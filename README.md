@@ -1,17 +1,30 @@
 # jellyflut
 
-A new Flutter project.
+A jellyfin client made in Flutter
+
+It's an alpha, soooooo for now, few things work...
+
+## Todo
+
+- [] SQLite to avoir logging and to save server URL
+- [] Browse all files (for now only the first item of a collection)
+- [] Correct all flutter things, make things faster
+- etc
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+How to test ?
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+git clone https://github.com/Thomas-Sohier/jellyflut.git
+cd jellyflut
+flutter packages get
+flutter packages upgrade
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+How to build ? (Android)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# jellyflut
+```bash
+flutter build apk --release
+```
