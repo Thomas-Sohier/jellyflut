@@ -9,7 +9,12 @@ It's an alpha, soooooo for now, few things work...
 - [] SQLite to avoir logging and to save server URL
 - [] Browse all files (for now only the first item of a collection)
 - [] Correct all flutter things, make things faster
-- etc
+
+## Screens
+
+![Image of login screen](./img/login.jpg)
+![Image of home](./img/home.jpg)
+![Image of details](./img/details.jpg)
 
 ## Getting Started
 
