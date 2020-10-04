@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
+import 'package:jellyflut/components/outlineTextField.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 
 import 'background.dart';
@@ -20,6 +21,7 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordFilter = new TextEditingController();
   String _username = "";
   String _password = "";
+  var _obscureText = true;
   FormType _form = FormType
       .login; // our default setting is to login, and we should switch to creating an account when the user chooses to
 
@@ -86,61 +88,17 @@ class _LoginState extends State<Login> {
             padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                      textInputAction: TextInputAction.next,
-                      controller: _usernameFilter,
-                      style: TextStyle(color: Colors.black),
-                      textAlign: TextAlign.center,
-                      decoration: new InputDecoration(
-                          prefixIcon:
-                              Icon(Icons.person, color: Color(0xFF825191)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  style: BorderStyle.solid,
-                                  color: Colors.grey[400])),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide: BorderSide(
-                                  width: 2,
-                                  style: BorderStyle.solid,
-                                  color: Color(0xFF825191))),
-                          filled: true,
-                          hintStyle: new TextStyle(color: Colors.grey[600]),
-                          hintText: "Username",
-                          fillColor: Colors.white)),
+                OutlineTextField(
+                  "username",
+                  controller: _usernameFilter,
+                  prefixIcon: Icon(Icons.person),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                    textInputAction: TextInputAction.done,
-                    controller: _passwordFilter,
-                    obscureText: true,
-                    style: TextStyle(color: Colors.black),
-                    textAlign: TextAlign.center,
-                    decoration: new InputDecoration(
-                        prefixIcon:
-                            Icon(Icons.vpn_key, color: Color(0xFF825191)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                                width: 2,
-                                style: BorderStyle.solid,
-                                color: Colors.grey[400])),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            borderSide: BorderSide(
-                                width: 2,
-                                style: BorderStyle.solid,
-                                color: Color(0xFF825191))),
-                        filled: true,
-                        hintStyle: new TextStyle(color: Colors.grey[600]),
-                        hintText: "Password",
-                        fillColor: Colors.white),
+                OutlineTextField(
+                  'password',
+                  controller: _passwordFilter,
+                  obscureText: true,
+                  prefixIcon: Icon(
+                    Icons.vpn_key,
                   ),
                 ),
                 SizedBox(height: size.height * 0.03),
