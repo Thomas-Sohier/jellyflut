@@ -1,3 +1,6 @@
+List<Server> serverFromList(List<Map> datas) =>
+    List<Server>.from(datas.map((x) => Server.fromMap(x)));
+
 class Server {
   Server({this.url, this.name});
 

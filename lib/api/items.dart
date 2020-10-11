@@ -1,44 +1,95 @@
 import 'package:dio/dio.dart';
 import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/itemDetails.dart';
+import 'package:jellyflut/models/imageBlurHashes.dart';
+import 'package:jellyflut/models/item.dart';
 
 import '../globals.dart';
 
 BaseOptions options = new BaseOptions(
-  connectTimeout: 5000,
-  receiveTimeout: 3000,
+  connectTimeout: 60000,
+  receiveTimeout: 60000,
   contentType: "JSON",
 );
 
 Dio dio = new Dio(options);
 
-String getItemImageUrl(String itemId,
+String getItemImageUrl(Item item,
     {int maxHeight = 1920,
     int maxWidth = 1080,
-    String type = "primary",
+    String type = "Primary",
     int quality = 90}) {
-  return "${basePath}/Items/${itemId}/Images/${type}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}";
+  String finalType = _fallBackImg(item.imageBlurHashes, type);
+  if (type == "Logo") {
+    return "${server.url}/Items/${item.id}/Images/${finalType}?quality=${quality}";
+  } else {
+    return "${server.url}/Items/${item.id}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}";
+  }
 }
 
-Future<ItemDetail> getItemDetails(Item item) async {
+String _fallBackImg(ImageBlurHashes imageBlurHashes, String tag) {
+  String hash;
+  if (tag == "Primary") {
+    hash = _fallBackPrimary(imageBlurHashes);
+  } else if (tag == "Backdrop") {
+    hash = _fallBackBackdrop(imageBlurHashes);
+  } else if (tag == "Logo") {
+    hash = _fallBackLogo(imageBlurHashes);
+  }
+  return hash;
+}
+
+String _fallBackPrimary(ImageBlurHashes imageBlurHashes) {
+  if (imageBlurHashes.primary != null)
+    return "Primary";
+  else if (imageBlurHashes.thumb != null)
+    return "Thumb";
+  else if (imageBlurHashes.backdrop != null)
+    return "Backdrop";
+  else if (imageBlurHashes.art != null)
+    return "Art";
+  else
+    return "Primary";
+}
+
+String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
+  if (imageBlurHashes.backdrop != null)
+    return "Backdrop";
+  else if (imageBlurHashes.thumb != null)
+    return "Thumb";
+  else if (imageBlurHashes.art != null)
+    return "Art";
+  else if (imageBlurHashes.primary != null)
+    return "Primary";
+  else
+    return "Primary";
+}
+
+String _fallBackLogo(ImageBlurHashes imageBlurHashes) {
+  if (imageBlurHashes.logo != null) {
+    return "Logo";
+  }
+  return "";
+}
+
+Future<Item> getItem(String itemId) async {
   var queryParams = new Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
   queryParams["Content-Type"] = "application/json";
 
-  String url = "${basePath}/Users/${user.id}/Items/${item.id}";
+  String url = "${server.url}/Users/${user.id}/Items/${itemId}";
 
   Response response;
-  ItemDetail itemDetail = new ItemDetail();
+  Item item = new Item();
   try {
     response = await dio.get(url, queryParameters: queryParams);
-    itemDetail = ItemDetail.fromMap(response.data);
+    item = Item.fromMap(response.data);
   } catch (e) {
     print(e);
   }
-  return itemDetail;
+  return item;
 }
 
-Future<ItemDetail> getItemsRecursive(String parentId,
+Future<Category> getItemsRecursive(String parentId,
     {String filter = "IsNotFolder, IsUnplayed",
     bool recursive = true,
     String sortBy = "PremiereDate",
@@ -54,23 +105,23 @@ Future<ItemDetail> getItemsRecursive(String parentId,
   queryParams["Recursive"] = recursive;
   queryParams["SortBy"] = sortBy;
   queryParams["MediaTypes"] = mediaType;
-  queryParams["Limit"] = 300;
+  queryParams["Limit"] = limit;
   queryParams["Fields"] = fields;
-  queryParams["ExcludeLocationTypes"] = 300;
-  queryParams["EnableTotalRecordCount"] = 300;
-  queryParams["CollapseBoxSetItems"] = false;
+  queryParams["ExcludeLocationTypes"] = excludeLocationTypes;
+  queryParams["EnableTotalRecordCount"] = enableTotalRecordCount;
+  queryParams["CollapseBoxSetItems"] = collapseBoxSetItems;
   queryParams["api_key"] = apiKey;
   queryParams["Content-Type"] = "application/json";
 
-  String url = "${basePath}/Users/${user.id}/Items/${parentId}";
+  String url = "${server.url}/Users/${user.id}/Items";
 
   Response response;
-  ItemDetail itemDetail = new ItemDetail();
+  Category category = new Category();
   try {
     response = await dio.get(url, queryParameters: queryParams);
-    itemDetail = mediaFromMap(response.data);
+    category = Category.fromMap(response.data);
   } catch (e) {
     print(e);
   }
-  return itemDetail;
+  return category;
 }

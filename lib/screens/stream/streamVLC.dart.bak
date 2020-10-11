@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:jellyflut/models/itemDetails.dart';
+import 'package:jellyflut/models/item.dart';
 
 import '../../globals.dart';
 
@@ -90,8 +90,7 @@ class _StreamVLCState extends State<StreamVLC> {
 
   @override
   Widget build(BuildContext context) {
-    final ItemDetail media =
-        ModalRoute.of(context).settings.arguments as ItemDetail;
+    final Item media = ModalRoute.of(context).settings.arguments as Item;
     return Scaffold(
         body: GestureDetector(
             onTap: () => {_toggleMenu()},
@@ -139,7 +138,7 @@ class _StreamVLCState extends State<StreamVLC> {
     super.dispose();
   }
 
-  Widget _vlcPlayerControl(ItemDetail media) {
+  Widget _vlcPlayerControl(Item media) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,7 +178,8 @@ class _StreamVLCState extends State<StreamVLC> {
                   onChanged: (progress) {
                     setState(() {
                       sliderValue = progress.floor().toDouble();
-                      _videoViewController.setStreamUrl(createURl(media));
+                      _videoViewController.setStreamUrl(
+                          createURl(media, startTick: sliderValue.toInt()));
                     });
                     //convert to Milliseconds since VLC requires MS to set time
                     _videoViewController.setTime(sliderValue.toInt() * 1000);
@@ -381,8 +381,8 @@ class _StreamVLCState extends State<StreamVLC> {
   }
 }
 
-String createURl(ItemDetail item, {double startTick = 0}) {
+String createURl(Item item, {int startTick = 0}) {
   String url =
-      "${basePath}/Videos/${item.id}/stream.${item.container.split(',').first}?startTimeTicks=${startTick}";
+      "${server.url}/Videos/${item.id}/stream.${item.container.split(',').first}?startTimeTicks=${startTick}";
   return url;
 }

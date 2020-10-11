@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/screens/home/bottomBar.dart';
-import 'package:jellyflut/screens/home/collection.dart';
+import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/collection.dart';
+import 'package:jellyflut/screens/home/collectionHome.dart';
 
 import 'background.dart';
 
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
                 if (snapshot.hasData) {
                   List<Widget> children = new List();
                   snapshot.data.items.forEach((Item item) {
-                    children.add(Collection(item));
+                    children.add(CollectionHome(item));
                   });
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

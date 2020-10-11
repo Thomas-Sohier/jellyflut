@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/models/media.dart';
+import 'package:jellyflut/models/item.dart';
 
 class Latest extends StatefulWidget {
   @override
@@ -49,9 +48,9 @@ class _LatestState extends State<Latest> {
     ]);
   }
 
-  List<Widget> displayLatestMedia(List<Media> medias) {
+  List<Widget> displayLatestMedia(List<Item> medias) {
     List<Widget> latestMedia = new List<Widget>();
-    medias.forEach((Media media) {
+    medias.forEach((Item media) {
       String firstKey = media.imageBlurHashes.primary.entries.first.key;
       latestMedia.add(
         Container(

@@ -1,14 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 
 // or new Dio with a BaseOptions instance.
 BaseOptions options = new BaseOptions(
-  connectTimeout: 5000,
-  receiveTimeout: 3000,
+  connectTimeout: 30000,
+  receiveTimeout: 30000,
 );
 Dio dio = new Dio(options);
 
@@ -34,7 +35,7 @@ Future<AuthenticationResponse> login(String username, String password) async {
   Response response;
   AuthenticationResponse authenticationResponse;
   try {
-    response = await dio.post(basePath + login, data: formData);
+    response = await dio.post('${server.url}${login}', data: formData);
     authenticationResponse = AuthenticationResponse.fromMap(response.data);
     await setGlobals(authenticationResponse);
   } catch (e) {
@@ -42,14 +43,4 @@ Future<AuthenticationResponse> login(String username, String password) async {
     return null;
   }
   return authenticationResponse;
-}
-
-setGlobals(AuthenticationResponse response) async {
-  // Permet de rendre les informations nécessaires global
-  user = response.user;
-  apiKey = response.accessToken;
-
-  // Permet de garder la personne connecté
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs?.setBool("isLoggedIn", true);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/category.dart';
+import 'package:jellyflut/models/item.dart';
 
 class BottomBar extends StatefulWidget {
   @override

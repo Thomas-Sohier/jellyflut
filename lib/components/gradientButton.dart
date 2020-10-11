@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/itemDetails.dart';
+import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/colors.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -16,7 +15,7 @@ class GradienButton extends StatefulWidget {
       this.color2 = const Color(0xFF04a2db)});
 
   final Widget child;
-  final ItemDetail item;
+  final Item item;
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
@@ -38,10 +37,12 @@ class _GradienButtonState extends State<GradienButton> {
             side: BorderSide(color: Colors.transparent)),
         textColor: Colors.black,
         color: Colors.transparent,
-        child: widget.item == null
-            ? customPalette(
-                widget.color1, widget.color2, widget.text, widget.icon)
-            : generatedPalette(widget.item, widget.text, widget.icon));
+        child: customPalette(
+            widget.color1, widget.color2, widget.text, widget.icon));
+    // child: widget.item == null
+    //     ? customPalette(
+    //         widget.color1, widget.color2, widget.text, widget.icon)
+    //     : generatedPalette(widget.item, widget.text, widget.icon));
   }
 }
 
@@ -80,9 +81,9 @@ Widget customPalette(Color color1, Color color2, String text, IconData icon) {
   );
 }
 
-Widget generatedPalette(ItemDetail item, String text, IconData icon) {
+Widget generatedPalette(Item item, String text, IconData icon) {
   return FutureBuilder<PaletteGenerator>(
-    future: gePalette(getItemImageUrl(item.id)),
+    future: gePalette(getItemImageUrl(item)),
     builder: (context, snapshot) {
       Widget child;
       if (snapshot.hasData) {

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'externalUrl.dart';
 import 'genreItem.dart';
 import 'imageTags.dart';
-import 'itemDetails.dart';
+import 'item.dart';
 import 'person.dart';
 import 'providerIds.dart';
 import 'seasonBlurHash.dart';

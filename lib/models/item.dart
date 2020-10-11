@@ -1,11 +1,14 @@
 // To parse this JSON data, do
 //
-//     final media = mediaFromMap(jsonString);
+//     final media = itemFromMap(jsonString);
 
 import 'dart:convert';
 
 import 'package:jellyflut/shared/enums.dart';
 
+import 'albumArtists.dart';
+import 'artist.dart';
+import 'artistItems.dart';
 import 'chapter.dart';
 import 'externalUrl.dart';
 import 'genreItem.dart';
@@ -17,15 +20,12 @@ import 'person.dart';
 import 'providerIds.dart';
 import 'userData.dart';
 
-List<ItemDetail> mediaFromList(String str) =>
-    List<ItemDetail>.from(json.decode(str).map((x) => ItemDetail.fromMap(x)));
+Item itemFromMap(String str) => Item.fromMap(json.decode(str));
 
-ItemDetail mediaFromMap(String str) => ItemDetail.fromMap(json.decode(str));
+String itemToMap(Item data) => json.encode(data.toMap());
 
-String mediaToMap(ItemDetail data) => json.encode(data.toMap());
-
-class ItemDetail {
-  ItemDetail({
+class Item {
+  Item({
     this.name,
     this.originalTitle,
     this.serverId,
@@ -33,6 +33,7 @@ class ItemDetail {
     this.indexNumber,
     this.parentIndexNumber,
     this.etag,
+    this.collectionType,
     this.dateCreated,
     this.canDelete,
     this.canDownload,
@@ -58,7 +59,16 @@ class ItemDetail {
     this.isHd,
     this.isFolder,
     this.parentId,
+    this.seriesId,
+    this.seasonId,
     this.type,
+    this.artists,
+    this.artistItems,
+    this.album,
+    this.albumId,
+    this.albumPrimaryImageTag,
+    this.albumArtist,
+    this.albumArtists,
     this.people,
     this.studios,
     this.genreItems,
@@ -82,7 +92,6 @@ class ItemDetail {
     this.width,
     this.height,
   });
-
   String name;
   String originalTitle;
   String serverId;
@@ -90,6 +99,7 @@ class ItemDetail {
   int indexNumber;
   int parentIndexNumber;
   String etag;
+  String collectionType;
   DateTime dateCreated;
   bool canDelete;
   bool canDownload;
@@ -115,7 +125,16 @@ class ItemDetail {
   bool isHd;
   bool isFolder;
   String parentId;
+  String seriesId;
+  String seasonId;
   String type;
+  List<Artist> artists;
+  List<ArtistItems> artistItems;
+  String album;
+  String albumId;
+  String albumPrimaryImageTag;
+  String albumArtist;
+  List<AlbumArtists> albumArtists;
   List<Person> people;
   List<GenreItem> studios;
   List<GenreItem> genreItems;
@@ -139,7 +158,7 @@ class ItemDetail {
   int width;
   int height;
 
-  factory ItemDetail.fromMap(Map<String, dynamic> json) => ItemDetail(
+  factory Item.fromMap(Map<String, dynamic> json) => Item(
         name: json["Name"] == null ? null : json["Name"],
         originalTitle:
             json["OriginalTitle"] == null ? null : json["OriginalTitle"],
@@ -150,6 +169,8 @@ class ItemDetail {
             ? null
             : json["ParentIndexNumber"],
         etag: json["Etag"] == null ? null : json["Etag"],
+        collectionType:
+            json["CollectionType"] == null ? null : json["CollectionType"],
         dateCreated: json["DateCreated"] == null
             ? null
             : DateTime.parse(json["DateCreated"]),
@@ -204,7 +225,26 @@ class ItemDetail {
         isHd: json["IsHD"] == null ? null : json["isHd"],
         isFolder: json["IsFolder"] == null ? null : json["IsFolder"],
         parentId: json["ParentId"] == null ? null : json["ParentId"],
+        seriesId: json["seriesId"] == null ? null : json["seriesId"],
+        seasonId: json["seasonId"] == null ? null : json["seasonId"],
         type: json["Type"] == null ? null : json["Type"],
+        artists: json["Artists"] == null
+            ? null
+            : List<Artist>.from(json["Artists"].map((x) => Artist.fromMap(x))),
+        artistItems: json["ArtistItems"] == null
+            ? null
+            : List<ArtistItems>.from(
+                json["ArtistItems"].map((x) => ArtistItems.fromMap(x))),
+        album: json["Album"] == null ? null : json["Album"],
+        albumId: json["AlbumId"] == null ? null : json["AlbumId"],
+        albumPrimaryImageTag: json["AlbumPrimaryImageTag"] == null
+            ? null
+            : json["AlbumPrimaryImageTag"],
+        albumArtist: json["AlbumArtist"] == null ? null : json["AlbumArtist"],
+        albumArtists: json["AlbumArtists"] == null
+            ? null
+            : List<AlbumArtists>.from(
+                json["AlbumArtists"].map((x) => AlbumArtists.fromMap(x))),
         people: json["people"] == null
             ? null
             : List<Person>.from(json["People"].map((x) => Person.fromMap(x))),
@@ -219,12 +259,12 @@ class ItemDetail {
         localTrailerCount: json["LocalTrailerCount"] == null
             ? null
             : json["localTrailerCount"],
-        userData: json["userData"] == null
+        userData: json["UserData"] == null
             ? null
             : UserData.fromMap(json["UserData"]),
         specialFeatureCount: json["SpecialFeatureCount"] == null
             ? null
-            : json["specialFeatureCount"],
+            : json["SpecialFeatureCount"],
         displayPreferencesId: json["DisplayPreferencesId"] == null
             ? null
             : json["DisplayPreferencesId"],
@@ -277,6 +317,7 @@ class ItemDetail {
         "ParentIndexNumber":
             parentIndexNumber == null ? null : parentIndexNumber,
         "Etag": etag,
+        "CollectionType": collectionType,
         "DateCreated": dateCreated.toIso8601String(),
         "CanDelete": canDelete,
         "CanDownload": canDownload,
@@ -305,6 +346,13 @@ class ItemDetail {
         "IsFolder": isFolder,
         "ParentId": parentId,
         "Type": type,
+        "Artists": artists,
+        "ArtistItems": artistItems,
+        "Album": album,
+        "AlbumId": albumId,
+        "AlbumPrimaryImageTag": albumPrimaryImageTag,
+        "AlbumArtist": albumArtist,
+        "AlbumArtists": albumArtists,
         "People": List<dynamic>.from(people.map((x) => x.toMap())),
         "Studios": List<dynamic>.from(studios.map((x) => x.toMap())),
         "GenreItems": List<dynamic>.from(genreItems.map((x) => x.toMap())),

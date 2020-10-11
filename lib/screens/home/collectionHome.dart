@@ -1,40 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/media.dart';
+import 'package:jellyflut/models/category.dart';
+import 'package:jellyflut/models/item.dart';
 
-class Collection extends StatefulWidget {
+class CollectionHome extends StatefulWidget {
   final Item item;
-  const Collection(this.item);
+  const CollectionHome(this.item);
 
   @override
   State<StatefulWidget> createState() {
-    return _CollectionState();
+    return _CollectionHomeState();
   }
 }
 
 const double gapSize = 20;
 
-class _CollectionState extends State<Collection> {
+class _CollectionHomeState extends State<CollectionHome> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-      future: getItems(widget?.item?.id, 10),
+      future: getCategory(parentId: widget?.item?.id, limit: 10),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    widget.item.name,
-                    style: TextStyle(color: Colors.white, fontSize: 28),
+                GestureDetector(
+                  onTap: () => navigatorKey.currentState
+                      .pushNamed("/collection", arguments: widget.item),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      widget.item.name,
+                      style: TextStyle(color: Colors.white, fontSize: 28),
+                    ),
                   ),
                 ),
                 ConstrainedBox(
@@ -75,7 +79,7 @@ class _CollectionState extends State<Collection> {
                     aspectRatio: _aspectRatio(widget.item.collectionType),
                     child: Hero(
                         tag: "poster-${item.id}",
-                        child: AsyncImage(item.id, item.imageBlurHashes)))),
+                        child: AsyncImage(item, item.imageBlurHashes)))),
             Text(
               item.name,
               overflow: TextOverflow.ellipsis,

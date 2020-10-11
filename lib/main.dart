@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/auth.dart';
+import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/home/home.dart';
-import 'package:jellyflut/screens/login/login.dart';
+import 'package:jellyflut/screens/splash/splash.dart';
+import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/screens/stream/streamVLC.dart';
+import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/theme.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DatabaseService();
+  init();
   runApp(MyApp());
 }
 
@@ -20,15 +26,17 @@ class MyApp extends StatelessWidget {
       title: 'JellyFlut',
       navigatorKey: navigatorKey,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: color1,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => Login(),
+        '/': (context) => Splash(),
         // When navigating to the "/second" route, build the SecondScreen widget.
+        '/login': (context) => ParentStart(),
         '/home': (context) => Home(),
-        '/watch': (context) => StreamVLC(),
+        '/collection': (context) => CollectionMain(),
+        '/watch': (context) => Stream(),
         '/details': (context) => Details(),
       },
       onUnknownRoute: (RouteSettings settings) {

@@ -1,15 +1,19 @@
+import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:jellyflut/components/asyncImage.dart';
-import 'package:jellyflut/components/gradientButton.dart';
-import 'package:jellyflut/models/itemDetails.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/category.dart';
+import 'package:jellyflut/api/user.dart';
+import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/components/cardItemWithChild.dart';
+import 'package:jellyflut/components/gradientButton.dart';
+import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/shared/shared.dart';
 
 import '../../main.dart';
 import 'collection.dart';
-
-var itemDetail = new ItemDetail();
+import 'favButton.dart';
+import 'viewedButton.dart';
 
 class Details extends StatefulWidget {
   @override
@@ -18,20 +22,21 @@ class Details extends StatefulWidget {
   }
 }
 
+Item item = new Item();
+
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
-    final Item item = ModalRoute.of(context).settings.arguments as Item;
+    item = ModalRoute.of(context).settings.arguments as Item;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         // bottomNavigationBar: BottomBar(),
         extendBody: true,
         backgroundColor: Colors.transparent,
-        body: FutureBuilder<ItemDetail>(
-          future: getItemDetails(item),
+        body: FutureBuilder<Item>(
+          future: getItem(item.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              itemDetail = snapshot.data;
               return body(snapshot.data, size, context);
             } else if (snapshot.hasError) {
               return Container(child: Text("Error"));
@@ -43,13 +48,14 @@ class _DetailsState extends State<Details> {
   }
 }
 
-Widget body(ItemDetail itemDetail, Size size, BuildContext context) {
+Widget body(Item item, Size size, BuildContext context) {
   return Stack(
+    alignment: Alignment.topCenter,
     children: [
       Container(
           child: Container(
               foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-              child: AsyncImage(itemDetail.id, itemDetail.imageBlurHashes)),
+              child: AsyncImage(item, item.imageBlurHashes)),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -69,68 +75,22 @@ Widget body(ItemDetail itemDetail, Size size, BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: size.height * 0.10),
-            Container(
-                width: 200,
-                child: AsyncImage(
-                  itemDetail.id,
-                  itemDetail.imageBlurHashes,
-                  tag: "Logo",
-                )),
+            if (item.imageBlurHashes.logo != null)
+              Container(
+                  width: size.width,
+                  height: 100,
+                  child: AsyncImage(
+                    item,
+                    item.imageBlurHashes,
+                    boxFit: BoxFit.contain,
+                    tag: "Logo",
+                  )),
             SizedBox(height: size.height * 0.05),
             Stack(children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 25),
-                child: Card(
-                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(12, 25, 12, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (itemDetail.name != null)
-                              Expanded(
-                                  child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
-                                      child: Text(itemDetail.name,
-                                          overflow: TextOverflow.clip,
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold)))),
-                            Spacer(),
-                            if (itemDetail.genres != null)
-                              Expanded(
-                                  child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
-                                      child: Text(itemDetail.genres.first,
-                                          overflow: TextOverflow.clip,
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal)))),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (itemDetail.overview != null)
-                              Expanded(
-                                  child: Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
-                                      child: Text(itemDetail.overview,
-                                          overflow: TextOverflow.clip,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal)))),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 25),
+                  child: CardItemWithChild(item,
+                      item.isFolder == true ? Collection(item) : Container())),
               Positioned(
                   height: 50,
                   width: 250,
@@ -138,23 +98,15 @@ Widget body(ItemDetail itemDetail, Size size, BuildContext context) {
                   left: 75,
                   child: GradienButton(
                     "Play",
-                    _playItem,
-                    item: itemDetail,
-                    // _playItem(context, itemDetail),
+                    () {
+                      _playItem(item);
+                    },
+                    item: item,
+                    // _playItem(context, item),
                     icon: Icons.play_circle_outline,
                   )),
             ]),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            if (itemDetail.isFolder == true)
-              Card(
-                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Collection(itemDetail.id)])))
+            SizedBox(height: size.height * 0.05),
           ],
         ),
       )
@@ -170,7 +122,7 @@ Widget _placeHolderBody(Item item, Size size) {
         child: Container(
             child: Container(
                 foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-                child: AsyncImage(item.id, item.imageBlurHashes)),
+                child: AsyncImage(item, item.imageBlurHashes)),
             foregroundDecoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -194,16 +146,11 @@ Widget _placeHolderBody(Item item, Size size) {
             Container(
                 width: 200,
                 child: AsyncImage(
-                  item.id,
+                  item,
                   item.imageBlurHashes,
                   tag: "Logo",
                 )),
             SizedBox(height: size.height * 0.10),
-            // GradienButton(
-            //   "Play",
-            //   () {},
-            //   icon: Icons.play_circle_outline,
-            // ),
             SizedBox(height: size.height * 0.05),
             Card(
               margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -226,7 +173,7 @@ Widget _placeHolderBody(Item item, Size size) {
                                             fontWeight: FontWeight.bold))))),
                       ],
                     ),
-                    // if (itemDetail.isFolder == true) Collection(itemDetail)
+                    // if (item.isFolder == true) Collection(item)
                   ],
                 ),
               ),
@@ -238,6 +185,20 @@ Widget _placeHolderBody(Item item, Size size) {
   );
 }
 
-void _playItem() async {
-  navigatorKey.currentState.pushNamed("/watch", arguments: itemDetail);
+Widget actionIcons(Item item) {
+  return Row(
+    children: [FavButton(item), ViewedButton(item)],
+  );
+}
+
+void _playItem(Item item) async {
+  if (item.type != "Book") {
+    navigatorKey.currentState.pushNamed("/watch", arguments: item);
+  }
+  String path = await getEbook(item);
+  if (path != null) {
+    await EpubViewer.openAsset(
+      path,
+    ).catchError((onError) => showToast(onError.toString()));
+  }
 }
