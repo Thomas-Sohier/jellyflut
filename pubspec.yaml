@@ -41,12 +41,16 @@ dependencies:
   permission_handler: ^5.0.1+1
   fluttertoast: ^7.1.1
   flutter_svg: ^0.19.0
-  provider: ^3.0.0
+  provider: ^4.3.2+2
   
   # Video Player
-  video_player: '>=0.11.0 <2.0.0'
+  subtitle_wrapper_package:  
+    git:
+      url: git@github.com:Joran-Dob/flutter_subtitle_wrapper.git
+      ref: master
+  video_player: '>=0.10.2+1 <2.0.0'
   # flutter_vlc_player: ^4.0.1
-  # better_player: ^0.0.22
+  # better_player: ^0.0.25
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

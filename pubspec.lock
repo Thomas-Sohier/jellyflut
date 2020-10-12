@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.2"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -113,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.8+1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.5"
   fake_async:
     dependency: transitive
     description:
@@ -139,6 +153,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bloc:
+    dependency: transitive
+    description:
+      name: flutter_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.6"
   flutter_blurhash:
     dependency: "direct main"
     description:
@@ -212,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   octo_image:
     dependency: transitive
     description:
@@ -337,7 +365,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.0"
+    version: "4.3.2+2"
   rxdart:
     dependency: transitive
     description:
@@ -434,6 +462,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  subtitle_wrapper_package:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "916e72dd67ac7fe7a24c206f67b67f1e097d0b4e"
+      url: "git@github.com:Joran-Dob/flutter_subtitle_wrapper.git"
+    source: git
+    version: "1.0.3"
   synchronized:
     dependency: transitive
     description:
@@ -482,7 +519,7 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.0"
+    version: "0.10.12+5"
   video_player_platform_interface:
     dependency: transitive
     description:
