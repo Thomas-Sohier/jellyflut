@@ -2,15 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/background.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
-import 'package:jellyflut/models/item.dart';
 
 class AsyncImage extends StatefulWidget {
-  AsyncImage(this.item, this.blurHash,
+  AsyncImage(this.itemId, this.blurHash,
       {this.tag = "Primary", this.boxFit = BoxFit.fitHeight});
 
-  final Item item;
+  final String itemId;
   final ImageBlurHashes blurHash;
   final String tag;
   final BoxFit boxFit;
@@ -22,13 +20,14 @@ class AsyncImage extends StatefulWidget {
 class _AsyncImageState extends State<AsyncImage> {
   @override
   Widget build(BuildContext context) {
-    return body(widget.item, widget.tag, widget.boxFit);
+    return body(widget.itemId, widget.blurHash, widget.tag, widget.boxFit);
   }
 }
 
-Widget body(Item item, String tag, BoxFit boxFit) {
+Widget body(
+    String itemId, ImageBlurHashes blurHash, String tag, BoxFit boxFit) {
   return CachedNetworkImage(
-    imageUrl: getItemImageUrl(item, type: tag),
+    imageUrl: getItemImageUrl(itemId, blurHash, type: tag),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -37,17 +36,16 @@ Widget body(Item item, String tag, BoxFit boxFit) {
     ),
     fadeInCurve: Curves.easeInOut,
     placeholder: (context, url) {
-      String hash = _fallBackBlurHash(item.imageBlurHashes, tag);
+      String hash = _fallBackBlurHash(blurHash, tag);
       if (tag != "Logo" && hash != null)
         return AspectRatio(
             aspectRatio: 3 / 4,
-            child:
-                BlurHash(hash: _fallBackBlurHash(item.imageBlurHashes, tag)));
+            child: BlurHash(hash: _fallBackBlurHash(blurHash, tag)));
       else
         return Container();
     },
     errorWidget: (context, url, error) {
-      String hash = _fallBackBlurHash(item.imageBlurHashes, tag);
+      String hash = _fallBackBlurHash(blurHash, tag);
       if (tag != "Logo" && hash != null)
         return AspectRatio(aspectRatio: 3 / 4, child: BlurHash(hash: hash));
       else

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:subtitle_wrapper_package/data/models/style/subtitle_position.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_style.dart';
 import 'package:subtitle_wrapper_package/subtitle_controller.dart';
 import 'package:subtitle_wrapper_package/subtitle_wrapper_package.dart';
@@ -21,6 +24,8 @@ class Stream extends StatefulWidget {
 class _StreamState extends State<Stream> {
   Future<void> _initializeVideoPlayerFuture;
   int _playBackTime;
+  int _subsId;
+  Timer _timer;
 
   final SubtitleController subtitleController = SubtitleController(
       showSubtitles: true,
@@ -42,17 +47,7 @@ class _StreamState extends State<Stream> {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Wakelock.enable();
-    Future.delayed(const Duration(seconds: 5), () {
-      //asynchronous delay
-      if (this.mounted) {
-        //checks if widget is still active and not disposed
-        setState(() {
-          //tells the widget builder to rebuild again because ui has updated
-          _visible =
-              false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
-        });
-      }
-    });
+    autoHideControl();
     Future.delayed(Duration.zero, () {
       setState(() {
         Item tempItem = ModalRoute.of(context).settings.arguments as Item;
@@ -71,36 +66,48 @@ class _StreamState extends State<Stream> {
         body: Center(
           child: Container(
               child: Stack(children: [
-            if (_controller != null)
-              _controller.value.initialized
-                  ? Center(
-                      child: AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: SubTitleWrapper(
-                              videoPlayerController: _controller,
-                              subtitleController: subtitleController,
-                              subtitleStyle: SubtitleStyle(
-                                textColor: Colors.white,
-                                hasBorder: true,
-                              ),
-                              videoChild: VideoPlayer(_controller))))
-                  : Center(child: CircularProgressIndicator()),
-            if (_controller != null)
-              Visibility(
-                child: videoControl(),
-                maintainSize: true,
-                maintainAnimation: true,
-                maintainState: true,
-                visible: _visible,
-              ),
+            if (_controller != null && _controller.value.initialized)
+              Center(
+                  child: AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: SubTitleWrapper(
+                          videoPlayerController: _controller,
+                          subtitleController: subtitleController,
+                          subtitleStyle: SubtitleStyle(
+                            textColor: Colors.white,
+                            fontSize: 18,
+                            position: SubtitlePosition(
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.05),
+                            hasBorder: true,
+                          ),
+                          videoChild: GestureDetector(
+                              onTap: () {
+                                _visible = !_visible;
+                                autoHideControl();
+                              },
+                              child: VideoPlayer(_controller)))))
+            else
+              Center(child: CircularProgressIndicator()),
+            if (_controller != null && _playBackTime != null)
+              Positioned(
+                  bottom: 0,
+                  width: MediaQuery.of(context).size.width,
+                  child: Visibility(
+                    child: videoControl(),
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: _visible,
+                  )),
           ])),
         ));
   }
 
   Widget videoControl() {
     return Row(children: [
-      Expanded(
-          flex: 1,
+      Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
               onTap: () {
                 setState(() {
@@ -113,22 +120,38 @@ class _StreamState extends State<Stream> {
                 _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
                 color: Colors.white,
               ))),
-      Expanded(
-          flex: 3,
-          child: Slider(
-            activeColor: Colors.white,
-            inactiveColor: Colors.white,
-            onChanged: (value) {
-              setState(() {
-                _controller.seekTo(Duration(milliseconds: value.round()));
-                _controller.play();
-              });
-            },
-            value: videoCurrentPosition(),
-            max: videoMaxPosition(item),
+      Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Text(
+            printDuration(Duration(seconds: _playBackTime)),
+            style: TextStyle(color: Colors.white),
           )),
       Expanded(
           flex: 1,
+          child: Slider(
+            activeColor: Colors.white,
+            inactiveColor: Colors.white30,
+            min: 0,
+            max: _controller.value.duration.inSeconds.toDouble(),
+            value: _playBackTime.toDouble(),
+            onChanged: (value) {
+              setState(() {
+                _playBackTime = value.toInt();
+              });
+            },
+            onChangeEnd: (value) {
+              _controller.seekTo(Duration(seconds: _playBackTime));
+            },
+          )),
+      Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Text(
+            printDuration(
+                Duration(seconds: _controller.value.duration.inSeconds)),
+            style: TextStyle(color: Colors.white),
+          )),
+      Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
               onTap: () {
                 changeSubtitle(item, context);
@@ -137,8 +160,8 @@ class _StreamState extends State<Stream> {
                 Icons.subtitles,
                 color: Colors.white,
               ))),
-      Expanded(
-          flex: 1,
+      Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
               onTap: () {},
               child: Icon(
@@ -146,6 +169,20 @@ class _StreamState extends State<Stream> {
                 color: Colors.white,
               ))),
     ]);
+  }
+
+  Future<void> autoHideControl() {
+    Future.delayed(const Duration(seconds: 5), () {
+      //asynchronous delay
+      if (this.mounted) {
+        //checks if widget is still active and not disposed
+        setState(() {
+          //tells the widget builder to rebuild again because ui has updated
+          _visible =
+              false; //update the variable declare this under your class so its accessible for both your widget build and initState which is located under widget build{}
+        });
+      }
+    });
   }
 
   double videoCurrentPosition() {
@@ -164,10 +201,11 @@ class _StreamState extends State<Stream> {
 
   @override
   void dispose() {
-    super.dispose();
     Wakelock.disable();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    _timer.cancel();
     _controller.dispose();
+    super.dispose();
   }
 
   String createURl(Item item, {int startTick = 0}) {
@@ -225,6 +263,15 @@ class _StreamState extends State<Stream> {
         setState(() {
           _controller.play();
         });
+        _timer = Timer.periodic(
+            Duration(seconds: 15),
+            (Timer t) =>
+                itemProgress(item, _controller, subtitlesIndex: _subsId));
+        _controller.addListener(() {
+          setState(() {
+            _playBackTime = _controller.value.position.inSeconds;
+          });
+        });
       }).catchError((onError) {
         showToast("Can't direct play this file, trying to transcode...");
         setNewStream(createTranscodeUrl(item)).catchError((onError) {
@@ -277,6 +324,7 @@ class _StreamState extends State<Stream> {
 
   Future<ClosedCaptionFile> setSubtitles(
       String itemId, String codec, int subtitleId) async {
+    _subsId = subtitleId;
     String mediaSourceId = itemId.substring(0, 8) +
         "-" +
         itemId.substring(8, 12) +
@@ -337,4 +385,14 @@ class _StreamState extends State<Stream> {
       showToast("No subtitles found");
     }
   }
+}
+
+Future<double> _bufferingPercentage(VideoPlayerController controller) async {
+  if (controller.value.buffered.length == 0) return 0.0;
+  final bufferedMilliseconds = controller.value.buffered
+      .map((element) =>
+          element.end.inMilliseconds - element.start.inMilliseconds)
+      .toList()
+      .reduce((a, b) => a + b);
+  return bufferedMilliseconds / controller.value.duration.inMilliseconds * 100;
 }

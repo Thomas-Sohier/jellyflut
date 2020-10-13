@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import 'critics.dart';
@@ -27,7 +26,7 @@ class _CarousselItemState extends State<CarousselItem> {
   }
 
   Widget _buildCarousel(List<Item> items) {
-    double customViewportFraction = widget.detailMode ? 1 : 0.7;
+    double customViewportFraction = widget.detailMode ? 1 : 0.4;
     return PageView.builder(
       controller: PageController(viewportFraction: customViewportFraction),
       onPageChanged: (int index) => setState(() => _index = index),
@@ -60,75 +59,71 @@ Widget carrousselDetailItem(Item item, Color textColor) {
               color: textColor, fontWeight: FontWeight.w600, fontSize: 28)),
     ),
     Expanded(
-        child: Row(children: [
-      Expanded(
-          flex: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
+        child: GestureDetector(
+            onTap: () => navigatorKey.currentState
+                .pushNamed("/details", arguments: item),
+            child: Row(children: [
               Expanded(
-                  child: GestureDetector(
-                      onTap: () => navigatorKey.currentState
-                          .pushNamed("/details", arguments: item),
-                      child: Padding(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Hero(
-                              tag: "poster-${item.id}",
-                              child: AsyncImage(
-                                item,
-                                item.imageBlurHashes,
-                                boxFit: BoxFit.contain,
-                              ))))),
-            ],
-          )),
-      Expanded(
-        flex: 3,
-        child: Column(children: [
-          Critics(item, textColor: Colors.white),
-          if (item.overview != null)
-            new Expanded(
-                flex: 1,
-                child: new SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      removeAllHtmlTags(item.overview),
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(color: Colors.white70, fontSize: 17),
-                    )))
-        ]),
-      )
-    ]))
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: Hero(
+                                  tag: "poster-${item.id}",
+                                  child: AsyncImage(
+                                    returnImageId(item),
+                                    item.imageBlurHashes,
+                                    boxFit: BoxFit.contain,
+                                  )))),
+                    ],
+                  )),
+              Expanded(
+                flex: 3,
+                child: Column(children: [
+                  Critics(item, textColor: Colors.white),
+                  if (item.overview != null)
+                    new Expanded(
+                        flex: 1,
+                        child: new SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Text(
+                              removeAllHtmlTags(item.overview),
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                  color: Colors.white70, fontSize: 17),
+                            )))
+                ]),
+              )
+            ])))
   ]);
 }
 
 Widget carrousselDefault(Item item, Color textColor) {
-  return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: GestureDetector(
-                      onTap: () => navigatorKey.currentState
-                          .pushNamed("/details", arguments: item),
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4.0),
-                          child: Hero(
-                              tag: "poster-${item.id}",
-                              child: AsyncImage(
-                                item,
-                                item.imageBlurHashes,
-                              ))))),
-              Text(item.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22)),
-            ])
-      ]);
+  return GestureDetector(
+      onTap: () =>
+          navigatorKey.currentState.pushNamed("/details", arguments: item),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+                child: Hero(
+                    tag: "poster-${item.id}",
+                    child: AsyncImage(
+                      returnImageId(item),
+                      item.imageBlurHashes,
+                      boxFit: BoxFit.contain,
+                    ))),
+            Text(item.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22)),
+          ]));
 }

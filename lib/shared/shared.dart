@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
+import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/server.dart';
 import 'package:jellyflut/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,4 +92,11 @@ String removeAllHtmlTags(String htmlText) {
   RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
   return htmlText.replaceAll(exp, '');
+}
+
+String returnImageId(Item item) {
+  if (item.type == "Season" || item.type == "Episode") {
+    return item.seriesId;
+  }
+  return item.id;
 }

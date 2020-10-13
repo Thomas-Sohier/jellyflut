@@ -225,8 +225,8 @@ class Item {
         isHd: json["IsHD"] == null ? null : json["isHd"],
         isFolder: json["IsFolder"] == null ? null : json["IsFolder"],
         parentId: json["ParentId"] == null ? null : json["ParentId"],
-        seriesId: json["seriesId"] == null ? null : json["seriesId"],
-        seasonId: json["seasonId"] == null ? null : json["seasonId"],
+        seriesId: json["SeriesId"] == null ? null : json["SeriesId"],
+        seasonId: json["SeasonId"] == null ? null : json["SeasonId"],
         type: json["Type"] == null ? null : json["Type"],
         artists: json["Artists"] == null
             ? null

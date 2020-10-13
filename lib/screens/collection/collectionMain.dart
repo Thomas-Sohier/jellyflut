@@ -63,7 +63,7 @@ class _CollectionMainState extends State<CollectionMain> {
                               .pushNamed("/details", arguments: items[index]),
                           child: Column(children: [
                             Expanded(
-                                child: AsyncImage(items[index],
+                                child: AsyncImage(items[index].id,
                                     items[index].imageBlurHashes)),
                             Text(
                               items[index].name,

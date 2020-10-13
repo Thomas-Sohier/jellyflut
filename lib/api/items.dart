@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:jellyflut/models/MediaPlayedInfos.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/mediaSource.dart';
+import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
 
@@ -13,16 +19,16 @@ BaseOptions options = new BaseOptions(
 
 Dio dio = new Dio(options);
 
-String getItemImageUrl(Item item,
+String getItemImageUrl(String itemId, ImageBlurHashes imageBlurHashes,
     {int maxHeight = 1920,
     int maxWidth = 1080,
     String type = "Primary",
     int quality = 90}) {
-  String finalType = _fallBackImg(item.imageBlurHashes, type);
+  String finalType = _fallBackImg(imageBlurHashes, type);
   if (type == "Logo") {
-    return "${server.url}/Items/${item.id}/Images/${finalType}?quality=${quality}";
+    return "${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}";
   } else {
-    return "${server.url}/Items/${item.id}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}";
+    return "${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}";
   }
 }
 
@@ -124,4 +130,35 @@ Future<Category> getItemsRecursive(String parentId,
     print(e);
   }
   return category;
+}
+
+void itemProgress(Item item, VideoPlayerController videoPlayerController,
+    {int subtitlesIndex}) {
+  var queryParams = new Map<String, dynamic>();
+  queryParams["api_key"] = apiKey;
+
+  MediaPlayedInfos mediaPlayedInfos = new MediaPlayedInfos();
+  mediaPlayedInfos.isMuted =
+      videoPlayerController.value.volume > 0 ? true : false;
+  mediaPlayedInfos.isPaused = videoPlayerController.value.isPlaying;
+  mediaPlayedInfos.canSeek = true;
+  mediaPlayedInfos.itemId = item.id;
+  mediaPlayedInfos.mediaSourceId = item.id;
+  mediaPlayedInfos.positionTicks =
+      videoPlayerController.value.position.inMicroseconds * 10;
+  mediaPlayedInfos.volumeLevel = videoPlayerController.value.volume.toInt();
+  mediaPlayedInfos.subtitleStreamIndex =
+      subtitlesIndex != null ? subtitlesIndex : -1;
+
+  String url = "${server.url}/Sessions/Playing/Progress";
+
+  Map<String, dynamic> _mediaPlayedInfos = mediaPlayedInfos.toJson();
+  _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
+
+  String _json = json.encode(_mediaPlayedInfos);
+
+  dio
+      .post(url, data: _json, queryParameters: queryParams)
+      .then((_) => print("progress ok"))
+      .catchError((onError) => print(onError));
 }

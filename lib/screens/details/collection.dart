@@ -31,7 +31,7 @@ class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-      future: collectionFutureMethod(widget.item),
+      future: collectionItems(widget.item),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SingleChildScrollView(
@@ -56,18 +56,19 @@ class _CollectionState extends State<Collection> {
     return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 300),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
           child: CarousselItem(
             category.items,
-            textColor: Colors.black,
+            textColor: Colors.white,
           ),
         ));
   }
 
   Widget displayItems(Category category) {
-    return Container(
-        color: Colors.grey[100],
-        child: ListView.builder(
+    return Card(
+        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: Container(
+            child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items.length,
@@ -135,8 +136,8 @@ class _CollectionState extends State<Collection> {
                                                     .toString(),
                                                 album: item.album,
                                                 image: MetasImage.network(
-                                                    getItemImageUrl(
-                                                        item)), //can be MetasImage.network
+                                                    getItemImageUrl(item.id,
+                                                        item.imageBlurHashes)), //can be MetasImage.network
                                               ),
                                             ),
                                             showNotification: true,
@@ -151,13 +152,14 @@ class _CollectionState extends State<Collection> {
               )
             ]);
           },
-        ));
+        )));
   }
 
   Widget displayVideosItems(Category category) {
-    return Container(
-        color: Colors.grey[100],
-        child: ListView.builder(
+    return Card(
+        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: Container(
+            child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items == null ? 0 : category.items.length,
@@ -228,7 +230,7 @@ class _CollectionState extends State<Collection> {
                                   )))),
                     ]));
           },
-        ));
+        )));
   }
 
   String createURl(Item item) {
@@ -241,7 +243,7 @@ String msToHumanReadable(int ms) {
   return DateTime.fromMicrosecondsSinceEpoch(ms).hour.toString();
 }
 
-Future collectionFutureMethod(Item item) {
+Future collectionItems(Item item) {
   if (item.type == "Series" || item.type == "MusicAlbum") {
     return getCategory(parentId: item.id, limit: 100);
   } else {

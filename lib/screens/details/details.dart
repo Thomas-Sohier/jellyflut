@@ -55,7 +55,7 @@ Widget body(Item item, Size size, BuildContext context) {
       Container(
           child: Container(
               foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-              child: AsyncImage(item, item.imageBlurHashes)),
+              child: AsyncImage(item.id, item.imageBlurHashes)),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -80,7 +80,7 @@ Widget body(Item item, Size size, BuildContext context) {
                   width: size.width,
                   height: 100,
                   child: AsyncImage(
-                    item,
+                    returnImageId(item),
                     item.imageBlurHashes,
                     boxFit: BoxFit.contain,
                     tag: "Logo",
@@ -89,8 +89,10 @@ Widget body(Item item, Size size, BuildContext context) {
             Stack(children: <Widget>[
               Container(
                   padding: EdgeInsets.only(top: 25),
-                  child: CardItemWithChild(item,
-                      item.isFolder == true ? Collection(item) : Container())),
+                  child: CardItemWithChild(
+                    item,
+                    item.isFolder == true ? Collection(item) : Container(),
+                  )),
               Positioned(
                   height: 50,
                   width: 250,
@@ -122,7 +124,7 @@ Widget _placeHolderBody(Item item, Size size) {
         child: Container(
             child: Container(
                 foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-                child: AsyncImage(item, item.imageBlurHashes)),
+                child: AsyncImage(item.id, item.imageBlurHashes)),
             foregroundDecoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -146,38 +148,19 @@ Widget _placeHolderBody(Item item, Size size) {
             Container(
                 width: 200,
                 child: AsyncImage(
-                  item,
+                  returnImageId(item),
                   item.imageBlurHashes,
                   tag: "Logo",
                 )),
             SizedBox(height: size.height * 0.10),
             SizedBox(height: size.height * 0.05),
-            Card(
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                            child: Container(
-                                child: Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
-                                    child: Text(item.name,
-                                        overflow: TextOverflow.clip,
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold))))),
-                      ],
-                    ),
-                    // if (item.isFolder == true) Collection(item)
-                  ],
-                ),
-              ),
-            ),
+            Container(
+                padding: EdgeInsets.only(top: 25),
+                child: CardItemWithChild(
+                  item,
+                  Container(),
+                  isSkeleton: true,
+                ))
           ],
         ),
       )

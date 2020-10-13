@@ -79,7 +79,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                     aspectRatio: _aspectRatio(widget.item.collectionType),
                     child: Hero(
                         tag: "poster-${item.id}",
-                        child: AsyncImage(item, item.imageBlurHashes)))),
+                        child: AsyncImage(item.id, item.imageBlurHashes)))),
             Text(
               item.name,
               overflow: TextOverflow.ellipsis,
