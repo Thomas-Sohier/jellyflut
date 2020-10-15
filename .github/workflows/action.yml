@@ -1,5 +1,0 @@
-name: Jellyflut
-description: 'Github action for apk building for flutter apps.'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
