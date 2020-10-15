@@ -13,9 +13,9 @@ It's an alpha, soooooo for now, few things work...
 
 ## Screens
 
-![Image of login screen](./img/login.jpg)
-![Image of home](./img/home.jpg)
-![Image of details](./img/details.jpg)
+![Image of login screen](./img/login.jpg){:width="300px"}
+![Image of home](./img/home.jpg){:width="300px"}
+![Image of details](./img/details.jpg){:width="300px"}
 
 ## Getting Started
 
