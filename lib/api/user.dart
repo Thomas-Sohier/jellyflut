@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
@@ -70,47 +70,27 @@ Future<String> getEbook(Item item) async {
   String url = "${server.url}/Items/${item.id}/Download?api_key=${apiKey}";
   // Directory storageDir = await getTemporaryDirectory();
   Directory storageDir = await getApplicationDocumentsDirectory();
-  String tempPath = storageDir.path;
-  String downloadPath = "${tempPath}/${item.name}.epub";
+  String storageDirPath = storageDir.path;
+  if (Platform.isAndroid) {
+    storageDirPath = "/storage/emulated/0/Download";
+  }
 
-  File file = await downloadFile(url, downloadPath);
-  return file.path;
-
-  // try {
-  //   Response response = await dio.get(
-  //     url,
-  //     //Received data with List<int>
-  //     options: Options(
-  //         responseType: ResponseType.bytes,
-  //         followRedirects: false,
-  //         validateStatus: (status) {
-  //           return status < 500;
-  //         }),
-  //   );
-  //   print(response.headers);
-  //   File file = File(downloadPath);
-  //   var raf = file.openSync(mode: FileMode.write);
-  //   // response.data is List<int> type
-  //   raf.writeFromSync(response.data);
-  //   // await extractZipFile(downloadPath, tempPath);
-  //   await raf.close();
-  //   return raf.path;
-  // } catch (e) {
-  //   print(e);
-  // }
+  String dowloadPath = "${storageDirPath}/${item.name}.epub";
+  await downloadFile(url, dowloadPath);
+  return dowloadPath;
 }
 
 Future<bool> requestStorage() async {
-  bool storage = await Permission.storage.request().isGranted;
-  if (storage) {
-    return true;
-  } else {
-    PermissionStatus permissionStatus = await Permission.storage.request();
-    if (permissionStatus.isDenied) {
-      return false;
-    }
-  }
-  return false;
+  // bool storage = await Permission.storage.request().isGranted;
+  // if (storage) {
+  //   return true;
+  // } else {
+  //   PermissionStatus permissionStatus = await Permission.storage.request();
+  //   if (permissionStatus.isDenied) {
+  //     return false;
+  //   }
+  // }
+  return true;
 }
 
 Future<Map<String, dynamic>> viewItem(String itemId) async {

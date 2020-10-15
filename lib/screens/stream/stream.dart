@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
@@ -22,6 +24,8 @@ class Stream extends StatefulWidget {
 }
 
 class _StreamState extends State<Stream> {
+  static const platform =
+      const MethodChannel('com.example.jellyflut/videoPlayer');
   Future<void> _initializeVideoPlayerFuture;
   int _playBackTime;
   int _subsId;
@@ -53,7 +57,7 @@ class _StreamState extends State<Stream> {
         Item tempItem = ModalRoute.of(context).settings.arguments as Item;
         getItem(tempItem.id).then((Item responseItem) {
           item = responseItem;
-          _initializePlay(createURl(responseItem));
+          _initializePlay(createURl(responseItem), platform);
         });
       });
     });
@@ -132,7 +136,9 @@ class _StreamState extends State<Stream> {
             activeColor: Colors.white,
             inactiveColor: Colors.white30,
             min: 0,
-            max: _controller.value.duration.inSeconds.toDouble(),
+            max: _controller.value.duration.inSeconds.toDouble() != 0
+                ? _controller.value.duration.inSeconds.toDouble()
+                : _playBackTime.toDouble() + 1,
             value: _playBackTime.toDouble(),
             onChanged: (value) {
               setState(() {
@@ -163,7 +169,9 @@ class _StreamState extends State<Stream> {
       Container(
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                changeAudioSource(item, context);
+              },
               child: Icon(
                 Icons.library_music,
                 color: Colors.white,
@@ -210,9 +218,6 @@ class _StreamState extends State<Stream> {
 
   String createURl(Item item, {int startTick = 0}) {
     return "${server.url}/Videos/${item.id}/stream.${item.container.split(',').first}?startTimeTicks=${startTick}";
-    // String url =
-    //     "${server.url}/Videos/${item.id}/stream.avi?startTimeTicks=${startTick}";
-    // return url;
   }
 
   String createTranscodeUrl(Item item) {
@@ -224,11 +229,9 @@ class _StreamState extends State<Stream> {
     queryParam["AudioStreamIndex:"] = "1";
     queryParam["VideoBitrate"] = "148288567";
     queryParam["AudioBitrate"] = "384000";
-    queryParam["PlaySessionId"] = "1f4dcede9ece4cb9a8bd558c98e29e88";
     queryParam["api_key"] = apiKey;
     queryParam["TranscodingMaxAudioChannels"] = "2";
     queryParam["RequireAvc"] = "false";
-    // queryParam["Tag"] = "44db3569cff049d3039fab0ac7d83975";
     queryParam["SegmentContainer"] = "ts";
     queryParam["MinSegments"] = "1";
     queryParam["BreakOnNonKeyFrames"] = "true";
@@ -256,29 +259,31 @@ class _StreamState extends State<Stream> {
     });
   }
 
-  Future<void> _initializePlay(String videoPath) async {
-    _controller = VideoPlayerController.network(videoPath)
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+  Future<void> _initializePlay(String videoPath, MethodChannel platform) async {
+    isCodecSupported(item, platform);
+    _controller = VideoPlayerController.network(videoPath);
+    _controller.initialize().then((_) {
+      print("Stream controller initialized");
+      // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+      setState(() {
+        _controller.play();
+      });
+      _timer = Timer.periodic(
+          Duration(seconds: 15),
+          (Timer t) =>
+              itemProgress(item, _controller, subtitlesIndex: _subsId));
+      _controller.addListener(() {
         setState(() {
-          _controller.play();
-        });
-        _timer = Timer.periodic(
-            Duration(seconds: 15),
-            (Timer t) =>
-                itemProgress(item, _controller, subtitlesIndex: _subsId));
-        _controller.addListener(() {
-          setState(() {
-            _playBackTime = _controller.value.position.inSeconds;
-          });
-        });
-      }).catchError((onError) {
-        showToast("Can't direct play this file, trying to transcode...");
-        setNewStream(createTranscodeUrl(item)).catchError((onError) {
-          dispose();
-          navigatorKey.currentState.pop();
+          _playBackTime = _controller.value.position.inSeconds;
         });
       });
+    }).catchError((onError) {
+      showToast("Can't direct play this file, trying to transcode...");
+      setNewStream(createTranscodeUrl(item)).catchError((onError) {
+        dispose();
+        navigatorKey.currentState.pop();
+      });
+    });
   }
 
   void changeSubtitle(Item item, BuildContext context) {
@@ -395,4 +400,16 @@ Future<double> _bufferingPercentage(VideoPlayerController controller) async {
       .toList()
       .reduce((a, b) => a + b);
   return bufferedMilliseconds / controller.value.duration.inMilliseconds * 100;
+}
+
+void isCodecSupported(Item item, MethodChannel platform) async {
+  // TODO finish this method to know if video can be direct play
+  if (Platform.isAndroid) {
+    List<String> codecs = item.container.split(",");
+    print(codecs);
+    final dynamic result = await platform.invokeMethod('getListOfCodec');
+    print(result);
+  } else if (Platform.isIOS) {
+    // TODO make IOS
+  }
 }

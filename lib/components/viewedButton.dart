@@ -26,20 +26,20 @@ class _ViewedButtonState extends State<ViewedButton> {
   @override
   Widget build(BuildContext context) {
     if (isViewed)
-      return GestureDetector(
-          onTap: () => unsetItemViewed(widget.item.id),
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
+      return Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: InkWell(
+            onTap: () => unsetItemViewed(widget.item.id),
             child: Icon(
               Icons.check,
               color: Colors.green,
             ),
           ));
     else
-      return GestureDetector(
-          onTap: () => setItemViewed(widget.item.id),
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
+      return Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: InkWell(
+            onTap: () => setItemViewed(widget.item.id),
             child: Icon(
               Icons.check,
               color: Colors.black,

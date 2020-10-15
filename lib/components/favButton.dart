@@ -26,20 +26,22 @@ class _FavButtonState extends State<FavButton> {
   @override
   Widget build(BuildContext context) {
     if (isFav)
-      return GestureDetector(
-          onTap: () => unsetItemFav(widget.item.id),
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
+      return Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: InkWell(
+            radius: 6,
+            onTap: () => unsetItemFav(widget.item.id),
             child: Icon(
               Icons.favorite,
               color: Colors.red,
             ),
           ));
     else
-      return GestureDetector(
-          onTap: () => setItemFav(widget.item.id),
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
+      return Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: InkWell(
+            radius: 6,
+            onTap: () => setItemFav(widget.item.id),
             child: Icon(
               Icons.favorite_border,
               color: Colors.red,

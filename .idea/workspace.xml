@@ -2,36 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bccb1bd0-4fde-4697-870b-00d0e3550fd5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/jellyflut/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/jellyflut/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/jellyflut_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android/jellyflut_android.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/auth.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/auth.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/items.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/items.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/user.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/asyncImage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/asyncImage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/gradientButton.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/gradientButton.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/outlineTextField.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/outlineTextField.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/database/database.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/globals.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/globals.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/category.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/category.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/itemDetails.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/media.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/season.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/season.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/server.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/server.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/details/background.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/details/collection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/details/collection.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/details/details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/details/details.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/bottomBar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/bottomBar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/collection.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/home.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/latest.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/latest.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/login/background.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/login/login.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/stream/stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/stream/stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/stream/streamVLC.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +18,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="aefcfe88" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -75,6 +55,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="808" y="447" width="597" height="443" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1602607693390">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="808" y="447" width="597" height="443" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.30.1920.1050@0.30.1920.1050" timestamp="1602607693390" />
     <state x="743" y="283" width="424" height="512" key="FileChooserDialogImpl" timestamp="1602349204483">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
@@ -9,11 +10,12 @@ import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 import 'collection.dart';
-import 'favButton.dart';
-import 'viewedButton.dart';
+import '../../components/favButton.dart';
+import '../../components/viewedButton.dart';
 
 class Details extends StatefulWidget {
   @override
@@ -101,7 +103,7 @@ Widget body(Item item, Size size, BuildContext context) {
                   child: GradienButton(
                     "Play",
                     () {
-                      _playItem(item);
+                      _playItem(item, context);
                     },
                     item: item,
                     // _playItem(context, item),
@@ -174,14 +176,36 @@ Widget actionIcons(Item item) {
   );
 }
 
-void _playItem(Item item) async {
+void _playItem(Item item, BuildContext context) async {
   if (item.type != "Book") {
     navigatorKey.currentState.pushNamed("/watch", arguments: item);
   }
+  readBook(context);
+}
+
+void readBook(BuildContext context) async {
   String path = await getEbook(item);
   if (path != null) {
-    await EpubViewer.openAsset(
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    EpubViewer.setConfig(
+      themeColor: Theme.of(context).primaryColor,
+      scrollDirection: EpubScrollDirection.VERTICAL,
+      allowSharing: true,
+      enableTts: true,
+    );
+
+    //TODO save locator
+    dynamic book;
+    if (sharedPreferences.getString(path) != null)
+      book = json.decode(sharedPreferences.getString(path));
+
+    // Get locator which you can save in your database
+    EpubViewer.locatorStream.listen((locator) {
+      sharedPreferences.setString(path, locator);
+    });
+
+    EpubViewer.open(
       path,
-    ).catchError((onError) => showToast(onError.toString()));
+    );
   }
 }

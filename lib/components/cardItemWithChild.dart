@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/components/cardInfosChild.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/favButton.dart';
-import 'package:jellyflut/screens/details/viewedButton.dart';
+import 'package:jellyflut/components/favButton.dart';
+import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import 'critics.dart';
@@ -181,19 +182,7 @@ Widget cardWithData(Item item) {
               ),
             ),
             padding: EdgeInsets.all(12),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    actionIcons(item),
-                    Spacer(),
-                    if (item.runTimeTicks != null)
-                      Text(printDuration(Duration(
-                          microseconds: (item.runTimeTicks / 10).round())))
-                  ],
-                )
-              ],
-            )),
+            child: CardInfos(item))
       ],
     ),
   );

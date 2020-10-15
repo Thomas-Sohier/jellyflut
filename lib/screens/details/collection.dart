@@ -7,8 +7,8 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/carroussel.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/favButton.dart';
-import 'package:jellyflut/screens/details/viewedButton.dart';
+import 'package:jellyflut/components/favButton.dart';
+import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import '../../globals.dart';
@@ -70,18 +70,20 @@ class _CollectionState extends State<Collection> {
         child: Container(
             child: ListView.builder(
           shrinkWrap: true,
+          padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items.length,
           itemBuilder: (context, index) {
             Item item = category.items[index];
 
             return Column(children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                child: Divider(
-                  color: Colors.grey[500],
+              if (index != 0)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  child: Divider(
+                    color: Colors.grey[500],
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -94,12 +96,20 @@ class _CollectionState extends State<Collection> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            Text(item.name,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Color(0xFF333333),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600)),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 10,
+                                    child: Text(item.name,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: Color(0xFF333333),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600))),
+                                Spacer(),
+                                actionIcons(item, view: false)
+                              ],
+                            ),
                             item.artists != null
                                 ? Text(
                                     item.artists
@@ -251,8 +261,8 @@ Future collectionItems(Item item) {
   }
 }
 
-Widget actionIcons(Item item) {
+Widget actionIcons(Item item, {fav = true, view = true}) {
   return Row(
-    children: [FavButton(item), ViewedButton(item)],
+    children: [if (fav) FavButton(item), if (view) ViewedButton(item)],
   );
 }
