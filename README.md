@@ -6,9 +6,10 @@ It's an alpha, soooooo for now, few things work...
 
 ## Todo
 
-- [] SQLite to avoir logging and to save server URL
-- [] Browse all files (for now only the first item of a collection)
-- [] Correct all flutter things, make things faster
+- [x] SQLite to have logging and to save server URL
+- [x] Browse all files (for now only the first item of a collection)
+- [ ] BIGGEST THING TO DO make transcoding work, for now i don't know how to check if file can be direct play and if no how to tell jellyfin to send me the correct url
+- [ ] Correct all flutter things, make things faster
 
 ## Screens
 
