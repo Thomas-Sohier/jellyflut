@@ -6,9 +6,11 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/carroussel.dart';
+import 'package:jellyflut/components/carrousselBackGroundImage.dart';
+import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/home/background.dart';
+import 'package:jellyflut/shared/background.dart';
 
 class CollectionMain extends StatefulWidget {
   @override
@@ -25,19 +27,24 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     final Item item = ModalRoute.of(context).settings.arguments as Item;
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
+        floatingActionButton: MusicPlayerFAB(),
         backgroundColor: Colors.transparent,
         body: Background(
-            child: SingleChildScrollView(
-                child: Column(children: [
-          SizedBox(
-            height: size.height * 0.02,
-          ),
+            child: Stack(children: [
           if (item.collectionType == "movies" || item.collectionType == "books")
-            head(item),
-          listOfItems(item),
-        ]))));
+            CarrousselBackGroundImage(),
+          Positioned(
+              child: SingleChildScrollView(
+                  child: Column(
+            children: [
+              if (item.collectionType == "movies" ||
+                  item.collectionType == "books")
+                head(item, context),
+              listOfItems(item),
+            ],
+          )))
+        ])));
   }
 
   Widget listOfItems(Item item) {
@@ -79,21 +86,24 @@ class _CollectionMainState extends State<CollectionMain> {
         });
   }
 
-  Widget head(Item item) {
+  Widget head(Item item, BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     String filter = "IsNotFolder,IsUnplayed";
     String fields =
         "ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview";
 
-    return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 300),
-        child: FutureBuilder<Category>(
-            future: getItemsRecursive(item.id,
-                limit: 5, fields: fields, filter: filter, sortBy: "Random"),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return CarousselItem(snapshot.data.items, detailMode: true);
-              }
-              return Container();
-            }));
+    return Container(
+        padding: EdgeInsets.only(top: size.height * 0.02),
+        child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 300),
+            child: FutureBuilder<Category>(
+                future: getItemsRecursive(item.id,
+                    limit: 5, fields: fields, filter: filter, sortBy: "Random"),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return CarousselItem(snapshot.data.items, detailMode: true);
+                  }
+                  return Container();
+                })));
   }
 }

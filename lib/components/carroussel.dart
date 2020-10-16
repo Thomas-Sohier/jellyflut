@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/shared/shared.dart';
-
 import 'critics.dart';
 
 class CarousselItem extends StatefulWidget {
@@ -20,6 +20,17 @@ class CarousselItem extends StatefulWidget {
 
 class _CarousselItemState extends State<CarousselItem> {
   int _index = 0;
+
+  @override
+  void dispose() {
+    CarrousselModel().reset();
+    super.dispose();
+  }
+
+  void setFirstPoster(String itemId) {
+    CarrousselModel().changeItem(itemId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildCarousel(widget.items);
@@ -27,9 +38,13 @@ class _CarousselItemState extends State<CarousselItem> {
 
   Widget _buildCarousel(List<Item> items) {
     double customViewportFraction = widget.detailMode ? 1 : 0.4;
+    if (items.length > 0) setFirstPoster(items.first.id);
     return PageView.builder(
       controller: PageController(viewportFraction: customViewportFraction),
-      onPageChanged: (int index) => setState(() => _index = index),
+      onPageChanged: (int index) {
+        CarrousselModel().changeItem(items[index].id);
+        setState(() => _index = index);
+      },
       pageSnapping: true,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int itemIndex) {

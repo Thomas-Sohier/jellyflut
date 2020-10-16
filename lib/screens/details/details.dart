@@ -8,6 +8,7 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
+import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,7 @@ class _DetailsState extends State<Details> {
     return Scaffold(
         // bottomNavigationBar: BottomBar(),
         extendBody: true,
+        floatingActionButton: MusicPlayerFAB(),
         backgroundColor: Colors.transparent,
         body: FutureBuilder<Item>(
           future: getItem(item.id),

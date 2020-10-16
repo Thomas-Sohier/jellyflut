@@ -17,6 +17,23 @@ class MusicPlayer extends ChangeNotifier {
 
   MusicPlayer._internal();
 
+  String currentMusicTitle() {
+    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+        .audio.audio.metas.title;
+  }
+
+  double currentMusicMaxDuration() {
+    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+        .audio.duration.inMilliseconds
+        .toDouble();
+  }
+
+  double currentMusicDuration() {
+    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value
+        .currentPosition.inMilliseconds
+        .toDouble();
+  }
+
   void play() {
     _musicPlayer.assetsAudioPlayer.play();
     notifyListeners();
@@ -24,6 +41,13 @@ class MusicPlayer extends ChangeNotifier {
 
   void pause() {
     _musicPlayer.assetsAudioPlayer.pause();
+    notifyListeners();
+  }
+
+  void toggle() {
+    _musicPlayer.assetsAudioPlayer.isPlaying.value
+        ? _musicPlayer.assetsAudioPlayer.pause()
+        : _musicPlayer.assetsAudioPlayer.play();
     notifyListeners();
   }
 
