@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/collection.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
+import 'package:provider/provider.dart';
 
 import 'background.dart';
 
@@ -20,6 +22,18 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         // bottomNavigationBar: BottomBar(),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => MusicPlayer().pause(),
+            child: Consumer<MusicPlayer>(
+              builder: (context, musicPlayer, child) => Container(
+                child: Text(
+                    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value ==
+                            null
+                        ? "Pas de musique"
+                        : musicPlayer.assetsAudioPlayer.realtimePlayingInfos
+                            .value.current.audio.audio.metas.title),
+              ),
+            )),
         extendBody: true,
         backgroundColor: Colors.transparent,
         body: Background(

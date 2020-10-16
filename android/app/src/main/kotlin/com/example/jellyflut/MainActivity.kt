@@ -23,7 +23,7 @@ class MainActivity: FlutterActivity() {
                 if (!MediaCodecList(numCodecs).codecInfos[i].isEncoder) {
                     codecs.add(MediaCodecList(numCodecs).codecInfos[i].name);
                     for (element in MediaCodecList(numCodecs).codecInfos[i].supportedTypes)
-                    codecs.add(element.toString());
+                        codecs.add(element.toString());
                 }
             }
             return codecs;

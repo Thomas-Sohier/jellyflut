@@ -9,6 +9,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import '../../globals.dart';
@@ -135,23 +136,7 @@ class _CollectionState extends State<Collection> {
                               child: item.artists != null
                                   ? GestureDetector(
                                       onTap: () =>
-                                          AssetsAudioPlayer.newPlayer().open(
-                                            Audio.network(
-                                              createURl(item),
-                                              metas: Metas(
-                                                title: item.name,
-                                                artist: item.artists
-                                                    .map((e) => e.name)
-                                                    .join(", ")
-                                                    .toString(),
-                                                album: item.album,
-                                                image: MetasImage.network(
-                                                    getItemImageUrl(item.id,
-                                                        item.imageBlurHashes)), //can be MetasImage.network
-                                              ),
-                                            ),
-                                            showNotification: true,
-                                          ),
+                                          MusicPlayer().playRemoteItem(item),
                                       child: Icon(
                                         Icons.play_circle_outline,
                                         size: 32,

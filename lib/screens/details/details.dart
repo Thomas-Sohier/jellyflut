@@ -57,7 +57,11 @@ Widget body(Item item, Size size, BuildContext context) {
       Container(
           child: Container(
               foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-              child: AsyncImage(item.id, item.imageBlurHashes)),
+              child: AsyncImage(
+                item.id,
+                item.imageBlurHashes,
+                boxFit: BoxFit.fitHeight,
+              )),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -68,7 +72,7 @@ Widget body(Item item, Size size, BuildContext context) {
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: [0, 0.2, 0.6, 1],
+              stops: [0, 0.2, 0.7, 1],
             ),
           )),
       SingleChildScrollView(
@@ -179,8 +183,9 @@ Widget actionIcons(Item item) {
 void _playItem(Item item, BuildContext context) async {
   if (item.type != "Book") {
     navigatorKey.currentState.pushNamed("/watch", arguments: item);
+  } else {
+    readBook(context);
   }
-  readBook(context);
 }
 
 void readBook(BuildContext context) async {

@@ -27,14 +27,15 @@ Future<bool> isLoggedIn() async {
 }
 
 Future<bool> isAuth() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLogged = await isLoggedIn();
   Server s = await getLastUsedServer();
   if (isLogged && s != null) {
     server = s;
-    User u = new User();
-    u.id = "b597a9ce17904545b6934b4b7fa4e703";
-    user = u;
-    apiKey = "6369d15616334468b23b684eda0af05f";
+    User _user = new User();
+    _user.id = prefs.getString("userId");
+    user = _user;
+    apiKey = prefs.getString("apiKey");
     return true;
   }
   return false;
@@ -60,6 +61,8 @@ setGlobals(AuthenticationResponse response) async {
   // Permet de garder la personne connecté
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs?.setBool("isLoggedIn", true);
+  prefs?.setString("apiKey", apiKey);
+  prefs?.setString("userId", user.id);
 }
 
 void showToast(String msg) {
