@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":path_provider" external.linked.project.path="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="io.flutter.plugins.pathprovider" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":path_provider" external.linked.project.path="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="io.flutter.plugins.pathprovider" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -19,25 +19,21 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/main/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/debug/res;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/resValues/debug" />
-        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/androidTest/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/resValues/androidTest/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/main/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/debug/res;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/androidTest/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/path_provider/generated/res/resValues/androidTest/debug" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="PROJECT_TYPE" value="1" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../../../build/path_provider/intermediates/javac/debug/classes" />
     <output-test url="file://$MODULE_DIR$/../../../../build/path_provider/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
-    <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18">
-      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/.pub" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/android/.gradle" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/build" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/example/.pub" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18/example/build" />
+    <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21">
+      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/.gradle" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/path_provider/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/path_provider/generated/aidl_source_output_dir/debugAndroidTest/out" />
@@ -58,14 +54,15 @@
     <content url="file://$MODULE_DIR$/../../../../build/path_provider/generated/source/buildConfig/debug">
       <sourceFolder url="file://$MODULE_DIR$/../../../../build/path_provider/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-75bef9f6c8ac2ed4e1e04cdfcd88b177d9f1850d" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-b8752bbfff0419c8bf616b602bc59fd28f6a3d1b" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:20.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />

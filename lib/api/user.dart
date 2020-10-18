@@ -1,29 +1,26 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/epub.dart';
-import 'package:jellyflut/shared/shared.dart';
-// import 'package:permission_handler/permission_handler.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:path_provider/path_provider.dart';
 
-BaseOptions options = new BaseOptions(
+BaseOptions options = BaseOptions(
   connectTimeout: 60000,
   receiveTimeout: 60000,
   contentType: "JSON",
 );
 
-Dio dio = new Dio(options);
+Dio dio = Dio(options);
 
 List<String> _mapCategory(Category category) {
   return category.items.map((e) => e.name).toList();
 }
 
 Future<List<Item>> getLatestMedia() async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
   queryParams["Content-Type"] = "application/json";
 
@@ -35,13 +32,13 @@ Future<List<Item>> getLatestMedia() async {
   } catch (e) {
     print(e);
   }
-  List<Item> items = new List<Item>();
+  List<Item> items = List<Item>();
   return items;
   // return Item.fromMap(json.encode(response.data));
 }
 
 Future<Category> getCategory({String parentId, int limit = 10}) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
   queryParams["Limit"] = limit;
   if (parentId != null) queryParams["ParentId"] = parentId;
@@ -49,7 +46,7 @@ Future<Category> getCategory({String parentId, int limit = 10}) async {
   String url = "${server.url}/Users/${user.id}/Items";
 
   Response response;
-  Category category = new Category();
+  Category category = Category();
   try {
     response = await dio.get(url, queryParameters: queryParams);
     category = Category.fromMap(response.data);
@@ -64,28 +61,28 @@ Future<String> getEbook(Item item) async {
   if (!hasStorage) {
     return null;
   }
-  var queryParams = new Map<String, dynamic>();
-  queryParams["api_key"] = apiKey;
+  var queryParams = Map<String, dynamic>();
+  queryParams['api_key'] = apiKey;
 
-  String url = "${server.url}/Items/${item.id}/Download?api_key=${apiKey}";
+  var url = '${server.url}/Items/${item.id}/Download?api_key=${apiKey}';
   // Directory storageDir = await getTemporaryDirectory();
-  Directory storageDir = await getApplicationDocumentsDirectory();
-  String storageDirPath = storageDir.path;
+  var storageDir = await getApplicationDocumentsDirectory();
+  var storageDirPath = storageDir.path;
   if (Platform.isAndroid) {
-    storageDirPath = "/storage/emulated/0/Download";
+    storageDirPath = '/storage/emulated/0/Download';
   }
 
-  String dowloadPath = "${storageDirPath}/${item.name}.epub";
+  var dowloadPath = '${storageDirPath}/${item.name}.epub';
   await downloadFile(url, dowloadPath);
   return dowloadPath;
 }
 
 Future<bool> requestStorage() async {
-  // bool storage = await Permission.storage.request().isGranted;
+  // var storage = await Permission.storage.request().isGranted;
   // if (storage) {
   //   return true;
   // } else {
-  //   PermissionStatus permissionStatus = await Permission.storage.request();
+  //   var permissionStatus = await Permission.storage.request();
   //   if (permissionStatus.isDenied) {
   //     return false;
   //   }
@@ -94,7 +91,7 @@ Future<bool> requestStorage() async {
 }
 
 Future<Map<String, dynamic>> viewItem(String itemId) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   // queryParams["DatePlayed"] = datePlayedFromDate(new DateTime.now());
   queryParams["api_key"] = apiKey;
 
@@ -110,7 +107,7 @@ Future<Map<String, dynamic>> viewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unviewItem(String itemId) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
 
   String url = "${server.url}/Users/${user.id}/PlayedItems/${itemId}";
@@ -125,11 +122,11 @@ Future<Map<String, dynamic>> unviewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> favItem(String itemId) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = <String, dynamic>{};
   // queryParams["DatePlayed"] = datePlayedFromDate(new DateTime.now());
-  queryParams["api_key"] = apiKey;
+  queryParams['api_key'] = apiKey;
 
-  String url = "${server.url}/Users/${user.id}/FavoriteItems/${itemId}";
+  var url = '${server.url}/Users/${user.id}/FavoriteItems/${itemId}';
 
   Response response;
   try {
@@ -141,7 +138,7 @@ Future<Map<String, dynamic>> favItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unfavItem(String itemId) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
 
   String url = "${server.url}/Users/${user.id}/FavoriteItems/${itemId}";

@@ -1,91 +1,93 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/mediaSource.dart';
+import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
 
-BaseOptions options = new BaseOptions(
+BaseOptions options = BaseOptions(
   connectTimeout: 60000,
   receiveTimeout: 60000,
-  contentType: "JSON",
+  contentType: 'JSON',
 );
 
-Dio dio = new Dio(options);
+Dio dio = Dio(options);
 
 String getItemImageUrl(String itemId, ImageBlurHashes imageBlurHashes,
     {int maxHeight = 1920,
     int maxWidth = 1080,
-    String type = "Primary",
+    String type = 'Primary',
     int quality = 90}) {
-  String finalType = _fallBackImg(imageBlurHashes, type);
-  if (type == "Logo") {
-    return "${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}";
+  var finalType = _fallBackImg(imageBlurHashes, type);
+  if (type == 'Logo') {
+    return '${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}';
   } else {
-    return "${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}";
+    return '${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}';
   }
 }
 
 String _fallBackImg(ImageBlurHashes imageBlurHashes, String tag) {
   String hash;
-  if (tag == "Primary") {
+  if (tag == 'Primary') {
     hash = _fallBackPrimary(imageBlurHashes);
-  } else if (tag == "Backdrop") {
+  } else if (tag == 'Backdrop') {
     hash = _fallBackBackdrop(imageBlurHashes);
-  } else if (tag == "Logo") {
+  } else if (tag == 'Logo') {
     hash = _fallBackLogo(imageBlurHashes);
   }
   return hash;
 }
 
 String _fallBackPrimary(ImageBlurHashes imageBlurHashes) {
-  if (imageBlurHashes.primary != null)
-    return "Primary";
-  else if (imageBlurHashes.thumb != null)
-    return "Thumb";
-  else if (imageBlurHashes.backdrop != null)
-    return "Backdrop";
-  else if (imageBlurHashes.art != null)
-    return "Art";
-  else
-    return "Primary";
+  if (imageBlurHashes.primary != null) {
+    return 'Primary';
+  } else if (imageBlurHashes.thumb != null) {
+    return 'Thumb';
+  } else if (imageBlurHashes.backdrop != null) {
+    return 'Backdrop';
+  } else if (imageBlurHashes.art != null) {
+    return 'Art';
+  } else {
+    return 'Primary';
+  }
 }
 
 String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
   if (imageBlurHashes.backdrop != null)
-    return "Backdrop";
-  else if (imageBlurHashes.thumb != null)
-    return "Thumb";
-  else if (imageBlurHashes.art != null)
-    return "Art";
-  else if (imageBlurHashes.primary != null)
-    return "Primary";
-  else
-    return "Primary";
+    // ignore: curly_braces_in_flow_control_structures
+    return 'Backdrop';
+  else if (imageBlurHashes.thumb != null) {
+    return 'Thumb';
+  } else if (imageBlurHashes.art != null) {
+    return 'Art';
+  } else if (imageBlurHashes.primary != null) {
+    return 'Primary';
+  } else {
+    return 'Primary';
+  }
 }
 
 String _fallBackLogo(ImageBlurHashes imageBlurHashes) {
   if (imageBlurHashes.logo != null) {
-    return "Logo";
+    return 'Logo';
   }
-  return "";
+  return '';
 }
 
 Future<Item> getItem(String itemId) async {
-  var queryParams = new Map<String, dynamic>();
-  queryParams["api_key"] = apiKey;
-  queryParams["Content-Type"] = "application/json";
+  var queryParams = Map<String, dynamic>();
+  queryParams['api_key'] = apiKey;
+  queryParams['Content-Type'] = 'application/json';
 
-  String url = "${server.url}/Users/${user.id}/Items/${itemId}";
+  var url = '${server.url}/Users/${user.id}/Items/${itemId}';
 
   Response response;
-  Item item = new Item();
+  var item = Item();
   try {
     response = await dio.get(url, queryParameters: queryParams);
     item = Item.fromMap(response.data);
@@ -96,33 +98,33 @@ Future<Item> getItem(String itemId) async {
 }
 
 Future<Category> getItemsRecursive(String parentId,
-    {String filter = "IsNotFolder, IsUnplayed",
+    {String filter = 'IsNotFolder, IsUnplayed',
     bool recursive = true,
-    String sortBy = "PremiereDate",
-    String mediaType = "Audio%2CVideo",
+    String sortBy = 'PremiereDate',
+    String mediaType = 'Audio%2CVideo',
     int limit = 300,
-    String fields = "Chapters",
-    String excludeLocationTypes = "Virtual",
+    String fields = 'Chapters',
+    String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
-  var queryParams = new Map<String, dynamic>();
-  queryParams["ParentId"] = parentId;
-  queryParams["Filters"] = filter;
-  queryParams["Recursive"] = recursive;
-  queryParams["SortBy"] = sortBy;
-  queryParams["MediaTypes"] = mediaType;
-  queryParams["Limit"] = limit;
-  queryParams["Fields"] = fields;
-  queryParams["ExcludeLocationTypes"] = excludeLocationTypes;
-  queryParams["EnableTotalRecordCount"] = enableTotalRecordCount;
-  queryParams["CollapseBoxSetItems"] = collapseBoxSetItems;
-  queryParams["api_key"] = apiKey;
-  queryParams["Content-Type"] = "application/json";
+  var queryParams = Map<String, dynamic>();
+  queryParams['ParentId'] = parentId;
+  queryParams['Filters'] = filter;
+  queryParams['Recursive'] = recursive;
+  queryParams['SortBy'] = sortBy;
+  queryParams['MediaTypes'] = mediaType;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
+  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
+  queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
+  queryParams['api_key'] = apiKey;
+  queryParams['Content-Type'] = 'application/json';
 
-  String url = "${server.url}/Users/${user.id}/Items";
+  var url = '${server.url}/Users/${user.id}/Items';
 
   Response response;
-  Category category = new Category();
+  var category = Category();
   try {
     response = await dio.get(url, queryParameters: queryParams);
     category = Category.fromMap(response.data);
@@ -134,10 +136,10 @@ Future<Category> getItemsRecursive(String parentId,
 
 void itemProgress(Item item, VideoPlayerController videoPlayerController,
     {int subtitlesIndex}) {
-  var queryParams = new Map<String, dynamic>();
-  queryParams["api_key"] = apiKey;
+  var queryParams = <String, dynamic>{};
+  queryParams['api_key'] = apiKey;
 
-  MediaPlayedInfos mediaPlayedInfos = new MediaPlayedInfos();
+  var mediaPlayedInfos = MediaPlayedInfos();
   mediaPlayedInfos.isMuted =
       videoPlayerController.value.volume > 0 ? true : false;
   mediaPlayedInfos.isPaused = videoPlayerController.value.isPlaying;
@@ -147,18 +149,45 @@ void itemProgress(Item item, VideoPlayerController videoPlayerController,
   mediaPlayedInfos.positionTicks =
       videoPlayerController.value.position.inMicroseconds * 10;
   mediaPlayedInfos.volumeLevel = videoPlayerController.value.volume.toInt();
-  mediaPlayedInfos.subtitleStreamIndex =
-      subtitlesIndex != null ? subtitlesIndex : -1;
+  mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
 
-  String url = "${server.url}/Sessions/Playing/Progress";
+  var url = '${server.url}/Sessions/Playing/Progress';
 
-  Map<String, dynamic> _mediaPlayedInfos = mediaPlayedInfos.toJson();
+  var _mediaPlayedInfos = mediaPlayedInfos.toJson();
   _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
 
-  String _json = json.encode(_mediaPlayedInfos);
+  var _json = json.encode(_mediaPlayedInfos);
 
+  dio.options.contentType = 'application/json';
   dio
       .post(url, data: _json, queryParameters: queryParams)
-      .then((_) => print("progress ok"))
+      .then((_) => print('progress ok'))
       .catchError((onError) => print(onError));
+}
+
+Future<PlayBackInfos> playbackInfos(String json, String itemId,
+    {startTimeTick = 0}) async {
+  var _authHeader = await authHeader();
+  var queryParams = <String, dynamic>{};
+  queryParams['UserId'] = user.id;
+  queryParams['StartTimeTicks'] = startTimeTick;
+  queryParams['IsPlayback'] = true;
+  queryParams['AutoOpenLiveStream'] = true;
+  queryParams['MaxStreamingBitrate'] = 148672567;
+  // queryParams['AutoOpenLiveStream'] = user.id;
+  queryParams['api_key'] = apiKey;
+  dio.options.contentType = 'application/json';
+  dio.options.headers['X-Emby-Authorization'] = _authHeader;
+
+  var url = '${server.url}/Items/${itemId}/PlaybackInfo';
+
+  Response response;
+  var playBackInfos = PlayBackInfos();
+  try {
+    response = await dio.post(url, queryParameters: queryParams, data: json);
+    playBackInfos = PlayBackInfos.fromMap(response.data);
+  } catch (e) {
+    print(e);
+  }
+  return playBackInfos;
 }

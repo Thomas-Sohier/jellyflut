@@ -27,14 +27,15 @@ Future<bool> isLoggedIn() async {
 }
 
 Future<bool> isAuth() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLogged = await isLoggedIn();
   Server s = await getLastUsedServer();
   if (isLogged && s != null) {
     server = s;
-    User u = new User();
-    u.id = "b597a9ce17904545b6934b4b7fa4e703";
-    user = u;
-    apiKey = "6369d15616334468b23b684eda0af05f";
+    User _user = User();
+    _user.id = prefs.getString("userId");
+    user = _user;
+    apiKey = prefs.getString("apiKey");
     return true;
   }
   return false;
@@ -45,7 +46,7 @@ void setServer(Server s) {
 }
 
 Future<Server> getLastUsedServer() async {
-  DatabaseService databaseService = new DatabaseService();
+  DatabaseService databaseService = DatabaseService();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getInt("serverId") != null
       ? databaseService.getServer(prefs.getInt("serverId"))
@@ -60,6 +61,8 @@ setGlobals(AuthenticationResponse response) async {
   // Permet de garder la personne connecté
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs?.setBool("isLoggedIn", true);
+  prefs?.setString("apiKey", apiKey);
+  prefs?.setString("userId", user.id);
 }
 
 void showToast(String msg) {
@@ -72,6 +75,13 @@ void showToast(String msg) {
       backgroundColor: Colors.grey[300],
       textColor: Colors.black,
       fontSize: 16.0);
+}
+
+double aspectRatio({String type}) {
+  if (type == "MusicAlbum") {
+    return 1 / 1;
+  }
+  return 2 / 3;
 }
 
 String printDuration(Duration duration) {

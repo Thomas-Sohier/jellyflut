@@ -4,11 +4,18 @@ class Skeleton extends StatefulWidget {
   final double height;
   final double width;
   final int nbLine;
+  final List<Color> colors;
 
-  Skeleton({Key key, this.height = 15, this.width = 200, this.nbLine = 1})
+  Skeleton(
+      {Key key,
+      this.height = 15,
+      this.width = 200,
+      this.nbLine = 1,
+      this.colors = const [Colors.black12, Colors.black26, Colors.black12]})
       : super(key: key);
 
-  createState() => SkeletonState();
+  @override
+  SkeletonState createState() => SkeletonState();
 }
 
 class SkeletonState extends State<Skeleton>
@@ -58,11 +65,7 @@ class SkeletonState extends State<Skeleton>
                     gradient: LinearGradient(
                         begin: Alignment(gradientPosition.value, 0),
                         end: Alignment(-1, 0),
-                        colors: [
-                          Colors.black12,
-                          Colors.black26,
-                          Colors.black12
-                        ]))));
+                        colors: widget.colors))));
       },
     );
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":device_info" external.linked.project.path="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="io.flutter.plugins.deviceinfo" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":device_info" external.linked.project.path="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="io.flutter.plugins.deviceinfo" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -19,8 +19,8 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/src/main/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/src/debug/res;file://$MODULE_DIR$/../../../../build/device_info/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/device_info/generated/res/resValues/debug" />
-        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/src/androidTest/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/device_info/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/device_info/generated/res/resValues/androidTest/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/src/main/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/src/debug/res;file://$MODULE_DIR$/../../../../build/device_info/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/device_info/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/src/androidTest/res;file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/device_info/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/device_info/generated/res/resValues/androidTest/debug" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
         <option name="PROJECT_TYPE" value="1" />
       </configuration>
@@ -30,13 +30,9 @@
     <output url="file://$MODULE_DIR$/../../../../build/device_info/intermediates/javac/debug/classes" />
     <output-test url="file://$MODULE_DIR$/../../../../build/device_info/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
-    <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8">
-      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/src/main/java" isTestSource="false" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/.pub" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/android/.gradle" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/build" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/example/.pub" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8/example/build" />
+    <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9">
+      <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+9/android/.gradle" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/device_info/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/device_info/generated/aidl_source_output_dir/debugAndroidTest/out" />
@@ -57,9 +53,9 @@
     <content url="file://$MODULE_DIR$/../../../../build/device_info/generated/source/buildConfig/debug">
       <sourceFolder url="file://$MODULE_DIR$/../../../../build/device_info/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-75bef9f6c8ac2ed4e1e04cdfcd88b177d9f1850d" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-b8752bbfff0419c8bf616b602bc59fd28f6a3d1b" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />

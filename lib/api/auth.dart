@@ -7,11 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api.dart';
 
 // or new Dio with a BaseOptions instance.
-BaseOptions options = new BaseOptions(
+BaseOptions options = BaseOptions(
   connectTimeout: 30000,
   receiveTimeout: 30000,
 );
-Dio dio = new Dio(options);
+Dio dio = Dio(options);
 
 Future<bool> isLoggedIn() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -19,16 +19,16 @@ Future<bool> isLoggedIn() async {
 }
 
 Future<AuthenticationResponse> login(String username, String password) async {
-  var body = new Map<String, dynamic>();
+  var body = Map<String, dynamic>();
   body["Username"] = username;
   body["PW"] = password;
 
   String login = "/Users/AuthenticateByName";
-  var headers = new Map<String, dynamic>();
+  var headers = Map<String, dynamic>();
   headers["X-Emby-Authorization"] = await authHeader();
   headers["Content-Type"] = "application/json";
 
-  FormData formData = new FormData.fromMap(body);
+  FormData formData = FormData.fromMap(body);
 
   dio.options.headers = headers;
 

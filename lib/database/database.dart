@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:jellyflut/models/user.dart';
 import 'package:jellyflut/models/userDB.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -63,12 +64,12 @@ class DatabaseService {
     return id;
   }
 
-  Future<Server> getUser(int id) async {
+  Future<User> getUser(int id) async {
     Database db = await database;
     List<Map> datas =
         await db.query(tableUser, where: 'id = ?', whereArgs: [id]);
     if (datas.length > 0) {
-      return Server.fromMap(datas.first);
+      return User.fromMap(datas.first);
     }
     return null;
   }

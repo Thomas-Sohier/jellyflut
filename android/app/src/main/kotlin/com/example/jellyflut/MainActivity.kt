@@ -5,6 +5,7 @@ import android.media.MediaCodecInfo
 import android.media.MediaCodecList
 import android.util.Log
 import androidx.annotation.NonNull
+import com.example.jellyflut.player.ExoPlayerFormats
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -15,18 +16,8 @@ class MainActivity: FlutterActivity() {
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
 
-        fun getListOfCodec(): ArrayList<String> {
-            val numCodecs = MediaCodecList.ALL_CODECS;
-            val nbOfCodec = MediaCodecList(numCodecs).codecInfos.size;
-            val codecs = ArrayList<String>();
-            for (i in 0 until nbOfCodec) {
-                if (!MediaCodecList(numCodecs).codecInfos[i].isEncoder) {
-                    codecs.add(MediaCodecList(numCodecs).codecInfos[i].name);
-                    for (element in MediaCodecList(numCodecs).codecInfos[i].supportedTypes)
-                    codecs.add(element.toString());
-                }
-            }
-            return codecs;
+        fun getListOfCodec(): String {
+            return ExoPlayerFormats.supportedCodecs.toJSONString();
         }
         
         super.configureFlutterEngine(flutterEngine)

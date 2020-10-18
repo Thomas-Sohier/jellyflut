@@ -44,7 +44,7 @@ class _OutlineTextFieldState extends State<OutlineTextField> {
           onSubmitted: widget.onSubmitted,
           focusNode: widget.focusNode,
           autofocus: true,
-          decoration: new InputDecoration(
+          decoration: InputDecoration(
               prefixIcon: widget.prefixIcon,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -60,7 +60,7 @@ class _OutlineTextFieldState extends State<OutlineTextField> {
                       style: BorderStyle.solid,
                       color: widget.colorFocus)),
               filled: true,
-              hintStyle: new TextStyle(color: Colors.grey[600]),
+              hintStyle: TextStyle(color: Colors.grey[600]),
               hintText: widget.text,
               fillColor: Colors.white)),
     );

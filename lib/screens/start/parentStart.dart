@@ -24,7 +24,7 @@ class _ParentStartState extends State<ParentStart> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         body: Background(
             child: SingleChildScrollView(
@@ -33,7 +33,7 @@ class _ParentStartState extends State<ParentStart> {
                     children: <Widget>[
           SizedBox(height: size.height * 0.15),
           Hero(
-              tag: "logo",
+              tag: 'logo',
               child: Image(
                 image: AssetImage('img/jellyfin_logo.png'),
                 width: 120.0,
@@ -66,10 +66,10 @@ class _ParentStartState extends State<ParentStart> {
                               : CrossFadeState.showSecond,
                         )))),
             if (!_first)
-              new Positioned.fill(
-                  child: new LayoutBuilder(builder: (context, constraints) {
-                return new Padding(
-                    padding: new EdgeInsets.only(
+              Positioned.fill(
+                  child: LayoutBuilder(builder: (context, constraints) {
+                return Padding(
+                    padding: EdgeInsets.only(
                         // top: constraints.biggest.height * .8,,
                         left: constraints.biggest.width * .25,
                         right: constraints.biggest.width * .25,

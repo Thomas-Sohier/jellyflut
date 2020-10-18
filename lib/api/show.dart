@@ -2,16 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:jellyflut/models/category.dart';
 import '../globals.dart';
 
-BaseOptions options = new BaseOptions(
+BaseOptions options = BaseOptions(
   connectTimeout: 60000,
   receiveTimeout: 60000,
   contentType: "JSON",
 );
 
-Dio dio = new Dio(options);
+Dio dio = Dio(options);
 
 Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
-  var queryParams = new Map<String, dynamic>();
+  var queryParams = Map<String, dynamic>();
   queryParams["api_key"] = apiKey;
   queryParams["seasonId"] = seasonId;
   queryParams["userId"] = user.id;
@@ -21,7 +21,7 @@ Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   String url = "${server.url}/Shows/${parentId}/Episodes";
 
   Response response;
-  Category category = new Category();
+  Category category = Category();
   try {
     response = await dio.get(url, queryParameters: queryParams);
     category = Category.fromMap(response.data);
