@@ -14,11 +14,10 @@ Future<String> authHeader() async {
   // data
   String name = "jellyflut";
   String host = device.host;
-  Random random = new Random();
-  int id = random.nextInt(30);
-  String version = "0.1";
+  String id = device.id;
+  String version = "10.6.4";
 
   var auth =
-      "MediaBrowser Client=\'${name}\', Device=\'${host}\', DeviceId=\'${id}\', Version=\'${version}\'";
+      'MediaBrowser Client=\"${name}\", Device=\"${host}\", DeviceId=\"${id}\", Version=\"${version}\"';
   return auth;
 }

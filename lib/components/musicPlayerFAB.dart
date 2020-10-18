@@ -20,8 +20,12 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MusicPlayer>(
-        builder: (context, musicPlayer, child) =>
-            isInit() ? body(musicPlayer) : Container());
+        builder: (context, musicPlayer, child) => isInit()
+            ? body(musicPlayer)
+            : Container(
+                height: 0,
+                width: 0,
+              ));
   }
 
   Widget body(MusicPlayer musicPlayer) {
@@ -95,7 +99,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   void playerListener() {
-    MusicPlayer _musicPlayer = new MusicPlayer();
+    MusicPlayer _musicPlayer = MusicPlayer();
     _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
       if (event.isPlaying) {
         setState(() {
@@ -107,7 +111,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
 }
 
 bool isInit() {
-  MusicPlayer _musicPlayer = new MusicPlayer();
+  MusicPlayer _musicPlayer = MusicPlayer();
   return _musicPlayer.assetsAudioPlayer.current.hasValue &&
       _musicPlayer.assetsAudioPlayer.isPlaying.value;
 }

@@ -19,7 +19,7 @@ class _LatestState extends State<Latest> {
       Container(
         padding: EdgeInsets.fromLTRB(12, 20, 12, 20),
         child: Text(
-          "Latest",
+          'Latest',
           style: TextStyle(color: Colors.white, fontSize: 24),
         ),
       ),
@@ -49,7 +49,7 @@ class _LatestState extends State<Latest> {
   }
 
   List<Widget> displayLatestMedia(List<Item> medias) {
-    List<Widget> latestMedia = new List<Widget>();
+    List<Widget> latestMedia = List<Widget>();
     medias.forEach((Item media) {
       String firstKey = media.imageBlurHashes.primary.entries.first.key;
       latestMedia.add(

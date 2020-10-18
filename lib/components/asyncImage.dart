@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
+import 'package:jellyflut/shared/shared.dart';
 
 class AsyncImage extends StatefulWidget {
   AsyncImage(this.itemId, this.blurHash,
-      {this.tag = "Primary",
+      {this.tag = 'Primary',
       this.boxFit = BoxFit.fitHeight,
       this.alignment = Alignment.topCenter});
 
@@ -40,28 +41,31 @@ Widget body(String itemId, ImageBlurHashes blurHash, String tag, BoxFit boxFit,
     ),
     fadeInCurve: Curves.easeInOut,
     placeholder: (context, url) {
-      String hash = _fallBackBlurHash(blurHash, tag);
-      if (tag != "Logo" && hash != null)
+      var hash = _fallBackBlurHash(blurHash, tag);
+      if (tag != 'Logo' && hash != null) {
         return AspectRatio(
-            aspectRatio: 3 / 4,
+            aspectRatio: aspectRatio(),
             child: BlurHash(hash: _fallBackBlurHash(blurHash, tag)));
-      else
+      } else {
         return Container();
+      }
     },
     errorWidget: (context, url, error) {
-      String hash = _fallBackBlurHash(blurHash, tag);
-      if (tag != "Logo" && hash != null)
-        return AspectRatio(aspectRatio: 3 / 4, child: BlurHash(hash: hash));
-      else
+      var hash = _fallBackBlurHash(blurHash, tag);
+      if (tag != 'Logo' && hash != null) {
+        return AspectRatio(
+            aspectRatio: aspectRatio(), child: BlurHash(hash: hash));
+      } else {
         return Container();
+      }
     },
   );
 }
 
 String _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
-  if (tag == "Primary") {
+  if (tag == 'Primary') {
     return _fallBackBlurHashPrimary(imageBlurHashes);
-  } else if (tag == "Logo") {
+  } else if (tag == 'Logo') {
     return _fallBackBlurHashLogo(imageBlurHashes);
   }
   return null;

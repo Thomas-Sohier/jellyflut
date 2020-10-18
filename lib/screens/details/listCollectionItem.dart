@@ -7,6 +7,7 @@ class ListCollectionItem extends StatelessWidget {
 
   const ListCollectionItem(this.category);
 
+  @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 300),

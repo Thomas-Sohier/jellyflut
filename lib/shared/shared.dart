@@ -32,7 +32,7 @@ Future<bool> isAuth() async {
   Server s = await getLastUsedServer();
   if (isLogged && s != null) {
     server = s;
-    User _user = new User();
+    User _user = User();
     _user.id = prefs.getString("userId");
     user = _user;
     apiKey = prefs.getString("apiKey");
@@ -46,7 +46,7 @@ void setServer(Server s) {
 }
 
 Future<Server> getLastUsedServer() async {
-  DatabaseService databaseService = new DatabaseService();
+  DatabaseService databaseService = DatabaseService();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getInt("serverId") != null
       ? databaseService.getServer(prefs.getInt("serverId"))
@@ -75,6 +75,13 @@ void showToast(String msg) {
       backgroundColor: Colors.grey[300],
       textColor: Colors.black,
       fontSize: 16.0);
+}
+
+double aspectRatio({String type}) {
+  if (type == "MusicAlbum") {
+    return 1 / 1;
+  }
+  return 2 / 3;
 }
 
 String printDuration(Duration duration) {

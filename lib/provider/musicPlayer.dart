@@ -6,7 +6,7 @@ import 'package:jellyflut/models/item.dart';
 import '../globals.dart';
 
 class MusicPlayer extends ChangeNotifier {
-  AssetsAudioPlayer assetsAudioPlayer = new AssetsAudioPlayer();
+  AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
 
   // Singleton
   static final MusicPlayer _musicPlayer = MusicPlayer._internal();

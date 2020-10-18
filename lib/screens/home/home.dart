@@ -3,11 +3,7 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/screens/details/collection.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
-import 'package:jellyflut/shared/theme.dart';
-import 'package:provider/provider.dart';
 
 import 'background.dart';
 
@@ -21,9 +17,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
-        // bottomNavigationBar: BottomBar(),
         floatingActionButton: MusicPlayerFAB(),
         extendBody: true,
         backgroundColor: Colors.transparent,
@@ -40,7 +35,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Hero(
-                    tag: "logo",
+                    tag: 'logo',
                     child: Image(
                       image: AssetImage('img/jellyfin_logo.png'),
                       width: 40.0,
@@ -49,9 +44,9 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
                 ),
                 Hero(
-                  tag: "logo_text",
+                  tag: 'logo_text',
                   child: Text(
-                    "Jellyfin",
+                    'Jellyfin',
                     style: TextStyle(fontSize: 22, color: Colors.white),
                   ),
                 ),
@@ -62,16 +57,7 @@ class _HomeState extends State<Home> {
               future: getCategory(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Widget> children = new List();
-                  snapshot.data.items.forEach((Item item) {
-                    children.add(CollectionHome(item));
-                  });
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: children,
-                  );
+                  return buildCategory(snapshot.data);
                 } else {
                   return Container();
                 }
@@ -81,4 +67,16 @@ class _HomeState extends State<Home> {
           ],
         ))));
   }
+}
+
+Widget buildCategory(Category category) {
+  return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.all(0),
+      itemCount: category.items.length,
+      itemBuilder: (context, index) {
+        var _item = category.items[index];
+        return CollectionHome(_item);
+      });
 }

@@ -19,6 +19,5 @@ class CarrousselModel extends ChangeNotifier {
 
   void reset() {
     _carrousselModel.itemId = null;
-    notifyListeners();
   }
 }

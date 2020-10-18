@@ -15,35 +15,12 @@ class ServerForm extends StatefulWidget {
 }
 
 class _ServerFormState extends State<ServerForm> {
-  final TextEditingController _serverNameFilter = new TextEditingController();
-  final TextEditingController _urlFilter = new TextEditingController();
-  final FocusNode urlFocusNode = new FocusNode();
-  String _serverName = "";
-  String _url = "";
-
-  _ServerState() {
-    _serverNameFilter.addListener(_serverNameListen);
-    _urlFilter.addListener(_urlListen);
-  }
-
-  void _serverNameListen() {
-    if (_serverNameFilter.text.isEmpty) {
-      _serverName = "";
-    } else {
-      _serverName = _serverNameFilter.text;
-    }
-  }
-
-  void _urlListen() {
-    if (_urlFilter.text.isEmpty) {
-      _url = "";
-    } else {
-      _url = _urlFilter.text;
-    }
-  }
+  final TextEditingController _serverNameFilter = TextEditingController();
+  final TextEditingController _urlFilter = TextEditingController();
+  final FocusNode urlFocusNode = FocusNode();
 
   void addServer() {
-    Server s = new Server();
+    var s = Server();
     s.name = _serverNameFilter.text;
     s.url = _urlFilter.text;
 
@@ -53,11 +30,11 @@ class _ServerFormState extends State<ServerForm> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Column(
       children: [
         Text(
-          "Server configuration",
+          'Server configuration',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
@@ -69,7 +46,7 @@ class _ServerFormState extends State<ServerForm> {
           controller: _serverNameFilter,
         ),
         OutlineTextField(
-          "url",
+          'url',
           controller: _urlFilter,
           textInputAction: TextInputAction.done,
           focusNode: urlFocusNode,

@@ -25,13 +25,13 @@ class Details extends StatefulWidget {
   }
 }
 
-Item item = new Item();
+Item item = Item();
 
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     item = ModalRoute.of(context).settings.arguments as Item;
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         // bottomNavigationBar: BottomBar(),
         extendBody: true,
@@ -43,7 +43,7 @@ class _DetailsState extends State<Details> {
             if (snapshot.hasData) {
               return body(snapshot.data, size, context);
             } else if (snapshot.hasError) {
-              return Container(child: Text("Error"));
+              return Container(child: Text('Error'));
             } else {
               return _placeHolderBody(item, size);
             }
@@ -91,7 +91,7 @@ Widget body(Item item, Size size, BuildContext context) {
                     returnImageId(item),
                     item.imageBlurHashes,
                     boxFit: BoxFit.contain,
-                    tag: "Logo",
+                    tag: 'Logo',
                   )),
             SizedBox(height: size.height * 0.05),
             Stack(children: <Widget>[
@@ -107,7 +107,7 @@ Widget body(Item item, Size size, BuildContext context) {
                   top: 0,
                   left: 75,
                   child: GradienButton(
-                    "Play",
+                    'Play',
                     () {
                       _playItem(item, context);
                     },
@@ -128,7 +128,7 @@ Widget _placeHolderBody(Item item, Size size) {
   return Stack(
     children: [
       Hero(
-        tag: "poster-${item.id}",
+        tag: 'poster-${item.id}',
         child: Container(
             child: Container(
                 foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
@@ -158,7 +158,7 @@ Widget _placeHolderBody(Item item, Size size) {
                 child: AsyncImage(
                   returnImageId(item),
                   item.imageBlurHashes,
-                  tag: "Logo",
+                  tag: 'Logo',
                 )),
             SizedBox(height: size.height * 0.10),
             SizedBox(height: size.height * 0.05),
@@ -183,17 +183,17 @@ Widget actionIcons(Item item) {
 }
 
 void _playItem(Item item, BuildContext context) async {
-  if (item.type != "Book") {
-    navigatorKey.currentState.pushNamed("/watch", arguments: item);
+  if (item.type != 'Book') {
+    await navigatorKey.currentState.pushNamed('/watch', arguments: item);
   } else {
     readBook(context);
   }
 }
 
 void readBook(BuildContext context) async {
-  String path = await getEbook(item);
+  var path = await getEbook(item);
   if (path != null) {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var sharedPreferences = await SharedPreferences.getInstance();
     EpubViewer.setConfig(
       themeColor: Theme.of(context).primaryColor,
       scrollDirection: EpubScrollDirection.VERTICAL,
@@ -203,8 +203,9 @@ void readBook(BuildContext context) async {
 
     //TODO save locator
     dynamic book;
-    if (sharedPreferences.getString(path) != null)
+    if (sharedPreferences.getString(path) != null) {
       book = json.decode(sharedPreferences.getString(path));
+    }
 
     // Get locator which you can save in your database
     EpubViewer.locatorStream.listen((locator) {

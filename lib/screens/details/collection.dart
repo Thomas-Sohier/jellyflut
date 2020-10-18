@@ -1,22 +1,11 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/components/carroussel.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/components/viewedButton.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/listCollectionItem.dart';
 import 'package:jellyflut/screens/details/listMusicItem.dart';
 import 'package:jellyflut/screens/details/listVideoItem.dart';
-import 'package:jellyflut/shared/shared.dart';
-
-import '../../globals.dart';
-import '../../main.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
@@ -59,7 +48,7 @@ class _CollectionState extends State<Collection> {
 
 Future collectionItems(Item item) {
   // If it's a series or a music album we get every item
-  if (item.type == "Series" || item.type == "MusicAlbum") {
+  if (item.type == 'Series' || item.type == 'MusicAlbum') {
     return getCategory(parentId: item.id, limit: 100);
   } else {
     return getShowSeasonEpisode(item.seriesId, item.id);

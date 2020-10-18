@@ -3,7 +3,6 @@ import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import '../../main.dart';
@@ -13,6 +12,7 @@ class ListVideoItem extends StatelessWidget {
 
   const ListVideoItem(this.category);
 
+  @override
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -22,7 +22,7 @@ class ListVideoItem extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items == null ? 0 : category.items.length,
           itemBuilder: (context, index) {
-            Item item = category.items[index];
+            var item = category.items[index];
 
             return Padding(
                 padding: EdgeInsets.all(12),
@@ -35,7 +35,7 @@ class ListVideoItem extends StatelessWidget {
                           child: GestureDetector(
                               onTap: () {
                                 navigatorKey.currentState
-                                    .pushNamed("/details", arguments: item);
+                                    .pushNamed('/details', arguments: item);
                               },
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -65,10 +65,7 @@ class ListVideoItem extends StatelessWidget {
                                                       .round())),
                                           style: TextStyle(
                                               color: Colors.grey[700])),
-                                    Text(
-                                        (item.overview == null
-                                            ? ""
-                                            : item.overview),
+                                    Text((item.overview ?? ''),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             color: Color(0xFF333333))),
@@ -79,7 +76,7 @@ class ListVideoItem extends StatelessWidget {
                               child: GestureDetector(
                                   onTap: () {
                                     navigatorKey.currentState
-                                        .pushNamed("/watch", arguments: item);
+                                        .pushNamed('/watch', arguments: item);
                                   },
                                   child: Icon(
                                     Icons.play_circle_outline,

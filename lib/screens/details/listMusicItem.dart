@@ -11,6 +11,7 @@ class ListMusicItem extends StatelessWidget {
 
   const ListMusicItem(this.category);
 
+  @override
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -21,7 +22,7 @@ class ListMusicItem extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items.length,
           itemBuilder: (context, index) {
-            Item item = category.items[index];
+            var item = category.items[index];
 
             return Column(children: [
               if (index != 0)
@@ -61,7 +62,7 @@ class ListMusicItem extends StatelessWidget {
                                 ? Text(
                                     item.artists
                                         .map((e) => e.name)
-                                        .join(", ")
+                                        .join(', ')
                                         .toString(),
                                     textAlign: TextAlign.left,
                                     style: TextStyle(

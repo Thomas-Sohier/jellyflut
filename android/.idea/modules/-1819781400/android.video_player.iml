@@ -32,11 +32,7 @@
     <exclude-output />
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/android/src/main/java" isTestSource="false" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/android/.gradle" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/build" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/example/.pub" />
-      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/video_player/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/video_player/generated/aidl_source_output_dir/debugAndroidTest/out" />
@@ -59,7 +55,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-75bef9f6c8ac2ed4e1e04cdfcd88b177d9f1850d" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-b8752bbfff0419c8bf616b602bc59fd28f6a3d1b" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />

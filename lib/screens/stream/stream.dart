@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/mediaStream.dart';
+import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_position.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_style.dart';
@@ -23,9 +24,8 @@ class Stream extends StatefulWidget {
   _StreamState createState() => _StreamState();
 }
 
-class _StreamState extends State<Stream> {
-  static const platform =
-      const MethodChannel('com.example.jellyflut/videoPlayer');
+class _StreamState extends State<Stream> with WidgetsBindingObserver {
+  static const platform = MethodChannel('com.example.jellyflut/videoPlayer');
   Future<void> _initializeVideoPlayerFuture;
   int _playBackTime;
   int _subsId;
@@ -43,21 +43,34 @@ class _StreamState extends State<Stream> {
   bool _visible = false;
 
   VideoPlayerController _controller;
-  Item item = new Item();
+  Item item = Item();
+
+  void _hideStatusBar() {
+    SystemChrome.setEnabledSystemUIOverlays(
+        <SystemUiOverlay>[SystemUiOverlay.bottom]);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _hideStatusBar();
+    }
+  }
 
   @override
   void initState() {
     // final Item media = ModalRoute.of(context).settings.arguments as Item;
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Wakelock.enable();
     autoHideControl();
+    _hideStatusBar();
+    WidgetsBinding.instance.addObserver(this);
     Future.delayed(Duration.zero, () {
       setState(() {
-        Item tempItem = ModalRoute.of(context).settings.arguments as Item;
+        var tempItem = ModalRoute.of(context).settings.arguments as Item;
         getItem(tempItem.id).then((Item responseItem) {
           item = responseItem;
-          _initializePlay(createURl(responseItem), platform);
+          _initializePlay();
         });
       });
     });
@@ -65,47 +78,51 @@ class _StreamState extends State<Stream> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Container(
-              child: Stack(children: [
-            if (_controller != null && _controller.value.initialized)
-              Center(
-                  child: AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: SubTitleWrapper(
-                          videoPlayerController: _controller,
-                          subtitleController: subtitleController,
-                          subtitleStyle: SubtitleStyle(
-                            textColor: Colors.white,
-                            fontSize: 18,
-                            position: SubtitlePosition(
-                                bottom:
-                                    MediaQuery.of(context).size.height * 0.05),
-                            hasBorder: true,
-                          ),
-                          videoChild: GestureDetector(
-                              onTap: () {
-                                _visible = !_visible;
-                                autoHideControl();
-                              },
-                              child: VideoPlayer(_controller)))))
-            else
-              Center(child: CircularProgressIndicator()),
-            if (_controller != null && _playBackTime != null)
-              Positioned(
-                  bottom: 0,
-                  width: MediaQuery.of(context).size.width,
-                  child: Visibility(
-                    child: videoControl(),
-                    maintainSize: true,
-                    maintainAnimation: true,
-                    maintainState: true,
-                    visible: _visible,
-                  )),
-          ])),
-        ));
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+        ),
+        child: Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
+              child: Container(
+                  child: Stack(children: [
+                if (_controller != null && _controller.value.initialized)
+                  Center(
+                      child: AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: SubTitleWrapper(
+                              videoPlayerController: _controller,
+                              subtitleController: subtitleController,
+                              subtitleStyle: SubtitleStyle(
+                                textColor: Colors.white,
+                                fontSize: 18,
+                                position: SubtitlePosition(
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.05),
+                                hasBorder: true,
+                              ),
+                              videoChild: GestureDetector(
+                                  onTap: () {
+                                    _visible = !_visible;
+                                    autoHideControl();
+                                  },
+                                  child: VideoPlayer(_controller)))))
+                else
+                  Center(child: CircularProgressIndicator()),
+                if (_controller != null && _playBackTime != null)
+                  Positioned(
+                      bottom: 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: Visibility(
+                        child: videoControl(),
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        visible: _visible,
+                      )),
+              ])),
+            )));
   }
 
   Widget videoControl() {
@@ -179,10 +196,10 @@ class _StreamState extends State<Stream> {
     ]);
   }
 
-  Future<void> autoHideControl() {
+  Future<void> autoHideControl() async {
     Future.delayed(const Duration(seconds: 5), () {
       //asynchronous delay
-      if (this.mounted) {
+      if (mounted) {
         //checks if widget is still active and not disposed
         setState(() {
           //tells the widget builder to rebuild again because ui has updated
@@ -216,36 +233,6 @@ class _StreamState extends State<Stream> {
     super.dispose();
   }
 
-  String createURl(Item item, {int startTick = 0}) {
-    return "${server.url}/Videos/${item.id}/stream.${item.container.split(',').first}?startTimeTicks=${startTick}";
-  }
-
-  String createTranscodeUrl(Item item) {
-    Map<String, String> queryParam = new Map();
-
-    queryParam["MediaSourceId"] = item.id;
-    queryParam["VideoCodec"] = "h264";
-    queryParam["AudioCodec"] = "mp3,aac";
-    queryParam["AudioStreamIndex:"] = "1";
-    queryParam["VideoBitrate"] = "148288567";
-    queryParam["AudioBitrate"] = "384000";
-    queryParam["api_key"] = apiKey;
-    queryParam["TranscodingMaxAudioChannels"] = "2";
-    queryParam["RequireAvc"] = "false";
-    queryParam["SegmentContainer"] = "ts";
-    queryParam["MinSegments"] = "1";
-    queryParam["BreakOnNonKeyFrames"] = "true";
-    queryParam["h264-profile"] = "high,main,baseline,constrainedbaseline";
-    queryParam["h264-level"] = "51";
-    queryParam["h264-deinterlace"] = "true";
-    queryParam["TranscodeReasons"] = "VideoCodecNotSupported";
-
-    final uri = new Uri.https(server.url.replaceAll('https://', ''),
-        '/videos/${item.id}/main.m3u8', queryParam);
-    String url = uri.toString();
-    return url;
-  }
-
   Future<void> setNewStream(String videoPath) {
     _controller = VideoPlayerController.network(videoPath);
     _controller.addListener(() {
@@ -259,11 +246,11 @@ class _StreamState extends State<Stream> {
     });
   }
 
-  Future<void> _initializePlay(String videoPath, MethodChannel platform) async {
-    isCodecSupported(item, platform);
+  Future<void> _initializePlay() async {
+    var videoPath = await getStreamURL(item, platform);
     _controller = VideoPlayerController.network(videoPath);
     _controller.initialize().then((_) {
-      print("Stream controller initialized");
+      print('Stream controller initialized');
       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
       setState(() {
         _controller.play();
@@ -278,24 +265,20 @@ class _StreamState extends State<Stream> {
         });
       });
     }).catchError((onError) {
-      showToast("Can't direct play this file, trying to transcode...");
-      setNewStream(createTranscodeUrl(item)).catchError((onError) {
-        dispose();
-        navigatorKey.currentState.pop();
-      });
+      showToast('Can\'t play this file, ${onError}');
     });
   }
 
   void changeSubtitle(Item item, BuildContext context) {
-    List<MediaStream> subtitles = item.mediaStreams
-        .where((element) => element.type.toString() == "Type.SUBTITLE")
+    var subtitles = item.mediaStreams
+        .where((element) => element.type.toString() == 'Type.SUBTITLE')
         .toList();
-    if (subtitles != null && subtitles.length > 0) {
+    if (subtitles != null && subtitles.isNotEmpty) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Select Subtitle"),
+              title: Text('Select Subtitle'),
               content: Container(
                 width: double.maxFinite,
                 height: 250,
@@ -323,29 +306,28 @@ class _StreamState extends State<Stream> {
             );
           });
     } else {
-      showToast("No subtitles found");
+      showToast('No subtitles found');
     }
   }
 
-  Future<ClosedCaptionFile> setSubtitles(
-      String itemId, String codec, int subtitleId) async {
+  void setSubtitles(String itemId, String codec, int subtitleId) async {
     _subsId = subtitleId;
-    String mediaSourceId = itemId.substring(0, 8) +
-        "-" +
+    var mediaSourceId = itemId.substring(0, 8) +
+        '-' +
         itemId.substring(8, 12) +
-        "-" +
+        '-' +
         itemId.substring(12, 16) +
-        "-" +
+        '-' +
         itemId.substring(16, 20) +
-        "-" +
+        '-' +
         itemId.substring(20, itemId.length);
 
-    String parsedCodec = codec.substring(codec.indexOf('.') + 1);
+    var parsedCodec = codec.substring(codec.indexOf('.') + 1);
 
-    Map<String, String> queryParam = new Map();
-    queryParam["api_key"] = apiKey;
+    var queryParam = <String, String>{};
+    queryParam['api_key'] = apiKey;
 
-    final uri = new Uri.https(
+    final uri = Uri.https(
         server.url.replaceAll('https://', ''),
         '/Videos/${mediaSourceId}/${itemId}/Subtitles/${subtitleId}/0/Stream.${parsedCodec}',
         queryParam);
@@ -353,15 +335,15 @@ class _StreamState extends State<Stream> {
   }
 
   void changeAudioSource(Item item, BuildContext context) {
-    List<MediaStream> subtitles = item.mediaStreams
-        .where((element) => element.type.toString() == "Type.AUDIO")
+    var subtitles = item.mediaStreams
+        .where((element) => element.type.toString() == 'Type.AUDIO')
         .toList();
-    if (subtitles != null && subtitles.length > 0) {
+    if (subtitles != null && subtitles.isNotEmpty) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Select Subtitle"),
+              title: Text('Select Subtitle'),
               content: Container(
                 width: double.maxFinite,
                 height: 250,
@@ -387,13 +369,18 @@ class _StreamState extends State<Stream> {
             );
           });
     } else {
-      showToast("No subtitles found");
+      showToast('No subtitles found');
     }
   }
 }
 
+String createURL(Item item, {int startTick = 0}) {
+  var codecs = item.container.split(',');
+  return '${server.url}/Videos/${item.id}/stream.${codecs.first}?startTimeTicks=${startTick}';
+}
+
 Future<double> _bufferingPercentage(VideoPlayerController controller) async {
-  if (controller.value.buffered.length == 0) return 0.0;
+  if (controller.value.buffered.isEmpty) return 0.0;
   final bufferedMilliseconds = controller.value.buffered
       .map((element) =>
           element.end.inMilliseconds - element.start.inMilliseconds)
@@ -402,14 +389,31 @@ Future<double> _bufferingPercentage(VideoPlayerController controller) async {
   return bufferedMilliseconds / controller.value.duration.inMilliseconds * 100;
 }
 
-void isCodecSupported(Item item, MethodChannel platform) async {
+Future<String> getStreamURL(Item item, MethodChannel platform) async {
+  var data = await isCodecSupported(item, platform);
+  var backInfos =
+      await playbackInfos(data, item.id, startTimeTick: item.runTimeTicks);
+  var completeTranscodeUrl;
+  if (backInfos.mediaSources.first.transcodingUrl != null) {
+    completeTranscodeUrl =
+        '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
+  }
+  return completeTranscodeUrl ?? createURL(item, startTick: item.runTimeTicks);
+}
+
+Future<String> isCodecSupported(Item item, MethodChannel platform) async {
+  var result;
   // TODO finish this method to know if video can be direct play
   if (Platform.isAndroid) {
-    List<String> codecs = item.container.split(",");
-    print(codecs);
-    final dynamic result = await platform.invokeMethod('getListOfCodec');
-    print(result);
+    result = await platform.invokeMethod('getListOfCodec');
   } else if (Platform.isIOS) {
     // TODO make IOS
+    result = '';
   }
+  return _playbackInfos;
 }
+
+// TODO remove when function done
+// Used meanwhile a correct implementation of device capabilities
+String _playbackInfos =
+    '{"DeviceProfile":{"MaxStreamingBitrate":120000000,"MaxStaticBitrate":100000000,"MusicStreamingTranscodingBitrate":192000,"DirectPlayProfiles":[{"Container":"webm","Type":"Video","VideoCodec":"vp8,vp9,av1","AudioCodec":"vorbis,opus"},{"Container":"mp4,m4v","Type":"Video","VideoCodec":"h264,vp8,vp9,av1","AudioCodec":"mp3,aac,opus,flac,vorbis"},{"Container":"opus","Type":"Audio"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3"},{"Container":"aac","Type":"Audio"},{"Container":"m4a,m4b","AudioCodec":"aac","Type":"Audio"},{"Container":"flac","Type":"Audio"},{"Container":"webma,webm","Type":"Audio"},{"Container":"wav","Type":"Audio"},{"Container":"ogg","Type":"Audio"}],"TranscodingProfiles":[{"Container":"ts","Type":"Audio","AudioCodec":"aac","Context":"Streaming","Protocol":"hls","MaxAudioChannels":"2","MinSegments":"1","BreakOnNonKeyFrames":true},{"Container":"aac","Type":"Audio","AudioCodec":"aac","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"opus","Type":"Audio","AudioCodec":"opus","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"wav","Type":"Audio","AudioCodec":"wav","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"opus","Type":"Audio","AudioCodec":"opus","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"aac","Type":"Audio","AudioCodec":"aac","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"wav","Type":"Audio","AudioCodec":"wav","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"ts","Type":"Video","AudioCodec":"mp3,aac","VideoCodec":"h264","Context":"Streaming","Protocol":"hls","MaxAudioChannels":"2","MinSegments":"1","BreakOnNonKeyFrames":true},{"Container":"webm","Type":"Video","AudioCodec":"vorbis","VideoCodec":"vpx","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp4","Type":"Video","AudioCodec":"mp3,aac,opus,flac,vorbis","VideoCodec":"h264","Context":"Static","Protocol":"http"}],"ContainerProfiles":[],"CodecProfiles":[{"Type":"VideoAudio","Codec":"aac","Conditions":[{"Condition":"Equals","Property":"IsSecondaryAudio","Value":"false","IsRequired":false}]},{"Type":"VideoAudio","Conditions":[{"Condition":"Equals","Property":"IsSecondaryAudio","Value":"false","IsRequired":false}]},{"Type":"Video","Codec":"h264","Conditions":[{"Condition":"NotEquals","Property":"IsAnamorphic","Value":"true","IsRequired":false},{"Condition":"EqualsAny","Property":"VideoProfile","Value":"high|main|baseline|constrained baseline","IsRequired":false},{"Condition":"LessThanEqual","Property":"VideoLevel","Value":"51","IsRequired":false},{"Condition":"NotEquals","Property":"IsInterlaced","Value":"true","IsRequired":false}]}],"SubtitleProfiles":[{"Format":"vtt","Method":"External"},{"Format":"ass","Method":"External"},{"Format":"ssa","Method":"External"}],"ResponseProfiles":[{"Type":"Video","Container":"m4v","MimeType":"video/mp4"}]}}';

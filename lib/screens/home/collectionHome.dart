@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/shared/shared.dart';
 
 class CollectionHome extends StatefulWidget {
   final Item item;
@@ -32,7 +33,7 @@ class _CollectionHomeState extends State<CollectionHome> {
               children: [
                 GestureDetector(
                   onTap: () => navigatorKey.currentState
-                      .pushNamed("/collection", arguments: widget.item),
+                      .pushNamed('/collection', arguments: widget.item),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
@@ -42,12 +43,8 @@ class _CollectionHomeState extends State<CollectionHome> {
                   ),
                 ),
                 ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 230, minHeight: 230),
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: displayItems(snapshot.data),
-                    ))
+                    constraints: BoxConstraints(maxHeight: 230),
+                    child: displayItems(snapshot.data)),
               ]);
         } else {
           return Container();
@@ -56,57 +53,24 @@ class _CollectionHomeState extends State<CollectionHome> {
     );
   }
 
-  List<Widget> displayItems(Category category) {
-    List<Widget> latestMedia = new List<Widget>();
-    category?.items?.forEach((Item item) {
-      String key = item.imageBlurHashes.primary?.keys?.first;
-      latestMedia.add(Container(
-        width: 10,
-      ));
-      latestMedia.add(Container(
-        constraints: BoxConstraints(maxWidth: 150),
-        width: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed("/details", arguments: item);
-                },
-                child: AspectRatio(
-                    aspectRatio: _aspectRatio(widget.item.collectionType),
-                    child: Hero(
-                        tag: "poster-${item.id}",
-                        child: AsyncImage(item.id, item.imageBlurHashes)))),
-            Text(
-              item.name,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            )
-          ],
-        ),
-      ));
-    });
-    return latestMedia;
+  Widget displayItems(Category category) {
+    return ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: category.items.length,
+        itemBuilder: (context, index) {
+          var _item = category.items[index];
+          return Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: ItemPoster(_item));
+        });
   }
 
-  fallbackBlurHash(Map<String, dynamic> bhPrimary, {String key}) {
-    if (key == null) {
-      key = bhPrimary.keys.first;
-    }
+  dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, {String key}) {
+    key ??= bhPrimary.keys.first;
     if (bhPrimary != null || key != null) {
       return bhPrimary[key];
     }
-    return "";
-  }
-
-  double _aspectRatio(String type) {
-    if (type == "music") {
-      return 1 / 1;
-    }
-    return 3 / 4;
+    return '';
   }
 }

@@ -21,9 +21,9 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _usernameFilter = new TextEditingController();
-  final TextEditingController _passwordFilter = new TextEditingController();
-  final FocusNode passwordFocusNode = new FocusNode();
+  final TextEditingController _usernameFilter = TextEditingController();
+  final TextEditingController _passwordFilter = TextEditingController();
+  final FocusNode passwordFocusNode = FocusNode();
   String _username = "";
   String _password = "";
 
@@ -54,9 +54,9 @@ class _LoginFormState extends State<LoginForm> {
 
     login(_username, _password).then((AuthenticationResponse response) {
       if (response == null) return null;
-      DatabaseService db = new DatabaseService();
+      DatabaseService db = DatabaseService();
       // Create user with info
-      UserDB userDB = new UserDB();
+      UserDB userDB = UserDB();
       userDB.name = _username;
       userDB.apiKey = response.accessToken;
       apiKey = response.accessToken;
