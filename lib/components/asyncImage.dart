@@ -35,6 +35,7 @@ Widget body(String itemId, ImageBlurHashes blurHash, String tag, BoxFit boxFit,
     imageUrl: getItemImageUrl(itemId, blurHash, type: tag),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
         image: DecorationImage(
             image: imageProvider, fit: boxFit, alignment: alignment),
       ),

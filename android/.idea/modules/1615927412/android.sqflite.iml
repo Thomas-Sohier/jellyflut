@@ -33,7 +33,11 @@
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/android/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/android/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/build" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/example/.pub" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.1+1/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/sqflite/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/sqflite/generated/aidl_source_output_dir/debugAndroidTest/out" />

@@ -32,7 +32,11 @@
     <exclude-output />
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/android/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/build" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/example/.pub" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/video_player/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/video_player/generated/aidl_source_output_dir/debugAndroidTest/out" />

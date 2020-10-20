@@ -33,7 +33,11 @@
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/build" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/example/.pub" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.21/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/path_provider/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/path_provider/generated/aidl_source_output_dir/debugAndroidTest/out" />

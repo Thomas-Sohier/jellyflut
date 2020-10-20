@@ -32,7 +32,11 @@
     <exclude-output />
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/android/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/build" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/example/.pub" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+2/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/shared_preferences/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/shared_preferences/generated/aidl_source_output_dir/debugAndroidTest/out" />

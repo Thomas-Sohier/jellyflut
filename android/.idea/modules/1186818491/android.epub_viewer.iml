@@ -33,7 +33,11 @@
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/android/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/android/src/main/assets" type="java-resource" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/build" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/example/.pub" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/epub_viewer-0.1.8+1/example/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/epub_viewer/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/epub_viewer/generated/aidl_source_output_dir/debugAndroidTest/out" />

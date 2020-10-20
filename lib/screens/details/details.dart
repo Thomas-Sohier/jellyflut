@@ -94,18 +94,18 @@ Widget body(Item item, Size size, BuildContext context) {
                     tag: 'Logo',
                   )),
             SizedBox(height: size.height * 0.05),
-            Stack(children: <Widget>[
+            Stack(overflow: Overflow.visible, children: <Widget>[
               Container(
                   padding: EdgeInsets.only(top: 25),
                   child: CardItemWithChild(
                     item,
                     item.isFolder == true ? Collection(item) : Container(),
                   )),
-              Positioned(
-                  height: 50,
-                  width: 250,
-                  top: 0,
-                  left: 75,
+              Positioned.fill(
+                  child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: size.width * 0.5),
                   child: GradienButton(
                     'Play',
                     () {
@@ -114,7 +114,9 @@ Widget body(Item item, Size size, BuildContext context) {
                     item: item,
                     // _playItem(context, item),
                     icon: Icons.play_circle_outline,
-                  )),
+                  ),
+                ),
+              ))
             ]),
             SizedBox(height: size.height * 0.05),
           ],

@@ -97,12 +97,17 @@ Future<Item> getItem(String itemId) async {
   return item;
 }
 
-Future<Category> getItemsRecursive(String parentId,
+Future<Category> getItems(String parentId,
     {String filter = 'IsNotFolder, IsUnplayed',
     bool recursive = true,
     String sortBy = 'PremiereDate',
+    String sortOrder = 'Ascending',
     String mediaType = 'Audio%2CVideo',
+    String enableImageTypes = 'Primary,Backdrop,Banner,Thumb',
+    String includeItemTypes,
     int limit = 300,
+    int startIndex = 0,
+    int imageTypeLimit = 1,
     String fields = 'Chapters',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
@@ -112,6 +117,13 @@ Future<Category> getItemsRecursive(String parentId,
   queryParams['Filters'] = filter;
   queryParams['Recursive'] = recursive;
   queryParams['SortBy'] = sortBy;
+  queryParams['SortOrder'] = sortOrder;
+  if (includeItemTypes != null) {
+    queryParams['IncludeItemTypes'] = includeItemTypes;
+  }
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+  queryParams['EnableImageTypes'] = enableImageTypes;
+  queryParams['StartIndex'] = startIndex;
   queryParams['MediaTypes'] = mediaType;
   queryParams['Limit'] = limit;
   queryParams['Fields'] = fields;

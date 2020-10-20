@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
+import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DatabaseService();
-  init();
+  await init();
   runApp(MyApp());
 }
 
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => MusicPlayer()),
           ChangeNotifierProvider(create: (context) => CarrousselModel()),
+          ChangeNotifierProvider(create: (context) => ListOfItems()),
         ],
         child: MaterialApp(
           title: 'JellyFlut',

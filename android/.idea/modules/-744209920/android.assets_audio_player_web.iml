@@ -57,7 +57,9 @@
     <exclude-output />
     <content url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/assets_audio_player_web-2.0.9+2">
       <sourceFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/assets_audio_player_web-2.0.9+2/android/src/main/kotlin" isTestSource="false" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/assets_audio_player_web-2.0.9+2/.pub" />
       <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/assets_audio_player_web-2.0.9+2/android/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/assets_audio_player_web-2.0.9+2/build" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/assets_audio_player_web/generated/aidl_source_output_dir/debug/out" />
     <content url="file://$MODULE_DIR$/../../../../build/assets_audio_player_web/generated/aidl_source_output_dir/debugAndroidTest/out" />

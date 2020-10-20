@@ -8,10 +8,10 @@ import 'package:provider/provider.dart';
 class CarrousselBackGroundImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Consumer<CarrousselModel>(
         builder: (context, carrousselModel, child) {
-      if (carrousselModel.itemId != null)
+      if (carrousselModel.itemId != null) {
         return Container(
           height: size.height,
           width: size.width,
@@ -35,15 +35,16 @@ class CarrousselBackGroundImage extends StatelessWidget {
                   return AsyncImage(
                     snapshot.data.id,
                     snapshot.data.imageBlurHashes,
-                    tag: "Primary",
+                    tag: 'Primary',
                     boxFit: BoxFit.fitHeight,
                   );
                 }
                 return Container();
               }),
         );
-      else
+      } else {
         return Container();
+      }
     });
   }
 }

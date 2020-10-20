@@ -37,12 +37,12 @@ class _GradienButtonState extends State<GradienButton> {
             side: BorderSide(color: Colors.transparent)),
         textColor: Colors.black,
         color: Colors.transparent,
-        child: customPalette(
-            widget.color1, widget.color2, widget.text, widget.icon));
-    // child: widget.item == null
-    //     ? customPalette(
-    //         widget.color1, widget.color2, widget.text, widget.icon)
-    //     : generatedPalette(widget.item, widget.text, widget.icon));
+        // child: customPalette(
+        //     widget.color1, widget.color2, widget.text, widget.icon));
+        child: widget.item == null
+            ? customPalette(
+                widget.color1, widget.color2, widget.text, widget.icon)
+            : generatedPalette(widget.item, widget.text, widget.icon));
   }
 }
 
@@ -87,7 +87,7 @@ Widget generatedPalette(Item item, String text, IconData icon) {
     builder: (context, snapshot) {
       Widget child;
       if (snapshot.hasData) {
-        List<PaletteColor> paletteColor = snapshot.data.paletteColors;
+        var paletteColor = snapshot.data.paletteColors;
         var foregroundColor = paletteColor[0].color.computeLuminance() > 0.5
             ? Colors.black
             : Colors.white;
@@ -101,9 +101,11 @@ Widget generatedPalette(Item item, String text, IconData icon) {
             borderRadius: BorderRadius.all(Radius.circular(80.0)),
           ),
           child: Container(
-              height: 50,
-              constraints:
-                  const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
+              constraints: const BoxConstraints(
+                  minWidth: 88.0,
+                  minHeight: 36.0,
+                  maxWidth: 200,
+                  maxHeight: 50),
               alignment: Alignment.center,
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,15 +126,13 @@ Widget generatedPalette(Item item, String text, IconData icon) {
                       )
                   ])),
         );
-      } else if (snapshot.hasError) {
-        child = Container();
-      } else {
-        child = customPalette(Color(0xFFa95dc3), Color(0xFF04a2db), text, icon);
       }
       return AnimatedSwitcher(
-        duration: Duration(seconds: 1),
-        child: child,
-      );
+          duration: const Duration(milliseconds: 1500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(child: child, opacity: animation);
+          },
+          child: child);
     },
   );
 }

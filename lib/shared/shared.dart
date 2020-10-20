@@ -90,18 +90,31 @@ String printDuration(Duration duration) {
     return "0$n";
   }
 
-  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-  if (duration.inHours > 0)
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-  else
-    return "$twoDigitMinutes:$twoDigitSeconds";
+  var twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  var twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+  if (duration.inHours > 0) {
+    return '${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds';
+  } else {
+    return '$twoDigitMinutes:$twoDigitSeconds';
+  }
 }
 
 String removeAllHtmlTags(String htmlText) {
-  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+  var exp = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true);
 
   return htmlText.replaceAll(exp, '');
+}
+
+String getCollectionItemType(String collectionType) {
+  if (collectionType == 'movies') {
+    return 'movie';
+  } else if (collectionType == 'tvshows') {
+    return 'Series';
+  } else if (collectionType == 'music') {
+    return 'MusicAlbum';
+  } else if (collectionType == 'books') {
+    return 'Book';
+  }
 }
 
 String returnImageId(Item item) {
