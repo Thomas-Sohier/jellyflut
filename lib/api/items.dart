@@ -79,6 +79,21 @@ String _fallBackLogo(ImageBlurHashes imageBlurHashes) {
   return '';
 }
 
+Future<int> deleteItem(String itemId) async {
+  var map = <String, dynamic>{};
+  var queryParams = map;
+  queryParams['api_key'] = apiKey;
+  var url = '${server.url}/Items/${itemId}';
+
+  var response = Response();
+  try {
+    response = await dio.delete(url, queryParameters: queryParams);
+  } catch (e) {
+    print(e);
+  }
+  return response.statusCode;
+}
+
 Future<Item> getItem(String itemId) async {
   var queryParams = Map<String, dynamic>();
   queryParams['api_key'] = apiKey;
@@ -95,6 +110,54 @@ Future<Item> getItem(String itemId) async {
     print(e);
   }
   return item;
+}
+
+Future<Category> getResumeItems(
+    {String filter = 'IsNotFolder, IsUnplayed',
+    bool recursive = true,
+    String sortBy = '',
+    String sortOrder = '',
+    String mediaType = 'Video',
+    String enableImageTypes = 'Primary,Backdrop,Thumb',
+    String includeItemTypes,
+    int limit = 12,
+    int startIndex = 0,
+    int imageTypeLimit = 1,
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo',
+    String excludeLocationTypes = '',
+    bool enableTotalRecordCount = false,
+    bool collapseBoxSetItems = false}) async {
+  var queryParams = Map<String, dynamic>();
+  queryParams['Filters'] = filter;
+  queryParams['Recursive'] = recursive;
+  queryParams['SortBy'] = sortBy;
+  queryParams['SortOrder'] = sortOrder;
+  if (includeItemTypes != null) {
+    queryParams['IncludeItemTypes'] = includeItemTypes;
+  }
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+  queryParams['EnableImageTypes'] = enableImageTypes;
+  queryParams['StartIndex'] = startIndex;
+  queryParams['MediaTypes'] = mediaType;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
+  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
+  queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
+  queryParams['api_key'] = apiKey;
+  queryParams['Content-Type'] = 'application/json';
+
+  var url = '${server.url}/Users/${user.id}/Items/Resume';
+
+  Response response;
+  var category = Category();
+  try {
+    response = await dio.get(url, queryParameters: queryParams);
+    category = Category.fromMap(response.data);
+  } catch (e) {
+    print(e);
+  }
+  return category;
 }
 
 Future<Category> getItems(String parentId,

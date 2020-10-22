@@ -4,6 +4,7 @@ import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
+import 'package:jellyflut/screens/home/resume.dart';
 
 import 'background.dart';
 
@@ -53,6 +54,7 @@ class _HomeState extends State<Home> {
               ],
             ),
             SizedBox(height: size.height * 0.03),
+            Resume(),
             FutureBuilder<Category>(
               future: getCategory(),
               builder: (context, snapshot) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
@@ -86,14 +87,7 @@ Widget carrousselDetailItem(Item item, Color textColor) {
                       Expanded(
                           child: Padding(
                               padding: EdgeInsets.only(right: 10),
-                              child: Hero(
-                                  tag: 'poster-${item.id}',
-                                  child: AsyncImage(
-                                    returnImageId(item),
-                                    item.imageBlurHashes,
-                                    alignment: Alignment.center,
-                                    boxFit: BoxFit.contain,
-                                  )))),
+                              child: ItemPoster(item, showName: false))),
                     ],
                   )),
               Expanded(

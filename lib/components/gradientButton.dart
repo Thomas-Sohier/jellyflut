@@ -126,6 +126,8 @@ Widget generatedPalette(Item item, String text, IconData icon) {
                       )
                   ])),
         );
+      } else {
+        child = Container(height: 0, width: 0);
       }
       return AnimatedSwitcher(
           duration: const Duration(milliseconds: 1500),

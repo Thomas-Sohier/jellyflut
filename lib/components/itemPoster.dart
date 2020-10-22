@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/colors.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 import 'asyncImage.dart';
 
 class ItemPoster extends StatelessWidget {
-  ItemPoster(this.item, {this.textColor = Colors.white});
+  ItemPoster(this.item, {this.textColor = Colors.white, this.showName = true});
 
   final Item item;
   final Color textColor;
+  final bool showName;
 
   final BoxShadow boxShadowColor1 =
       BoxShadow(blurRadius: 6, color: Colors.black38, spreadRadius: 1);
@@ -61,55 +58,99 @@ class ItemPoster extends StatelessWidget {
                     ),
                     if (item.userData.playbackPositionTicks != null &&
                         item.userData.playbackPositionTicks > 0)
-                      Stack(
-                        children: [
-                          FractionallySizedBox(
-                            widthFactor: 1,
-                            heightFactor: 0.03,
-                            child: Container(
-                              color: Colors.white38,
-                            ),
-                          ),
-                          FractionallySizedBox(
-                            widthFactor: percentDuration(item),
-                            heightFactor: 0.03,
-                            child: Container(
-                              color: color1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (item.userData.played)
                       Positioned(
                           bottom: 5,
-                          right: 15,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 12,
-                                        color: Colors.black,
-                                        spreadRadius: 1)
-                                  ]),
-                              child: Icon(
-                                Icons.check_circle_rounded,
-                                color: Colors.green,
+                          right: 5,
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 6,
+                                              color: Colors.black54,
+                                              spreadRadius: 12)
+                                        ],
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30))),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        // Stroked text as border.
+                                        Text(
+                                          (percentDuration(item) * 100)
+                                              .round()
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              foreground: Paint()
+                                                ..style = PaintingStyle.stroke
+                                                ..strokeWidth = 2
+                                                ..color = Colors.white
+                                                ..color = Colors.black),
+                                        ),
+                                        // Solid text as fill.
+                                        Text(
+                                          (percentDuration(item) * 100)
+                                              .round()
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              CircularProgressIndicator(
+                                backgroundColor: Colors.black12,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(color1),
+                                value: percentDuration(item),
+                              ),
+                            ],
+                          )),
+                    if (item.userData.played)
+                      Positioned.fill(
+                          child: Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 0,
+                                              color: Colors.white,
+                                              spreadRadius: 0)
+                                        ]),
+                                    child: Icon(
+                                      Icons.check_circle_rounded,
+                                      color: Colors.green,
+                                    )),
                               ))),
                   ]),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                item.name,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
+            if (showName)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  item.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style:
+                      TextStyle(color: textColor, fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
           ]),
         ));
   }

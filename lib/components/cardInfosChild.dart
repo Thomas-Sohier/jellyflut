@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/expandedSection.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -25,7 +28,7 @@ class _CardInfosState extends State<CardInfos> {
 
   @override
   Widget build(BuildContext context) {
-    Item item = widget.item;
+    var item = widget.item;
 
     return Column(
       children: [
@@ -45,21 +48,53 @@ class _CardInfosState extends State<CardInfos> {
                     child: Icon(Icons.info_outline)))
           ],
         ),
-        details(item)
+        details(item, context)
       ],
     );
   }
 }
 
-Widget details(Item item) {
+Widget details(Item item, BuildContext context) {
   return ExpandedSection(
       expand: _infos,
       child: Column(children: [
         Divider(),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                  onTap: () => deleteDialogItem(item, context).then((value) {
+                        if (value) {
+                          deleteItem(item.id).then((int statusCode) {
+                            if (statusCode == HttpStatus.noContent) {
+                              Navigator.pop(context);
+                            } else {
+                              AlertDialog(
+                                content: Text("Error, cannot delete item..."),
+                              );
+                            }
+                          });
+                        }
+                      }),
+                  child: Icon(Icons.delete_outline)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(Icons.edit_outlined),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Icon(
+                  Icons.search_outlined,
+                  color: Colors.black,
+                )),
+          ],
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Infos",
+            'Infos',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
@@ -67,7 +102,7 @@ Widget details(Item item) {
           Row(
             children: [
               Text(
-                "Codec : ",
+                'Codec : ',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(item.container),
@@ -77,7 +112,7 @@ Widget details(Item item) {
           Row(
             children: [
               Text(
-                "Date added : ",
+                'Date added : ',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(item.dateCreated.toLocal().toIso8601String()),
@@ -87,7 +122,7 @@ Widget details(Item item) {
           Row(
             children: [
               Text(
-                "Sous titre : ",
+                'Sous titre : ',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Expanded(
@@ -95,8 +130,8 @@ Widget details(Item item) {
                       item.mediaStreams
                           .where((element) =>
                               element.type.toString() == "Type.SUBTITLE")
-                          .map((e) => e.title)
-                          .join(", "),
+                          .map((e) => e.displayTitle)
+                          .join(', '),
                       overflow: TextOverflow.clip)),
             ],
           ),
@@ -112,10 +147,76 @@ Widget details(Item item) {
                       item.mediaStreams
                           .where((element) =>
                               element.type.toString() == "Type.AUDIO")
-                          .map((e) => e.title)
+                          .map((e) => e.displayTitle)
                           .join(", "),
                       overflow: TextOverflow.clip)),
             ],
           )
       ]));
+}
+
+Future<bool> deleteDialogItem(Item item, BuildContext context) async {
+  return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+            title: Text(
+              'Delete ${item.name} ?',
+              style: TextStyle(),
+            ),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: Text(
+                  'This action cannot be reversed !',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SimpleDialogOption(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: Text(
+                            'no',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                    SimpleDialogOption(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          decoration: BoxDecoration(
+                              color: Colors.red[700],
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 4,
+                                    color: Colors.black26,
+                                    spreadRadius: 2)
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          child: InkWell(
+                              child: const Text(
+                            'Yes',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ),
+                  ],
+                ),
+              )
+            ]);
+      });
 }

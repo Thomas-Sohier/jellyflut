@@ -178,12 +178,6 @@ Widget _placeHolderBody(Item item, Size size) {
   );
 }
 
-Widget actionIcons(Item item) {
-  return Row(
-    children: [FavButton(item), ViewedButton(item)],
-  );
-}
-
 void _playItem(Item item, BuildContext context) async {
   if (item.type != 'Book') {
     await navigatorKey.currentState.pushNamed('/watch', arguments: item);

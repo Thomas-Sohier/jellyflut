@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/shared.dart';
 
 class CollectionHome extends StatefulWidget {
   final Item item;
@@ -23,6 +21,10 @@ const double gapSize = 20;
 class _CollectionHomeState extends State<CollectionHome> {
   @override
   Widget build(BuildContext context) {
+    return buildAllCategory();
+  }
+
+  Widget buildAllCategory() {
     return FutureBuilder<Category>(
       future: getCategory(parentId: widget?.item?.id, limit: 10),
       builder: (context, snapshot) {
@@ -43,7 +45,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                   ),
                 ),
                 ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 230),
+                    constraints: BoxConstraints(maxHeight: 250),
                     child: displayItems(snapshot.data)),
               ]);
         } else {
@@ -61,8 +63,7 @@ class _CollectionHomeState extends State<CollectionHome> {
         itemBuilder: (context, index) {
           var _item = category.items[index];
           return Padding(
-              padding: const EdgeInsets.only(left: 4, right: 4),
-              child: ItemPoster(_item));
+              padding: const EdgeInsets.all(5), child: ItemPoster(_item));
         });
   }
 

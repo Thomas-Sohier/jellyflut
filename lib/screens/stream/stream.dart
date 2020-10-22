@@ -253,6 +253,8 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
       print('Stream controller initialized');
       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
       setState(() {
+        _controller.seekTo(Duration(
+            microseconds: (item.userData.playbackPositionTicks / 10).round()));
         _controller.play();
       });
       _timer = Timer.periodic(
@@ -391,8 +393,8 @@ Future<double> _bufferingPercentage(VideoPlayerController controller) async {
 
 Future<String> getStreamURL(Item item, MethodChannel platform) async {
   var data = await isCodecSupported(item, platform);
-  var backInfos =
-      await playbackInfos(data, item.id, startTimeTick: item.runTimeTicks);
+  var backInfos = await playbackInfos(data, item.id,
+      startTimeTick: item.userData.playbackPositionTicks);
   var completeTranscodeUrl;
   if (backInfos.mediaSources.first.transcodingUrl != null) {
     completeTranscodeUrl =

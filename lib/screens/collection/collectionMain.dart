@@ -45,6 +45,7 @@ class _CollectionMainState extends State<CollectionMain> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     final item = ModalRoute.of(context).settings.arguments as Item;
     return Scaffold(
         floatingActionButton: MusicPlayerFAB(),
@@ -56,13 +57,17 @@ class _CollectionMainState extends State<CollectionMain> {
           Positioned(
               child: SingleChildScrollView(
                   controller: _scrollController,
-                  child: Column(
-                    children: [
-                      if (item.collectionType == 'movies' ||
-                          item.collectionType == 'books')
-                        head(item, context),
-                      listOfItems(item),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.04),
+                    child: Column(
+                      children: [
+                        if (item.collectionType == 'movies' ||
+                            item.collectionType == 'books')
+                          head(item, context),
+                        sortItems(),
+                        listOfItems(item),
+                      ],
+                    ),
                   )))
         ])));
   }
@@ -90,6 +95,7 @@ class _CollectionMainState extends State<CollectionMain> {
     return FutureBuilder<Category>(
         future: getItems(item.id,
             filter: '',
+            fields: 'DateCreated, DateAdded',
             includeItemTypes: getCollectionItemType(item.collectionType),
             limit: 100),
         builder: (context, snapshot) {
@@ -103,24 +109,48 @@ class _CollectionMainState extends State<CollectionMain> {
         });
   }
 
+  Widget sortItems() {
+    return Material(
+      color: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.date_range,
+              color: Colors.white,
+            ),
+            onPressed: () => ListOfItems().sortItemByDate(),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.sort_by_alpha,
+              color: Colors.white,
+              size: 26,
+            ),
+            onPressed: () => ListOfItems().sortItemByName(),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget head(Item item, BuildContext context) {
-    var size = MediaQuery.of(context).size;
     var filter = 'IsNotFolder,IsUnplayed';
     var fields =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
 
-    return Container(
-        padding: EdgeInsets.only(top: size.height * 0.02),
-        child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 300),
-            child: FutureBuilder<Category>(
-                future: getItems(item.id,
-                    limit: 5, fields: fields, filter: filter, sortBy: 'Random'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return CarousselItem(snapshot.data.items, detailMode: true);
-                  }
-                  return Container();
-                })));
+    return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 300),
+        child: FutureBuilder<Category>(
+            future: getItems(item.id,
+                limit: 5, fields: fields, filter: filter, sortBy: 'Random'),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return CarousselItem(snapshot.data.items, detailMode: true);
+              }
+              return Container();
+            }));
   }
 }
