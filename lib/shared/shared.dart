@@ -20,22 +20,20 @@ Future<void> init() async {
 }
 
 Future<bool> isLoggedIn() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getBool("isLoggedIn") == null
-      ? false
-      : prefs.getBool("isLoggedIn");
+  var prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isLoggedIn') ?? false;
 }
 
 Future<bool> isAuth() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isLogged = await isLoggedIn();
-  Server s = await getLastUsedServer();
+  var prefs = await SharedPreferences.getInstance();
+  var isLogged = await isLoggedIn();
+  var s = await getLastUsedServer();
   if (isLogged && s != null) {
     server = s;
-    User _user = User();
-    _user.id = prefs.getString("userId");
+    var _user = User();
+    _user.id = prefs.getString('userId');
     user = _user;
-    apiKey = prefs.getString("apiKey");
+    apiKey = prefs.getString('apiKey');
     return true;
   }
   return false;
@@ -46,23 +44,23 @@ void setServer(Server s) {
 }
 
 Future<Server> getLastUsedServer() async {
-  DatabaseService databaseService = DatabaseService();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getInt("serverId") != null
-      ? databaseService.getServer(prefs.getInt("serverId"))
+  var databaseService = DatabaseService();
+  var prefs = await SharedPreferences.getInstance();
+  return prefs.getInt('serverId') != null
+      ? databaseService.getServer(prefs.getInt('serverId'))
       : null;
 }
 
-setGlobals(AuthenticationResponse response) async {
+void setGlobals(AuthenticationResponse response) async {
   // Permet de rendre les informations nécessaires global
   user = response.user;
   apiKey = response.accessToken;
 
   // Permet de garder la personne connecté
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs?.setBool("isLoggedIn", true);
-  prefs?.setString("apiKey", apiKey);
-  prefs?.setString("userId", user.id);
+  var prefs = await SharedPreferences.getInstance();
+  await prefs?.setBool('isLoggedIn', true);
+  await prefs?.setString('apiKey', apiKey);
+  await prefs?.setString('userId', user.id);
 }
 
 void showToast(String msg) {
@@ -78,16 +76,19 @@ void showToast(String msg) {
 }
 
 double aspectRatio({String type}) {
-  if (type == "MusicAlbum") {
+  if (type == 'MusicAlbum') {
     return 1 / 1;
+  }
+  if (type == 'Backdrop') {
+    return 16 / 9;
   }
   return 2 / 3;
 }
 
 String printDuration(Duration duration) {
   String twoDigits(int n) {
-    if (n >= 10) return "$n";
-    return "0$n";
+    if (n >= 10) return '$n';
+    return '0$n';
   }
 
   var twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
@@ -114,11 +115,13 @@ String getCollectionItemType(String collectionType) {
     return 'MusicAlbum';
   } else if (collectionType == 'books') {
     return 'Book';
+  } else {
+    return '';
   }
 }
 
 String returnImageId(Item item) {
-  if (item.type == "Season" || item.type == "Episode") {
+  if (item.type == 'Season' || item.type == 'Episode') {
     return item.seriesId;
   }
   return item.id;

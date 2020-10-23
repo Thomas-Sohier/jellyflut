@@ -140,6 +140,7 @@ Widget carrousselDefault(Item item, Color textColor) {
                     tag: 'poster-${item.id}',
                     child: AsyncImage(
                       returnImageId(item),
+                      item.imageTags.primary,
                       item.imageBlurHashes,
                       boxFit: BoxFit.contain,
                     ))),

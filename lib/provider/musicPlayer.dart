@@ -34,6 +34,14 @@ class MusicPlayer extends ChangeNotifier {
         .toDouble();
   }
 
+  void addPlaylist(String path, String id, String title, String artist,
+      String album, MetasImage image) {
+    _musicPlayer.assetsAudioPlayer.playlist.add(Audio.network(path,
+        metas: Metas(
+            id: id, title: title, album: album, artist: artist, image: image)));
+    print(_musicPlayer.assetsAudioPlayer.playlist.audios);
+  }
+
   void play() {
     _musicPlayer.assetsAudioPlayer.play();
     notifyListeners();
@@ -61,7 +69,9 @@ class MusicPlayer extends ChangeNotifier {
               artist: item.artists.map((e) => e.name).join(", ").toString(),
               album: item.album,
               image: MetasImage.network(getItemImageUrl(
-                  item.id, item.imageBlurHashes)), //can be MetasImage.network
+                  item.id,
+                  item.imageTags.primary,
+                  item.imageBlurHashes)), //can be MetasImage.network
             ),
           ),
           showNotification: true,

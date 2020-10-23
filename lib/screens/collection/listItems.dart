@@ -26,7 +26,7 @@ class ListItems extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: aspectRatio(type: items.first.type),
-                mainAxisSpacing: 15,
+                mainAxisSpacing: 25,
                 crossAxisSpacing: 5),
             itemBuilder: (context, index) {
               return ItemPoster(items[index]);

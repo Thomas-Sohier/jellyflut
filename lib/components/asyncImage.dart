@@ -6,7 +6,7 @@ import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class AsyncImage extends StatefulWidget {
-  AsyncImage(this.itemId, this.blurHash,
+  AsyncImage(this.itemId, this.imageTag, this.blurHash,
       {this.tag = 'Primary',
       this.boxFit = BoxFit.fitHeight,
       this.alignment = Alignment.topCenter});
@@ -14,6 +14,7 @@ class AsyncImage extends StatefulWidget {
   final String itemId;
   final ImageBlurHashes blurHash;
   final String tag;
+  final String imageTag;
   final BoxFit boxFit;
   final Alignment alignment;
 
@@ -24,15 +25,15 @@ class AsyncImage extends StatefulWidget {
 class _AsyncImageState extends State<AsyncImage> {
   @override
   Widget build(BuildContext context) {
-    return body(widget.itemId, widget.blurHash, widget.tag, widget.boxFit,
-        widget.alignment);
+    return body(widget.itemId, widget.imageTag, widget.blurHash, widget.tag,
+        widget.boxFit, widget.alignment);
   }
 }
 
-Widget body(String itemId, ImageBlurHashes blurHash, String tag, BoxFit boxFit,
-    Alignment alignment) {
+Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
+    String tag, BoxFit boxFit, Alignment alignment) {
   return CachedNetworkImage(
-    imageUrl: getItemImageUrl(itemId, blurHash, type: tag),
+    imageUrl: getItemImageUrl(itemId, imageTag, blurHash, type: tag),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),

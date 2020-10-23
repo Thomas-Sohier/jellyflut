@@ -83,7 +83,8 @@ Widget customPalette(Color color1, Color color2, String text, IconData icon) {
 
 Widget generatedPalette(Item item, String text, IconData icon) {
   return FutureBuilder<PaletteGenerator>(
-    future: gePalette(getItemImageUrl(item.id, item.imageBlurHashes)),
+    future: gePalette(
+        getItemImageUrl(item.id, item.imageTags.primary, item.imageBlurHashes)),
     builder: (context, snapshot) {
       Widget child;
       if (snapshot.hasData) {

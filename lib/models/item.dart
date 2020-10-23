@@ -318,30 +318,33 @@ class Item {
             parentIndexNumber == null ? null : parentIndexNumber,
         "Etag": etag,
         "CollectionType": collectionType,
-        "DateCreated": dateCreated.toIso8601String(),
+        "DateCreated": dateCreated == null ?? dateCreated.toIso8601String(),
         "CanDelete": canDelete,
         "CanDownload": canDownload,
         "HasSubtitles": hasSubtitles,
         "Container": container,
         "SortName": sortName,
-        "PremiereDate": premiereDate.toIso8601String(),
-        "ExternalUrls": List<dynamic>.from(externalUrls.map((x) => x.toMap())),
-        "MediaSources": List<dynamic>.from(mediaSources.map((x) => x.toMap())),
+        "PremiereDate": premiereDate == null ?? premiereDate.toIso8601String(),
+        "ExternalUrls": externalUrls == null ??
+            List<dynamic>.from(externalUrls.map((x) => x.toMap())),
+        "MediaSources": mediaSources == null ??
+            List<dynamic>.from(mediaSources.map((x) => x.toMap())),
         "CriticRating": criticRating,
-        "ProductionLocations":
+        "ProductionLocations": productionLocations == null ??
             List<dynamic>.from(productionLocations.map((x) => x)),
         "Path": path,
         "EnableMediaSourceDisplay": enableMediaSourceDisplay,
         "Overview": overview,
-        "Taglines": List<dynamic>.from(taglines.map((x) => x)),
-        "Genres": List<dynamic>.from(genres.map((x) => x)),
+        "Taglines":
+            taglines == null ?? List<dynamic>.from(taglines.map((x) => x)),
+        "Genres": genres == null ?? List<dynamic>.from(genres.map((x) => x)),
         "CommunityRating": communityRating,
         "RunTimeTicks": runTimeTicks,
         "PlayAccess": playAccess,
         "ProductionYear": productionYear,
-        "RemoteTrailers":
+        "RemoteTrailers": remoteTrailers == null ??
             List<dynamic>.from(remoteTrailers.map((x) => x.toMap())),
-        "ProviderIds": providerIds.toMap(),
+        "ProviderIds": providerIds == null ?? providerIds.toMap(),
         "IsHD": isHd,
         "IsFolder": isFolder,
         "ParentId": parentId,
@@ -353,27 +356,33 @@ class Item {
         "AlbumPrimaryImageTag": albumPrimaryImageTag,
         "AlbumArtist": albumArtist,
         "AlbumArtists": albumArtists,
-        "People": List<dynamic>.from(people.map((x) => x.toMap())),
-        "Studios": List<dynamic>.from(studios.map((x) => x.toMap())),
-        "GenreItems": List<dynamic>.from(genreItems.map((x) => x.toMap())),
+        "People":
+            people == null ?? List<dynamic>.from(people.map((x) => x.toMap())),
+        "Studios": studios == null ??
+            List<dynamic>.from(studios.map((x) => x.toMap())),
+        "GenreItems": genreItems == null ??
+            List<dynamic>.from(genreItems.map((x) => x.toMap())),
         "LocalTrailerCount": localTrailerCount,
-        "UserData": userData.toMap(),
+        "UserData": userData == null ?? userData.toMap(),
         "SpecialFeatureCount": specialFeatureCount,
         "DisplayPreferencesId": displayPreferencesId,
-        "Tags": List<dynamic>.from(tags.map((x) => x)),
+        "Tags": tags == null ?? List<dynamic>.from(tags.map((x) => x)),
         "PrimaryImageAspectRatio": primaryImageAspectRatio,
-        "MediaStreams": List<dynamic>.from(mediaStreams.map((x) => x.toMap())),
+        "MediaStreams": mediaStreams == null ??
+            List<dynamic>.from(mediaStreams.map((x) => x.toMap())),
         "VideoType": videoType,
-        "ImageTags": imageTags.toMap(),
-        "BackdropImageTags":
+        "ImageTags": imageTags == null ?? imageTags.toMap(),
+        "BackdropImageTags": backdropImageTags == null ??
             List<dynamic>.from(backdropImageTags.map((x) => x)),
-        "ScreenshotImageTags":
+        "ScreenshotImageTags": screenshotImageTags == null ??
             List<dynamic>.from(screenshotImageTags.map((x) => x)),
         "ImageBlurHashes": imageBlurHashes.toMap(),
-        "Chapters": List<dynamic>.from(chapters.map((x) => x.toMap())),
+        "Chapters": chapters == null ??
+            List<dynamic>.from(chapters.map((x) => x.toMap())),
         "LocationType": locationType,
         "MediaType": typeValues.reverse[mediaType],
-        "LockedFields": List<dynamic>.from(lockedFields.map((x) => x)),
+        "LockedFields": lockedFields == null ??
+            List<dynamic>.from(lockedFields.map((x) => x)),
         "LockData": lockData,
         "Width": width,
         "Height": height,

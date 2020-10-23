@@ -99,8 +99,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   void playerListener() {
-    MusicPlayer _musicPlayer = MusicPlayer();
-    _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
+    MusicPlayer().assetsAudioPlayer.realtimePlayingInfos.listen((event) {
       if (event.isPlaying) {
         setState(() {
           _playBackTime = event.currentPosition.inMilliseconds.toInt();
@@ -111,7 +110,6 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
 }
 
 bool isInit() {
-  MusicPlayer _musicPlayer = MusicPlayer();
-  return _musicPlayer.assetsAudioPlayer.current.hasValue &&
-      _musicPlayer.assetsAudioPlayer.isPlaying.value;
+  return MusicPlayer().assetsAudioPlayer.current.hasValue &&
+      MusicPlayer().assetsAudioPlayer.isPlaying.value;
 }

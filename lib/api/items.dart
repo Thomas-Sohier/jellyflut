@@ -18,16 +18,19 @@ BaseOptions options = BaseOptions(
 
 Dio dio = Dio(options);
 
-String getItemImageUrl(String itemId, ImageBlurHashes imageBlurHashes,
+String getItemImageUrl(
+    String itemId, String imageTag, ImageBlurHashes imageBlurHashes,
     {int maxHeight = 1920,
     int maxWidth = 1080,
     String type = 'Primary',
     int quality = 90}) {
   var finalType = _fallBackImg(imageBlurHashes, type);
   if (type == 'Logo') {
-    return '${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}';
+    return '${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}&tag=${imageTag}';
+  } else if (type == 'Backdrop') {
+    return '${server.url}/Items/${itemId}/Images/${finalType}?maxWidth=800&tag=${imageTag}&quality=${quality}';
   } else {
-    return '${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&quality=${quality}';
+    return '${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&tag=${imageTag}&quality=${quality}';
   }
 }
 
@@ -38,7 +41,7 @@ String _fallBackImg(ImageBlurHashes imageBlurHashes, String tag) {
   } else if (tag == 'Backdrop') {
     hash = _fallBackBackdrop(imageBlurHashes);
   } else if (tag == 'Logo') {
-    hash = _fallBackLogo(imageBlurHashes);
+    hash = tag;
   }
   return hash;
 }
@@ -70,13 +73,6 @@ String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
   } else {
     return 'Primary';
   }
-}
-
-String _fallBackLogo(ImageBlurHashes imageBlurHashes) {
-  if (imageBlurHashes.logo != null) {
-    return 'Logo';
-  }
-  return '';
 }
 
 Future<int> deleteItem(String itemId) async {

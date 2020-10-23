@@ -34,6 +34,7 @@ class CarrousselBackGroundImage extends StatelessWidget {
                 if (snapshot.hasData) {
                   return AsyncImage(
                     snapshot.data.id,
+                    snapshot.data.imageTags.primary,
                     snapshot.data.imageBlurHashes,
                     tag: 'Primary',
                     boxFit: BoxFit.fitHeight,
