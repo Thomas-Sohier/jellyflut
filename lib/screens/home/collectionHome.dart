@@ -63,7 +63,10 @@ class _CollectionHomeState extends State<CollectionHome> {
         itemBuilder: (context, index) {
           var _item = category.items[index];
           return Padding(
-              padding: const EdgeInsets.all(5), child: ItemPoster(_item));
+              padding: const EdgeInsets.all(5),
+              child: ItemPoster(
+                _item,
+              ));
         });
   }
 

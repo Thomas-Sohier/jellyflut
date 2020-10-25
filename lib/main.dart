@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
             '/home': (context) => Home(),
             '/collection': (context) => CollectionMain(),
             '/watch': (context) => Stream(),
-            '/details': (context) => Details(),
           },
           onUnknownRoute: (RouteSettings settings) {
             return MaterialPageRoute(builder: (BuildContext context) => Home());

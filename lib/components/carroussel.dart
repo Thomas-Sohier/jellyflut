@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
+import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
+import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:uuid/uuid.dart';
 import 'critics.dart';
 
 class CarousselItem extends StatefulWidget {
@@ -59,12 +62,13 @@ class _CarousselItemState extends State<CarousselItem> {
     return Transform.scale(
         scale: itemIndex == _index ? 0.9 : 0.7,
         child: widget.detailMode
-            ? carrousselDetailItem(i, widget.textColor)
-            : carrousselDefault(i, widget.textColor));
+            ? carrousselDetailItem(i, widget.textColor, context)
+            : carrousselDefault(i, widget.textColor, context));
   }
 }
 
-Widget carrousselDetailItem(Item item, Color textColor) {
+Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
+  var heroTag = item.id + Uuid().v4();
   return Column(children: [
     Padding(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -75,8 +79,12 @@ Widget carrousselDetailItem(Item item, Color textColor) {
     ),
     Expanded(
         child: GestureDetector(
-            onTap: () => navigatorKey.currentState
-                .pushNamed('/details', arguments: item),
+            onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Details(item: item, heroTag: heroTag)),
+                ),
             child: Row(children: [
               Expanded(
                   flex: 2,
@@ -126,29 +134,13 @@ Widget carrousselDetailItem(Item item, Color textColor) {
   ]);
 }
 
-Widget carrousselDefault(Item item, Color textColor) {
+Widget carrousselDefault(Item item, Color textColor, BuildContext context) {
+  var heroTag = item.id + Uuid().v4();
   return GestureDetector(
-      onTap: () =>
-          navigatorKey.currentState.pushNamed('/details', arguments: item),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-                child: Hero(
-                    tag: 'poster-${item.id}',
-                    child: AsyncImage(
-                      returnImageId(item),
-                      item.imageTags.primary,
-                      item.imageBlurHashes,
-                      boxFit: BoxFit.contain,
-                    ))),
-            Text(item.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22)),
-          ]));
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Details(item: item, heroTag: heroTag)),
+          ),
+      child: ItemPoster(item));
 }

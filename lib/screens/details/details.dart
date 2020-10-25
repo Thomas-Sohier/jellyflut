@@ -9,7 +9,6 @@ import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +17,11 @@ import '../../main.dart';
 import 'collection.dart';
 
 class Details extends StatefulWidget {
+  final Item item;
+  final String heroTag;
+
+  const Details({@required this.item, @required this.heroTag});
+
   @override
   State<StatefulWidget> createState() {
     return _DetailsState();
@@ -29,9 +33,7 @@ Item item = Item();
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
-    final ScreenDetailsArguments args =
-        ModalRoute.of(context).settings.arguments;
-    item = args.item;
+    item = widget.item;
     var size = MediaQuery.of(context).size;
     return Scaffold(
         // bottomNavigationBar: BottomBar(),
@@ -42,11 +44,11 @@ class _DetailsState extends State<Details> {
           future: getItem(item.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return body(snapshot.data, size, args.heroTag, context);
+              return body(snapshot.data, size, widget.heroTag, context);
             } else if (snapshot.hasError) {
               return Container(child: Text('Error'));
             } else {
-              return _placeHolderBody(item, size);
+              return _placeHolderBody(item, widget.heroTag, size);
             }
           },
         ));
@@ -66,7 +68,7 @@ Widget body(Item item, Size size, String heroTag, BuildContext context) {
                     item.id,
                     item.imageTags.primary,
                     item.imageBlurHashes,
-                    boxFit: BoxFit.fitHeight,
+                    boxFit: BoxFit.cover,
                   ))),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
@@ -131,14 +133,20 @@ Widget body(Item item, Size size, String heroTag, BuildContext context) {
   );
 }
 
-Widget _placeHolderBody(Item item, Size size) {
+Widget _placeHolderBody(Item item, String heroTag, Size size) {
   return Stack(
     children: [
       Container(
           child: Container(
               foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-              child: AsyncImage(
-                  item.id, item.imageTags.primary, item.imageBlurHashes)),
+              child: Hero(
+                  tag: heroTag,
+                  child: AsyncImage(
+                    item.id,
+                    item.imageTags.primary,
+                    item.imageBlurHashes,
+                    boxFit: BoxFit.cover,
+                  ))),
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -149,7 +157,7 @@ Widget _placeHolderBody(Item item, Size size) {
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: [0, 0.2, 0.6, 1],
+              stops: [0, 0.2, 0.7, 1],
             ),
           )),
       SingleChildScrollView(
@@ -168,13 +176,16 @@ Widget _placeHolderBody(Item item, Size size) {
               )),
           SizedBox(height: size.height * 0.10),
           SizedBox(height: size.height * 0.05),
-          Container(
-              padding: EdgeInsets.only(top: 25),
-              child: CardItemWithChild(
-                item,
-                Container(),
-                isSkeleton: true,
-              ))
+          Hero(
+            tag: item.id,
+            child: Container(
+                padding: EdgeInsets.only(top: 25),
+                child: CardItemWithChild(
+                  item,
+                  Container(),
+                  isSkeleton: true,
+                )),
+          )
         ],
       ))
     ],

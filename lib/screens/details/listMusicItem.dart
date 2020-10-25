@@ -1,7 +1,4 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/api.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
@@ -10,8 +7,6 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/itemDialog.dart';
 import 'package:jellyflut/screens/form/editItemInfos.dart';
 import 'package:jellyflut/shared/shared.dart';
-
-import '../../globals.dart';
 
 class ListMusicItem extends StatelessWidget {
   final Category category;

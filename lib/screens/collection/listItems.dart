@@ -24,8 +24,9 @@ class ListItems extends StatelessWidget {
             physics: ScrollPhysics(),
             itemCount: items.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: aspectRatio(type: items.first.type) -
+                    .1, // we chage the aspect ratio a bit to show more poster height with text
                 crossAxisCount: 3,
-                childAspectRatio: aspectRatio(type: items.first.type),
                 mainAxisSpacing: 25,
                 crossAxisSpacing: 5),
             itemBuilder: (context, index) {
