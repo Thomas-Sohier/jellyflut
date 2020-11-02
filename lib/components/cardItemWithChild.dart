@@ -188,7 +188,7 @@ Widget cardWithData(Item item) {
                     colors: [Colors.black12, Colors.grey[100]],
                   ),
                 ),
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.all(5),
                 child: CardInfos(item))
           ],
         )),

@@ -18,13 +18,16 @@ BaseOptions options = BaseOptions(
 
 Dio dio = Dio(options);
 
-String getItemImageUrl(
-    String itemId, String imageTag, ImageBlurHashes imageBlurHashes,
-    {int maxHeight = 1920,
+String getItemImageUrl(String itemId, String imageTag,
+    {ImageBlurHashes imageBlurHashes,
+    int maxHeight = 1920,
     int maxWidth = 1080,
     String type = 'Primary',
     int quality = 90}) {
-  var finalType = _fallBackImg(imageBlurHashes, type);
+  var finalType = type;
+  if (imageBlurHashes != null) {
+    finalType = _fallBackImg(imageBlurHashes, type);
+  }
   if (type == 'Logo') {
     return '${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}&tag=${imageTag}';
   } else if (type == 'Backdrop') {
@@ -90,8 +93,38 @@ Future<int> deleteItem(String itemId) async {
   return response.statusCode;
 }
 
-Future<Item> getItem(String itemId) async {
-  var queryParams = Map<String, dynamic>();
+Future<Item> getItem(String itemId,
+    {String filter = 'IsNotFolder, IsUnplayed',
+    bool recursive = true,
+    String sortBy = 'PremiereDate',
+    String sortOrder = 'Ascending',
+    String mediaType = 'Audio%2CVideo',
+    String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
+    String includeItemTypes,
+    int limit = 300,
+    int startIndex = 0,
+    int imageTypeLimit = 1,
+    String fields = 'Chapters, People',
+    String excludeLocationTypes = 'Virtual',
+    bool enableTotalRecordCount = false,
+    bool collapseBoxSetItems = false}) async {
+  var queryParams = <String, dynamic>{};
+  queryParams['Filters'] = filter;
+  queryParams['Recursive'] = recursive;
+  queryParams['SortBy'] = sortBy;
+  queryParams['SortOrder'] = sortOrder;
+  if (includeItemTypes != null) {
+    queryParams['IncludeItemTypes'] = includeItemTypes;
+  }
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+  queryParams['EnableImageTypes'] = enableImageTypes;
+  queryParams['StartIndex'] = startIndex;
+  queryParams['MediaTypes'] = mediaType;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
+  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
+  queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
   queryParams['api_key'] = apiKey;
   queryParams['Content-Type'] = 'application/json';
 
@@ -162,7 +195,7 @@ Future<Category> getItems(String parentId,
     String sortBy = 'PremiereDate',
     String sortOrder = 'Ascending',
     String mediaType = 'Audio%2CVideo',
-    String enableImageTypes = 'Primary,Backdrop,Banner,Thumb',
+    String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
     String includeItemTypes,
     int limit = 300,
     int startIndex = 0,
@@ -171,7 +204,7 @@ Future<Category> getItems(String parentId,
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
-  var queryParams = Map<String, dynamic>();
+  var queryParams = <String, dynamic>{};
   queryParams['ParentId'] = parentId;
   queryParams['Filters'] = filter;
   queryParams['Recursive'] = recursive;

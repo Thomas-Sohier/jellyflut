@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/listOfItems.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/shared/shared.dart';
+import 'package:provider/provider.dart';
 
 class CollectionHome extends StatefulWidget {
   final Item item;
@@ -21,12 +26,21 @@ const double gapSize = 20;
 class _CollectionHomeState extends State<CollectionHome> {
   @override
   Widget build(BuildContext context) {
-    return buildAllCategory();
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => MusicPlayer()),
+      ChangeNotifierProvider(create: (context) => ListOfItems()),
+    ], child: buildAllCategory());
   }
 
   Widget buildAllCategory() {
     return FutureBuilder<Category>(
-      future: getCategory(parentId: widget?.item?.id, limit: 10),
+      future: getItems(widget?.item?.id,
+          filter: '',
+          sortBy: 'DateCreated',
+          sortOrder: 'Descending',
+          fields: 'DateCreated, DateAdded',
+          includeItemTypes: getCollectionItemType(widget.item.collectionType),
+          limit: 10),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
@@ -44,9 +58,10 @@ class _CollectionHomeState extends State<CollectionHome> {
                     ),
                   ),
                 ),
-                ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 250),
-                    child: displayItems(snapshot.data)),
+                SizedBox(
+                  height: 250,
+                  child: displayItems(snapshot.data),
+                )
               ]);
         } else {
           return Container();
@@ -64,8 +79,11 @@ class _CollectionHomeState extends State<CollectionHome> {
           var _item = category.items[index];
           return Padding(
               padding: const EdgeInsets.all(5),
-              child: ItemPoster(
-                _item,
+              child: AspectRatio(
+                aspectRatio: aspectRatio(type: _item.type) - .1,
+                child: ItemPoster(
+                  _item,
+                ),
               ));
         });
   }

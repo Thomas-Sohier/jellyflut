@@ -83,8 +83,8 @@ Widget customPalette(Color color1, Color color2, String text, IconData icon) {
 
 Widget generatedPalette(Item item, String text, IconData icon) {
   return FutureBuilder<PaletteGenerator>(
-    future: gePalette(
-        getItemImageUrl(item.id, item.imageTags.primary, item.imageBlurHashes)),
+    future: gePalette(getItemImageUrl(item.id, item.imageTags.primary,
+        imageBlurHashes: item.imageBlurHashes)),
     builder: (context, snapshot) {
       Widget child;
       if (snapshot.hasData) {
@@ -128,7 +128,7 @@ Widget generatedPalette(Item item, String text, IconData icon) {
                   ])),
         );
       } else {
-        child = Container(height: 0, width: 0);
+        child = Container(height: 50, width: 0);
       }
       return AnimatedSwitcher(
           duration: const Duration(milliseconds: 1500),

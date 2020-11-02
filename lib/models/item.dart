@@ -245,14 +245,14 @@ class Item {
             ? null
             : List<AlbumArtists>.from(
                 json["AlbumArtists"].map((x) => AlbumArtists.fromMap(x))),
-        people: json["people"] == null
+        people: json["People"] == null
             ? null
             : List<Person>.from(json["People"].map((x) => Person.fromMap(x))),
-        studios: json["studios"] == null
+        studios: json["Studios"] == null
             ? null
             : List<GenreItem>.from(
                 json["Studios"].map((x) => GenreItem.fromMap(x))),
-        genreItems: json["genreItems"] == null
+        genreItems: json["GenreItems"] == null
             ? null
             : List<GenreItem>.from(
                 json["GenreItems"].map((x) => GenreItem.fromMap(x))),

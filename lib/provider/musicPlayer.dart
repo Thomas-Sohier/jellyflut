@@ -69,9 +69,9 @@ class MusicPlayer extends ChangeNotifier {
               artist: item.artists.map((e) => e.name).join(", ").toString(),
               album: item.album,
               image: MetasImage.network(getItemImageUrl(
-                  item.id,
-                  item.imageTags.primary,
-                  item.imageBlurHashes)), //can be MetasImage.network
+                  item.id, item.imageTags.primary,
+                  imageBlurHashes:
+                      item.imageBlurHashes)), //can be MetasImage.network
             ),
           ),
           showNotification: true,

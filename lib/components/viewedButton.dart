@@ -5,7 +5,9 @@ import 'package:jellyflut/shared/shared.dart';
 
 class ViewedButton extends StatefulWidget {
   final Item item;
-  const ViewedButton(this.item);
+  final EdgeInsetsGeometry padding;
+
+  const ViewedButton(this.item, {this.padding = const EdgeInsets.all(10)});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,43 +27,53 @@ class _ViewedButtonState extends State<ViewedButton> {
 
   @override
   Widget build(BuildContext context) {
-    if (isViewed)
-      return Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: InkWell(
-            onTap: () => unsetItemViewed(widget.item.id),
+    return Material(
+      color: Colors.transparent,
+      child: button(),
+    );
+  }
+
+  Widget button() {
+    if (isViewed) {
+      return InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          onTap: () => unsetItemViewed(widget.item.id),
+          child: Padding(
+            padding: widget.padding,
             child: Icon(
               Icons.check,
               color: Colors.green,
             ),
           ));
-    else
-      return Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: InkWell(
-            onTap: () => setItemViewed(widget.item.id),
+    } else {
+      return InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          onTap: () => setItemViewed(widget.item.id),
+          child: Padding(
+            padding: widget.padding,
             child: Icon(
               Icons.check,
               color: Colors.black,
             ),
           ));
+    }
   }
 
   void setItemViewed(String itemId) {
     viewItem(itemId).then((Map<String, dynamic> json) => {
           setState(() {
-            isViewed = json["Played"];
+            isViewed = json['Played'];
           }),
-          showToast("Item viewed")
+          showToast('Item viewed')
         });
   }
 
   void unsetItemViewed(String itemId) {
     unviewItem(itemId).then((Map<String, dynamic> json) => {
           setState(() {
-            isViewed = json["Played"];
+            isViewed = json['Played'];
           }),
-          showToast("Item unviewed")
+          showToast('Item unviewed')
         });
   }
 }

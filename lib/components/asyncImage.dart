@@ -33,7 +33,8 @@ class _AsyncImageState extends State<AsyncImage> {
 Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
     String tag, BoxFit boxFit, Alignment alignment) {
   return CachedNetworkImage(
-    imageUrl: getItemImageUrl(itemId, imageTag, blurHash, type: tag),
+    imageUrl:
+        getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -45,9 +46,12 @@ Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
     placeholder: (context, url) {
       var hash = _fallBackBlurHash(blurHash, tag);
       if (tag != 'Logo' && hash != null) {
-        return AspectRatio(
-            aspectRatio: aspectRatio(),
-            child: BlurHash(hash: _fallBackBlurHash(blurHash, tag)));
+        return Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            child: AspectRatio(
+                aspectRatio: aspectRatio(),
+                child: BlurHash(hash: _fallBackBlurHash(blurHash, tag))));
       } else {
         return Container();
       }
@@ -70,7 +74,7 @@ String _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
   } else if (tag == 'Logo') {
     return _fallBackBlurHashLogo(imageBlurHashes);
   }
-  return null;
+  return 'Primary';
 }
 
 String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
@@ -83,12 +87,12 @@ String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
   } else if (imageBlurHashes.art != null) {
     return imageBlurHashes.art.values.first;
   }
-  return null;
+  return '';
 }
 
 String _fallBackBlurHashLogo(ImageBlurHashes imageBlurHashes) {
   if (imageBlurHashes.logo != null) {
     return imageBlurHashes.logo.values.first;
   }
-  return null;
+  return '';
 }

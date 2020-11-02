@@ -65,7 +65,7 @@ class _ItemPosterState extends State<ItemPoster> {
                           aspectRatio: widget.item.primaryImageAspectRatio ??
                               aspectRatio(type: widget.item.type),
                           child: AsyncImage(
-                            widget.item.id,
+                            itemsPoster(widget.item),
                             widget.item.imageTags.primary,
                             widget.item.imageBlurHashes,
                             tag: widget.type,
@@ -188,4 +188,12 @@ class _ItemPosterState extends State<ItemPoster> {
 
 double percentDuration(Item item) {
   return item.userData.playbackPositionTicks / item.runTimeTicks;
+}
+
+String itemsPoster(Item item) {
+  if (item.type == 'Season') {
+    if (item.imageTags.primary != null) return item.id;
+    return item.seriesId;
+  }
+  return item.id;
 }

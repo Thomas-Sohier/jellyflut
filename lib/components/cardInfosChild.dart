@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/expandedSection.dart';
+import 'package:jellyflut/components/peoplesList.dart';
+import 'package:jellyflut/components/unorderedList.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import 'cardItemWithChild.dart';
@@ -41,11 +45,17 @@ class _CardInfosState extends State<CardInfos> {
                   Duration(microseconds: (item.runTimeTicks / 10).round()))),
             Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: GestureDetector(
-                    onTap: () => setState(() {
-                          _infos = !_infos;
-                        }),
-                    child: Icon(Icons.info_outline)))
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      onTap: () => setState(() {
+                            _infos = !_infos;
+                          }),
+                      child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Icon(Icons.info_outline))),
+                ))
           ],
         ),
         details(item, context)
@@ -54,58 +64,95 @@ class _CardInfosState extends State<CardInfos> {
   }
 }
 
+Widget tabs(Item item, BuildContext context) {
+  return DefaultTabController(
+      // The number of tabs / content sections to display.
+      length: 3,
+      child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: 250),
+          child: Column(
+            children: [
+              TabBar(tabs: [
+                Tab(
+                  icon: Icon(
+                    Icons.info,
+                    color: Colors.black,
+                  ),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.black,
+                  ),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ),
+                )
+              ]),
+              Flexible(
+                  child: TabBarView(children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: infos(item, context),
+                ),
+                item?.people != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: PeoplesList(item.people),
+                      )
+                    : Container(),
+                Material(
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ItemDialogActions(item, null),
+                    ))
+              ]))
+            ],
+          )));
+}
+
 Widget details(Item item, BuildContext context) {
-  return ExpandedSection(
-      expand: _infos,
-      child: Column(children: [
-        Divider(),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: GestureDetector(
-                  onTap: () => deleteDialogItem(item, context).then((value) {
-                        if (value) {
-                          deleteItem(item.id).then((int statusCode) {
-                            if (statusCode == HttpStatus.noContent) {
-                              Navigator.pop(context);
-                            } else {
-                              AlertDialog(
-                                content: Text("Error, cannot delete item..."),
-                              );
-                            }
-                          });
-                        }
-                      }),
-                  child: Icon(Icons.delete_outline)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Icon(Icons.edit_outlined),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Icon(
-                  Icons.search_outlined,
-                  color: Colors.black,
-                )),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Infos',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+  return ExpandedSection(expand: _infos, child: tabs(item, context));
+}
+
+Widget infos(Item item, BuildContext context) {
+  var titleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 16);
+  var valueStyle = TextStyle(fontSize: 16);
+  var formatter = DateFormat('dd-MM-yyyy');
+  return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(mainAxisSize: MainAxisSize.max, children: [
+        if (item.videoType != null)
+          Row(
+            children: [
+              Text(
+                'Video : ',
+                style: titleStyle,
+              ),
+              Text(
+                item.mediaStreams
+                    .where((element) => element.type.toString() == 'Type.VIDEO')
+                    .first
+                    .displayTitle,
+                style: valueStyle,
+              ),
+            ],
           ),
-        ),
         if (item.container != null)
           Row(
             children: [
               Text(
                 'Codec : ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: titleStyle,
               ),
-              Text(item.container),
+              Text(
+                item.container,
+                style: valueStyle,
+              ),
             ],
           ),
         if (item.dateCreated != null)
@@ -113,110 +160,47 @@ Widget details(Item item, BuildContext context) {
             children: [
               Text(
                 'Date added : ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: titleStyle,
               ),
-              Text(item.dateCreated.toLocal().toIso8601String()),
+              Text(
+                formatter.format(item.dateCreated),
+                style: valueStyle,
+              ),
             ],
           ),
         if (item.hasSubtitles != null)
-          Row(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Sous titre : ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: titleStyle,
               ),
-              Expanded(
-                  child: Text(
-                      item.mediaStreams
-                          .where((element) =>
-                              element.type.toString() == "Type.SUBTITLE")
-                          .map((e) => e.displayTitle)
-                          .join(', '),
-                      overflow: TextOverflow.clip)),
+              UnorderedList(
+                  texts: item.mediaStreams
+                      .where((element) =>
+                          element.type.toString() == 'Type.SUBTITLE')
+                      .map((e) => e.displayTitle)
+                      .toList())
             ],
           ),
         if (item.mediaStreams != null)
-          Row(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Audio : ",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                'Audio : ',
+                style: titleStyle,
               ),
-              Expanded(
-                  child: Text(
-                      item.mediaStreams
-                          .where((element) =>
-                              element.type.toString() == "Type.AUDIO")
-                          .map((e) => e.displayTitle)
-                          .join(", "),
-                      overflow: TextOverflow.clip)),
+              UnorderedList(
+                  texts: item.mediaStreams
+                      .where(
+                          (element) => element.type.toString() == 'Type.AUDIO')
+                      .map((e) => e.displayTitle)
+                      .toList()),
             ],
           )
       ]));
-}
-
-Future<bool> deleteDialogItem(Item item, BuildContext context) async {
-  return await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-            title: Text(
-              'Delete ${item.name} ?',
-              style: TextStyle(),
-            ),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                child: Text(
-                  'This action cannot be reversed !',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SimpleDialogOption(
-                      padding: EdgeInsets.all(0),
-                      onPressed: () {
-                        Navigator.pop(context, false);
-                      },
-                      child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          child: Text(
-                            'no',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )),
-                    ),
-                    SimpleDialogOption(
-                      padding: EdgeInsets.all(0),
-                      onPressed: () {
-                        Navigator.pop(context, true);
-                      },
-                      child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          decoration: BoxDecoration(
-                              color: Colors.red[700],
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 4,
-                                    color: Colors.black26,
-                                    spreadRadius: 2)
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: InkWell(
-                              child: const Text(
-                            'Yes',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ))),
-                    ),
-                  ],
-                ),
-              )
-            ]);
-      });
 }

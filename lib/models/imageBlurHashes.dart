@@ -16,12 +16,12 @@ class ImageBlurHashes {
   Map<String, dynamic> thumb;
 
   factory ImageBlurHashes.fromMap(Map<String, dynamic> json) => ImageBlurHashes(
-        backdrop: json["Backdrop"],
-        primary: json["Primary"],
-        art: json["Art"],
-        banner: json["Banner"],
-        logo: json["Logo"],
-        thumb: json["Thumb"],
+        backdrop: json["Backdrop"] == null ? null : json["Backdrop"],
+        primary: json["Primary"] == null ? null : json["Primary"],
+        art: json["Art"] == null ? null : json["Art"],
+        banner: json["Banner"] == null ? null : json["Banner"],
+        logo: json["Logo"] == null ? null : json["Logo"],
+        thumb: json["Thumb"] == null ? null : json["Thumb"],
       );
 
   Map<String, dynamic> toMap() => {

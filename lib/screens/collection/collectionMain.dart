@@ -7,10 +7,12 @@ import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:jellyflut/shared/background.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:provider/provider.dart';
 
 class CollectionMain extends StatefulWidget {
   @override
@@ -47,32 +49,35 @@ class _CollectionMainState extends State<CollectionMain> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final item = ModalRoute.of(context).settings.arguments as Item;
-    return Scaffold(
-        floatingActionButton: MusicPlayerFAB(),
-        backgroundColor: Colors.transparent,
-        body: Background(
-            child: Stack(children: [
-          if (item.collectionType == 'movies' || item.collectionType == 'books')
-            CarrousselBackGroundImage(),
-          Positioned(
-              child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.04),
-                    child: Column(
-                      children: [
-                        if (item.collectionType == 'movies' ||
-                            item.collectionType == 'books')
-                          head(item, context),
-                        sortItems(),
-                        listOfItems(item),
-                      ],
-                    ),
-                  )))
-        ])));
+    return ChangeNotifierProvider(
+        create: (context) => MusicPlayer(),
+        child: Scaffold(
+            floatingActionButton: MusicPlayerFAB(),
+            backgroundColor: Colors.transparent,
+            body: Background(
+                child: Stack(children: [
+              if (item.collectionType == 'movies' ||
+                  item.collectionType == 'books')
+                CarrousselBackGroundImage(),
+              Positioned(
+                  child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: size.height * 0.04),
+                        child: Column(
+                          children: [
+                            if (item.collectionType == 'movies' ||
+                                item.collectionType == 'books')
+                              head(item, context),
+                            sortItems(),
+                            listOfItems(item),
+                          ],
+                        ),
+                      )))
+            ]))));
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
@@ -82,9 +87,9 @@ class _CollectionMainState extends State<CollectionMain> {
 
   void showMoreItem() {
     if (items.isEmpty) return;
-    var startIndex = (pageCount - 1) * 10;
+    var startIndex = (pageCount - 1) * 20;
     var endIndex =
-        items.length > pageCount * 10 ? pageCount * 10 : items.length;
+        items.length > pageCount * 20 ? pageCount * 20 : items.length;
     if (startIndex > endIndex) return;
     var _items = items.sublist(startIndex, endIndex);
     ListOfItems().addNewItems(_items);
@@ -95,6 +100,7 @@ class _CollectionMainState extends State<CollectionMain> {
     return FutureBuilder<Category>(
         future: getItems(item.id,
             filter: '',
+            sortBy: 'Name',
             fields: 'DateCreated, DateAdded',
             includeItemTypes: getCollectionItemType(item.collectionType),
             limit: 100),
