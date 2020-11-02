@@ -6,6 +6,7 @@ import 'package:jellyflut/components/carrousselBackGroundImage.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
@@ -31,9 +32,15 @@ class _CollectionMainState extends State<CollectionMain> {
   var itemsToShow = <Item>[];
   ScrollController _scrollController;
 
+  // Provider
+  ListOfItems listOfItems;
+  CarrousselModel carrousselModel;
+
   @override
   void initState() {
     super.initState();
+    listOfItems = ListOfItems();
+    carrousselModel = CarrousselModel();
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
@@ -52,26 +59,30 @@ class _CollectionMainState extends State<CollectionMain> {
     return ChangeNotifierProvider(
         create: (context) => MusicPlayer(),
         child: Scaffold(
-            floatingActionButton: MusicPlayerFAB(),
+            // floatingActionButton: MusicPlayerFAB(),
             backgroundColor: Colors.transparent,
             body: Background(
                 child: Stack(children: [
               if (item.collectionType == 'movies' ||
                   item.collectionType == 'books')
-                CarrousselBackGroundImage(),
+                ChangeNotifierProvider.value(
+                    value: carrousselModel, child: CarrousselBackGroundImage()),
               Positioned(
                   child: SingleChildScrollView(
                       controller: _scrollController,
                       child: Padding(
                         padding: EdgeInsets.only(top: size.height * 0.04),
-                        child: Column(
-                          children: [
-                            if (item.collectionType == 'movies' ||
-                                item.collectionType == 'books')
-                              head(item, context),
-                            sortItems(),
-                            listOfItems(item),
-                          ],
+                        child: ChangeNotifierProvider.value(
+                          value: listOfItems,
+                          child: Column(
+                            children: [
+                              if (item.collectionType == 'movies' ||
+                                  item.collectionType == 'books')
+                                head(item, context),
+                              sortItems(),
+                              listItems(item),
+                            ],
+                          ),
                         ),
                       )))
             ]))));
@@ -96,7 +107,7 @@ class _CollectionMainState extends State<CollectionMain> {
     pageCount++;
   }
 
-  Widget listOfItems(Item item) {
+  Widget listItems(Item item) {
     return FutureBuilder<Category>(
         future: getItems(item.id,
             filter: '',

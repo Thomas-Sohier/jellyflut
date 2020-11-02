@@ -21,6 +21,7 @@ class ListVideoItem extends StatelessWidget {
         child: Container(
             child: ListView.builder(
           shrinkWrap: true,
+          padding: EdgeInsets.all(0),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: category.items == null ? 0 : category.items.length,
           itemBuilder: (context, index) {

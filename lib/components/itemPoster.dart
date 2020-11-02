@@ -39,10 +39,10 @@ class _ItemPosterState extends State<ItemPoster> {
   @override
   Widget build(BuildContext context) {
     heroTag = widget.item.id + Uuid().v4();
-    return Hero(tag: heroTag, child: body(context));
+    return body(heroTag, context);
   }
 
-  Widget body(BuildContext context) {
+  Widget body(String heroTag, BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -57,109 +57,112 @@ class _ItemPosterState extends State<ItemPoster> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: Stack(fit: StackFit.expand, children: [
-                        AspectRatio(
-                          aspectRatio: widget.item.primaryImageAspectRatio ??
-                              aspectRatio(type: widget.item.type),
-                          child: AsyncImage(
-                            itemsPoster(widget.item),
-                            widget.item.imageTags.primary,
-                            widget.item.imageBlurHashes,
-                            tag: widget.type,
-                            boxFit: widget.boxFit,
+                child: Hero(
+                  tag: heroTag,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Stack(fit: StackFit.expand, children: [
+                          AspectRatio(
+                            aspectRatio: widget.item.primaryImageAspectRatio ??
+                                aspectRatio(type: widget.item.type),
+                            child: AsyncImage(
+                              itemsPoster(widget.item),
+                              widget.item.imageTags.primary,
+                              widget.item.imageBlurHashes,
+                              tag: widget.type,
+                              boxFit: widget.boxFit,
+                            ),
                           ),
-                        ),
-                        if (widget.item.userData.playbackPositionTicks !=
-                                null &&
-                            widget.item.userData.playbackPositionTicks > 0)
-                          Positioned(
-                              bottom: 5,
-                              right: 5,
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  blurRadius: 6,
-                                                  color: Colors.black54,
-                                                  spreadRadius: 12)
-                                            ],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30))),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            // Stroked text as border.
-                                            Text(
-                                              (percentDuration(widget.item) *
-                                                      100)
-                                                  .round()
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  foreground: Paint()
-                                                    ..style =
-                                                        PaintingStyle.stroke
-                                                    ..strokeWidth = 2
-                                                    ..color = Colors.white
-                                                    ..color = Colors.black),
-                                            ),
-                                            // Solid text as fill.
-                                            Text(
-                                              (percentDuration(widget.item) *
-                                                      100)
-                                                  .round()
-                                                  .toString(),
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
+                          if (widget.item.userData.playbackPositionTicks !=
+                                  null &&
+                              widget.item.userData.playbackPositionTicks > 0)
+                            Positioned(
+                                bottom: 5,
+                                right: 5,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: 6,
+                                                    color: Colors.black54,
+                                                    spreadRadius: 12)
+                                              ],
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30))),
+                                          child: Stack(
+                                            children: <Widget>[
+                                              // Stroked text as border.
+                                              Text(
+                                                (percentDuration(widget.item) *
+                                                        100)
+                                                    .round()
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    foreground: Paint()
+                                                      ..style =
+                                                          PaintingStyle.stroke
+                                                      ..strokeWidth = 2
+                                                      ..color = Colors.white
+                                                      ..color = Colors.black),
                                               ),
-                                            ),
-                                          ],
+                                              // Solid text as fill.
+                                              Text(
+                                                (percentDuration(widget.item) *
+                                                        100)
+                                                    .round()
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  CircularProgressIndicator(
-                                    backgroundColor: Colors.black12,
-                                    valueColor:
-                                        AlwaysStoppedAnimation<Color>(color1),
-                                    value: percentDuration(widget.item),
-                                  ),
-                                ],
-                              )),
-                        if (widget.item.userData.played)
-                          Positioned.fill(
-                              right: 5,
-                              child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  blurRadius: 0,
-                                                  color: Colors.white,
-                                                  spreadRadius: 0)
-                                            ]),
-                                        child: Icon(
-                                          Icons.check_circle_rounded,
-                                          color: Colors.green,
-                                        )),
-                                  ))),
-                      ]),
-                    ),
-                  ],
+                                    CircularProgressIndicator(
+                                      backgroundColor: Colors.black12,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(color1),
+                                      value: percentDuration(widget.item),
+                                    ),
+                                  ],
+                                )),
+                          if (widget.item.userData.played)
+                            Positioned.fill(
+                                right: 5,
+                                child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    blurRadius: 0,
+                                                    color: Colors.white,
+                                                    spreadRadius: 0)
+                                              ]),
+                                          child: Icon(
+                                            Icons.check_circle_rounded,
+                                            color: Colors.green,
+                                          )),
+                                    ))),
+                        ]),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Row(
