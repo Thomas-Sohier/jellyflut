@@ -8,11 +8,8 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
-import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/detailsProvider.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
@@ -21,7 +18,6 @@ import 'collection.dart';
 class Details extends StatefulWidget {
   final Item item;
   final String heroTag;
-
   const Details({@required this.item, @required this.heroTag});
 
   @override
@@ -31,85 +27,113 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  DetailsProvider detailsProvider;
   @override
   void initState() {
     super.initState();
-    detailsProvider = DetailsProvider();
   }
 
   @override
   void dispose() {
-    detailsProvider.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    loadDetail(widget.item.id);
     var size = MediaQuery.of(context).size;
-    return ChangeNotifierProvider.value(
-        value: detailsProvider,
-        child: Scaffold(
-            extendBody: true,
-            backgroundColor: Colors.transparent,
-            body:
-                body(heroTag: widget.heroTag, size: size, item: widget.item)));
+    return Scaffold(
+        extendBody: true,
+        backgroundColor: Colors.transparent,
+        body: body(
+            heroTag: widget.heroTag,
+            size: size,
+            item: widget.item,
+            context: context));
   }
 }
 
-Widget body(
+Widget futureItemDetails(
     {@required Item item, @required String heroTag, @required Size size}) {
+  return FutureBuilder(
+    future: getItem(item.id),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return detailsElements(
+            size: size,
+            item: snapshot.data,
+            heroTag: heroTag,
+            context: context);
+      } else {
+        return _placeHolderBody(item, heroTag, size);
+      }
+    },
+  );
+}
+
+Widget body(
+    {@required Item item,
+    @required String heroTag,
+    @required Size size,
+    @required BuildContext context}) {
   return Stack(children: [
-    Hero(
-        tag: heroTag,
-        child: Container(
-            child: Container(
-                foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-                child: AsyncImage(
-                  item.id,
-                  item.imageTags.primary,
-                  item.imageBlurHashes,
-                  boxFit: BoxFit.cover,
-                )),
-            foregroundDecoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black,
-                  Colors.transparent,
-                  Colors.transparent,
-                  Colors.black
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0, 0.2, 0.7, 1],
-              ),
-            ))),
+    Hero(tag: heroTag, child: backgroundImage(item)),
     SingleChildScrollView(
-        child: Consumer<DetailsProvider>(
-            builder: (context, detailsProvider, child) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: size.height * 0.10),
-                      if (detailsProvider.item?.imageBlurHashes?.logo != null)
-                        Container(
-                            width: size.width,
-                            height: 100,
-                            child: AsyncImage(
-                              returnImageId(detailsProvider.item),
-                              detailsProvider.item.imageTags.primary,
-                              detailsProvider.item.imageBlurHashes,
-                              boxFit: BoxFit.contain,
-                              tag: 'Logo',
-                            )),
-                      SizedBox(height: size.height * 0.05),
-                      buildCard(detailsProvider.item, size, heroTag, context),
-                      detailsProvider.item.isFolder == true
-                          ? Collection(item)
-                          : Container(),
-                    ])))
+        child: futureItemDetails(item: item, heroTag: heroTag, size: size))
   ]);
+}
+
+Widget detailsElements(
+    {@required Size size,
+    @required Item item,
+    @required String heroTag,
+    @required BuildContext context}) {
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(height: size.height * 0.10),
+        if (item?.imageBlurHashes?.logo != null) logo(item, size),
+        SizedBox(height: size.height * 0.05),
+        buildCard(item, size, heroTag, context),
+        item.isFolder == true ? Collection(item) : Container(),
+      ]);
+}
+
+Widget logo(Item item, Size size) {
+  return Container(
+      width: size.width,
+      height: 100,
+      child: AsyncImage(
+        returnImageId(item),
+        item.imageTags.primary,
+        item.imageBlurHashes,
+        boxFit: BoxFit.contain,
+        tag: 'Logo',
+      ));
+}
+
+Widget backgroundImage(Item item) {
+  return Container(
+      child: Container(
+          foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
+          child: AsyncImage(
+            item.id,
+            item.imageTags.primary,
+            item.imageBlurHashes,
+            boxFit: BoxFit.cover,
+          )),
+      foregroundDecoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.black,
+            Colors.transparent,
+            Colors.transparent,
+            Colors.black
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: [0, 0.2, 0.7, 1],
+        ),
+      ));
 }
 
 Widget card(Item item, Size size, String heroTag, BuildContext context) {
@@ -150,10 +174,6 @@ Widget _placeHolderBody(Item item, String heroTag, Size size) {
         Container(),
         isSkeleton: true,
       ));
-}
-
-void loadDetail(String itemId) {
-  getItem(itemId).then((Item _item) => DetailsProvider().updateItem(_item));
 }
 
 void _playItem(Item item, BuildContext context) async {

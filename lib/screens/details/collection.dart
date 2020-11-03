@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/category.dart';
@@ -49,7 +50,8 @@ class _CollectionState extends State<Collection> {
 Future collectionItems(Item item) {
   // If it's a series or a music album we get every item
   if (item.type == 'Series' || item.type == 'MusicAlbum') {
-    return getCategory(parentId: item.id, limit: 100);
+    return getItems(item.id,
+        limit: 100, fields: 'ImageTags', filter: 'IsFolder');
   } else {
     return getShowSeasonEpisode(item.seriesId, item.id);
   }

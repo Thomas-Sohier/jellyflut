@@ -38,7 +38,7 @@ class _CollectionHomeState extends State<CollectionHome> {
           filter: '',
           sortBy: 'DateCreated',
           sortOrder: 'Descending',
-          fields: 'DateCreated, DateAdded',
+          fields: 'DateCreated, DateAdded, ImageTags',
           includeItemTypes: getCollectionItemType(widget.item.collectionType),
           limit: 10),
       builder: (context, snapshot) {

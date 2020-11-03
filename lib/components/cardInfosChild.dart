@@ -134,10 +134,13 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               Text(
-                item.mediaStreams
-                    .where((element) => element.type.toString() == 'Type.VIDEO')
-                    .first
-                    .displayTitle,
+                item.mediaStreams != null
+                    ? item.mediaStreams
+                        .where((element) =>
+                            element.type.toString() == 'Type.VIDEO')
+                        .first
+                        .displayTitle
+                    : '-',
                 style: valueStyle,
               ),
             ],

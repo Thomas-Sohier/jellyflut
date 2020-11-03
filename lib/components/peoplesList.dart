@@ -53,13 +53,13 @@ Widget listPeoples(List<Person> peoples) {
             Flexible(
                 flex: 1,
                 child: Text(
-                  people.name,
+                  people.name ?? '-',
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 )),
             Flexible(
                 flex: 1,
                 child: Text(
-                  people.role,
+                  people.role ?? '-',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.black54, fontSize: 12),
                 ))

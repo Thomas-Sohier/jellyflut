@@ -87,12 +87,12 @@ String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
   } else if (imageBlurHashes.art != null) {
     return imageBlurHashes.art.values.first;
   }
-  return '';
+  return null;
 }
 
 String _fallBackBlurHashLogo(ImageBlurHashes imageBlurHashes) {
   if (imageBlurHashes.logo != null) {
     return imageBlurHashes.logo.values.first;
   }
-  return '';
+  return null;
 }
