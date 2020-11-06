@@ -8,10 +8,10 @@ import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DatabaseService();
-  await init();
+  init();
   runApp(MyApp());
 }
 
@@ -42,4 +42,8 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+void splashLoad() {
+  init();
 }

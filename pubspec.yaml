@@ -43,6 +43,7 @@ dependencies:
   subtitle_wrapper_package: ^1.0.3
   video_player: ^0.10.2+1
   intl: ^0.16.1
+  animated_splash: ^1.0.0
   # permission_handler: ^5.0.1+1
   uuid: ^2.2.2
   wakelock: ^0.2.0+1

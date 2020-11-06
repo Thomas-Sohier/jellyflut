@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_position.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_style.dart';
@@ -17,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../../globals.dart';
-import '../../main.dart';
 
 class Stream extends StatefulWidget {
   @override
@@ -46,8 +42,9 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
   Item item = Item();
 
   void _hideStatusBar() {
-    SystemChrome.setEnabledSystemUIOverlays(
-        <SystemUiOverlay>[SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIOverlays(
+    //     <SystemUiOverlay>[SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   @override
@@ -82,47 +79,51 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
         value: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
         ),
-        child: Scaffold(
-            backgroundColor: Colors.black,
-            body: Center(
-              child: Container(
-                  child: Stack(children: [
-                if (_controller != null && _controller.value.initialized)
-                  Center(
-                      child: AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: SubTitleWrapper(
-                              videoPlayerController: _controller,
-                              subtitleController: subtitleController,
-                              subtitleStyle: SubtitleStyle(
-                                textColor: Colors.white,
-                                fontSize: 18,
-                                position: SubtitlePosition(
-                                    bottom: MediaQuery.of(context).size.height *
-                                        0.05),
-                                hasBorder: true,
-                              ),
-                              videoChild: GestureDetector(
-                                  onTap: () {
-                                    _visible = !_visible;
-                                    autoHideControl();
-                                  },
-                                  child: VideoPlayer(_controller)))))
-                else
-                  Center(child: CircularProgressIndicator()),
-                if (_controller != null && _playBackTime != null)
-                  Positioned(
-                      bottom: 0,
-                      width: MediaQuery.of(context).size.width,
-                      child: Visibility(
-                        child: videoControl(),
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: _visible,
-                      )),
-              ])),
-            )));
+        child: GestureDetector(
+            onTap: () {
+              _visible = !_visible;
+              autoHideControl();
+            },
+            child: Scaffold(
+                backgroundColor: Colors.black,
+                body: Container(
+                  child: Center(
+                    child: Container(
+                        child: Stack(children: [
+                      if (_controller != null && _controller.value.initialized)
+                        Center(
+                            child: AspectRatio(
+                                aspectRatio: _controller.value.aspectRatio,
+                                child: SubTitleWrapper(
+                                    videoPlayerController: _controller,
+                                    subtitleController: subtitleController,
+                                    subtitleStyle: SubtitleStyle(
+                                      textColor: Colors.white,
+                                      fontSize: 18,
+                                      position: SubtitlePosition(
+                                          bottom: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05),
+                                      hasBorder: true,
+                                    ),
+                                    videoChild: VideoPlayer(_controller))))
+                      else
+                        Center(child: CircularProgressIndicator()),
+                      if (_controller != null && _playBackTime != null)
+                        Positioned(
+                            bottom: 0,
+                            width: MediaQuery.of(context).size.width,
+                            child: Visibility(
+                              child: videoControl(),
+                              maintainSize: true,
+                              maintainAnimation: true,
+                              maintainState: true,
+                              visible: _visible,
+                            )),
+                    ])),
+                  ),
+                ))));
   }
 
   Widget videoControl() {
