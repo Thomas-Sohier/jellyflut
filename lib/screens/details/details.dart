@@ -51,24 +51,6 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 }
 
-Widget futureItemDetails(
-    {@required Item item, @required String heroTag, @required Size size}) {
-  return FutureBuilder(
-    future: getItem(item.id),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return detailsElements(
-            size: size,
-            item: snapshot.data,
-            heroTag: heroTag,
-            context: context);
-      } else {
-        return _placeHolderBody(item, heroTag, size);
-      }
-    },
-  );
-}
-
 Widget body(
     {@required Item item,
     @required String heroTag,
@@ -79,6 +61,24 @@ Widget body(
     SingleChildScrollView(
         child: futureItemDetails(item: item, heroTag: heroTag, size: size))
   ]);
+}
+
+Widget futureItemDetails(
+    {@required Item item, @required String heroTag, @required Size size}) {
+  return FutureBuilder<dynamic>(
+    future: _getItemsCustom(itemId: item.id),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return detailsElements(
+            size: size,
+            item: snapshot.data[1],
+            heroTag: heroTag,
+            context: context);
+      } else {
+        return _placeHolderBody(item, heroTag, size);
+      }
+    },
+  );
 }
 
 Widget detailsElements(
@@ -167,13 +167,29 @@ Widget buildCard(Item item, Size size, String heroTag, context) {
 }
 
 Widget _placeHolderBody(Item item, String heroTag, Size size) {
-  return Container(
-      padding: EdgeInsets.only(top: 25),
-      child: CardItemWithChild(
-        item,
-        Container(),
-        isSkeleton: true,
-      ));
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: size.height * 0.10),
+        SizedBox(
+          height: 100,
+        ), // Logo
+        Container(
+            padding: EdgeInsets.only(top: 25),
+            child: CardItemWithChild(
+              item,
+              Container(),
+              isSkeleton: true,
+            ))
+      ]);
+}
+
+Future _getItemsCustom({@required String itemId}) async {
+  var futures = <Future>[];
+  futures.add(Future.delayed(Duration(milliseconds: 400)));
+  futures.add(getItem(itemId));
+  return Future.wait(futures);
 }
 
 void _playItem(Item item, BuildContext context) async {

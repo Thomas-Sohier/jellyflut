@@ -83,7 +83,7 @@ Widget skeletonCard() {
                     colors: [Colors.black12, Colors.grey[100]],
                   ),
                 ),
-                padding: EdgeInsets.all(12),
+                padding: EdgeInsets.fromLTRB(12, 5, 12, 5),
                 child: Column(
                   children: [
                     Row(
