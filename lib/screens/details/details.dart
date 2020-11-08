@@ -59,7 +59,13 @@ Widget body(
   return Stack(children: [
     Hero(tag: heroTag, child: backgroundImage(item)),
     SingleChildScrollView(
-        child: futureItemDetails(item: item, heroTag: heroTag, size: size))
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+          futureItemDetails(item: item, heroTag: heroTag, size: size),
+          item.isFolder == true ? Collection(item) : Container(),
+        ]))
   ]);
 }
 
@@ -94,7 +100,6 @@ Widget detailsElements(
         if (item?.imageBlurHashes?.logo != null) logo(item, size),
         SizedBox(height: size.height * 0.05),
         buildCard(item, size, heroTag, context),
-        item.isFolder == true ? Collection(item) : Container(),
       ]);
 }
 
@@ -116,8 +121,8 @@ Widget backgroundImage(Item item) {
       child: Container(
           foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
           child: AsyncImage(
-            item.id,
-            item.imageTags.primary,
+            correctImageId(item),
+            correctImageTags(item),
             item.imageBlurHashes,
             boxFit: BoxFit.cover,
           )),
@@ -190,6 +195,34 @@ Future _getItemsCustom({@required String itemId}) async {
   futures.add(Future.delayed(Duration(milliseconds: 400)));
   futures.add(getItem(itemId));
   return Future.wait(futures);
+}
+
+String correctImageTags(Item item) {
+  if (item.imageTags.toMap().values.every((element) => element == null)) {
+    if (item.type == "Season") {
+      return item.seriesPrimaryImageTag;
+    } else if (item.type == "Album") {
+      return item.albumPrimaryImageTag;
+    } else {
+      return null;
+    }
+  } else {
+    return item.imageTags.primary;
+  }
+}
+
+String correctImageId(Item item) {
+  if (item.imageTags.toMap().values.every((element) => element == null)) {
+    if (item.type == "Season") {
+      return item.seriesId;
+    } else if (item.type == "Album") {
+      return item.albumId;
+    } else {
+      return item.id;
+    }
+  } else {
+    return item.id;
+  }
 }
 
 void _playItem(Item item, BuildContext context) async {

@@ -6,7 +6,6 @@ import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:uuid/uuid.dart';
 
-import '../main.dart';
 import 'asyncImage.dart';
 
 class ItemPoster extends StatefulWidget {
@@ -150,9 +149,9 @@ class _ItemPosterState extends State<ItemPoster> {
                                                   Radius.circular(30)),
                                               boxShadow: [
                                                 BoxShadow(
-                                                    blurRadius: 0,
+                                                    blurRadius: 0.0,
                                                     color: Colors.white,
-                                                    spreadRadius: 0)
+                                                    spreadRadius: 0.0)
                                               ]),
                                           child: Icon(
                                             Icons.check_circle_rounded,

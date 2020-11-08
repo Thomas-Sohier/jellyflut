@@ -54,6 +54,7 @@ class SkeletonState extends State<Skeleton>
       shrinkWrap: true,
       padding: EdgeInsets.all(4),
       itemCount: widget.nbLine,
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return Padding(
             padding: EdgeInsets.all(4),

@@ -24,26 +24,18 @@ const double gapSize = 20;
 class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Category>(
-      future: collectionItems(widget.item),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return SingleChildScrollView(
-              child: Column(
-            children: [
-              if (widget.item.isFolder && widget.item.type == "MusicAlbum")
-                ListMusicItem(snapshot.data)
-              else if (widget.item.isFolder && widget.item.type == "Season")
-                ListVideoItem(snapshot.data)
-              else
-                ListCollectionItem(snapshot.data)
-            ],
-          ));
-        } else {
-          return Container();
-        }
-      },
-    );
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        if (widget.item.isFolder && widget.item.type == 'MusicAlbum')
+          // ListMusicItem(item: widget.item);
+          Container()
+        else if (widget.item.isFolder && widget.item.type == 'Season')
+          ListVideoItem(item: widget.item)
+        else
+          ListCollectionItem(item: widget.item)
+      ],
+    ));
   }
 }
 

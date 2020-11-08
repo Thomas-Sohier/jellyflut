@@ -23,7 +23,7 @@ class CardItemWithChild extends StatefulWidget {
 class _CardItemWithChildState extends State<CardItemWithChild> {
   @override
   Widget build(BuildContext context) {
-    Item item = widget.item;
+    var item = widget.item;
     return Column(children: [
       widget.isSkeleton ? skeletonCard() : cardWithData(item),
       Container(
@@ -121,16 +121,16 @@ Widget cardWithData(Item item) {
                     children: [
                       if (item.name != null)
                         Expanded(
-                            flex: 3,
+                            flex: 4,
                             child: Text(item.name,
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold))),
-                      if (item.genres != null && item.genres.length > 0)
+                      if (item.genres != null && item.genres.isNotEmpty)
                         Expanded(
                             flex: 2,
-                            child: Text(item.genres.first,
+                            child: Text(item.genres.join(', ').toString(),
                                 overflow: TextOverflow.clip,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(

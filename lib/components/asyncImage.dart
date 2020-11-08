@@ -51,7 +51,10 @@ Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             child: AspectRatio(
                 aspectRatio: aspectRatio(),
-                child: BlurHash(hash: _fallBackBlurHash(blurHash, tag))));
+                child: BlurHash(
+                  hash: _fallBackBlurHash(blurHash, tag),
+                  imageFit: BoxFit.cover,
+                )));
       } else {
         return Container();
       }

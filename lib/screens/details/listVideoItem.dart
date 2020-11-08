@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/components/favButton.dart';
+import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
@@ -10,27 +13,75 @@ import '../../main.dart';
 import 'details.dart';
 
 class ListVideoItem extends StatelessWidget {
-  final Category category;
+  final Item item;
 
-  const ListVideoItem(this.category);
+  const ListVideoItem({@required this.item});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Container(
-            child: ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(0),
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: category.items == null ? 0 : category.items.length,
-          itemBuilder: (context, index) {
-            var item = category.items[index];
-            var heroTag = item.id + Uuid().v4();
-            return videoItem(context, item, heroTag);
-          },
-        )));
+    return FutureBuilder<dynamic>(
+        future: _getEpisodeCustom(seriesId: item.seriesId, itemId: item.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return body(snapshot.data[1]);
+            // return placeholderBody();
+          }
+          return placeholderBody();
+        });
   }
+}
+
+Widget body(Category category) {
+  return Card(
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Container(
+          child: ListView.builder(
+        shrinkWrap: true,
+        padding: EdgeInsets.all(0),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: category.items == null ? 0 : category.items.length,
+        itemBuilder: (context, index) {
+          var item = category.items[index];
+          var heroTag = item.id + Uuid().v4();
+          return videoItem(context, item, heroTag);
+        },
+      )));
+}
+
+Widget placeholderBody() {
+  return Card(
+      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Container(
+          child: ListView.builder(
+        shrinkWrap: true,
+        padding: EdgeInsets.all(0),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 5, bottom: 5),
+            child: Row(children: [
+              Expanded(
+                  flex: 8,
+                  child: Column(
+                    children: [
+                      Skeleton(),
+                      Skeleton(nbLine: 3),
+                    ],
+                  )),
+              Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Skeleton(
+                        height: 60,
+                      ),
+                    ],
+                  ))
+            ]),
+          );
+        },
+      )));
 }
 
 Widget videoItem(BuildContext context, Item item, String heroTag) {
@@ -101,4 +152,12 @@ Widget actionIcons(Item item, {fav = true, view = true}) {
   return Row(
     children: [if (fav) FavButton(item), if (view) ViewedButton(item)],
   );
+}
+
+Future _getEpisodeCustom(
+    {@required String seriesId, @required String itemId}) async {
+  var futures = <Future>[];
+  futures.add(Future.delayed(Duration(milliseconds: 400)));
+  futures.add(getShowSeasonEpisode(seriesId, itemId));
+  return Future.wait(futures);
 }
