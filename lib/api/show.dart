@@ -5,23 +5,23 @@ import '../globals.dart';
 BaseOptions options = BaseOptions(
   connectTimeout: 60000,
   receiveTimeout: 60000,
-  contentType: "JSON",
+  contentType: 'JSON',
 );
 
 Dio dio = Dio(options);
 
 Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   var queryParams = Map<String, dynamic>();
-  queryParams["api_key"] = apiKey;
-  queryParams["seasonId"] = seasonId;
-  queryParams["userId"] = user.id;
+  queryParams['api_key'] = apiKey;
+  queryParams['seasonId'] = seasonId;
+  queryParams['userId'] = user.id;
   queryParams["Fields"] =
-      "ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview";
+      'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
 
-  String url = "${server.url}/Shows/${parentId}/Episodes";
+  var url = "${server.url}/Shows/${parentId}/Episodes";
 
   Response response;
-  Category category = Category();
+  var category = Category();
   try {
     response = await dio.get(url, queryParameters: queryParams);
     category = Category.fromMap(response.data);

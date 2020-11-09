@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../main.dart';
 import 'details.dart';
 
 class ListVideoItem extends StatelessWidget {
@@ -135,8 +134,13 @@ Widget videoItem(BuildContext context, Item item, String heroTag) {
                         padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                         child: GestureDetector(
                             onTap: () {
-                              navigatorKey.currentState
-                                  .pushNamed('/watch', arguments: item);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Stream(
+                                            item: item,
+                                            streamUrl: null,
+                                          )));
                             },
                             child: Icon(
                               Icons.play_circle_outline,

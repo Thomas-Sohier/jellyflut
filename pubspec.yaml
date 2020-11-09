@@ -31,7 +31,7 @@ dependencies:
   cached_network_image: ^2.3.3
   cupertino_icons: ^1.0.0
   device_info: ^1.0.0
-  dio: ^3.0.10
+  dio: ^3.0.9
   epub_viewer: ^0.1.9
   flutter_blurhash: ^0.5.0
   flutter_svg: ^0.19.1

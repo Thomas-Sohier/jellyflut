@@ -4,11 +4,13 @@ import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -141,6 +143,13 @@ Widget backgroundImage(Item item) {
       ));
 }
 
+Widget buildCard(Item item, Size size, String heroTag, context) {
+  if (item.id != null) {
+    return card(item, size, heroTag, context);
+  }
+  return _placeHolderBody(item, heroTag, size);
+}
+
 Widget card(Item item, Size size, String heroTag, BuildContext context) {
   return Stack(overflow: Overflow.visible, children: <Widget>[
     Container(
@@ -162,13 +171,6 @@ Widget card(Item item, Size size, String heroTag, BuildContext context) {
       ),
     ))
   ]);
-}
-
-Widget buildCard(Item item, Size size, String heroTag, context) {
-  if (item.id != null) {
-    return card(item, size, heroTag, context);
-  }
-  return _placeHolderBody(item, heroTag, size);
 }
 
 Widget _placeHolderBody(Item item, String heroTag, Size size) {
@@ -227,7 +229,15 @@ String correctImageId(Item item) {
 
 void _playItem(Item item, BuildContext context) async {
   if (item.type != 'Book') {
-    await navigatorKey.currentState.pushNamed('/watch', arguments: item);
+    var url = await getFirstUnplayedItemURL(item);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Stream(
+                item: item,
+                streamUrl: url,
+              )),
+    );
   } else {
     readBook(item, context);
   }

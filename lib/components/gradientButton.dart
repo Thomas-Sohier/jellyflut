@@ -127,6 +127,9 @@ Widget generatedPalette(Item item, String text, IconData icon) {
                       )
                   ])),
         );
+      } else if (snapshot.hasError) {
+        return customPalette(
+            const Color(0xFFa95dc3), const Color(0xFF04a2db), text, icon);
       } else {
         child = Container(height: 50, width: 0);
       }

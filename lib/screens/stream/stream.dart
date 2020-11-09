@@ -1,10 +1,13 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:provider/provider.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_position.dart';
 import 'package:subtitle_wrapper_package/data/models/style/subtitle_style.dart';
 import 'package:subtitle_wrapper_package/subtitle_controller.dart';
@@ -16,16 +19,21 @@ import 'package:wakelock/wakelock.dart';
 import '../../globals.dart';
 
 class Stream extends StatefulWidget {
+  final String streamUrl;
+  final Item item;
+
+  const Stream({@required this.streamUrl, @required this.item});
+
   @override
   _StreamState createState() => _StreamState();
 }
 
 class _StreamState extends State<Stream> with WidgetsBindingObserver {
-  static const platform = MethodChannel('com.example.jellyflut/videoPlayer');
   Future<void> _initializeVideoPlayerFuture;
   int _playBackTime;
   int _subsId;
   Timer _timer;
+  StreamModel streamProvider;
 
   final SubtitleController subtitleController = SubtitleController(
       showSubtitles: true,
@@ -61,16 +69,28 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
     Wakelock.enable();
     autoHideControl();
     _hideStatusBar();
+    streamProvider = StreamModel();
     WidgetsBinding.instance.addObserver(this);
+    if (widget.item != null && widget.streamUrl == null) {
+      initItemStream();
+    } else {
+      initURLStream();
+    }
+  }
+
+  void initItemStream() {
     Future.delayed(Duration.zero, () {
       setState(() {
-        var tempItem = ModalRoute.of(context).settings.arguments as Item;
-        getItem(tempItem.id).then((Item responseItem) {
-          item = responseItem;
-          _initializePlay();
+        getItem(widget.item.id).then((Item responseItem) async {
+          var videoPath = await getStreamURL(item: responseItem);
+          await _initializePlay(videoPath);
         });
       });
     });
+  }
+
+  void initURLStream() async {
+    await _initializePlay(widget.streamUrl);
   }
 
   @override
@@ -110,6 +130,16 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
                                     videoChild: VideoPlayer(_controller))))
                       else
                         Center(child: CircularProgressIndicator()),
+                      Positioned(
+                          top: 0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Visibility(
+                            child: videoInfo(),
+                            maintainSize: true,
+                            maintainAnimation: true,
+                            maintainState: true,
+                            visible: _visible,
+                          )),
                       if (_controller != null && _playBackTime != null)
                         Positioned(
                             bottom: 0,
@@ -124,6 +154,22 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
                     ])),
                   ),
                 ))));
+  }
+
+  Widget videoInfo() {
+    return ChangeNotifierProvider.value(
+        value: streamProvider,
+        child: streamProvider.item.id != null
+            ? Row(children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+                  child: Text(
+                    streamProvider.item.name,
+                    style: TextStyle(color: Colors.white, fontSize: 26),
+                  ),
+                ),
+              ])
+            : Container());
   }
 
   Widget videoControl() {
@@ -178,7 +224,7 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
               onTap: () {
-                changeSubtitle(item, context);
+                changeSubtitle(streamProvider.item, context);
               },
               child: Icon(
                 Icons.subtitles,
@@ -188,7 +234,7 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: GestureDetector(
               onTap: () {
-                changeAudioSource(item, context);
+                changeAudioSource(streamProvider.item, context);
               },
               child: Icon(
                 Icons.library_music,
@@ -247,21 +293,21 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> _initializePlay() async {
-    var videoPath = await getStreamURL(item, platform);
+  Future<void> _initializePlay(String videoPath) async {
     _controller = VideoPlayerController.network(videoPath);
-    _controller.initialize().then((_) {
+    await _controller.initialize().then((_) {
       print('Stream controller initialized');
       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
       setState(() {
         _controller.seekTo(Duration(
-            microseconds: (item.userData.playbackPositionTicks / 10).round()));
+            microseconds:
+                (widget.item.userData.playbackPositionTicks / 10).round()));
         _controller.play();
       });
       _timer = Timer.periodic(
           Duration(seconds: 15),
-          (Timer t) =>
-              itemProgress(item, _controller, subtitlesIndex: _subsId));
+          (Timer t) => itemProgress(streamProvider.item, _controller,
+              subtitlesIndex: _subsId));
       _controller.addListener(() {
         setState(() {
           _playBackTime = _controller.value.position.inSeconds;
@@ -269,6 +315,10 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
       });
     }).catchError((onError) {
       showToast('Can\'t play this file, ${onError}');
+      log(
+        onError.toString(),
+        level: 4,
+      );
     });
   }
 
@@ -377,11 +427,6 @@ class _StreamState extends State<Stream> with WidgetsBindingObserver {
   }
 }
 
-String createURL(Item item, {int startTick = 0}) {
-  var codecs = item.container.split(',');
-  return '${server.url}/Videos/${item.id}/stream.${codecs.first}?startTimeTicks=${startTick}';
-}
-
 Future<double> _bufferingPercentage(VideoPlayerController controller) async {
   if (controller.value.buffered.isEmpty) return 0.0;
   final bufferedMilliseconds = controller.value.buffered
@@ -391,32 +436,3 @@ Future<double> _bufferingPercentage(VideoPlayerController controller) async {
       .reduce((a, b) => a + b);
   return bufferedMilliseconds / controller.value.duration.inMilliseconds * 100;
 }
-
-Future<String> getStreamURL(Item item, MethodChannel platform) async {
-  var data = await isCodecSupported(item, platform);
-  var backInfos = await playbackInfos(data, item.id,
-      startTimeTick: item.userData.playbackPositionTicks);
-  var completeTranscodeUrl;
-  if (backInfos.mediaSources.first.transcodingUrl != null) {
-    completeTranscodeUrl =
-        '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
-  }
-  return completeTranscodeUrl ?? createURL(item, startTick: item.runTimeTicks);
-}
-
-Future<String> isCodecSupported(Item item, MethodChannel platform) async {
-  var result;
-  // TODO finish this method to know if video can be direct play
-  if (Platform.isAndroid) {
-    result = await platform.invokeMethod('getListOfCodec');
-  } else if (Platform.isIOS) {
-    // TODO make IOS
-    result = '';
-  }
-  return _playbackInfos;
-}
-
-// TODO remove when function done
-// Used meanwhile a correct implementation of device capabilities
-String _playbackInfos =
-    '{"DeviceProfile":{"MaxStreamingBitrate":120000000,"MaxStaticBitrate":100000000,"MusicStreamingTranscodingBitrate":192000,"DirectPlayProfiles":[{"Container":"webm","Type":"Video","VideoCodec":"vp8,vp9,av1","AudioCodec":"vorbis,opus"},{"Container":"mp4,m4v","Type":"Video","VideoCodec":"h264,vp8,vp9,av1","AudioCodec":"mp3,aac,opus,flac,vorbis"},{"Container":"opus","Type":"Audio"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3"},{"Container":"aac","Type":"Audio"},{"Container":"m4a,m4b","AudioCodec":"aac","Type":"Audio"},{"Container":"flac","Type":"Audio"},{"Container":"webma,webm","Type":"Audio"},{"Container":"wav","Type":"Audio"},{"Container":"ogg","Type":"Audio"}],"TranscodingProfiles":[{"Container":"ts","Type":"Audio","AudioCodec":"aac","Context":"Streaming","Protocol":"hls","MaxAudioChannels":"2","MinSegments":"1","BreakOnNonKeyFrames":true},{"Container":"aac","Type":"Audio","AudioCodec":"aac","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"opus","Type":"Audio","AudioCodec":"opus","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"wav","Type":"Audio","AudioCodec":"wav","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"opus","Type":"Audio","AudioCodec":"opus","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp3","Type":"Audio","AudioCodec":"mp3","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"aac","Type":"Audio","AudioCodec":"aac","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"wav","Type":"Audio","AudioCodec":"wav","Context":"Static","Protocol":"http","MaxAudioChannels":"2"},{"Container":"ts","Type":"Video","AudioCodec":"mp3,aac","VideoCodec":"h264","Context":"Streaming","Protocol":"hls","MaxAudioChannels":"2","MinSegments":"1","BreakOnNonKeyFrames":true},{"Container":"webm","Type":"Video","AudioCodec":"vorbis","VideoCodec":"vpx","Context":"Streaming","Protocol":"http","MaxAudioChannels":"2"},{"Container":"mp4","Type":"Video","AudioCodec":"mp3,aac,opus,flac,vorbis","VideoCodec":"h264","Context":"Static","Protocol":"http"}],"ContainerProfiles":[],"CodecProfiles":[{"Type":"VideoAudio","Codec":"aac","Conditions":[{"Condition":"Equals","Property":"IsSecondaryAudio","Value":"false","IsRequired":false}]},{"Type":"VideoAudio","Conditions":[{"Condition":"Equals","Property":"IsSecondaryAudio","Value":"false","IsRequired":false}]},{"Type":"Video","Codec":"h264","Conditions":[{"Condition":"NotEquals","Property":"IsAnamorphic","Value":"true","IsRequired":false},{"Condition":"EqualsAny","Property":"VideoProfile","Value":"high|main|baseline|constrained baseline","IsRequired":false},{"Condition":"LessThanEqual","Property":"VideoLevel","Value":"51","IsRequired":false},{"Condition":"NotEquals","Property":"IsInterlaced","Value":"true","IsRequired":false}]}],"SubtitleProfiles":[{"Format":"vtt","Method":"External"},{"Format":"ass","Method":"External"},{"Format":"ssa","Method":"External"}],"ResponseProfiles":[{"Type":"Video","Container":"m4v","MimeType":"video/mp4"}]}}';
