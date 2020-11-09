@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
@@ -35,7 +34,6 @@ class _CollectionHomeState extends State<CollectionHome> {
   Widget buildAllCategory() {
     return FutureBuilder<Category>(
       future: getItems(widget?.item?.id,
-          filter: '',
           sortBy: 'DateCreated',
           sortOrder: 'Descending',
           fields: 'DateCreated, DateAdded, ImageTags',

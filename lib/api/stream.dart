@@ -22,6 +22,13 @@ String createURL(Item item, {int startTick = 0}) {
   return '${server.url}/Videos/${item.id}/stream.${codecs.first}?startTimeTicks=${startTick}';
 }
 
+Future<String> getItemURL(Item item) {
+  if (item.type == 'Episode' || item.type == 'Movie') {
+    return getStreamURL(item: item);
+  }
+  return getFirstUnplayedItemURL(item);
+}
+
 Future<String> getFirstUnplayedItemURL(Item item) async {
   var category =
       await getItems(item.id, filter: 'IsNotFolder', fields: 'MediaStreams');

@@ -6,7 +6,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
 
@@ -190,11 +190,11 @@ Future<Category> getResumeItems(
 }
 
 Future<Category> getItems(String parentId,
-    {String filter = 'IsNotFolder, IsUnplayed',
+    {String filter,
     bool recursive = true,
     String sortBy = 'PremiereDate',
     String sortOrder = 'Ascending',
-    String mediaType = 'Audio,Video',
+    String mediaType,
     String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
     String includeItemTypes,
     int limit = 300,
@@ -206,24 +206,33 @@ Future<Category> getItems(String parentId,
     bool collapseBoxSetItems = false}) async {
   var queryParams = <String, dynamic>{};
   queryParams['ParentId'] = parentId;
-  queryParams['Filters'] = filter;
-  queryParams['Recursive'] = recursive;
-  queryParams['SortBy'] = sortBy;
-  queryParams['SortOrder'] = sortOrder;
-  if (includeItemTypes != null) {
-    queryParams['IncludeItemTypes'] = includeItemTypes;
-  }
-  queryParams['ImageTypeLimit'] = imageTypeLimit;
-  queryParams['EnableImageTypes'] = enableImageTypes;
-  queryParams['StartIndex'] = startIndex;
-  queryParams['MediaTypes'] = mediaType;
-  queryParams['Limit'] = limit;
-  queryParams['Fields'] = fields;
-  queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
-  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
-  queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
+  filter != null ? queryParams['Filters'] = filter : null;
+  recursive != null ? queryParams['Recursive'] = recursive : null;
+  sortBy != null ? queryParams['SortBy'] = sortBy : null;
+  sortOrder != null ? queryParams['SortOrder'] = sortOrder : null;
+  includeItemTypes != null
+      ? queryParams['IncludeItemTypes'] = includeItemTypes
+      : null;
+  imageTypeLimit != null
+      ? queryParams['ImageTypeLimit'] = imageTypeLimit
+      : null;
+  enableImageTypes != null
+      ? queryParams['EnableImageTypes'] = enableImageTypes
+      : null;
+  startIndex != null ? queryParams['StartIndex'] = startIndex : null;
+  mediaType != null ? queryParams['MediaTypes'] = mediaType : null;
+  limit != null ? queryParams['Limit'] = limit : null;
+  fields != null ? queryParams['Fields'] = fields : null;
+  excludeLocationTypes != null
+      ? queryParams['ExcludeLocationTypes'] = excludeLocationTypes
+      : null;
+  enableTotalRecordCount != null
+      ? queryParams['EnableTotalRecordCount'] = enableTotalRecordCount
+      : null;
+  collapseBoxSetItems != null
+      ? queryParams['CollapseBoxSetItems'] = collapseBoxSetItems
+      : null;
   queryParams['api_key'] = apiKey;
-  queryParams['Content-Type'] = 'application/json';
 
   var url = '${server.url}/Users/${user.id}/Items';
 
@@ -238,36 +247,36 @@ Future<Category> getItems(String parentId,
   return category;
 }
 
-void itemProgress(Item item, VideoPlayerController videoPlayerController,
-    {int subtitlesIndex}) {
-  var queryParams = <String, dynamic>{};
-  queryParams['api_key'] = apiKey;
+// void itemProgress(Item item, VideoPlayerController videoPlayerController,
+//     {int subtitlesIndex}) {
+//   var queryParams = <String, dynamic>{};
+//   queryParams['api_key'] = apiKey;
 
-  var mediaPlayedInfos = MediaPlayedInfos();
-  mediaPlayedInfos.isMuted =
-      videoPlayerController.value.volume > 0 ? true : false;
-  mediaPlayedInfos.isPaused = videoPlayerController.value.isPlaying;
-  mediaPlayedInfos.canSeek = true;
-  mediaPlayedInfos.itemId = item.id;
-  mediaPlayedInfos.mediaSourceId = item.id;
-  mediaPlayedInfos.positionTicks =
-      videoPlayerController.value.position.inMicroseconds * 10;
-  mediaPlayedInfos.volumeLevel = videoPlayerController.value.volume.toInt();
-  mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
+//   var mediaPlayedInfos = MediaPlayedInfos();
+//   mediaPlayedInfos.isMuted =
+//       videoPlayerController.value.volume > 0 ? true : false;
+//   mediaPlayedInfos.isPaused = videoPlayerController.value.isPlaying;
+//   mediaPlayedInfos.canSeek = true;
+//   mediaPlayedInfos.itemId = item.id;
+//   mediaPlayedInfos.mediaSourceId = item.id;
+//   mediaPlayedInfos.positionTicks =
+//       videoPlayerController.value.position.inMicroseconds * 10;
+//   mediaPlayedInfos.volumeLevel = videoPlayerController.value.volume.toInt();
+//   mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
 
-  var url = '${server.url}/Sessions/Playing/Progress';
+//   var url = '${server.url}/Sessions/Playing/Progress';
 
-  var _mediaPlayedInfos = mediaPlayedInfos.toJson();
-  _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
+//   var _mediaPlayedInfos = mediaPlayedInfos.toJson();
+//   _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
 
-  var _json = json.encode(_mediaPlayedInfos);
+//   var _json = json.encode(_mediaPlayedInfos);
 
-  dio.options.contentType = 'application/json';
-  dio
-      .post(url, data: _json, queryParameters: queryParams)
-      .then((_) => print('progress ok'))
-      .catchError((onError) => print(onError));
-}
+//   dio.options.contentType = 'application/json';
+//   dio
+//       .post(url, data: _json, queryParameters: queryParams)
+//       .then((_) => print('progress ok'))
+//       .catchError((onError) => print(onError));
+// }
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
     {startTimeTick = 0}) async {

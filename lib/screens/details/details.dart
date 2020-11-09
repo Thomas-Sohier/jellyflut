@@ -10,11 +10,10 @@ import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/stream/stream.dart';
+import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
 import 'collection.dart';
 
 class Details extends StatefulWidget {
@@ -229,7 +228,7 @@ String correctImageId(Item item) {
 
 void _playItem(Item item, BuildContext context) async {
   if (item.type != 'Book') {
-    var url = await getFirstUnplayedItemURL(item);
+    var url = await getItemURL(item);
     await Navigator.push(
       context,
       MaterialPageRoute(
