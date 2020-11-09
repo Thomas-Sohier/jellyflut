@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/home.dart';
-import 'package:jellyflut/screens/splash/splash.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -24,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     var futures = <Future>[];
     DatabaseService();
     futures.add(isAuth());
-    futures.add(Future.delayed(Duration(seconds: 2)));
+    futures.add(Future.delayed(Duration(seconds: 1)));
     var resp = await Future.wait(futures);
     if (resp[0]) {
       return Future.value(Home());

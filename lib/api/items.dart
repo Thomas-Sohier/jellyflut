@@ -247,36 +247,39 @@ Future<Category> getItems(String parentId,
   return category;
 }
 
-// void itemProgress(Item item, VideoPlayerController videoPlayerController,
-//     {int subtitlesIndex}) {
-//   var queryParams = <String, dynamic>{};
-//   queryParams['api_key'] = apiKey;
+void itemProgress(Item item,
+    {bool isMuted = false,
+    bool isPaused = false,
+    bool canSeek = true,
+    int positionTicks = 0,
+    int volumeLevel = 100,
+    int subtitlesIndex}) {
+  var queryParams = <String, dynamic>{};
+  queryParams['api_key'] = apiKey;
 
-//   var mediaPlayedInfos = MediaPlayedInfos();
-//   mediaPlayedInfos.isMuted =
-//       videoPlayerController.value.volume > 0 ? true : false;
-//   mediaPlayedInfos.isPaused = videoPlayerController.value.isPlaying;
-//   mediaPlayedInfos.canSeek = true;
-//   mediaPlayedInfos.itemId = item.id;
-//   mediaPlayedInfos.mediaSourceId = item.id;
-//   mediaPlayedInfos.positionTicks =
-//       videoPlayerController.value.position.inMicroseconds * 10;
-//   mediaPlayedInfos.volumeLevel = videoPlayerController.value.volume.toInt();
-//   mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
+  var mediaPlayedInfos = MediaPlayedInfos();
+  mediaPlayedInfos.isMuted = isMuted;
+  mediaPlayedInfos.isPaused = isPaused;
+  mediaPlayedInfos.canSeek = true;
+  mediaPlayedInfos.itemId = item.id;
+  mediaPlayedInfos.mediaSourceId = item.id;
+  mediaPlayedInfos.positionTicks = positionTicks * 10;
+  mediaPlayedInfos.volumeLevel = volumeLevel;
+  mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
 
-//   var url = '${server.url}/Sessions/Playing/Progress';
+  var url = '${server.url}/Sessions/Playing/Progress';
 
-//   var _mediaPlayedInfos = mediaPlayedInfos.toJson();
-//   _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
+  var _mediaPlayedInfos = mediaPlayedInfos.toJson();
+  _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
 
-//   var _json = json.encode(_mediaPlayedInfos);
+  var _json = json.encode(_mediaPlayedInfos);
 
-//   dio.options.contentType = 'application/json';
-//   dio
-//       .post(url, data: _json, queryParameters: queryParams)
-//       .then((_) => print('progress ok'))
-//       .catchError((onError) => print(onError));
-// }
+  dio.options.contentType = 'application/json';
+  dio
+      .post(url, data: _json, queryParameters: queryParams)
+      .then((_) => print('progress ok'))
+      .catchError((onError) => print(onError));
+}
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
     {startTimeTick = 0}) async {

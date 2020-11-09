@@ -24,6 +24,7 @@ String createURL(Item item, {int startTick = 0}) {
 
 Future<String> getItemURL(Item item) {
   if (item.type == 'Episode' || item.type == 'Movie') {
+    StreamModel().setItem(item);
     return getStreamURL(item: item);
   }
   return getFirstUnplayedItemURL(item);

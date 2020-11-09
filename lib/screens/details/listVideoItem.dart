@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/show.dart';
+import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
@@ -133,13 +134,14 @@ Widget videoItem(BuildContext context, Item item, String heroTag) {
                     child: Padding(
                         padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                         child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
+                            onTap: () async {
+                              var url = await getStreamURL(item: item);
+                              await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Stream(
                                             item: item,
-                                            streamUrl: null,
+                                            streamUrl: url,
                                           )));
                             },
                             child: Icon(
