@@ -27,7 +27,10 @@ PageController pageController = PageController(viewportFraction: 0.8);
 
 class _CollectionMainState extends State<CollectionMain> {
   bool isLoading = false;
+  bool blockItemsLoading = false;
   int pageCount = 1;
+  int startIndex = 0;
+  var item;
   var items = <Item>[];
   var itemsToShow = <Item>[];
   ScrollController _scrollController;
@@ -55,37 +58,33 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final item = ModalRoute.of(context).settings.arguments as Item;
-    return ChangeNotifierProvider(
-        create: (context) => MusicPlayer(),
-        child: Scaffold(
-            // floatingActionButton: MusicPlayerFAB(),
-            backgroundColor: Colors.transparent,
-            body: Background(
-                child: Stack(children: [
-              if (item.collectionType == 'movies' ||
-                  item.collectionType == 'books')
-                ChangeNotifierProvider.value(
-                    value: carrousselModel, child: CarrousselBackGroundImage()),
-              Positioned(
-                  child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: size.height * 0.04),
-                        child: ChangeNotifierProvider.value(
-                          value: listOfItems,
-                          child: Column(
-                            children: [
-                              if (item.collectionType == 'movies' ||
-                                  item.collectionType == 'books')
-                                head(item, context),
-                              sortItems(),
-                              listItems(item),
-                            ],
-                          ),
-                        ),
-                      )))
-            ]))));
+    item = ModalRoute.of(context).settings.arguments as Item;
+    return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Background(
+            child: Stack(children: [
+          if (item.collectionType == 'movies' || item.collectionType == 'books')
+            ChangeNotifierProvider.value(
+                value: carrousselModel, child: CarrousselBackGroundImage()),
+          Positioned(
+              child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.04),
+                    child: ChangeNotifierProvider.value(
+                      value: listOfItems,
+                      child: Column(
+                        children: [
+                          if (item.collectionType == 'movies' ||
+                              item.collectionType == 'books')
+                            head(item, context),
+                          sortItems(),
+                          listItems(item),
+                        ],
+                      ),
+                    ),
+                  )))
+        ])));
   }
 
   void _scrollListener() {
@@ -97,14 +96,29 @@ class _CollectionMainState extends State<CollectionMain> {
   }
 
   void showMoreItem() {
-    if (items.isEmpty) return;
-    var startIndex = (pageCount - 1) * 20;
-    var endIndex =
-        items.length > pageCount * 20 ? pageCount * 20 : items.length;
-    if (startIndex > endIndex) return;
-    var _items = items.sublist(startIndex, endIndex);
-    ListOfItems().addNewItems(_items);
-    pageCount++;
+    // if (items.isEmpty) return;
+    // var startIndex = (pageCount - 1) * 20;
+    // var endIndex =
+    //     items.length > pageCount * 20 ? pageCount * 20 : items.length;
+    // if (startIndex > endIndex) return;
+    // var _items = items.sublist(startIndex, endIndex);
+    if (blockItemsLoading == false) {
+      blockItemsLoading = true;
+      getItems(item.id,
+              sortBy: 'Name',
+              fields: 'DateCreated, DateAdded',
+              startIndex: startIndex,
+              includeItemTypes: getCollectionItemType(item.collectionType),
+              limit: 100)
+          .then((_category) {
+        ListOfItems().addNewItems(_category.items);
+        if (_category.items.isNotEmpty) {
+          startIndex = startIndex + 100;
+          pageCount++;
+        }
+        blockItemsLoading = false;
+      });
+    }
   }
 
   Widget listItems(Item item) {
@@ -113,6 +127,7 @@ class _CollectionMainState extends State<CollectionMain> {
             filter: '',
             sortBy: 'Name',
             fields: 'DateCreated, DateAdded',
+            startIndex: startIndex,
             includeItemTypes: getCollectionItemType(item.collectionType),
             limit: 100),
         builder: (context, snapshot) {

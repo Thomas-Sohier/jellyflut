@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -15,22 +16,34 @@ BaseOptions options = BaseOptions(
 
 Dio dio = Dio(options);
 
-Future<List<Item>> getLatestMedia() async {
+Future<List<Item>> getLatestMedia({
+  String parentId,
+  int limit = 16,
+  String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
+  String enableImageTypes = 'Primary,Backdrop,Thumb',
+  int imageTypeLimit = 1,
+}) async {
   var queryParams = <String, dynamic>{};
+  parentId != null ? queryParams['ParentId'] = parentId : null;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+  queryParams['EnableImageTypes'] = enableImageTypes;
   queryParams['api_key'] = apiKey;
   queryParams['Content-Type'] = 'application/json';
 
   var url = '${server.url}/Users/${user.id}/Items/Latest';
 
   Response response;
+  var items = <Item>[];
   try {
     response = await dio.get(url, queryParameters: queryParams);
+    final List t = response.data;
+    items = t.map((item) => Item.fromMap(item)).toList();
   } catch (e) {
     print(e);
   }
-  List<Item> items = List<Item>();
   return items;
-  // return Item.fromMap(json.encode(response.data));
 }
 
 Future<Category> getCategory({String parentId, int limit = 10}) async {

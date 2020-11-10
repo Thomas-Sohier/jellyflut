@@ -62,19 +62,22 @@ Widget placeholderBody() {
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Row(children: [
               Expanded(
-                  flex: 8,
+                  flex: 7,
                   child: Column(
                     children: [
                       Skeleton(),
-                      Skeleton(nbLine: 3),
+                      Skeleton(
+                        nbLine: 3,
+                        height: 10,
+                      ),
                     ],
                   )),
               Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
                     children: [
                       Skeleton(
-                        height: 60,
+                        height: 40,
                       ),
                     ],
                   ))

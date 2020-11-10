@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {

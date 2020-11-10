@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/listCollectionItem.dart';
 import 'package:jellyflut/screens/details/listMusicItem.dart';
@@ -28,8 +26,7 @@ class _CollectionState extends State<Collection> {
         child: Column(
       children: [
         if (widget.item.isFolder && widget.item.type == 'MusicAlbum')
-          // ListMusicItem(item: widget.item);
-          Container()
+          ListMusicItem(item: widget.item)
         else if (widget.item.isFolder && widget.item.type == 'Season')
           ListVideoItem(item: widget.item)
         else

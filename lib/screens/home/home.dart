@@ -20,57 +20,54 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return ChangeNotifierProvider(
-        create: (context) => MusicPlayer(),
-        child: Scaffold(
-            floatingActionButton: MusicPlayerFAB(),
-            extendBody: true,
-            backgroundColor: Colors.transparent,
-            body: Background(
-                child: SingleChildScrollView(
-                    child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
+    return Scaffold(
+        extendBody: true,
+        backgroundColor: Colors.transparent,
+        body: Background(
+            child: SingleChildScrollView(
+                child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: size.height * 0.05),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: size.height * 0.05),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Hero(
-                        tag: 'logo',
-                        child: Image(
-                          image: AssetImage('img/jellyfin_logo.png'),
-                          width: 40.0,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-                    ),
-                    Hero(
-                      tag: 'logo_text',
-                      child: Text(
-                        'Jellyfin',
-                        style: TextStyle(fontSize: 22, color: Colors.white),
-                      ),
-                    ),
-                  ],
+                Hero(
+                    tag: 'logo',
+                    child: Image(
+                      image: AssetImage('img/jellyfin_logo.png'),
+                      width: 40.0,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
                 ),
-                SizedBox(height: size.height * 0.03),
-                Resume(),
-                FutureBuilder<Category>(
-                  future: getCategory(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return buildCategory(snapshot.data);
-                    } else {
-                      return Container();
-                    }
-                  },
+                Hero(
+                  tag: 'logo_text',
+                  child: Text(
+                    'Jellyfin',
+                    style: TextStyle(fontSize: 22, color: Colors.white),
+                  ),
                 ),
-                SizedBox(height: size.height * 0.05),
               ],
-            )))));
+            ),
+            SizedBox(height: size.height * 0.03),
+            Resume(),
+            FutureBuilder<Category>(
+              future: getCategory(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return buildCategory(snapshot.data);
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            SizedBox(height: size.height * 0.05),
+          ],
+        ))));
   }
 }
 

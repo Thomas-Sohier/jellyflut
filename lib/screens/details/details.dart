@@ -109,8 +109,8 @@ Widget logo(Item item, Size size) {
       width: size.width,
       height: 100,
       child: AsyncImage(
-        returnImageId(item),
-        item.imageTags.primary,
+        correctImageId(item, type: 'logo'),
+        correctImageTags(item, type: 'logo'),
         item.imageBlurHashes,
         boxFit: BoxFit.contain,
         tag: 'Logo',
@@ -175,7 +175,7 @@ Widget card(Item item, Size size, String heroTag, BuildContext context) {
 Widget _placeHolderBody(Item item, String heroTag, Size size) {
   return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(height: size.height * 0.10),
         SizedBox(
@@ -196,34 +196,6 @@ Future _getItemsCustom({@required String itemId}) async {
   futures.add(Future.delayed(Duration(milliseconds: 400)));
   futures.add(getItem(itemId));
   return Future.wait(futures);
-}
-
-String correctImageTags(Item item) {
-  if (item.imageTags.toMap().values.every((element) => element == null)) {
-    if (item.type == "Season") {
-      return item.seriesPrimaryImageTag;
-    } else if (item.type == "Album") {
-      return item.albumPrimaryImageTag;
-    } else {
-      return null;
-    }
-  } else {
-    return item.imageTags.primary;
-  }
-}
-
-String correctImageId(Item item) {
-  if (item.imageTags.toMap().values.every((element) => element == null)) {
-    if (item.type == "Season") {
-      return item.seriesId;
-    } else if (item.type == "Album") {
-      return item.albumId;
-    } else {
-      return item.id;
-    }
-  } else {
-    return item.id;
-  }
 }
 
 void _playItem(Item item, BuildContext context) async {

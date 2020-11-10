@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
@@ -26,19 +27,15 @@ class _CollectionHomeState extends State<CollectionHome> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => MusicPlayer()),
       ChangeNotifierProvider(create: (context) => ListOfItems()),
     ], child: buildAllCategory());
   }
 
   Widget buildAllCategory() {
-    return FutureBuilder<Category>(
-      future: getItems(widget?.item?.id,
-          sortBy: 'DateCreated',
-          sortOrder: 'Descending',
-          fields: 'DateCreated, DateAdded, ImageTags',
-          includeItemTypes: getCollectionItemType(widget.item.collectionType),
-          limit: 10),
+    return FutureBuilder<List<Item>>(
+      future: getLatestMedia(
+          parentId: widget?.item?.id,
+          fields: 'DateCreated, DateAdded, ImageTags'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
@@ -68,13 +65,13 @@ class _CollectionHomeState extends State<CollectionHome> {
     );
   }
 
-  Widget displayItems(Category category) {
+  Widget displayItems(List<Item> items) {
     return ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: category.items.length,
+        itemCount: items.length,
         itemBuilder: (context, index) {
-          var _item = category.items[index];
+          var _item = items[index];
           return Padding(
               padding: const EdgeInsets.all(5),
               child: AspectRatio(

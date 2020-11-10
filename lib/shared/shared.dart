@@ -8,17 +8,6 @@ import 'package:jellyflut/models/server.dart';
 import 'package:jellyflut/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
-
-Future<void> init() async {
-  isAuth().then((bool resp) => {
-        if (resp)
-          {navigatorKey.currentState.pushReplacementNamed('/home')}
-        else
-          {navigatorKey.currentState.pushReplacementNamed('/login')}
-      });
-}
-
 Future<bool> isLoggedIn() async {
   var prefs = await SharedPreferences.getInstance();
   return prefs.getBool('isLoggedIn') ?? false;
@@ -125,4 +114,56 @@ String returnImageId(Item item) {
     return item.seriesId;
   }
   return item.id;
+}
+
+String correctImageTags(Item item, {String type = 'Primary'}) {
+  if (type.toLowerCase().trim() == 'logo' &&
+      (item.type == 'Season' ||
+          item.type == 'Episode' ||
+          item.type == 'Album')) {
+    if (item.type == 'Season' || item.type == 'Episode') {
+      return item.seriesPrimaryImageTag;
+    } else if (item.type == 'Album') {
+      return item.albumPrimaryImageTag;
+    }
+  } else if (item.imageTags
+      .toMap()
+      .values
+      .every((element) => element == null)) {
+    if (item.type == 'Season') {
+      return item.seriesPrimaryImageTag;
+    } else if (item.type == 'Album') {
+      return item.albumPrimaryImageTag;
+    } else {
+      return null;
+    }
+  } else {
+    return item.imageTags.primary;
+  }
+}
+
+String correctImageId(Item item, {String type = 'Primary'}) {
+  if (type.toLowerCase().trim() == 'logo' &&
+      (item.type == 'Season' ||
+          item.type == 'Episode' ||
+          item.type == 'Album')) {
+    if (item.type == 'Season' || item.type == 'Episode') {
+      return item.seriesId;
+    } else if (item.type == 'Album') {
+      return item.albumId;
+    }
+  } else if (item.imageTags
+      .toMap()
+      .values
+      .every((element) => element == null)) {
+    if (item.type == 'Season') {
+      return item.seriesId;
+    } else if (item.type == 'Album') {
+      return item.albumId;
+    } else {
+      return item.id;
+    }
+  } else {
+    return item.id;
+  }
 }

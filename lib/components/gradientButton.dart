@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/colors.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class GradienButton extends StatefulWidget {
@@ -39,9 +42,9 @@ class _GradienButtonState extends State<GradienButton> {
         color: Colors.transparent,
         // child: customPalette(
         //     widget.color1, widget.color2, widget.text, widget.icon));
+        // return buttonDefault('Player', Icons.play_circle_fill_outlined);
         child: widget.item == null
-            ? customPalette(
-                widget.color1, widget.color2, widget.text, widget.icon)
+            ? buttonDefault(widget.text, widget.icon)
             : generatedPalette(widget.item, widget.text, widget.icon));
   }
 }
@@ -83,7 +86,8 @@ Widget customPalette(Color color1, Color color2, String text, IconData icon) {
 
 Widget generatedPalette(Item item, String text, IconData icon) {
   return FutureBuilder<PaletteGenerator>(
-    future: gePalette(getItemImageUrl(item.id, item.imageTags.primary,
+    future: gePalette(getItemImageUrl(
+        correctImageId(item), correctImageTags(item),
         imageBlurHashes: item.imageBlurHashes)),
     builder: (context, snapshot) {
       Widget child;
@@ -128,17 +132,52 @@ Widget generatedPalette(Item item, String text, IconData icon) {
                   ])),
         );
       } else if (snapshot.hasError) {
-        return customPalette(
-            const Color(0xFFa95dc3), const Color(0xFF04a2db), text, icon);
+        return buttonDefault(text, icon);
       } else {
-        child = Container(height: 50, width: 0);
+        child = buttonDefault(text, icon);
       }
       return AnimatedSwitcher(
           duration: const Duration(milliseconds: 1500),
           transitionBuilder: (Widget child, Animation<double> animation) {
             return FadeTransition(child: child, opacity: animation);
           },
+          switchInCurve: Curves.easeInToLinear,
           child: child);
     },
+  );
+}
+
+Widget buttonDefault(String text, IconData icon) {
+  return ClipRRect(
+    borderRadius: BorderRadius.all(Radius.circular(80.0)),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+      child: Container(
+          constraints: const BoxConstraints(
+              minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200.withOpacity(0.5),
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+          ),
+          alignment: Alignment.center,
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black, fontSize: 18),
+                ),
+                if (icon != null)
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Icon(
+                      icon,
+                      color: Colors.black,
+                    ),
+                  )
+              ])),
+    ),
   );
 }

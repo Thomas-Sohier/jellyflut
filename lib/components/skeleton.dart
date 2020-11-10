@@ -50,24 +50,23 @@ class SkeletonState extends State<Skeleton>
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.all(4),
-      itemCount: widget.nbLine,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: EdgeInsets.all(4),
-            child: Container(
-                width: double.infinity,
-                height: widget.height,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    gradient: LinearGradient(
-                        begin: Alignment(gradientPosition.value, 0),
-                        end: Alignment(-1, 0),
-                        colors: widget.colors))));
-      },
+    var list = List<int>.generate(widget.nbLine, (i) => i + 1);
+    return Column(
+      children: list.map((e) => skeleton()).toList(),
     );
+  }
+
+  Widget skeleton() {
+    return Padding(
+        padding: EdgeInsets.all(4),
+        child: Container(
+            width: double.infinity,
+            height: widget.height,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                gradient: LinearGradient(
+                    begin: Alignment(gradientPosition.value, 0),
+                    end: Alignment(-1, 0),
+                    colors: widget.colors))));
   }
 }
