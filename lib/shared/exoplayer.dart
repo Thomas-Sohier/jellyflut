@@ -36,21 +36,32 @@ const videoProfiles = {
   'mov': ['mpeg1video', 'mpeg2video', 'mpeg4', 'h263', 'h264', 'hevc']
 };
 
-const audioProfiles = {
+var audioProfiles = {
   '3gp': ['aac', '3gpp', 'flac'],
   'mp4': ['mp3', 'aac', 'mp1', 'mp2'],
-  'ts': ['mp3', 'aac', 'mp1', 'mp2'],
+  'ts': ['mp3', 'aac', 'mp1', 'mp2', 'ac3', 'dts'],
   'flac': ['flac'],
   'aac': ['aac'],
-  'mkv': ['mp3', 'aac', 'flac', 'vorbis', 'opus', 'wma', 'mp1', 'mp2'],
+  'mkv': [
+    'mp3',
+    'aac',
+    'dts',
+    'flac',
+    'vorbis',
+    'opus',
+    'ac3',
+    'wma',
+    'mp1',
+    'mp2'
+  ],
   'mp3': ['mp3'],
   'ogg': ['ogg', 'opus', 'vorbis'],
   'webm': ['vorbis', 'opus'],
   'flv': ['mp3', 'aac'],
-  'asf': ['aac', 'wma', 'flac', 'pcm'],
-  'm2ts': ['aac', 'pcm'],
+  'asf': ['aac', 'ac3', 'dts', 'wma', 'flac', 'pcm'],
+  'm2ts': ['aac', 'ac3', 'dts', 'pcm'],
   'vob': ['mp1'],
-  'mov': ['mp3', 'aac', 'pcm']
+  'mov': ['mp3', 'aac', 'ac3', 'dts-hd', 'pcm']
 };
 
 const subtitleProfiles = [
@@ -102,7 +113,6 @@ Future<DeviceProfile> getExoplayerProfile() async {
   var codecs = DeviceCodecs.fromMap(result);
   var videoCodecs = <Codec>[];
   var audioCodecs = <Codec>[];
-  var transcofingProfiles = getTRanscodingProfiles(audioCodecs);
 
   codecs.audioCodecs.forEach((audioCodec) {
     audioCodecs.add(audioCodec);
@@ -144,8 +154,10 @@ Future<DeviceProfile> getExoplayerProfile() async {
     videoCodecs.add(videoCodec);
 
     var profiles = videoCodec.profiles.join('|');
-    var maxLevel =
-        videoCodec.levels.isNotEmpty ?? videoCodec.levels.reduce(max);
+    var maxLevel;
+    if (videoCodec.levels.isNotEmpty) {
+      maxLevel = videoCodec.levels.reduce(max);
+    }
 
     var conditions = <Condition>[];
     conditions.add(Condition(
@@ -190,7 +202,7 @@ Future<DeviceProfile> getExoplayerProfile() async {
             .join(',')));
   });
 
-  profile.transcodingProfiles = transcofingProfiles;
+  profile.transcodingProfiles = getTRanscodingProfiles(audioCodecs);
   savedDeviceProfile = profile;
 
   return profile;
