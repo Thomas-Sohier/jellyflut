@@ -21,10 +21,9 @@ class CodecProfile {
       );
 
   Map<String, dynamic> toMap() => {
-        "Type": type == null ? null : type,
-        "Codec": codec == null ? null : codec,
-        "Conditions": conditions == null
-            ? null
-            : List<dynamic>.from(conditions.map((x) => x.toMap())),
+        if (type != null) 'Type': type,
+        if (codec != null) 'Codec': codec,
+        if (conditions != null)
+          'Conditions': List<dynamic>.from(conditions.map((x) => x.toMap())),
       };
 }

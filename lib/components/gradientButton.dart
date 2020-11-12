@@ -2,11 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/colors.dart';
-import 'package:jellyflut/shared/shared.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class GradienButton extends StatefulWidget {
   GradienButton(this.text, this.onPressed,
@@ -40,12 +36,8 @@ class _GradienButtonState extends State<GradienButton> {
             side: BorderSide(color: Colors.transparent)),
         textColor: Colors.black,
         color: Colors.transparent,
-        // child: customPalette(
-        //     widget.color1, widget.color2, widget.text, widget.icon));
-        // return buttonDefault('Player', Icons.play_circle_fill_outlined);
-        child: widget.item == null
-            ? buttonDefault(widget.text, widget.icon)
-            : generatedPalette(widget.item, widget.text, widget.icon));
+        child: customPalette(
+            widget.color1, widget.color2, widget.text, widget.icon));
   }
 }
 
@@ -81,103 +73,5 @@ Widget customPalette(Color color1, Color color2, String text, IconData icon) {
                   ),
                 )
             ])),
-  );
-}
-
-Widget generatedPalette(Item item, String text, IconData icon) {
-  return FutureBuilder<PaletteGenerator>(
-    future: gePalette(getItemImageUrl(
-        correctImageId(item), correctImageTags(item),
-        imageBlurHashes: item.imageBlurHashes)),
-    builder: (context, snapshot) {
-      Widget child;
-      if (snapshot.hasData) {
-        var paletteColor = snapshot.data.paletteColors;
-        var foregroundColor = paletteColor[0].color.computeLuminance() > 0.5
-            ? Colors.black
-            : Colors.white;
-        child = Ink(
-          key: ValueKey<int>(0),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [paletteColor[0].color, paletteColor[1].color],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
-            borderRadius: BorderRadius.all(Radius.circular(80.0)),
-          ),
-          child: Container(
-              constraints: const BoxConstraints(
-                  minWidth: 88.0,
-                  minHeight: 36.0,
-                  maxWidth: 200,
-                  maxHeight: 50),
-              alignment: Alignment.center,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: foregroundColor, fontSize: 18),
-                    ),
-                    if (icon != null)
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        child: Icon(
-                          icon,
-                          color: foregroundColor,
-                        ),
-                      )
-                  ])),
-        );
-      } else if (snapshot.hasError) {
-        return buttonDefault(text, icon);
-      } else {
-        child = buttonDefault(text, icon);
-      }
-      return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 1500),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(child: child, opacity: animation);
-          },
-          switchInCurve: Curves.easeInToLinear,
-          child: child);
-    },
-  );
-}
-
-Widget buttonDefault(String text, IconData icon) {
-  return ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(80.0)),
-    child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-      child: Container(
-          constraints: const BoxConstraints(
-              minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200.withOpacity(0.5),
-            borderRadius: BorderRadius.all(Radius.circular(80.0)),
-          ),
-          alignment: Alignment.center,
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black, fontSize: 18),
-                ),
-                if (icon != null)
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                    child: Icon(
-                      icon,
-                      color: Colors.black,
-                    ),
-                  )
-              ])),
-    ),
   );
 }

@@ -124,29 +124,27 @@ Widget infos(Item item, BuildContext context) {
       scrollDirection: Axis.vertical,
       child: Column(mainAxisSize: MainAxisSize.max, children: [
         if (item.videoType != null)
-          Row(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Video : ',
                 style: titleStyle,
               ),
-              Text(
-                item.mediaStreams != null
-                    ? item.mediaStreams
-                        .where((element) =>
-                            element.type.toString() == 'Type.VIDEO')
-                        .first
-                        .displayTitle
-                    : '-',
-                style: valueStyle,
-              ),
+              UnorderedList(
+                  texts: item.mediaStreams
+                      .where((element) =>
+                          element.type.trim().toLowerCase() == 'video')
+                      .map((e) => e.displayTitle + ', ' + e.codec)
+                      .toList()),
             ],
           ),
         if (item.container != null)
           Row(
             children: [
               Text(
-                'Codec : ',
+                'Container : ',
                 style: titleStyle,
               ),
               Text(
@@ -180,8 +178,8 @@ Widget infos(Item item, BuildContext context) {
               UnorderedList(
                   texts: item.mediaStreams
                       .where((element) =>
-                          element.type.toString() == 'Type.SUBTITLE')
-                      .map((e) => e.displayTitle)
+                          element.type.trim().toLowerCase() == 'subtitle')
+                      .map((e) => e.displayTitle + ', ' + e.codec)
                       .toList())
             ],
           ),
@@ -196,9 +194,9 @@ Widget infos(Item item, BuildContext context) {
               ),
               UnorderedList(
                   texts: item.mediaStreams
-                      .where(
-                          (element) => element.type.toString() == 'Type.AUDIO')
-                      .map((e) => e.displayTitle)
+                      .where((element) =>
+                          element.type.trim().toLowerCase() == 'audio')
+                      .map((e) => e.displayTitle + ', ' + e.codec)
                       .toList()),
             ],
           )

@@ -40,12 +40,12 @@ class MediaStream {
     this.localizedForced,
   });
 
-  Codec codec;
+  String codec;
   Language language;
   String colorTransfer;
   String colorPrimaries;
-  TimeBase timeBase;
-  CodecTimeBase codecTimeBase;
+  String timeBase;
+  String codecTimeBase;
   String videoRange;
   String displayTitle;
   String nalLengthSize;
@@ -61,7 +61,7 @@ class MediaStream {
   double averageFrameRate;
   double realFrameRate;
   String profile;
-  Type type;
+  String type;
   String aspectRatio;
   int index;
   bool isExternal;
@@ -78,14 +78,14 @@ class MediaStream {
   String localizedForced;
 
   factory MediaStream.fromMap(Map<String, dynamic> json) => MediaStream(
-        codec: codecValues.map[json["Codec"]],
+        codec: json["Codec"],
         language: languageValues.map[json["Language"]],
         colorTransfer:
             json["ColorTransfer"] == null ? null : json["ColorTransfer"],
         colorPrimaries:
             json["ColorPrimaries"] == null ? null : json["ColorPrimaries"],
-        timeBase: timeBaseValues.map[json["TimeBase"]],
-        codecTimeBase: codecTimeBaseValues.map[json["CodecTimeBase"]],
+        timeBase: json["TimeBase"],
+        codecTimeBase: json["CodecTimeBase"],
         videoRange: json["VideoRange"] == null ? null : json["VideoRange"],
         displayTitle: json["DisplayTitle"],
         nalLengthSize:
@@ -106,7 +106,7 @@ class MediaStream {
             ? null
             : json["RealFrameRate"].toDouble(),
         profile: json["Profile"] == null ? null : json["Profile"],
-        type: typeValues.map[json["Type"]],
+        type: json["Type"],
         aspectRatio: json["AspectRatio"] == null ? null : json["AspectRatio"],
         index: json["Index"],
         isExternal: json["IsExternal"],

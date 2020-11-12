@@ -12,41 +12,47 @@ class TranscodingProfile {
   });
 
   String container;
-  Type type;
+  String type;
   String audioCodec;
   String context;
   String protocol;
   String maxAudioChannels;
-  String minSegments;
+  int minSegments;
   bool breakOnNonKeyFrames;
   String videoCodec;
 
   factory TranscodingProfile.fromMap(Map<String, dynamic> json) =>
       TranscodingProfile(
-        container: json["Container"] == null ? null : json["Container"],
-        type: json["Type"] == null ? null : json["Type"],
-        audioCodec: json["AudioCodec"] == null ? null : json["AudioCodec"],
-        context: json["Context"] == null ? null : json["Context"],
-        protocol: json["Protocol"] == null ? null : json["Protocol"],
+        container: json['Container'] == null ? null : json['Container'],
+        type: json['Type'] == null ? null : json['Type'],
+        audioCodec: json['AudioCodec'] == null ? null : json['AudioCodec'],
+        context: json['Context'] == null ? null : json['Context'],
+        protocol: json['Protocol'] == null ? null : json['Protocol'],
         maxAudioChannels:
-            json["MaxAudioChannels"] == null ? null : json["MaxAudioChannels"],
-        minSegments: json["MinSegments"] == null ? null : json["MinSegments"],
-        breakOnNonKeyFrames: json["BreakOnNonKeyFrames"] == null
+            json['MaxAudioChannels'] == null ? null : json['MaxAudioChannels'],
+        minSegments: json['MinSegments'] == null ? null : json['MinSegments'],
+        breakOnNonKeyFrames: json['BreakOnNonKeyFrames'] == null
             ? null
-            : json["BreakOnNonKeyFrames"],
-        videoCodec: json["VideoCodec"] == null ? null : json["VideoCodec"],
+            : json['BreakOnNonKeyFrames'],
+        videoCodec: json['VideoCodec'] == null ? null : json['VideoCodec'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Container": container == null ? null : container,
-        "Type": type == null ? null : type,
-        "AudioCodec": audioCodec == null ? null : audioCodec,
-        "Context": context == null ? null : context,
-        "Protocol": protocol == null ? null : protocol,
-        "MaxAudioChannels": maxAudioChannels == null ? null : maxAudioChannels,
-        "MinSegments": minSegments == null ? null : minSegments,
-        "BreakOnNonKeyFrames":
-            breakOnNonKeyFrames == null ? null : breakOnNonKeyFrames,
-        "VideoCodec": videoCodec == null ? null : videoCodec,
+        if (container != null)
+          'Container': container == null ? null : container,
+        if (type != null) 'Type': type == null ? null : type,
+        if (audioCodec != null)
+          'AudioCodec': audioCodec == null ? null : audioCodec,
+        if (context != null) 'Context': context == null ? null : context,
+        if (protocol != null) 'Protocol': protocol == null ? null : protocol,
+        if (maxAudioChannels != null)
+          'MaxAudioChannels':
+              maxAudioChannels == null ? null : maxAudioChannels,
+        if (minSegments != null)
+          'MinSegments': minSegments == null ? null : minSegments,
+        if (breakOnNonKeyFrames != null)
+          'BreakOnNonKeyFrames': breakOnNonKeyFrames,
+        if (videoCodec != null)
+          'VideoCodec': videoCodec == null ? null : videoCodec,
       };
 }

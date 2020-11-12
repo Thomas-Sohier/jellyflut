@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
 
@@ -20,7 +21,7 @@ class ListOfItems extends ChangeNotifier {
 
   ListOfItems._internal();
 
-  void addNewItems(List<Item> itemsToAdd) {
+  void addNewItems(List<Item> itemsToAdd) async {
     _items.addAll(itemsToAdd);
     notifyListeners();
   }

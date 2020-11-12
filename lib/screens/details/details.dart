@@ -9,6 +9,7 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
 import 'package:jellyflut/components/gradientButton.dart';
+import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -159,7 +160,7 @@ Widget card(Item item, Size size, String heroTag, BuildContext context) {
       alignment: Alignment.topCenter,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: size.width * 0.5),
-        child: GradienButton(
+        child: PaletteButton(
           'Play',
           () {
             _playItem(item, context);
@@ -204,10 +205,8 @@ void _playItem(Item item, BuildContext context) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => Stream(
-                item: item,
-                streamUrl: url,
-              )),
+          builder: (context) =>
+              Stream(item: item, streamUrl: url, playbackInfos: null)),
     );
   } else {
     readBook(item, context);

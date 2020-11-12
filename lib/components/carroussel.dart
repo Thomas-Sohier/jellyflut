@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/itemPoster.dart';
-import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/screens/details/details.dart';

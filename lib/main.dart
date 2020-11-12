@@ -67,7 +67,6 @@ class Jellyflut extends StatelessWidget {
         '/login': (context) => ParentStart(),
         '/home': (context) => Home(),
         '/collection': (context) => CollectionMain(),
-        '/watch': (context) => Stream(),
       },
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: (BuildContext context) => Home());

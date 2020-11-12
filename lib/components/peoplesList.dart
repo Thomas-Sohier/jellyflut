@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/person.dart';
 import 'package:jellyflut/shared/theme.dart';
 
@@ -41,14 +42,20 @@ Widget listPeoples(List<Person> peoples) {
                     padding: EdgeInsets.only(left: 5, right: 5),
                     child: AspectRatio(
                         aspectRatio: 2 / 3,
-                        child: BlurHash(
-                          hash:
-                              people.imageBlurHashes?.primary?.values?.first ??
-                                  '-----------------------',
-                          image: getItemImageUrl(
-                              people.id, people.primaryImageTag,
-                              imageBlurHashes: people.imageBlurHashes),
-                          imageFit: BoxFit.contain,
+                        child: AsyncImage(
+                          people.id,
+                          people.primaryImageTag,
+                          people.imageBlurHashes,
+                          boxFit: BoxFit.contain,
+                          placeholder: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            child: Center(
+                              child: Icon(Icons.person),
+                            ),
+                          ),
                         )))),
             Flexible(
                 flex: 1,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -13,12 +12,18 @@ import '../../globals.dart';
 class Stream extends StatefulWidget {
   final Item item;
   final String streamUrl;
+  final PlaybackInfos playbackInfos;
 
-  const Stream({@required this.item, @required this.streamUrl});
+  const Stream(
+      {@required this.item,
+      @required this.streamUrl,
+      @required this.playbackInfos});
 
   @override
   _StreamState createState() => _StreamState();
 }
+
+class PlaybackInfos {}
 
 class _StreamState extends State<Stream> {
   StreamModel streamModel;
@@ -36,6 +41,10 @@ class _StreamState extends State<Stream> {
         fit: BoxFit.contain,
         autoPlay: true,
         looping: false,
+        allowedScreenSleep: false,
+        startAt: Duration(
+            microseconds:
+                (widget.item.userData.playbackPositionTicks / 10).round()),
         showControlsOnInitialize: true,
         controlsConfiguration: configuration());
 
@@ -47,7 +56,7 @@ class _StreamState extends State<Stream> {
   @override
   void initState() {
     Wakelock.enable();
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    // SystemChrome.setEnabledSystemUIOverlays([]);
     progressTimer();
     streamModel = StreamModel();
     super.initState();
@@ -56,8 +65,8 @@ class _StreamState extends State<Stream> {
   @override
   void dispose() {
     Wakelock.disable();
-    SystemChrome.setEnabledSystemUIOverlays(
-        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIOverlays(
+    //     [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     _timer.cancel();
     super.dispose();
   }
@@ -109,9 +118,11 @@ class _StreamState extends State<Stream> {
     return BetterPlayerControlsConfiguration(
       enableSkips: false,
       enableFullscreen: true,
+      enableProgressText: true,
       enablePlaybackSpeed: true,
       enableMute: true,
       enablePlayPause: true,
+      enableSubtitles: true,
       enableQualities: false,
       controlBarHeight: 40,
     );
@@ -121,7 +132,7 @@ class _StreamState extends State<Stream> {
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
   var subtitles = item?.mediaStreams != null
       ? item.mediaStreams
-          .where((element) => element.type.toString() == 'Type.SUBTITLE')
+          .where((element) => element.type.trim().toLowerCase() == 'subtitle')
           .toList()
       : [];
   var asyncSubs = subtitles

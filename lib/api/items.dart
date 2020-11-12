@@ -289,8 +289,7 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
-  queryParams['MaxStreamingBitrate'] = 148672567;
-  // queryParams['AutoOpenLiveStream'] = user.id;
+  queryParams['MaxStreamingBitrate'] = 160000000;
   queryParams['api_key'] = apiKey;
   dio.options.contentType = 'application/json';
   dio.options.headers['X-Emby-Authorization'] = _authHeader;

@@ -9,7 +9,8 @@ class AsyncImage extends StatefulWidget {
   AsyncImage(this.itemId, this.imageTag, this.blurHash,
       {this.tag = 'Primary',
       this.boxFit = BoxFit.fitHeight,
-      this.alignment = Alignment.topCenter});
+      this.alignment = Alignment.topCenter,
+      this.placeholder});
 
   final String itemId;
   final ImageBlurHashes blurHash;
@@ -17,6 +18,7 @@ class AsyncImage extends StatefulWidget {
   final String imageTag;
   final BoxFit boxFit;
   final Alignment alignment;
+  final Widget placeholder;
 
   @override
   State<StatefulWidget> createState() => _AsyncImageState();
@@ -26,12 +28,12 @@ class _AsyncImageState extends State<AsyncImage> {
   @override
   Widget build(BuildContext context) {
     return body(widget.itemId, widget.imageTag, widget.blurHash, widget.tag,
-        widget.boxFit, widget.alignment);
+        widget.boxFit, widget.alignment, widget.placeholder);
   }
 }
 
 Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
-    String tag, BoxFit boxFit, Alignment alignment) {
+    String tag, BoxFit boxFit, Alignment alignment, Widget placeholder) {
   return CachedNetworkImage(
     imageUrl:
         getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash),
@@ -46,15 +48,13 @@ Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
     placeholder: (context, url) {
       var hash = _fallBackBlurHash(blurHash, tag);
       if (tag != 'Logo' && hash != null) {
-        return Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: AspectRatio(
-                aspectRatio: aspectRatio(),
-                child: BlurHash(
-                  hash: _fallBackBlurHash(blurHash, tag),
-                  imageFit: BoxFit.cover,
-                )));
+        return AspectRatio(
+            aspectRatio: aspectRatio(),
+            child: BlurHash(
+              hash: hash,
+            ));
+      } else if (placeholder != null) {
+        return placeholder;
       } else {
         return Container();
       }
@@ -64,6 +64,8 @@ Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
       if (tag != 'Logo' && hash != null) {
         return AspectRatio(
             aspectRatio: aspectRatio(), child: BlurHash(hash: hash));
+      } else if (placeholder != null) {
+        return placeholder;
       } else {
         return Container();
       }
@@ -81,7 +83,9 @@ String _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
 }
 
 String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-  if (imageBlurHashes.primary != null) {
+  if (imageBlurHashes == null) {
+    return null;
+  } else if (imageBlurHashes.primary != null) {
     return imageBlurHashes.primary.values.first;
   } else if (imageBlurHashes.thumb != null) {
     return imageBlurHashes.thumb.values.first;

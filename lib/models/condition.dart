@@ -8,20 +8,20 @@ class Condition {
 
   String condition;
   String property;
-  String value;
+  dynamic value;
   bool isRequired;
 
   factory Condition.fromMap(Map<String, dynamic> json) => Condition(
-        condition: json["Condition"] == null ? null : json["Condition"],
-        property: json["Property"] == null ? null : json["Property"],
-        value: json["Value"] == null ? null : json["Value"],
-        isRequired: json["IsRequired"] == null ? null : json["IsRequired"],
+        condition: json['Condition'] ?? null,
+        property: json['Property'] ?? null,
+        value: json['Value'] ?? null,
+        isRequired: json['IsRequired'] ?? null,
       );
 
   Map<String, dynamic> toMap() => {
-        "Condition": condition == null ? null : condition,
-        "Property": property == null ? null : property,
-        "Value": value == null ? null : value,
-        "IsRequired": isRequired == null ? null : isRequired,
+        if (condition != null) 'Condition': condition,
+        if (property != null) 'Property': property,
+        if (value != null || value != '') 'Value': value,
+        if (isRequired != null) 'IsRequired': isRequired,
       };
 }
