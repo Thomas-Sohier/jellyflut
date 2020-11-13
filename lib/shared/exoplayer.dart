@@ -76,20 +76,14 @@ const subtitleProfiles = [
 ];
 
 Future<DeviceProfile> getExoplayerProfile() async {
-  // if (cachedDeviceProfile) {
-  //       return (cachedDeviceProfile);
-  //   }
-
-  // var bitrateSetting = appSettings.maxStreamingBitrate();
-
   var profile = DeviceProfile();
 
-  // if (savedDeviceProfile != null) {
-  //   return savedDeviceProfile;
-  // }
+  if (savedDeviceProfile != null) {
+    return savedDeviceProfile;
+  }
 
   profile.name = 'Android ExoPlayer';
-  profile.maxStreamingBitrate = 120000000;
+  profile.maxStreamingBitrate = 120000000; // TODO calculate it
   profile.maxStaticBitrate = 100000000;
   profile.musicStreamingTranscodingBitrate = 192000;
 

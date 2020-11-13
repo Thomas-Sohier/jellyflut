@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/stream/controls.dart';
 import 'package:wakelock/wakelock.dart';
-
-import '../../globals.dart';
 
 class Stream extends StatefulWidget {
   final Item item;
@@ -31,17 +31,23 @@ class _StreamState extends State<Stream> {
   BetterPlayerDataSource dataSource;
   Timer _timer;
 
-  Future<BetterPlayerController> setupData() async {
+  Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.NETWORK, widget.streamUrl,
-        subtitles: await getSubtitles(widget.item));
-
+        subtitles: await getSubtitles(streamModel.item));
+    var aspectRatio = int.tryParse(streamModel.item.mediaStreams
+        .firstWhere((element) => element.type.trim().toLowerCase() == 'video')
+        .aspectRatio
+        .replaceAll(':', '/'));
     var betterPlayerConfiguration = BetterPlayerConfiguration(
-        aspectRatio: 16 / 9,
+        aspectRatio: aspectRatio ?? 16 / 9,
         fit: BoxFit.contain,
         autoPlay: true,
         looping: false,
+        fullScreenByDefault: true,
         allowedScreenSleep: false,
+        subtitlesConfiguration:
+            BetterPlayerSubtitlesConfiguration(fontSize: 18),
         startAt: Duration(
             microseconds:
                 (widget.item.userData.playbackPositionTicks / 10).round()),
@@ -50,7 +56,9 @@ class _StreamState extends State<Stream> {
 
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     await _betterPlayerController.setupDataSource(dataSource);
-    return Future.value(_betterPlayerController);
+    _betterPlayerController.enterFullScreen();
+    StreamModel().setBetterPlayerController(_betterPlayerController);
+    return Future.value(true);
   }
 
   @override
@@ -75,14 +83,15 @@ class _StreamState extends State<Stream> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: FutureBuilder<BetterPlayerController>(
+      body: FutureBuilder<bool>(
         future: setupData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Center(
               child: AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: BetterPlayer(controller: snapshot.data)),
+                  child: BetterPlayer(
+                      controller: streamModel.betterPlayerController)),
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -93,45 +102,49 @@ class _StreamState extends State<Stream> {
   }
 
   void progressTimer() {
-    if (_betterPlayerController != null) {
-      _timer = Timer.periodic(
-          Duration(seconds: 15),
-          (Timer t) => itemProgress(streamModel.item,
-              canSeek: true,
-              isMuted:
-                  _betterPlayerController.videoPlayerController.value.volume > 0
-                      ? true
-                      : false,
-              isPaused: !_betterPlayerController
-                  .videoPlayerController.value.isPlaying,
-              positionTicks: _betterPlayerController
-                  .videoPlayerController.value.position.inMicroseconds,
-              volumeLevel: _betterPlayerController
-                  .videoPlayerController.value.volume
-                  .round(),
-              subtitlesIndex: _betterPlayerController
-                  .videoPlayerController.value.caption.number));
-    }
+    _timer = Timer.periodic(
+        Duration(seconds: 15),
+        (Timer t) => itemProgress(streamModel.item,
+            canSeek: true,
+            isMuted:
+                _betterPlayerController.videoPlayerController.value.volume > 0
+                    ? true
+                    : false,
+            isPaused:
+                !_betterPlayerController.videoPlayerController.value.isPlaying,
+            positionTicks: _betterPlayerController
+                .videoPlayerController.value.position.inMicroseconds,
+            volumeLevel: _betterPlayerController
+                .videoPlayerController.value.volume
+                .round(),
+            subtitlesIndex: _betterPlayerController
+                .videoPlayerController.value.caption.number));
   }
 
   BetterPlayerControlsConfiguration configuration() {
     return BetterPlayerControlsConfiguration(
       enableSkips: false,
-      enableFullscreen: true,
+      enableFullscreen: false,
       enableProgressText: true,
       enablePlaybackSpeed: true,
       enableMute: true,
       enablePlayPause: true,
       enableSubtitles: true,
       enableQualities: false,
+      customControls: Controls(),
       controlBarHeight: 40,
     );
   }
 }
 
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
-  var subtitles = item?.mediaStreams != null
-      ? item.mediaStreams
+  var subtitles = StreamModel().playBackInfos.mediaSources.first.mediaStreams !=
+          null
+      ? StreamModel()
+          .playBackInfos
+          .mediaSources
+          .first
+          .mediaStreams
           .where((element) => element.type.trim().toLowerCase() == 'subtitle')
           .toList()
       : [];
@@ -139,33 +152,12 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
       .map((sub) async => BetterPlayerSubtitlesSource(
           type: BetterPlayerSubtitlesSourceType.NETWORK,
           urls: [
-            await getSubtitleURL(item.id, sub.codec.toString(), sub.index)
+            sub.isExternal
+                ? sub.deliveryUrl
+                : await getSubtitleURL(item.id, sub.codec, sub.index)
           ],
-          name: sub.title))
+          selectedByDefault: sub.isDefault,
+          name: '${sub.language} - ${sub.title}'))
       .toList();
   return Future.wait(asyncSubs);
-}
-
-Future<String> getSubtitleURL(
-    String itemId, String codec, int subtitleId) async {
-  var mediaSourceId = itemId.substring(0, 8) +
-      '-' +
-      itemId.substring(8, 12) +
-      '-' +
-      itemId.substring(12, 16) +
-      '-' +
-      itemId.substring(16, 20) +
-      '-' +
-      itemId.substring(20, itemId.length);
-
-  var parsedCodec = codec.substring(codec.indexOf('.') + 1);
-
-  var queryParam = <String, String>{};
-  queryParam['api_key'] = apiKey;
-
-  var uri = Uri.https(
-      server.url.replaceAll('https://', ''),
-      '/Videos/${mediaSourceId}/${itemId}/Subtitles/${subtitleId}/0/Stream.${parsedCodec}',
-      queryParam);
-  return uri.origin + uri.path;
 }

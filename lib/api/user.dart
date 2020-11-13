@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,13 +7,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:path_provider/path_provider.dart';
 
-BaseOptions options = BaseOptions(
-  connectTimeout: 60000,
-  receiveTimeout: 60000,
-  contentType: 'JSON',
-);
-
-Dio dio = Dio(options);
+import 'dio.dart';
 
 Future<List<Item>> getLatestMedia({
   String parentId,
@@ -29,8 +22,6 @@ Future<List<Item>> getLatestMedia({
   queryParams['Fields'] = fields;
   queryParams['ImageTypeLimit'] = imageTypeLimit;
   queryParams['EnableImageTypes'] = enableImageTypes;
-  queryParams['api_key'] = apiKey;
-  queryParams['Content-Type'] = 'application/json';
 
   var url = '${server.url}/Users/${user.id}/Items/Latest';
 
@@ -48,7 +39,6 @@ Future<List<Item>> getLatestMedia({
 
 Future<Category> getCategory({String parentId, int limit = 10}) async {
   var queryParams = <String, dynamic>{};
-  queryParams['api_key'] = apiKey;
   queryParams['Limit'] = limit;
   if (parentId != null) queryParams['ParentId'] = parentId;
 
@@ -100,15 +90,11 @@ Future<bool> requestStorage() async {
 }
 
 Future<Map<String, dynamic>> viewItem(String itemId) async {
-  var queryParams = <String, dynamic>{};
-  // queryParams['DatePlayed'] = datePlayedFromDate(new DateTime.now());
-  queryParams['api_key'] = apiKey;
-
   var url = '${server.url}/Users/${user.id}/PlayedItems/${itemId}';
 
   Response response;
   try {
-    response = await dio.post(url, queryParameters: queryParams);
+    response = await dio.post(url);
   } catch (e) {
     print(e);
   }
@@ -116,14 +102,11 @@ Future<Map<String, dynamic>> viewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unviewItem(String itemId) async {
-  var queryParams = <String, dynamic>{};
-  queryParams['api_key'] = apiKey;
-
   var url = '${server.url}/Users/${user.id}/PlayedItems/${itemId}';
 
   Response response;
   try {
-    response = await dio.delete(url, queryParameters: queryParams);
+    response = await dio.delete(url);
   } catch (e) {
     print(e);
   }
@@ -131,15 +114,11 @@ Future<Map<String, dynamic>> unviewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> favItem(String itemId) async {
-  var queryParams = <String, dynamic>{};
-  // queryParams['DatePlayed'] = datePlayedFromDate(new DateTime.now());
-  queryParams['api_key'] = apiKey;
-
   var url = '${server.url}/Users/${user.id}/FavoriteItems/${itemId}';
 
   Response response;
   try {
-    response = await dio.post(url, queryParameters: queryParams);
+    response = await dio.post(url);
   } catch (e) {
     print(e);
   }
@@ -147,14 +126,11 @@ Future<Map<String, dynamic>> favItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unfavItem(String itemId) async {
-  var queryParams = <String, dynamic>{};
-  queryParams['api_key'] = apiKey;
-
   var url = '${server.url}/Users/${user.id}/FavoriteItems/${itemId}';
 
   Response response;
   try {
-    response = await dio.delete(url, queryParameters: queryParams);
+    response = await dio.delete(url);
   } catch (e) {
     print(e);
   }

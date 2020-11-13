@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:jellyflut/api/dio.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -6,29 +7,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 
-// or new Dio with a BaseOptions instance.
-BaseOptions options = BaseOptions(
-  connectTimeout: 30000,
-  receiveTimeout: 30000,
-);
-Dio dio = Dio(options);
-
 Future<bool> isLoggedIn() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var prefs = await SharedPreferences.getInstance();
   return prefs.getBool('isLoggedIn') ?? false;
 }
 
 Future<AuthenticationResponse> login(String username, String password) async {
-  var body = Map<String, dynamic>();
-  body["Username"] = username;
-  body["PW"] = password;
+  var body = <String, dynamic>{};
+  body['Username'] = username;
+  body['PW'] = password;
 
-  String login = "/Users/AuthenticateByName";
+  var login = '/Users/AuthenticateByName';
   var headers = Map<String, dynamic>();
-  headers["X-Emby-Authorization"] = await authHeader();
-  headers["Content-Type"] = "application/json";
+  headers['Content-Type'] = 'application/json';
 
-  FormData formData = FormData.fromMap(body);
+  var formData = FormData.fromMap(body);
 
   dio.options.headers = headers;
 

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/models/deviceProfileParent.dart';
@@ -12,16 +13,10 @@ import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/shared/exoplayer.dart';
 
 import '../globals.dart';
+import 'dio.dart';
 import 'items.dart';
 
-BaseOptions options = BaseOptions(
-  connectTimeout: 60000,
-  receiveTimeout: 60000,
-  contentType: 'JSON',
-);
 const platform = MethodChannel('com.example.jellyflut/videoPlayer');
-
-Dio dio = Dio(options);
 
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
     {int startTick = 0}) async {
@@ -29,7 +24,11 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   return '${server.url}/Videos/${item.id}/stream.${playBackInfos.mediaSources.first.container}?startTimeTicks=${startTick}&Static=true&mediaSourceId=${item.id}&deviceId=${info.id}&api_key=${apiKey}&Tag=${playBackInfos.mediaSources.first.eTag}';
 }
 
-Future<String> getItemURL(Item item) {
+Future<String> getItemURL(Item item) async {
+  await bitrateTest(size: 500000);
+  await bitrateTest(size: 1000000);
+  await bitrateTest(size: 3000000);
+
   if (item.type == 'Episode' || item.type == 'Movie') {
     StreamModel().setItem(item);
     return getStreamURL(item: item);
@@ -40,27 +39,35 @@ Future<String> getItemURL(Item item) {
 Future<String> getFirstUnplayedItemURL(Item item) async {
   var category =
       await getItems(item.id, filter: 'IsNotFolder', fields: 'MediaStreams');
+  // remove all item without an index to avoid sort error
   category.items.removeWhere((element) => element.indexNumber == null);
+  // sort by index to get the next item to stream
   category.items.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
   var itemToPlay = category.items.firstWhere(
       (element) => !element.userData.played,
       orElse: () => category.items.first);
-  StreamModel().setItem(itemToPlay);
   return getStreamURL(item: itemToPlay);
 }
 
 Future<String> getStreamURL({Item item}) async {
   var data = await isCodecSupported(item, platform);
-  // var dataJSON = json.encode(data);
   var backInfos = await playbackInfos(data, item.id,
       startTimeTick: item.userData.playbackPositionTicks);
   var completeTranscodeUrl;
+  var finalUrl;
+
+  // Check if we have a transcide url or we create it
   if (backInfos.mediaSources.first.transcodingUrl != null) {
     completeTranscodeUrl =
         '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
   }
-  return completeTranscodeUrl ??
+  finalUrl = completeTranscodeUrl ??
       await createURL(item, backInfos, startTick: item.runTimeTicks);
+  // Current item, playbackinfos and stream url
+  StreamModel().setItem(item);
+  StreamModel().setPlaybackInfos(backInfos);
+  StreamModel().setURL(finalUrl);
+  return finalUrl;
 }
 
 Future<String> isCodecSupported(Item item, MethodChannel platform) async {
@@ -78,4 +85,53 @@ Future<String> isCodecSupported(Item item, MethodChannel platform) async {
   log(result.toString());
   var x = json.encode(result);
   return x;
+}
+
+Future<String> changeAudioSource(int audioIndex, {int playbackTick}) async {
+  var url = StreamModel().url;
+
+  var queryParam = <String, String>{};
+  queryParam['api_key'] = apiKey;
+
+  var uri = Uri.https(server.url.replaceAll('https?://', ''), url, queryParam);
+  return uri.origin + uri.path;
+}
+
+Future<String> getSubtitleURL(
+    String itemId, String codec, int subtitleId) async {
+  var mediaSourceId = itemId.substring(0, 8) +
+      '-' +
+      itemId.substring(8, 12) +
+      '-' +
+      itemId.substring(12, 16) +
+      '-' +
+      itemId.substring(16, 20) +
+      '-' +
+      itemId.substring(20, itemId.length);
+
+  var parsedCodec = codec.substring(codec.indexOf('.') + 1);
+
+  var queryParam = <String, String>{};
+  queryParam['api_key'] = apiKey;
+
+  var uri = Uri.https(
+      server.url.replaceAll('https://', ''),
+      '/Videos/${mediaSourceId}/${itemId}/Subtitles/${subtitleId}/0/Stream.${parsedCodec}',
+      queryParam);
+  return uri.origin + uri.path;
+}
+
+Future<dynamic> bitrateTest({@required int size}) async {
+  var queryParams = <String, dynamic>{};
+  queryParams['Size'] = size;
+
+  var url = '${server.url}/Playback/BitrateTest';
+
+  Response response;
+  try {
+    response = await dio.get(url, queryParameters: queryParams);
+  } catch (e) {
+    print(e);
+  }
+  return response.data;
 }

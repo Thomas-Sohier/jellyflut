@@ -9,14 +9,7 @@ import 'package:jellyflut/models/playbackInfos.dart';
 // import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
-
-BaseOptions options = BaseOptions(
-  connectTimeout: 60000,
-  receiveTimeout: 60000,
-  contentType: 'JSON',
-);
-
-Dio dio = Dio(options);
+import 'dio.dart';
 
 String getItemImageUrl(String itemId, String imageTag,
     {ImageBlurHashes imageBlurHashes,
@@ -79,14 +72,11 @@ String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
 }
 
 Future<int> deleteItem(String itemId) async {
-  var map = <String, dynamic>{};
-  var queryParams = map;
-  queryParams['api_key'] = apiKey;
   var url = '${server.url}/Items/${itemId}';
 
   var response = Response();
   try {
-    response = await dio.delete(url, queryParameters: queryParams);
+    response = await dio.delete(url);
   } catch (e) {
     print(e);
   }
@@ -125,8 +115,6 @@ Future<Item> getItem(String itemId,
   queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
-  queryParams['api_key'] = apiKey;
-  queryParams['Content-Type'] = 'application/json';
 
   var url = '${server.url}/Users/${user.id}/Items/${itemId}';
 
@@ -156,7 +144,7 @@ Future<Category> getResumeItems(
     String excludeLocationTypes = '',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
-  var queryParams = Map<String, dynamic>();
+  var queryParams = <String, dynamic>{};
   queryParams['Filters'] = filter;
   queryParams['Recursive'] = recursive;
   queryParams['SortBy'] = sortBy;
@@ -173,8 +161,6 @@ Future<Category> getResumeItems(
   queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
-  queryParams['api_key'] = apiKey;
-  queryParams['Content-Type'] = 'application/json';
 
   var url = '${server.url}/Users/${user.id}/Items/Resume';
 
@@ -232,7 +218,6 @@ Future<Category> getItems(String parentId,
   collapseBoxSetItems != null
       ? queryParams['CollapseBoxSetItems'] = collapseBoxSetItems
       : null;
-  queryParams['api_key'] = apiKey;
 
   var url = '${server.url}/Users/${user.id}/Items';
 
@@ -254,9 +239,6 @@ void itemProgress(Item item,
     int positionTicks = 0,
     int volumeLevel = 100,
     int subtitlesIndex}) {
-  var queryParams = <String, dynamic>{};
-  queryParams['api_key'] = apiKey;
-
   var mediaPlayedInfos = MediaPlayedInfos();
   mediaPlayedInfos.isMuted = isMuted;
   mediaPlayedInfos.isPaused = isPaused;
@@ -276,30 +258,30 @@ void itemProgress(Item item,
 
   dio.options.contentType = 'application/json';
   dio
-      .post(url, data: _json, queryParameters: queryParams)
+      .post(url, data: _json)
       .then((_) => print('progress ok'))
       .catchError((onError) => print(onError));
 }
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
     {startTimeTick = 0}) async {
-  var _authHeader = await authHeader();
   var queryParams = <String, dynamic>{};
   queryParams['UserId'] = user.id;
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
-  queryParams['MaxStreamingBitrate'] = 160000000;
-  queryParams['api_key'] = apiKey;
   dio.options.contentType = 'application/json';
-  dio.options.headers['X-Emby-Authorization'] = _authHeader;
 
   var url = '${server.url}/Items/${itemId}/PlaybackInfo';
 
   Response response;
   var playBackInfos = PlayBackInfos();
   try {
-    response = await dio.post(url, queryParameters: queryParams, data: json);
+    response = await dio.post(
+      url,
+      queryParameters: queryParams,
+      data: json,
+    );
     playBackInfos = PlayBackInfos.fromMap(response.data);
   } catch (e) {
     print(e);

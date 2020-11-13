@@ -1,24 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:jellyflut/models/category.dart';
 import '../globals.dart';
-
-BaseOptions options = BaseOptions(
-  connectTimeout: 60000,
-  receiveTimeout: 60000,
-  contentType: 'JSON',
-);
-
-Dio dio = Dio(options);
+import 'dio.dart';
 
 Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
-  var queryParams = Map<String, dynamic>();
-  queryParams['api_key'] = apiKey;
+  var queryParams = <String, dynamic>{};
   queryParams['seasonId'] = seasonId;
   queryParams['userId'] = user.id;
-  queryParams["Fields"] =
+  queryParams['Fields'] =
       'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
 
-  var url = "${server.url}/Shows/${parentId}/Episodes";
+  var url = '${server.url}/Shows/${parentId}/Episodes';
 
   Response response;
   var category = Category();
