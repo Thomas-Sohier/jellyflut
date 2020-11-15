@@ -22,7 +22,7 @@ class Critics extends StatelessWidget {
       );
     else
       return SvgPicture.asset(
-        "img/rotten.svg",
+        'img/rotten.svg',
         semanticsLabel: 'Critic rating',
         height: 20,
       );

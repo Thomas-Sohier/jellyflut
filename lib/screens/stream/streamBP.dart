@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -30,21 +29,22 @@ class _StreamState extends State<Stream> {
   StreamModel streamModel;
   BetterPlayerController _betterPlayerController;
   BetterPlayerDataSource dataSource;
+  var aspectRatio;
 
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.NETWORK, widget.streamUrl,
         subtitles: await getSubtitles(streamModel.item));
-    var aspectRatio = int.tryParse(streamModel.item.mediaStreams
+    var aspectRatioString = streamModel.item.mediaStreams
         .firstWhere((element) => element.type.trim().toLowerCase() == 'video')
-        .aspectRatio
-        .replaceAll(':', '/'));
+        .aspectRatio;
+    aspectRatio = calculateAspectRatio(aspectRatioString) ?? 16 / 9;
     var betterPlayerConfiguration = BetterPlayerConfiguration(
-        aspectRatio: aspectRatio ?? 16 / 9,
+        aspectRatio: aspectRatio,
         fit: BoxFit.contain,
         autoPlay: true,
         looping: false,
-        fullScreenByDefault: true,
+        fullScreenByDefault: false,
         allowedScreenSleep: false,
         subtitlesConfiguration:
             BetterPlayerSubtitlesConfiguration(fontSize: 18),
@@ -56,7 +56,6 @@ class _StreamState extends State<Stream> {
 
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     await _betterPlayerController.setupDataSource(dataSource);
-    _betterPlayerController.enterFullScreen();
     StreamModel().setBetterPlayerController(_betterPlayerController);
     return Future.value(true);
   }
@@ -70,10 +69,11 @@ class _StreamState extends State<Stream> {
   }
 
   @override
-  void dispose() {
-    Wakelock.disable();
+  Future<void> dispose() async {
+    await Wakelock.disable();
+    await deleteActiveEncoding();
     streamModel.stopProgressTimer();
-    streamModel.dispose();
+    streamModel.betterPlayerController.dispose();
     super.dispose();
   }
 
@@ -87,7 +87,7 @@ class _StreamState extends State<Stream> {
           if (snapshot.hasData) {
             return Center(
               child: AspectRatio(
-                  aspectRatio: 16 / 9,
+                  aspectRatio: aspectRatio,
                   child: BetterPlayer(
                       controller: streamModel.betterPlayerController)),
             );
@@ -138,4 +138,13 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
           name: '${sub.language} - ${sub.title}'))
       .toList();
   return Future.wait(asyncSubs);
+}
+
+double calculateAspectRatio(String aspectRatio) {
+  if (aspectRatio.isEmpty) return null;
+  var separatorIndex = aspectRatio.indexOf(':');
+  var firstValue = int.parse(aspectRatio.substring(0, separatorIndex));
+  var secondValue =
+      int.parse(aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
+  return firstValue / secondValue;
 }

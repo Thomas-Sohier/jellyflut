@@ -18,6 +18,30 @@ import 'items.dart';
 
 const platform = MethodChannel('com.example.jellyflut/videoPlayer');
 
+Future<int> deleteActiveEncoding({String playSessionId}) async {
+  var info = await deviceInfo();
+  var queryParam = <String, String>{};
+  queryParam['deviceId'] = info.id;
+  queryParam['PlaySessionId'] =
+      StreamModel().playBackInfos?.playSessionId ?? playSessionId;
+
+  var url = '${server.url}/Videos/ActiveEncodings';
+
+  Response response;
+  try {
+    response = await dio.delete(url, queryParameters: queryParam);
+  } catch (e) {
+    print(e);
+  }
+  if (response.statusCode == 204) {
+    print('Stream decoding successfully deleted');
+  } else {
+    print('Stream encoding cannot be deleted, ${response.data}');
+  }
+
+  return response.statusCode;
+}
+
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
     {int startTick = 0, int audioStreamIndex}) async {
   var info = await deviceInfo();
