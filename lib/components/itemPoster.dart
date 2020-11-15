@@ -76,66 +76,112 @@ class _ItemPosterState extends State<ItemPoster> {
                           if (widget.item.userData.playbackPositionTicks !=
                                   null &&
                               widget.item.userData.playbackPositionTicks > 0)
-                            Positioned(
-                                bottom: 5,
-                                right: 5,
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    blurRadius: 6,
-                                                    color: Colors.black54,
-                                                    spreadRadius: 12)
-                                              ],
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30))),
-                                          child: Stack(
-                                            children: <Widget>[
-                                              // Stroked text as border.
-                                              Text(
-                                                (percentDuration(widget.item) *
-                                                        100)
-                                                    .round()
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    foreground: Paint()
-                                                      ..style =
-                                                          PaintingStyle.stroke
-                                                      ..strokeWidth = 2
-                                                      ..color = Colors.white
-                                                      ..color = Colors.black),
+                            Positioned.fill(
+                                child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: FractionallySizedBox(
+                                        widthFactor: 0.9,
+                                        heightFactor: 0.2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Text(
+                                                      (percentDuration(widget
+                                                                      .item) *
+                                                                  100)
+                                                              .round()
+                                                              .toString() +
+                                                          ' %',
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  )),
+                                                ],
                                               ),
-                                              // Solid text as fill.
-                                              Text(
-                                                (percentDuration(widget.item) *
-                                                        100)
-                                                    .round()
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
+                                              Stack(
+                                                children: [
+                                                  Positioned(
+                                                      child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .all(Radius.circular(
+                                                                            80.0)),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                      blurRadius:
+                                                                          1,
+                                                                      color: Colors
+                                                                          .black45,
+                                                                      spreadRadius:
+                                                                          1)
+                                                                ]),
+                                                            width: double
+                                                                .maxFinite,
+                                                            height: 3,
+                                                          ))),
+                                                  Positioned(
+                                                      child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          80.0)),
+                                                              color: Colors
+                                                                  .black26,
+                                                            ),
+                                                            width: double
+                                                                .maxFinite,
+                                                            height: 3,
+                                                          ))),
+                                                  Positioned(
+                                                      child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child:
+                                                              FractionallySizedBox(
+                                                                  widthFactor:
+                                                                      percentDuration(
+                                                                          widget
+                                                                              .item),
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                80.0)),
+                                                                        color: Colors
+                                                                            .white),
+                                                                    width: double
+                                                                        .maxFinite,
+                                                                    height: 3,
+                                                                  )))),
+                                                ],
+                                              )
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                    CircularProgressIndicator(
-                                      backgroundColor: Colors.black12,
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(color1),
-                                      value: percentDuration(widget.item),
-                                    ),
-                                  ],
-                                )),
+                                        )))),
                           if (widget.item.userData.played)
                             Positioned.fill(
                                 right: 5,

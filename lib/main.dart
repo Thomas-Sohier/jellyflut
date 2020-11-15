@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
       backgroundColor: Colors.grey[900],
       photoSize: 80.0,
       loaderColor: color1,
+      seconds: null,
     );
   }
 }
@@ -71,23 +72,6 @@ class Jellyflut extends StatelessWidget {
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: (BuildContext context) => Home());
       },
-    );
-  }
-}
-
-class AfterSplash extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          title: new Text("Welcome In SplashScreen Package"),
-          automaticallyImplyLeading: false),
-      body: new Center(
-        child: new Text(
-          "Done!",
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
-        ),
-      ),
     );
   }
 }

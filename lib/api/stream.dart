@@ -19,9 +19,25 @@ import 'items.dart';
 const platform = MethodChannel('com.example.jellyflut/videoPlayer');
 
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-    {int startTick = 0}) async {
+    {int startTick = 0, int audioStreamIndex}) async {
   var info = await deviceInfo();
-  return '${server.url}/Videos/${item.id}/stream.${playBackInfos.mediaSources.first.container}?startTimeTicks=${startTick}&Static=true&mediaSourceId=${item.id}&deviceId=${info.id}&api_key=${apiKey}&Tag=${playBackInfos.mediaSources.first.eTag}';
+  var queryParam = <String, String>{};
+  queryParam['startTimeTicks'] = startTick.toString();
+  queryParam['Static'] = true.toString();
+  queryParam['mediaSourceId'] = item.id;
+  queryParam['deviceId'] = info.id;
+  queryParam['Tag'] = playBackInfos.mediaSources.first.eTag;
+  if (audioStreamIndex != null) {
+    queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
+  }
+  queryParam['api_key'] = apiKey;
+
+  var url =
+      'Videos/${item.id}/stream.${playBackInfos.mediaSources.first.container}';
+
+  var uri = Uri.https(
+      server.url.replaceAll(RegExp('https?://'), ''), url, queryParam);
+  return uri.toString();
 }
 
 Future<String> getItemURL(Item item) async {
@@ -88,13 +104,24 @@ Future<String> isCodecSupported(Item item, MethodChannel platform) async {
 }
 
 Future<String> changeAudioSource(int audioIndex, {int playbackTick}) async {
-  var url = StreamModel().url;
+  var streamModel = StreamModel();
+  var item = streamModel.item;
+  var backInfos = streamModel.playBackInfos;
+  var startTick = (streamModel.betterPlayerController.videoPlayerController
+          .value.position.inMicroseconds *
+      10);
 
-  var queryParam = <String, String>{};
-  queryParam['api_key'] = apiKey;
-
-  var uri = Uri.https(server.url.replaceAll('https?://', ''), url, queryParam);
-  return uri.origin + uri.path;
+  if (backInfos.mediaSources.first.transcodingUrl != null) {
+    var url = backInfos.mediaSources.first.transcodingUrl;
+    var uri = Uri.parse(url);
+    var queryParams = Map<String, String>.from(uri.queryParameters);
+    queryParams['AudioStreamIndex'] = audioIndex.toString();
+    return await Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
+            Uri.parse(url).path, queryParams)
+        .toString();
+  }
+  return createURL(item, backInfos,
+      startTick: startTick, audioStreamIndex: audioIndex);
 }
 
 Future<String> getSubtitleURL(
@@ -115,7 +142,7 @@ Future<String> getSubtitleURL(
   queryParam['api_key'] = apiKey;
 
   var uri = Uri.https(
-      server.url.replaceAll('https://', ''),
+      server.url.replaceAll(RegExp('http?s://'), ''),
       '/Videos/${mediaSourceId}/${itemId}/Subtitles/${subtitleId}/0/Stream.${parsedCodec}',
       queryParam);
   return uri.origin + uri.path;

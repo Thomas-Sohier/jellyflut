@@ -35,6 +35,8 @@ class _AsyncImageState extends State<AsyncImage> {
 Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
     String tag, BoxFit boxFit, Alignment alignment, Widget placeholder) {
   return CachedNetworkImage(
+    height: double.maxFinite,
+    width: double.maxFinite,
     imageUrl:
         getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash),
     imageBuilder: (context, imageProvider) => Container(

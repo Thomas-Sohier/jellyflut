@@ -6,6 +6,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
+import 'package:jellyflut/provider/streamModel.dart';
 // import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
@@ -264,12 +265,24 @@ void itemProgress(Item item,
 }
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
-    {startTimeTick = 0}) async {
+    {startTimeTick = 0, int subtitleStreamIndex, int audioStreamIndex}) async {
+  var streamModel = StreamModel();
   var queryParams = <String, dynamic>{};
   queryParams['UserId'] = user.id;
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
+  queryParams['MediaSourceId'] = itemId;
+  if (subtitleStreamIndex != null) {
+    queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
+  } else {
+    queryParams['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex;
+  }
+  if (audioStreamIndex != null) {
+    queryParams['AudioStreamIndex'] = audioStreamIndex;
+  } else {
+    queryParams['AudioStreamIndex'] = streamModel.audioStreamIndex;
+  }
   dio.options.contentType = 'application/json';
 
   var url = '${server.url}/Items/${itemId}/PlaybackInfo';

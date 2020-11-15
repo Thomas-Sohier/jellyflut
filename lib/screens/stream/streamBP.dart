@@ -6,8 +6,9 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/controls.dart';
 import 'package:wakelock/wakelock.dart';
+
+import 'controls.dart';
 
 class Stream extends StatefulWidget {
   final Item item;
@@ -29,7 +30,6 @@ class _StreamState extends State<Stream> {
   StreamModel streamModel;
   BetterPlayerController _betterPlayerController;
   BetterPlayerDataSource dataSource;
-  Timer _timer;
 
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource(
@@ -64,18 +64,16 @@ class _StreamState extends State<Stream> {
   @override
   void initState() {
     Wakelock.enable();
-    // SystemChrome.setEnabledSystemUIOverlays([]);
-    progressTimer();
     streamModel = StreamModel();
+    streamModel.startProgressTimer();
     super.initState();
   }
 
   @override
   void dispose() {
     Wakelock.disable();
-    // SystemChrome.setEnabledSystemUIOverlays(
-    //     [SystemUiOverlay.top, SystemUiOverlay.bottom]);
-    _timer.cancel();
+    streamModel.stopProgressTimer();
+    streamModel.dispose();
     super.dispose();
   }
 
@@ -99,26 +97,6 @@ class _StreamState extends State<Stream> {
         },
       ),
     );
-  }
-
-  void progressTimer() {
-    _timer = Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) => itemProgress(streamModel.item,
-            canSeek: true,
-            isMuted:
-                _betterPlayerController.videoPlayerController.value.volume > 0
-                    ? true
-                    : false,
-            isPaused:
-                !_betterPlayerController.videoPlayerController.value.isPlaying,
-            positionTicks: _betterPlayerController
-                .videoPlayerController.value.position.inMicroseconds,
-            volumeLevel: _betterPlayerController
-                .videoPlayerController.value.volume
-                .round(),
-            subtitlesIndex: _betterPlayerController
-                .videoPlayerController.value.caption.number));
   }
 
   BetterPlayerControlsConfiguration configuration() {
@@ -156,7 +134,7 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
                 ? sub.deliveryUrl
                 : await getSubtitleURL(item.id, sub.codec, sub.index)
           ],
-          selectedByDefault: sub.isDefault,
+          selectedByDefault: StreamModel().subtitleStreamIndex == sub.index,
           name: '${sub.language} - ${sub.title}'))
       .toList();
   return Future.wait(asyncSubs);

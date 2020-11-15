@@ -4,6 +4,7 @@ import 'package:jellyflut/components/expandedSection.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/components/unorderedList.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
 
@@ -19,24 +20,34 @@ class CardInfos extends StatefulWidget {
 }
 
 bool _infos;
+var audioValue;
+var subValue;
+var audioList;
+var subList;
 
 class _CardInfosState extends State<CardInfos> {
   @override
   void initState() {
     super.initState();
     _infos = false;
+    audioList = audioDropdownItems(widget.item);
+    subList = subDropdownItems(widget.item);
   }
 
   @override
   Widget build(BuildContext context) {
     var item = widget.item;
-
     return Column(
       children: [
         Row(
           children: [
             actionIcons(item),
             Spacer(),
+            if (item.userData.playbackPositionTicks != null)
+              Text(printDuration(Duration(
+                      microseconds:
+                          (item.userData.playbackPositionTicks / 10).round())) +
+                  ' - '),
             if (item.runTimeTicks != null)
               Text(printDuration(
                   Duration(microseconds: (item.runTimeTicks / 10).round()))),
@@ -55,6 +66,74 @@ class _CardInfosState extends State<CardInfos> {
                 ))
           ],
         ),
+        if (item?.mediaSources != null)
+          Row(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: DropdownButtonHideUnderline(
+                      child: Container(
+                    height: 36,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1.0, style: BorderStyle.solid),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                    ),
+                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: DropdownButton<String>(
+                        value: audioValue,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        iconSize: 24,
+                        isDense: true,
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(color: Colors.black),
+                        hint: Text('Audio'),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            setAudioStreamIndex(item, newValue);
+                            audioValue = newValue;
+                          });
+                        },
+                        items: audioList),
+                  ))),
+              Spacer(
+                flex: 1,
+              ),
+              Expanded(
+                  flex: 5,
+                  child: DropdownButtonHideUnderline(
+                    child: Container(
+                      height: 36,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side:
+                              BorderSide(width: 1.0, style: BorderStyle.solid),
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        ),
+                      ),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: DropdownButton<String>(
+                          value: subValue,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          iconSize: 24,
+                          elevation: 16,
+                          isDense: true,
+                          isExpanded: true,
+                          style: TextStyle(color: Colors.black),
+                          hint: Text('Subtitles'),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              setSubStreamIndex(item, newValue);
+                              subValue = newValue;
+                            });
+                          },
+                          items: subList),
+                    ),
+                  )),
+            ],
+          ),
         details(item, context)
       ],
     );
@@ -201,4 +280,74 @@ Widget infos(Item item, BuildContext context) {
             ],
           )
       ]));
+}
+
+List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
+  if (item.mediaSources == null) return <DropdownMenuItem<String>>[];
+
+  // Find the default sub to choose
+  var audioList = item.mediaSources.first.mediaStreams
+      .where((element) => element.type.trim().toLowerCase() == 'audio')
+      .toList();
+
+  var defaultAudio = audioList.firstWhere(
+    (element) => element.isDefault,
+    orElse: () => audioList.first,
+  );
+  audioValue = defaultAudio.displayTitle;
+  StreamModel().setAudioStreamIndex(defaultAudio.index);
+
+  // Find all audio to fill dropdown
+  var audioDropdownList = audioList
+      .map((e) => e.displayTitle)
+      .map<DropdownMenuItem<String>>((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(value),
+    );
+  }).toList();
+
+  return audioDropdownList;
+}
+
+void setAudioStreamIndex(Item item, String audioDisplayTitle) {
+  var selectedAudio = item.mediaSources.first.mediaStreams
+      .where((element) => element.type.trim().toLowerCase() == 'audio')
+      .firstWhere((element) => element.displayTitle == audioDisplayTitle);
+  StreamModel().setAudioStreamIndex(selectedAudio.index);
+}
+
+List<DropdownMenuItem<String>> subDropdownItems(Item item) {
+  if (item.mediaSources == null) return <DropdownMenuItem<String>>[];
+
+  // Find the default sub to choose
+  var subList = item.mediaSources.first.mediaStreams
+      .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+      .toList();
+  var defaultSub = subList.firstWhere(
+    (element) => element.isDefault,
+    orElse: () => item.mediaSources.first.mediaStreams.first,
+  );
+
+  subValue = defaultSub.displayTitle;
+  StreamModel().setSubtitleStreamIndex(defaultSub.index);
+
+  // Find all subtitles to fill dropdown
+  var subDropdownList = subList
+      .map((e) => e.displayTitle)
+      .map<DropdownMenuItem<String>>((String value) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Text(value),
+    );
+  }).toList();
+
+  return subDropdownList;
+}
+
+void setSubStreamIndex(Item item, String subDisplayTitle) {
+  var selectedSub = item.mediaSources.first.mediaStreams
+      .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+      .firstWhere((element) => element.displayTitle == subDisplayTitle);
+  StreamModel().setSubtitleStreamIndex(selectedSub.index);
 }

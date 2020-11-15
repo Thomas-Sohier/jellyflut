@@ -13,7 +13,7 @@ class Resume extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var _items = snapshot.data.items;
-            if (_items.isNotEmpty) {
+            if (_items != null && _items.isNotEmpty) {
               return body(_items);
             } else {
               return Container(
@@ -41,7 +41,7 @@ class Resume extends StatelessWidget {
           ),
         ),
         ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 250),
+            constraints: BoxConstraints(maxHeight: 230),
             child: Padding(
                 padding: const EdgeInsets.all(5),
                 child: ListView.builder(
@@ -54,7 +54,7 @@ class Resume extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                       child: ItemPoster(
                         _item,
-                        boxFit: BoxFit.fitWidth,
+                        boxFit: BoxFit.cover,
                       ),
                     );
                   },

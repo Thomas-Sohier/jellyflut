@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +24,7 @@ class _ControlsState extends State<Controls> {
   Timer _timer;
   int _playBackTime = 0;
   int subtitleSelectedIndex;
+  int audioSelectedIndex;
   StreamModel streamModel;
 
   @override
@@ -41,7 +44,7 @@ class _ControlsState extends State<Controls> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -108,18 +111,19 @@ class _ControlsState extends State<Controls> {
             ),
           ),
         ),
-        InkWell(
-            onTap: () {
-              changeAudioSource(1);
-            },
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.audiotrack,
-                color: Colors.white,
-              ),
-            ))
+        // TODO make audio change works
+        // InkWell(
+        //     onTap: () {
+        //       changeAudio(context);
+        //     },
+        //     borderRadius: BorderRadius.all(Radius.circular(50)),
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Icon(
+        //         Icons.audiotrack,
+        //         color: Colors.white,
+        //       ),
+        //     ))
       ],
     );
   }
@@ -183,7 +187,7 @@ class _ControlsState extends State<Controls> {
   }
 
   Future<void> autoHideControl() async {
-    if (StreamModel().betterPlayerController != null) {
+    if (streamModel.betterPlayerController != null) {
       if (_timer != null) _timer.cancel();
       setState(() {
         _visible = !_visible;
@@ -197,9 +201,7 @@ class _ControlsState extends State<Controls> {
   }
 
   void changeSubtitle(BuildContext context) {
-    var subtitles = StreamModel()
-        .item
-        .mediaStreams
+    var subtitles = streamModel.item.mediaStreams
         .where((element) => element.type.trim().toLowerCase() == 'subtitle')
         .toList();
     if (subtitles != null && subtitles.isNotEmpty) {
@@ -292,4 +294,88 @@ class _ControlsState extends State<Controls> {
             urls: [url],
             name: sub.title));
   }
+
+  void changeAudio(BuildContext context) {
+    var audios = streamModel.item.mediaStreams
+        .where((element) => element.type.trim().toLowerCase() == 'audio')
+        .toList();
+    if (audios != null && audios.isNotEmpty) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Select audio source'),
+              content: Container(
+                constraints: BoxConstraints(maxWidth: 150),
+                width: double.maxFinite,
+                height: 250,
+                child: ListView.builder(
+                  itemCount: audios.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      selected: isAudioSelected(index, audios),
+                      title: Text(
+                        audios[index].displayTitle,
+                      ),
+                      onTap: () {
+                        changeAudioSource(audios[index].index,
+                                playbackTick: _playBackTime)
+                            .then((url) => changeAudioTrack(url));
+                        Navigator.pop(
+                          context,
+                          index < audios.length ? audios[index] : -1,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            );
+          });
+    } else {
+      showToast('No audios found');
+    }
+  }
+
+  bool isAudioSelected(int index, List<MediaStream> listAudios) {
+    if (subtitleSelectedIndex == index) {
+      return true;
+    } else if (subtitleSelectedIndex == null && listAudios[index].isDefault) {
+      return true;
+    }
+    return false;
+  }
+
+  void changeAudioTrack(String url) async {
+    var tick = streamModel.betterPlayerController.videoPlayerController.value
+        .position.inMicroseconds;
+    test(url, tick);
+    // await streamModel.betterPlayerController.setupDataSource(ds);
+  }
+
+  void test(String url, int startTick) async {
+    var dataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.NETWORK, url,
+        subtitles: await getSubtitles(streamModel.item));
+
+    streamModel.betterPlayerController.betterPlayerSubtitlesSourceList.clear();
+    var x = streamModel.betterPlayerController.betterPlayerDataSource.url;
+    await streamModel.betterPlayerController.setupDataSource(dataSource);
+    streamModel.betterPlayerController.playNextVideo();
+  }
+}
+
+BetterPlayerControlsConfiguration configuration() {
+  return BetterPlayerControlsConfiguration(
+    enableSkips: false,
+    enableFullscreen: false,
+    enableProgressText: true,
+    enablePlaybackSpeed: true,
+    enableMute: true,
+    enablePlayPause: true,
+    enableSubtitles: true,
+    enableQualities: false,
+    // customControls: Controls(),
+    controlBarHeight: 40,
+  );
 }
