@@ -25,7 +25,12 @@ You can :
 
 ![Image of login screen](./img/login.jpg)
 ![Image of home](./img/home.jpg)
-![Image of details](./img/details.jpg)
+![Image of details](./img/home_research.jpg)
+![Image of details](./img/details_serie.jpg)
+![Image of details](./img/details_serie_bottom.jpg)
+![Image of details](./img/details_season.jpg)
+![Image of details](./img/details_epsiode.jpg)
+![Image of details](./img/details_music.jpg)
 
 ## Getting Started
 
