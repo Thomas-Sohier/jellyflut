@@ -2,7 +2,7 @@
 
 A jellyfin client made in Flutter
 
-It's a beta, it works mostly.
+It's a beta, it works okay.
  
 You can :
 - [x] Play a video
