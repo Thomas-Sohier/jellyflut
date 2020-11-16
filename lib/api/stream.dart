@@ -43,7 +43,8 @@ Future<int> deleteActiveEncoding({String playSessionId}) async {
 }
 
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-    {int startTick = 0, int audioStreamIndex}) async {
+    {int startTick = 0, int audioStreamIndex, int subtitleStreamIndex}) async {
+  var streamModel = StreamModel();
   var info = await deviceInfo();
   var queryParam = <String, String>{};
   queryParam['startTimeTicks'] = startTick.toString();
@@ -51,8 +52,16 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   queryParam['mediaSourceId'] = item.id;
   queryParam['deviceId'] = info.id;
   queryParam['Tag'] = playBackInfos.mediaSources.first.eTag;
+  if (subtitleStreamIndex != null) {
+    queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
+  } else {
+    queryParam['SubtitleStreamIndex'] =
+        streamModel.subtitleStreamIndex.toString();
+  }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
+  } else {
+    queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex.toString();
   }
   queryParam['api_key'] = apiKey;
 

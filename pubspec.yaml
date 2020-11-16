@@ -27,7 +27,7 @@ dependencies:
   flutter:
     sdk: flutter
   assets_audio_player: ^2.0.13
-  better_player: ^0.0.33
+  better_player: ^0.0.34
   cached_network_image: ^2.3.3
   cupertino_icons: ^1.0.0
   device_info: ^1.0.0

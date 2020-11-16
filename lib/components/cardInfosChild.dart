@@ -326,13 +326,14 @@ List<DropdownMenuItem<String>> subDropdownItems(Item item) {
   var subList = item.mediaSources.first.mediaStreams
       .where((element) => element.type.trim().toLowerCase() == 'subtitle')
       .toList();
-  var defaultSub = subList.firstWhere(
-    (element) => element.isDefault,
-    orElse: () => subList.first,
-  );
-
-  subValue = defaultSub.displayTitle;
-  StreamModel().setSubtitleStreamIndex(defaultSub.index);
+  if (subList.isNotEmpty) {
+    var defaultSub = subList.firstWhere(
+      (element) => element.isDefault,
+      orElse: () => subList.first,
+    );
+    subValue = defaultSub.displayTitle;
+    StreamModel().setSubtitleStreamIndex(defaultSub.index);
+  }
 
   // Find all subtitles to fill dropdown
   var subDropdownList = subList

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
 import 'package:jellyflut/models/category.dart';
@@ -300,4 +301,50 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
     print(e);
   }
   return playBackInfos;
+}
+
+Future<Category> searchItems(
+    {@required String searchTerm,
+    bool includePeople = false,
+    bool includeMedia = true,
+    bool includeGenres = false,
+    bool includeStudios = false,
+    bool includeArtists = false,
+    String includeItemTypes = 'Movie',
+    int limit = 24,
+    String fields =
+        'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount',
+    bool recursive = true,
+    bool enableTotalRecordCount = false,
+    int imageTypeLimit = 1,
+    String mediaTypes}) async {
+  var queryParams = <String, dynamic>{};
+  queryParams['searchTerm'] = searchTerm;
+  queryParams['IncludePeople'] = includePeople;
+  queryParams['IncludeMedia'] = includeMedia;
+  queryParams['IncludeGenres'] = includeGenres;
+  queryParams['IncludeStudios'] = includeStudios;
+  queryParams['IncludeArtists'] = includeArtists;
+  queryParams['IncludeItemTypes'] = includeItemTypes;
+  queryParams['MediaTypes'] = mediaTypes;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['Recursive'] = recursive;
+  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+
+  var url = '${server.url}/Users/${user.id}/Items';
+
+  Response response;
+  var category = Category();
+  try {
+    response = await dio.get(
+      url,
+      queryParameters: queryParams,
+    );
+    category = Category.fromMap(response.data);
+  } catch (e) {
+    print(e);
+  }
+  return category;
 }

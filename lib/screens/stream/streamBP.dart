@@ -51,7 +51,6 @@ class _StreamState extends State<Stream> {
         startAt: Duration(
             microseconds:
                 (widget.item.userData.playbackPositionTicks / 10).round()),
-        showControlsOnInitialize: true,
         controlsConfiguration: configuration());
 
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
@@ -109,6 +108,7 @@ class _StreamState extends State<Stream> {
       enablePlayPause: true,
       enableSubtitles: true,
       enableQualities: false,
+      showControlsOnInitialize: true,
       customControls: Controls(),
       controlBarHeight: 40,
     );
@@ -143,8 +143,8 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
 double calculateAspectRatio(String aspectRatio) {
   if (aspectRatio.isEmpty) return null;
   var separatorIndex = aspectRatio.indexOf(':');
-  var firstValue = int.parse(aspectRatio.substring(0, separatorIndex));
-  var secondValue =
-      int.parse(aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
+  var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));
+  var secondValue = double.parse(
+      aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
   return firstValue / secondValue;
 }

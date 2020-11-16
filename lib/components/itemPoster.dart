@@ -49,8 +49,7 @@ class _ItemPosterState extends State<ItemPoster> {
             builder: (context) => Details(item: widget.item, heroTag: heroTag)),
       ),
       child: AspectRatio(
-        aspectRatio: widget.item.primaryImageAspectRatio ??
-            aspectRatio(type: widget.item.type),
+        aspectRatio: handleAspectRatio(widget.item),
         child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,8 +62,7 @@ class _ItemPosterState extends State<ItemPoster> {
                       Flexible(
                         child: Stack(fit: StackFit.expand, children: [
                           AspectRatio(
-                            aspectRatio: widget.item.primaryImageAspectRatio ??
-                                aspectRatio(type: widget.item.type),
+                            aspectRatio: handleAspectRatio(widget.item),
                             child: AsyncImage(
                               itemsPoster(widget.item),
                               widget.item.imageTags.primary,
@@ -244,4 +242,14 @@ String itemsPoster(Item item) {
     return item.seriesId;
   }
   return item.id;
+}
+
+double handleAspectRatio(Item item) {
+  if (item.primaryImageAspectRatio != null) {
+    if (item.primaryImageAspectRatio > 0.0) {
+      return item.primaryImageAspectRatio;
+    }
+    return aspectRatio(type: item.type);
+  }
+  return aspectRatio(type: item.type);
 }
