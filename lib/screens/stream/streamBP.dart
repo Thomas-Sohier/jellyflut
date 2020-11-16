@@ -32,8 +32,7 @@ class _StreamState extends State<Stream> {
   var aspectRatio;
 
   Future<bool> setupData() async {
-    dataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.NETWORK, widget.streamUrl,
+    dataSource = BetterPlayerDataSource.network(widget.streamUrl,
         subtitles: await getSubtitles(streamModel.item));
     var aspectRatioString = streamModel.item.mediaStreams
         .firstWhere((element) => element.type.trim().toLowerCase() == 'video')

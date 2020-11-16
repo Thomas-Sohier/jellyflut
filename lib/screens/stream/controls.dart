@@ -112,18 +112,18 @@ class _ControlsState extends State<Controls> {
           ),
         ),
         // TODO make audio change works
-        // InkWell(
-        //     onTap: () {
-        //       changeAudio(context);
-        //     },
-        //     borderRadius: BorderRadius.all(Radius.circular(50)),
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Icon(
-        //         Icons.audiotrack,
-        //         color: Colors.white,
-        //       ),
-        //     ))
+        InkWell(
+            onTap: () {
+              changeAudio(context);
+            },
+            borderRadius: BorderRadius.all(Radius.circular(50)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.audiotrack,
+                color: Colors.white,
+              ),
+            ))
       ],
     );
   }
@@ -365,33 +365,15 @@ class _ControlsState extends State<Controls> {
   void changeAudioTrack(String url) async {
     var tick = streamModel.betterPlayerController.videoPlayerController.value
         .position.inMicroseconds;
-    test(url, tick);
-    // await streamModel.betterPlayerController.setupDataSource(ds);
-  }
-
-  void test(String url, int startTick) async {
-    var dataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.NETWORK, url,
+    var dataSource = BetterPlayerDataSource.file(url,
         subtitles: await getSubtitles(streamModel.item));
 
+    // BetterPlayerDataSource.file(url);
+
     streamModel.betterPlayerController.betterPlayerSubtitlesSourceList.clear();
-    var x = streamModel.betterPlayerController.betterPlayerDataSource.url;
     await streamModel.betterPlayerController.setupDataSource(dataSource);
     streamModel.betterPlayerController.playNextVideo();
+    await streamModel.betterPlayerController
+        .seekTo(Duration(microseconds: tick));
   }
-}
-
-BetterPlayerControlsConfiguration configuration() {
-  return BetterPlayerControlsConfiguration(
-    enableSkips: false,
-    enableFullscreen: false,
-    enableProgressText: true,
-    enablePlaybackSpeed: true,
-    enableMute: true,
-    enablePlayPause: true,
-    enableSubtitles: true,
-    enableQualities: false,
-    // customControls: Controls(),
-    controlBarHeight: 40,
-  );
 }

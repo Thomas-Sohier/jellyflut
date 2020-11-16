@@ -47,10 +47,10 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   var streamModel = StreamModel();
   var info = await deviceInfo();
   var queryParam = <String, String>{};
-  queryParam['startTimeTicks'] = startTick.toString();
+  queryParam['StartTimeTicks'] = startTick.toString();
   queryParam['Static'] = true.toString();
-  queryParam['mediaSourceId'] = item.id;
-  queryParam['deviceId'] = info.id;
+  queryParam['MediaSourceId'] = item.id;
+  queryParam['DeviceId'] = info.id;
   queryParam['Tag'] = playBackInfos.mediaSources.first.eTag;
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
