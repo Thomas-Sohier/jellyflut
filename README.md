@@ -22,15 +22,16 @@ You can :
   - [ ] other things...
 
 ## Screens
-
-![Image of login screen](./img/readme/login.jpg)
-![Image of home](./img/readme/home.jpg)
-![Image of details](./img/readme/home_research.jpg)
-![Image of details](./img/readme/details_serie.jpg)
-![Image of details](./img/readme/details_serie_bottom.jpg)
-![Image of details](./img/readme/details_season.jpg)
-![Image of details](./img/readme/details_epsiode.jpg)
-![Image of details](./img/readme/details_music.jpg)
+<div style="display: flex">
+ <img src="./img/readme/login.jpg" height="500" />
+ <img src="./img/readme/home.jpg" height="500" />
+ <img src="./img/readme/home_research.jpg" height="500" />
+ <img src="./img/readme/details_serie.jpg" height="500" />
+ <img src="./img/readme/details_serie_bottom.jpg" height="500" />
+ <img src="./img/readme/details_season.jpg" height="500" />
+ <img src="./img/readme/details_epsiode.jpg" height="500" />
+ <img src="./img/readme/details_music.jpg" height="500" />
+</div>
 
 ## Getting Started
 
