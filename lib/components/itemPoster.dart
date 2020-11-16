@@ -3,7 +3,6 @@ import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart';
 import 'package:uuid/uuid.dart';
 
 import 'asyncImage.dart';

@@ -8,7 +8,6 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
-import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
@@ -217,6 +216,7 @@ void readBook(Item item, BuildContext context) async {
   var path = await getEbook(item);
   if (path != null) {
     var sharedPreferences = await SharedPreferences.getInstance();
+
     EpubViewer.setConfig(
       themeColor: Theme.of(context).primaryColor,
       scrollDirection: EpubScrollDirection.VERTICAL,

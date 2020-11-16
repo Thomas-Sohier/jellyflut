@@ -123,9 +123,11 @@ packages:
   epub_viewer:
     dependency: "direct main"
     description:
-      name: epub_viewer
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "34202b4b0e790d8c1b05403a38f2e07b2b627499"
+      url: "https://github.com/hvmien/epub_viewer"
+    source: git
     version: "0.1.9"
   fake_async:
     dependency: transitive
