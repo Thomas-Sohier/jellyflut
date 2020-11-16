@@ -23,14 +23,14 @@ You can :
 
 ## Screens
 
-![Image of login screen](./img/login.jpg)
-![Image of home](./img/home.jpg)
-![Image of details](./img/home_research.jpg)
-![Image of details](./img/details_serie.jpg)
-![Image of details](./img/details_serie_bottom.jpg)
-![Image of details](./img/details_season.jpg)
-![Image of details](./img/details_epsiode.jpg)
-![Image of details](./img/details_music.jpg)
+![Image of login screen](./img/readme/login.jpg)
+![Image of home](./img/readme/home.jpg)
+![Image of details](./img/readme/home_research.jpg)
+![Image of details](./img/readme/details_serie.jpg)
+![Image of details](./img/readme/details_serie_bottom.jpg)
+![Image of details](./img/readme/details_season.jpg)
+![Image of details](./img/readme/details_epsiode.jpg)
+![Image of details](./img/readme/details_music.jpg)
 
 ## Getting Started
 
