@@ -8,6 +8,7 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/cardItemWithChild.dart';
+import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
@@ -41,14 +42,15 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-        extendBody: true,
-        backgroundColor: Colors.transparent,
-        body: body(
-            heroTag: widget.heroTag,
-            size: size,
-            item: widget.item,
-            context: context));
+    return MusicPlayerFAB(
+        child: Scaffold(
+            extendBody: true,
+            backgroundColor: Colors.transparent,
+            body: body(
+                heroTag: widget.heroTag,
+                size: size,
+                item: widget.item,
+                context: context)));
   }
 }
 

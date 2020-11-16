@@ -53,25 +53,27 @@ class Jellyflut extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'JellyFlut',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-        primarySwatch: color1,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyApp(),
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // '/': (context) => Splash(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/login': (context) => ParentStart(),
-        '/home': (context) => Home(),
-        '/collection': (context) => CollectionMain(),
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(builder: (BuildContext context) => Home());
-      },
-    );
+    return ChangeNotifierProvider.value(
+        value: MusicPlayer(),
+        child: MaterialApp(
+          title: 'JellyFlut',
+          navigatorKey: navigatorKey,
+          theme: ThemeData(
+            primarySwatch: color1,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: MyApp(),
+          routes: {
+            // When navigating to the "/" route, build the FirstScreen widget.
+            // '/': (context) => Splash(),
+            // When navigating to the "/second" route, build the SecondScreen widget.
+            '/login': (context) => ParentStart(),
+            '/home': (context) => Home(),
+            '/collection': (context) => CollectionMain(),
+          },
+          onUnknownRoute: (RouteSettings settings) {
+            return MaterialPageRoute(builder: (BuildContext context) => Home());
+          },
+        ));
   }
 }
