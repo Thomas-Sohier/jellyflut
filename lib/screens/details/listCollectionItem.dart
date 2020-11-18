@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/components/carroussel.dart';
+import 'package:jellyflut/components/carroussel/carroussel.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 

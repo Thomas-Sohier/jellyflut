@@ -8,12 +8,12 @@ class ExternalUrl {
   String url;
 
   factory ExternalUrl.fromMap(Map<String, dynamic> json) => ExternalUrl(
-        name: json["Name"],
-        url: json["Url"],
+        name: json['Name'],
+        url: json['Url'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Name": name,
-        "Url": url,
+        'Name': name,
+        'Url': url,
       };
 }

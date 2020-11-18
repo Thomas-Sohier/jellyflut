@@ -66,7 +66,7 @@ class MusicPlayer extends ChangeNotifier {
             _createURl(item),
             metas: Metas(
               title: item.name,
-              artist: item.artists.map((e) => e.name).join(", ").toString(),
+              artist: item.artists.map((e) => e.name).join(', ').toString(),
               album: item.album,
               image: MetasImage.network(getItemImageUrl(
                   item.id, item.imageTags.primary,
@@ -80,7 +80,7 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   String _createURl(Item item) {
-    String url = "${server.url}/Audio/${item.id}/stream.mp3";
+    var url = '${server.url}/Audio/${item.id}/stream.mp3';
     return url;
   }
 }

@@ -48,7 +48,7 @@ class ItemDialogActions extends StatelessWidget {
                         Navigator.pop(context);
                       } else {
                         AlertDialog(
-                          content: Text("Error, cannot delete item..."),
+                          content: Text('Error, cannot delete item...'),
                         );
                       }
                     });

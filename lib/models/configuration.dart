@@ -34,42 +34,42 @@ class Configuration {
   bool enableNextEpisodeAutoPlay;
 
   factory Configuration.fromMap(Map<String, dynamic> json) => Configuration(
-        audioLanguagePreference: json["AudioLanguagePreference"],
-        playDefaultAudioTrack: json["PlayDefaultAudioTrack"],
-        subtitleLanguagePreference: json["SubtitleLanguagePreference"],
-        displayMissingEpisodes: json["DisplayMissingEpisodes"],
+        audioLanguagePreference: json['AudioLanguagePreference'],
+        playDefaultAudioTrack: json['PlayDefaultAudioTrack'],
+        subtitleLanguagePreference: json['SubtitleLanguagePreference'],
+        displayMissingEpisodes: json['DisplayMissingEpisodes'],
         groupedFolders:
-            List<dynamic>.from(json["GroupedFolders"].map((x) => x)),
-        subtitleMode: json["SubtitleMode"],
-        displayCollectionsView: json["DisplayCollectionsView"],
-        enableLocalPassword: json["EnableLocalPassword"],
-        orderedViews: List<String>.from(json["OrderedViews"].map((x) => x)),
+            List<dynamic>.from(json['GroupedFolders'].map((x) => x)),
+        subtitleMode: json['SubtitleMode'],
+        displayCollectionsView: json['DisplayCollectionsView'],
+        enableLocalPassword: json['EnableLocalPassword'],
+        orderedViews: List<String>.from(json['OrderedViews'].map((x) => x)),
         latestItemsExcludes:
-            List<dynamic>.from(json["LatestItemsExcludes"].map((x) => x)),
+            List<dynamic>.from(json['LatestItemsExcludes'].map((x) => x)),
         myMediaExcludes:
-            List<dynamic>.from(json["MyMediaExcludes"].map((x) => x)),
-        hidePlayedInLatest: json["HidePlayedInLatest"],
-        rememberAudioSelections: json["RememberAudioSelections"],
-        rememberSubtitleSelections: json["RememberSubtitleSelections"],
-        enableNextEpisodeAutoPlay: json["EnableNextEpisodeAutoPlay"],
+            List<dynamic>.from(json['MyMediaExcludes'].map((x) => x)),
+        hidePlayedInLatest: json['HidePlayedInLatest'],
+        rememberAudioSelections: json['RememberAudioSelections'],
+        rememberSubtitleSelections: json['RememberSubtitleSelections'],
+        enableNextEpisodeAutoPlay: json['EnableNextEpisodeAutoPlay'],
       );
 
   Map<String, dynamic> toMap() => {
-        "AudioLanguagePreference": audioLanguagePreference,
-        "PlayDefaultAudioTrack": playDefaultAudioTrack,
-        "SubtitleLanguagePreference": subtitleLanguagePreference,
-        "DisplayMissingEpisodes": displayMissingEpisodes,
-        "GroupedFolders": List<dynamic>.from(groupedFolders.map((x) => x)),
-        "SubtitleMode": subtitleMode,
-        "DisplayCollectionsView": displayCollectionsView,
-        "EnableLocalPassword": enableLocalPassword,
-        "OrderedViews": List<dynamic>.from(orderedViews.map((x) => x)),
-        "LatestItemsExcludes":
+        'AudioLanguagePreference': audioLanguagePreference,
+        'PlayDefaultAudioTrack': playDefaultAudioTrack,
+        'SubtitleLanguagePreference': subtitleLanguagePreference,
+        'DisplayMissingEpisodes': displayMissingEpisodes,
+        'GroupedFolders': List<dynamic>.from(groupedFolders.map((x) => x)),
+        'SubtitleMode': subtitleMode,
+        'DisplayCollectionsView': displayCollectionsView,
+        'EnableLocalPassword': enableLocalPassword,
+        'OrderedViews': List<dynamic>.from(orderedViews.map((x) => x)),
+        'LatestItemsExcludes':
             List<dynamic>.from(latestItemsExcludes.map((x) => x)),
-        "MyMediaExcludes": List<dynamic>.from(myMediaExcludes.map((x) => x)),
-        "HidePlayedInLatest": hidePlayedInLatest,
-        "RememberAudioSelections": rememberAudioSelections,
-        "RememberSubtitleSelections": rememberSubtitleSelections,
-        "EnableNextEpisodeAutoPlay": enableNextEpisodeAutoPlay,
+        'MyMediaExcludes': List<dynamic>.from(myMediaExcludes.map((x) => x)),
+        'HidePlayedInLatest': hidePlayedInLatest,
+        'RememberAudioSelections': rememberAudioSelections,
+        'RememberSubtitleSelections': rememberSubtitleSelections,
+        'EnableNextEpisodeAutoPlay': enableNextEpisodeAutoPlay,
       };
 }

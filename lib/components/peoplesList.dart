@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/person.dart';
-import 'package:jellyflut/shared/theme.dart';
 
 class PeoplesList extends StatefulWidget {
   final List<Person> peoples;

@@ -17,23 +17,23 @@ class Capabilities {
 
   factory Capabilities.fromMap(Map<String, dynamic> json) => Capabilities(
         playableMediaTypes:
-            List<dynamic>.from(json["PlayableMediaTypes"].map((x) => x)),
+            List<dynamic>.from(json['PlayableMediaTypes'].map((x) => x)),
         supportedCommands:
-            List<dynamic>.from(json["SupportedCommands"].map((x) => x)),
-        supportsMediaControl: json["SupportsMediaControl"],
-        supportsContentUploading: json["SupportsContentUploading"],
-        supportsPersistentIdentifier: json["SupportsPersistentIdentifier"],
-        supportsSync: json["SupportsSync"],
+            List<dynamic>.from(json['SupportedCommands'].map((x) => x)),
+        supportsMediaControl: json['SupportsMediaControl'],
+        supportsContentUploading: json['SupportsContentUploading'],
+        supportsPersistentIdentifier: json['SupportsPersistentIdentifier'],
+        supportsSync: json['SupportsSync'],
       );
 
   Map<String, dynamic> toMap() => {
-        "PlayableMediaTypes":
+        'PlayableMediaTypes':
             List<dynamic>.from(playableMediaTypes.map((x) => x)),
-        "SupportedCommands":
+        'SupportedCommands':
             List<dynamic>.from(supportedCommands.map((x) => x)),
-        "SupportsMediaControl": supportsMediaControl,
-        "SupportsContentUploading": supportsContentUploading,
-        "SupportsPersistentIdentifier": supportsPersistentIdentifier,
-        "SupportsSync": supportsSync,
+        'SupportsMediaControl': supportsMediaControl,
+        'SupportsContentUploading': supportsContentUploading,
+        'SupportsPersistentIdentifier': supportsPersistentIdentifier,
+        'SupportsSync': supportsSync,
       };
 }

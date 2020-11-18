@@ -10,14 +10,14 @@ class ResponseProfile {
   String mimeType;
 
   factory ResponseProfile.fromMap(Map<String, dynamic> json) => ResponseProfile(
-        type: json["Type"] == null ? null : json["Type"],
-        container: json["Container"] == null ? null : json["Container"],
-        mimeType: json["MimeType"] == null ? null : json["MimeType"],
+        type: json['Type'] == null ? null : json['Type'],
+        container: json['Container'] == null ? null : json['Container'],
+        mimeType: json['MimeType'] == null ? null : json['MimeType'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Type": type == null ? null : type,
-        "Container": container == null ? null : container,
-        "MimeType": mimeType == null ? null : mimeType,
+        'Type': type == null ? null : type,
+        'Container': container == null ? null : container,
+        'MimeType': mimeType == null ? null : mimeType,
       };
 }

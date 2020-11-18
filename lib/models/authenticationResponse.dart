@@ -28,16 +28,16 @@ class AuthenticationResponse {
 
   factory AuthenticationResponse.fromMap(Map<String, dynamic> json) =>
       AuthenticationResponse(
-        user: User.fromMap(json["User"]),
-        sessionInfo: SessionInfo.fromMap(json["SessionInfo"]),
-        accessToken: json["AccessToken"],
-        serverId: json["ServerId"],
+        user: User.fromMap(json['User']),
+        sessionInfo: SessionInfo.fromMap(json['SessionInfo']),
+        accessToken: json['AccessToken'],
+        serverId: json['ServerId'],
       );
 
   Map<String, dynamic> toMap() => {
-        "User": user.toMap(),
-        "SessionInfo": sessionInfo.toMap(),
-        "AccessToken": accessToken,
-        "ServerId": serverId,
+        'User': user.toMap(),
+        'SessionInfo': sessionInfo.toMap(),
+        'AccessToken': accessToken,
+        'ServerId': serverId,
       };
 }

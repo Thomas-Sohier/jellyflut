@@ -41,9 +41,9 @@ class _ParentStartState extends State<ParentStart> {
               )),
           SizedBox(height: size.height * 0.03),
           Hero(
-            tag: "logo_text",
+            tag: 'logo_text',
             child: Text(
-              "Jellyfin",
+              'Jellyfin',
               style: TextStyle(fontSize: 48, color: Colors.white),
             ),
           ),
@@ -80,24 +80,24 @@ class _ParentStartState extends State<ParentStart> {
                             color: color1,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(80.0))),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.dns,
-                                color: Colors.white,
-                              ),
-                              Spacer(),
-                              Text(
-                                server.name,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                              Spacer(
-                                flex: 2,
-                              )
-                            ])));
+                        child: Stack(alignment: Alignment.center, children: [
+                          Positioned.fill(
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Icon(
+                                    Icons.dns,
+                                    color: Colors.white,
+                                  ))),
+                          Positioned.fill(
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    server.name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  )))
+                        ])));
               }))
           ])
         ]))));

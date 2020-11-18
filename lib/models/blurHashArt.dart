@@ -6,10 +6,10 @@ class BlurHashArt {
   Map<String, String> art;
 
   factory BlurHashArt.fromMap(Map<String, dynamic> json) => BlurHashArt(
-        art: json["Art"],
+        art: json['Art'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Art": art,
+        'Art': art,
       };
 }

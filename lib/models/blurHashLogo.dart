@@ -6,10 +6,10 @@ class BlurHashLogo {
   Map<String, String> logo;
 
   factory BlurHashLogo.fromMap(Map<String, dynamic> json) => BlurHashLogo(
-        logo: json["Logo"],
+        logo: json['Logo'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Logo": logo,
+        'Logo': logo,
       };
 }

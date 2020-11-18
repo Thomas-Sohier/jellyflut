@@ -19,12 +19,12 @@ class TranscodeInfos {
   DeviceProfile deviceProfile;
 
   factory TranscodeInfos.fromMap(Map<String, dynamic> json) => TranscodeInfos(
-        deviceProfile: json["DeviceProfile"] == null
+        deviceProfile: json['DeviceProfile'] == null
             ? null
-            : DeviceProfile.fromMap(json["DeviceProfile"]),
+            : DeviceProfile.fromMap(json['DeviceProfile']),
       );
 
   Map<String, dynamic> toMap() => {
-        "DeviceProfile": deviceProfile == null ? null : deviceProfile.toMap(),
+        'DeviceProfile': deviceProfile == null ? null : deviceProfile.toMap(),
       };
 }

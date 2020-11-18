@@ -24,8 +24,8 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-  String _username = "";
-  String _password = "";
+  String _username = '';
+  String _password = '';
 
   _LoginFormState() {
     _usernameFilter.addListener(_usernameListen);
@@ -34,7 +34,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _usernameListen() {
     if (_usernameFilter.text.isEmpty) {
-      _username = "";
+      _username = '';
     } else {
       _username = _usernameFilter.text;
     }
@@ -42,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void _passwordListen() {
     if (_passwordFilter.text.isEmpty) {
-      _password = "";
+      _password = '';
     } else {
       _password = _passwordFilter.text;
     }
@@ -54,9 +54,9 @@ class _LoginFormState extends State<LoginForm> {
 
     login(_username, _password).then((AuthenticationResponse response) {
       if (response == null) return null;
-      DatabaseService db = DatabaseService();
+      var db = DatabaseService();
       // Create user with info
-      UserDB userDB = UserDB();
+      var userDB = UserDB();
       userDB.name = _username;
       userDB.apiKey = response.accessToken;
       apiKey = response.accessToken;
@@ -66,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
       db.insertServer(server).then((int id) {
         SharedPreferences.getInstance()
             .then((SharedPreferences sharedPreferences) {
-          sharedPreferences.setInt("serverId", id).whenComplete(
+          sharedPreferences.setInt('serverId', id).whenComplete(
               () => Navigator.pushReplacementNamed(context, '/home'));
         });
       });
@@ -75,30 +75,35 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            FlatButton(
-              onPressed: widget.onPressed,
-              child: Icon(Icons.arrow_back_ios),
-            ),
-            Spacer(),
-            Text(
-              "Connection",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            Spacer(
-              flex: 2,
-            )
-          ],
-        ),
+        SizedBox(
+            height: 40,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned.fill(
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: FlatButton(
+                          onPressed: widget.onPressed,
+                          child: Icon(Icons.arrow_back_ios),
+                        ))),
+                Positioned.fill(
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Connection',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ))),
+              ],
+            )),
         OutlineTextField(
-          "username",
+          'username',
           controller: _usernameFilter,
+          autofocus: false,
           textInputAction: TextInputAction.next,
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
@@ -108,6 +113,7 @@ class _LoginFormState extends State<LoginForm> {
           'password',
           controller: _passwordFilter,
           obscureText: true,
+          autofocus: false,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _loginPressed(),
           focusNode: passwordFocusNode,

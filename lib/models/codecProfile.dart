@@ -12,12 +12,12 @@ class CodecProfile {
   List<Condition> conditions;
 
   factory CodecProfile.fromMap(Map<String, dynamic> json) => CodecProfile(
-        type: json["Type"] == null ? null : json["Type"],
-        codec: json["Codec"] == null ? null : json["Codec"],
-        conditions: json["Conditions"] == null
+        type: json['Type'] == null ? null : json['Type'],
+        codec: json['Codec'] == null ? null : json['Codec'],
+        conditions: json['Conditions'] == null
             ? null
             : List<Condition>.from(
-                json["Conditions"].map((x) => Condition.fromMap(x))),
+                json['Conditions'].map((x) => Condition.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {

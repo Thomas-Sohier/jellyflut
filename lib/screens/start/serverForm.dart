@@ -42,16 +42,18 @@ class _ServerFormState extends State<ServerForm> {
         OutlineTextField(
           'server name',
           textInputAction: TextInputAction.next,
+          autofocus: true,
           onSubmitted: (_) => FocusScope.of(context).requestFocus(urlFocusNode),
           controller: _serverNameFilter,
         ),
         OutlineTextField(
           'url',
           controller: _urlFilter,
+          autofocus: false,
           textInputAction: TextInputAction.done,
           focusNode: urlFocusNode,
           onSubmitted: (_) {
-            FocusScope.of(context).unfocus();
+            FocusScope.of(context).nextFocus();
             addServer();
           },
           prefixIcon: Icon(Icons.http),

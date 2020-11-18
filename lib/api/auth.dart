@@ -5,8 +5,6 @@ import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'api.dart';
-
 Future<bool> isLoggedIn() async {
   var prefs = await SharedPreferences.getInstance();
   return prefs.getBool('isLoggedIn') ?? false;

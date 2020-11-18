@@ -14,18 +14,19 @@ class Critics extends StatelessWidget {
   }
 
   Widget criticRating(int rating) {
-    if (rating > 50)
+    if (rating > 50) {
       return SvgPicture.asset(
-        "img/fresh.svg",
+        'img/fresh.svg',
         semanticsLabel: 'Critic rating',
         height: 20,
       );
-    else
+    } else {
       return SvgPicture.asset(
         'img/rotten.svg',
         semanticsLabel: 'Critic rating',
         height: 20,
       );
+    }
   }
 
   Widget body(Item item, Color textColor) {

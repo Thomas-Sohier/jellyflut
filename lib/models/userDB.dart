@@ -9,12 +9,12 @@ class UserDB {
   String apiKey;
 
   UserDB.fromMap(Map<String, dynamic> map)
-      : assert(map["name"] != null),
-        assert(map["apiKey"] != null),
-        name = map["name"],
-        apiKey = map["apiKey"];
+      : assert(map['name'] != null),
+        assert(map['apiKey'] != null),
+        name = map['name'],
+        apiKey = map['apiKey'];
 
   Map<String, dynamic> toMap() {
-    return {"name": this.name, "apiKey": this.apiKey};
+    return {'name': name, 'apiKey': apiKey};
   }
 }

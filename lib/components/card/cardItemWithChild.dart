@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/cardInfosChild.dart';
+import 'package:jellyflut/components/card/cardInfosChild.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/shared/shared.dart';
 
-import 'critics.dart';
+import '../critics.dart';
 
 class CardItemWithChild extends StatefulWidget {
   CardItemWithChild(this.item, this.child, {this.isSkeleton = false});
@@ -152,7 +152,7 @@ Widget cardWithData(Item item) {
                               child: Text(
                                   item.artists
                                       .map((e) => e.name)
-                                      .join(", ")
+                                      .join(', ')
                                       .toString(),
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(

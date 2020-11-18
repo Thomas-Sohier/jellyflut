@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/carroussel.dart';
-import 'package:jellyflut/components/carrousselBackGroundImage.dart';
-import 'package:jellyflut/components/musicPlayerFAB.dart';
+import 'package:jellyflut/components/carroussel/carroussel.dart';
+import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:jellyflut/shared/background.dart';

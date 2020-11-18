@@ -8,12 +8,12 @@ class GenreItem {
   String id;
 
   factory GenreItem.fromMap(Map<String, dynamic> json) => GenreItem(
-        name: json["Name"],
-        id: json["Id"],
+        name: json['Name'],
+        id: json['Id'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Name": name,
-        "Id": id,
+        'Name': name,
+        'Id': id,
       };
 }

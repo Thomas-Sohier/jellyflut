@@ -5,8 +5,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:jellyflut/models/server.dart';
 
-final tableServer = "server";
-final tableUser = "user";
+final tableServer = 'server';
+final tableUser = 'user';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();
@@ -43,32 +43,32 @@ class DatabaseService {
   }
 
   Future<int> insertServer(Server server) async {
-    Database db = await database;
-    int id = await db.insert(tableServer, server.toMap());
+    var db = await database;
+    var id = await db.insert(tableServer, server.toMap());
     return id;
   }
 
   Future<Server> getServer(int id) async {
-    Database db = await database;
+    var db = await database;
     List<Map> datas =
         await db.query(tableServer, where: 'id = ?', whereArgs: [id]);
-    if (datas.length > 0) {
+    if (datas.isNotEmpty) {
       return Server.fromMap(datas.first);
     }
     return null;
   }
 
   Future<int> insertUSer(UserDB userDB) async {
-    Database db = await database;
-    int id = await db.insert(tableUser, userDB.toMap());
+    var db = await database;
+    var id = await db.insert(tableUser, userDB.toMap());
     return id;
   }
 
   Future<User> getUser(int id) async {
-    Database db = await database;
+    var db = await database;
     List<Map> datas =
         await db.query(tableUser, where: 'id = ?', whereArgs: [id]);
-    if (datas.length > 0) {
+    if (datas.isNotEmpty) {
       return User.fromMap(datas.first);
     }
     return null;

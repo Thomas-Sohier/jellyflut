@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/itemPoster.dart';
+import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
-import 'critics.dart';
+import '../critics.dart';
 
 class CarousselItem extends StatefulWidget {
   CarousselItem(this.items,

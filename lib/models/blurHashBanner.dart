@@ -6,10 +6,10 @@ class BlurHashBanner {
   Map<String, String> banner;
 
   factory BlurHashBanner.fromMap(Map<String, dynamic> json) => BlurHashBanner(
-        banner: json["Banner"],
+        banner: json['Banner'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Banner": banner,
+        'Banner': banner,
       };
 }

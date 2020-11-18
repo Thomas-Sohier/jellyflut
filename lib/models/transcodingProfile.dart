@@ -38,21 +38,16 @@ class TranscodingProfile {
       );
 
   Map<String, dynamic> toMap() => {
-        if (container != null)
-          'Container': container == null ? null : container,
-        if (type != null) 'Type': type == null ? null : type,
-        if (audioCodec != null)
-          'AudioCodec': audioCodec == null ? null : audioCodec,
-        if (context != null) 'Context': context == null ? null : context,
-        if (protocol != null) 'Protocol': protocol == null ? null : protocol,
+        if (container != null) 'Container': container ?? null,
+        if (type != null) 'Type': type ?? null,
+        if (audioCodec != null) 'AudioCodec': audioCodec ?? null,
+        if (context != null) 'Context': context ?? null,
+        if (protocol != null) 'Protocol': protocol ?? null,
         if (maxAudioChannels != null)
-          'MaxAudioChannels':
-              maxAudioChannels == null ? null : maxAudioChannels,
-        if (minSegments != null)
-          'MinSegments': minSegments == null ? null : minSegments,
+          'MaxAudioChannels': maxAudioChannels ?? null,
+        if (minSegments != null) 'MinSegments': minSegments ?? null,
         if (breakOnNonKeyFrames != null)
           'BreakOnNonKeyFrames': breakOnNonKeyFrames,
-        if (videoCodec != null)
-          'VideoCodec': videoCodec == null ? null : videoCodec,
+        if (videoCodec != null) 'VideoCodec': videoCodec ?? null,
       };
 }

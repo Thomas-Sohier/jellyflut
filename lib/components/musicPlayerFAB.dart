@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class MusicPlayerFAB extends StatefulWidget {
   final Widget child;
 
-  const MusicPlayerFAB({@required Widget this.child});
+  const MusicPlayerFAB({@required this.child});
 
   @override
   State<StatefulWidget> createState() => _MusicPlayerFABState();

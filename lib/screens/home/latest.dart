@@ -49,9 +49,9 @@ class _LatestState extends State<Latest> {
   }
 
   List<Widget> displayLatestMedia(List<Item> medias) {
-    List<Widget> latestMedia = List<Widget>();
+    var latestMedia = <Widget>[];
     medias.forEach((Item media) {
-      String firstKey = media.imageBlurHashes.primary.entries.first.key;
+      var firstKey = media.imageBlurHashes.primary.entries.first.key;
       latestMedia.add(
         Container(
           height: listViewHeight,

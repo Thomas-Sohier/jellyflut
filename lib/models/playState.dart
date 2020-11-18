@@ -12,16 +12,16 @@ class PlayState {
   String repeatMode;
 
   factory PlayState.fromMap(Map<String, dynamic> json) => PlayState(
-        canSeek: json["CanSeek"],
-        isPaused: json["IsPaused"],
-        isMuted: json["IsMuted"],
-        repeatMode: json["RepeatMode"],
+        canSeek: json['CanSeek'],
+        isPaused: json['IsPaused'],
+        isMuted: json['IsMuted'],
+        repeatMode: json['RepeatMode'],
       );
 
   Map<String, dynamic> toMap() => {
-        "CanSeek": canSeek,
-        "IsPaused": isPaused,
-        "IsMuted": isMuted,
-        "RepeatMode": repeatMode,
+        'CanSeek': canSeek,
+        'IsPaused': isPaused,
+        'IsMuted': isMuted,
+        'RepeatMode': repeatMode,
       };
 }

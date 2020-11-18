@@ -6,10 +6,10 @@ class BlurHashPrimary {
   Map<String, String> primary;
 
   factory BlurHashPrimary.fromMap(Map<String, dynamic> json) => BlurHashPrimary(
-        primary: json["Primary"],
+        primary: json['Primary'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Primary": primary,
+        'Primary': primary,
       };
 }

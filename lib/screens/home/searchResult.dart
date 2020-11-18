@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/itemPoster.dart';
+import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
-import 'package:jellyflut/provider/streamModel.dart';
 import 'package:provider/provider.dart';
 
 class SearchResult extends StatefulWidget {

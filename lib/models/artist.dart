@@ -10,6 +10,6 @@ class Artist {
       );
 
   Map<String, dynamic> toMap() => {
-        "Name": name,
+        'Name': name,
       };
 }

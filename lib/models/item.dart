@@ -161,237 +161,237 @@ class Item {
   int height;
 
   factory Item.fromMap(Map<String, dynamic> json) => Item(
-        name: json["Name"] == null ? null : json["Name"],
+        name: json['Name'] == null ? null : json['Name'],
         originalTitle:
-            json["OriginalTitle"] == null ? null : json["OriginalTitle"],
-        serverId: json["ServerId"] == null ? null : json["ServerId"],
-        id: json["Id"] == null ? null : json["Id"],
-        indexNumber: json["IndexNumber"] == null ? null : json["IndexNumber"],
-        parentIndexNumber: json["ParentIndexNumber"] == null
+            json['OriginalTitle'] == null ? null : json['OriginalTitle'],
+        serverId: json['ServerId'] == null ? null : json['ServerId'],
+        id: json['Id'] == null ? null : json['Id'],
+        indexNumber: json['IndexNumber'] == null ? null : json['IndexNumber'],
+        parentIndexNumber: json['ParentIndexNumber'] == null
             ? null
-            : json["ParentIndexNumber"],
-        etag: json["Etag"] == null ? null : json["Etag"],
+            : json['ParentIndexNumber'],
+        etag: json['Etag'] == null ? null : json['Etag'],
         collectionType:
-            json["CollectionType"] == null ? null : json["CollectionType"],
-        dateCreated: json["DateCreated"] == null
+            json['CollectionType'] == null ? null : json['CollectionType'],
+        dateCreated: json['DateCreated'] == null
             ? null
-            : DateTime.parse(json["DateCreated"]),
-        canDelete: json["CanDelete"] == null ? null : json["CanDelete"],
-        canDownload: json["CanDownload"] == null ? null : json["CanDownload"],
+            : DateTime.parse(json['DateCreated']),
+        canDelete: json['CanDelete'] == null ? null : json['CanDelete'],
+        canDownload: json['CanDownload'] == null ? null : json['CanDownload'],
         hasSubtitles:
-            json["HasSubtitles"] == null ? null : json["HasSubtitles"],
-        container: json["Container"] == null ? null : json["Container"],
-        sortName: json["SortName"] == null ? null : json["SortName"],
-        premiereDate: json["PremiereDate"] == null
+            json['HasSubtitles'] == null ? null : json['HasSubtitles'],
+        container: json['Container'] == null ? null : json['Container'],
+        sortName: json['SortName'] == null ? null : json['SortName'],
+        premiereDate: json['PremiereDate'] == null
             ? null
-            : DateTime.parse(json["PremiereDate"]),
-        externalUrls: json["ExternalUrls"] == null
+            : DateTime.parse(json['PremiereDate']),
+        externalUrls: json['ExternalUrls'] == null
             ? null
             : List<ExternalUrl>.from(
-                json["ExternalUrls"].map((x) => ExternalUrl.fromMap(x))),
-        mediaSources: json["MediaSources"] == null
+                json['ExternalUrls'].map((x) => ExternalUrl.fromMap(x))),
+        mediaSources: json['MediaSources'] == null
             ? null
             : List<MediaSource>.from(
-                json["MediaSources"].map((x) => MediaSource.fromMap(x))),
+                json['MediaSources'].map((x) => MediaSource.fromMap(x))),
         criticRating:
-            json["CriticRating"] == null ? null : json["CriticRating"],
-        productionLocations: json["ProductionLocations"] == null
+            json['CriticRating'] == null ? null : json['CriticRating'],
+        productionLocations: json['ProductionLocations'] == null
             ? null
-            : List<String>.from(json["ProductionLocations"].map((x) => x)),
-        path: json["Path"] == null ? null : json["Path"],
-        enableMediaSourceDisplay: json["EnableMediaSourceDisplay"] == null
+            : List<String>.from(json['ProductionLocations'].map((x) => x)),
+        path: json['Path'] == null ? null : json['Path'],
+        enableMediaSourceDisplay: json['EnableMediaSourceDisplay'] == null
             ? null
-            : json["EnableMediaSourceDisplay"],
-        overview: json["Overview"] == null ? null : json["Overview"],
-        taglines: json["Taglines"] == null
+            : json['EnableMediaSourceDisplay'],
+        overview: json['Overview'] == null ? null : json['Overview'],
+        taglines: json['Taglines'] == null
             ? null
-            : List<dynamic>.from(json["Taglines"].map((x) => x)),
-        genres: json["Genres"] == null
+            : List<dynamic>.from(json['Taglines'].map((x) => x)),
+        genres: json['Genres'] == null
             ? null
-            : List<String>.from(json["Genres"].map((x) => x)),
-        communityRating: json["CommunityRating"] == null
+            : List<String>.from(json['Genres'].map((x) => x)),
+        communityRating: json['CommunityRating'] == null
             ? null
-            : json["CommunityRating"].toDouble(),
+            : json['CommunityRating'].toDouble(),
         runTimeTicks:
-            json["RunTimeTicks"] == null ? null : json["RunTimeTicks"],
-        playAccess: json["PlayAccess"] == null ? null : json["PlayAccess"],
+            json['RunTimeTicks'] == null ? null : json['RunTimeTicks'],
+        playAccess: json['PlayAccess'] == null ? null : json['PlayAccess'],
         productionYear:
-            json["ProductionYear"] == null ? null : json["ProductionYear"],
-        remoteTrailers: json["RemoteTrailers"] == null
+            json['ProductionYear'] == null ? null : json['ProductionYear'],
+        remoteTrailers: json['RemoteTrailers'] == null
             ? null
             : List<ExternalUrl>.from(
-                json["RemoteTrailers"].map((x) => ExternalUrl.fromMap(x))),
-        providerIds: json["ProviderIds"] == null
+                json['RemoteTrailers'].map((x) => ExternalUrl.fromMap(x))),
+        providerIds: json['ProviderIds'] == null
             ? null
-            : ProviderIds.fromMap(json["ProviderIds"]),
-        isHd: json["IsHD"] == null ? null : json["isHd"],
-        isFolder: json["IsFolder"] == null ? null : json["IsFolder"],
-        parentId: json["ParentId"] == null ? null : json["ParentId"],
-        seriesId: json["SeriesId"] == null ? null : json["SeriesId"],
-        seasonId: json["SeasonId"] == null ? null : json["SeasonId"],
-        type: json["Type"] == null ? null : json["Type"],
-        artists: json["Artists"] == null
+            : ProviderIds.fromMap(json['ProviderIds']),
+        isHd: json['IsHD'] == null ? null : json['isHd'],
+        isFolder: json['IsFolder'] == null ? null : json['IsFolder'],
+        parentId: json['ParentId'] == null ? null : json['ParentId'],
+        seriesId: json['SeriesId'] == null ? null : json['SeriesId'],
+        seasonId: json['SeasonId'] == null ? null : json['SeasonId'],
+        type: json['Type'] == null ? null : json['Type'],
+        artists: json['Artists'] == null
             ? null
-            : List<Artist>.from(json["Artists"].map((x) => Artist.fromMap(x))),
-        artistItems: json["ArtistItems"] == null
+            : List<Artist>.from(json['Artists'].map((x) => Artist.fromMap(x))),
+        artistItems: json['ArtistItems'] == null
             ? null
             : List<ArtistItems>.from(
-                json["ArtistItems"].map((x) => ArtistItems.fromMap(x))),
-        album: json["Album"] == null ? null : json["Album"],
-        albumId: json["AlbumId"] == null ? null : json["AlbumId"],
-        albumPrimaryImageTag: json["AlbumPrimaryImageTag"] == null
+                json['ArtistItems'].map((x) => ArtistItems.fromMap(x))),
+        album: json['Album'] == null ? null : json['Album'],
+        albumId: json['AlbumId'] == null ? null : json['AlbumId'],
+        albumPrimaryImageTag: json['AlbumPrimaryImageTag'] == null
             ? null
-            : json["AlbumPrimaryImageTag"],
-        albumArtist: json["AlbumArtist"] == null ? null : json["AlbumArtist"],
-        albumArtists: json["AlbumArtists"] == null
+            : json['AlbumPrimaryImageTag'],
+        albumArtist: json['AlbumArtist'] == null ? null : json['AlbumArtist'],
+        albumArtists: json['AlbumArtists'] == null
             ? null
             : List<AlbumArtists>.from(
-                json["AlbumArtists"].map((x) => AlbumArtists.fromMap(x))),
-        people: json["People"] == null
+                json['AlbumArtists'].map((x) => AlbumArtists.fromMap(x))),
+        people: json['People'] == null
             ? null
-            : List<Person>.from(json["People"].map((x) => Person.fromMap(x))),
-        studios: json["Studios"] == null
-            ? null
-            : List<GenreItem>.from(
-                json["Studios"].map((x) => GenreItem.fromMap(x))),
-        genreItems: json["GenreItems"] == null
+            : List<Person>.from(json['People'].map((x) => Person.fromMap(x))),
+        studios: json['Studios'] == null
             ? null
             : List<GenreItem>.from(
-                json["GenreItems"].map((x) => GenreItem.fromMap(x))),
-        localTrailerCount: json["LocalTrailerCount"] == null
+                json['Studios'].map((x) => GenreItem.fromMap(x))),
+        genreItems: json['GenreItems'] == null
             ? null
-            : json["localTrailerCount"],
-        userData: json["UserData"] == null
+            : List<GenreItem>.from(
+                json['GenreItems'].map((x) => GenreItem.fromMap(x))),
+        localTrailerCount: json['LocalTrailerCount'] == null
             ? null
-            : UserData.fromMap(json["UserData"]),
-        specialFeatureCount: json["SpecialFeatureCount"] == null
+            : json['localTrailerCount'],
+        userData: json['UserData'] == null
             ? null
-            : json["SpecialFeatureCount"],
-        displayPreferencesId: json["DisplayPreferencesId"] == null
+            : UserData.fromMap(json['UserData']),
+        specialFeatureCount: json['SpecialFeatureCount'] == null
             ? null
-            : json["DisplayPreferencesId"],
-        tags: json["Tags"] == null
+            : json['SpecialFeatureCount'],
+        displayPreferencesId: json['DisplayPreferencesId'] == null
             ? null
-            : List<dynamic>.from(json["Tags"].map((x) => x)),
-        primaryImageAspectRatio: json["PrimaryImageAspectRatio"] == null
+            : json['DisplayPreferencesId'],
+        tags: json['Tags'] == null
             ? null
-            : json["PrimaryImageAspectRatio"].toDouble(),
-        mediaStreams: json["MediaStreams"] == null
+            : List<dynamic>.from(json['Tags'].map((x) => x)),
+        primaryImageAspectRatio: json['PrimaryImageAspectRatio'] == null
+            ? null
+            : json['PrimaryImageAspectRatio'].toDouble(),
+        mediaStreams: json['MediaStreams'] == null
             ? null
             : List<MediaStream>.from(
-                json["MediaStreams"].map((x) => MediaStream.fromMap(x))),
-        videoType: json["VideoType"] == null ? null : json["VideoType"],
-        imageTags: json["ImageTags"] == null
+                json['MediaStreams'].map((x) => MediaStream.fromMap(x))),
+        videoType: json['VideoType'] == null ? null : json['VideoType'],
+        imageTags: json['ImageTags'] == null
             ? null
-            : ImageTags.fromMap(json["ImageTags"]),
-        seriesPrimaryImageTag: json["SeriesPrimaryImageTag"] == null
+            : ImageTags.fromMap(json['ImageTags']),
+        seriesPrimaryImageTag: json['SeriesPrimaryImageTag'] == null
             ? null
-            : json["SeriesPrimaryImageTag"],
-        backdropImageTags: json["BackdropImageTags"] == null
+            : json['SeriesPrimaryImageTag'],
+        backdropImageTags: json['BackdropImageTags'] == null
             ? null
-            : List<String>.from(json["BackdropImageTags"].map((x) => x)),
-        screenshotImageTags: json["ScreenshotImageTags"] == null
+            : List<String>.from(json['BackdropImageTags'].map((x) => x)),
+        screenshotImageTags: json['ScreenshotImageTags'] == null
             ? null
-            : List<dynamic>.from(json["ScreenshotImageTags"].map((x) => x)),
-        imageBlurHashes: json["ImageBlurHashes"] == null
+            : List<dynamic>.from(json['ScreenshotImageTags'].map((x) => x)),
+        imageBlurHashes: json['ImageBlurHashes'] == null
             ? null
-            : ImageBlurHashes.fromMap(json["ImageBlurHashes"]),
-        chapters: json["Chapters"] == null
+            : ImageBlurHashes.fromMap(json['ImageBlurHashes']),
+        chapters: json['Chapters'] == null
             ? null
             : List<Chapter>.from(
-                json["Chapters"].map((x) => Chapter.fromMap(x))),
+                json['Chapters'].map((x) => Chapter.fromMap(x))),
         locationType:
-            json["LocationType"] == null ? null : json["LocationType"],
-        mediaType: typeValues.map[json["MediaType"]] == null
+            json['LocationType'] == null ? null : json['LocationType'],
+        mediaType: typeValues.map[json['MediaType']] == null
             ? null
-            : typeValues.map[json["MediaType"]],
-        lockedFields: json["LockedFields"] == null
+            : typeValues.map[json['MediaType']],
+        lockedFields: json['LockedFields'] == null
             ? null
-            : List<dynamic>.from(json["LockedFields"].map((x) => x)),
-        lockData: json["LockData"] == null ? null : json["LockData"],
-        width: json["Width"] == null ? null : json["Width"],
-        height: json["Height"] == null ? null : json["Height"],
+            : List<dynamic>.from(json['LockedFields'].map((x) => x)),
+        lockData: json['LockData'] == null ? null : json['LockData'],
+        width: json['Width'] == null ? null : json['Width'],
+        height: json['Height'] == null ? null : json['Height'],
       );
 
   Map<String, dynamic> toMap() {
     var map = {
-      "Name": name,
-      "OriginalTitle": originalTitle,
-      "ServerId": serverId,
-      "Id": id,
-      "IndexNumber": indexNumber == null ? null : indexNumber,
-      "ParentIndexNumber": parentIndexNumber == null ? null : parentIndexNumber,
-      "Etag": etag,
-      "CollectionType": collectionType,
-      "DateCreated": dateCreated == null ?? dateCreated.toIso8601String(),
-      "CanDelete": canDelete,
-      "CanDownload": canDownload,
-      "HasSubtitles": hasSubtitles,
-      "Container": container,
-      "SortName": sortName,
-      "PremiereDate": premiereDate == null ?? premiereDate.toIso8601String(),
-      "ExternalUrls": externalUrls == null ??
+      'Name': name,
+      'OriginalTitle': originalTitle,
+      'ServerId': serverId,
+      'Id': id,
+      'IndexNumber': indexNumber == null ? null : indexNumber,
+      'ParentIndexNumber': parentIndexNumber == null ? null : parentIndexNumber,
+      'Etag': etag,
+      'CollectionType': collectionType,
+      'DateCreated': dateCreated == null ?? dateCreated.toIso8601String(),
+      'CanDelete': canDelete,
+      'CanDownload': canDownload,
+      'HasSubtitles': hasSubtitles,
+      'Container': container,
+      'SortName': sortName,
+      'PremiereDate': premiereDate == null ?? premiereDate.toIso8601String(),
+      'ExternalUrls': externalUrls == null ??
           List<dynamic>.from(externalUrls.map((x) => x.toMap())),
-      "MediaSources": mediaSources == null ??
+      'MediaSources': mediaSources == null ??
           List<dynamic>.from(mediaSources.map((x) => x.toMap())),
-      "CriticRating": criticRating,
-      "ProductionLocations": productionLocations == null ??
+      'CriticRating': criticRating,
+      'ProductionLocations': productionLocations == null ??
           List<dynamic>.from(productionLocations.map((x) => x)),
-      "Path": path,
-      "EnableMediaSourceDisplay": enableMediaSourceDisplay,
-      "Overview": overview,
-      "Taglines":
+      'Path': path,
+      'EnableMediaSourceDisplay': enableMediaSourceDisplay,
+      'Overview': overview,
+      'Taglines':
           taglines == null ?? List<dynamic>.from(taglines.map((x) => x)),
-      "Genres": genres == null ?? List<dynamic>.from(genres.map((x) => x)),
-      "CommunityRating": communityRating,
-      "RunTimeTicks": runTimeTicks,
-      "PlayAccess": playAccess,
-      "ProductionYear": productionYear,
-      "RemoteTrailers": remoteTrailers == null ??
+      'Genres': genres == null ?? List<dynamic>.from(genres.map((x) => x)),
+      'CommunityRating': communityRating,
+      'RunTimeTicks': runTimeTicks,
+      'PlayAccess': playAccess,
+      'ProductionYear': productionYear,
+      'RemoteTrailers': remoteTrailers == null ??
           List<dynamic>.from(remoteTrailers.map((x) => x.toMap())),
-      "ProviderIds": providerIds == null ?? providerIds.toMap(),
-      "IsHD": isHd,
-      "IsFolder": isFolder,
-      "ParentId": parentId,
-      "Type": type,
-      "Artists": artists,
-      "ArtistItems": artistItems,
-      "Album": album,
-      "AlbumId": albumId,
-      "AlbumPrimaryImageTag": albumPrimaryImageTag,
-      "AlbumArtist": albumArtist,
-      "AlbumArtists": albumArtists,
-      "People":
+      'ProviderIds': providerIds == null ?? providerIds.toMap(),
+      'IsHD': isHd,
+      'IsFolder': isFolder,
+      'ParentId': parentId,
+      'Type': type,
+      'Artists': artists,
+      'ArtistItems': artistItems,
+      'Album': album,
+      'AlbumId': albumId,
+      'AlbumPrimaryImageTag': albumPrimaryImageTag,
+      'AlbumArtist': albumArtist,
+      'AlbumArtists': albumArtists,
+      'People':
           people == null ?? List<dynamic>.from(people.map((x) => x.toMap())),
-      "Studios":
+      'Studios':
           studios == null ?? List<dynamic>.from(studios.map((x) => x.toMap())),
-      "GenreItems": genreItems == null ??
+      'GenreItems': genreItems == null ??
           List<dynamic>.from(genreItems.map((x) => x.toMap())),
-      "LocalTrailerCount": localTrailerCount,
-      "UserData": userData == null ?? userData.toMap(),
-      "SpecialFeatureCount": specialFeatureCount,
-      "DisplayPreferencesId": displayPreferencesId,
-      "Tags": tags == null ?? List<dynamic>.from(tags.map((x) => x)),
-      "PrimaryImageAspectRatio": primaryImageAspectRatio,
-      "MediaStreams": mediaStreams == null ??
+      'LocalTrailerCount': localTrailerCount,
+      'UserData': userData == null ?? userData.toMap(),
+      'SpecialFeatureCount': specialFeatureCount,
+      'DisplayPreferencesId': displayPreferencesId,
+      'Tags': tags == null ?? List<dynamic>.from(tags.map((x) => x)),
+      'PrimaryImageAspectRatio': primaryImageAspectRatio,
+      'MediaStreams': mediaStreams == null ??
           List<dynamic>.from(mediaStreams.map((x) => x.toMap())),
-      "VideoType": videoType,
+      'VideoType': videoType,
       'ImageTags': imageTags == null ?? imageTags.toMap(),
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
-      "BackdropImageTags": backdropImageTags == null ??
+      'BackdropImageTags': backdropImageTags == null ??
           List<dynamic>.from(backdropImageTags.map((x) => x)),
-      "ScreenshotImageTags": screenshotImageTags == null ??
+      'ScreenshotImageTags': screenshotImageTags == null ??
           List<dynamic>.from(screenshotImageTags.map((x) => x)),
       'ImageBlurHashes': imageBlurHashes.toMap(),
-      "Chapters": chapters == null ??
+      'Chapters': chapters == null ??
           List<dynamic>.from(chapters.map((x) => x.toMap())),
-      "LocationType": locationType,
-      "MediaType": typeValues.reverse[mediaType],
-      "LockedFields": lockedFields == null ??
+      'LocationType': locationType,
+      'MediaType': typeValues.reverse[mediaType],
+      'LockedFields': lockedFields == null ??
           List<dynamic>.from(lockedFields.map((x) => x)),
-      "LockData": lockData,
-      "Width": width,
-      "Height": height,
+      'LockData': lockData,
+      'Width': width,
+      'Height': height,
     };
     return map;
   }
