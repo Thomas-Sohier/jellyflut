@@ -13,13 +13,16 @@ class MusicPlayerFAB extends StatefulWidget {
 }
 
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
-  int _playBackTime = 0;
+  int _playBackTime;
   MusicPlayer musicPlayer;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
+    _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
+            ?.duration?.inMilliseconds ??
+        0;
     playerListener();
   }
 
