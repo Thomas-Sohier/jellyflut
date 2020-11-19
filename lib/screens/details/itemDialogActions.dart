@@ -6,6 +6,7 @@ import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import '../../globals.dart';
@@ -24,20 +25,32 @@ class ItemDialogActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        item.type == 'Music'
+        item.type == 'Audio'
             ? _dialogListField(
                 'Add to playlist', () => _addItemToPlaylist(item, context),
                 fontSize: _fontSize, icon: Icons.playlist_add)
             : Container(),
         _dialogListField('Edit Infos', switchWidget,
             fontSize: _fontSize, icon: Icons.info_outline),
-        item.type == 'Music'
-            ? _dialogListField('See artist', () {},
-                fontSize: _fontSize, icon: Icons.person_outline)
+        item.type == 'Audio'
+            ? _dialogListField('See artist', () async {
+                var artist = await getArtist(item);
+                await Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Details(item: artist, heroTag: '')));
+              }, fontSize: _fontSize, icon: Icons.person_outline)
             : Container(),
-        item.type == 'Music'
-            ? _dialogListField('See album', () {},
-                fontSize: _fontSize, icon: Icons.album_outlined)
+        item.type == 'Audio'
+            ? _dialogListField('See album', () async {
+                var album = await getAlbum(item);
+                await Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Details(item: album, heroTag: '')));
+              }, fontSize: _fontSize, icon: Icons.album_outlined)
             : Container(),
         _dialogListField(
             'Delete',
@@ -146,7 +159,7 @@ Future<bool> deleteDialogItem(Item item, BuildContext context) async {
                       child: Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                           child: Text(
-                            'no',
+                            'No',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )),
                     ),
@@ -158,21 +171,15 @@ Future<bool> deleteDialogItem(Item item, BuildContext context) async {
                       child: Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                           decoration: BoxDecoration(
-                              color: Colors.red[700],
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 4,
-                                    color: Colors.black26,
-                                    spreadRadius: 2)
-                              ],
+                              color: Colors.red[600],
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
                           child: InkWell(
                               child: const Text(
-                            'Yes',
+                            'Delete',
                             style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                            ),
                           ))),
                     ),
                   ],
@@ -180,4 +187,13 @@ Future<bool> deleteDialogItem(Item item, BuildContext context) async {
               )
             ]);
       });
+}
+
+Future<Item> getAlbum(Item item) async {
+  return await getItem(item.albumId);
+}
+
+Future<Item> getArtist(Item item) async {
+  var val = item.artistItems.first.artistItems['Id'];
+  return await getItem(val);
 }

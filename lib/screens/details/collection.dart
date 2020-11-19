@@ -24,23 +24,38 @@ class _CollectionState extends State<Collection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Column(
-      children: [
-        if (widget.item.isFolder && widget.item.type == 'MusicAlbum')
-          ListMusicItem(item: widget.item)
-        else if (widget.item.isFolder && widget.item.type == 'Season')
-          ListVideoItem(item: widget.item)
-        else
-          ListCollectionItem(item: widget.item)
-      ],
+      children: [showCollection(widget.item)],
     ));
   }
+}
+
+Widget showCollection(Item item) {
+  if (item.isFolder != null) {
+    if (item.isFolder && item.type == 'MusicAlbum') {
+      return ListMusicItem(item: item);
+    } else if (item.isFolder && item.type == 'Season') {
+      return ListVideoItem(item: item);
+    }
+    return ListCollectionItem(item: item);
+  } else if (item.type == 'MusicArtist') {
+    return ListCollectionItem(
+      item: item,
+      future: getItems(
+          includeItemTypes: 'MusicAlbum',
+          sortBy: 'ProductionYear,Sortname',
+          albumArtistIds: item.id,
+          fields:
+              'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+    );
+  }
+  return Container();
 }
 
 Future collectionItems(Item item) {
   // If it's a series or a music album we get every item
   if (item.type == 'Series' || item.type == 'MusicAlbum') {
-    return getItems(item.id,
-        limit: 100, fields: 'ImageTags', filter: 'IsFolder');
+    return getItems(
+        parentId: item.id, limit: 100, fields: 'ImageTags', filter: 'IsFolder');
   } else {
     return getShowSeasonEpisode(item.seriesId, item.id);
   }

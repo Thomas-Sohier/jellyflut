@@ -34,7 +34,6 @@ class _SearchResultState extends State<SearchResult> {
 
   @override
   Widget build(BuildContext context) {
-    _focusNode.requestFocus();
     return ChangeNotifierProvider.value(
         value: searchProvider,
         child: Consumer<SearchProvider>(builder: (context, search, child) {

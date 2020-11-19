@@ -67,7 +67,7 @@ Widget body(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
           futureItemDetails(item: item, heroTag: heroTag, size: size),
-          item.isFolder == true ? Collection(item) : Container(),
+          Collection(item),
         ]))
   ]);
 }

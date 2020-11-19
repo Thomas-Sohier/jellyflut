@@ -86,8 +86,8 @@ Future<String> getItemURL(Item item) async {
 }
 
 Future<String> getFirstUnplayedItemURL(Item item) async {
-  var category =
-      await getItems(item.id, filter: 'IsNotFolder', fields: 'MediaStreams');
+  var category = await getItems(
+      parentId: item.id, filter: 'IsNotFolder', fields: 'MediaStreams');
   // remove all item without an index to avoid sort error
   category.items.removeWhere((element) => element.indexNumber == null);
   // sort by index to get the next item to stream

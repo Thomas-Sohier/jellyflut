@@ -7,14 +7,19 @@ import 'package:jellyflut/models/item.dart';
 
 class ListCollectionItem extends StatelessWidget {
   final Item item;
+  final Future<Category> future;
 
-  const ListCollectionItem({@required this.item});
+  const ListCollectionItem({@required this.item, this.future});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-        future: getItems(item.id,
-            limit: 100, fields: 'ImageTags', filter: 'IsFolder'),
+        future: future ??
+            getItems(
+                parentId: item.id,
+                limit: 100,
+                fields: 'ImageTags',
+                filter: 'IsFolder'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ConstrainedBox(

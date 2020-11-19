@@ -102,7 +102,8 @@ class _CollectionMainState extends State<CollectionMain> {
     // var _items = items.sublist(startIndex, endIndex);
     if (blockItemsLoading == false) {
       blockItemsLoading = true;
-      getItems(item.id,
+      getItems(
+              parentId: item.id,
               sortBy: 'Name',
               fields: 'DateCreated, DateAdded',
               startIndex: startIndex,
@@ -121,7 +122,8 @@ class _CollectionMainState extends State<CollectionMain> {
 
   Widget listItems(Item item) {
     return FutureBuilder<Category>(
-        future: getItems(item.id,
+        future: getItems(
+            parentId: item.id,
             filter: '',
             sortBy: 'Name',
             fields: 'DateCreated, DateAdded',
@@ -174,8 +176,12 @@ class _CollectionMainState extends State<CollectionMain> {
     return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 300),
         child: FutureBuilder<Category>(
-            future: getItems(item.id,
-                limit: 5, fields: fields, filter: filter, sortBy: 'Random'),
+            future: getItems(
+                parentId: item.id,
+                limit: 5,
+                fields: fields,
+                filter: filter,
+                sortBy: 'Random'),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return CarousselItem(snapshot.data.items, detailMode: true);

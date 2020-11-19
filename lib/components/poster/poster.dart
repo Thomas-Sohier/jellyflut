@@ -26,6 +26,7 @@ class Poster extends StatelessWidget {
         item.imageBlurHashes,
         tag: type,
         boxFit: boxFit,
+        alignment: Alignment.center,
       ),
     );
   }

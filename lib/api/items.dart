@@ -176,14 +176,16 @@ Future<Category> getResumeItems(
   return category;
 }
 
-Future<Category> getItems(String parentId,
-    {String filter,
+Future<Category> getItems(
+    {String parentId,
+    String filter,
     bool recursive = true,
     String sortBy = 'PremiereDate',
     String sortOrder = 'Ascending',
     String mediaType,
     String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
     String includeItemTypes,
+    String albumArtistIds,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
@@ -192,7 +194,7 @@ Future<Category> getItems(String parentId,
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
   var queryParams = <String, dynamic>{};
-  queryParams['ParentId'] = parentId;
+  parentId != null ? queryParams['ParentId'] = parentId : null;
   filter != null ? queryParams['Filters'] = filter : null;
   recursive != null ? queryParams['Recursive'] = recursive : null;
   sortBy != null ? queryParams['SortBy'] = sortBy : null;
@@ -212,6 +214,9 @@ Future<Category> getItems(String parentId,
   fields != null ? queryParams['Fields'] = fields : null;
   excludeLocationTypes != null
       ? queryParams['ExcludeLocationTypes'] = excludeLocationTypes
+      : null;
+  albumArtistIds != null
+      ? queryParams['AlbumArtistIds'] = albumArtistIds
       : null;
   enableTotalRecordCount != null
       ? queryParams['EnableTotalRecordCount'] = enableTotalRecordCount
