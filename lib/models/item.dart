@@ -82,6 +82,7 @@ class Item {
     this.videoType,
     this.imageTags,
     this.seriesPrimaryImageTag,
+    this.seriesName,
     this.backdropImageTags,
     this.screenshotImageTags,
     this.imageBlurHashes,
@@ -149,6 +150,7 @@ class Item {
   String videoType;
   ImageTags imageTags;
   String seriesPrimaryImageTag;
+  String seriesName;
   List<String> backdropImageTags;
   List<dynamic> screenshotImageTags;
   ImageBlurHashes imageBlurHashes;
@@ -287,6 +289,7 @@ class Item {
         seriesPrimaryImageTag: json['SeriesPrimaryImageTag'] == null
             ? null
             : json['SeriesPrimaryImageTag'],
+        seriesName: json['SeriesName'] == null ? null : json['SeriesName'],
         backdropImageTags: json['BackdropImageTags'] == null
             ? null
             : List<String>.from(json['BackdropImageTags'].map((x) => x)),
@@ -378,6 +381,7 @@ class Item {
       'VideoType': videoType,
       'ImageTags': imageTags == null ?? imageTags.toMap(),
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
+      'SeriesName': seriesName,
       'BackdropImageTags': backdropImageTags == null ??
           List<dynamic>.from(backdropImageTags.map((x) => x)),
       'ScreenshotImageTags': screenshotImageTags == null ??

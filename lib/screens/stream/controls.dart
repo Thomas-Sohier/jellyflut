@@ -96,36 +96,63 @@ class _ControlsState extends State<Controls> {
   }
 
   Widget topRow() {
-    return Row(
-      children: [
-        InkWell(
-          onTap: () {
-            changeSubtitle(context);
-          },
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.closed_caption,
-              color: Colors.white,
+    return Row(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              streamModel.item.name,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.white),
             ),
-          ),
+            streamModel.item.seriesName != null
+                ? Text(
+                    streamModel.item.seriesName,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.grey[400], fontSize: 16),
+                  )
+                : Container(),
+          ],
         ),
-        // TODO make audio change works
-        InkWell(
+      ),
+      Spacer(),
+      Row(
+        children: [
+          InkWell(
             onTap: () {
-              changeAudio(context);
+              changeSubtitle(context);
             },
             borderRadius: BorderRadius.all(Radius.circular(50)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Icon(
-                Icons.audiotrack,
+                Icons.closed_caption,
                 color: Colors.white,
               ),
-            ))
-      ],
-    );
+            ),
+          ),
+          // TODO make audio change works
+          InkWell(
+              onTap: () {
+                changeAudio(context);
+              },
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.audiotrack,
+                  color: Colors.white,
+                ),
+              ))
+        ],
+      )
+    ]);
   }
 
   Widget bottomRow() {

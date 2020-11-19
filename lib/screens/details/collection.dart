@@ -35,8 +35,9 @@ Widget showCollection(Item item) {
       return ListMusicItem(item: item);
     } else if (item.isFolder && item.type == 'Season') {
       return ListVideoItem(item: item);
+    } else if (item.isFolder) {
+      return ListCollectionItem(item: item);
     }
-    return ListCollectionItem(item: item);
   } else if (item.type == 'MusicArtist') {
     return ListCollectionItem(
       item: item,
