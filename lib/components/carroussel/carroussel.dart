@@ -133,11 +133,8 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
 
 Widget carrousselDefault(Item item, Color textColor, BuildContext context) {
   var heroTag = item.id + Uuid().v4();
-  return GestureDetector(
-      onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Details(item: item, heroTag: heroTag)),
-          ),
-      child: ItemPoster(item));
+  return ItemPoster(
+    item,
+    heroTag: heroTag,
+  );
 }

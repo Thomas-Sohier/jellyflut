@@ -10,11 +10,13 @@ import 'package:uuid/uuid.dart';
 class ItemPoster extends StatefulWidget {
   ItemPoster(this.item,
       {this.textColor = Colors.white,
+      this.heroTag,
       this.showName = true,
       this.type = 'Primary',
       this.boxFit = BoxFit.cover});
 
   final Item item;
+  final String heroTag;
   final Color textColor;
   final bool showName;
   final String type;
@@ -36,7 +38,7 @@ class _ItemPosterState extends State<ItemPoster> {
   ScreenDetailsArguments screenDetailsArguments;
   @override
   Widget build(BuildContext context) {
-    heroTag = widget.item.id + Uuid().v4();
+    heroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
     return body(heroTag, context);
   }
 

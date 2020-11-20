@@ -66,25 +66,21 @@ Widget body(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-          futureItemDetails(item: item, heroTag: heroTag, size: size),
+          futureItemDetails(item: item, size: size),
           Collection(item),
         ]))
   ]);
 }
 
-Widget futureItemDetails(
-    {@required Item item, @required String heroTag, @required Size size}) {
+Widget futureItemDetails({@required Item item, @required Size size}) {
   return FutureBuilder<dynamic>(
     future: _getItemsCustom(itemId: item.id),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
         return detailsElements(
-            size: size,
-            item: snapshot.data[1],
-            heroTag: heroTag,
-            context: context);
+            size: size, item: snapshot.data[1], context: context);
       } else {
-        return _placeHolderBody(item, heroTag, size);
+        return _placeHolderBody(item, size);
       }
     },
   );
@@ -93,7 +89,6 @@ Widget futureItemDetails(
 Widget detailsElements(
     {@required Size size,
     @required Item item,
-    @required String heroTag,
     @required BuildContext context}) {
   return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +97,7 @@ Widget detailsElements(
         SizedBox(height: size.height * 0.10),
         if (item?.imageBlurHashes?.logo != null) logo(item, size),
         SizedBox(height: size.height * 0.05),
-        buildCard(item, size, heroTag, context),
+        buildCard(item, size, context),
       ]);
 }
 
@@ -144,14 +139,14 @@ Widget backgroundImage(Item item) {
       ));
 }
 
-Widget buildCard(Item item, Size size, String heroTag, context) {
+Widget buildCard(Item item, Size size, BuildContext context) {
   if (item.id != null) {
-    return card(item, size, heroTag, context);
+    return card(item, size, context);
   }
-  return _placeHolderBody(item, heroTag, size);
+  return _placeHolderBody(item, size);
 }
 
-Widget card(Item item, Size size, String heroTag, BuildContext context) {
+Widget card(Item item, Size size, BuildContext context) {
   return Stack(overflow: Overflow.visible, children: <Widget>[
     Container(
         padding: EdgeInsets.only(top: 25),
@@ -174,7 +169,7 @@ Widget card(Item item, Size size, String heroTag, BuildContext context) {
   ]);
 }
 
-Widget _placeHolderBody(Item item, String heroTag, Size size) {
+Widget _placeHolderBody(Item item, Size size) {
   return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
