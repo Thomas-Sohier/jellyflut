@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'package:path/path.dart' as p;
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -54,19 +54,20 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   queryParam['Tag'] = playBackInfos.mediaSources.first.eTag;
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
-  } else {
+  } else if (streamModel.subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] =
         streamModel.subtitleStreamIndex.toString();
   }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
-  } else {
+  } else if (streamModel.audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex.toString();
   }
   queryParam['api_key'] = apiKey;
 
-  var url =
-      'Videos/${item.id}/stream.${playBackInfos.mediaSources.first.container}';
+  var extension = p.extension(playBackInfos.mediaSources.first.path);
+
+  var url = 'Videos/${item.id}/stream${extension}';
 
   var uri = Uri.https(
       server.url.replaceAll(RegExp('https?://'), ''), url, queryParam);
@@ -124,16 +125,14 @@ Future<String> isCodecSupported(Item item, MethodChannel platform) async {
   // TODO finish this method to know if video can be direct play
   if (Platform.isAndroid) {
     var deviceProfile = await getExoplayerProfile();
-    var x = DeviceProfileParent(deviceProfile: deviceProfile);
-    result = x.toMap();
+    result = DeviceProfileParent(deviceProfile: deviceProfile).toMap();
     // log(result);
   } else if (Platform.isIOS) {
     // TODO make IOS
     result = '';
   }
-  log(result.toString());
-  var x = json.encode(result);
-  return x;
+  // log(result.toString());;
+  return json.encode(result);
 }
 
 Future<String> changeAudioSource(int audioIndex, {int playbackTick}) async {

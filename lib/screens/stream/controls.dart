@@ -76,14 +76,14 @@ class _ControlsState extends State<Controls> {
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.black54,
+            Colors.black87,
             Colors.transparent,
             Colors.transparent,
             Colors.black54
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          stops: [0, 0.2, 0.8, 1],
+          stops: [0, 0.3, 0.8, 1],
         ),
       ),
     );
@@ -96,63 +96,72 @@ class _ControlsState extends State<Controls> {
   }
 
   Widget topRow() {
-    return Row(children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              streamModel.item.name,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.white),
-            ),
-            streamModel.item.seriesName != null
-                ? Text(
-                    streamModel.item.seriesName,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(color: Colors.grey[400], fontSize: 16),
-                  )
-                : Container(),
-          ],
-        ),
-      ),
-      Spacer(),
-      Row(
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InkWell(
-            onTap: () {
-              changeSubtitle(context);
-            },
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.closed_caption,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          // TODO make audio change works
-          InkWell(
-              onTap: () {
-                changeAudio(context);
-              },
-              borderRadius: BorderRadius.all(Radius.circular(50)),
+          Expanded(
+              flex: 7,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.audiotrack,
-                  color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      streamModel.item.name,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white),
+                    ),
+                    streamModel.item.seriesName != null
+                        ? Text(
+                            streamModel.item.seriesName,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: Colors.grey[400], fontSize: 16),
+                          )
+                        : Container(),
+                  ],
                 ),
+              )),
+          Expanded(
+              flex: 3,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      changeSubtitle(context);
+                    },
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.closed_caption,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  // TODO make audio change works
+                  InkWell(
+                      onTap: () {
+                        changeAudio(context);
+                      },
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.audiotrack,
+                          color: Colors.white,
+                        ),
+                      ))
+                ],
               ))
-        ],
-      )
-    ]);
+        ]);
   }
 
   Widget bottomRow() {

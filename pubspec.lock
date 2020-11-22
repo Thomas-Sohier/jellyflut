@@ -28,7 +28,7 @@ packages:
       name: better_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.34"
+    version: "0.0.35"
   boolean_selector:
     dependency: transitive
     description:
@@ -206,7 +206,7 @@ packages:
       name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.1.1"
+    version: "7.1.3"
   html:
     dependency: transitive
     description:

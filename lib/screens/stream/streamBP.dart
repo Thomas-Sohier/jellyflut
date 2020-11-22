@@ -34,9 +34,12 @@ class _StreamState extends State<Stream> {
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource.network(widget.streamUrl,
         subtitles: await getSubtitles(streamModel.item));
-    var aspectRatioString = streamModel.item.mediaStreams
-        .firstWhere((element) => element.type.trim().toLowerCase() == 'video')
-        .aspectRatio;
+    var aspectRatioString = streamModel.item.mediaStreams != null
+        ? streamModel.item.mediaStreams
+            .firstWhere(
+                (element) => element.type.trim().toLowerCase() == 'video')
+            .aspectRatio
+        : null;
     aspectRatio = calculateAspectRatio(aspectRatioString) ?? 16 / 9;
     var betterPlayerConfiguration = BetterPlayerConfiguration(
         aspectRatio: aspectRatio,
@@ -140,6 +143,7 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
 }
 
 double calculateAspectRatio(String aspectRatio) {
+  if (aspectRatio == null) return null;
   if (aspectRatio.isEmpty) return null;
   var separatorIndex = aspectRatio.indexOf(':');
   var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));

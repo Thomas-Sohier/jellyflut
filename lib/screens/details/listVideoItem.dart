@@ -138,14 +138,15 @@ Widget videoItem(BuildContext context, Item item, String heroTag) {
                         padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                         child: GestureDetector(
                             onTap: () async {
-                              var url = await getStreamURL(item: item);
+                              var url = await getItemURL(item);
                               await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Stream(
-                                            item: item,
-                                            streamUrl: url,
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Stream(
+                                        item: item,
+                                        streamUrl: url,
+                                        playbackInfos: null)),
+                              );
                             },
                             child: Icon(
                               Icons.play_circle_outline,
