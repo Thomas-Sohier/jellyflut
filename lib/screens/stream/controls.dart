@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../globals.dart';
@@ -26,6 +26,12 @@ class _ControlsState extends State<Controls> {
   int subtitleSelectedIndex;
   int audioSelectedIndex;
   StreamModel streamModel;
+
+  final Shader linearGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [jellyLightBLue, jellyLightPurple],
+  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   @override
   void initState() {
@@ -121,7 +127,9 @@ class _ControlsState extends State<Controls> {
                             streamModel.item.seriesName,
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                                color: Colors.grey[400], fontSize: 16),
+                                fontWeight: FontWeight.w600,
+                                foreground: Paint()..shader = linearGradient,
+                                fontSize: 16),
                           )
                         : Container(),
                   ],
@@ -133,6 +141,19 @@ class _ControlsState extends State<Controls> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: streamModel.playBackInfos.mediaSources.first
+                                  .transcodingUrl !=
+                              null
+                          ? gradientMask(
+                              child: Icon(
+                              Icons.cloud_outlined,
+                              color: Colors.white,
+                            ))
+                          : gradientMask(
+                              child: Icon(Icons.play_for_work,
+                                  color: Colors.white))),
                   InkWell(
                     onTap: () {
                       changeSubtitle(context);
@@ -411,5 +432,19 @@ class _ControlsState extends State<Controls> {
     streamModel.betterPlayerController.playNextVideo();
     await streamModel.betterPlayerController
         .seekTo(Duration(microseconds: tick));
+  }
+
+  Widget gradientMask({@required Widget child}) {
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return RadialGradient(
+          center: Alignment.topLeft,
+          radius: 0.5,
+          colors: <Color>[jellyLightBLue, jellyLightPurple],
+          tileMode: TileMode.mirror,
+        ).createShader(bounds);
+      },
+      child: child,
+    );
   }
 }

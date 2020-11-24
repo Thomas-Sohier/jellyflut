@@ -62,7 +62,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(blurRadius: 6, color: Colors.black54, spreadRadius: 2)
-              ], borderRadius: BorderRadius.circular(30), color: color1),
+              ], borderRadius: BorderRadius.circular(30), color: jellyPurple),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

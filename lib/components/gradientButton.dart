@@ -41,12 +41,13 @@ class _GradienButtonState extends State<GradienButton> {
   }
 }
 
-Widget customPalette(Color color1, Color color2, String text, IconData icon) {
+Widget customPalette(
+    Color jellyPurple, Color color2, String text, IconData icon) {
   return Ink(
     key: ValueKey<int>(1),
     decoration: BoxDecoration(
       gradient: LinearGradient(
-          colors: [color1, color2],
+          colors: [jellyPurple, color2],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight),
       borderRadius: BorderRadius.all(Radius.circular(80.0)),

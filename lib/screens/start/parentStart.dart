@@ -77,7 +77,7 @@ class _ParentStartState extends State<ParentStart> {
                     child: Container(
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                            color: color1,
+                            color: jellyPurple,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(80.0))),
                         child: Stack(alignment: Alignment.center, children: [

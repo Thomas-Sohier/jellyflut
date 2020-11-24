@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Colors.grey[900],
       photoSize: 80.0,
-      loaderColor: color1,
+      loaderColor: jellyPurple,
       seconds: null,
     );
   }
@@ -57,7 +57,7 @@ class Jellyflut extends StatelessWidget {
           title: 'JellyFlut',
           navigatorKey: navigatorKey,
           theme: ThemeData(
-            primarySwatch: color1,
+            primarySwatch: jellyPurple,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: MyApp(),

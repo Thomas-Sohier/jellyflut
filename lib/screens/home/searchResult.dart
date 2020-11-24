@@ -13,8 +13,7 @@ class SearchResult extends StatefulWidget {
 }
 
 TextEditingController searchController = TextEditingController();
-bool _visibleSearchBar = true;
-final _focusNode = FocusNode();
+FocusNode _focusNode;
 
 class _SearchResultState extends State<SearchResult> {
   var searchProvider = SearchProvider();
@@ -23,12 +22,13 @@ class _SearchResultState extends State<SearchResult> {
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     // searchBarListener();
   }
 
   @override
   void dispose() {
-    // _focusNode.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -127,7 +127,6 @@ class _SearchResultState extends State<SearchResult> {
   Widget searchIcon() {
     return InkWell(
       onTap: () => setState(() {
-        _visibleSearchBar = true;
         _focusNode.requestFocus();
       }),
       radius: 60,
