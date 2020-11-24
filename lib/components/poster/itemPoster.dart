@@ -39,7 +39,14 @@ class _ItemPosterState extends State<ItemPoster> {
   @override
   Widget build(BuildContext context) {
     heroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
-    return body(heroTag, context);
+    return GestureDetector(
+        onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Details(item: widget.item, heroTag: heroTag)),
+            ),
+        child: body(heroTag, context));
   }
 
   Widget body(String heroTag, BuildContext context) {

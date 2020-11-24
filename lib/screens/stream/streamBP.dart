@@ -29,6 +29,7 @@ class _StreamState extends State<Stream> {
   StreamModel streamModel;
   BetterPlayerController _betterPlayerController;
   BetterPlayerDataSource dataSource;
+  StreamController<bool> _placeholderStreamController;
   var aspectRatio;
 
   Future<bool> setupData() async {
@@ -64,6 +65,7 @@ class _StreamState extends State<Stream> {
   @override
   void initState() {
     Wakelock.enable();
+    _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
     streamModel.startProgressTimer();
     super.initState();
@@ -73,6 +75,7 @@ class _StreamState extends State<Stream> {
   Future<void> dispose() async {
     await Wakelock.disable();
     await deleteActiveEncoding();
+    await _placeholderStreamController.close();
     streamModel.stopProgressTimer();
     streamModel.betterPlayerController.dispose();
     super.dispose();
