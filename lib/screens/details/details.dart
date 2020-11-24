@@ -104,6 +104,8 @@ Widget detailsElements(
 Widget logo(Item item, Size size) {
   return Container(
       width: size.width,
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      constraints: BoxConstraints(maxWidth: 400),
       height: 100,
       child: AsyncImage(
         correctImageId(item, type: 'logo'),
