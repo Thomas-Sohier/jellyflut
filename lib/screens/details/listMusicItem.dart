@@ -69,8 +69,11 @@ Widget body(Category category) {
             ? a.indexNumber.compareTo(b.indexNumber)
             : 0));
 
-    discs.forEach((key, value) =>
-        children.add(Column(children: [listTitle(key), listCard(value)])));
+    discs.forEach((key, value) => children.add(Column(children: [
+          listTitle(key),
+          listCard(value),
+          SizedBox(height: 30),
+        ])));
   }
 
   return Column(
@@ -101,17 +104,17 @@ Widget listTitle(String index) {
 
 Widget listCard(List<Item> items) {
   return Card(
-      child: Container(
-          child: ListView.builder(
-    shrinkWrap: true,
-    padding: EdgeInsets.zero,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: items.length,
-    itemBuilder: (context, index) {
-      var item = items[index];
-      return item.isFolder ? Container() : listItem(index, item, context);
-    },
-  )));
+      margin: EdgeInsets.all(0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          var item = items[index];
+          return item.isFolder ? Container() : listItem(index, item, context);
+        },
+      ));
 }
 
 Widget listItem(int index, Item item, BuildContext context) {
