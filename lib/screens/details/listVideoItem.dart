@@ -33,9 +33,8 @@ class ListVideoItem extends StatelessWidget {
 
 Widget body(Category category) {
   return Card(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: Container(
-          child: ListView.builder(
+      margin: EdgeInsets.only(top: 20),
+      child: ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: const NeverScrollableScrollPhysics(),
@@ -45,14 +44,13 @@ Widget body(Category category) {
           var heroTag = item.id + Uuid().v4();
           return videoItem(context, item, heroTag);
         },
-      )));
+      ));
 }
 
 Widget placeholderBody() {
   return Card(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: Container(
-          child: ListView.builder(
+      margin: EdgeInsets.only(top: 20),
+      child: ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(0),
         physics: const NeverScrollableScrollPhysics(),
@@ -84,7 +82,7 @@ Widget placeholderBody() {
             ]),
           );
         },
-      )));
+      ));
 }
 
 Widget videoItem(BuildContext context, Item item, String heroTag) {

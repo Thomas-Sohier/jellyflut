@@ -80,27 +80,38 @@ Widget body(Category category) {
 }
 
 Widget listTitle(String index) {
-  return Text(
-    'Disc ${index}',
-    style: TextStyle(
-        color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
-  );
+  return Container(
+      decoration: BoxDecoration(
+          color: Colors.grey[200],
+          gradient: LinearGradient(
+            colors: [Colors.grey[200], Colors.grey[500]],
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+            stops: [0.7, 1],
+          ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
+      child: Text(
+        'Disc ${index}',
+        style: TextStyle(
+            color: Colors.black, fontSize: 22, fontWeight: FontWeight.w700),
+      ));
 }
 
 Widget listCard(List<Item> items) {
   return Card(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Container(
           child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          var item = items[index];
-          return item.isFolder ? Container() : listItem(index, item, context);
-        },
-      )));
+    shrinkWrap: true,
+    padding: EdgeInsets.zero,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      var item = items[index];
+      return item.isFolder ? Container() : listItem(index, item, context);
+    },
+  )));
 }
 
 Widget listItem(int index, Item item, BuildContext context) {

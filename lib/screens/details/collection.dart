@@ -23,9 +23,13 @@ class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        child: Column(
-      children: [showCollection(widget.item)],
-    ));
+        child: Container(
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 600),
+                child: Column(
+                  children: [showCollection(widget.item)],
+                ))));
   }
 
   Widget showCollection(Item item) {
