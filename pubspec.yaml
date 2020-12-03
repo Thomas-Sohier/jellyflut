@@ -35,7 +35,7 @@ dependencies:
       url: https://github.com/fezu54/SplashScreenFlutterPackage
       ref: master
   assets_audio_player: ^2.0.13
-  better_player: ^0.0.35
+  better_player: ^0.0.36
   cached_network_image: ^2.3.3
   cupertino_icons: ^1.0.0
   device_info: ^1.0.0

@@ -28,6 +28,16 @@ class Details extends StatefulWidget {
   }
 }
 
+final playableItems = [
+  'musicalbum',
+  'music',
+  'movie',
+  'series',
+  'season',
+  'episode',
+  'book'
+];
+
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
   @override
   void initState() {
@@ -153,21 +163,23 @@ Widget card(Item item, Size size, BuildContext context) {
     Container(
         padding: EdgeInsets.only(top: 25),
         child: CardItemWithChild(item, Container())),
-    Positioned.fill(
-        child: Align(
-      alignment: Alignment.topCenter,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: size.width * 0.5),
-        child: PaletteButton(
-          'Play',
-          () {
-            _playItem(item, context);
-          },
-          item: item,
-          icon: Icons.play_circle_outline,
-        ),
-      ),
-    ))
+    playableItems.contains(item.type.trim().toLowerCase())
+        ? Positioned.fill(
+            child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: size.width * 0.5),
+              child: PaletteButton(
+                'Play',
+                () {
+                  _playItem(item, context);
+                },
+                item: item,
+                icon: Icons.play_circle_outline,
+              ),
+            ),
+          ))
+        : Container()
   ]);
 }
 

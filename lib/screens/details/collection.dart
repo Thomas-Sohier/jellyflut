@@ -27,34 +27,67 @@ class _CollectionState extends State<Collection> {
       children: [showCollection(widget.item)],
     ));
   }
-}
 
-Widget showCollection(Item item) {
-  if (item.isFolder != null) {
-    if (item.isFolder && item.type == 'MusicAlbum') {
-      return ListMusicItem(item: item);
-    } else if (item.isFolder && item.type == 'Season') {
-      return ListVideoItem(item: item);
-    } else if (item.isFolder) {
-      return ListCollectionItem(item: item);
+  Widget showCollection(Item item) {
+    var size = MediaQuery.of(context).size;
+    if (item.isFolder != null) {
+      if (item.isFolder && item.type == 'MusicAlbum') {
+        return ListMusicItem(item: item);
+      } else if (item.isFolder && item.type == 'Season') {
+        return ListVideoItem(item: item);
+      } else if (item.isFolder) {
+        return ListCollectionItem(item: item);
+      }
+    } else if (item.type == 'MusicArtist') {
+      return Column(children: [
+        ListCollectionItem(
+          item: item,
+          future: getItems(
+              includeItemTypes: 'MusicAlbum',
+              sortBy: 'ProductionYear,Sortname',
+              albumArtistIds: item.id,
+              fields:
+                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+        )
+      ]);
+    } else if (item.type == 'Person') {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        ListCollectionItem(
+          item: item,
+          title: 'Movies',
+          future: getItems(
+              includeItemTypes: 'Movie',
+              sortBy: 'ProductionYear,Sortname',
+              personIds: item.id,
+              fields:
+                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+        ),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        ListCollectionItem(
+          item: item,
+          title: 'Series',
+          future: getItems(
+              includeItemTypes: 'Series',
+              sortBy: 'ProductionYear,Sortname',
+              personIds: item.id,
+              fields:
+                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+        ),
+      ]);
     }
-  } else if (item.type == 'MusicArtist') {
-    return ListCollectionItem(
-      item: item,
-      future: getItems(
-          includeItemTypes: 'MusicAlbum',
-          sortBy: 'ProductionYear,Sortname',
-          albumArtistIds: item.id,
-          fields:
-              'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
-    );
+    return Container();
   }
-  return Container();
 }
 
 Future collectionItems(Item item) {
+  final itemWithChilds = ['susicAlbum', 'series'];
   // If it's a series or a music album we get every item
-  if (item.type == 'Series' || item.type == 'MusicAlbum') {
+  if (itemWithChilds.contains(item.type.trim().toLowerCase())) {
     return getItems(
         parentId: item.id, limit: 100, fields: 'ImageTags', filter: 'IsFolder');
   } else {

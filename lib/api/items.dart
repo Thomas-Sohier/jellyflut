@@ -186,6 +186,7 @@ Future<Category> getItems(
     String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
     String includeItemTypes,
     String albumArtistIds,
+    String personIds,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
@@ -218,6 +219,7 @@ Future<Category> getItems(
   albumArtistIds != null
       ? queryParams['AlbumArtistIds'] = albumArtistIds
       : null;
+  personIds != null ? queryParams['PersonIds'] = personIds : null;
   enableTotalRecordCount != null
       ? queryParams['EnableTotalRecordCount'] = enableTotalRecordCount
       : null;

@@ -143,9 +143,10 @@ class _CardInfosState extends State<CardInfos> {
 }
 
 Widget tabs(Item item, BuildContext context) {
+  var isPerson = item.type.trim().toLowerCase() == 'person';
   return DefaultTabController(
       // The number of tabs / content sections to display.
-      length: 3,
+      length: isPerson ? 2 : 3,
       child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 250),
           child: Column(
@@ -157,12 +158,13 @@ Widget tabs(Item item, BuildContext context) {
                     color: Colors.black,
                   ),
                 ),
-                Tab(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.black,
+                if (!isPerson)
+                  Tab(
+                    icon: Icon(
+                      Icons.person,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
                 Tab(
                   icon: Icon(
                     Icons.edit,
@@ -176,12 +178,11 @@ Widget tabs(Item item, BuildContext context) {
                   padding: const EdgeInsets.all(8.0),
                   child: infos(item, context),
                 ),
-                item?.people != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: PeoplesList(item.people),
-                      )
-                    : Container(),
+                if (!isPerson)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PeoplesList(item.people),
+                  ),
                 Material(
                     color: Colors.transparent,
                     child: Padding(

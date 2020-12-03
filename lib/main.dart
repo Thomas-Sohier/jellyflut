@@ -34,13 +34,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return SplashScreen(
+    return SplashScreen.network(
       navigateAfterFuture: initMain(),
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Colors.grey[900],
       photoSize: 80.0,
       loaderColor: jellyPurple,
-      seconds: null,
     );
   }
 }
