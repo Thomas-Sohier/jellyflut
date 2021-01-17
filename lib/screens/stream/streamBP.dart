@@ -7,6 +7,7 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:wakelock/wakelock.dart';
 
+import '../../components/asyncImage.dart';
 import 'controls.dart';
 
 class Stream extends StatefulWidget {
@@ -30,6 +31,7 @@ class _StreamState extends State<Stream> {
   BetterPlayerController _betterPlayerController;
   BetterPlayerDataSource dataSource;
   StreamController<bool> _placeholderStreamController;
+  final GlobalKey _betterPlayerKey = GlobalKey();
   var aspectRatio;
 
   Future<bool> setupData() async {
@@ -47,7 +49,7 @@ class _StreamState extends State<Stream> {
         fit: BoxFit.contain,
         autoPlay: true,
         looping: false,
-        fullScreenByDefault: false,
+        fullScreenByDefault: true,
         allowedScreenSleep: false,
         subtitlesConfiguration:
             BetterPlayerSubtitlesConfiguration(fontSize: 18),
@@ -58,6 +60,7 @@ class _StreamState extends State<Stream> {
 
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
     await _betterPlayerController.setupDataSource(dataSource);
+    _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     StreamModel().setBetterPlayerController(_betterPlayerController);
     return Future.value(true);
   }
@@ -93,6 +96,7 @@ class _StreamState extends State<Stream> {
               child: AspectRatio(
                   aspectRatio: aspectRatio,
                   child: BetterPlayer(
+                      key: _betterPlayerKey,
                       controller: streamModel.betterPlayerController)),
             );
           } else {
@@ -114,7 +118,8 @@ class _StreamState extends State<Stream> {
       enableSubtitles: true,
       enableQualities: false,
       showControlsOnInitialize: true,
-      customControls: Controls(),
+      playerTheme: BetterPlayerTheme.custom,
+      customControlsBuilder: (controller) => Controls(),
       controlBarHeight: 40,
     );
   }
@@ -133,7 +138,7 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
       : [];
   var asyncSubs = subtitles
       .map((sub) async => BetterPlayerSubtitlesSource(
-          type: BetterPlayerSubtitlesSourceType.NETWORK,
+          type: BetterPlayerSubtitlesSourceType.network,
           urls: [
             sub.isExternal
                 ? sub.deliveryUrl

@@ -107,7 +107,7 @@ class _ControlsState extends State<Controls> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-              flex: 7,
+              flex: 6,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -119,7 +119,7 @@ class _ControlsState extends State<Controls> {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.white),
                     ),
                     streamModel.item.seriesName != null
@@ -129,14 +129,14 @@ class _ControlsState extends State<Controls> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 foreground: Paint()..shader = linearGradient,
-                                fontSize: 16),
+                                fontSize: 14),
                           )
                         : Container(),
                   ],
                 ),
               )),
           Expanded(
-              flex: 3,
+              flex: 4,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -154,6 +154,27 @@ class _ControlsState extends State<Controls> {
                           : gradientMask(
                               child: Icon(Icons.play_for_work,
                                   color: Colors.white))),
+                  InkWell(
+                    onTap: () {
+                      streamModel.betterPlayerController
+                          .isPictureInPictureSupported()
+                          .then((value) => {
+                                if (value)
+                                  streamModel.betterPlayerController
+                                      .enablePictureInPicture(streamModel
+                                          .betterPlayerController
+                                          .betterPlayerGlobalKey)
+                              });
+                    },
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.picture_in_picture,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       changeSubtitle(context);
@@ -361,9 +382,9 @@ class _ControlsState extends State<Controls> {
         '/Videos/${mediaSourceId}/${_itemId}/Subtitles/${sub.index}/0/Stream.${parsedCodec}',
         queryParam);
     var url = uri.origin + uri.path;
-    streamModel.betterPlayerController.setupSubtitleSource(
+    await streamModel.betterPlayerController.setupSubtitleSource(
         BetterPlayerSubtitlesSource(
-            type: BetterPlayerSubtitlesSourceType.NETWORK,
+            type: BetterPlayerSubtitlesSourceType.network,
             urls: [url],
             name: sub.title));
   }

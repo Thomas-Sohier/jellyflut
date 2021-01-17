@@ -70,7 +70,7 @@ Widget body(Category category) {
             : 0));
 
     discs.forEach((key, value) => children.add(Column(children: [
-          listTitle(key),
+          listTitle(key, value),
           listCard(value),
           SizedBox(height: 30),
         ])));
@@ -82,8 +82,11 @@ Widget body(Category category) {
           : children);
 }
 
-Widget listTitle(String index) {
+Widget listTitle(String index, List<Item> items) {
+  var duration = 0;
+  items.forEach((item) => duration += (item.runTimeTicks / 10).round());
   return Container(
+      width: double.maxFinite,
       decoration: BoxDecoration(
           color: Colors.grey[200],
           gradient: LinearGradient(
@@ -94,11 +97,21 @@ Widget listTitle(String index) {
           ),
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-      child: Text(
-        'Disc ${index}',
-        style: TextStyle(
-            color: Colors.black, fontSize: 22, fontWeight: FontWeight.w700),
+      padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Icon(Icons.album),
+          ),
+          Text(
+            'Disc ${index}',
+            style: TextStyle(
+                color: Colors.black, fontSize: 22, fontWeight: FontWeight.w700),
+          ),
+          Spacer(),
+          Text(printDuration(Duration(microseconds: duration)))
+        ],
       ));
 }
 
@@ -189,7 +202,7 @@ Widget listItem(int index, Item item, BuildContext context) {
 
 Widget placeholderBody() {
   return Card(
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: Container(
           child: ListView.builder(
         shrinkWrap: true,
