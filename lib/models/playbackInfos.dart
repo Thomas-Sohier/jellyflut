@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:jellyflut/models/mediaStream.dart';
+
 import 'mediaSource.dart';
 
 PlayBackInfos playBackInfosFromMap(String str) =>
@@ -31,4 +33,12 @@ class PlayBackInfos {
             : List<dynamic>.from(mediaSources.map((x) => x.toMap())),
         'PlaySessionId': playSessionId == null ? null : playSessionId,
       };
+
+  List<MediaStream> getSubtitles() {
+    return mediaSources.first.mediaStreams != null
+        ? mediaSources.first.mediaStreams
+            .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+            .toList()
+        : [];
+  }
 }

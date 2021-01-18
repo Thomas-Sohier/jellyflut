@@ -7,7 +7,6 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../../components/asyncImage.dart';
 import 'controls.dart';
 
 class Stream extends StatefulWidget {
@@ -37,25 +36,17 @@ class _StreamState extends State<Stream> {
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource.network(widget.streamUrl,
         subtitles: await getSubtitles(streamModel.item));
-    var aspectRatioString = streamModel.item.mediaStreams != null
-        ? streamModel.item.mediaStreams
-            .firstWhere(
-                (element) => element.type.trim().toLowerCase() == 'video')
-            .aspectRatio
-        : null;
-    aspectRatio = calculateAspectRatio(aspectRatioString) ?? 16 / 9;
+    aspectRatio = streamModel.item.getAspectRatio();
     var betterPlayerConfiguration = BetterPlayerConfiguration(
         aspectRatio: aspectRatio,
         fit: BoxFit.contain,
         autoPlay: true,
         looping: false,
-        fullScreenByDefault: true,
+        fullScreenByDefault: false,
         allowedScreenSleep: false,
         subtitlesConfiguration:
             BetterPlayerSubtitlesConfiguration(fontSize: 18),
-        startAt: Duration(
-            microseconds:
-                (widget.item.userData.playbackPositionTicks / 10).round()),
+        startAt: Duration(microseconds: (widget.item.getPlaybackPosition())),
         controlsConfiguration: configuration());
 
     _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
@@ -126,17 +117,9 @@ class _StreamState extends State<Stream> {
 }
 
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
-  var subtitles = StreamModel().playBackInfos.mediaSources.first.mediaStreams !=
-          null
-      ? StreamModel()
-          .playBackInfos
-          .mediaSources
-          .first
-          .mediaStreams
-          .where((element) => element.type.trim().toLowerCase() == 'subtitle')
-          .toList()
-      : [];
-  var asyncSubs = subtitles
+  var asyncSubs = StreamModel()
+      .playBackInfos
+      .getSubtitles()
       .map((sub) async => BetterPlayerSubtitlesSource(
           type: BetterPlayerSubtitlesSourceType.network,
           urls: [
@@ -148,14 +131,4 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
           name: '${sub.language} - ${sub.title}'))
       .toList();
   return Future.wait(asyncSubs);
-}
-
-double calculateAspectRatio(String aspectRatio) {
-  if (aspectRatio == null) return null;
-  if (aspectRatio.isEmpty) return null;
-  var separatorIndex = aspectRatio.indexOf(':');
-  var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));
-  var secondValue = double.parse(
-      aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
-  return firstValue / secondValue;
 }

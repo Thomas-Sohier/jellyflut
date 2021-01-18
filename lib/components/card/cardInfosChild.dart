@@ -50,8 +50,7 @@ class _CardInfosState extends State<CardInfos> {
                           (item.userData.playbackPositionTicks / 10).round())) +
                   ' - '),
             if (item.runTimeTicks != null)
-              Text(printDuration(
-                  Duration(microseconds: (item.runTimeTicks / 10).round()))),
+              Text(printDuration(Duration(microseconds: item.getDuration()))),
             Padding(
                 padding: EdgeInsets.only(left: 10),
                 child: Material(

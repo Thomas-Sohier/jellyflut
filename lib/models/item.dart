@@ -399,4 +399,79 @@ class Item {
     };
     return map;
   }
+
+  /**
+   * Check if item is new
+   * 
+   * Return [true] is is less than 3 days old
+   * Return [false] is date of creation is null or if more than 3 days old
+  */
+  bool isNew() {
+    if (dateCreated == null) {
+      return false;
+    }
+    var difference = dateCreated.difference(DateTime.now());
+    return difference.inDays < -3 ? false : true;
+  }
+
+  /**
+   * Duration in microseconds from the item
+   * 
+   * Return the [duration] if known
+   * Return [0] if not known
+   */
+  int getDuration() {
+    return (runTimeTicks / 10).round();
+  }
+
+  /**
+   * Get item aspect ratio
+   * 
+   * Return aspect ratio from video as [double] value
+   * If not specified return [16/9] as default value
+   */
+  double getAspectRatio() {
+    MediaStream mediaStream;
+    if (mediaStreams.isNotEmpty) {
+      mediaStream = mediaStreams.firstWhere(
+          (element) => element.type.trim().toLowerCase() == 'video');
+
+      // If aspect ratio is specified then we use it
+      // else we calculate it
+      if (mediaStream.aspectRatio.isNotEmpty) {
+        return calculateAspectRatio(mediaStream.aspectRatio);
+      }
+      return (mediaStream.width / mediaStream.height);
+    }
+    return 16 / 9;
+  }
+
+  /**
+   * Parse aspect ratio (jellyfin format) from string to double
+   * 
+   * Return aspect ratio from video as [double] value
+   * If not specified return [null] as default value
+   */
+  double calculateAspectRatio(String aspectRatio) {
+    if (aspectRatio == null) return null;
+    if (aspectRatio.isEmpty) return null;
+    var separatorIndex = aspectRatio.indexOf(':');
+    var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));
+    var secondValue = double.parse(
+        aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
+    return firstValue / secondValue;
+  }
+
+  /**
+   * Playback position last time played
+   * 
+   * Return playback position in microsecond as [int]
+   * Return [null] if not specified
+   */
+  int getPlaybackPosition() {
+    if (userData.playbackPositionTicks != null) {
+      return (userData.playbackPositionTicks / 10).round();
+    }
+    return null;
+  }
 }

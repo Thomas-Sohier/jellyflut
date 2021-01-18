@@ -66,7 +66,7 @@ class ProgressBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(80.0)),
-        color: Colors.black26,
+        color: Colors.black87,
       ),
       width: double.maxFinite,
       height: 3,
@@ -78,7 +78,7 @@ class ProgressBar extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(80.0)),
           boxShadow: [
-            BoxShadow(blurRadius: 1, color: Colors.black45, spreadRadius: 1)
+            BoxShadow(blurRadius: 0, color: Colors.black87, spreadRadius: 1.5)
           ]),
       width: double.maxFinite,
       height: 3,

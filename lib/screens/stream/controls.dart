@@ -155,17 +155,9 @@ class _ControlsState extends State<Controls> {
                               child: Icon(Icons.play_for_work,
                                   color: Colors.white))),
                   InkWell(
-                    onTap: () {
-                      streamModel.betterPlayerController
-                          .isPictureInPictureSupported()
-                          .then((value) => {
-                                if (value)
-                                  streamModel.betterPlayerController
-                                      .enablePictureInPicture(streamModel
-                                          .betterPlayerController
-                                          .betterPlayerGlobalKey)
-                              });
-                    },
+                    onTap: () => streamModel.betterPlayerController
+                        .enablePictureInPicture(streamModel
+                            .betterPlayerController.betterPlayerGlobalKey),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

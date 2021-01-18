@@ -123,9 +123,8 @@ Widget videoItem(BuildContext context, Item item, String heroTag) {
                       ),
                       if (item.runTimeTicks != null)
                         Text(
-                            printDuration(Duration(
-                                microseconds:
-                                    (item.runTimeTicks / 10).round())),
+                            printDuration(
+                                Duration(microseconds: item.getDuration())),
                             style: TextStyle(color: Colors.grey[700])),
                       Text((item.overview ?? ''),
                           textAlign: TextAlign.left,

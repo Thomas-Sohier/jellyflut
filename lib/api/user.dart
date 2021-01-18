@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/epub.dart';
@@ -6,6 +6,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'dio.dart';
 
@@ -56,36 +57,49 @@ Future<Category> getCategory({String parentId, int limit = 10}) async {
 }
 
 Future<String> getEbook(Item item) async {
+  // Check if we have rights
+  // If not we cancel
   var hasStorage = await requestStorage();
   if (!hasStorage) {
     return null;
   }
+
+  // Check if ebook is already present
+  if (await isEbookDownloaded(item)) {
+    return getStoragePathItem(item);
+  }
+
   var queryParams = <String, dynamic>{};
   queryParams['api_key'] = apiKey;
 
   var url = '${server.url}/Items/${item.id}/Download?api_key=${apiKey}';
-  // Directory storageDir = await getTemporaryDirectory();
-  var storageDir = await getApplicationDocumentsDirectory();
-  var storageDirPath = storageDir.path;
-  if (Platform.isAndroid) {
-    storageDirPath = '/storage/emulated/0/Download';
-  }
 
-  var dowloadPath = '${storageDirPath}/${item.name}.epub';
+  var dowloadPath = await getStoragePathItem(item);
   await downloadFile(url, dowloadPath);
   return dowloadPath;
 }
 
+Future<bool> isEbookDownloaded(Item item) async {
+  var path = await getStoragePathItem(item);
+  return io.File(path).exists();
+}
+
+Future<String> getStoragePathItem(Item item) async {
+  var storageDir = await getTemporaryDirectory();
+  var storageDirPath = storageDir.path;
+  return '${storageDirPath}/${item.name}.epub';
+}
+
 Future<bool> requestStorage() async {
-  // var storage = await Permission.storage.request().isGranted;
-  // if (storage) {
-  //   return true;
-  // } else {
-  //   var permissionStatus = await Permission.storage.request();
-  //   if (permissionStatus.isDenied) {
-  //     return false;
-  //   }
-  // }
+  var storage = await Permission.storage.request().isGranted;
+  if (storage) {
+    return true;
+  } else {
+    var permissionStatus = await Permission.storage.request();
+    if (permissionStatus.isDenied) {
+      return false;
+    }
+  }
   return true;
 }
 

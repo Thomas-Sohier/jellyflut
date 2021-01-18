@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/parallelogram.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
 import 'package:jellyflut/components/poster/seenIcon.dart';
@@ -67,6 +68,22 @@ class _ItemPosterState extends State<ItemPoster> {
                               type: widget.type,
                               boxFit: widget.boxFit,
                               item: widget.item)),
+                      if (widget.item.isNew())
+                        Positioned.fill(
+                            top: 8,
+                            child: Align(
+                                alignment: Alignment.topLeft,
+                                child: CustomPaint(
+                                    painter: MyParallelogram(),
+                                    child: Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 2, 10, 2),
+                                        child: Text('NEW',
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.white,
+                                                fontWeight:
+                                                    FontWeight.bold)))))),
                       if (widget.item.userData.playbackPositionTicks != null &&
                           widget.item.userData.playbackPositionTicks > 0)
                         Positioned.fill(

@@ -84,7 +84,7 @@ Widget body(Category category) {
 
 Widget listTitle(String index, List<Item> items) {
   var duration = 0;
-  items.forEach((item) => duration += (item.runTimeTicks / 10).round());
+  items.forEach((item) => duration += item.getDuration());
   return Container(
       width: double.maxFinite,
       decoration: BoxDecoration(
@@ -184,9 +184,8 @@ Widget listItem(int index, Item item, BuildContext context) {
                         : Container(),
                     item.artists != null
                         ? Text(
-                            printDuration(Duration(
-                                microseconds:
-                                    (item.runTimeTicks / 10).round())),
+                            printDuration(
+                                Duration(microseconds: item.getDuration())),
                             textAlign: TextAlign.left,
                             style: TextStyle(color: Color(0xFF5774C2)))
                         : Container()
