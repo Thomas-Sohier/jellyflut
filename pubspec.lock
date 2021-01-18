@@ -143,6 +143,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.9"
+  ext_storage:
+    dependency: "direct main"
+    description:
+      name: ext_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:

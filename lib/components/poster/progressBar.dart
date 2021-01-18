@@ -9,31 +9,18 @@ class ProgressBar extends StatelessWidget {
   const ProgressBar({Key key, @required this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return Stack(
       children: [
-        Row(
-          children: [
-            Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: progressBarDurationPercent())),
-          ],
-        ),
-        Stack(
-          children: [
-            Positioned(
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: progressBarShadow())),
-            Positioned(
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: progressBarBackground())),
-            Positioned(
-                child: Align(
-                    alignment: Alignment.centerLeft, child: progressBar())),
-          ],
-        )
+        Positioned(
+            child: Align(
+                alignment: Alignment.bottomLeft, child: progressBarShadow())),
+        Positioned(
+            child: Align(
+                alignment: Alignment.bottomLeft,
+                child: progressBarBackground())),
+        Positioned(
+            child:
+                Align(alignment: Alignment.bottomLeft, child: progressBar())),
       ],
     );
   }

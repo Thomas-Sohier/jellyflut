@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/parallelogram.dart';
+import 'package:jellyflut/components/banner/LeftBanner.dart';
+import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
 import 'package:jellyflut/components/poster/seenIcon.dart';
@@ -68,13 +69,14 @@ class _ItemPosterState extends State<ItemPoster> {
                               type: widget.type,
                               boxFit: widget.boxFit,
                               item: widget.item)),
-                      if (widget.item.isNew())
-                        Positioned.fill(
-                            top: 8,
-                            child: Align(
-                                alignment: Alignment.topLeft,
+                      Stack(
+                        children: [
+                          if (widget.item.isNew())
+                            Positioned(
+                                top: 8,
+                                left: 0,
                                 child: CustomPaint(
-                                    painter: MyParallelogram(),
+                                    painter: LeftBanner(color: Colors.red[700]),
                                     child: Container(
                                         padding:
                                             EdgeInsets.fromLTRB(10, 2, 10, 2),
@@ -83,7 +85,24 @@ class _ItemPosterState extends State<ItemPoster> {
                                                 fontStyle: FontStyle.italic,
                                                 color: Colors.white,
                                                 fontWeight:
-                                                    FontWeight.bold)))))),
+                                                    FontWeight.bold))))),
+                          if (widget.item.userData.played)
+                            Positioned(
+                                top: 8,
+                                right: 0,
+                                child: CustomPaint(
+                                    painter:
+                                        RightBanner(color: Colors.green[700]),
+                                    child: Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 2, 10, 2),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 16,
+                                        )))),
+                        ],
+                      ),
                       if (widget.item.userData.playbackPositionTicks != null &&
                           widget.item.userData.playbackPositionTicks > 0)
                         Positioned.fill(
@@ -97,14 +116,6 @@ class _ItemPosterState extends State<ItemPoster> {
                                             const EdgeInsets.only(bottom: 8.0),
                                         child:
                                             ProgressBar(item: widget.item))))),
-                      if (widget.item.userData.played)
-                        Positioned.fill(
-                            right: 5,
-                            child: Align(
-                                alignment: Alignment.topRight,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SeenIcon()))),
                     ]),
                   ),
                 ],
