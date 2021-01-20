@@ -22,6 +22,11 @@ class MusicPlayer extends ChangeNotifier {
         .audio.audio.metas.title;
   }
 
+  String currentMusicArtist() {
+    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+        .audio.audio.metas.artist;
+  }
+
   double currentMusicMaxDuration() {
     return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
         .audio.duration.inMilliseconds

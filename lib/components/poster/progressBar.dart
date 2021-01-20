@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
 
-import 'itemPoster.dart';
-
 class ProgressBar extends StatelessWidget {
   final Item item;
 
@@ -27,7 +25,7 @@ class ProgressBar extends StatelessWidget {
 
   Widget progressBar() {
     return FractionallySizedBox(
-        widthFactor: percentDuration(item),
+        widthFactor: item.getPercentPlayed(),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(80.0)),
@@ -39,7 +37,7 @@ class ProgressBar extends StatelessWidget {
 
   Widget progressBarDurationPercent() {
     return Text(
-      (percentDuration(item) * 100).round().toString() + ' %',
+      (item.getPercentPlayed() * 100).round().toString() + ' %',
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, shadows: [
         Shadow(offset: Offset(0, -2), blurRadius: 4, color: Colors.black),
@@ -70,9 +68,5 @@ class ProgressBar extends StatelessWidget {
       width: double.maxFinite,
       height: 3,
     );
-  }
-
-  double percentDuration(Item item) {
-    return item.userData.playbackPositionTicks / item.runTimeTicks;
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/shared.dart';
 
 import '../asyncImage.dart';
 
@@ -19,9 +18,9 @@ class Poster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: handleAspectRatio(item),
+      aspectRatio: item.getPrimaryAspectRatio(),
       child: AsyncImage(
-        itemsPoster(item),
+        item.getIdBasedOnImage(),
         item.imageTags.primary,
         item.imageBlurHashes,
         tag: type,
@@ -30,22 +29,4 @@ class Poster extends StatelessWidget {
       ),
     );
   }
-}
-
-String itemsPoster(Item item) {
-  if (item.type == 'Season') {
-    if (item.imageTags.primary != null) return item.id;
-    return item.seriesId;
-  }
-  return item.id;
-}
-
-double handleAspectRatio(Item item) {
-  if (item.primaryImageAspectRatio != null) {
-    if (item.primaryImageAspectRatio > 0.0) {
-      return item.primaryImageAspectRatio;
-    }
-    return aspectRatio(type: item.type);
-  }
-  return aspectRatio(type: item.type);
 }

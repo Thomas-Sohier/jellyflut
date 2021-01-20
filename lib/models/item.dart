@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:jellyflut/shared/enums.dart';
+import 'package:jellyflut/shared/shared.dart';
 
 import 'albumArtists.dart';
 import 'artist.dart';
@@ -473,5 +474,52 @@ class Item {
       return (userData.playbackPositionTicks / 10).round();
     }
     return null;
+  }
+
+  /**
+   * Percent of time played
+   * 
+   * Return percent og time played as [double]
+   * Return [null] if not specified
+   */
+  double getPercentPlayed() {
+    if (userData.playbackPositionTicks != null || runTimeTicks != null) {
+      return userData.playbackPositionTicks / runTimeTicks;
+    }
+    return null;
+  }
+
+  /**
+   * Get primary image aspect ratio. Useful to show poster of item
+   * 
+   * Return [double]
+   * 
+   * Return [primaryImageAspectRatio] if defined
+   * Else return an aspect ratio based on type if not defined
+   */
+  double getPrimaryAspectRatio() {
+    if (primaryImageAspectRatio != null) {
+      if (primaryImageAspectRatio > 0.0) {
+        return primaryImageAspectRatio;
+      }
+      return aspectRatio(type: type);
+    }
+    return aspectRatio(type: type);
+  }
+
+  /**
+   * Get id or parentid if primary image is not defined
+   * 
+   * Return [String]
+   * 
+   * Return id if type do not have parent
+   * Return parent id if there is no primary image set
+   */
+  String getIdBasedOnImage() {
+    if (type == 'Season') {
+      if (imageTags.primary != null) return id;
+      return seriesId;
+    }
+    return id;
   }
 }

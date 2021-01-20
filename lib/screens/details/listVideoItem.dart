@@ -42,7 +42,7 @@ Widget body(Category category) {
         itemBuilder: (context, index) {
           var item = category.items[index];
           var heroTag = item.id + Uuid().v4();
-          return videoItem(context, item, heroTag);
+          return videoItem(index, context, item, heroTag);
         },
       ));
 }
@@ -85,79 +85,114 @@ Widget placeholderBody() {
       ));
 }
 
-Widget videoItem(BuildContext context, Item item, String heroTag) {
-  return InkWell(
-    onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Details(item: item, heroTag: heroTag)),
-    ),
-    child: Hero(
-      tag: item.id,
-      child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      Row(
-                        children: [
-                          Expanded(
-                              flex: 10,
-                              child: Text(item.name.trim(),
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.clip,
+Widget videoItem(int index, BuildContext context, Item item, String heroTag) {
+  return Column(children: [
+    if (index != 0)
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Divider(
+          height: 1,
+          color: Colors.grey[500],
+        ),
+      ),
+    InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Details(item: item, heroTag: heroTag)),
+      ),
+      child: Hero(
+        tag: item.id,
+        child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12, left: 6),
+                    child: Text(item.indexNumber.toString(),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 22,
+                        )),
+                  ),
+                  Expanded(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        if (item.isNew())
+                          Container(
+                              padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                              color: Colors.red[700],
+                              child: Text('NEW',
                                   style: TextStyle(
-                                      color: Color(0xFF333333),
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600))),
-                          Spacer(),
-                          actionIcons(item)
-                        ],
-                      ),
-                      if (item.runTimeTicks != null)
-                        Text(
-                            printDuration(
-                                Duration(microseconds: item.getDuration())),
-                            style: TextStyle(color: Colors.grey[700])),
-                      Text((item.overview ?? ''),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(color: Color(0xFF333333))),
-                    ])),
-                Container(
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
-                        child: GestureDetector(
-                            onTap: () async {
-                              var url = await getItemURL(item);
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Stream(
-                                        item: item,
-                                        streamUrl: url,
-                                        playbackInfos: null)),
-                              );
-                            },
-                            child: Icon(
-                              Icons.play_circle_outline,
-                              size: 32,
-                              color: Colors.black,
-                            )))),
-              ])),
-    ),
-  );
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold))),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 10,
+                                child: Text(item.name.trim(),
+                                    textAlign: TextAlign.left,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        color: Color(0xFF333333),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600))),
+                            Spacer(),
+                            actionIcons(item)
+                          ],
+                        ),
+                        if (item.runTimeTicks != null)
+                          Text(
+                              printDuration(
+                                  Duration(microseconds: item.getDuration())),
+                              style: TextStyle(color: Colors.grey[700])),
+                        Text((item.overview ?? ''),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(color: Color(0xFF333333))),
+                      ])),
+                  Container(
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
+                          child: GestureDetector(
+                              onTap: () async {
+                                var url = await getItemURL(item);
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Stream(
+                                          item: item,
+                                          streamUrl: url,
+                                          playbackInfos: null)),
+                                );
+                              },
+                              child: Icon(
+                                Icons.play_circle_outline,
+                                size: 32,
+                                color: Colors.black,
+                              )))),
+                ])),
+      ),
+    )
+  ]);
 }
 
 Widget actionIcons(Item item, {fav = true, view = true}) {
   return Row(
-    children: [if (fav) FavButton(item), if (view) ViewedButton(item)],
+    children: [
+      if (fav)
+        FavButton(
+          item,
+          padding: EdgeInsets.only(left: 8, right: 8),
+        ),
+      if (view) ViewedButton(item, padding: EdgeInsets.only(left: 8, right: 8))
+    ],
   );
 }
 

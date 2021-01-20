@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart'
+    as MusicPlayerWidget;
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -66,8 +68,20 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MusicPlayerWidget.MusicPlayer(),
+                        )),
+                    child: Icon(
+                      Icons.more_vert,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
                   Expanded(
-                      flex: 3,
+                      flex: 4,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,

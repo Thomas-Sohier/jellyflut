@@ -190,7 +190,7 @@ Future<Category> getItems(
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'Chapters',
+    String fields = 'Chapters, DateCreated',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {

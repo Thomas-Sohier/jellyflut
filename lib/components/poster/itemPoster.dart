@@ -3,7 +3,6 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
-import 'package:jellyflut/components/poster/seenIcon.dart';
 import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -53,7 +52,7 @@ class _ItemPosterState extends State<ItemPoster> {
 
   Widget body(String heroTag, BuildContext context) {
     return AspectRatio(
-      aspectRatio: handleAspectRatio(widget.item),
+      aspectRatio: widget.item.getPrimaryAspectRatio(),
       child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,35 +71,9 @@ class _ItemPosterState extends State<ItemPoster> {
                       Stack(
                         children: [
                           if (widget.item.isNew())
-                            Positioned(
-                                top: 8,
-                                left: 0,
-                                child: CustomPaint(
-                                    painter: LeftBanner(color: Colors.red[700]),
-                                    child: Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 2, 10, 2),
-                                        child: Text('NEW',
-                                            style: TextStyle(
-                                                fontStyle: FontStyle.italic,
-                                                color: Colors.white,
-                                                fontWeight:
-                                                    FontWeight.bold))))),
+                            Positioned(top: 8, left: 0, child: newBanner()),
                           if (widget.item.userData.played)
-                            Positioned(
-                                top: 8,
-                                right: 0,
-                                child: CustomPaint(
-                                    painter:
-                                        RightBanner(color: Colors.green[700]),
-                                    child: Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 2, 10, 2),
-                                        child: Icon(
-                                          Icons.check,
-                                          color: Colors.white,
-                                          size: 16,
-                                        )))),
+                            Positioned(top: 8, right: 0, child: playedBanner()),
                         ],
                       ),
                       if (widget.item.userData.playbackPositionTicks != null &&
@@ -108,14 +81,7 @@ class _ItemPosterState extends State<ItemPoster> {
                         Positioned.fill(
                             child: Align(
                                 alignment: Alignment.bottomCenter,
-                                child: FractionallySizedBox(
-                                    widthFactor: 0.9,
-                                    heightFactor: 0.2,
-                                    child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child:
-                                            ProgressBar(item: widget.item))))),
+                                child: progressBar())),
                     ]),
                   ),
                 ],
@@ -141,5 +107,38 @@ class _ItemPosterState extends State<ItemPoster> {
             ),
           ]),
     );
+  }
+
+  Widget newBanner() {
+    return CustomPaint(
+        painter: LeftBanner(color: Colors.red[700]),
+        child: Container(
+            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+            child: Text('NEW',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold))));
+  }
+
+  Widget playedBanner() {
+    return CustomPaint(
+        painter: RightBanner(color: Colors.green[700]),
+        child: Container(
+            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 16,
+            )));
+  }
+
+  Widget progressBar() {
+    return FractionallySizedBox(
+        widthFactor: 0.9,
+        heightFactor: 0.2,
+        child: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: ProgressBar(item: widget.item)));
   }
 }
