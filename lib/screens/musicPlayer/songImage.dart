@@ -7,7 +7,9 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 
 class SongImage extends StatefulWidget {
   final double height;
-  SongImage({Key key, @required this.height}) : super(key: key);
+  final Color color;
+  SongImage({Key key, @required this.height, @required this.color})
+      : super(key: key);
 
   @override
   _SongImageState createState() => _SongImageState();
@@ -65,14 +67,22 @@ BackdropFilter defaultSingleStyle(double size) {
           height: size,
           width: size,
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 10, spreadRadius: 8, color: Colors.black54)
+              ],
               color: Colors.grey.shade200.withOpacity(0.5),
               shape: BoxShape.circle)));
 }
 
 Container imageSingle(double size, Widget image) {
   return Container(
-    decoration:
-        BoxDecoration(shape: BoxShape.circle, color: Colors.indigo[200]),
+    decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.indigo[200],
+        boxShadow: [
+          BoxShadow(blurRadius: 10, spreadRadius: 8, color: Colors.black54)
+        ]),
     height: size,
     width: size,
     child: ClipRRect(

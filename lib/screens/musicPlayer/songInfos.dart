@@ -4,7 +4,9 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 
 class SongInfos extends StatefulWidget {
   final double height;
-  SongInfos({Key key, @required this.height}) : super(key: key);
+  final Color color;
+  SongInfos({Key key, @required this.height, @required this.color})
+      : super(key: key);
 
   @override
   _SongInfosState createState() => _SongInfosState();
@@ -29,19 +31,31 @@ class _SongInfosState extends State<SongInfos> {
     var height = widget.height;
     return SizedBox(
         height: height,
-        child: Column(
-          children: [
-            Text(
-              musicPlayer.currentMusicTitle(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            Text(musicPlayer.currentMusicArtist(),
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                musicPlayer.currentMusicTitle(),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: TextStyle(fontSize: 18, color: Colors.grey[700]))
-          ],
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: widget.color),
+              ),
+              Text(musicPlayer.currentMusicArtist(),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: widget.color,
+                      fontWeight: FontWeight.w300))
+            ],
+          ),
         ));
   }
 }

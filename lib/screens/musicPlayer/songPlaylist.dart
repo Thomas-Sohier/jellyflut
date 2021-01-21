@@ -5,7 +5,9 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 
 class SongPlaylist extends StatefulWidget {
   final double height;
-  SongPlaylist({Key key, @required this.height}) : super(key: key);
+  final Color color;
+  SongPlaylist({Key key, @required this.height, @required this.color})
+      : super(key: key);
 
   @override
   _SongPlaylistState createState() => _SongPlaylistState();
@@ -48,39 +50,53 @@ class _SongPlaylistState extends State<SongPlaylist> {
             padding: EdgeInsets.only(top: 5, bottom: 5),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                border: Border.all(color: Colors.black.withAlpha(80))),
+                border: Border.all(color: widget.color, width: 0.5)),
             child: Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
                   child: Text(
                     index.toString(),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: widget.color),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Text(
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Text(
+                            musicPlayer.assetsAudioPlayer.playlist.audios[index]
+                                .metas.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: widget.color)),
+                      ),
+                      Text(
                           musicPlayer.assetsAudioPlayer.playlist.audios[index]
-                              .metas.title,
+                              .metas.artist,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600)),
-                    ),
-                    Text(
-                        musicPlayer.assetsAudioPlayer.playlist.audios[index]
-                            .metas.artist,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.normal)),
-                    Text(
-                        musicPlayer.assetsAudioPlayer.playlist.audios[index]
-                            .metas.album,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.normal))
-                  ],
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: widget.color)),
+                      Text(
+                          musicPlayer.assetsAudioPlayer.playlist.audios[index]
+                              .metas.album,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: widget.color))
+                    ],
+                  ),
                 )
               ],
             ),

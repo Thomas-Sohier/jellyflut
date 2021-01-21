@@ -4,7 +4,9 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 
 class SongControls extends StatefulWidget {
   final double height;
-  SongControls({Key key, @required this.height}) : super(key: key);
+  final Color color;
+  SongControls({Key key, @required this.height, @required this.color})
+      : super(key: key);
 
   @override
   _SongControlsState createState() => _SongControlsState();
@@ -17,10 +19,10 @@ class _SongControlsState extends State<SongControls> {
   @override
   void initState() {
     super.initState();
+    musicPlayer = MusicPlayer();
     _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
             ?.duration?.inMilliseconds ??
         0;
-    musicPlayer = MusicPlayer();
   }
 
   @override
@@ -42,6 +44,7 @@ class _SongControlsState extends State<SongControls> {
                 onTap: () => musicPlayer.assetsAudioPlayer.previous(),
                 child: Icon(
                   Icons.skip_previous,
+                  color: widget.color,
                   size: 48,
                 ),
               ),
@@ -51,6 +54,7 @@ class _SongControlsState extends State<SongControls> {
                   musicPlayer.assetsAudioPlayer.isPlaying.value
                       ? Icons.pause_circle_filled_outlined
                       : Icons.play_circle_fill_outlined,
+                  color: widget.color,
                   size: 48,
                 ),
               ),
@@ -58,6 +62,7 @@ class _SongControlsState extends State<SongControls> {
                 onTap: () => musicPlayer.assetsAudioPlayer.next(),
                 child: Icon(
                   Icons.skip_next,
+                  color: widget.color,
                   size: 48,
                 ),
               ),
@@ -65,8 +70,8 @@ class _SongControlsState extends State<SongControls> {
           ),
           Expanded(
               child: Slider(
-                  activeColor: Colors.black,
-                  inactiveColor: Colors.grey[600].withAlpha(100),
+                  activeColor: widget.color,
+                  inactiveColor: widget.color.withAlpha(100),
                   value: _playBackTime.toDouble(),
                   min: 0,
                   max: musicPlayer.currentMusicMaxDuration() <=
