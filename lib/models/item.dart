@@ -3,10 +3,23 @@
 //     final media = itemFromMap(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:epub_viewer/epub_viewer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/api/stream.dart';
+import 'package:jellyflut/api/user.dart';
+import 'package:jellyflut/models/deviceProfileParent.dart';
+import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/details/details.dart';
+import 'package:jellyflut/screens/stream/streamBP.dart' as StreamBP;
 import 'package:jellyflut/shared/enums.dart';
+import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:jellyflut/shared/shared.dart';
 
+import '../globals.dart';
 import 'albumArtists.dart';
 import 'artist.dart';
 import 'artistItems.dart';
@@ -521,5 +534,221 @@ class Item {
       return seriesId;
     }
     return id;
+  }
+
+  /**
+   * Check if item have parents
+   * 
+   * Return [bool]
+   * 
+   * Return [true] if parents
+   * Return [false] is no parents found
+   */
+  bool hasParent() {
+    var hasSerieParent = seriesName != null ? seriesName.isNotEmpty : false;
+    var hasAlbumParent = albumId != null ? albumId.isNotEmpty : false;
+    var hasSeasonParent = seasonId != null ? seasonId.isNotEmpty : false;
+    return hasSerieParent || hasAlbumParent || hasSeasonParent;
+  }
+
+  String getParentId() {
+    if (seriesId != null && seriesId.isNotEmpty) return seriesId;
+    if (seasonId != null && seasonId.isNotEmpty) return seasonId;
+    if (albumId != null && albumId.isNotEmpty) return albumId;
+    return id;
+  }
+
+  /**
+   * Get parent name
+   * 
+   * Return [String]
+   * 
+   * Return parents name if not null
+   * ELse return empty string
+   */
+  String parentName() {
+    if (seriesName != null && seriesName.isNotEmpty) return seriesName;
+    if (album != null && album.isNotEmpty) return album;
+    return name;
+  }
+
+  /**
+   * Get collection type such as requested by API
+   * 
+   * Return [String]
+   * 
+   * Return correct collection type based on item one
+   * If nothing found then return current one
+   */
+  String getCollectionType() {
+    if (collectionType == 'movies') {
+      return 'movie';
+    } else if (collectionType == 'tvshows') {
+      return 'Series';
+    } else if (collectionType == 'music') {
+      return 'MusicAlbum';
+    } else if (collectionType == 'books') {
+      return 'Book';
+    } else {
+      return collectionType;
+    }
+  }
+
+  /**
+   * Get correct image id based on searchType
+   * 
+   * Return [String]
+   * 
+   * Return id as [String] if found
+   * Else return item's id as [String]
+   */
+  String correctImageId({String searchType = 'Primary'}) {
+    if (searchType.toLowerCase().trim() == 'logo' &&
+        (type == 'Season' || type == 'Episode' || type == 'Album')) {
+      if (type == 'Season' || type == 'Episode') {
+        return seriesId;
+      } else if (type == 'Album') {
+        return albumId;
+      }
+    } else if (imageTags.toMap().values.every((element) => element == null)) {
+      if (type == 'Season') {
+        return seriesId;
+      } else if (type == 'Album') {
+        return albumId;
+      } else {
+        return id;
+      }
+    } else {
+      return id;
+    }
+    return id;
+  }
+
+  /**
+   * Get correct image tags based on searchType
+   * 
+   * Return [String]
+   * 
+   * Return imageTag as [String] if found
+   * Else return [null]
+   */
+  String correctImageTags({String searchType = 'Primary'}) {
+    if (searchType.toLowerCase().trim() == 'logo' &&
+        (type == 'Season' || type == 'Episode' || type == 'Album')) {
+      if (type == 'Season' || type == 'Episode') {
+        return seriesPrimaryImageTag;
+      } else if (type == 'Album') {
+        return albumPrimaryImageTag;
+      }
+    } else if (imageTags.toMap().values.every((element) => element == null)) {
+      if (type == 'Season') {
+        return seriesPrimaryImageTag;
+      } else if (type == 'Album') {
+        return albumPrimaryImageTag;
+      } else {
+        return null;
+      }
+    } else {
+      return imageTags.primary;
+    }
+    return null;
+  }
+
+  /**
+   * Play current item given context
+   * 
+   * If Book open Epub reader
+   * If Video open video player
+   */
+  void playItem(BuildContext context) async {
+    if (type != 'Book') {
+      var url = await getItemURL();
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => StreamBP.Stream(
+                item: this, streamUrl: url, playbackInfos: null)),
+      );
+    } else {
+      readBook(context);
+    }
+  }
+
+  Future<String> getItemURL() async {
+    var streamModel = StreamModel();
+
+    await bitrateTest(size: 500000);
+    await bitrateTest(size: 1000000);
+    await bitrateTest(size: 3000000);
+
+    if (type == 'Episode' || type == 'Movie') {
+      streamModel.setItem(this);
+      return _getStreamURL(this);
+    }
+    return _getFirstUnplayedItemURL();
+  }
+
+  Future<String> _getFirstUnplayedItemURL() async {
+    var category = await getItems(
+        parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
+    // remove all item without an index to avoid sort error
+    category.items.removeWhere((element) => element.indexNumber == null);
+    // sort by index to get the next item to stream
+    category.items.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
+    var itemToPlay = category.items.firstWhere(
+        (element) => !element.userData.played,
+        orElse: () => category.items.first);
+    return _getStreamURL(itemToPlay);
+  }
+
+  Future<String> _getStreamURL(Item item) async {
+    var streamModel = StreamModel();
+    var data = await isCodecSupported();
+    var backInfos = await playbackInfos(data, item.id,
+        startTimeTick: item.userData.playbackPositionTicks);
+    var completeTranscodeUrl;
+    var finalUrl;
+
+    // Check if we have a transcide url or we create it
+    if (backInfos.mediaSources.first.transcodingUrl != null) {
+      completeTranscodeUrl =
+          '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
+    }
+    finalUrl = completeTranscodeUrl ??
+        await createURL(this, backInfos, startTick: runTimeTicks);
+    // Current item, playbackinfos and stream url
+    streamModel.setItem(this);
+    streamModel.setPlaybackInfos(backInfos);
+    streamModel.setURL(finalUrl);
+    return finalUrl;
+  }
+
+  void readBook(BuildContext context) async {
+    var path = await getEbook(this);
+    if (path != null) {
+      // var sharedPreferences = await SharedPreferences.getInstance();
+
+      EpubViewer.setConfig(
+        themeColor: Theme.of(context).primaryColor,
+        scrollDirection: EpubScrollDirection.VERTICAL,
+        allowSharing: true,
+        enableTts: true,
+      );
+
+      //TODO save locator
+      // dynamic book;
+      // if (sharedPreferences.getString(path) != null) {
+      //   book = json.decode(sharedPreferences.getString(path));
+      // }
+
+      // // Get locator which you can save in your database
+      // EpubViewer.locatorStream.listen((locator) {
+      //   sharedPreferences.setString(path, locator);
+      // });
+
+      EpubViewer.open(
+        path,
+      );
+    }
   }
 }

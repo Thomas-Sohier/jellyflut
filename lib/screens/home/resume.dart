@@ -54,6 +54,7 @@ class Resume extends StatelessWidget {
                       padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                       child: ItemPoster(
                         _item,
+                        showParent: false,
                         boxFit: BoxFit.cover,
                       ),
                     );

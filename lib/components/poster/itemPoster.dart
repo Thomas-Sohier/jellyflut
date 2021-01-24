@@ -13,6 +13,7 @@ class ItemPoster extends StatefulWidget {
       {this.textColor = Colors.white,
       this.heroTag,
       this.showName = true,
+      this.showParent = true,
       this.type = 'Primary',
       this.boxFit = BoxFit.cover});
 
@@ -20,6 +21,7 @@ class ItemPoster extends StatefulWidget {
   final String heroTag;
   final Color textColor;
   final bool showName;
+  final bool showParent;
   final String type;
   final BoxFit boxFit;
 
@@ -65,6 +67,7 @@ class _ItemPosterState extends State<ItemPoster> {
                       Hero(
                           tag: heroTag,
                           child: Poster(
+                              showParent: widget.showParent,
                               type: widget.type,
                               boxFit: widget.boxFit,
                               item: widget.item)),
@@ -87,24 +90,30 @@ class _ItemPosterState extends State<ItemPoster> {
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.showName)
+            if (widget.showName)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Expanded(
-                    child: Text(
-                      widget.item.name,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: widget.textColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                    child: Column(
+                      children: [
+                        Text(
+                          widget.showParent
+                              ? widget.item.parentName()
+                              : widget.item.name,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: widget.textColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        ),
+                      ],
                     ),
-                  ),
-              ],
-            ),
+                  )
+                ],
+              ),
           ]),
     );
   }

@@ -7,9 +7,11 @@ class Poster extends StatelessWidget {
   final String type;
   final BoxFit boxFit;
   final Item item;
+  final bool showParent;
 
   const Poster(
       {Key key,
+      this.showParent = false,
       @required this.type,
       @required this.boxFit,
       @required this.item})
@@ -20,7 +22,7 @@ class Poster extends StatelessWidget {
     return AspectRatio(
       aspectRatio: item.getPrimaryAspectRatio(),
       child: AsyncImage(
-        item.getIdBasedOnImage(),
+        showParent ? item.getParentId() : item.id,
         item.imageTags.primary,
         item.imageBlurHashes,
         tag: type,

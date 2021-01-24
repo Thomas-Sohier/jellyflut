@@ -10,7 +10,6 @@ import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:jellyflut/shared/background.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 
 class CollectionMain extends StatefulWidget {
@@ -107,7 +106,7 @@ class _CollectionMainState extends State<CollectionMain> {
               sortBy: 'Name',
               fields: 'DateCreated, DateAdded',
               startIndex: startIndex,
-              includeItemTypes: getCollectionItemType(item.collectionType),
+              includeItemTypes: item.getCollectionType(),
               limit: 100)
           .then((_category) {
         ListOfItems().addNewItems(_category.items);
@@ -128,7 +127,7 @@ class _CollectionMainState extends State<CollectionMain> {
             sortBy: 'Name',
             fields: 'DateCreated, DateAdded',
             startIndex: startIndex,
-            includeItemTypes: getCollectionItemType(item.collectionType),
+            includeItemTypes: item.getCollectionType(),
             limit: 100),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

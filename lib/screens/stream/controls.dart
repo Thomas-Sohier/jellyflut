@@ -122,9 +122,9 @@ class _ControlsState extends State<Controls> {
                           fontSize: 18,
                           color: Colors.white),
                     ),
-                    streamModel.item.seriesName != null
+                    streamModel.item.hasParent() != null
                         ? Text(
-                            streamModel.item.seriesName,
+                            streamModel.item.parentName(),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,

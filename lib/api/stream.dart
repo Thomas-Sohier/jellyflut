@@ -74,53 +74,7 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   return uri.toString();
 }
 
-Future<String> getItemURL(Item item) async {
-  await bitrateTest(size: 500000);
-  await bitrateTest(size: 1000000);
-  await bitrateTest(size: 3000000);
-
-  if (item.type == 'Episode' || item.type == 'Movie') {
-    StreamModel().setItem(item);
-    return getStreamURL(item: item);
-  }
-  return getFirstUnplayedItemURL(item);
-}
-
-Future<String> getFirstUnplayedItemURL(Item item) async {
-  var category = await getItems(
-      parentId: item.id, filter: 'IsNotFolder', fields: 'MediaStreams');
-  // remove all item without an index to avoid sort error
-  category.items.removeWhere((element) => element.indexNumber == null);
-  // sort by index to get the next item to stream
-  category.items.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
-  var itemToPlay = category.items.firstWhere(
-      (element) => !element.userData.played,
-      orElse: () => category.items.first);
-  return getStreamURL(item: itemToPlay);
-}
-
-Future<String> getStreamURL({Item item}) async {
-  var data = await isCodecSupported(item, platform);
-  var backInfos = await playbackInfos(data, item.id,
-      startTimeTick: item.userData.playbackPositionTicks);
-  var completeTranscodeUrl;
-  var finalUrl;
-
-  // Check if we have a transcide url or we create it
-  if (backInfos.mediaSources.first.transcodingUrl != null) {
-    completeTranscodeUrl =
-        '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
-  }
-  finalUrl = completeTranscodeUrl ??
-      await createURL(item, backInfos, startTick: item.runTimeTicks);
-  // Current item, playbackinfos and stream url
-  StreamModel().setItem(item);
-  StreamModel().setPlaybackInfos(backInfos);
-  StreamModel().setURL(finalUrl);
-  return finalUrl;
-}
-
-Future<String> isCodecSupported(Item item, MethodChannel platform) async {
+Future<String> isCodecSupported() async {
   var result;
   // TODO finish this method to know if video can be direct play
   if (Platform.isAndroid) {

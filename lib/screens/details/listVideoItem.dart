@@ -162,7 +162,7 @@ Widget videoItem(int index, BuildContext context, Item item, String heroTag) {
                           padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                           child: GestureDetector(
                               onTap: () async {
-                                var url = await getItemURL(item);
+                                var url = await item.getItemURL();
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(

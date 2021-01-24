@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/colors.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class PaletteButton extends StatefulWidget {
@@ -55,7 +54,7 @@ Widget generatedPalette(
     Item item, String text, IconData icon, BorderRadius borderRadius) {
   return FutureBuilder<PaletteGenerator>(
     future: gePalette(getItemImageUrl(
-        correctImageId(item), correctImageTags(item),
+        item.correctImageId(), item.correctImageTags(),
         imageBlurHashes: item.imageBlurHashes)),
     builder: (context, snapshot) {
       Widget child;

@@ -12,6 +12,7 @@ import 'package:jellyflut/components/card/cardItemWithChild.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,7 +72,7 @@ Widget body(
     @required Size size,
     @required BuildContext context}) {
   return Stack(children: [
-    Hero(tag: heroTag, child: backgroundImage(item)),
+    Hero(tag: heroTag, child: BackgroundImage(item: item)),
     SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,36 +120,11 @@ Widget logo(Item item, Size size) {
       constraints: BoxConstraints(maxWidth: 400),
       height: 100,
       child: AsyncImage(
-        correctImageId(item, type: 'logo'),
-        correctImageTags(item, type: 'logo'),
+        item.correctImageId(searchType: 'logo'),
+        item.correctImageTags(searchType: 'logo'),
         item.imageBlurHashes,
         boxFit: BoxFit.contain,
         tag: 'Logo',
-      ));
-}
-
-Widget backgroundImage(Item item) {
-  return Container(
-      child: Container(
-          foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-          child: AsyncImage(
-            correctImageId(item),
-            correctImageTags(item),
-            item.imageBlurHashes,
-            boxFit: BoxFit.cover,
-          )),
-      foregroundDecoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.black,
-            Colors.transparent,
-            Colors.transparent,
-            Colors.black
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          stops: [0, 0.2, 0.7, 1],
-        ),
       ));
 }
 
@@ -160,7 +136,7 @@ Widget buildCard(Item item, Size size, BuildContext context) {
 }
 
 Widget card(Item item, Size size, BuildContext context) {
-  return Stack(overflow: Overflow.visible, children: <Widget>[
+  return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
     Container(
         padding: EdgeInsets.only(top: 25),
         child: CardItemWithChild(item, Container())),
@@ -173,7 +149,7 @@ Widget card(Item item, Size size, BuildContext context) {
               child: PaletteButton(
                 'Play',
                 () {
-                  _playItem(item, context);
+                  item.playItem(context);
                 },
                 item: item,
                 icon: Icons.play_circle_outline,
@@ -208,47 +184,4 @@ Future _getItemsCustom({@required String itemId}) async {
   futures.add(Future.delayed(Duration(milliseconds: 400)));
   futures.add(getItem(itemId));
   return Future.wait(futures);
-}
-
-void _playItem(Item item, BuildContext context) async {
-  if (item.type != 'Book') {
-    var url = await getItemURL(item);
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              Stream(item: item, streamUrl: url, playbackInfos: null)),
-    );
-  } else {
-    readBook(item, context);
-  }
-}
-
-void readBook(Item item, BuildContext context) async {
-  var path = await getEbook(item);
-  if (path != null) {
-    var sharedPreferences = await SharedPreferences.getInstance();
-
-    EpubViewer.setConfig(
-      themeColor: Theme.of(context).primaryColor,
-      scrollDirection: EpubScrollDirection.VERTICAL,
-      allowSharing: true,
-      enableTts: true,
-    );
-
-    //TODO save locator
-    dynamic book;
-    if (sharedPreferences.getString(path) != null) {
-      book = json.decode(sharedPreferences.getString(path));
-    }
-
-    // Get locator which you can save in your database
-    EpubViewer.locatorStream.listen((locator) {
-      sharedPreferences.setString(path, locator);
-    });
-
-    EpubViewer.open(
-      path,
-    );
-  }
 }
