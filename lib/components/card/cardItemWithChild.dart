@@ -124,7 +124,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                         if (item.genres != null && item.genres.isNotEmpty)
                           Expanded(
                               flex: 2,
-                              child: Text(item.genres.join(', ').toString(),
+                              child: Text(item.concatenateGenre(maxGenre: 3),
                                   overflow: TextOverflow.clip,
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
@@ -133,31 +133,28 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                       ],
                     ),
                   ),
-                  if (item.communityRating != null || item.criticRating != null)
+                  if (item.hasRatings())
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: Critics(item)),
-                  Row(
-                    children: [
-                      if (item.artists != null)
+                  if (item.artists != null)
+                    Row(
+                      children: [
                         Expanded(
                             child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
                                 child: Text(
-                                    item.artists
-                                        .map((e) => e.name)
-                                        .join(', ')
-                                        .toString(),
+                                    item.concatenateArtists(maxArtists: 5),
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         color: Color(0xFF3B5088),
                                         fontSize: 18)))),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (item.overview != null)
+                      ],
+                    ),
+                  if (item.overview != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Expanded(
                             child: Padding(
                                 padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
@@ -167,8 +164,8 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.normal)))),
-                    ],
-                  ),
+                      ],
+                    ),
                 ]),
               ),
               Container(

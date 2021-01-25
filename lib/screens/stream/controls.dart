@@ -136,7 +136,7 @@ class _ControlsState extends State<Controls> {
                 ),
               )),
           Expanded(
-              flex: 4,
+              flex: 5,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,

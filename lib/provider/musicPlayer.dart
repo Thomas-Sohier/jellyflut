@@ -64,8 +64,8 @@ class MusicPlayer extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playRemoteItem(Item item) {
-    _musicPlayer.assetsAudioPlayer
+  void playRemoteItem(Item item) async {
+    await _musicPlayer.assetsAudioPlayer
         .open(
           Audio.network(
             _createURl(item),
@@ -74,7 +74,7 @@ class MusicPlayer extends ChangeNotifier {
               artist: item.artists.map((e) => e.name).join(', ').toString(),
               album: item.album,
               image: MetasImage.network(getItemImageUrl(
-                  item.id, item.imageTags.primary,
+                  item.correctImageId(), item.correctImageTags(),
                   imageBlurHashes: item.imageBlurHashes)),
             ),
           ),

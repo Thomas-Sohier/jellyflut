@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -614,7 +615,7 @@ class Item {
     } else if (imageTags.toMap().values.every((element) => element == null)) {
       if (type == 'Season') {
         return seriesId;
-      } else if (type == 'Album') {
+      } else if (type == 'Album' || type == 'Audio') {
         return albumId;
       } else {
         return id;
@@ -675,6 +676,22 @@ class Item {
       );
     } else if (type == 'Audio') {
       MusicPlayer().playRemoteItem(this);
+    } else if (type == 'MusicAlbum') {
+      await getItems(parentId: id)
+          .then((value) => value.items.forEach((Item _item) async {
+                var url = _item.createMusicURL();
+                MusicPlayer().addPlaylist(
+                    url,
+                    _item.id,
+                    _item.name,
+                    _item.artists.first.name,
+                    _item.album,
+                    MetasImage.network(getItemImageUrl(
+                        _item.id, _item.imageTags.primary,
+                        imageBlurHashes: _item.imageBlurHashes)));
+              }))
+          .then((value) =>
+              MusicPlayer().assetsAudioPlayer.playlistPlayAtIndex(0));
     } else if (type == 'Book') {
       readBook(context);
     }
@@ -690,8 +707,14 @@ class Item {
     if (type == 'Episode' || type == 'Movie') {
       streamModel.setItem(this);
       return _getStreamURL(this);
+    } else if (type == 'Season' || type == 'Series') {
+      return _getFirstUnplayedItemURL();
+    } else if (type == 'Audio') {
+      // TODO rework
+      return _getStreamURL(this);
+    } else if (type == 'Album') {
+      // TODO
     }
-    return _getFirstUnplayedItemURL();
   }
 
   Future<String> _getFirstUnplayedItemURL() async {
@@ -756,5 +779,37 @@ class Item {
         path,
       );
     }
+  }
+
+  String concatenateGenre({int maxGenre}) {
+    var max = genres.length;
+    if (maxGenre != null) {
+      max = genres.length > maxGenre ? maxGenre : genres.length;
+    }
+
+    if (genres != null) {
+      return genres.getRange(0, max).join(', ').toString();
+    }
+    return '';
+  }
+
+  String concatenateArtists({int maxArtists}) {
+    var max = artists.length;
+    if (maxArtists != null) {
+      max = artists.length > maxArtists ? maxArtists : artists.length;
+    }
+
+    if (artists != null) {
+      return artists.getRange(0, max).map((e) => e.name).join(', ').toString();
+    }
+    return '';
+  }
+
+  bool hasRatings() {
+    return communityRating != null || criticRating != null;
+  }
+
+  String createMusicURL() {
+    return '${server.url}/Audio/${id}/stream.mp3';
   }
 }
