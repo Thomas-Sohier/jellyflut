@@ -134,6 +134,7 @@ Widget carrousselDefault(Item item, Color textColor, BuildContext context) {
   var heroTag = item.id + Uuid().v4();
   return ItemPoster(
     item,
+    showParent: false,
     heroTag: heroTag,
   );
 }

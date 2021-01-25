@@ -22,7 +22,7 @@ class Poster extends StatelessWidget {
     return AspectRatio(
       aspectRatio: item.getPrimaryAspectRatio(),
       child: AsyncImage(
-        showParent ? item.getParentId() : item.id,
+        showParent ? item.getParentId() : item.getIdBasedOnImage(),
         item.imageTags.primary,
         item.imageBlurHashes,
         tag: type,

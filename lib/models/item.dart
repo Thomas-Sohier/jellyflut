@@ -12,6 +12,7 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/deviceProfileParent.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart' as StreamBP;
@@ -661,7 +662,10 @@ class Item {
    * If Video open video player
    */
   void playItem(BuildContext context) async {
-    if (type != 'Book') {
+    if (type == 'Episode' ||
+        type == 'Season' ||
+        type == 'Series' ||
+        type == 'Movie') {
       var url = await getItemURL();
       await Navigator.push(
         context,
@@ -669,7 +673,9 @@ class Item {
             builder: (context) => StreamBP.Stream(
                 item: this, streamUrl: url, playbackInfos: null)),
       );
-    } else {
+    } else if (type == 'Audio') {
+      MusicPlayer().playRemoteItem(this);
+    } else if (type == 'Book') {
       readBook(context);
     }
   }

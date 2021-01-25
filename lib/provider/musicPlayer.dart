@@ -75,8 +75,7 @@ class MusicPlayer extends ChangeNotifier {
               album: item.album,
               image: MetasImage.network(getItemImageUrl(
                   item.id, item.imageTags.primary,
-                  imageBlurHashes:
-                      item.imageBlurHashes)), //can be MetasImage.network
+                  imageBlurHashes: item.imageBlurHashes)),
             ),
           ),
           showNotification: true,

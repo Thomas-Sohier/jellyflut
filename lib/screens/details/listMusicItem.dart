@@ -141,7 +141,7 @@ Widget listItem(int index, Item item, BuildContext context) {
         ),
       ),
     InkWell(
-      onTap: () => MusicPlayer().playRemoteItem(item),
+      onTap: () => item.playItem(context),
       onLongPress: () {
         ItemDialog(item, context).showMusicDialog();
       },
