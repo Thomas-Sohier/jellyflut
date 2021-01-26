@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
   final double height;
@@ -23,6 +24,7 @@ class _SongControlsState extends State<SongControls> {
     _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
             ?.duration?.inMilliseconds ??
         0;
+    playerListener();
   }
 
   @override
@@ -32,6 +34,13 @@ class _SongControlsState extends State<SongControls> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<MusicPlayer>(builder: (context, mp, child) {
+      musicPlayer = mp;
+      return body();
+    });
+  }
+
+  Widget body() {
     var height = widget.height;
     return Container(
         height: height,
@@ -84,5 +93,15 @@ class _SongControlsState extends State<SongControls> {
                   },
                   onChanged: (value) => _playBackTime = value.toInt()))
         ]));
+  }
+
+  void playerListener() {
+    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
+      if (event.isPlaying && mounted) {
+        setState(() {
+          _playBackTime = event.currentPosition.inMilliseconds.toInt();
+        });
+      }
+    });
   }
 }

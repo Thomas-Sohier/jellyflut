@@ -48,26 +48,31 @@ class _MusicPlayerState extends State<MusicPlayer> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            SongBackground(
-              color1: backgroundColor1,
-              color2: backgroundColor2,
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+        body: ChangeNotifierProvider.value(
+            value: musicPlayer,
+            child: Stack(
               children: [
-                SongImage(height: size.height * 0.45, color: foregroundColor),
-                SongInfos(height: size.height * 0.15, color: foregroundColor),
-                SongControls(
-                    height: size.height * 0.10, color: foregroundColor),
-                SongPlaylist(height: size.height * 0.30, color: foregroundColor)
+                SongBackground(
+                  color1: backgroundColor1,
+                  color2: backgroundColor2,
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SongImage(
+                        height: size.height * 0.45, color: foregroundColor),
+                    SongInfos(
+                        height: size.height * 0.15, color: foregroundColor),
+                    SongControls(
+                        height: size.height * 0.10, color: foregroundColor),
+                    SongPlaylist(
+                        height: size.height * 0.30, color: foregroundColor)
+                  ],
+                )
               ],
-            )
-          ],
-        ));
+            )));
   }
 
   void setAlbumPrimaryColor() {

@@ -812,4 +812,10 @@ class Item {
   String createMusicURL() {
     return '${server.url}/Audio/${id}/stream.mp3';
   }
+
+  List<MediaStream> getMediaStreamFromType({@required String type}) {
+    return mediaStreams
+        .where((element) => element.type.trim().toLowerCase() == type)
+        .toList();
+  }
 }

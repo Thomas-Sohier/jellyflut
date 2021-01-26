@@ -47,6 +47,11 @@ class MusicPlayer extends ChangeNotifier {
     print(_musicPlayer.assetsAudioPlayer.playlist.audios);
   }
 
+  void removePlaylistItemAtIndex(int index) {
+    assetsAudioPlayer.playlist.removeAtIndex(index);
+    notifyListeners();
+  }
+
   void play() {
     _musicPlayer.assetsAudioPlayer.play();
     notifyListeners();
@@ -65,26 +70,30 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void playRemoteItem(Item item) async {
-    await _musicPlayer.assetsAudioPlayer
-        .open(
-          Audio.network(
-            _createURl(item),
-            metas: Metas(
-              title: item.name,
-              artist: item.artists.map((e) => e.name).join(', ').toString(),
-              album: item.album,
-              image: MetasImage.network(getItemImageUrl(
-                  item.correctImageId(), item.correctImageTags(),
-                  imageBlurHashes: item.imageBlurHashes)),
-            ),
-          ),
-          showNotification: true,
-        )
-        .then((_) => notifyListeners());
+    var url = await contructAudioURL(itemId: item.id);
+    await getItem(item.id).then((Item _item) => {
+          _musicPlayer.assetsAudioPlayer
+              .open(
+                Audio.network(
+                  url,
+                  metas: Metas(
+                    title: item.name,
+                    artist:
+                        item.artists.map((e) => e.name).join(', ').toString(),
+                    album: item.album,
+                    image: MetasImage.network(getItemImageUrl(
+                        item.correctImageId(), item.correctImageTags(),
+                        imageBlurHashes: item.imageBlurHashes)),
+                  ),
+                ),
+                showNotification: true,
+              )
+              .then((_) => notifyListeners())
+        });
   }
 
-  String _createURl(Item item) {
-    var url = '${server.url}/Audio/${item.id}/stream.mp3';
+  String _createURl(String id, {String codec = 'mp3'}) {
+    var url = '${server.url}/Audio/${id}/stream.${codec}';
     return url;
   }
 }

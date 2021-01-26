@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
@@ -7,9 +8,11 @@ import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:uuid/uuid.dart';
 // import 'package:video_player/video_player.dart';
 
 import '../globals.dart';
+import 'api.dart';
 import 'dio.dart';
 
 String getItemImageUrl(String itemId, String imageTag,
@@ -353,4 +356,36 @@ Future<Category> searchItems(
     print(e);
   }
   return category;
+}
+
+Future<String> contructAudioURL(
+    {@required String itemId,
+    int maxStreamingBitrate = 140000000,
+    String container = 'opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg',
+    String transcodingContainer = 'ts',
+    String transcodingProtocol = 'hls',
+    String audioCodec = 'aac',
+    int startTimeTicks = 0,
+    bool enableRedirection = true,
+    bool enableRemoteMedia = false}) async {
+  var dInfo = await deviceInfo();
+  var queryParams = <String, String>{};
+  queryParams['UserId'] = user.id;
+  queryParams['DeviceId'] = dInfo.id;
+  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate.toString();
+  queryParams['Container'] = container;
+  queryParams['TranscodingContainer'] = transcodingContainer;
+  queryParams['TranscodingProtocol'] = transcodingProtocol;
+  queryParams['AudioCodec'] = audioCodec;
+  queryParams['PlaySessionId'] = Uuid().v1();
+  queryParams['StartTimeTicks'] = startTimeTicks.toString();
+  queryParams['EnableRedirection'] = enableRedirection.toString();
+  queryParams['EnableRemoteMedia'] = enableRemoteMedia.toString();
+  queryParams['api_key'] = apiKey;
+
+  var url = 'Audio/${itemId}/universal';
+
+  var uri = Uri.https(
+      server.url.replaceAll(RegExp('https?://'), ''), url, queryParams);
+  return uri.toString();
 }
