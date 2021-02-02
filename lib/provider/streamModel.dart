@@ -72,8 +72,7 @@ class StreamModel extends ChangeNotifier {
             volumeLevel: _betterPlayerController
                 .videoPlayerController.value.volume
                 .round(),
-            subtitlesIndex: _betterPlayerController
-                .videoPlayerController.value.caption.number));
+            subtitlesIndex: 1));
   }
 
   void stopProgressTimer() {

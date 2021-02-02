@@ -38,6 +38,7 @@ dependencies:
   epub_viewer: ^0.1.9
   ext_storage: ^1.0.3
   flutter_blurhash: ^0.5.0
+  flutter_native_splash: ^0.2.9
   flutter_svg: ^0.19.1
   fluttertoast: ^7.1.6
   intl: ^0.16.1

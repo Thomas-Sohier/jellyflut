@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     var futures = <Future>[];
     DatabaseService();
     futures.add(isAuth());
-    futures.add(Future.delayed(Duration(seconds: 1)));
+    futures.add(Future.delayed(Duration(seconds: 2)));
     var resp = await Future.wait(futures);
     if (resp[0]) {
       return Future.value(Home());
@@ -34,10 +34,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return SplashScreen.network(
+    return SplashScreen(
       navigateAfterFuture: initMain(),
       image: Image.asset('img/jellyfin_logo.png'),
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Color(0xFF252525),
       photoSize: 80.0,
       loaderColor: jellyPurple,
     );
