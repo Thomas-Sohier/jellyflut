@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class SongPlaylist extends StatefulWidget {
-  final double height;
+  final Color backgroundColor;
   final Color color;
-  SongPlaylist({Key key, @required this.height, @required this.color})
+  SongPlaylist({Key key, @required this.backgroundColor, @required this.color})
       : super(key: key);
 
   @override
@@ -30,25 +30,32 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    var height = widget.height;
-    return Consumer<MusicPlayer>(builder: (context, mp, child) {
-      musicPlayer = mp;
-      return SizedBox(
-          height: height,
-          child: GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: widget.color,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemCount:
-                      musicPlayer.assetsAudioPlayer.playlist.numberOfItems,
-                  itemBuilder: (context, index) => playlistListItem(
-                      index,
-                      musicPlayer
-                          .assetsAudioPlayer.playlist.audios[index].metas))));
-    });
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    return Scaffold(
+        backgroundColor: widget.backgroundColor,
+        body: Column(
+          children: [
+            SizedBox(
+              height: statusBarHeight,
+            ),
+            Consumer<MusicPlayer>(builder: (context, mp, child) {
+              musicPlayer = mp;
+              return GlowingOverscrollIndicator(
+                  axisDirection: AxisDirection.down,
+                  color: widget.color,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      itemCount:
+                          musicPlayer.assetsAudioPlayer.playlist.numberOfItems,
+                      itemBuilder: (context, index) => playlistListItem(
+                          index,
+                          musicPlayer.assetsAudioPlayer.playlist.audios[index]
+                              .metas)));
+            }),
+          ],
+        ));
   }
 
   Widget playlistListItem(int index, Metas metas) {

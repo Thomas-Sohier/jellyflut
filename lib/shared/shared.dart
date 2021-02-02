@@ -77,7 +77,7 @@ double aspectRatio({String type}) {
 String printDuration(Duration duration) {
   String twoDigits(int n) {
     if (n >= 10) return '$n';
-    return '0$n';
+    return '$n';
   }
 
   var twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));

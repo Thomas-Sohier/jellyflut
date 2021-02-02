@@ -77,6 +77,7 @@ class MusicPlayer extends ChangeNotifier {
                 Audio.network(
                   url,
                   metas: Metas(
+                    id: item.id,
                     title: item.name,
                     artist:
                         item.artists.map((e) => e.name).join(', ').toString(),

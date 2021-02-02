@@ -6,8 +6,10 @@ import 'package:jellyflut/shared/shared.dart';
 class FavButton extends StatefulWidget {
   final Item item;
   final EdgeInsetsGeometry padding;
+  final double size;
 
-  const FavButton(this.item, {this.padding = const EdgeInsets.all(10)});
+  const FavButton(this.item,
+      {this.padding = const EdgeInsets.all(10), this.size = 26});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,10 +42,7 @@ class _FavButtonState extends State<FavButton> {
           onTap: () => unsetItemFav(widget.item.id),
           child: Padding(
             padding: widget.padding,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
+            child: Icon(Icons.favorite, color: Colors.red, size: widget.size),
           ));
     } else {
       return InkWell(
@@ -51,10 +50,8 @@ class _FavButtonState extends State<FavButton> {
         onTap: () => setItemFav(widget.item.id),
         child: Padding(
           padding: widget.padding,
-          child: Icon(
-            Icons.favorite_border,
-            color: Colors.red,
-          ),
+          child:
+              Icon(Icons.favorite_border, color: Colors.red, size: widget.size),
         ),
       );
     }

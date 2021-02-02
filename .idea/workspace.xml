@@ -5,16 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bccb1bd0-4fde-4697-870b-00d0e3550fd5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/api/items.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/items.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[aefcfe88]" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -55,14 +57,16 @@
     </state>
     <state x="640" y="261" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606912977464" />
     <state x="2560" y="170" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1050/1920.-121.1920.1170@1920.-121.1920.1170" timestamp="1611605140342" />
-    <state x="100" y="100" width="1720" height="850" key="AVDManager" timestamp="1606914719215">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="100" y="127" width="1720" height="853" key="AVDManager" timestamp="1612201380041">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="100" y="100" width="1720" height="850" key="AVDManager/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606914719215" />
-    <state x="456" y="170" key="SettingsEditor" timestamp="1606913265550">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="100" y="127" width="1720" height="853" key="AVDManager/0.27.1920.1053@0.27.1920.1053" timestamp="1612201380041" />
+    <state x="456" y="197" key="SettingsEditor" timestamp="1612201379633">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="456" y="170" key="SettingsEditor/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606913265550" />
+    <state x="456" y="197" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1612201379633" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

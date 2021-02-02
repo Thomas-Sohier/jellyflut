@@ -4,9 +4,9 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
-  final double height;
   final Color color;
-  SongControls({Key key, @required this.height, @required this.color})
+  final Color backgroundColor;
+  SongControls({Key key, @required this.color, @required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -15,16 +15,14 @@ class SongControls extends StatefulWidget {
 
 class _SongControlsState extends State<SongControls> {
   MusicPlayer musicPlayer;
-  int _playBackTime;
+  List<BoxShadow> shadows = [
+    BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)
+  ];
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
-            ?.duration?.inMilliseconds ??
-        0;
-    playerListener();
   }
 
   @override
@@ -41,67 +39,62 @@ class _SongControlsState extends State<SongControls> {
   }
 
   Widget body() {
-    var height = widget.height;
     return Container(
-        height: height,
         child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: widget.backgroundColor,
+                  boxShadow: shadows,
+                  shape: BoxShape.circle),
+              child: InkWell(
                 onTap: () => musicPlayer.assetsAudioPlayer.previous(),
                 child: Icon(
                   Icons.skip_previous,
                   color: widget.color,
-                  size: 48,
+                  size: 32,
                 ),
-              ),
-              InkWell(
-                onTap: () => musicPlayer.toggle(),
-                child: Icon(
-                  musicPlayer.assetsAudioPlayer.isPlaying.value
-                      ? Icons.pause_circle_filled_outlined
-                      : Icons.play_circle_fill_outlined,
-                  color: widget.color,
-                  size: 48,
-                ),
-              ),
-              InkWell(
-                onTap: () => musicPlayer.assetsAudioPlayer.next(),
-                child: Icon(
-                  Icons.skip_next,
-                  color: widget.color,
-                  size: 48,
-                ),
-              ),
-            ],
+              )),
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24),
+            child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    color: widget.backgroundColor,
+                    boxShadow: shadows,
+                    shape: BoxShape.circle),
+                child: InkWell(
+                  onTap: () => musicPlayer.toggle(),
+                  child: Icon(
+                    musicPlayer.assetsAudioPlayer.isPlaying.value
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                    color: widget.color,
+                    size: 42,
+                  ),
+                )),
           ),
-          Expanded(
-              child: Slider(
-                  activeColor: widget.color,
-                  inactiveColor: widget.color.withAlpha(100),
-                  value: _playBackTime.toDouble(),
-                  min: 0,
-                  max: musicPlayer.currentMusicMaxDuration() <=
-                          _playBackTime.toDouble()
-                      ? _playBackTime.toDouble() + 1
-                      : musicPlayer.currentMusicMaxDuration(),
-                  onChangeEnd: (value) {
-                    musicPlayer.assetsAudioPlayer
-                        .seek(Duration(milliseconds: value.toInt()));
-                  },
-                  onChanged: (value) => _playBackTime = value.toInt()))
-        ]));
-  }
-
-  void playerListener() {
-    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.isPlaying && mounted) {
-        setState(() {
-          _playBackTime = event.currentPosition.inMilliseconds.toInt();
-        });
-      }
-    });
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: widget.backgroundColor,
+                boxShadow: shadows,
+                shape: BoxShape.circle),
+            child: InkWell(
+              onTap: () => musicPlayer.assetsAudioPlayer.next(),
+              child: Icon(
+                Icons.skip_next,
+                color: widget.color,
+                size: 32,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ]));
   }
 }

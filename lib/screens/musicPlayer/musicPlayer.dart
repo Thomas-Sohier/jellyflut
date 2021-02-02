@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/screens/musicPlayer/songBackground.dart';
 import 'package:jellyflut/screens/musicPlayer/songControls.dart';
+import 'package:jellyflut/screens/musicPlayer/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/songImage.dart';
 import 'package:jellyflut/screens/musicPlayer/songInfos.dart';
 import 'package:jellyflut/screens/musicPlayer/songPlaylist.dart';
@@ -45,32 +46,40 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
     var size = MediaQuery.of(context).size;
+    var height = size.height - statusBarHeight;
     return Scaffold(
+        extendBody: false,
         backgroundColor: Colors.white,
         body: ChangeNotifierProvider.value(
             value: musicPlayer,
             child: Stack(
               children: [
                 SongBackground(
-                  color1: backgroundColor1,
-                  color2: backgroundColor2,
+                  color1: Colors.grey[900],
+                  color2: Colors.grey[900],
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SongImage(
-                        height: size.height * 0.45, color: foregroundColor),
-                    SongInfos(
-                        height: size.height * 0.15, color: foregroundColor),
-                    SongControls(
-                        height: size.height * 0.10, color: foregroundColor),
-                    SongPlaylist(
-                        height: size.height * 0.30, color: foregroundColor)
-                  ],
-                )
+                Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: statusBarHeight,
+                        ),
+                        SongHeaderBar(
+                            height: height * 0.05, color: Colors.white),
+                        SongInfos(height: height * 0.30, color: Colors.white),
+                        SongImage(
+                            height: height * 0.55,
+                            color: foregroundColor,
+                            albumColors: [backgroundColor1, backgroundColor2]),
+                        // SongControls(height: height * 0.10, color: foregroundColor),
+                        // SongPlaylist(height: height * 0.30, color: foregroundColor)
+                      ],
+                    ))
               ],
             )));
   }

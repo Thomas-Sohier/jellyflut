@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
