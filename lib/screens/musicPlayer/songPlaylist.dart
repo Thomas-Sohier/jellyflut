@@ -60,27 +60,27 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   Widget playlistListItem(int index, Metas metas) {
     return Dismissible(
-        key: ValueKey(metas.id + Uuid().v1()),
-        onDismissed: (direction) {
-          musicPlayer.removePlaylistItemAtIndex(index);
-        },
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          child: InkWell(
-            onTap: () =>
-                musicPlayer.assetsAudioPlayer.playlistPlayAtIndex(index),
-            child: Column(
-              children: [
-                if (index > 0)
-                  Divider(
-                    color: widget.color,
-                    thickness: 0.5,
-                  ),
-                playlistItem(index)
-              ],
+      key: ValueKey(metas.id + Uuid().v1()),
+      onDismissed: (direction) {
+        musicPlayer.removePlaylistItemAtIndex(index);
+      },
+      child: Column(
+        children: [
+          if (index > 0)
+            Divider(
+              color: widget.color,
+              height: 0.5,
+              thickness: 0.5,
             ),
-          ),
-        ));
+          InkWell(
+              onTap: () =>
+                  musicPlayer.assetsAudioPlayer.playlistPlayAtIndex(index),
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                  child: playlistItem(index)))
+        ],
+      ),
+    );
   }
 
   Widget playlistItem(int index) {
