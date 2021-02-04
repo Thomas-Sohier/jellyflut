@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'package:jellyflut/models/device.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/models/deviceProfileParent.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
@@ -14,12 +14,11 @@ import 'package:jellyflut/shared/exoplayer.dart';
 
 import '../globals.dart';
 import 'dio.dart';
-import 'items.dart';
 
 const platform = MethodChannel('com.example.jellyflut/videoPlayer');
 
 Future<int> deleteActiveEncoding({String playSessionId}) async {
-  var info = await deviceInfo();
+  var info = await DeviceInfo().getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['deviceId'] = info.id;
   queryParam['PlaySessionId'] =
@@ -45,7 +44,7 @@ Future<int> deleteActiveEncoding({String playSessionId}) async {
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
     {int startTick = 0, int audioStreamIndex, int subtitleStreamIndex}) async {
   var streamModel = StreamModel();
-  var info = await deviceInfo();
+  var info = await DeviceInfo().getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['StartTimeTicks'] = startTick.toString();
   queryParam['Static'] = true.toString();

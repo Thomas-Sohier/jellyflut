@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/api.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/models/device.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -90,7 +90,7 @@ class ItemDialogActions extends StatelessWidget {
   }
 
   Future<String> _createURL(String itemId) async {
-    var device = await deviceInfo();
+    var device = await DeviceInfo().getCurrentDeviceInfo();
     var url =
         '${server.url}/Audio/${itemId}/universal?UserId=${user.id}&DeviceId=${device.id}&Container=opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg&TranscodingContainer=ts&TranscodingProtocol=hls&AudioCodec=aac&api_key=${apiKey}&StartTimeTicks=0&EnableRedirection=true&EnableRemoteMedia=false';
     return url;

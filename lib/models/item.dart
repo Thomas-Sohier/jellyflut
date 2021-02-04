@@ -3,22 +3,18 @@
 //     final media = itemFromMap(jsonString);
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:epub_viewer/epub_viewer.dart';
+import 'package:fereader/fereader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/models/deviceProfileParent.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart' as StreamBP;
 import 'package:jellyflut/shared/enums.dart';
-import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import '../globals.dart';
@@ -755,9 +751,9 @@ class Item {
   void readBook(BuildContext context) async {
     var path = await getEbook(this);
     if (path != null) {
-      // var sharedPreferences = await SharedPreferences.getInstance();
+      //var sharedPreferences = await SharedPreferences.getInstance();
 
-      EpubViewer.setConfig(
+      Fereader.setConfig(
         themeColor: Theme.of(context).primaryColor,
         scrollDirection: EpubScrollDirection.VERTICAL,
         allowSharing: true,
@@ -765,19 +761,21 @@ class Item {
       );
 
       //TODO save locator
-      // dynamic book;
-      // if (sharedPreferences.getString(path) != null) {
-      //   book = json.decode(sharedPreferences.getString(path));
-      // }
+      /* dynamic book;
+      if (sharedPreferences.getString(path) != null) {
+        book = json.decode(sharedPreferences.getString(path));
+      }
 
-      // // Get locator which you can save in your database
-      // EpubViewer.locatorStream.listen((locator) {
-      //   sharedPreferences.setString(path, locator);
-      // });
+      // Get locator which you can save in your database
+      Fereader.locatorStream.listen((locator) {
+        print('prout: ' + locator);
+        sharedPreferences.setString(path, locator);
+      });
 
-      EpubViewer.open(
+      Fereader.open(
         path,
       );
+          */
     }
   }
 

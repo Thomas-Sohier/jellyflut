@@ -136,13 +136,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.10"
-  epub_viewer:
-    dependency: "direct main"
-    description:
-      name: epub_viewer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.9"
   ext_storage:
     dependency: "direct main"
     description:
@@ -157,6 +150,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.3"
+  fereader:
+    dependency: "direct main"
+    description:
+      name: fereader
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   ffi:
     dependency: transitive
     description:

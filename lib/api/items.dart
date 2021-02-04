@@ -3,15 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
 import 'package:jellyflut/models/category.dart';
+import 'package:jellyflut/models/device.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:uuid/uuid.dart';
-// import 'package:video_player/video_player.dart';
-
 import '../globals.dart';
-import 'api.dart';
 import 'dio.dart';
 
 String getItemImageUrl(String itemId, String imageTag,
@@ -367,7 +365,7 @@ Future<String> contructAudioURL(
     int startTimeTicks = 0,
     bool enableRedirection = true,
     bool enableRemoteMedia = false}) async {
-  var dInfo = await deviceInfo();
+  var dInfo = await DeviceInfo().getCurrentDeviceInfo();
   var queryParams = <String, String>{};
   queryParams['UserId'] = user.id;
   queryParams['DeviceId'] = dInfo.id;

@@ -2,7 +2,7 @@
 import 'package:dio/dio.dart';
 
 import '../globals.dart';
-import 'api.dart';
+import 'interceptor.dart';
 
 BaseOptions options = BaseOptions(
     connectTimeout: 30000, receiveTimeout: 30000, contentType: 'JSON');

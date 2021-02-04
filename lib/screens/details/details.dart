@@ -1,21 +1,12 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/stream.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/card/cardItemWithChild.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
-import 'package:jellyflut/screens/stream/streamBP.dart';
-import 'package:jellyflut/shared/shared.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'collection.dart';
 
