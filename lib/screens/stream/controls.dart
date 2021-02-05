@@ -353,27 +353,7 @@ class _ControlsState extends State<Controls> {
   void setSubtitles(int index, List<MediaStream> listSubtitles) async {
     var _itemId = StreamModel().item.id;
     var sub = listSubtitles[index];
-    subtitleSelectedIndex = index;
-    var mediaSourceId = _itemId.substring(0, 8) +
-        '-' +
-        _itemId.substring(8, 12) +
-        '-' +
-        _itemId.substring(12, 16) +
-        '-' +
-        _itemId.substring(16, 20) +
-        '-' +
-        _itemId.substring(20, _itemId.length);
-
-    var parsedCodec = sub.codec.substring(sub.codec.indexOf('.') + 1);
-
-    var queryParam = <String, String>{};
-    queryParam['api_key'] = apiKey;
-
-    final uri = Uri.https(
-        server.url.replaceAll('https://', ''),
-        '/Videos/${mediaSourceId}/${_itemId}/Subtitles/${sub.index}/0/Stream.${parsedCodec}',
-        queryParam);
-    var url = uri.origin + uri.path;
+    var url = await getSubtitleURL(_itemId, 'srt', sub.index);
     await streamModel.betterPlayerController.setupSubtitleSource(
         BetterPlayerSubtitlesSource(
             type: BetterPlayerSubtitlesSourceType.network,

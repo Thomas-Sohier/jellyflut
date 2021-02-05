@@ -710,6 +710,9 @@ class Item {
       return _getStreamURL(this);
     } else if (type == 'Album') {
       // TODO
+      return '';
+    } else {
+      return null;
     }
   }
 
@@ -740,9 +743,9 @@ class Item {
           '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
     }
     finalUrl = completeTranscodeUrl ??
-        await createURL(this, backInfos, startTick: runTimeTicks);
+        await createURL(item, backInfos, startTick: runTimeTicks);
     // Current item, playbackinfos and stream url
-    streamModel.setItem(this);
+    streamModel.setItem(item);
     streamModel.setPlaybackInfos(backInfos);
     streamModel.setURL(finalUrl);
     return finalUrl;

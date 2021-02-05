@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   device_info: ^1.0.0
   dio: ^3.0.9
-  fereader: ^0.1.2
+  fereader: ^0.2.0
   ext_storage: ^1.0.3
   flutter_blurhash: ^0.5.0
   flutter_native_splash: ^0.2.9
