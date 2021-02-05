@@ -774,11 +774,10 @@ class Item {
         print('prout: ' + locator);
         sharedPreferences.setString(path, locator);
       });
-
+      */
       Fereader.open(
         path,
       );
-          */
     }
   }
 
