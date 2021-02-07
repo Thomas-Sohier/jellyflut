@@ -94,3 +94,7 @@ String removeAllHtmlTags(String htmlText) {
 
   return htmlText.replaceAll(exp, '');
 }
+
+String getEnumValue(String enumValue) {
+  return enumValue.substring(enumValue.toString().indexOf('.') + 1);
+}

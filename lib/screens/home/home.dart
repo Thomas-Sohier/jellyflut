@@ -6,6 +6,7 @@ import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
+import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:provider/provider.dart';
 
 import 'background.dart';
@@ -78,7 +79,8 @@ class _HomeState extends State<Home> {
                                               ),
                                             ),
                                             Spacer(),
-                                            searchIcon()
+                                            searchIcon(),
+                                            settingsIcon()
                                           ],
                                         ));
                                   },
@@ -113,6 +115,22 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.search,
+            color: Colors.white,
+            size: 28,
+          )),
+    );
+  }
+
+  Widget settingsIcon() {
+    return InkWell(
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Settings())),
+      radius: 60,
+      borderRadius: BorderRadius.all(Radius.circular(80)),
+      child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Icon(
+            Icons.settings,
             color: Colors.white,
             size: 28,
           )),

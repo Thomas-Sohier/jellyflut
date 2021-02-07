@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
@@ -12,8 +13,11 @@ void automaticStreamingSoftwareChooser(
     {@required String url,
     @required Item item,
     @required BuildContext context}) async {
-  var streamingSoftware = StreamingSoftware(name: StreamingSoftwareName.vlc);
-  switch (streamingSoftware.name) {
+  var streamingSoftwareDB = await DatabaseService().getSettings(0);
+  var streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
+      e.toString() ==
+      'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+  switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
       _controller = VlcPlayerController.network(
         url,
