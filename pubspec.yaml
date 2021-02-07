@@ -30,7 +30,8 @@ dependencies:
     git:
       url: https://github.com/markst/Flutter-AssetsAudioPlayer
       ref: master
-  better_player: ^0.0.49
+  better_player: ^0.0.52
+  flutter_vlc_player: ^5.0.3
   cached_network_image: ^2.5.0
   cupertino_icons: ^1.0.2
   device_info: ^1.0.0

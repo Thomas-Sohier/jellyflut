@@ -6,6 +6,7 @@ import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -163,14 +164,8 @@ Widget videoItem(int index, BuildContext context, Item item, String heroTag) {
                           child: GestureDetector(
                               onTap: () async {
                                 var url = await item.getItemURL();
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Stream(
-                                          item: item,
-                                          streamUrl: url,
-                                          playbackInfos: null)),
-                                );
+                                await automaticStreamingSoftwareChooser(
+                                    url: url, item: item, context: context);
                               },
                               child: Icon(
                                 Icons.play_circle_outline,

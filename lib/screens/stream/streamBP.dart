@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/stream/controlsBP.dart';
 import 'package:wakelock/wakelock.dart';
-
-import 'controls.dart';
 
 class Stream extends StatefulWidget {
   final Item item;
@@ -34,22 +33,20 @@ class _StreamState extends State<Stream> {
   var aspectRatio;
 
   Future<bool> setupData() async {
-    dataSource = BetterPlayerDataSource.network(widget.streamUrl,
-        subtitles: await getSubtitles(streamModel.item));
+    dataSource = BetterPlayerDataSource.network(
+      widget.streamUrl,
+      subtitles: await getSubtitles(streamModel.item),
+      useHlsTracks: false,
+      useHlsAudioTracks: false,
+      useHlsSubtitles: false,
+    );
     aspectRatio = streamModel.item.getAspectRatio();
-    var betterPlayerConfiguration = BetterPlayerConfiguration(
-        aspectRatio: aspectRatio,
-        fit: BoxFit.contain,
-        autoPlay: true,
-        looping: false,
-        fullScreenByDefault: false,
-        allowedScreenSleep: false,
-        subtitlesConfiguration:
-            BetterPlayerSubtitlesConfiguration(fontSize: 18),
-        startAt: Duration(microseconds: (widget.item.getPlaybackPosition())),
-        controlsConfiguration: configuration());
 
-    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
+    _betterPlayerController = BetterPlayerController(
+        setupPlayerControllerConfiguration(
+            aspectRatio: aspectRatio,
+            startAt: widget.item.getPlaybackPosition(),
+            customConfiguration: configuration()));
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     StreamModel().setBetterPlayerController(_betterPlayerController);
@@ -97,23 +94,40 @@ class _StreamState extends State<Stream> {
       ),
     );
   }
+}
 
-  BetterPlayerControlsConfiguration configuration() {
-    return BetterPlayerControlsConfiguration(
-      enableSkips: false,
-      enableFullscreen: false,
-      enableProgressText: true,
-      enablePlaybackSpeed: true,
-      enableMute: true,
-      enablePlayPause: true,
-      enableSubtitles: true,
-      enableQualities: false,
-      showControlsOnInitialize: true,
-      playerTheme: BetterPlayerTheme.custom,
-      customControlsBuilder: (controller) => Controls(),
-      controlBarHeight: 40,
-    );
-  }
+BetterPlayerControlsConfiguration configuration() {
+  return BetterPlayerControlsConfiguration(
+    enableSkips: false,
+    enableFullscreen: false,
+    enableProgressText: true,
+    enablePlaybackSpeed: true,
+    enableMute: true,
+    enablePlayPause: true,
+    enableSubtitles: true,
+    enableQualities: false,
+    showControlsOnInitialize: true,
+    playerTheme: BetterPlayerTheme.custom,
+    customControlsBuilder: (controller) => ControlsBP(),
+    controlBarHeight: 40,
+  );
+}
+
+BetterPlayerConfiguration setupPlayerControllerConfiguration(
+    {double aspectRatio = 16 / 9,
+    int startAt = 0,
+    BetterPlayerControlsConfiguration customConfiguration}) {
+  return BetterPlayerConfiguration(
+      aspectRatio: aspectRatio,
+      fit: BoxFit.contain,
+      autoPlay: true,
+      autoDispose: true,
+      looping: false,
+      fullScreenByDefault: false,
+      allowedScreenSleep: false,
+      subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(fontSize: 18),
+      startAt: Duration(microseconds: 0),
+      controlsConfiguration: customConfiguration ?? configuration());
 }
 
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {

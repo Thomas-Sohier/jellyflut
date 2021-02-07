@@ -13,6 +13,7 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart' as StreamBP;
 import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -664,12 +665,8 @@ class Item {
         type == 'Series' ||
         type == 'Movie') {
       var url = await getItemURL();
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => StreamBP.Stream(
-                item: this, streamUrl: url, playbackInfos: null)),
-      );
+      await automaticStreamingSoftwareChooser(
+          url: url, item: this, context: context);
     } else if (type == 'Audio') {
       MusicPlayer().playRemoteItem(this);
     } else if (type == 'MusicAlbum') {
@@ -743,7 +740,8 @@ class Item {
           '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
     }
     finalUrl = completeTranscodeUrl ??
-        await createURL(item, backInfos, startTick: runTimeTicks);
+        await createURL(item, backInfos,
+            startTick: item.userData.playbackPositionTicks);
     // Current item, playbackinfos and stream url
     streamModel.setItem(item);
     streamModel.setPlaybackInfos(backInfos);

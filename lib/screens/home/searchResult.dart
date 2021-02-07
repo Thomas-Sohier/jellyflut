@@ -185,7 +185,7 @@ Widget searchField() {
 }
 
 void searchItemsFuture(String value) {
-  var results = Map<String, List<Item>>();
+  var results = <String, List<Item>>{};
   searchItems(searchTerm: value, includeItemTypes: 'Movie').then((value) {
     results.putIfAbsent('Movie', () => value.items);
     SearchProvider().addSearchResult(results);
