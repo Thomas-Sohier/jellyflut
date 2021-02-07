@@ -24,6 +24,8 @@ void automaticStreamingSoftwareChooser(
         hwAcc: HwAcc.FULL,
         onInit: () async {
           await _controller.startRendererScanning();
+          await _controller
+              .seekTo(Duration(microseconds: item.getPlaybackPosition()));
         },
         onRendererHandler: (type, id, name) {
           print('onRendererHandler $type $id $name');
