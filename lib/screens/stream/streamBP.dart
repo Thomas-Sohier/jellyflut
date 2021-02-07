@@ -58,7 +58,17 @@ class _StreamState extends State<Stream> {
     Wakelock.enable();
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
-    streamModel.startProgressTimer();
+    streamModel.startProgressTimer(
+        isMuted: _betterPlayerController.videoPlayerController.value.volume > 0
+            ? true
+            : false,
+        isPaused:
+            !_betterPlayerController.videoPlayerController.value.isPlaying,
+        positionTicks: _betterPlayerController
+            .videoPlayerController.value.position.inMicroseconds,
+        volumeLevel:
+            _betterPlayerController.videoPlayerController.value.volume.round(),
+        subtitlesIndex: 0);
     super.initState();
   }
 

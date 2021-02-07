@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsVLC.dart';
 import 'package:jellyflut/shared/theme.dart';
 
@@ -48,6 +49,12 @@ class _StreamVLCState extends State<StreamVLC>
   void initState() {
     super.initState();
     _controller = widget.controller;
+    StreamModel().startProgressTimer(
+        isMuted: _controller.value.volume > 0 ? true : false,
+        isPaused: !_controller.value.isPlaying,
+        positionTicks: _controller.value.position.inMicroseconds,
+        volumeLevel: _controller.value.volume.round(),
+        subtitlesIndex: 0);
     _controller.addListener(listener);
   }
 

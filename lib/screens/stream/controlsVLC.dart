@@ -31,6 +31,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
   void initState() {
     streamModel = StreamModel();
     controller = widget.controller;
+
     super.initState();
   }
 

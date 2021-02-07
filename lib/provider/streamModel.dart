@@ -56,23 +56,21 @@ class StreamModel extends ChangeNotifier {
     _subtitleStreamIndex = subtitleStreamIndex;
   }
 
-  void startProgressTimer() {
+  void startProgressTimer(
+      {@required bool isMuted,
+      @required bool isPaused,
+      @required int positionTicks,
+      @required int volumeLevel,
+      @required int subtitlesIndex}) {
     _timer = Timer.periodic(
         Duration(seconds: 15),
         (Timer t) => itemProgress(_item,
             canSeek: true,
-            isMuted:
-                _betterPlayerController.videoPlayerController.value.volume > 0
-                    ? true
-                    : false,
-            isPaused:
-                !_betterPlayerController.videoPlayerController.value.isPlaying,
-            positionTicks: _betterPlayerController
-                .videoPlayerController.value.position.inMicroseconds,
-            volumeLevel: _betterPlayerController
-                .videoPlayerController.value.volume
-                .round(),
-            subtitlesIndex: 1));
+            isMuted: isMuted,
+            isPaused: isPaused,
+            positionTicks: positionTicks,
+            volumeLevel: volumeLevel,
+            subtitlesIndex: subtitlesIndex));
   }
 
   void stopProgressTimer() {
