@@ -415,7 +415,7 @@ class _ControlsBPState extends State<ControlsBP> {
   void changeAudioTrack(String url) async {
     var tick = streamModel.betterPlayerController.videoPlayerController.value
         .position.inMicroseconds;
-    var dataSource = BetterPlayerDataSource.file(url,
+    var dataSource = BetterPlayerDataSource.network(url,
         subtitles: await getSubtitles(streamModel.item));
 
     // BetterPlayerDataSource.file(url);

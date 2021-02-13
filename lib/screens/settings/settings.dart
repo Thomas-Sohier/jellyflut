@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/settingsDB.dart';
@@ -20,6 +21,8 @@ class _SettingsState extends State<Settings> {
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(
           backgroundColor: Color(0xFF252525),
+          foregroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
           title: Text('Settings'),
         ),
         body: FutureBuilder<SettingsDB>(

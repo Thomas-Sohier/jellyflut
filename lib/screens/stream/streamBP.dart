@@ -49,15 +49,7 @@ class _StreamState extends State<Stream> {
             customConfiguration: configuration()));
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
-    StreamModel().setBetterPlayerController(_betterPlayerController);
-    return Future.value(true);
-  }
-
-  @override
-  void initState() {
-    Wakelock.enable();
-    _placeholderStreamController = StreamController.broadcast();
-    streamModel = StreamModel();
+    streamModel.setBetterPlayerController(_betterPlayerController);
     streamModel.startProgressTimer(
         isMuted: _betterPlayerController.videoPlayerController.value.volume > 0
             ? true
@@ -69,6 +61,14 @@ class _StreamState extends State<Stream> {
         volumeLevel:
             _betterPlayerController.videoPlayerController.value.volume.round(),
         subtitlesIndex: 0);
+    return Future.value(true);
+  }
+
+  @override
+  void initState() {
+    Wakelock.enable();
+    _placeholderStreamController = StreamController.broadcast();
+    streamModel = StreamModel();
     super.initState();
   }
 

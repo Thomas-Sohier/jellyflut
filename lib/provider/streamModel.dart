@@ -74,6 +74,6 @@ class StreamModel extends ChangeNotifier {
   }
 
   void stopProgressTimer() {
-    _timer.cancel();
+    _timer?.cancel();
   }
 }
