@@ -30,7 +30,7 @@ packages:
       name: assets_audio_player_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.13+1"
+    version: "2.0.13+8"
   async:
     dependency: transitive
     description:
@@ -44,7 +44,7 @@ packages:
       name: better_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.52"
+    version: "0.0.53"
   boolean_selector:
     dependency: transitive
     description:
@@ -197,20 +197,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  flutter_hls_parser:
-    dependency: transitive
-    description:
-      name: flutter_hls_parser
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  flutter_native_splash:
-    dependency: "direct main"
-    description:
-      name: flutter_native_splash
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.9"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -229,14 +215,14 @@ packages:
       name: flutter_vlc_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.3"
+    version: "5.0.4"
   flutter_vlc_player_platform_interface:
     dependency: transitive
     description:
       name: flutter_vlc_player_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -452,13 +438,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.3.3"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.5"
   rxdart:
     dependency: transitive
     description:
@@ -472,7 +451,7 @@ packages:
       name: settings_ui
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -660,13 +639,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.5.1"
-  yaml:
-    dependency: transitive
-    description:
-      name: yaml
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1"
 sdks:
   dart: ">=2.12.0-0.0 <3.0.0"
   flutter: ">=1.24.0-6.0.pre"

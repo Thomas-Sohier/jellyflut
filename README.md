@@ -13,8 +13,9 @@ You can :
 
 - [x] SQLite to have logging and to save server URL
 - [x] Browse all files (for now only the first item of a collection)
-- [x] ~~BIGGEST THING TO DO make transcoding work, for now i don't know how to check if file can be direct play and if no how to tell jellyfin to send me the correct url~~ It works
-- [ ] Control music from any screen
+- [x] ~~BIGGEST THING TO DO make transcoding work, for now i don't know how to check if file can be direct play and if no how to tell jellyfin to send me the correct url~~ It works (mostly)
+- [x] Control music from any screen
+- [ ] Extract or/and parse subtitles from video file (depend on https://pub.dev/packages/better_player)
 - [ ] Correct all flutter things, make things faster
   - [x] Hero animation OK
   - [x] Async details loading

@@ -9,6 +9,7 @@ import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:better_player/src/hls/better_player_hls_audio_track.dart';
 
 import '../../globals.dart';
 
@@ -362,54 +363,96 @@ class _ControlsBPState extends State<ControlsBP> {
   }
 
   void changeAudio(BuildContext context) {
-    var audios = streamModel.item.mediaStreams
+    var hlsAudios = streamModel.betterPlayerController.betterPlayerAudioTracks;
+    var remoteAudios = streamModel.item.mediaStreams
         .where((element) => element.type.trim().toLowerCase() == 'audio')
         .toList();
-    if (audios != null && audios.isNotEmpty) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Select audio source'),
-              content: Container(
-                constraints: BoxConstraints(maxWidth: 150),
-                width: double.maxFinite,
-                height: 250,
-                child: ListView.builder(
-                  itemCount: audios.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      selected: isAudioSelected(index, audios),
-                      title: Text(
-                        audios[index].displayTitle,
-                      ),
-                      onTap: () {
-                        changeAudioSource(audios[index].index,
-                                playbackTick: _playBackTime)
-                            .then((url) => changeAudioTrack(url));
-                        Navigator.pop(
-                          context,
-                          index < audios.length ? audios[index] : -1,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            );
-          });
+    if (hlsAudios != null && hlsAudios.isNotEmpty) {
+      dialogHLSAudio(hlsAudios);
+    } else if (remoteAudios != null && remoteAudios.isNotEmpty) {
+      dialogRemoteAudio(remoteAudios);
     } else {
       showToast('No audios found');
     }
   }
 
   bool isAudioSelected(int index, List<MediaStream> listAudios) {
-    if (subtitleSelectedIndex == index) {
+    if (audioSelectedIndex == index) {
       return true;
-    } else if (subtitleSelectedIndex == null && listAudios[index].isDefault) {
+    } else if (audioSelectedIndex == null && listAudios[index].isDefault) {
       return true;
     }
     return false;
+  }
+
+  void dialogRemoteAudio(List<MediaStream> audios) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Select audio source'),
+            content: Container(
+              constraints: BoxConstraints(maxWidth: 150),
+              width: double.maxFinite,
+              height: 250,
+              child: ListView.builder(
+                itemCount: audios.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    selected: isAudioSelected(index, audios),
+                    title: Text(
+                      audios[index].displayTitle,
+                    ),
+                    onTap: () {
+                      changeAudioSource(audios[index].index,
+                              playbackTick: _playBackTime)
+                          .then((url) => changeAudioTrack(url));
+                      audioSelectedIndex = index;
+                      Navigator.pop(
+                        context,
+                        index < audios.length ? audios[index] : -1,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          );
+        });
+  }
+
+  void dialogHLSAudio(List<BetterPlayerHlsAudioTrack> audios) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Select audio source'),
+            content: Container(
+              constraints: BoxConstraints(maxWidth: 150),
+              width: double.maxFinite,
+              height: 250,
+              child: ListView.builder(
+                itemCount: audios.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    selected: audios[index].id == index,
+                    title: Text(
+                      audios[index].label,
+                    ),
+                    onTap: () {
+                      streamModel.betterPlayerController
+                          .setAudioTrack(audios[index]);
+                      Navigator.pop(
+                        context,
+                        index < audios.length ? audios[index] : -1,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          );
+        });
   }
 
   void changeAudioTrack(String url) async {

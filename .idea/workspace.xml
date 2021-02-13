@@ -32,23 +32,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bccb1bd0-4fde-4697-870b-00d0e3550fd5" name="Default Changelist" comment="Better name for interceptor">
-      <change afterPath="$PROJECT_DIR$/lib/models/device.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/api.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/interceptor.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/dio.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/dio.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/items.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/items.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/api/stream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/api/stream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/details/details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/details/details.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/details/itemDialogActions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/details/itemDialogActions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/home.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/service/navigationService.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,6 +88,14 @@
       <option name="presentableId" value="Default" />
       <updated>1602349000407</updated>
     </task>
+    <task id="LOCAL-00001" summary="Better name for interceptor">
+      <created>1612476758397</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612476758398</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,6 +120,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Better name for interceptor" />
@@ -151,11 +145,11 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="581" y="292" width="748" height="521" key="#main.dart/0.27.1920.1053@0.27.1920.1053" timestamp="1612476147611" />
-    <state x="100" y="300" width="977" height="680" key="AVDManager" timestamp="1612442172878">
+    <state x="100" y="300" width="977" height="680" key="AVDManager" timestamp="1612519145250">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="100" y="100" width="1720" height="850" key="AVDManager/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606914719215" />
-    <state x="100" y="300" width="977" height="680" key="AVDManager/0.27.1920.1053@0.27.1920.1053" timestamp="1612442172878" />
+    <state x="100" y="300" width="977" height="680" key="AVDManager/0.27.1920.1053@0.27.1920.1053" timestamp="1612519145250" />
     <state x="999" y="462" width="424" height="483" key="FileChooserDialogImpl" timestamp="1612442171284">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -197,10 +191,10 @@
     </state>
     <state x="456" y="170" key="SettingsEditor/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606913265550" />
     <state x="456" y="197" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1612442121265" />
-    <state x="555" y="285" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1612476646027">
+    <state x="555" y="285" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1612476760711">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="555" y="285" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1612476646027" />
+    <state x="555" y="285" width="800" height="535" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1612476760711" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

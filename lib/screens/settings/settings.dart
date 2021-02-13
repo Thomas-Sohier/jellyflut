@@ -16,14 +16,25 @@ class _SettingsState extends State<Settings> {
   SettingsDB settingsDB;
 
   @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(
-          backgroundColor: Color(0xFF252525),
-          foregroundColor: Colors.white,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
           title: Text('Settings'),
+          brightness: Brightness.light,
+          backwardsCompatibility: false, // temporary
+          foregroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.light),
+          backgroundColor: Color(0xFF252525),
         ),
         body: FutureBuilder<SettingsDB>(
             future: getSettingsDB(),
@@ -35,6 +46,9 @@ class _SettingsState extends State<Settings> {
                   darkBackgroundColor: Color(0xFF252525),
                   sections: [
                     SettingsSection(
+                      title: 'Video Player',
+                      titleTextStyle: TextStyle(color: Colors.white),
+                      titlePadding: EdgeInsets.only(top: 20, left: 10),
                       tiles: [
                         SettingsTile(
                           title: 'Preferred player',
