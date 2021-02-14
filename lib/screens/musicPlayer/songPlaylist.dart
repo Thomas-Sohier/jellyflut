@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:provider/provider.dart';
@@ -30,32 +31,37 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
         backgroundColor: widget.backgroundColor,
-        body: Column(
-          children: [
-            SizedBox(
-              height: statusBarHeight,
-            ),
-            Consumer<MusicPlayer>(builder: (context, mp, child) {
-              musicPlayer = mp;
-              return GlowingOverscrollIndicator(
-                  axisDirection: AxisDirection.down,
-                  color: widget.color,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      itemCount:
-                          musicPlayer.assetsAudioPlayer.playlist.numberOfItems,
-                      itemBuilder: (context, index) => playlistListItem(
-                          index,
-                          musicPlayer.assetsAudioPlayer.playlist.audios[index]
-                              .metas)));
-            }),
-          ],
-        ));
+        appBar: AppBar(
+          title: Text('Playlist'),
+          brightness: Brightness.light,
+          backwardsCompatibility: false, // temporary
+          foregroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.light),
+          backgroundColor: widget.backgroundColor,
+        ),
+        body: Consumer<MusicPlayer>(builder: (context, mp, child) {
+          musicPlayer = mp;
+          return GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: widget.color,
+              child: ChangeNotifierProvider.value(
+                value: musicPlayer,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    itemCount:
+                        musicPlayer.assetsAudioPlayer.playlist.numberOfItems,
+                    itemBuilder: (context, index) => playlistListItem(
+                        index,
+                        musicPlayer
+                            .assetsAudioPlayer.playlist.audios[index].metas)),
+              ));
+        }));
   }
 
   Widget playlistListItem(int index, Metas metas) {
@@ -68,13 +74,12 @@ class _SongPlaylistState extends State<SongPlaylist> {
         children: [
           if (index > 0)
             Divider(
-              color: widget.color,
+              color: widget.color.withAlpha(100),
               height: 0.5,
               thickness: 0.5,
             ),
           InkWell(
-              onTap: () =>
-                  musicPlayer.assetsAudioPlayer.playlistPlayAtIndex(index),
+              onTap: () => musicPlayer.playAtIndex(index),
               child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: playlistItem(index)))

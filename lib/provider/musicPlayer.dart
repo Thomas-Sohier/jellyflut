@@ -39,12 +39,17 @@ class MusicPlayer extends ChangeNotifier {
         .toDouble();
   }
 
-  void addPlaylist(String path, String id, String title, String artist,
-      String album, MetasImage image) {
-    _musicPlayer.assetsAudioPlayer.playlist.add(Audio.network(path,
-        metas: Metas(
-            id: id, title: title, album: album, artist: artist, image: image)));
-    print(_musicPlayer.assetsAudioPlayer.playlist.audios);
+  String getCurrentAudioImagePath() {
+    return assetsAudioPlayer.current.value.audio.audio.metas.image.path;
+  }
+
+  void addPlaylist(Item item) async {
+    assetsAudioPlayer.playlist.add(await _createAudioNetwork(item));
+  }
+
+  void playAtIndex(int index) {
+    assetsAudioPlayer.playlistPlayAtIndex(index);
+    notifyListeners();
   }
 
   void removePlaylistItemAtIndex(int index) {
@@ -69,28 +74,45 @@ class MusicPlayer extends ChangeNotifier {
     notifyListeners();
   }
 
+  void playPlaylist(String parentId) {
+    getItems(parentId: parentId)
+        .then((value) => value.items
+                .where((_item) => _item.isFolder == false)
+                .forEach((Item _item) async {
+              if (assetsAudioPlayer.playlist == null) {
+                playRemoteItem(_item);
+              } else {
+                await addPlaylist(_item);
+              }
+            }))
+        .then((value) => assetsAudioPlayer.playlistPlayAtIndex(0));
+  }
+
   void playRemoteItem(Item item) async {
-    var url = await contructAudioURL(itemId: item.id);
-    await getItem(item.id).then((Item _item) => {
+    await getItem(item.id).then((Item _item) async => {
           _musicPlayer.assetsAudioPlayer
               .open(
-                Audio.network(
-                  url,
-                  metas: Metas(
-                    id: item.id,
-                    title: item.name,
-                    artist:
-                        item.artists.map((e) => e.name).join(', ').toString(),
-                    album: item.album,
-                    image: MetasImage.network(getItemImageUrl(
-                        item.correctImageId(), item.correctImageTags(),
-                        imageBlurHashes: item.imageBlurHashes)),
-                  ),
-                ),
+                await _createAudioNetwork(item),
                 showNotification: true,
               )
               .then((_) => notifyListeners())
         });
+  }
+
+  Future<Audio> _createAudioNetwork(Item item) async {
+    var url = await contructAudioURL(itemId: item.id);
+    return Audio.network(
+      url,
+      metas: Metas(
+        id: item.id,
+        title: item.name,
+        artist: item.artists.map((e) => e.name).join(', ').toString(),
+        album: item.album,
+        image: MetasImage.network(getItemImageUrl(
+            item.correctImageId(), item.correctImageTags(),
+            imageBlurHashes: item.imageBlurHashes)),
+      ),
+    );
   }
 
   String _createURl(String id, {String codec = 'mp3'}) {

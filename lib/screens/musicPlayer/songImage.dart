@@ -87,8 +87,8 @@ class _SongImageState extends State<SongImage> {
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(musicPlayer.assetsAudioPlayer
-                                .current.value.audio.audio.metas.image.path)),
+                            image: NetworkImage(
+                                musicPlayer.getCurrentAudioImagePath())),
                       ),
                     ),
                     Positioned.fill(

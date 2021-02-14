@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -24,13 +25,13 @@ class StreamVLC extends StatefulWidget {
 class _StreamVLCState extends State<StreamVLC>
     with AutomaticKeepAliveClientMixin {
   VlcPlayerController _controller;
+  StreamModel streamModel;
 
   //
   final double initSnapshotRightPosition = 10;
   final double initSnapshotBottomPosition = 10;
-  OverlayEntry _overlayEntry;
 
-  //
+  // slider
   double sliderValue = 0.0;
   double volumeValue = 50;
   String position = '';
@@ -48,8 +49,9 @@ class _StreamVLCState extends State<StreamVLC>
   @override
   void initState() {
     super.initState();
+    streamModel = StreamModel();
     _controller = widget.controller;
-    StreamModel().startProgressTimer(
+    streamModel.startProgressTimer(
         isMuted: _controller.value.volume > 0 ? true : false,
         isPaused: !_controller.value.isPlaying,
         positionTicks: _controller.value.position.inMicroseconds,
@@ -61,6 +63,7 @@ class _StreamVLCState extends State<StreamVLC>
   @override
   void dispose() {
     _controller.removeListener(listener);
+    streamModel.stopProgressTimer();
     super.dispose();
   }
 

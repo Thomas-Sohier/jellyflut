@@ -660,6 +660,7 @@ class Item {
    * If Video open video player
    */
   void playItem(BuildContext context) async {
+    var musicPlayer = MusicPlayer();
     if (type == 'Episode' ||
         type == 'Season' ||
         type == 'Series' ||
@@ -668,23 +669,9 @@ class Item {
       await automaticStreamingSoftwareChooser(
           url: url, item: this, context: context);
     } else if (type == 'Audio') {
-      MusicPlayer().playRemoteItem(this);
+      musicPlayer.playRemoteItem(this);
     } else if (type == 'MusicAlbum') {
-      await getItems(parentId: id)
-          .then((value) => value.items.forEach((Item _item) async {
-                var url = _item.createMusicURL();
-                MusicPlayer().addPlaylist(
-                    url,
-                    _item.id,
-                    _item.name,
-                    _item.artists.first.name,
-                    _item.album,
-                    MetasImage.network(getItemImageUrl(
-                        _item.id, _item.imageTags.primary,
-                        imageBlurHashes: _item.imageBlurHashes)));
-              }))
-          .then((value) =>
-              MusicPlayer().assetsAudioPlayer.playlistPlayAtIndex(0));
+      musicPlayer.playPlaylist(id);
     } else if (type == 'Book') {
       readBook(context);
     }

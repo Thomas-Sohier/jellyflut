@@ -11,12 +11,8 @@ import 'package:wakelock/wakelock.dart';
 class Stream extends StatefulWidget {
   final Item item;
   final String streamUrl;
-  final PlaybackInfos playbackInfos;
 
-  const Stream(
-      {@required this.item,
-      @required this.streamUrl,
-      @required this.playbackInfos});
+  const Stream({@required this.item, @required this.streamUrl});
 
   @override
   _StreamState createState() => _StreamState();
@@ -136,7 +132,7 @@ BetterPlayerConfiguration setupPlayerControllerConfiguration(
       fullScreenByDefault: false,
       allowedScreenSleep: false,
       subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(fontSize: 18),
-      startAt: Duration(microseconds: 0),
+      startAt: Duration(microseconds: startAt),
       controlsConfiguration: customConfiguration ?? configuration());
 }
 

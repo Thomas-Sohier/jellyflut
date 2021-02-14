@@ -76,24 +76,9 @@ class ItemDialogActions extends StatelessWidget {
   }
 
   void _addItemToPlaylist(Item _item, BuildContext context) async {
-    var url = await _createURL(_item.id);
-    MusicPlayer().addPlaylist(
-        url,
-        _item.id,
-        _item.name,
-        _item.artists.first.name,
-        _item.album,
-        MetasImage.network(getItemImageUrl(_item.id, _item.imageTags.primary,
-            imageBlurHashes: _item.imageBlurHashes)));
+    MusicPlayer().addPlaylist(item);
     Navigator.pop(context);
     showToast('${_item.name} added to playlist');
-  }
-
-  Future<String> _createURL(String itemId) async {
-    var device = await DeviceInfo().getCurrentDeviceInfo();
-    var url =
-        '${server.url}/Audio/${itemId}/universal?UserId=${user.id}&DeviceId=${device.id}&Container=opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg&TranscodingContainer=ts&TranscodingProtocol=hls&AudioCodec=aac&api_key=${apiKey}&StartTimeTicks=0&EnableRedirection=true&EnableRemoteMedia=false';
-    return url;
   }
 
   Widget _dialogListField(String text, VoidCallback onTap,

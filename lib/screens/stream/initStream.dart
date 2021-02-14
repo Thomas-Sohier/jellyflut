@@ -21,23 +21,20 @@ void automaticStreamingSoftwareChooser(
     case StreamingSoftwareName.vlc:
       _controller = VlcPlayerController.network(
         url,
-        hwAcc: HwAcc.FULL,
+        autoPlay: false,
         onInit: () async {
           await _controller.startRendererScanning();
+          await _controller.play();
           await _controller
               .seekTo(Duration(microseconds: item.getPlaybackPosition()));
         },
-        onRendererHandler: (type, id, name) {
-          print('onRendererHandler $type $id $name');
-        },
         options: VlcPlayerOptions(
-          advanced: VlcAdvancedOptions([
-            VlcAdvancedOptions.networkCaching(2000),
-          ]),
-          rtp: VlcRtpOptions([
-            VlcRtpOptions.rtpOverRtsp(true),
-          ]),
-        ),
+            advanced: VlcAdvancedOptions([
+              VlcAdvancedOptions.networkCaching(2000),
+            ]),
+            extras: [
+              '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
+            ]),
       );
       await Navigator.push(
           context,
@@ -46,16 +43,10 @@ void automaticStreamingSoftwareChooser(
                   StreamVLC(controller: _controller, showControls: true)));
       break;
     case StreamingSoftwareName.exoplayer:
-      Stream(
-        streamUrl: url,
-        playbackInfos: null,
-        item: item,
-      );
       await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  Stream(item: item, streamUrl: url, playbackInfos: null)));
+              builder: (context) => Stream(item: item, streamUrl: url)));
       break;
   }
 }
