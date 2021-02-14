@@ -254,22 +254,22 @@ class _ControlsBPState extends State<ControlsBP> {
                 Duration(seconds: _controller.value.duration.inSeconds)),
             style: TextStyle(color: Colors.white),
           )),
-      InkWell(
-          onTap: () {
-            setState(() {
-              streamModel.betterPlayerController.toggleFullScreen();
-            });
-          },
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              streamModel.betterPlayerController.isFullScreen
-                  ? Icons.fullscreen_exit
-                  : Icons.fullscreen,
-              color: Colors.white,
-            ),
-          )),
+      // InkWell(
+      //     onTap: () {
+      //       setState(() {
+      //         streamModel.betterPlayerController.toggleFullScreen();
+      //       });
+      //     },
+      //     borderRadius: BorderRadius.all(Radius.circular(50)),
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: Icon(
+      //         streamModel.betterPlayerController.isFullScreen
+      //             ? Icons.fullscreen_exit
+      //             : Icons.fullscreen,
+      //         color: Colors.white,
+      //       ),
+      //     )),
     ]);
   }
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsVLC.dart';
@@ -50,6 +51,9 @@ class _StreamVLCState extends State<StreamVLC>
   void initState() {
     super.initState();
     streamModel = StreamModel();
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     _controller = widget.controller;
     streamModel.startProgressTimer(
         isMuted: _controller.value.volume > 0 ? true : false,
@@ -64,6 +68,9 @@ class _StreamVLCState extends State<StreamVLC>
   void dispose() {
     _controller.removeListener(listener);
     streamModel.stopProgressTimer();
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.dispose();
   }
 

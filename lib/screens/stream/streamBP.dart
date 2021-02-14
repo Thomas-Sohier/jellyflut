@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -17,8 +18,6 @@ class Stream extends StatefulWidget {
   @override
   _StreamState createState() => _StreamState();
 }
-
-class PlaybackInfos {}
 
 class _StreamState extends State<Stream> {
   StreamModel streamModel;
@@ -65,6 +64,9 @@ class _StreamState extends State<Stream> {
     Wakelock.enable();
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     super.initState();
   }
 
@@ -75,6 +77,9 @@ class _StreamState extends State<Stream> {
     await _placeholderStreamController.close();
     streamModel.stopProgressTimer();
     streamModel.betterPlayerController.dispose();
+    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.dispose();
   }
 
