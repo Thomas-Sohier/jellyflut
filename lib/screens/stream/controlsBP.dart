@@ -403,15 +403,20 @@ class _ControlsBPState extends State<ControlsBP> {
                     title: Text(
                       audios[index].displayTitle,
                     ),
-                    onTap: () {
-                      changeAudioSource(audios[index].index,
-                              playbackTick: _playBackTime)
-                          .then((url) => changeAudioTrack(url));
-                      audioSelectedIndex = index;
-                      Navigator.pop(
-                        context,
-                        index < audios.length ? audios[index] : -1,
-                      );
+                    onTap: () async {
+                      await getNewAudioSource(audios[index].index,
+                              playbackTick: await streamModel
+                                  .betterPlayerController
+                                  .videoPlayerController
+                                  .position)
+                          .then((url) {
+                        changeAudioTrack(url);
+                        audioSelectedIndex = index;
+                        Navigator.pop(
+                          context,
+                          index < audios.length ? audios[index] : -1,
+                        );
+                      });
                     },
                   );
                 },

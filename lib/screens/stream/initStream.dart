@@ -21,12 +21,9 @@ void automaticStreamingSoftwareChooser(
     case StreamingSoftwareName.vlc:
       _controller = VlcPlayerController.network(
         url,
-        autoPlay: false,
+        autoPlay: true,
         onInit: () async {
           await _controller.startRendererScanning();
-          await _controller.play();
-          await _controller
-              .seekTo(Duration(microseconds: item.getPlaybackPosition()));
         },
         options: VlcPlayerOptions(
             advanced: VlcAdvancedOptions([

@@ -88,13 +88,12 @@ Future<String> isCodecSupported() async {
   return json.encode(result);
 }
 
-Future<String> changeAudioSource(int audioIndex, {int playbackTick}) async {
+Future<String> getNewAudioSource(int audioIndex,
+    {Duration playbackTick}) async {
   var streamModel = StreamModel();
   var item = streamModel.item;
   var backInfos = streamModel.playBackInfos;
-  var startTick = (streamModel.betterPlayerController.videoPlayerController
-          .value.position.inMicroseconds *
-      10);
+  var startTick = playbackTick.inMicroseconds * 10;
 
   if (backInfos.mediaSources.first.transcodingUrl != null) {
     var url = backInfos.mediaSources.first.transcodingUrl;
@@ -107,6 +106,26 @@ Future<String> changeAudioSource(int audioIndex, {int playbackTick}) async {
   }
   return createURL(item, backInfos,
       startTick: startTick, audioStreamIndex: audioIndex);
+}
+
+Future<String> getNewSubtitleSource(int subtitleIndex,
+    {Duration playbackTick}) async {
+  var streamModel = StreamModel();
+  var item = streamModel.item;
+  var backInfos = streamModel.playBackInfos;
+  var startTick = playbackTick.inMicroseconds * 10;
+
+  if (backInfos.mediaSources.first.transcodingUrl != null) {
+    var url = backInfos.mediaSources.first.transcodingUrl;
+    var uri = Uri.parse(url);
+    var queryParams = Map<String, String>.from(uri.queryParameters);
+    queryParams['SubtitleStreamIndex'] = subtitleIndex.toString();
+    return await Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
+            Uri.parse(url).path, queryParams)
+        .toString();
+  }
+  return createURL(item, backInfos,
+      startTick: startTick, subtitleStreamIndex: subtitleIndex);
 }
 
 Future<String> getSubtitleURL(

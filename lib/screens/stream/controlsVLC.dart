@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:jellyflut/api/stream.dart';
+import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -276,41 +278,95 @@ class _ControlsVLCState extends State<ControlsVLC> {
     if (!controller.value.isPlaying) return;
 
     var subtitleTracks = await controller.getSpuTracks();
-    //
-    if (subtitleTracks != null && subtitleTracks.isNotEmpty) {
-      var selectedSubId = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Select Subtitle'),
-            content: Container(
-              width: double.maxFinite,
-              height: 250,
-              child: ListView.builder(
-                itemCount: subtitleTracks.keys.length + 1,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
+    var subtitlesRemoteTracks = streamModel.item.mediaStreams
+        .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+        .toList();
+
+    if (streamModel.playBackInfos.mediaSources.first.transcodingUrl == null &&
+        subtitleTracks != null &&
+        subtitleTracks.isNotEmpty) {
+      setEmbedSubtitlesTracks(subtitleTracks);
+    } else if (subtitlesRemoteTracks != null &&
+        subtitlesRemoteTracks.isNotEmpty) {
+      setRemoteSubtitlesTracks(subtitlesRemoteTracks);
+    }
+  }
+
+  void setEmbedSubtitlesTracks(Map<int, String> subtitleTracks) async {
+    var selectedSubId = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Subtitle'),
+          content: Container(
+            width: double.maxFinite,
+            height: 250,
+            child: ListView.builder(
+              itemCount: subtitleTracks.keys.length + 1,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    index < subtitleTracks.keys.length
+                        ? subtitleTracks.values.elementAt(index).toString()
+                        : 'Disable',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
                       index < subtitleTracks.keys.length
-                          ? subtitleTracks.values.elementAt(index).toString()
-                          : 'Disable',
-                    ),
-                    onTap: () {
-                      Navigator.pop(
-                        context,
-                        index < subtitleTracks.keys.length
-                            ? subtitleTracks.keys.elementAt(index)
-                            : -1,
-                      );
-                    },
-                  );
-                },
-              ),
+                          ? subtitleTracks.keys.elementAt(index)
+                          : -1,
+                    );
+                  },
+                );
+              },
             ),
-          );
-        },
-      );
-      if (selectedSubId != null) await controller.setSpuTrack(selectedSubId);
+          ),
+        );
+      },
+    );
+    if (selectedSubId != null) {
+      await controller.setSpuTrack(selectedSubId);
+    }
+  }
+
+  void setRemoteSubtitlesTracks(List<MediaStream> subtitlesRemoteTracks) async {
+    var selectedSub = await showDialog<MediaStream>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Subtitle'),
+          content: Container(
+            width: double.maxFinite,
+            height: 250,
+            child: ListView.builder(
+              itemCount: subtitlesRemoteTracks.length + 1,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    index < subtitlesRemoteTracks.length
+                        ? subtitlesRemoteTracks[index].displayTitle
+                        : 'Disable',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                      index < subtitlesRemoteTracks.length
+                          ? subtitlesRemoteTracks[index]
+                          : -1,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+    if (selectedSub != null) {
+      var url = await getNewSubtitleSource(selectedSub.index,
+          playbackTick: controller.value.position);
+      await controller.setMediaFromNetwork(url, autoPlay: true);
     }
   }
 
@@ -318,43 +374,94 @@ class _ControlsVLCState extends State<ControlsVLC> {
     if (!controller.value.isPlaying) return;
 
     var audioTracks = await controller.getAudioTracks();
+    var remoteAudiosTracks = streamModel.item.mediaStreams
+        .where((element) => element.type.trim().toLowerCase() == 'audio')
+        .toList();
     //
-    if (audioTracks != null && audioTracks.isNotEmpty) {
-      var selectedAudioTrackId = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Select Audio'),
-            content: Container(
-              width: double.maxFinite,
-              height: 250,
-              child: ListView.builder(
-                itemCount: audioTracks.keys.length + 1,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
+    if (streamModel.playBackInfos.mediaSources.first.transcodingUrl == null &&
+        audioTracks != null &&
+        audioTracks.isNotEmpty) {
+      setEmbedAudioTracks(audioTracks);
+    } else if (audioTracks != null && audioTracks.isNotEmpty) {
+      setRemoteAudiosTracks(remoteAudiosTracks);
+    }
+  }
+
+  void setEmbedAudioTracks(Map<int, String> audioTracks) async {
+    var selectedAudioTrackId = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Audio'),
+          content: Container(
+            width: double.maxFinite,
+            height: 250,
+            child: ListView.builder(
+              itemCount: audioTracks.keys.length + 1,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    index < audioTracks.keys.length
+                        ? audioTracks.values.elementAt(index).toString()
+                        : 'Disable',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
                       index < audioTracks.keys.length
-                          ? audioTracks.values.elementAt(index).toString()
-                          : 'Disable',
-                    ),
-                    onTap: () {
-                      Navigator.pop(
-                        context,
-                        index < audioTracks.keys.length
-                            ? audioTracks.keys.elementAt(index)
-                            : -1,
-                      );
-                    },
-                  );
-                },
-              ),
+                          ? audioTracks.keys.elementAt(index)
+                          : -1,
+                    );
+                  },
+                );
+              },
             ),
-          );
-        },
-      );
-      if (selectedAudioTrackId != null) {
-        await controller.setAudioTrack(selectedAudioTrackId);
-      }
+          ),
+        );
+      },
+    );
+    if (selectedAudioTrackId != null) {
+      await controller.setAudioTrack(selectedAudioTrackId);
+    }
+  }
+
+  void setRemoteAudiosTracks(List<MediaStream> remoteAudiosTracks) async {
+    var selectedAudioTrack = await showDialog<MediaStream>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Audio'),
+          content: Container(
+            width: double.maxFinite,
+            height: 250,
+            child: ListView.builder(
+              itemCount: remoteAudiosTracks.length + 1,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    index < remoteAudiosTracks.length
+                        ? remoteAudiosTracks[index].displayTitle
+                        : 'Disable',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                      index < remoteAudiosTracks.length
+                          ? remoteAudiosTracks[index]
+                          : -1,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+    if (selectedAudioTrack != null) {
+      var url = await getNewAudioSource(selectedAudioTrack.index,
+          playbackTick: controller.value.position);
+      await controller.setMediaFromNetwork(url, autoPlay: true);
     }
   }
 
@@ -396,7 +503,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
       );
       await controller.castToRenderer(selectedCastDeviceName);
     } else {
-      Scaffold.of(context)
+      ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('No Display Device Found!')));
     }
   }
