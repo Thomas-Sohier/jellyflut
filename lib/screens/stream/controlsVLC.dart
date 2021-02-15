@@ -185,8 +185,9 @@ class _ControlsVLCState extends State<ControlsVLC> {
     return Row(children: [
       InkWell(
           onTap: () async {
-            await widget.controller.stop();
-            await widget.controller.play();
+            widget.controller.value.isPlaying
+                ? await widget.controller.pause()
+                : await widget.controller.play();
           },
           borderRadius: BorderRadius.all(Radius.circular(50)),
           child: Padding(
