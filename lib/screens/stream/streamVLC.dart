@@ -7,6 +7,7 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsVLC.dart';
 import 'package:jellyflut/shared/theme.dart';
+import 'package:wakelock/wakelock.dart';
 
 class StreamVLC extends StatefulWidget {
   final VlcPlayerController controller;
@@ -49,7 +50,7 @@ class _StreamVLCState extends State<StreamVLC>
 
   @override
   void initState() {
-    super.initState();
+    Wakelock.enable();
     streamModel = StreamModel();
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
@@ -62,10 +63,12 @@ class _StreamVLCState extends State<StreamVLC>
         volumeLevel: _controller.value.volume.round(),
         subtitlesIndex: 0);
     _controller.addListener(listener);
+    super.initState();
   }
 
   @override
   void dispose() {
+    Wakelock.disable();
     _controller.removeListener(listener);
     streamModel.stopProgressTimer();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
@@ -76,7 +79,6 @@ class _StreamVLCState extends State<StreamVLC>
 
   void listener() async {
     if (!mounted) return;
-    //
     if (_controller.value.isInitialized) {
       var oPosition = _controller.value.position;
       var oDuration = _controller.value.duration;
@@ -96,7 +98,6 @@ class _StreamVLCState extends State<StreamVLC>
       }
       numberOfCaptions = _controller.value.spuTracksCount;
       numberOfAudioTracks = _controller.value.audioTracksCount;
-      //
       setState(() {});
     }
   }
@@ -117,11 +118,11 @@ class _StreamVLCState extends State<StreamVLC>
               children: <Widget>[
                 VlcPlayer(
                   controller: _controller,
-                  aspectRatio: 16 / 9,
+                  aspectRatio: streamModel.item.getAspectRatio(),
                   placeholder: Center(child: CircularProgressIndicator()),
                 ),
                 SizedBox(
-                    height: size.width / (16 / 9),
+                    height: size.width / streamModel.item.getAspectRatio(),
                     child: ControlsVLC(
                       controller: _controller,
                     )),
