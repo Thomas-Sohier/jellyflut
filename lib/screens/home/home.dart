@@ -28,80 +28,71 @@ class _HomeState extends State<Home> {
         value: searchResult,
         child: MusicPlayerFAB(
             child: Scaffold(
-                extendBody: true,
-                backgroundColor: Colors.transparent,
-                body: Background(
-                    child: RefreshIndicator(
+          extendBody: true,
+          backgroundColor: Colors.transparent,
+          body: Background(
+              child: RefreshIndicator(
                   onRefresh: () => _refreshItems(),
                   child: SingleChildScrollView(
-                      child: Material(
-                          color: Colors.transparent,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(height: size.height * 0.05),
-                              Stack(children: [
-                                SearchResult(),
-                                Consumer<SearchProvider>(
-                                  builder: (context, value, child) {
-                                    return Visibility(
-                                        visible: !SearchProvider().showResults,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Hero(
-                                                tag: 'logo',
-                                                child: Image(
-                                                  image: AssetImage(
-                                                      'img/jellyfin_logo.png'),
-                                                  width: 40.0,
-                                                )),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      6, 0, 0, 0),
-                                            ),
-                                            Hero(
-                                              tag: 'logo_text',
-                                              child: Text(
-                                                'Jellyfin',
-                                                style: TextStyle(
-                                                    fontSize: 22,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            searchIcon(),
-                                            settingsIcon()
-                                          ],
-                                        ));
-                                  },
-                                )
-                              ]),
-                              SizedBox(height: size.height * 0.03),
-                              Resume(),
-                              FutureBuilder<Category>(
-                                future: getCategory(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return buildCategory(snapshot.data);
-                                  } else {
-                                    return Container();
-                                  }
-                                },
-                              ),
-                              SizedBox(height: size.height * 0.05),
-                            ],
-                          ))),
-                )))));
+                      child: Column(
+                    children: [
+                      SizedBox(height: size.height * 0.05),
+                      Stack(children: [
+                        SearchResult(),
+                        Consumer<SearchProvider>(
+                          builder: (context, value, child) {
+                            return Visibility(
+                                visible: !SearchProvider().showResults,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Hero(
+                                        tag: 'logo',
+                                        child: Image(
+                                          image: AssetImage(
+                                              'img/jellyfin_logo.png'),
+                                          width: 40.0,
+                                        )),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    ),
+                                    Hero(
+                                      tag: 'logo_text',
+                                      child: Text(
+                                        'Jellyfin',
+                                        style: TextStyle(
+                                            fontSize: 22, color: Colors.white),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    searchIcon(),
+                                    settingsIcon()
+                                  ],
+                                ));
+                          },
+                        )
+                      ]),
+                      SizedBox(height: size.height * 0.03),
+                      Resume(),
+                      FutureBuilder<Category>(
+                        future: getCategory(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return buildCategory(snapshot.data);
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                      SizedBox(height: size.height * 0.05),
+                    ],
+                  )))),
+        )));
   }
 
   Widget searchIcon() {

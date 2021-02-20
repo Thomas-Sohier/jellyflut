@@ -27,8 +27,10 @@ class AsyncImage extends StatefulWidget {
 class _AsyncImageState extends State<AsyncImage> {
   @override
   Widget build(BuildContext context) {
-    return body(widget.itemId, widget.imageTag, widget.blurHash, widget.tag,
-        widget.boxFit, widget.alignment, widget.placeholder);
+    return ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        child: body(widget.itemId, widget.imageTag, widget.blurHash, widget.tag,
+            widget.boxFit, widget.alignment, widget.placeholder));
   }
 }
 
