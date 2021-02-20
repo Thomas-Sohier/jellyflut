@@ -13,7 +13,6 @@ class StreamModel extends ChangeNotifier {
   BetterPlayerController _betterPlayerController;
   int _audioStreamIndex;
   int _subtitleStreamIndex;
-  Timer _timer;
 
   // Singleton
   static final StreamModel _streamProvider = StreamModel._internal();
@@ -54,26 +53,5 @@ class StreamModel extends ChangeNotifier {
 
   void setSubtitleStreamIndex(int subtitleStreamIndex) {
     _subtitleStreamIndex = subtitleStreamIndex;
-  }
-
-  void startProgressTimer(
-      {@required bool isMuted,
-      @required bool isPaused,
-      @required int positionTicks,
-      @required int volumeLevel,
-      @required int subtitlesIndex}) {
-    _timer = Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) => itemProgress(_item,
-            canSeek: true,
-            isMuted: isMuted,
-            isPaused: isPaused,
-            positionTicks: positionTicks,
-            volumeLevel: volumeLevel,
-            subtitlesIndex: subtitlesIndex));
-  }
-
-  void stopProgressTimer() {
-    _timer?.cancel();
   }
 }

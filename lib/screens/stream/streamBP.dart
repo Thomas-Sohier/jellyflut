@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -24,6 +25,7 @@ class _StreamState extends State<Stream> {
   BetterPlayerController _betterPlayerController;
   BetterPlayerDataSource dataSource;
   StreamController<bool> _placeholderStreamController;
+  Timer _timer;
   final GlobalKey _betterPlayerKey = GlobalKey();
   var aspectRatio;
 
@@ -45,17 +47,6 @@ class _StreamState extends State<Stream> {
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     streamModel.setBetterPlayerController(_betterPlayerController);
-    streamModel.startProgressTimer(
-        isMuted: _betterPlayerController.videoPlayerController.value.volume > 0
-            ? true
-            : false,
-        isPaused:
-            !_betterPlayerController.videoPlayerController.value.isPlaying,
-        positionTicks: _betterPlayerController
-            .videoPlayerController.value.position.inMicroseconds,
-        volumeLevel:
-            _betterPlayerController.videoPlayerController.value.volume.round(),
-        subtitlesIndex: 0);
     return Future.value(true);
   }
 
@@ -64,6 +55,7 @@ class _StreamState extends State<Stream> {
     Wakelock.enable();
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
+    _startProgressTimer();
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -75,7 +67,7 @@ class _StreamState extends State<Stream> {
     await Wakelock.disable();
     await deleteActiveEncoding();
     await _placeholderStreamController.close();
-    streamModel.stopProgressTimer();
+    _timer?.cancel();
     streamModel.betterPlayerController.dispose();
     await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     await SystemChrome.setPreferredOrientations(
@@ -104,6 +96,29 @@ class _StreamState extends State<Stream> {
         },
       ),
     );
+  }
+
+  void _startProgressTimer() {
+    _timer = Timer.periodic(
+        Duration(seconds: 15),
+        (Timer
+                t) =>
+            itemProgress(streamModel.item,
+                canSeek: true,
+                isMuted:
+                    streamModel.betterPlayerController.videoPlayerController.value
+                                .volume >
+                            0
+                        ? true
+                        : false,
+                isPaused: !streamModel.betterPlayerController.videoPlayerController
+                    .value.isPlaying,
+                positionTicks: streamModel.betterPlayerController
+                    .videoPlayerController.value.position.inMicroseconds,
+                volumeLevel: streamModel
+                    .betterPlayerController.videoPlayerController.value.volume
+                    .round(),
+                subtitlesIndex: 0));
   }
 }
 

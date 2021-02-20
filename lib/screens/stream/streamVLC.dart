@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsVLC.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -28,6 +29,7 @@ class _StreamVLCState extends State<StreamVLC>
     with AutomaticKeepAliveClientMixin {
   VlcPlayerController _controller;
   StreamModel streamModel;
+  Timer _timer;
 
   //
   final double initSnapshotRightPosition = 10;
@@ -56,13 +58,8 @@ class _StreamVLCState extends State<StreamVLC>
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     _controller = widget.controller;
-    streamModel.startProgressTimer(
-        isMuted: _controller.value.volume > 0 ? true : false,
-        isPaused: !_controller.value.isPlaying,
-        positionTicks: _controller.value.position.inMicroseconds,
-        volumeLevel: _controller.value.volume.round(),
-        subtitlesIndex: 0);
     _controller.addListener(listener);
+    _startProgressTimer();
     super.initState();
   }
 
@@ -70,7 +67,7 @@ class _StreamVLCState extends State<StreamVLC>
   void dispose() {
     Wakelock.disable();
     _controller.removeListener(listener);
-    streamModel.stopProgressTimer();
+    _timer?.cancel();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -146,5 +143,17 @@ class _StreamVLCState extends State<StreamVLC>
       },
       child: child,
     );
+  }
+
+  void _startProgressTimer() {
+    _timer = Timer.periodic(
+        Duration(seconds: 15),
+        (Timer t) => itemProgress(streamModel.item,
+            canSeek: true,
+            isMuted: _controller.value.volume > 0 ? true : false,
+            isPaused: !_controller.value.isPlaying,
+            positionTicks: _controller.value.position.inMicroseconds,
+            volumeLevel: _controller.value.volume.round(),
+            subtitlesIndex: 0));
   }
 }
