@@ -1,9 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/components/carroussel/carroussel.dart';
+import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:uuid/uuid.dart';
 
 class ListCollectionItem extends StatelessWidget {
   final Item item;
@@ -38,15 +39,30 @@ class ListCollectionItem extends StatelessWidget {
                   ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: 300),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                        child: CarousselItem(
-                          snapshot.data.items,
-                          textColor: Colors.white,
-                        ),
-                      ))
+                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                          child: carouselSlider(snapshot.data.items)))
                 ]);
           }
           return Container();
         });
+  }
+
+  Widget carouselSlider(List<Item> items) {
+    return CarouselSlider(
+        options: CarouselOptions(
+            aspectRatio: items.first.getPrimaryAspectRatio(),
+            viewportFraction: items.first.getPrimaryAspectRatio(),
+            enlargeCenterPage: true,
+            enableInfiniteScroll: false,
+            scrollDirection: Axis.horizontal,
+            height: 300),
+        items: items.map((item) {
+          var heroTag = item.id + Uuid().v4();
+          return ItemPoster(
+            item,
+            showParent: false,
+            heroTag: heroTag,
+          );
+        }).toList());
   }
 }

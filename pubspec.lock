@@ -44,7 +44,7 @@ packages:
       name: better_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.56"
+    version: "0.0.57"
   boolean_selector:
     dependency: transitive
     description:
@@ -59,6 +59,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   characters:
     dependency: transitive
     description:
