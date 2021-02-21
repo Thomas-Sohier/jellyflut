@@ -1,12 +1,16 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/carroussel/carroussel.dart';
+import 'package:jellyflut/components/detailedItemPoster.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class ListItems extends StatefulWidget {
   const ListItems({Key key}) : super(key: key);
@@ -19,6 +23,9 @@ class _ListItemsState extends State<ListItems> {
   // Scroll controller
   ScrollController _scrollController;
 
+  // Carousel provider
+  CarrousselModel carrousselModel;
+
   // Items
   ListOfItems listOfItems;
 
@@ -27,6 +34,11 @@ class _ListItemsState extends State<ListItems> {
     super.initState();
     listOfItems = ListOfItems();
     listOfItems.showMoreItem();
+    // set first image background
+    carrousselModel = CarrousselModel();
+    listOfItems
+        .getheaderItems()
+        .then((items) => carrousselModel.changeItem(items.first.id));
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
@@ -113,10 +125,31 @@ class _ListItemsState extends State<ListItems> {
             future: listOfItems.getheaderItems(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return CarousselItem(snapshot.data, detailMode: true);
+                return carouselSlider(snapshot.data);
               }
               return Container();
             }));
+  }
+
+  Widget carouselSlider(List<Item> items) {
+    return CarouselSlider(
+        options: CarouselOptions(
+            aspectRatio: 16 / 9,
+            viewportFraction: 0.9,
+            enlargeCenterPage: true,
+            enableInfiniteScroll: false,
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (index, _) =>
+                carrousselModel.changeItem(items[index].id),
+            height: 300),
+        items: items.map((item) {
+          var heroTag = item.id + Uuid().v4();
+          return DetailedItemPoster(
+            item: item,
+            textColor: Colors.white,
+            heroTag: heroTag,
+          );
+        }).toList());
   }
 
   void _scrollListener() {
