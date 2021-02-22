@@ -41,7 +41,9 @@ jobs:
     #- run: flutter test
     
     # Build apk.
-    - run: flutter build apk
+    - run: flutter build apk --debug
+    - run: flutter build apk --profile
+    - run: flutter build apk --release
       env:
         KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
