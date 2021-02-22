@@ -36,11 +36,6 @@ class _SongPlaylistState extends State<SongPlaylist> {
         appBar: AppBar(
           title: Text('Playlist'),
           brightness: Brightness.light,
-          backwardsCompatibility: false, // temporary
-          foregroundColor: Colors.white,
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light),
           backgroundColor: widget.backgroundColor,
         ),
         body: Consumer<MusicPlayer>(builder: (context, mp, child) {

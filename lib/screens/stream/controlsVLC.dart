@@ -503,8 +503,8 @@ class _ControlsVLCState extends State<ControlsVLC> {
       );
       await controller.castToRenderer(selectedCastDeviceName);
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('No Display Device Found!')));
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text('No Display Device Found!')));
     }
   }
 }

@@ -29,11 +29,6 @@ class _SettingsState extends State<Settings> {
         appBar: AppBar(
           title: Text('Settings'),
           brightness: Brightness.light,
-          backwardsCompatibility: false, // temporary
-          foregroundColor: Colors.white,
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light),
           backgroundColor: Color(0xFF252525),
         ),
         body: FutureBuilder<SettingsDB>(
