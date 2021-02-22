@@ -41,7 +41,7 @@ jobs:
     #- run: flutter test
     
     # Build apk.
-    - run: flutter build apk --split-per-abi
+    - run: flutter build apk
       env:
         KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
