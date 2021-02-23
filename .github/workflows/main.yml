@@ -60,10 +60,10 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         ALIAS: ${{ secrets.ALIAS }}
         KEY_PATH: key.jks
-        
+
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    - name: Create a Release APK
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "build/app/outputs/apk/release/*.apk"
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.GITHUB_TOKEN }}
