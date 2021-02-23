@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 
-import '../globals.dart';
-
 class MusicPlayer extends ChangeNotifier {
   AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
 
@@ -113,10 +111,5 @@ class MusicPlayer extends ChangeNotifier {
             imageBlurHashes: item.imageBlurHashes)),
       ),
     );
-  }
-
-  String _createURl(String id, {String codec = 'mp3'}) {
-    var url = '${server.url}/Audio/${id}/stream.${codec}';
-    return url;
   }
 }

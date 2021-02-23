@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/callOnceClick.dart';
 import 'package:jellyflut/shared/colors.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -30,13 +29,9 @@ class PaletteButton extends StatefulWidget {
 }
 
 class _PaletteButtonState extends State<PaletteButton> {
-  CallOnce _callOnce;
-
   @override
   void initState() {
     super.initState();
-
-    _callOnce = CallOnce(widget.onPressed);
   }
 
   @override
@@ -47,7 +42,7 @@ class _PaletteButtonState extends State<PaletteButton> {
             minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
         child: FlatButton(
             padding: EdgeInsets.zero,
-            onPressed: _callOnce.invoke,
+            onPressed: widget.onPressed,
             shape: RoundedRectangleBorder(
                 borderRadius: borderRadius,
                 side: BorderSide(color: Colors.transparent)),

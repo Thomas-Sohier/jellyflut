@@ -6,10 +6,10 @@ class ImageTags {
   String primary;
 
   factory ImageTags.fromMap(Map<String, dynamic> json) => ImageTags(
-        primary: json["Primary"],
+        primary: json['Primary'],
       );
 
   Map<String, dynamic> toMap() => {
-        "Primary": primary,
+        'Primary': primary,
       };
 }

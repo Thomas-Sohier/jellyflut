@@ -24,8 +24,7 @@ class Person {
         id: json['Id'],
         role: json['Role'],
         type: personTypeValues.map[json['Type']],
-        primaryImageTag:
-            json['PrimaryImageTag'] == null ? null : json['PrimaryImageTag'],
+        primaryImageTag: json['PrimaryImageTag'],
         imageBlurHashes: json['ImageBlurHashes'] == null
             ? null
             : ImageBlurHashes.fromMap(json['ImageBlurHashes']),
@@ -36,7 +35,7 @@ class Person {
         'Id': id,
         'Role': role,
         'Type': personTypeValues.reverse[type],
-        'PrimaryImageTag': primaryImageTag == null ? null : primaryImageTag,
+        'PrimaryImageTag': primaryImageTag,
         'ImageBlurHashes':
             imageBlurHashes == null ? null : imageBlurHashes.toMap(),
       };

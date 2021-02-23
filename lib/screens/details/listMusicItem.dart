@@ -5,7 +5,6 @@ import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/itemDialog.dart';
 import 'package:jellyflut/screens/form/editItemInfos.dart';
 import 'package:jellyflut/shared/shared.dart';

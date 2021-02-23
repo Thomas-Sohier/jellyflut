@@ -55,63 +55,51 @@ class MediaPlayedInfos {
 
   factory MediaPlayedInfos.fromJson(Map<String, dynamic> json) =>
       MediaPlayedInfos(
-        volumeLevel: json['VolumeLevel'] == null ? null : json['VolumeLevel'],
-        isMuted: json['IsMuted'] == null ? null : json['IsMuted'],
-        isPaused: json['IsPaused'] == null ? null : json['IsPaused'],
-        repeatMode: json['RepeatMode'] == null ? null : json['RepeatMode'],
-        shuffleMode: json['ShuffleMode'] == null ? null : json['ShuffleMode'],
-        maxStreamingBitrate: json['MaxStreamingBitrate'] == null
-            ? null
-            : json['MaxStreamingBitrate'],
-        positionTicks:
-            json['PositionTicks'] == null ? null : json['PositionTicks'],
+        volumeLevel: json['VolumeLevel'],
+        isMuted: json['IsMuted'],
+        isPaused: json['IsPaused'],
+        repeatMode: json['RepeatMode'],
+        shuffleMode: json['ShuffleMode'],
+        maxStreamingBitrate: json['MaxStreamingBitrate'],
+        positionTicks: json['PositionTicks'],
         playbackStartTimeTicks: json['PlaybackStartTimeTicks'] == null
             ? null
             : json['PlaybackStartTimeTicks'].toDouble(),
-        subtitleStreamIndex: json['SubtitleStreamIndex'] == null
-            ? null
-            : json['SubtitleStreamIndex'],
-        audioStreamIndex:
-            json['AudioStreamIndex'] == null ? null : json['AudioStreamIndex'],
+        subtitleStreamIndex: json['SubtitleStreamIndex'],
+        audioStreamIndex: json['AudioStreamIndex'],
         bufferedRanges: json['BufferedRanges'] == null
             ? null
             : List<BufferedRange>.from(
                 json['BufferedRanges'].map((x) => BufferedRange.fromJson(x))),
-        playMethod: json['PlayMethod'] == null ? null : json['PlayMethod'],
-        playSessionId:
-            json['PlaySessionId'] == null ? null : json['PlaySessionId'],
-        playlistItemId:
-            json['PlaylistItemId'] == null ? null : json['PlaylistItemId'],
-        mediaSourceId:
-            json['MediaSourceId'] == null ? null : json['MediaSourceId'],
-        canSeek: json['CanSeek'] == null ? null : json['CanSeek'],
-        itemId: json['ItemId'] == null ? null : json['ItemId'],
-        eventName: json['EventName'] == null ? null : json['EventName'],
+        playMethod: json['PlayMethod'],
+        playSessionId: json['PlaySessionId'],
+        playlistItemId: json['PlaylistItemId'],
+        mediaSourceId: json['MediaSourceId'],
+        canSeek: json['CanSeek'],
+        itemId: json['ItemId'],
+        eventName: json['EventName'],
       );
 
   Map<String, dynamic> toJson() => {
-        'VolumeLevel': volumeLevel == null ? null : volumeLevel,
-        'IsMuted': isMuted == null ? null : isMuted,
-        'IsPaused': isPaused == null ? null : isPaused,
-        'RepeatMode': repeatMode == null ? null : repeatMode,
-        'ShuffleMode': shuffleMode == null ? null : shuffleMode,
-        'MaxStreamingBitrate':
-            maxStreamingBitrate == null ? null : maxStreamingBitrate,
-        'PositionTicks': positionTicks == null ? null : positionTicks,
-        'PlaybackStartTimeTicks':
-            playbackStartTimeTicks == null ? null : playbackStartTimeTicks,
-        'SubtitleStreamIndex':
-            subtitleStreamIndex == null ? null : subtitleStreamIndex,
-        'AudioStreamIndex': audioStreamIndex == null ? null : audioStreamIndex,
+        'VolumeLevel': volumeLevel,
+        'IsMuted': isMuted,
+        'IsPaused': isPaused,
+        'RepeatMode': repeatMode,
+        'ShuffleMode': shuffleMode,
+        'MaxStreamingBitrate': maxStreamingBitrate,
+        'PositionTicks': positionTicks,
+        'PlaybackStartTimeTicks': playbackStartTimeTicks,
+        'SubtitleStreamIndex': subtitleStreamIndex,
+        'AudioStreamIndex': audioStreamIndex,
         'BufferedRanges': bufferedRanges == null
             ? null
             : List<dynamic>.from(bufferedRanges.map((x) => x.toJson())),
-        'PlayMethod': playMethod == null ? null : playMethod,
-        'PlaySessionId': playSessionId == null ? null : playSessionId,
-        'PlaylistItemId': playlistItemId == null ? null : playlistItemId,
-        'MediaSourceId': mediaSourceId == null ? null : mediaSourceId,
-        'CanSeek': canSeek == null ? null : canSeek,
-        'ItemId': itemId == null ? null : itemId,
-        'EventName': eventName == null ? null : eventName,
+        'PlayMethod': playMethod,
+        'PlaySessionId': playSessionId,
+        'PlaylistItemId': playlistItemId,
+        'MediaSourceId': mediaSourceId,
+        'CanSeek': canSeek,
+        'ItemId': itemId,
+        'EventName': eventName,
       };
 }

@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/screens/musicPlayer/songBackground.dart';
-import 'package:jellyflut/screens/musicPlayer/songControls.dart';
 import 'package:jellyflut/screens/musicPlayer/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/songImage.dart';
 import 'package:jellyflut/screens/musicPlayer/songInfos.dart';
-import 'package:jellyflut/screens/musicPlayer/songPlaylist.dart';
-import 'package:jellyflut/provider/musicPlayer.dart' as MusicPlayerProvider;
+import 'package:jellyflut/provider/musicPlayer.dart' as music_player_provider;
 import 'package:jellyflut/shared/theme.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +17,7 @@ class MusicPlayer extends StatefulWidget {
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
-  MusicPlayerProvider.MusicPlayer musicPlayer;
+  music_player_provider.MusicPlayer musicPlayer;
   Color backgroundColor1;
   Color backgroundColor2;
   Color foregroundColor;
@@ -33,7 +29,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     backgroundColor1 = jellyLightPurple.shade500;
     backgroundColor2 = jellyLightBLue.shade50;
     foregroundColor = Colors.black;
-    musicPlayer = MusicPlayerProvider.MusicPlayer();
+    musicPlayer = music_player_provider.MusicPlayer();
     musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value.index;
     setAlbumPrimaryColor();
     playerListener();

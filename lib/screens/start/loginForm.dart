@@ -5,7 +5,6 @@ import 'package:jellyflut/components/outlineTextField.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/models/user.dart';
 import 'package:jellyflut/models/userDB.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
     _username = _usernameFilter.text;
     _password = _passwordFilter.text;
 
-    login(_username, _password).then((AuthenticationResponse response) {
+    await login(_username, _password).then((AuthenticationResponse response) {
       if (response == null) return null;
       var db = DatabaseService();
       // Create user with info

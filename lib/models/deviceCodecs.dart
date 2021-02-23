@@ -59,29 +59,29 @@ class Codec {
   int maxSampleRate;
 
   factory Codec.fromMap(Map<String, dynamic> json) => Codec(
-        mimeType: json['mimeType'] ?? null,
-        codec: json['codec'] ?? null,
-        isAudio: json['isAudio'] ?? null,
+        mimeType: json['mimeType'],
+        codec: json['codec'],
+        isAudio: json['isAudio'],
         profiles: json['profiles'] == null
             ? null
             : List<String>.from(json['profiles'].map((x) => x)),
         levels: json['levels'] == null
             ? null
             : List<int>.from(json['levels'].map((x) => x)),
-        maxBitrate: json['maxBitrate'] ?? null,
-        maxChannels: json['maxChannels'] ?? null,
-        maxSampleRate: json['maxSampleRate'] ?? null,
+        maxBitrate: json['maxBitrate'],
+        maxChannels: json['maxChannels'],
+        maxSampleRate: json['maxSampleRate'],
       );
 
   Map<String, dynamic> toMap() => {
-        if (mimeType != null) 'mimeType': mimeType ?? null,
-        if (codec != null) 'codec': codec ?? null,
-        if (isAudio != null) 'isAudio': isAudio ?? null,
+        if (mimeType != null) 'mimeType': mimeType,
+        if (codec != null) 'codec': codec,
+        if (isAudio != null) 'isAudio': isAudio,
         if (profiles != null)
           'profiles': List<dynamic>.from(profiles.map((x) => x)),
         if (levels != null) 'levels': List<dynamic>.from(levels.map((x) => x)),
-        if (maxBitrate != null) 'maxBitrate': maxBitrate ?? null,
-        if (maxChannels != null) 'maxChannels': maxChannels ?? null,
-        if (maxSampleRate != null) 'maxSampleRate': maxSampleRate ?? null,
+        if (maxBitrate != null) 'maxBitrate': maxBitrate,
+        if (maxChannels != null) 'maxChannels': maxChannels,
+        if (maxSampleRate != null) 'maxSampleRate': maxSampleRate,
       };
 }

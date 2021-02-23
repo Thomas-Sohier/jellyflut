@@ -68,7 +68,7 @@ class _LatestState extends State<Latest> {
                 GestureDetector(
                     onTap: () {
                       Navigator.of(context)
-                          .pushNamed("/watch", arguments: media);
+                          .pushNamed('/watch', arguments: media);
                     },
                     child: AspectRatio(
                         aspectRatio: 16 / 9,

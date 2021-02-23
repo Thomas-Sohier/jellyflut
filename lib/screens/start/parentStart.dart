@@ -16,7 +16,7 @@ class ParentStart extends StatefulWidget {
 class _ParentStartState extends State<ParentStart> {
   bool _first = true;
 
-  changeChildren() {
+  void changeChildren() {
     setState(() {
       _first = !_first;
     });

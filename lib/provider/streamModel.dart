@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 

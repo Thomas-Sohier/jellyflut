@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/callOnceClick.dart';
 
 class GradienButton extends StatefulWidget {
   GradienButton(this.text, this.onPressed,
@@ -28,19 +27,15 @@ class GradienButton extends StatefulWidget {
 }
 
 class _GradienButtonState extends State<GradienButton> {
-  CallOnce _callOnce;
-
   @override
   void initState() {
     super.initState();
-
-    _callOnce = CallOnce(widget.onPressed);
   }
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-        onPressed: _callOnce.invoke,
+        onPressed: widget.onPressed,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.borderRadius),
             side: BorderSide(color: Colors.transparent)),

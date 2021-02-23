@@ -16,16 +16,14 @@ class UserData {
   String key;
 
   factory UserData.fromMap(Map<String, dynamic> json) => UserData(
-        playbackPositionTicks: json['PlaybackPositionTicks'] == null
-            ? null
-            : json['PlaybackPositionTicks'],
-        playCount: json['PlayCount'] == null ? null : json['PlayCount'],
-        isFavorite: json['IsFavorite'] == null ? null : json['IsFavorite'],
+        playbackPositionTicks: json['PlaybackPositionTicks'],
+        playCount: json['PlayCount'],
+        isFavorite: json['IsFavorite'],
         lastPlayedDate: json['LastPlayedDate'] == null
             ? null
             : DateTime.parse(json['LastPlayedDate']),
-        played: json['Played'] == null ? null : json['Played'],
-        key: json['Key'] == null ? null : json['Key'],
+        played: json['Played'],
+        key: json['Key'],
       );
 
   Map<String, dynamic> toMap() => {

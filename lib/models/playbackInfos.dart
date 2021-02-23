@@ -23,15 +23,14 @@ class PlayBackInfos {
             ? null
             : List<MediaSource>.from(
                 json['MediaSources'].map((x) => MediaSource.fromMap(x))),
-        playSessionId:
-            json['PlaySessionId'] == null ? null : json['PlaySessionId'],
+        playSessionId: json['PlaySessionId'],
       );
 
   Map<String, dynamic> toMap() => {
         'MediaSources': mediaSources == null
             ? null
             : List<dynamic>.from(mediaSources.map((x) => x.toMap())),
-        'PlaySessionId': playSessionId == null ? null : playSessionId,
+        'PlaySessionId': playSessionId,
       };
 
   List<MediaStream> getSubtitles() {

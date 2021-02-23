@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
-import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 

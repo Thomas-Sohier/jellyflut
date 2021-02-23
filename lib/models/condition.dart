@@ -12,10 +12,10 @@ class Condition {
   bool isRequired;
 
   factory Condition.fromMap(Map<String, dynamic> json) => Condition(
-        condition: json['Condition'] ?? null,
-        property: json['Property'] ?? null,
-        value: json['Value'] ?? null,
-        isRequired: json['IsRequired'] ?? null,
+        condition: json['Condition'],
+        property: json['Property'],
+        value: json['Value'],
+        isRequired: json['IsRequired'],
       );
 
   Map<String, dynamic> toMap() => {

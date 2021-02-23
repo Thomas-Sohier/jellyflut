@@ -1,15 +1,11 @@
 import 'dart:io';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/device.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
-
-import '../../globals.dart';
 
 class ItemDialogActions extends StatelessWidget {
   final Item item;

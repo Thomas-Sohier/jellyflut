@@ -30,16 +30,11 @@ class DeviceProfile {
   List<ResponseProfile> responseProfiles;
 
   factory DeviceProfile.fromMap(Map<String, dynamic> json) => DeviceProfile(
-        name: json['Name'] == null ? null : json['Name'],
-        maxStreamingBitrate: json['MaxStreamingBitrate'] == null
-            ? null
-            : json['MaxStreamingBitrate'],
-        maxStaticBitrate:
-            json['MaxStaticBitrate'] == null ? null : json['MaxStaticBitrate'],
+        name: json['Name'],
+        maxStreamingBitrate: json['MaxStreamingBitrate'],
+        maxStaticBitrate: json['MaxStaticBitrate'],
         musicStreamingTranscodingBitrate:
-            json['MusicStreamingTranscodingBitrate'] == null
-                ? null
-                : json['MusicStreamingTranscodingBitrate'],
+            json['MusicStreamingTranscodingBitrate'],
         directPlayProfiles: json['DirectPlayProfiles'] == null
             ? null
             : List<DirectPlayProfile>.from(json['DirectPlayProfiles']

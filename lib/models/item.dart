@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:fereader/fereader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,7 +13,6 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
-import 'package:jellyflut/screens/stream/streamBP.dart' as StreamBP;
 import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
 
@@ -176,27 +174,22 @@ class Item {
   int height;
 
   factory Item.fromMap(Map<String, dynamic> json) => Item(
-        name: json['Name'] == null ? null : json['Name'],
-        originalTitle:
-            json['OriginalTitle'] == null ? null : json['OriginalTitle'],
-        serverId: json['ServerId'] == null ? null : json['ServerId'],
-        id: json['Id'] == null ? null : json['Id'],
-        indexNumber: json['IndexNumber'] == null ? null : json['IndexNumber'],
-        parentIndexNumber: json['ParentIndexNumber'] == null
-            ? null
-            : json['ParentIndexNumber'],
-        etag: json['Etag'] == null ? null : json['Etag'],
-        collectionType:
-            json['CollectionType'] == null ? null : json['CollectionType'],
+        name: json['Name'],
+        originalTitle: json['OriginalTitle'],
+        serverId: json['ServerId'],
+        id: json['Id'],
+        indexNumber: json['IndexNumber'],
+        parentIndexNumber: json['ParentIndexNumber'],
+        etag: json['Etag'],
+        collectionType: json['CollectionType'],
         dateCreated: json['DateCreated'] == null
             ? null
             : DateTime.parse(json['DateCreated']),
-        canDelete: json['CanDelete'] == null ? null : json['CanDelete'],
-        canDownload: json['CanDownload'] == null ? null : json['CanDownload'],
-        hasSubtitles:
-            json['HasSubtitles'] == null ? null : json['HasSubtitles'],
-        container: json['Container'] == null ? null : json['Container'],
-        sortName: json['SortName'] == null ? null : json['SortName'],
+        canDelete: json['CanDelete'],
+        canDownload: json['CanDownload'],
+        hasSubtitles: json['HasSubtitles'],
+        container: json['Container'],
+        sortName: json['SortName'],
         premiereDate: json['PremiereDate'] == null
             ? null
             : DateTime.parse(json['PremiereDate']),
@@ -208,16 +201,13 @@ class Item {
             ? null
             : List<MediaSource>.from(
                 json['MediaSources'].map((x) => MediaSource.fromMap(x))),
-        criticRating:
-            json['CriticRating'] == null ? null : json['CriticRating'],
+        criticRating: json['CriticRating'],
         productionLocations: json['ProductionLocations'] == null
             ? null
             : List<String>.from(json['ProductionLocations'].map((x) => x)),
-        path: json['Path'] == null ? null : json['Path'],
-        enableMediaSourceDisplay: json['EnableMediaSourceDisplay'] == null
-            ? null
-            : json['EnableMediaSourceDisplay'],
-        overview: json['Overview'] == null ? null : json['Overview'],
+        path: json['Path'],
+        enableMediaSourceDisplay: json['EnableMediaSourceDisplay'],
+        overview: json['Overview'],
         taglines: json['Taglines'] == null
             ? null
             : List<dynamic>.from(json['Taglines'].map((x) => x)),
@@ -227,11 +217,9 @@ class Item {
         communityRating: json['CommunityRating'] == null
             ? null
             : json['CommunityRating'].toDouble(),
-        runTimeTicks:
-            json['RunTimeTicks'] == null ? null : json['RunTimeTicks'],
-        playAccess: json['PlayAccess'] == null ? null : json['PlayAccess'],
-        productionYear:
-            json['ProductionYear'] == null ? null : json['ProductionYear'],
+        runTimeTicks: json['RunTimeTicks'],
+        playAccess: json['PlayAccess'],
+        productionYear: json['ProductionYear'],
         remoteTrailers: json['RemoteTrailers'] == null
             ? null
             : List<ExternalUrl>.from(
@@ -240,11 +228,11 @@ class Item {
             ? null
             : ProviderIds.fromMap(json['ProviderIds']),
         isHd: json['IsHD'] == null ? null : json['isHd'],
-        isFolder: json['IsFolder'] == null ? null : json['IsFolder'],
-        parentId: json['ParentId'] == null ? null : json['ParentId'],
-        seriesId: json['SeriesId'] == null ? null : json['SeriesId'],
-        seasonId: json['SeasonId'] == null ? null : json['SeasonId'],
-        type: json['Type'] == null ? null : json['Type'],
+        isFolder: json['IsFolder'],
+        parentId: json['ParentId'],
+        seriesId: json['SeriesId'],
+        seasonId: json['SeasonId'],
+        type: json['Type'],
         artists: json['Artists'] == null
             ? null
             : List<Artist>.from(json['Artists'].map((x) => Artist.fromMap(x))),
@@ -252,12 +240,10 @@ class Item {
             ? null
             : List<ArtistItems>.from(
                 json['ArtistItems'].map((x) => ArtistItems.fromMap(x))),
-        album: json['Album'] == null ? null : json['Album'],
-        albumId: json['AlbumId'] == null ? null : json['AlbumId'],
-        albumPrimaryImageTag: json['AlbumPrimaryImageTag'] == null
-            ? null
-            : json['AlbumPrimaryImageTag'],
-        albumArtist: json['AlbumArtist'] == null ? null : json['AlbumArtist'],
+        album: json['Album'],
+        albumId: json['AlbumId'],
+        albumPrimaryImageTag: json['AlbumPrimaryImageTag'],
+        albumArtist: json['AlbumArtist'],
         albumArtists: json['AlbumArtists'] == null
             ? null
             : List<AlbumArtists>.from(
@@ -279,12 +265,8 @@ class Item {
         userData: json['UserData'] == null
             ? null
             : UserData.fromMap(json['UserData']),
-        specialFeatureCount: json['SpecialFeatureCount'] == null
-            ? null
-            : json['SpecialFeatureCount'],
-        displayPreferencesId: json['DisplayPreferencesId'] == null
-            ? null
-            : json['DisplayPreferencesId'],
+        specialFeatureCount: json['SpecialFeatureCount'],
+        displayPreferencesId: json['DisplayPreferencesId'],
         tags: json['Tags'] == null
             ? null
             : List<dynamic>.from(json['Tags'].map((x) => x)),
@@ -295,14 +277,12 @@ class Item {
             ? null
             : List<MediaStream>.from(
                 json['MediaStreams'].map((x) => MediaStream.fromMap(x))),
-        videoType: json['VideoType'] == null ? null : json['VideoType'],
+        videoType: json['VideoType'],
         imageTags: json['ImageTags'] == null
             ? null
             : ImageTags.fromMap(json['ImageTags']),
-        seriesPrimaryImageTag: json['SeriesPrimaryImageTag'] == null
-            ? null
-            : json['SeriesPrimaryImageTag'],
-        seriesName: json['SeriesName'] == null ? null : json['SeriesName'],
+        seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
+        seriesName: json['SeriesName'],
         backdropImageTags: json['BackdropImageTags'] == null
             ? null
             : List<String>.from(json['BackdropImageTags'].map((x) => x)),
@@ -316,17 +296,14 @@ class Item {
             ? null
             : List<Chapter>.from(
                 json['Chapters'].map((x) => Chapter.fromMap(x))),
-        locationType:
-            json['LocationType'] == null ? null : json['LocationType'],
-        mediaType: typeValues.map[json['MediaType']] == null
-            ? null
-            : typeValues.map[json['MediaType']],
+        locationType: json['LocationType'],
+        mediaType: typeValues.map[json['MediaType']],
         lockedFields: json['LockedFields'] == null
             ? null
             : List<dynamic>.from(json['LockedFields'].map((x) => x)),
-        lockData: json['LockData'] == null ? null : json['LockData'],
-        width: json['Width'] == null ? null : json['Width'],
-        height: json['Height'] == null ? null : json['Height'],
+        lockData: json['LockData'],
+        width: json['Width'],
+        height: json['Height'],
       );
 
   Map<String, dynamic> toMap() {
@@ -335,8 +312,8 @@ class Item {
       'OriginalTitle': originalTitle,
       'ServerId': serverId,
       'Id': id,
-      'IndexNumber': indexNumber == null ? null : indexNumber,
-      'ParentIndexNumber': parentIndexNumber == null ? null : parentIndexNumber,
+      'IndexNumber': indexNumber,
+      'ParentIndexNumber': parentIndexNumber,
       'Etag': etag,
       'CollectionType': collectionType,
       'DateCreated': dateCreated == null ?? dateCreated.toIso8601String(),
@@ -413,12 +390,10 @@ class Item {
     return map;
   }
 
-  /**
-   * Check if item is new
-   * 
-   * Return [true] is is less than 3 days old
-   * Return [false] is date of creation is null or if more than 3 days old
-  */
+  ///Check if item is new
+  ///
+  /// Return [true] is is less than 3 days old
+  /// Return [false] is date of creation is null or if more than 3 days old
   bool isNew() {
     if (dateCreated == null) {
       return false;
@@ -427,22 +402,18 @@ class Item {
     return difference.inDays < -3 ? false : true;
   }
 
-  /**
-   * Duration in microseconds from the item
-   * 
-   * Return the [duration] if known
-   * Return [0] if not known
-   */
+  /// Duration in microseconds from the item
+  ///
+  /// Return the [duration] if known
+  /// Return [0] if not known
   int getDuration() {
     return (runTimeTicks / 10).round();
   }
 
-  /**
-   * Get item aspect ratio
-   * 
-   * Return aspect ratio from video as [double] value
-   * If not specified return [16/9] as default value
-   */
+  /// Get item aspect ratio
+  ///
+  /// Return aspect ratio from video as [double] value
+  /// If not specified return [16/9] as default value
   double getAspectRatio() {
     MediaStream mediaStream;
     if (mediaStreams.isNotEmpty) {
@@ -459,12 +430,10 @@ class Item {
     return 16 / 9;
   }
 
-  /**
-   * Parse aspect ratio (jellyfin format) from string to double
-   * 
-   * Return aspect ratio from video as [double] value
-   * If not specified return [null] as default value
-   */
+  /// Parse aspect ratio (jellyfin format) from string to double
+  ///
+  /// Return aspect ratio from video as [double] value
+  /// If not specified return [null] as default value
   double calculateAspectRatio(String aspectRatio) {
     if (aspectRatio == null) return null;
     if (aspectRatio.isEmpty) return null;
@@ -475,12 +444,10 @@ class Item {
     return firstValue / secondValue;
   }
 
-  /**
-   * Playback position last time played
-   * 
-   * Return playback position in microsecond as [int]
-   * Return [null] if not specified
-   */
+  /// Playback position last time played
+  ///
+  /// Return playback position in microsecond as [int]
+  /// Return [null] if not specified
   int getPlaybackPosition() {
     if (userData.playbackPositionTicks != null) {
       return (userData.playbackPositionTicks / 10).round();
@@ -488,12 +455,10 @@ class Item {
     return null;
   }
 
-  /**
-   * Percent of time played
-   * 
-   * Return percent og time played as [double]
-   * Return [null] if not specified
-   */
+  /// Percent of time played
+  ///
+  /// Return percent og time played as [double]
+  /// Return [null] if not specified
   double getPercentPlayed() {
     if (userData.playbackPositionTicks != null || runTimeTicks != null) {
       return userData.playbackPositionTicks / runTimeTicks;
@@ -501,14 +466,12 @@ class Item {
     return null;
   }
 
-  /**
-   * Get primary image aspect ratio. Useful to show poster of item
-   * 
-   * Return [double]
-   * 
-   * Return [primaryImageAspectRatio] if defined
-   * Else return an aspect ratio based on type if not defined
-   */
+  /// Get primary image aspect ratio. Useful to show poster of item
+  ///
+  /// Return [double]
+  ///
+  /// Return [primaryImageAspectRatio] if defined
+  /// Else return an aspect ratio based on type if not defined
   double getPrimaryAspectRatio() {
     if (primaryImageAspectRatio != null) {
       if (primaryImageAspectRatio > 0.0) {
@@ -519,14 +482,12 @@ class Item {
     return aspectRatio(type: type);
   }
 
-  /**
-   * Get id or parentid if primary image is not defined
-   * 
-   * Return [String]
-   * 
-   * Return id if type do not have parent
-   * Return parent id if there is no primary image set
-   */
+  /// Get id or parentid if primary image is not defined
+  ///
+  /// Return [String]
+  ///
+  /// Return id if type do not have parent
+  /// Return parent id if there is no primary image set
   String getIdBasedOnImage() {
     if (type == 'Season') {
       if (imageTags.primary != null) return id;
@@ -535,14 +496,12 @@ class Item {
     return id;
   }
 
-  /**
-   * Check if item have parents
-   * 
-   * Return [bool]
-   * 
-   * Return [true] if parents
-   * Return [false] is no parents found
-   */
+  /// Check if item have parents
+  ///
+  /// Return [bool]
+  ///
+  /// Return [true] if parents
+  /// Return [false] is no parents found
   bool hasParent() {
     var hasSerieParent = seriesName != null ? seriesName.isNotEmpty : false;
     var hasAlbumParent = albumId != null ? albumId.isNotEmpty : false;
@@ -557,28 +516,24 @@ class Item {
     return id;
   }
 
-  /**
-   * Get parent name
-   * 
-   * Return [String]
-   * 
-   * Return parents name if not null
-   * ELse return empty string
-   */
+  /// Get parent name
+  ///
+  /// Return [String]
+  ///
+  /// Return parents name if not null
+  /// ELse return empty string
   String parentName() {
     if (seriesName != null && seriesName.isNotEmpty) return seriesName;
     if (album != null && album.isNotEmpty) return album;
     return name;
   }
 
-  /**
-   * Get collection type such as requested by API
-   * 
-   * Return [String]
-   * 
-   * Return correct collection type based on item one
-   * If nothing found then return current one
-   */
+  /// Get collection type such as requested by API
+  ///
+  /// Return [String]
+  ///
+  /// Return correct collection type based on item one
+  /// If nothing found then return current one
   String getCollectionType() {
     if (collectionType == 'movies') {
       return 'movie';
@@ -593,14 +548,12 @@ class Item {
     }
   }
 
-  /**
-   * Get correct image id based on searchType
-   * 
-   * Return [String]
-   * 
-   * Return id as [String] if found
-   * Else return item's id as [String]
-   */
+  /// Get correct image id based on searchType
+  ///
+  /// Return [String]
+  ///
+  /// Return id as [String] if found
+  /// Else return item's id as [String]
   String correctImageId({String searchType = 'Primary'}) {
     if (searchType.toLowerCase().trim() == 'logo' &&
         (type == 'Season' || type == 'Episode' || type == 'Album')) {
@@ -623,14 +576,12 @@ class Item {
     return id;
   }
 
-  /**
-   * Get correct image tags based on searchType
-   * 
-   * Return [String]
-   * 
-   * Return imageTag as [String] if found
-   * Else return [null]
-   */
+  /// Get correct image tags based on searchType
+  ///
+  /// Return [String]
+  ///
+  /// Return imageTag as [String] if found
+  /// Else return [null]
   String correctImageTags({String searchType = 'Primary'}) {
     if (searchType.toLowerCase().trim() == 'logo' &&
         (type == 'Season' || type == 'Episode' || type == 'Album')) {
@@ -653,12 +604,10 @@ class Item {
     return null;
   }
 
-  /**
-   * Play current item given context
-   * 
-   * If Book open Epub reader
-   * If Video open video player
-   */
+  /// Play current item given context
+  ///
+  /// If Book open Epub reader
+  /// If Video open video player
   void playItem(BuildContext context) async {
     var musicPlayer = MusicPlayer();
     if (type == 'Episode' ||

@@ -5,7 +5,6 @@ import 'package:jellyflut/screens/details/animateSwitchDialog.dart';
 class ItemDialog {
   final Item _item;
   final BuildContext _buildContext;
-  bool _first = true;
 
   ItemDialog(this._item, this._buildContext);
 

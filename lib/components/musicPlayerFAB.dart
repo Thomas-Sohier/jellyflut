@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart'
-    as MusicPlayerWidget;
+    as music_player_widget;
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +72,8 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MusicPlayerWidget.MusicPlayer(),
+                          builder: (context) =>
+                              music_player_widget.MusicPlayer(),
                         )),
                     child: Icon(
                       Icons.more_vert,

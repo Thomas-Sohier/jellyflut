@@ -11,8 +11,6 @@ import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:better_player/src/hls/better_player_hls_audio_track.dart';
 
-import '../../globals.dart';
-
 class ControlsBP extends StatefulWidget {
   const ControlsBP();
 

@@ -16,7 +16,7 @@ Future<AuthenticationResponse> login(String username, String password) async {
   body['PW'] = password;
 
   var login = '/Users/AuthenticateByName';
-  var headers = Map<String, dynamic>();
+  var headers = <String, dynamic>{};
   headers['Content-Type'] = 'application/json';
 
   var formData = FormData.fromMap(body);
