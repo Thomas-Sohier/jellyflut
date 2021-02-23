@@ -9,8 +9,8 @@ on: push
 jobs:
   build:
     # This job will run on ubuntu virtual machine
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     steps:
 
     # Setup Java environment in order to build the Android app.
