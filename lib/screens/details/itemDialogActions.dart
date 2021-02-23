@@ -72,7 +72,9 @@ class ItemDialogActions extends StatelessWidget {
   }
 
   void _addItemToPlaylist(Item _item, BuildContext context) async {
-    MusicPlayer().addPlaylist(item);
+    var musicPlayer = MusicPlayer();
+    musicPlayer.addPlaylist(
+        item, musicPlayer.assetsAudioPlayer.playlist?.audios?.length);
     Navigator.pop(context);
     showToast('${_item.name} added to playlist');
   }

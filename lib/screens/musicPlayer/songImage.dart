@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
@@ -31,9 +32,7 @@ class _SongImageState extends State<SongImage> {
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
-            ?.duration?.inMilliseconds ??
-        0;
+    _playBackTime = musicPlayer.currentMusicDuration().toInt() ?? 0;
     playerListener();
   }
 
@@ -49,27 +48,11 @@ class _SongImageState extends State<SongImage> {
     return Container(
         height: height,
         width: double.maxFinite,
-        child: imageSingle(singleSize));
+        child: imageSingleAsync(singleSize));
   }
 
-  BackdropFilter defaultSingleStyle(double size) {
-    return BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: Container(
-            height: size,
-            width: size,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 10, spreadRadius: 8, color: Colors.black54)
-                ],
-                color: Colors.grey.shade200.withOpacity(0.5),
-                shape: BoxShape.circle)));
-  }
-
-  Widget imageSingle(double size) {
-    var sliderSize =
-        size * (_playBackTime / musicPlayer.currentMusicMaxDuration());
+  Widget imageSingleAsync(double size) {
+    var sliderSize = _playBackTime / musicPlayer.currentMusicMaxDuration();
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
@@ -77,27 +60,28 @@ class _SongImageState extends State<SongImage> {
             borderRadius: BorderRadius.all(Radius.circular(5)),
             child: GestureDetector(
                 onTapDown: (TapDownDetails details) =>
-                    onTapDown(context, details, size),
+                    onTapDown(context, details),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      height: size,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                                musicPlayer.getCurrentAudioImagePath())),
-                      ),
-                    ),
-                    Positioned.fill(
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              color: widget.albumColors[1].withAlpha(150),
-                              width: sliderSize,
-                            ))),
+                    musicPlayer.getCurrentAudioImagePath() != null
+                        ? CachedNetworkImage(
+                            imageUrl: musicPlayer.getCurrentAudioImagePath(),
+                            placeholder: (context, string) => placeholder(size),
+                            errorWidget: (context, url, error) =>
+                                placeholder(size),
+                            imageBuilder: (context, imageProvider) =>
+                                finalImage(imageProvider, size))
+                        : placeholder(size),
+                    if (!sliderSize.isNaN)
+                      Positioned.fill(
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: FractionallySizedBox(
+                                  widthFactor: sliderSize,
+                                  child: Container(
+                                    color: widget.albumColors[1].withAlpha(150),
+                                  )))),
                   ],
                 ))),
         Positioned.fill(
@@ -111,6 +95,31 @@ class _SongImageState extends State<SongImage> {
     );
   }
 
+  Widget placeholder(double size) {
+    return Container(
+        height: size,
+        color: widget.albumColors[0],
+        child: Center(
+          child: Icon(
+            Icons.album,
+            color: widget.color,
+            size: 70,
+          ),
+        ));
+  }
+
+  Widget finalImage(ImageProvider<Object> imageProvider, double size) {
+    return Container(
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: imageProvider,
+          ),
+        ));
+  }
+
   void playerListener() {
     musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
       if (event.isPlaying && mounted) {
@@ -121,15 +130,17 @@ class _SongImageState extends State<SongImage> {
     });
   }
 
-  void onTapDown(
-      BuildContext context, TapDownDetails details, double widgetWidth) {
+  void onTapDown(BuildContext context, TapDownDetails details) {
     print('${details.globalPosition}');
+    final widgetWidth = context.size.width;
     final RenderBox box = context.findRenderObject();
     final localOffset = box.globalToLocal(details.globalPosition);
     posx = localOffset.dx;
     var percentWidth = posx / widgetWidth;
     var duration = musicPlayer.currentMusicMaxDuration() * percentWidth;
-    musicPlayer.assetsAudioPlayer
-        .seek(Duration(milliseconds: duration.toInt()));
+    if (duration > 0 && duration < musicPlayer.currentMusicMaxDuration()) {
+      musicPlayer.assetsAudioPlayer
+          .seek(Duration(milliseconds: duration.toInt()));
+    }
   }
 }

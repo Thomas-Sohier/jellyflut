@@ -32,6 +32,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     musicPlayer = music_player_provider.MusicPlayer();
     musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value.index;
     setAlbumPrimaryColor();
+    setForegroundColorFromBackground();
     playerListener();
   }
 
@@ -47,15 +48,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
     var height = size.height - statusBarHeight;
     return Scaffold(
         extendBody: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[900],
         body: ChangeNotifierProvider.value(
             value: musicPlayer,
             child: Stack(
               children: [
-                SongBackground(
-                  color1: Colors.grey[900],
-                  color2: Colors.grey[900],
-                ),
+                SongBackground(color: Colors.grey[900]),
                 Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: Column(
@@ -103,7 +101,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   void playerListener() {
     musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (musicPlayerIndex != event.current.index) {
+      if (event.current != null && musicPlayerIndex != event.current.index) {
         musicPlayerIndex = event.current.index;
         setAlbumPrimaryColor();
       }

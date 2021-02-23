@@ -32,7 +32,7 @@ class ListVideoItem extends StatelessWidget {
 
 Widget body(Category category) {
   return Card(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.zero,
       child: ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(0),

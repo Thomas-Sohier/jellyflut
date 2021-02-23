@@ -72,6 +72,9 @@ Widget body(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             futureItemDetails(item: item, size: size),
+            SizedBox(
+              height: 20,
+            ),
             Collection(item),
           ]),
     ))

@@ -16,17 +16,11 @@ class ListMusicItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return FutureBuilder<dynamic>(
         future: _getMusicCustom(itemId: item.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(children: [
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              body(snapshot.data[1])
-            ]);
+            return body(snapshot.data[1]);
           }
           return placeholderBody();
         });
@@ -116,16 +110,17 @@ Widget listTitle(String index, List<Item> items) {
 
 Widget listCard(List<Item> items) {
   return Card(
+      margin: EdgeInsets.zero,
       child: ListView.builder(
-    shrinkWrap: true,
-    padding: EdgeInsets.zero,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: items.length,
-    itemBuilder: (context, index) {
-      var item = items[index];
-      return item.isFolder ? Container() : listItem(index, item, context);
-    },
-  ));
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          var item = items[index];
+          return item.isFolder ? Container() : listItem(index, item, context);
+        },
+      ));
 }
 
 Widget listItem(int index, Item item, BuildContext context) {
@@ -150,15 +145,16 @@ Widget listItem(int index, Item item, BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 12, left: 6),
-                child: Text(item.indexNumber.toString(),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Color(0xFF333333),
-                      fontSize: 22,
-                    )),
-              ),
+              if (item.indexNumber != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 12, left: 6),
+                  child: Text(item.indexNumber.toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFF333333),
+                        fontSize: 22,
+                      )),
+                ),
               Expanded(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

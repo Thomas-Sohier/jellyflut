@@ -9,7 +9,7 @@ class Skeleton extends StatefulWidget {
   Skeleton(
       {Key key,
       this.height = 15,
-      this.width = 200,
+      this.width,
       this.nbLine = 1,
       this.colors = const [Colors.black12, Colors.black26, Colors.black12]})
       : super(key: key);
@@ -60,7 +60,7 @@ class SkeletonState extends State<Skeleton>
     return Padding(
         padding: EdgeInsets.all(4),
         child: Container(
-            width: double.infinity,
+            width: widget.width ?? double.infinity,
             height: widget.height,
             decoration: BoxDecoration(
                 color: Colors.white,

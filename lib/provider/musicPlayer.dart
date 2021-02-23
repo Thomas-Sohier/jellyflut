@@ -16,33 +16,58 @@ class MusicPlayer extends ChangeNotifier {
   MusicPlayer._internal();
 
   String currentMusicTitle() {
-    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
-        .audio.audio.metas.title;
+    if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
+        null) {
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+          .audio.audio.metas.title;
+    }
+    return 'msuic playing';
   }
 
   String currentMusicArtist() {
-    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
-        .audio.audio.metas.artist;
+    if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
+        null) {
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+          .audio.audio.metas.artist;
+    }
+    return 'No';
   }
 
   double currentMusicMaxDuration() {
-    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
-        .audio.duration.inMilliseconds
-        .toDouble();
+    if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
+        null) {
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+          .audio.duration.inMilliseconds
+          .toDouble();
+    }
+    return 0;
   }
 
   double currentMusicDuration() {
-    return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value
-        .currentPosition.inMilliseconds
-        .toDouble();
+    if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
+        null) {
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value
+          .currentPosition.inMilliseconds
+          .toDouble();
+    }
+    return 0;
   }
 
   String getCurrentAudioImagePath() {
-    return assetsAudioPlayer.current.value.audio.audio.metas.image.path;
+    if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
+        null) {
+      return assetsAudioPlayer.current.value.audio.audio.metas.image.path;
+    }
+    return null;
   }
 
-  void addPlaylist(Item item) async {
-    assetsAudioPlayer.playlist.add(await _createAudioNetwork(item));
+  void addPlaylist(Item item, int index) async {
+    var audio = await _createAudioNetwork(item);
+    if (assetsAudioPlayer.playlist == null) {
+      await assetsAudioPlayer.open(audio);
+    } else {
+      assetsAudioPlayer.playlist.insert(index, audio);
+    }
   }
 
   void playAtIndex(int index) {
@@ -73,17 +98,16 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void playPlaylist(String parentId) {
-    getItems(parentId: parentId)
-        .then((value) => value.items
-                .where((_item) => _item.isFolder == false)
-                .forEach((Item _item) async {
-              if (assetsAudioPlayer.playlist == null) {
-                playRemoteItem(_item);
-              } else {
-                await addPlaylist(_item);
-              }
-            }))
-        .then((value) => assetsAudioPlayer.playlistPlayAtIndex(0));
+    assetsAudioPlayer.playlist?.audios?.clear();
+    getItems(parentId: parentId).then((value) {
+      value.items
+          .where((_item) => _item.isFolder == false)
+          .toList()
+          .sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
+      value.items.asMap().forEach((index, Item _item) async {
+        await addPlaylist(_item, index);
+      });
+    }).then((_) => assetsAudioPlayer.playlistPlayAtIndex(0));
   }
 
   void playRemoteItem(Item item) async {

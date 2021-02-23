@@ -66,20 +66,19 @@ class _ListItemsState extends State<ListItems> {
                   ]),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(8),
                   sliver: SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
                               aspectRatio(type: listOfItems.items.first.type) -
                                   .1,
                           crossAxisCount: 3,
-                          mainAxisSpacing: 25,
-                          crossAxisSpacing: 5),
+                          mainAxisSpacing: 15,
+                          crossAxisSpacing: 16),
                       delegate: SliverChildBuilderDelegate(
                           (BuildContext c, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ItemPoster(listOfItems.items[index]),
+                        return ItemPoster(
+                          listOfItems.items[index],
                         );
                       }, childCount: listOfItems.items.length)),
                 )
