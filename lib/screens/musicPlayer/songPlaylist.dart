@@ -35,7 +35,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
         backgroundColor: widget.backgroundColor,
         appBar: AppBar(
           title: Text('Playlist'),
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
           backgroundColor: widget.backgroundColor,
         ),
         body: Consumer<MusicPlayer>(builder: (context, mp, child) {

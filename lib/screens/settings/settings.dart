@@ -28,7 +28,7 @@ class _SettingsState extends State<Settings> {
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(
           title: Text('Settings'),
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
           backgroundColor: Color(0xFF252525),
         ),
         body: FutureBuilder<SettingsDB>(

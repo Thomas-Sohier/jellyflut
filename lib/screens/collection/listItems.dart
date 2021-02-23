@@ -80,7 +80,10 @@ class _ListItemsState extends State<ListItems> {
                           crossAxisSpacing: 5),
                       delegate: SliverChildBuilderDelegate(
                           (BuildContext c, int index) {
-                        return ItemPoster(listOfItems.items[index]);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ItemPoster(listOfItems.items[index]),
+                        );
                       }, childCount: listOfItems.items.length)),
                 )
               ])
@@ -115,27 +118,21 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget head(Item item, BuildContext context) {
-    var filter = 'IsNotFolder,IsUnplayed';
-    var fields =
-        'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
-
-    return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 300),
-        child: FutureBuilder<List<Item>>(
-            future: listOfItems.getheaderItems(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return carouselSlider(snapshot.data);
-              }
-              return Container();
-            }));
+    return FutureBuilder<List<Item>>(
+        future: listOfItems.getheaderItems(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return carouselSlider(snapshot.data);
+          }
+          return Container();
+        });
   }
 
   Widget carouselSlider(List<Item> items) {
     return CarouselSlider(
         options: CarouselOptions(
-            aspectRatio: 16 / 9,
-            viewportFraction: 0.9,
+            aspectRatio: (16 / 9),
+            viewportFraction: (16 / 9) / 2,
             enlargeCenterPage: true,
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,

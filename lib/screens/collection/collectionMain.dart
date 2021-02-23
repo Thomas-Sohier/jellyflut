@@ -19,9 +19,6 @@ class CollectionMain extends StatefulWidget {
   }
 }
 
-Item backgroundItem;
-PageController pageController = PageController(viewportFraction: 0.8);
-
 class _CollectionMainState extends State<CollectionMain> {
   var item;
   var items = <Item>[];

@@ -24,7 +24,6 @@ class _CollectionState extends State<Collection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 600),
                 child: Column(

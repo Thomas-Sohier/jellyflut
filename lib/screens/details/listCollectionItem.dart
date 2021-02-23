@@ -36,11 +36,9 @@ class ListCollectionItem extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 28),
                       ),
                     ),
-                  ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 300),
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                          child: carouselSlider(snapshot.data.items)))
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child: carouselSlider(snapshot.data.items))
                 ]);
           }
           return Container();
@@ -51,11 +49,11 @@ class ListCollectionItem extends StatelessWidget {
     return CarouselSlider(
         options: CarouselOptions(
             aspectRatio: items.first.getPrimaryAspectRatio(),
-            viewportFraction: items.first.getPrimaryAspectRatio(),
+            viewportFraction: items.first.getPrimaryAspectRatio() / 2,
             enlargeCenterPage: true,
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,
-            height: 300),
+            height: 200),
         items: items.map((item) {
           var heroTag = item.id + Uuid().v4();
           return ItemPoster(

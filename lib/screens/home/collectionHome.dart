@@ -6,6 +6,7 @@ import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 class CollectionHome extends StatefulWidget {
@@ -43,15 +44,38 @@ class _CollectionHomeState extends State<CollectionHome> {
                   onTap: () => navigatorKey.currentState
                       .pushNamed('/collection', arguments: widget.item),
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      widget.item.name,
-                      style: TextStyle(color: Colors.white, fontSize: 28),
+                    padding: const EdgeInsets.fromLTRB(10, 25, 5, 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 45,
+                          height: 5,
+                          margin: EdgeInsets.only(bottom: 5),
+                          decoration: BoxDecoration(
+                              color: jellyLightPurple,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                        ),
+                        Row(children: [
+                          Text(
+                            widget.item.name,
+                            style: TextStyle(color: Colors.white, fontSize: 28),
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: Colors.white,
+                            size: 32,
+                          )
+                        ])
+                      ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 250,
+                  height: 200,
                   child: displayItems(snapshot.data),
                 )
               ]);
@@ -70,7 +94,7 @@ class _CollectionHomeState extends State<CollectionHome> {
         itemBuilder: (context, index) {
           var _item = items[index];
           return Padding(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(8),
               child: AspectRatio(
                 aspectRatio: aspectRatio(type: _item.type) - .1,
                 child: ItemPoster(

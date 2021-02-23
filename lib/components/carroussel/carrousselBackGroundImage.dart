@@ -19,13 +19,13 @@ class CarrousselBackGroundImage extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 Colors.black,
-                Colors.black45,
-                Colors.black38,
+                Colors.black54,
+                Colors.black54,
                 Colors.black
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: [0, 0.4, 0.7, 1],
+              stops: [0, 0.5, 0.5, 1],
             ),
           ),
           child: FutureBuilder<Item>(

@@ -26,6 +26,7 @@ class ListItemsSkeleton extends StatelessWidget {
             shrinkWrap: true,
             physics: ScrollPhysics(),
             itemCount: 10,
+            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: nbColumn,
                 childAspectRatio: ratio,
