@@ -9,6 +9,10 @@ import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
 
 class CollectionMain extends StatefulWidget {
+  final Item item;
+
+  const CollectionMain({@required this.item});
+
   @override
   State<StatefulWidget> createState() {
     return _CollectionMainState();
@@ -16,7 +20,6 @@ class CollectionMain extends StatefulWidget {
 }
 
 class _CollectionMainState extends State<CollectionMain> {
-  var item;
   var items = <Item>[];
   var itemsToShow = <Item>[];
 
@@ -39,14 +42,14 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context);
-    item = ModalRoute.of(context).settings.arguments as Item;
-    listOfItems.setParentItem(item);
+    listOfItems.setParentItem(widget.item);
 
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Background(
             child: Stack(children: [
-          if (item.collectionType == 'movies' || item.collectionType == 'books')
+          if (widget.item.collectionType == 'movies' ||
+              widget.item.collectionType == 'books')
             ChangeNotifierProvider.value(
                 value: carrousselModel, child: CarrousselBackGroundImage()),
           Padding(

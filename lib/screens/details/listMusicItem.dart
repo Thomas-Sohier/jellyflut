@@ -116,17 +116,16 @@ Widget listTitle(String index, List<Item> items) {
 
 Widget listCard(List<Item> items) {
   return Card(
-      margin: EdgeInsets.all(0),
       child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          var item = items[index];
-          return item.isFolder ? Container() : listItem(index, item, context);
-        },
-      ));
+    shrinkWrap: true,
+    padding: EdgeInsets.zero,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      var item = items[index];
+      return item.isFolder ? Container() : listItem(index, item, context);
+    },
+  ));
 }
 
 Widget listItem(int index, Item item, BuildContext context) {

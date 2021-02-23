@@ -65,13 +65,16 @@ Widget body(
   return Stack(children: [
     Hero(tag: heroTag, child: BackgroundImage(item: item)),
     SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-          futureItemDetails(item: item, size: size),
-          Collection(item),
-        ]))
+        child: Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            futureItemDetails(item: item, size: size),
+            Collection(item),
+          ]),
+    ))
   ]);
 }
 
@@ -129,8 +132,7 @@ Widget buildCard(Item item, Size size, BuildContext context) {
 Widget card(Item item, Size size, BuildContext context) {
   return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
     Container(
-        padding: EdgeInsets.only(top: 25),
-        child: CardItemWithChild(item, Container())),
+        padding: EdgeInsets.only(top: 25), child: CardItemWithChild(item)),
     playableItems.contains(item.type.trim().toLowerCase())
         ? Positioned.fill(
             child: Align(
@@ -164,7 +166,6 @@ Widget _placeHolderBody(Item item, Size size) {
             padding: EdgeInsets.only(top: 25),
             child: CardItemWithChild(
               item,
-              Container(),
               isSkeleton: true,
             ))
       ]);
