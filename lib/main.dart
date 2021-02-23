@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -63,7 +62,6 @@ class Jellyflut extends StatelessWidget {
           routes: {
             '/login': (context) => ParentStart(),
             '/home': (context) => Home(),
-            '/collection': (context) => CollectionMain(),
           },
           onUnknownRoute: (RouteSettings settings) {
             return MaterialPageRoute(builder: (BuildContext context) => Home());
