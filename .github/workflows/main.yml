@@ -10,6 +10,7 @@ jobs:
   build:
     # This job will run on ubuntu virtual machine
     runs-on: ubuntu-latest
+    # runs-on: self-hosted
     steps:
 
     # Setup Java environment in order to build the Android app.
@@ -42,16 +43,27 @@ jobs:
     
     # Build apk.
     - run: flutter build apk --debug
+      env:
+        KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        ALIAS: ${{ secrets.ALIAS }}
+        KEY_PATH: key.jks
     - run: flutter build apk --profile
+      env:
+        KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        ALIAS: ${{ secrets.ALIAS }}
+        KEY_PATH: key.jks
     - run: flutter build apk --release
       env:
         KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         ALIAS: ${{ secrets.ALIAS }}
         KEY_PATH: key.jks
-    
+
     - name: Create a Release APK
+      if: ${{ startsWith(github.ref, 'refs/tags/') }}
       uses: ncipollo/release-action@v1
       with:
         artifacts: "build/app/outputs/apk/release/*.apk"
-        token: ${{ secrets.TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
