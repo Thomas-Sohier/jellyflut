@@ -42,7 +42,7 @@ dependencies:
   flutter_native_splash: ^0.3.0
   flutter_svg: ^0.19.1
   flutter_vlc_player: ^5.0.4
-  fluttertoast: ^7.0.4
+  fluttertoast: ^7.1.6
   intl: ^0.16.1
   palette_generator: ^0.2.3
   pedantic: ^1.9.2

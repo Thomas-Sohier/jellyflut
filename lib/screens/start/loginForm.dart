@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
@@ -6,6 +7,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/models/userDB.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
@@ -69,7 +71,8 @@ class _LoginFormState extends State<LoginForm> {
               () => Navigator.pushReplacementNamed(context, '/home'));
         });
       });
-    });
+    }).catchError((onError) =>
+        showToast(onError.toString(), toastLength: Toast.LENGTH_LONG));
   }
 
   @override

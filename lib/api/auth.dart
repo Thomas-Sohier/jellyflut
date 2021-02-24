@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/dio.dart';
 import 'package:jellyflut/globals.dart';
@@ -29,9 +31,12 @@ Future<AuthenticationResponse> login(String username, String password) async {
     response = await dio.post('${server.url}${login}', data: formData);
     authenticationResponse = AuthenticationResponse.fromMap(response.data);
     await setGlobals(authenticationResponse);
+  } on DioError catch (dioError, _) {
+    log(dioError.message);
+    return Future.error(dioError.error);
   } catch (e) {
-    print(e);
-    return null;
+    log(e);
+    return Future.error(e);
   }
   return authenticationResponse;
 }

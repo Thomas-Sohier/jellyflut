@@ -51,13 +51,14 @@ void setGlobals(AuthenticationResponse response) async {
   await prefs?.setString('userId', user.id);
 }
 
-void showToast(String msg) {
+void showToast(String msg,
+    {toastLength = Toast.LENGTH_SHORT, timeInSecForIosWeb = 1}) {
   Fluttertoast.cancel();
   Fluttertoast.showToast(
       msg: msg,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: toastLength,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
+      timeInSecForIosWeb: timeInSecForIosWeb,
       backgroundColor: Colors.grey[300],
       textColor: Colors.black,
       fontSize: 16.0);
