@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/database/database.dart';
@@ -49,6 +52,16 @@ void setGlobals(AuthenticationResponse response) async {
   await prefs?.setBool('isLoggedIn', true);
   await prefs?.setString('apiKey', apiKey);
   await prefs?.setString('userId', user.id);
+}
+
+Future<bool> detectAndroidTv() async {
+  if (Platform.isAndroid) {
+    var androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
+    var _isAndroidTv =
+        androidDeviceInfo.systemFeatures.contains('android.software.leanback');
+    return _isAndroidTv;
+  }
+  return false;
 }
 
 void showToast(String msg,

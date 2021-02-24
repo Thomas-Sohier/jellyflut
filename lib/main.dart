@@ -9,6 +9,8 @@ import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
+import 'globals.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Jellyflut());
@@ -23,6 +25,7 @@ class _MyAppState extends State<MyApp> {
   Future<Widget> initMain() async {
     var futures = <Future>[];
     DatabaseService();
+    isAndroidTv = await detectAndroidTv();
     futures.add(isAuth());
     futures.add(Future.delayed(Duration(seconds: 2)));
     var resp = await Future.wait(futures);

@@ -35,8 +35,8 @@ class _HomeState extends State<Home> {
                       onRefresh: () => _refreshItems(),
                       child: CustomScrollView(
                         slivers: [
-                          SliverPadding(
-                              padding: EdgeInsets.only(top: statusBarHeight)),
+                          SliverToBoxAdapter(
+                              child: SizedBox(height: statusBarHeight + 10)),
                           SliverToBoxAdapter(
                             child: Stack(children: [
                               SearchResult(),
@@ -44,40 +44,7 @@ class _HomeState extends State<Home> {
                                 builder: (context, value, child) {
                                   return Visibility(
                                       visible: !SearchProvider().showResults,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Hero(
-                                              tag: 'logo',
-                                              child: Image(
-                                                image: AssetImage(
-                                                    'img/jellyfin_logo.png'),
-                                                width: 40.0,
-                                              )),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                6, 0, 0, 0),
-                                          ),
-                                          Hero(
-                                            tag: 'logo_text',
-                                            child: Text(
-                                              'Jellyfin',
-                                              style: TextStyle(
-                                                  fontSize: 22,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          Spacer(),
-                                          searchIcon(),
-                                          settingsIcon()
-                                        ],
-                                      ));
+                                      child: headerBar());
                                 },
                               )
                             ]),
@@ -101,6 +68,37 @@ class _HomeState extends State<Home> {
                         ],
                       )))),
         ));
+  }
+
+  Widget headerBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 20,
+        ),
+        Hero(
+            tag: 'logo',
+            child: Image(
+              image: AssetImage('img/jellyfin_logo.png'),
+              width: 40.0,
+            )),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+        ),
+        Hero(
+          tag: 'logo_text',
+          child: Text(
+            'Jellyfin',
+            style: TextStyle(fontSize: 22, color: Colors.white),
+          ),
+        ),
+        Spacer(),
+        searchIcon(),
+        settingsIcon()
+      ],
+    );
   }
 
   Widget searchIcon() {

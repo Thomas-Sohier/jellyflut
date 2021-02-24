@@ -54,7 +54,7 @@ class _ListItemsState extends State<ListItems> {
 
   Widget buildItemsGrid() {
     var size = MediaQuery.of(context).size;
-    var numberOfItemRow = (size.width / 200).round();
+    var numberOfItemRow = (size.width / 150).round();
     // var spacing = numberOfItemRow
     return Consumer<ListOfItems>(
         builder: (context, listOfItems, child) => listOfItems.items.isNotEmpty

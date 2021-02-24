@@ -60,7 +60,7 @@ class _PaletteButtonState extends State<PaletteButton> {
         focusNode: _node,
         focusColor: Colors.transparent,
         focusElevation: 0,
-        autofocus: true,
+        autofocus: false,
         child: Container(
             decoration: BoxDecoration(
                 border: Border.all(width: 2, color: _focusColor),

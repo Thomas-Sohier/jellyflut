@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -98,11 +101,13 @@ class _ItemPosterState extends State<ItemPoster>
         focusColor: Colors.transparent,
         splashColor: Colors.transparent,
         focusElevation: 0,
-        autofocus: true,
-        child: ScaleTransition(
-            scale: _animation,
-            alignment: Alignment.center,
-            child: body(heroTag, context)));
+        autofocus: false,
+        child: isAndroidTv
+            ? ScaleTransition(
+                scale: _animation,
+                alignment: Alignment.center,
+                child: body(heroTag, context))
+            : body(heroTag, context));
   }
 
   Widget body(String heroTag, BuildContext context) {

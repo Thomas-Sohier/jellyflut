@@ -58,10 +58,11 @@ class _SearchResultState extends State<SearchResult> {
                       Icon(
                         Icons.movie,
                         size: 42,
+                        color: Colors.white,
                       ),
                       Text(
                         'No results...',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18, color: Colors.white70),
                       )
                     ])));
           } else {
@@ -74,7 +75,8 @@ class _SearchResultState extends State<SearchResult> {
     return Container(
         width: double.maxFinite,
         child: Card(
-            margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
+            color: Colors.grey[800],
+            margin: EdgeInsets.fromLTRB(10, 0, 10, 5),
             child: Column(
               children: [
                 Stack(children: [
@@ -97,14 +99,6 @@ class _SearchResultState extends State<SearchResult> {
                                 ],
                               )))),
                 ]),
-                // child: Center(
-                //   child: Text(
-                //     'Your research',
-                //     textAlign: TextAlign.center,
-                //     style: TextStyle(color: Colors.white, fontSize: 22),
-                //   ),
-                // ),
-
                 child
               ],
             )));
@@ -223,7 +217,7 @@ List<Widget> resultRows(Map<String, List<Item>> searchResult) {
           children: [
             Text(
               key,
-              style: TextStyle(color: Colors.black, fontSize: 22),
+              style: TextStyle(color: Colors.white, fontSize: 22),
               textAlign: TextAlign.left,
             ),
             resultListView(value),
@@ -235,7 +229,7 @@ List<Widget> resultRows(Map<String, List<Item>> searchResult) {
 
 Widget resultListView(List<Item> items) {
   return SizedBox(
-      height: 250,
+      height: 150,
       child: ListView.builder(
           shrinkWrap: true,
           itemCount: items.length,
@@ -246,7 +240,7 @@ Widget resultListView(List<Item> items) {
               padding: const EdgeInsets.all(5),
               child: ItemPoster(
                 item,
-                textColor: Colors.black,
+                textColor: Colors.white,
               ),
             );
           }));

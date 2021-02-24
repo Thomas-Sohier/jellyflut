@@ -58,7 +58,7 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
         focusNode: _node,
         focusColor: Colors.transparent,
         focusElevation: 0,
-        autofocus: true,
+        autofocus: false,
         child: Container(
             decoration: BoxDecoration(
                 color: Colors.transparent,
