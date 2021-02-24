@@ -53,6 +53,9 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget buildItemsGrid() {
+    var size = MediaQuery.of(context).size;
+    var numberOfItemRow = (size.width / 200).round();
+    // var spacing = numberOfItemRow
     return Consumer<ListOfItems>(
         builder: (context, listOfItems, child) => listOfItems.items.isNotEmpty
             ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
@@ -70,11 +73,10 @@ class _ListItemsState extends State<ListItems> {
                   sliver: SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
-                              aspectRatio(type: listOfItems.items.first.type) -
-                                  .1,
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 15,
-                          crossAxisSpacing: 16),
+                              aspectRatio(type: listOfItems.items.first.type),
+                          crossAxisCount: numberOfItemRow,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5),
                       delegate: SliverChildBuilderDelegate(
                           (BuildContext c, int index) {
                         return ItemPoster(

@@ -23,76 +23,84 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var statusBarHeight = MediaQuery.of(context).viewPadding.top;
     return ChangeNotifierProvider.value(
         value: searchResult,
         child: MusicPlayerFAB(
-            child: Scaffold(
-          extendBody: true,
-          backgroundColor: Colors.transparent,
-          body: Background(
-              child: RefreshIndicator(
-                  onRefresh: () => _refreshItems(),
-                  child: SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      SizedBox(height: size.height * 0.05),
-                      Stack(children: [
-                        SearchResult(),
-                        Consumer<SearchProvider>(
-                          builder: (context, value, child) {
-                            return Visibility(
-                                visible: !SearchProvider().showResults,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Hero(
-                                        tag: 'logo',
-                                        child: Image(
-                                          image: AssetImage(
-                                              'img/jellyfin_logo.png'),
-                                          width: 40.0,
-                                        )),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(6, 0, 0, 0),
-                                    ),
-                                    Hero(
-                                      tag: 'logo_text',
-                                      child: Text(
-                                        'Jellyfin',
-                                        style: TextStyle(
-                                            fontSize: 22, color: Colors.white),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    searchIcon(),
-                                    settingsIcon()
-                                  ],
-                                ));
-                          },
-                        )
-                      ]),
-                      SizedBox(height: size.height * 0.03),
-                      Resume(),
-                      FutureBuilder<Category>(
-                        future: getCategory(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return buildCategory(snapshot.data);
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                      SizedBox(height: size.height * 0.05),
-                    ],
-                  )))),
-        )));
+          child: Scaffold(
+              extendBody: true,
+              backgroundColor: Colors.transparent,
+              body: Background(
+                  child: RefreshIndicator(
+                      onRefresh: () => _refreshItems(),
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                              padding: EdgeInsets.only(top: statusBarHeight)),
+                          SliverToBoxAdapter(
+                            child: Stack(children: [
+                              SearchResult(),
+                              Consumer<SearchProvider>(
+                                builder: (context, value, child) {
+                                  return Visibility(
+                                      visible: !SearchProvider().showResults,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Hero(
+                                              tag: 'logo',
+                                              child: Image(
+                                                image: AssetImage(
+                                                    'img/jellyfin_logo.png'),
+                                                width: 40.0,
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                6, 0, 0, 0),
+                                          ),
+                                          Hero(
+                                            tag: 'logo_text',
+                                            child: Text(
+                                              'Jellyfin',
+                                              style: TextStyle(
+                                                  fontSize: 22,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          searchIcon(),
+                                          settingsIcon()
+                                        ],
+                                      ));
+                                },
+                              )
+                            ]),
+                          ),
+                          // Resume(),
+                          FutureBuilder<Category>(
+                            future: getCategory(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.data.items != null) {
+                                return buildCategory(snapshot.data);
+                              } else if (snapshot.hasData &&
+                                  snapshot.data.items != null) {
+                                return noConnectivity();
+                              }
+                              return SliverToBoxAdapter(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ],
+                      )))),
+        ));
   }
 
   Widget searchIcon() {
@@ -112,6 +120,17 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget noConnectivity() {
+    return SliverToBoxAdapter(
+        child: Container(
+      child: Icon(
+        Icons.wifi_off,
+        color: Colors.white,
+        size: 50,
+      ),
+    ));
+  }
+
   Widget settingsIcon() {
     return InkWell(
       onTap: () => Navigator.push(context,
@@ -129,15 +148,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildCategory(Category category) {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(0),
-        itemCount: category.items.length,
-        itemBuilder: (context, index) {
-          var _item = category.items[index];
-          return CollectionHome(_item);
-        });
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+      var _item = category.items[index];
+      return CollectionHome(_item);
+    }, childCount: category.items.length));
   }
 
   Future<Null> _refreshItems() async {

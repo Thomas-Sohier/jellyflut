@@ -6,6 +6,7 @@ import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
+import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
@@ -56,37 +57,8 @@ class _CollectionHomeState extends State<CollectionHome> {
               children: [
                 Padding(
                     padding: const EdgeInsets.fromLTRB(10, 25, 5, 5),
-                    child: Row(children: [
-                      GestureDetector(
-                        onTap: () => slideToPageDetail(),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 5,
-                              margin: EdgeInsets.only(bottom: 5),
-                              decoration: BoxDecoration(
-                                  color: jellyLightPurple,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                            ),
-                            Text(
-                              widget.item.name,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 28),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      InkWell(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          child: Icon(Icons.chevron_right_rounded,
-                              color: Colors.white, size: 42),
-                          onTap: () => slideToPageDetail()),
-                    ])),
+                    child: HomeCategoryTitle(widget.item,
+                        onTap: slideToPageDetail)),
                 SizedBox(
                   height: 200,
                   child: displayItems(snapshot.data),
@@ -101,7 +73,6 @@ class _CollectionHomeState extends State<CollectionHome> {
 
   Widget displayItems(List<Item> items) {
     return ListView.builder(
-        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -109,7 +80,7 @@ class _CollectionHomeState extends State<CollectionHome> {
           return Padding(
               padding: const EdgeInsets.all(8),
               child: AspectRatio(
-                aspectRatio: aspectRatio(type: _item.type) - .1,
+                aspectRatio: aspectRatio(type: _item.type),
                 child: ItemPoster(
                   _item,
                 ),

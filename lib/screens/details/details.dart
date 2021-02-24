@@ -62,14 +62,12 @@ Widget body(
     @required String heroTag,
     @required Size size,
     @required BuildContext context}) {
-  return Stack(children: [
+  return Stack(alignment: Alignment.center, children: [
     Hero(tag: heroTag, child: BackgroundImage(item: item)),
-    SingleChildScrollView(
-        child: Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+    ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: 600),
+      child: ListView(
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
           children: [
             futureItemDetails(item: item, size: size),
             SizedBox(
@@ -77,7 +75,7 @@ Widget body(
             ),
             Collection(item),
           ]),
-    ))
+    ),
   ]);
 }
 

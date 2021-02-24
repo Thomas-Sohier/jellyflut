@@ -29,7 +29,15 @@ class ItemPoster extends StatefulWidget {
   _ItemPosterState createState() => _ItemPosterState();
 }
 
-class _ItemPosterState extends State<ItemPoster> {
+class _ItemPosterState extends State<ItemPoster>
+    with SingleTickerProviderStateMixin {
+  // Dpad navigation
+  FocusNode _node;
+  AnimationController _controller;
+  Animation<double> _animation;
+  int _focusAlpha = 100;
+  Color _focusColor;
+
   final BoxShadow boxShadowjellyPurple =
       BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
 
@@ -38,18 +46,63 @@ class _ItemPosterState extends State<ItemPoster> {
 
   String heroTag;
 
-  ScreenDetailsArguments screenDetailsArguments;
+  @override
+  void initState() {
+    _node = FocusNode();
+    _focusColor = Colors.transparent;
+    _node.addListener(_onFocusChange);
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 100),
+        vsync: this,
+        lowerBound: 0.9,
+        upperBound: 1);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    super.initState();
+  }
+
+  void _onFocusChange() {
+    if (_node.hasFocus) {
+      _controller.forward();
+      setState(() {
+        _focusColor = Colors.white;
+      });
+    } else {
+      _controller.reverse();
+      setState(() {
+        _focusColor = Colors.transparent;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _node.dispose();
+    super.dispose();
+  }
+
+  void _onTap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Details(item: widget.item, heroTag: heroTag)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     heroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
-    return GestureDetector(
-        onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Details(item: widget.item, heroTag: heroTag)),
-            ),
-        child: body(heroTag, context));
+    return RawMaterialButton(
+        onPressed: _onTap,
+        focusNode: _node,
+        focusColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        focusElevation: 0,
+        autofocus: true,
+        child: ScaleTransition(
+            scale: _animation,
+            alignment: Alignment.center,
+            child: body(heroTag, context)));
   }
 
   Widget body(String heroTag, BuildContext context) {
@@ -69,6 +122,7 @@ class _ItemPosterState extends State<ItemPoster> {
                           child: Poster(
                               showParent: widget.showParent,
                               type: widget.type,
+                              focusColor: _focusColor,
                               boxFit: widget.boxFit,
                               item: widget.item)),
                       Stack(

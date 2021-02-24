@@ -180,11 +180,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
         children: [title(item.parentName()), subTitle(item.name)],
       );
     } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [title(item.name, clickable: false)],
-      );
+      return title(item.name, clickable: false);
     }
   }
 

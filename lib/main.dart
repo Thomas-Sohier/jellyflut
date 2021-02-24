@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/home/home.dart';
@@ -51,21 +52,46 @@ class Jellyflut extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
         value: MusicPlayer(),
-        child: MaterialApp(
-          title: 'JellyFlut',
-          navigatorKey: navigatorKey,
-          theme: ThemeData(
-            primarySwatch: jellyPurple,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          home: MyApp(),
-          routes: {
-            '/login': (context) => ParentStart(),
-            '/home': (context) => Home(),
-          },
-          onUnknownRoute: (RouteSettings settings) {
-            return MaterialPageRoute(builder: (BuildContext context) => Home());
-          },
-        ));
+        child: Shortcuts(
+            // needed for AndroidTV to be able to select
+            shortcuts: <LogicalKeySet, Intent>{
+              LogicalKeySet.fromSet(<LogicalKeyboardKey>{
+                LogicalKeyboardKey.select,
+                LogicalKeyboardKey.enter,
+                LogicalKeyboardKey.space,
+                LogicalKeyboardKey.mediaPlayPause,
+                LogicalKeyboardKey.mediaSelect,
+                LogicalKeyboardKey.mediaPlay,
+              }): const ActivateIntent(),
+              LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                  const DirectionalFocusIntent(TraversalDirection.down,
+                      ignoreTextFields: false),
+              LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                  const DirectionalFocusIntent(TraversalDirection.up,
+                      ignoreTextFields: false),
+              LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                  const DirectionalFocusIntent(TraversalDirection.left,
+                      ignoreTextFields: false),
+              LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                  const DirectionalFocusIntent(TraversalDirection.right,
+                      ignoreTextFields: false),
+            },
+            child: MaterialApp(
+              title: 'JellyFlut',
+              navigatorKey: navigatorKey,
+              theme: ThemeData(
+                primarySwatch: jellyPurple,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: MyApp(),
+              routes: {
+                '/login': (context) => ParentStart(),
+                '/home': (context) => Home(),
+              },
+              onUnknownRoute: (RouteSettings settings) {
+                return MaterialPageRoute(
+                    builder: (BuildContext context) => Home());
+              },
+            )));
   }
 }
