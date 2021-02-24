@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/home/home.dart';
