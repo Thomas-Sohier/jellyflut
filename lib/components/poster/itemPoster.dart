@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/ScreenDetailsArgument.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:uuid/uuid.dart';
@@ -38,7 +35,6 @@ class _ItemPosterState extends State<ItemPoster>
   FocusNode _node;
   AnimationController _controller;
   Animation<double> _animation;
-  int _focusAlpha = 100;
   Color _focusColor;
 
   final BoxShadow boxShadowjellyPurple =

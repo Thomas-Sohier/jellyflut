@@ -8,7 +8,6 @@ import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 class CollectionHome extends StatefulWidget {

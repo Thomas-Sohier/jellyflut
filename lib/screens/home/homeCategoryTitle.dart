@@ -20,7 +20,6 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
       BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
   String heroTag;
   FocusNode _node;
-  AnimationController _controller;
   Color _focusColor;
 
   Widget image;
