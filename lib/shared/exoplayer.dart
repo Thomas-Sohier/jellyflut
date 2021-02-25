@@ -122,25 +122,27 @@ Future<DeviceProfile> getExoplayerProfile() async {
     conditions.add(Condition(
         condition: 'LessThanEqual',
         property: 'AudioBitrate',
-        value: audioCodec.maxBitrate));
+        value: audioCodec.maxBitrate.toString()));
 
     if (profiles != null) {
       conditions.add(Condition(
-          condition: 'EqualsAny', property: 'AudioProfile', value: profiles));
+          condition: 'EqualsAny',
+          property: 'AudioProfile',
+          value: profiles.toString()));
     }
 
     if (maxChannels != null) {
       conditions.add(Condition(
           condition: 'LessThanEqual',
           property: 'AudioChannels',
-          value: maxChannels));
+          value: maxChannels.toString()));
     }
 
     if (maxSampleRate != null) {
       conditions.add(Condition(
           condition: 'LessThanEqual',
           property: 'AudioSampleRate',
-          value: maxSampleRate));
+          value: maxSampleRate.toString()));
     }
 
     profile.codecProfiles.add(CodecProfile(
@@ -160,16 +162,20 @@ Future<DeviceProfile> getExoplayerProfile() async {
     conditions.add(Condition(
         condition: 'LessThanEqual',
         property: 'VideoBitrate',
-        value: videoCodec.maxBitrate));
+        value: videoCodec.maxBitrate.toString()));
 
     if (profiles != null) {
       conditions.add(Condition(
-          condition: 'EqualsAny', property: 'VideoProfile', value: profiles));
+          condition: 'EqualsAny',
+          property: 'VideoProfile',
+          value: profiles.toString()));
     }
 
     if (maxLevel != null) {
       conditions.add(Condition(
-          condition: 'LessThanEqual', property: 'VideoLevel', value: maxLevel));
+          condition: 'LessThanEqual',
+          property: 'VideoLevel',
+          value: maxLevel.toString()));
     }
 
     if (conditions.isNotEmpty) {

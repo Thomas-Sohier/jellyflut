@@ -283,15 +283,14 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
   queryParams['MediaSourceId'] = itemId;
   if (subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
-  } else {
+  } else if (streamModel.subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex;
   }
   if (audioStreamIndex != null) {
     queryParams['AudioStreamIndex'] = audioStreamIndex;
-  } else {
+  } else if (streamModel.audioStreamIndex != null) {
     queryParams['AudioStreamIndex'] = streamModel.audioStreamIndex;
   }
-  dio.options.contentType = 'application/json';
 
   var url = '${server.url}/Items/${itemId}/PlaybackInfo';
 
