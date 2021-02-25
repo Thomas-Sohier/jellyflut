@@ -4,11 +4,8 @@ import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
 import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/models/userDB.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({this.onPressed});
@@ -25,12 +22,19 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
+  DatabaseService databaseService;
   String _username = '';
   String _password = '';
 
   _LoginFormState() {
     _usernameFilter.addListener(_usernameListen);
     _passwordFilter.addListener(_passwordListen);
+  }
+
+  @override
+  void initState() {
+    databaseService = DatabaseService();
+    super.initState();
   }
 
   void _usernameListen() {
@@ -53,26 +57,13 @@ class _LoginFormState extends State<LoginForm> {
     _username = _usernameFilter.text;
     _password = _passwordFilter.text;
 
-    await login(_username, _password).then((AuthenticationResponse response) {
+    await login(_username, _password)
+        .then((AuthenticationResponse response) async {
       if (response == null) return null;
-      var db = DatabaseService();
-      // Create user with info
-      var userDB = UserDB();
-      userDB.name = _username;
-      userDB.apiKey = response.accessToken;
-      apiKey = response.accessToken;
-
-      // Insert user and server in DB
-      db.insertUSer(userDB); // Save globals server object
-      db.insertServer(server).then((int id) {
-        SharedPreferences.getInstance()
-            .then((SharedPreferences sharedPreferences) {
-          sharedPreferences.setInt('serverId', id).whenComplete(
-              () => Navigator.pushReplacementNamed(context, '/home'));
-        });
-      });
+      await create(_username, response);
+      return Navigator.pushReplacementNamed(context, '/home');
     }).catchError((onError) =>
-        showToast(onError.toString(), toastLength: Toast.LENGTH_LONG));
+            showToast(onError.toString(), toastLength: Toast.LENGTH_LONG));
   }
 
   @override

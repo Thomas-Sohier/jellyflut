@@ -3,11 +3,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/models/server.dart';
-import 'package:jellyflut/models/user.dart';
+import 'package:jellyflut/api/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> isLoggedIn() async {
@@ -16,42 +12,12 @@ Future<bool> isLoggedIn() async {
 }
 
 Future<bool> isAuth() async {
-  var prefs = await SharedPreferences.getInstance();
   var isLogged = await isLoggedIn();
-  var s = await getLastUsedServer();
-  if (isLogged && s != null) {
-    server = s;
-    var _user = User();
-    _user.id = prefs.getString('userId');
-    user = _user;
-    apiKey = prefs.getString('apiKey');
+  if (isLogged) {
+    await saveToGlobals();
     return true;
   }
   return false;
-}
-
-void setServer(Server s) {
-  server = s;
-}
-
-Future<Server> getLastUsedServer() async {
-  var databaseService = DatabaseService();
-  var prefs = await SharedPreferences.getInstance();
-  return prefs.getInt('serverId') != null
-      ? databaseService.getServer(prefs.getInt('serverId'))
-      : null;
-}
-
-void setGlobals(AuthenticationResponse response) async {
-  // Permet de rendre les informations nécessaires global
-  user = response.user;
-  apiKey = response.accessToken;
-
-  // Permet de garder la personne connecté
-  var prefs = await SharedPreferences.getInstance();
-  await prefs?.setBool('isLoggedIn', true);
-  await prefs?.setString('apiKey', apiKey);
-  await prefs?.setString('userId', user.id);
 }
 
 Future<bool> detectAndroidTv() async {

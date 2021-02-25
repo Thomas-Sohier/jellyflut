@@ -1,14 +1,47 @@
+import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/user.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dio.dart';
+
+Future<User> getUserById({@required String userID}) async {
+  var url = '${server.url}/Users/${userID}';
+
+  Response response;
+  var currentUser;
+  try {
+    response = await dio.get(url);
+    currentUser = User.fromMap(response.data);
+  } catch (e) {
+    log(e);
+    return Future.error(e);
+  }
+  return currentUser;
+}
+
+Future<User> getCurrentUser() async {
+  var url = '${server.url}/Users/${user.id}';
+
+  Response response;
+  var currentUser;
+  try {
+    response = await dio.get(url);
+    currentUser = User.fromMap(response.data);
+  } catch (e) {
+    log(e);
+    return Future.error(e);
+  }
+  return currentUser;
+}
 
 Future<List<Item>> getLatestMedia({
   String parentId,
@@ -33,7 +66,8 @@ Future<List<Item>> getLatestMedia({
     final List t = response.data;
     items = t.map((item) => Item.fromMap(item)).toList();
   } catch (e) {
-    print(e);
+    log(e);
+    return Future.error(e);
   }
   return items;
 }
@@ -50,8 +84,12 @@ Future<Category> getCategory({String parentId, int limit = 10}) async {
   try {
     response = await dio.get(url, queryParameters: queryParams);
     category = Category.fromMap(response.data);
+  } on DioError catch (dioError, _) {
+    log(dioError.message);
+    return Future.error(dioError.error);
   } catch (e) {
-    print(e);
+    log(e);
+    return Future.error(e);
   }
   return category;
 }

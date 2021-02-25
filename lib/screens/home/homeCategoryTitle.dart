@@ -56,6 +56,8 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
         onPressed: widget.onTap,
         focusNode: _node,
         focusColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
         child: Container(
@@ -68,7 +70,7 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _focusColor.toString() != 'Color(0xffffffff)'
+                  _node.hasFocus
                       ? Container(
                           width: 45,
                           height: 5,

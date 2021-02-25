@@ -96,6 +96,7 @@ class _ItemPosterState extends State<ItemPoster>
         focusNode: _node,
         focusColor: Colors.transparent,
         splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
         child: isAndroidTv

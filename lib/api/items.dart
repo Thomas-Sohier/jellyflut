@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/device.dart';
@@ -17,7 +18,7 @@ String getItemImageUrl(String itemId, String imageTag,
     int maxHeight = 1920,
     int maxWidth = 1080,
     String type = 'Primary',
-    int quality = 90}) {
+    int quality = 60}) {
   var finalType = type;
   if (imageBlurHashes != null) {
     finalType = _fallBackImg(imageBlurHashes, type);
@@ -357,7 +358,7 @@ Future<Category> searchItems(
 
 Future<String> contructAudioURL(
     {@required String itemId,
-    int maxStreamingBitrate = 140000000,
+    int maxStreamingBitrate,
     String container = 'opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg',
     String transcodingContainer = 'ts',
     String transcodingProtocol = 'hls',
@@ -365,6 +366,11 @@ Future<String> contructAudioURL(
     int startTimeTicks = 0,
     bool enableRedirection = true,
     bool enableRemoteMedia = false}) async {
+  if (maxStreamingBitrate == null) {
+    var db = DatabaseService();
+    var settings = await db.getSettings(userDB.settingsId);
+    maxStreamingBitrate = settings.maxVideoBitrate;
+  }
   var dInfo = await DeviceInfo().getCurrentDeviceInfo();
   var queryParams = <String, String>{};
   queryParams['UserId'] = user.id;

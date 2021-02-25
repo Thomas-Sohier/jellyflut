@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
+import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
@@ -55,12 +60,15 @@ class _HomeState extends State<Home> {
                               if (snapshot.hasData &&
                                   snapshot.data.items != null) {
                                 return buildCategory(snapshot.data);
-                              } else if (snapshot.hasData &&
-                                  snapshot.data.items != null) {
-                                return noConnectivity();
+                              } else if (snapshot.connectionState ==
+                                      ConnectionState.done &&
+                                  snapshot.error != null) {
+                                return noConnectivity(snapshot.error);
                               }
-                              return SliverToBoxAdapter(
-                                child: CircularProgressIndicator(),
+                              return SliverFillRemaining(
+                                hasScrollBody: false,
+                                child:
+                                    Center(child: CircularProgressIndicator()),
                               );
                             },
                           ),
@@ -95,9 +103,31 @@ class _HomeState extends State<Home> {
         ),
         Spacer(),
         searchIcon(),
-        settingsIcon()
+        settingsIcon(),
+        userIcon()
       ],
     );
+  }
+
+  Widget noConnectivity(SocketException error) {
+    return SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Icon(
+              Icons.wifi_off,
+              color: Colors.white,
+              size: 50,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                error.message,
+                style: TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+            )
+          ]),
+        ));
   }
 
   Widget searchIcon() {
@@ -117,21 +147,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget noConnectivity() {
-    return SliverToBoxAdapter(
-        child: Container(
-      child: Icon(
-        Icons.wifi_off,
-        color: Colors.white,
-        size: 50,
-      ),
-    ));
-  }
-
   Widget settingsIcon() {
     return InkWell(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => Settings())),
+      onTap: () => Navigator.push(
+          context,
+          SlideRightRoute(
+            page: Settings(),
+          )),
       radius: 60,
       borderRadius: BorderRadius.all(Radius.circular(80)),
       child: Padding(
@@ -142,6 +164,19 @@ class _HomeState extends State<Home> {
             size: 28,
           )),
     );
+  }
+
+  Widget userIcon() {
+    return Padding(
+        padding: const EdgeInsets.all(6),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(14)),
+          child: CachedNetworkImage(
+            imageUrl:
+                '${server.url}/Users/${user.id}/Images/Primary?quality=90',
+            width: 28,
+          ),
+        ));
   }
 
   Widget buildCategory(Category category) {

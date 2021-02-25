@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:jellyflut/models/settingsDB.dart';
-import 'package:jellyflut/models/user.dart';
 import 'package:jellyflut/models/userDB.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -22,9 +22,21 @@ class DatabaseService {
     initDatabase();
   }
 
+  /// delete the db, create the folder and returnes its path
+  Future<String> initDb(String dbName) async {
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, dbName);
+
+    // Make sure the directory exists
+    try {
+      await Directory(databasesPath).create(recursive: true);
+    } catch (_) {}
+    return path;
+  }
+
   void initDatabase() async {
     database = openDatabase(
-      join(await getDatabasesPath(), 'beautiful_alarm.db'),
+      await initDb('jellyflut.db'),
       // When the database is first created, create a table to store data.
       onCreate: (db, version) {
         db.execute('''CREATE TABLE $tableServer(
@@ -34,25 +46,29 @@ class DatabaseService {
           ''');
         db.execute('''CREATE TABLE $tableUser(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            settingsId INTEGER,
+            serverId INTEGER,
             name VARCHAR,
             apiKey VARCHAR);
           ''');
         db.execute('''CREATE TABLE $tableSettings(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            preferredPlayer VARCHAR  default 'exoplayer');
+            preferredPlayer VARCHAR DEFAULT 'exoplayer',
+            maxVideoBitrate INTEGER DEFAULT 140000000,
+            preferredTranscodeAudioCodec VARCHAR DEFAULT 'auto',
+            maxAudioBitrate INTEGER DEFAULT 320000);
           ''');
-        db.execute('''INSERT INTO $tableSettings VALUES 
-            (0, 'exoplayer')
-        '''); // Create default settings
       },
       // Set the version. This executes the onCreate function and provides a
       // path to perform database upgrades and downgrades.
-      version: 4,
+      version: 6,
 
       // V1 : add Server & User table
       // V2 : edit table Server, added apiKey
       // V3 : add Settings table
       // V4 : add default value to Settings table
+      // V5 : add new settings
+      // V6 : add link user to settings
     );
   }
 
@@ -72,25 +88,26 @@ class DatabaseService {
     return null;
   }
 
-  Future<int> insertUSer(UserDB userDB) async {
+  Future<int> insertUser(UserDB userDB) async {
     var db = await database;
     var id = await db.insert(tableUser, userDB.toMap());
     return id;
   }
 
-  Future<User> getUser(int id) async {
+  Future<UserDB> getUser(int id) async {
     var db = await database;
     List<Map> datas =
         await db.query(tableUser, where: 'id = ?', whereArgs: [id]);
     if (datas.isNotEmpty) {
-      return User.fromMap(datas.first);
+      return UserDB.fromMap(datas.first);
     }
     return null;
   }
 
   Future<int> insertSettings(SettingsDB settingsDB) async {
     var db = await database;
-    var id = await db.insert(tableSettings, settingsDB.toMap());
+    var id = await db.insert(tableSettings, settingsDB.toMapDB(),
+        nullColumnHack: 'id');
     return id;
   }
 

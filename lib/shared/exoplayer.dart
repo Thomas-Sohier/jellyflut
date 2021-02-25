@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/codecProfile.dart';
 import 'package:jellyflut/models/condition.dart';
 import 'package:jellyflut/models/deviceCodecs.dart';
@@ -77,15 +78,17 @@ const subtitleProfiles = [
 
 Future<DeviceProfile> getExoplayerProfile() async {
   var profile = DeviceProfile();
+  var db = DatabaseService();
+  var settings = await db.getSettings(userDB.settingsId);
 
   if (savedDeviceProfile != null) {
     return savedDeviceProfile;
   }
 
-  profile.name = 'Android ExoPlayer';
-  profile.maxStreamingBitrate = 120000000; // TODO calculate it
+  profile.name = 'Android ${settings.preferredPlayer}';
+  profile.maxStreamingBitrate = settings.maxVideoBitrate;
   profile.maxStaticBitrate = 100000000;
-  profile.musicStreamingTranscodingBitrate = 192000;
+  profile.musicStreamingTranscodingBitrate = settings.maxAudioBitrate;
 
   profile.subtitleProfiles = [];
   profile.directPlayProfiles = [];
