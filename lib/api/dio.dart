@@ -5,7 +5,9 @@ import '../globals.dart';
 import 'interceptor.dart';
 
 BaseOptions options = BaseOptions(
-    connectTimeout: 30000, receiveTimeout: 30000, contentType: 'JSON');
+    connectTimeout: 30000,
+    receiveTimeout: 30000,
+    contentType: 'application/json');
 
 Dio dio = Dio(options)
   ..interceptors.addAll(

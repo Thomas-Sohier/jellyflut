@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/dio.dart';
+import 'package:jellyflut/api/interceptor.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
@@ -16,22 +18,18 @@ Future<bool> isLoggedIn() async {
 }
 
 Future<AuthenticationResponse> login(String username, String password) async {
-  var body = <String, dynamic>{};
-  body['Username'] = username;
-  body['PW'] = password;
-
-  var login = '/Users/AuthenticateByName';
-  var headers = <String, dynamic>{};
-  headers['Content-Type'] = 'application/json';
-
-  var formData = FormData.fromMap(body);
-
-  dio.options.headers = headers;
+  var login = '/Users/authenticatebyname';
+  var data = jsonEncode({'Username': username, 'Pw': password});
+  var authEmby = await authHeader();
 
   Response response;
   AuthenticationResponse authenticationResponse;
   try {
-    response = await dio.post('${server.url}${login}', data: formData);
+    response = await dio.post('${server.url}${login}',
+        data: data,
+        // X-Emby-Authorization needs to be set manually here
+        // I don't know why...
+        options: Options(headers: {'X-Emby-Authorization': authEmby}));
     authenticationResponse = AuthenticationResponse.fromMap(response.data);
   } on DioError catch (dioError, _) {
     log(dioError.message);

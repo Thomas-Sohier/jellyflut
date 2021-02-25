@@ -35,7 +35,7 @@ dependencies:
   carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
   device_info: ^0.4.2+10
-  dio: ^3.0.9
+  dio: ^3.0.10
   ext_storage: ^1.0.3
   fereader: ^0.2.0
   flutter_blurhash: ^0.5.0
