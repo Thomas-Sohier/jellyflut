@@ -78,12 +78,15 @@ class ItemPoster extends StatelessWidget {
         ),
       ),
       if (showName)
-        Text(
-          showParent ? item.parentName() : item.name,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: textColor, fontWeight: FontWeight.w700, fontSize: 16),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            showParent ? item.parentName() : item.name,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: textColor, fontWeight: FontWeight.w700, fontSize: 16),
+          ),
         )
     ]);
   }
