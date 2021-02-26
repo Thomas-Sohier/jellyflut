@@ -260,20 +260,6 @@ class _ControlsVLCState extends State<ControlsVLC> {
             }));
   }
 
-  Widget gradientMask({@required Widget child}) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return RadialGradient(
-          center: Alignment.topLeft,
-          radius: 0.5,
-          colors: <Color>[jellyLightBLue, jellyLightPurple],
-          tileMode: TileMode.mirror,
-        ).createShader(bounds);
-      },
-      child: child,
-    );
-  }
-
   void _getSubtitleTracks() async {
     if (!controller.value.isPlaying) return;
 
@@ -300,7 +286,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
           title: Text('Select Subtitle'),
           content: Container(
             width: double.maxFinite,
-            height: 250,
+            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
             child: ListView.builder(
               itemCount: subtitleTracks.keys.length + 1,
               itemBuilder: (context, index) {
@@ -337,8 +323,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Subtitle'),
           content: Container(
-            width: double.maxFinite,
-            height: 250,
+            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
             child: ListView.builder(
               itemCount: subtitlesRemoteTracks.length + 1,
               itemBuilder: (context, index) {
@@ -394,8 +379,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Audio'),
           content: Container(
-            width: double.maxFinite,
-            height: 250,
+            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
             child: ListView.builder(
               itemCount: audioTracks.keys.length + 1,
               itemBuilder: (context, index) {
@@ -432,8 +416,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Audio'),
           content: Container(
-            width: double.maxFinite,
-            height: 250,
+            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
             child: ListView.builder(
               itemCount: remoteAudiosTracks.length + 1,
               itemBuilder: (context, index) {
@@ -475,8 +458,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
           return AlertDialog(
             title: Text('Display Devices'),
             content: Container(
-              width: double.maxFinite,
-              height: 250,
+              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
               child: ListView.builder(
                 itemCount: castDevices.keys.length + 1,
                 itemBuilder: (context, index) {
@@ -503,8 +485,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
       );
       await controller.castToRenderer(selectedCastDeviceName);
     } else {
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(SnackBar(content: Text('No Display Device Found!')));
+      showToast('No Display Device Found!');
     }
   }
 }

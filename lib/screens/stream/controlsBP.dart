@@ -296,9 +296,7 @@ class _ControlsBPState extends State<ControlsBP> {
             return AlertDialog(
               title: Text('Select Subtitle'),
               content: Container(
-                constraints: BoxConstraints(maxWidth: 150),
-                width: double.maxFinite,
-                height: 250,
+                constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
                 child: ListView.builder(
                   itemCount: subtitles.length + 1,
                   itemBuilder: (context, index) {
@@ -390,9 +388,7 @@ class _ControlsBPState extends State<ControlsBP> {
           return AlertDialog(
             title: Text('Select audio source'),
             content: Container(
-              constraints: BoxConstraints(maxWidth: 150),
-              width: double.maxFinite,
-              height: 250,
+              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
               child: ListView.builder(
                 itemCount: audios.length,
                 itemBuilder: (context, index) {
@@ -431,9 +427,7 @@ class _ControlsBPState extends State<ControlsBP> {
           return AlertDialog(
             title: Text('Select audio source'),
             content: Container(
-              constraints: BoxConstraints(maxWidth: 150),
-              width: double.maxFinite,
-              height: 250,
+              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
               child: ListView.builder(
                 itemCount: audios.length,
                 itemBuilder: (context, index) {
@@ -471,19 +465,5 @@ class _ControlsBPState extends State<ControlsBP> {
     streamModel.betterPlayerController.playNextVideo();
     await streamModel.betterPlayerController
         .seekTo(Duration(microseconds: tick));
-  }
-
-  Widget gradientMask({@required Widget child}) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return RadialGradient(
-          center: Alignment.topLeft,
-          radius: 0.5,
-          colors: <Color>[jellyLightBLue, jellyLightPurple],
-          tileMode: TileMode.mirror,
-        ).createShader(bounds);
-      },
-      child: child,
-    );
   }
 }
