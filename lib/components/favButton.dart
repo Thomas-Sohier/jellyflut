@@ -9,7 +9,8 @@ class FavButton extends StatefulWidget {
   final double size;
 
   const FavButton(this.item,
-      {this.padding = const EdgeInsets.all(10), this.size = 26});
+      {Key key, this.padding = const EdgeInsets.all(10), this.size = 26})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -17,16 +18,7 @@ class FavButton extends StatefulWidget {
   }
 }
 
-bool isFav;
-
 class _FavButtonState extends State<FavButton> {
-  @override
-  void initState() {
-    super.initState();
-    isFav =
-        widget.item.userData == null ? false : widget.item.userData.isFavorite;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -36,10 +28,10 @@ class _FavButtonState extends State<FavButton> {
   }
 
   Widget button() {
-    if (isFav) {
+    if (widget.item.isFavorite()) {
       return InkWell(
           borderRadius: BorderRadius.all(Radius.circular(30)),
-          onTap: () => unsetItemFav(widget.item.id),
+          onTap: () => unsetItemFav(),
           child: Padding(
             padding: widget.padding,
             child: Icon(Icons.favorite, color: Colors.red, size: widget.size),
@@ -47,7 +39,7 @@ class _FavButtonState extends State<FavButton> {
     } else {
       return InkWell(
         borderRadius: BorderRadius.all(Radius.circular(30)),
-        onTap: () => setItemFav(widget.item.id),
+        onTap: () => setItemFav(),
         child: Padding(
           padding: widget.padding,
           child:
@@ -57,21 +49,21 @@ class _FavButtonState extends State<FavButton> {
     }
   }
 
-  void setItemFav(String itemId) {
-    favItem(itemId).then((Map<String, dynamic> json) => {
+  void setItemFav() {
+    favItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            isFav = json['IsFavorite'];
+            widget.item.userData.isFavorite = json['IsFavorite'];
           }),
-          showToast('Item fav')
+          showToast('${widget.item.name} added to favorite')
         });
   }
 
-  void unsetItemFav(String itemId) {
-    unfavItem(itemId).then((Map<String, dynamic> json) => {
+  void unsetItemFav() {
+    unfavItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            isFav = json['IsFavorite'];
+            widget.item.userData.isFavorite = json['IsFavorite'];
           }),
-          showToast('Item unfav')
+          showToast('${widget.item.name} removed from favorite')
         });
   }
 }

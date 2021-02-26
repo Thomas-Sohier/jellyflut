@@ -405,9 +405,23 @@ class Item {
   ///Check if item has been played
   ///
   /// Return [true] if played
-  /// Return [false] is is not played
+  /// Return [false] if is not played or [null]
   bool isPlayed() {
-    return userData.played;
+    if (userData != null) {
+      return userData.played;
+    }
+    return false;
+  }
+
+  ///Check if item has been played
+  ///
+  /// Return [true] if favorite
+  /// Return [false] if is not favorite or [null]
+  bool isFavorite() {
+    if (userData != null) {
+      return userData.isFavorite;
+    }
+    return false;
   }
 
   ///Check if item has been played

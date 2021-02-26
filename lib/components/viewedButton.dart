@@ -7,7 +7,9 @@ class ViewedButton extends StatefulWidget {
   final Item item;
   final EdgeInsetsGeometry padding;
 
-  const ViewedButton(this.item, {this.padding = const EdgeInsets.all(10)});
+  const ViewedButton(this.item,
+      {Key key, this.padding = const EdgeInsets.all(10)})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -15,16 +17,7 @@ class ViewedButton extends StatefulWidget {
   }
 }
 
-bool isViewed;
-
 class _ViewedButtonState extends State<ViewedButton> {
-  @override
-  void initState() {
-    super.initState();
-    isViewed =
-        widget.item.userData == null ? false : widget.item.userData.played;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -34,10 +27,10 @@ class _ViewedButtonState extends State<ViewedButton> {
   }
 
   Widget button() {
-    if (isViewed) {
+    if (widget.item.isPlayed()) {
       return InkWell(
           borderRadius: BorderRadius.all(Radius.circular(30)),
-          onTap: () => unsetItemViewed(widget.item.id),
+          onTap: () => unsetItemViewed(),
           child: Padding(
             padding: widget.padding,
             child: Icon(
@@ -48,7 +41,7 @@ class _ViewedButtonState extends State<ViewedButton> {
     } else {
       return InkWell(
           borderRadius: BorderRadius.all(Radius.circular(30)),
-          onTap: () => setItemViewed(widget.item.id),
+          onTap: () => setItemViewed(),
           child: Padding(
             padding: widget.padding,
             child: Icon(
@@ -59,21 +52,21 @@ class _ViewedButtonState extends State<ViewedButton> {
     }
   }
 
-  void setItemViewed(String itemId) {
-    viewItem(itemId).then((Map<String, dynamic> json) => {
+  void setItemViewed() {
+    viewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            isViewed = json['Played'];
+            widget.item.userData.played = json['Played'];
           }),
-          showToast('Item viewed')
+          showToast('${widget.item.name} marked as viewed')
         });
   }
 
-  void unsetItemViewed(String itemId) {
-    unviewItem(itemId).then((Map<String, dynamic> json) => {
+  void unsetItemViewed() {
+    unviewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            isViewed = json['Played'];
+            widget.item.userData.played = json['Played'];
           }),
-          showToast('Item unviewed')
+          showToast('${widget.item.name} marked as unviewed')
         });
   }
 }
