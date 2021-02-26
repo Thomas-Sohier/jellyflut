@@ -352,7 +352,7 @@ class _ControlsBPState extends State<ControlsBP> {
   void setSubtitles(int index, List<MediaStream> listSubtitles) async {
     var _itemId = StreamModel().item.id;
     var sub = listSubtitles[index];
-    var url = await getSubtitleURL(_itemId, 'srt', sub.index);
+    var url = await getSubtitleURL(_itemId, 'vtt', sub.index);
     await streamModel.betterPlayerController.setupSubtitleSource(
         BetterPlayerSubtitlesSource(
             type: BetterPlayerSubtitlesSourceType.network,

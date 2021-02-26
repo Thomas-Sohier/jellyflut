@@ -55,7 +55,7 @@ class _CollectionHomeState extends State<CollectionHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 25, 5, 5),
+                    padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
                     child: HomeCategoryTitle(widget.item,
                         onTap: slideToPageDetail)),
                 SizedBox(
