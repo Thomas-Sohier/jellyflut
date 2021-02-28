@@ -614,9 +614,7 @@ class Item {
         type == 'Season' ||
         type == 'Series' ||
         type == 'Movie') {
-      var url = await getItemURL();
-      await automaticStreamingSoftwareChooser(
-          url: url, item: this, context: context);
+      await automaticStreamingSoftwareChooser(item: this, context: context);
     } else if (type == 'Audio') {
       musicPlayer.playRemoteItem(this);
     } else if (type == 'MusicAlbum') {
@@ -626,7 +624,7 @@ class Item {
     }
   }
 
-  Future<String> getItemURL() async {
+  Future<String> getItemURL({bool directPlay = false}) async {
     var streamModel = StreamModel();
 
     await bitrateTest(size: 500000);
@@ -635,21 +633,17 @@ class Item {
 
     if (type == 'Episode' || type == 'Movie') {
       streamModel.setItem(this);
-      return _getStreamURL(this);
+      return _getStreamURL(this, directPlay);
     } else if (type == 'Season' || type == 'Series') {
-      return _getFirstUnplayedItemURL();
+      return _getFirstUnplayedItemURL(directPlay);
     } else if (type == 'Audio') {
-      // TODO rework
-      return _getStreamURL(this);
-    } else if (type == 'Album') {
-      // TODO
-      return '';
+      return _getStreamURL(this, directPlay);
     } else {
       return null;
     }
   }
 
-  Future<String> _getFirstUnplayedItemURL() async {
+  Future<String> _getFirstUnplayedItemURL(bool directPlay) async {
     var category = await getItems(
         parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
     // remove all item without an index to avoid sort error
@@ -659,10 +653,10 @@ class Item {
     var itemToPlay = category.items.firstWhere(
         (element) => !element.userData.played,
         orElse: () => category.items.first);
-    return _getStreamURL(itemToPlay);
+    return _getStreamURL(itemToPlay, directPlay);
   }
 
-  Future<String> _getStreamURL(Item item) async {
+  Future<String> _getStreamURL(Item item, bool directPlay) async {
     var streamModel = StreamModel();
     var data = await isCodecSupported();
     var backInfos = await playbackInfos(data, item.id,
@@ -671,7 +665,7 @@ class Item {
     var finalUrl;
 
     // Check if we have a transcide url or we create it
-    if (backInfos.mediaSources.first.transcodingUrl != null) {
+    if (backInfos.isTranscoding() && !directPlay) {
       completeTranscodeUrl =
           '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
     }

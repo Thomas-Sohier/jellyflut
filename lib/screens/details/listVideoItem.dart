@@ -161,9 +161,8 @@ Widget videoItem(int index, BuildContext context, Item item, String heroTag) {
                           padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                           child: GestureDetector(
                               onTap: () async {
-                                var url = await item.getItemURL();
                                 await automaticStreamingSoftwareChooser(
-                                    url: url, item: item, context: context);
+                                    item: item, context: context);
                               },
                               child: Icon(
                                 Icons.play_circle_outline,

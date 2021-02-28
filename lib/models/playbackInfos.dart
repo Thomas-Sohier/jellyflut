@@ -40,4 +40,9 @@ class PlayBackInfos {
             .toList()
         : [];
   }
+
+  bool isTranscoding() {
+    if (mediaSources?.first?.transcodingUrl != null) return true;
+    return false;
+  }
 }
