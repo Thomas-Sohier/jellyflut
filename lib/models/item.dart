@@ -706,7 +706,9 @@ class Item {
     finalUrl = completeTranscodeUrl ??
         await createURL(item, backInfos,
             startTick: item.userData.playbackPositionTicks);
-    // Current item, playbackinfos and stream url
+
+    // Current item, playbackinfos, stream url and direct play bool
+    streamModel.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
     streamModel.setItem(item);
     streamModel.setPlaybackInfos(backInfos);
     streamModel.setURL(finalUrl);

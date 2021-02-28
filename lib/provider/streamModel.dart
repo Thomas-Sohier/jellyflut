@@ -8,6 +8,7 @@ class StreamModel extends ChangeNotifier {
   PlayBackInfos _playBackInfos = PlayBackInfos();
   String _url;
   BetterPlayerController _betterPlayerController;
+  bool _isDirectPlay;
   int _audioStreamIndex;
   int _subtitleStreamIndex;
 
@@ -18,6 +19,7 @@ class StreamModel extends ChangeNotifier {
   PlayBackInfos get playBackInfos => _playBackInfos;
   String get url => _url;
   BetterPlayerController get betterPlayerController => _betterPlayerController;
+  bool get isDirectPlay => _isDirectPlay;
   int get audioStreamIndex => _audioStreamIndex;
   int get subtitleStreamIndex => _subtitleStreamIndex;
 
@@ -42,6 +44,10 @@ class StreamModel extends ChangeNotifier {
   void setBetterPlayerController(
       BetterPlayerController betterPlayerController) {
     _betterPlayerController = betterPlayerController;
+  }
+
+  void setIsDirectPlay(bool isDirectPlay) {
+    _isDirectPlay = isDirectPlay;
   }
 
   void setAudioStreamIndex(int audioStreamIndex) {

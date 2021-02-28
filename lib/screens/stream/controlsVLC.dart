@@ -130,17 +130,15 @@ class _ControlsVLCState extends State<ControlsVLC> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: streamModel.playBackInfos.mediaSources.first
-                                  .transcodingUrl !=
-                              null
+                      child: streamModel.isDirectPlay
                           ? gradientMask(
+                              child: Icon(Icons.play_for_work,
+                                  color: Colors.white))
+                          : gradientMask(
                               child: Icon(
                               Icons.cloud_outlined,
                               color: Colors.white,
-                            ))
-                          : gradientMask(
-                              child: Icon(Icons.play_for_work,
-                                  color: Colors.white))),
+                            ))),
                   InkWell(
                     onTap: () {
                       _getSubtitleTracks();
@@ -268,12 +266,9 @@ class _ControlsVLCState extends State<ControlsVLC> {
         .where((element) => element.type.trim().toLowerCase() == 'subtitle')
         .toList();
 
-    if (streamModel.playBackInfos.mediaSources.first.transcodingUrl == null &&
-        subtitleTracks != null &&
-        subtitleTracks.isNotEmpty) {
+    if (streamModel.isDirectPlay) {
       setEmbedSubtitlesTracks(subtitleTracks);
-    } else if (subtitlesRemoteTracks != null &&
-        subtitlesRemoteTracks.isNotEmpty) {
+    } else {
       setRemoteSubtitlesTracks(subtitlesRemoteTracks);
     }
   }
@@ -285,8 +280,8 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Subtitle'),
           content: Container(
-            width: double.maxFinite,
-            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+            width: 250,
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
               itemCount: subtitleTracks.keys.length + 1,
               itemBuilder: (context, index) {
@@ -363,11 +358,9 @@ class _ControlsVLCState extends State<ControlsVLC> {
         .where((element) => element.type.trim().toLowerCase() == 'audio')
         .toList();
     //
-    if (streamModel.playBackInfos.mediaSources.first.transcodingUrl == null &&
-        audioTracks != null &&
-        audioTracks.isNotEmpty) {
+    if (streamModel.isDirectPlay) {
       setEmbedAudioTracks(audioTracks);
-    } else if (audioTracks != null && audioTracks.isNotEmpty) {
+    } else {
       setRemoteAudiosTracks(remoteAudiosTracks);
     }
   }
@@ -379,7 +372,8 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Audio'),
           content: Container(
-            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+            width: 250,
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
               itemCount: audioTracks.keys.length + 1,
               itemBuilder: (context, index) {
@@ -416,7 +410,8 @@ class _ControlsVLCState extends State<ControlsVLC> {
         return AlertDialog(
           title: Text('Select Audio'),
           content: Container(
-            constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+            width: 250,
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
               itemCount: remoteAudiosTracks.length + 1,
               itemBuilder: (context, index) {
@@ -458,7 +453,8 @@ class _ControlsVLCState extends State<ControlsVLC> {
           return AlertDialog(
             title: Text('Display Devices'),
             content: Container(
-              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+              width: 250,
+              constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
               child: ListView.builder(
                 itemCount: castDevices.keys.length + 1,
                 itemBuilder: (context, index) {

@@ -142,17 +142,15 @@ class _ControlsBPState extends State<ControlsBP> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: streamModel.playBackInfos.mediaSources.first
-                                  .transcodingUrl !=
-                              null
+                      child: streamModel.isDirectPlay
                           ? gradientMask(
+                              child: Icon(Icons.play_for_work,
+                                  color: Colors.white))
+                          : gradientMask(
                               child: Icon(
                               Icons.cloud_outlined,
                               color: Colors.white,
-                            ))
-                          : gradientMask(
-                              child: Icon(Icons.play_for_work,
-                                  color: Colors.white))),
+                            ))),
                   InkWell(
                     onTap: () => streamModel.betterPlayerController
                         .enablePictureInPicture(streamModel
@@ -296,7 +294,8 @@ class _ControlsBPState extends State<ControlsBP> {
             return AlertDialog(
               title: Text('Select Subtitle'),
               content: Container(
-                constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+                width: 250,
+                constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
                 child: ListView.builder(
                   itemCount: subtitles.length + 1,
                   itemBuilder: (context, index) {
@@ -388,7 +387,8 @@ class _ControlsBPState extends State<ControlsBP> {
           return AlertDialog(
             title: Text('Select audio source'),
             content: Container(
-              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+              width: 250,
+              constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
               child: ListView.builder(
                 itemCount: audios.length,
                 itemBuilder: (context, index) {
@@ -427,7 +427,8 @@ class _ControlsBPState extends State<ControlsBP> {
           return AlertDialog(
             title: Text('Select audio source'),
             content: Container(
-              constraints: BoxConstraints(maxHeight: 300, maxWidth: 250),
+              width: 250,
+              constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
               child: ListView.builder(
                 itemCount: audios.length,
                 itemBuilder: (context, index) {

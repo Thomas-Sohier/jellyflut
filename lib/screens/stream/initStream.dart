@@ -20,20 +20,7 @@ void automaticStreamingSoftwareChooser(
   switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
       var url = await item.getItemURL(directPlay: true);
-      _controller = VlcPlayerController.network(
-        url,
-        autoPlay: true,
-        onInit: () async {
-          await _controller.startRendererScanning();
-        },
-        options: VlcPlayerOptions(
-            advanced: VlcAdvancedOptions([
-              VlcAdvancedOptions.networkCaching(2000),
-            ]),
-            extras: [
-              '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
-            ]),
-      );
+      var _controller = initVlcController(url, item);
       await Navigator.push(
           context,
           MaterialPageRoute(
@@ -48,4 +35,21 @@ void automaticStreamingSoftwareChooser(
               builder: (context) => Stream(item: item, streamUrl: url)));
       break;
   }
+}
+
+VlcPlayerController initVlcController(String url, Item item) {
+  return VlcPlayerController.network(
+    url,
+    autoPlay: true,
+    onInit: () async {
+      await _controller.startRendererScanning();
+    },
+    options: VlcPlayerOptions(
+        advanced: VlcAdvancedOptions([
+          VlcAdvancedOptions.networkCaching(2000),
+        ]),
+        extras: [
+          '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
+        ]),
+  );
 }
