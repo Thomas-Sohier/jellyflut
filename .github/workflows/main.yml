@@ -54,7 +54,7 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         ALIAS: ${{ secrets.ALIAS }}
         KEY_PATH: key.jks
-    - run: flutter build apk --release
+    - run: flutter build apk --split-per-abi
       env:
         KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
