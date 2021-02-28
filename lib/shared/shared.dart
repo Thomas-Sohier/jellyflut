@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> isLoggedIn() async {
@@ -28,6 +29,20 @@ Future<bool> detectAndroidTv() async {
     return _isAndroidTv;
   }
   return false;
+}
+
+Widget gradientMask({@required Widget child, double radius = 0.5}) {
+  return ShaderMask(
+    shaderCallback: (Rect bounds) {
+      return RadialGradient(
+        center: Alignment.topLeft,
+        radius: radius,
+        colors: <Color>[jellyLightBLue, jellyLightPurple],
+        tileMode: TileMode.mirror,
+      ).createShader(bounds);
+    },
+    child: child,
+  );
 }
 
 void showToast(String msg,

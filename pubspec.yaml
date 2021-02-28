@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.6
+version: 1.1.9
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -30,7 +30,7 @@ dependencies:
     git:
       url: https://github.com/markst/Flutter-AssetsAudioPlayer
       ref: master
-  better_player: ^0.0.58
+  better_player: ^0.0.59
   cached_network_image: ^2.5.0
   carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
@@ -38,28 +38,28 @@ dependencies:
   dio: ^3.0.10
   ext_storage: ^1.0.3
   fereader: ^0.2.0
-  flutter_blurhash: ^0.5.0
-  flutter_native_splash: ^0.3.0
   flutter_svg: ^0.19.1
   flutter_vlc_player: ^5.0.4
   fluttertoast: ^7.1.6
-  intl: ^0.16.1
-  package_info: ^0.4.0+16
+  octo_image: ^0.3.0
+  package_info: ^0.4.3+4
   palette_generator: ^0.2.3
-  pedantic: ^1.9.2
   permission_handler: ^5.0.1+1
-  provider: ^4.3.2+4
+  provider: ^4.3.3
   settings_ui: ^0.6.0
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^0.5.12+4 
   splashscreen: ^1.3.5
-  sqflite: ^1.3.2+1
+  sqflite: ^1.3.2+3
   uuid: ^2.2.2
   wakelock: ^0.2.1+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.8.1"
+  flutter_launcher_icons: ^0.8.1
+  flutter_native_splash: ^0.3.0
+  # intl: ^0.16.1
+  pedantic: ^1.9.2
 
 # The following section is specific to Flutter.
 flutter:

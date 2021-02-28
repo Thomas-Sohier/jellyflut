@@ -73,7 +73,7 @@ class _LatestState extends State<Latest> {
                     child: AspectRatio(
                         aspectRatio: 16 / 9,
                         child: BlurHash(
-                            imageFit: BoxFit.fill,
+                            imageFit: BoxFit.cover,
                             hash: media.imageBlurHashes.primary[firstKey]))),
                 Text(
                   media.name,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/songControls.dart';
+import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
   final double height;
@@ -54,35 +55,48 @@ class _SongImageState extends State<SongImage> {
   Widget imageSingleAsync(double size) {
     var sliderSize = _playBackTime / musicPlayer.currentMusicMaxDuration();
     return Stack(
+      alignment: Alignment.topCenter,
       clipBehavior: Clip.hardEdge,
       children: [
         ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5)),
-            child: GestureDetector(
-                onTapDown: (TapDownDetails details) =>
-                    onTapDown(context, details),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    musicPlayer.getCurrentAudioImagePath() != null
-                        ? CachedNetworkImage(
-                            imageUrl: musicPlayer.getCurrentAudioImagePath(),
-                            placeholder: (context, string) => placeholder(size),
-                            errorWidget: (context, url, error) =>
-                                placeholder(size),
-                            imageBuilder: (context, imageProvider) =>
-                                finalImage(imageProvider, size))
-                        : placeholder(size),
-                    if (!sliderSize.isNaN)
-                      Positioned.fill(
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: FractionallySizedBox(
-                                  widthFactor: sliderSize,
-                                  child: Container(
-                                    color: widget.albumColors[1].withAlpha(150),
-                                  )))),
-                  ],
+            child: SizedBox(
+                width: size,
+                height: size,
+                child: LayoutBuilder(
+                  builder: (singleContext, constraints) => GestureDetector(
+                    onTapDown: (TapDownDetails details) =>
+                        onTapDown(singleContext, details),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        musicPlayer.getCurrentAudioImagePath() != null
+                            ? OctoImage(
+                                image: CachedNetworkImageProvider(
+                                    musicPlayer.getCurrentAudioImagePath()),
+                                placeholderBuilder: (_) => placeholder(size),
+                                errorBuilder: (context, error, e) =>
+                                    placeholder(size),
+                                fadeInDuration: Duration(milliseconds: 300),
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                                width: size,
+                                height: size,
+                              )
+                            : placeholder(size),
+                        if (!sliderSize.isNaN)
+                          Positioned.fill(
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: FractionallySizedBox(
+                                      widthFactor: sliderSize,
+                                      child: Container(
+                                        color: widget.albumColors[1]
+                                            .withAlpha(150),
+                                      )))),
+                      ],
+                    ),
+                  ),
                 ))),
         Positioned.fill(
             top: size - 30,
@@ -131,7 +145,6 @@ class _SongImageState extends State<SongImage> {
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    print('${details.globalPosition}');
     final widgetWidth = context.size.width;
     final RenderBox box = context.findRenderObject();
     final localOffset = box.globalToLocal(details.globalPosition);

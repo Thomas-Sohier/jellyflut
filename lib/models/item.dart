@@ -392,14 +392,48 @@ class Item {
 
   ///Check if item is new
   ///
-  /// Return [true] is is less than 3 days old
-  /// Return [false] is date of creation is null or if more than 3 days old
+  /// Return [true] if is less than 3 days old
+  /// Return [false] if date of creation is null or if more than 3 days old
   bool isNew() {
     if (dateCreated == null) {
       return false;
     }
     var difference = dateCreated.difference(DateTime.now());
     return difference.inDays < -3 ? false : true;
+  }
+
+  ///Check if item has been played
+  ///
+  /// Return [true] if played
+  /// Return [false] if is not played or [null]
+  bool isPlayed() {
+    if (userData != null) {
+      return userData.played;
+    }
+    return false;
+  }
+
+  ///Check if item has been played
+  ///
+  /// Return [true] if favorite
+  /// Return [false] if is not favorite or [null]
+  bool isFavorite() {
+    if (userData != null) {
+      return userData.isFavorite;
+    }
+    return false;
+  }
+
+  ///Check if item has been played
+  ///
+  /// Return [true] if played
+  /// Return [false] is is not played
+  bool hasProgress() {
+    if (userData.playbackPositionTicks != null &&
+        userData.playbackPositionTicks > 0) {
+      return true;
+    }
+    return false;
   }
 
   /// Duration in microseconds from the item
@@ -416,7 +450,7 @@ class Item {
   /// If not specified return [16/9] as default value
   double getAspectRatio() {
     MediaStream mediaStream;
-    if (mediaStreams.isNotEmpty) {
+    if (mediaStreams != null && mediaStreams.isNotEmpty) {
       mediaStream = mediaStreams.firstWhere(
           (element) => element.type.trim().toLowerCase() == 'video');
 

@@ -165,7 +165,7 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
           urls: [
             sub.isExternal
                 ? sub.deliveryUrl
-                : await getSubtitleURL(item.id, 'srt', sub.index)
+                : await getSubtitleURL(item.id, 'vtt', sub.index)
           ],
           selectedByDefault: StreamModel().subtitleStreamIndex == sub.index,
           name: '${sub.language} - ${sub.title}'))
