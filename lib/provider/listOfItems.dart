@@ -6,7 +6,7 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 
 class ListOfItems extends ChangeNotifier {
-  final List<Item> _items = <Item>[];
+  List<Item> _items = <Item>[];
   final List<Item> _headerItems = <Item>[];
   Item _parentItem;
   bool _sortByNameASC = false;
@@ -20,7 +20,7 @@ class ListOfItems extends ChangeNotifier {
   bool isLoading = false;
   bool blockItemsLoading = false;
 
-  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  List<Item> get items => _items;
   // Singleton
   static final ListOfItems _listOfItems = ListOfItems._internal();
 
@@ -66,41 +66,27 @@ class ListOfItems extends ChangeNotifier {
     return _headerItems;
   }
 
-  void sortItemByDate() {
-    if (_sortByDateDSC || !_sortByDateASC && !_sortByDateDSC) {
-      _items.sort((a, b) {
-        if (a.dateCreated != null && b.dateCreated != null) {
-          return a.dateCreated.compareTo(b.dateCreated);
-        } else {
-          return -1;
-        }
-      });
-      _sortByDateASC = true;
-      _sortByDateDSC = false;
-    } else if (_sortByDateASC) {
-      _items.sort((a, b) {
-        if (a.dateCreated != null && b.dateCreated != null) {
-          return b.dateCreated.compareTo(a.dateCreated);
-        } else {
-          return -1;
-        }
-      });
-      _sortByDateASC = false;
-      _sortByDateDSC = true;
-    }
+  void sortItemByDate() async {
+    var i = await compute(_sortItemByDate, {
+      'items': _items,
+      'sortByDateASC': _sortByDateASC,
+      'sortByDateDSC': _sortByDateDSC
+    });
+    _items = i['items'];
+    _sortByDateASC = i['sortByDateASC'];
+    _sortByDateDSC = i['sortByDateDSC'];
     notifyListeners();
   }
 
-  void sortItemByName() {
-    if (_sortByNameDSC || !_sortByNameASC && !_sortByNameDSC) {
-      _items.sort((a, b) => a.name.compareTo(b.name));
-      _sortByNameASC = true;
-      _sortByNameDSC = false;
-    } else if (_sortByNameASC) {
-      _items.sort((a, b) => b.name.compareTo(a.name));
-      _sortByNameASC = false;
-      _sortByNameDSC = true;
-    }
+  void sortItemByName() async {
+    var i = await compute(_sortItemByName, {
+      'items': _items,
+      'sortByNameASC': _sortByNameASC,
+      'sortByNameDSC': _sortByNameDSC
+    });
+    _items = i['items'];
+    _sortByNameASC = i['sortByNameASC'];
+    _sortByNameDSC = i['sortByNameDSC'];
     notifyListeners();
   }
 
@@ -125,4 +111,68 @@ class ListOfItems extends ChangeNotifier {
       });
     }
   }
+}
+
+Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
+  List<Item> items = arg['items'];
+  bool sortByDateASC = arg['sortByDateASC'];
+  bool sortByDateDSC = arg['sortByDateDSC'];
+  if (!sortByDateASC || (!sortByDateASC && !sortByDateDSC)) {
+    items.sort((a, b) {
+      if (a.dateCreated != null && b.dateCreated != null) {
+        return a.dateCreated.compareTo(b.dateCreated);
+      } else {
+        return -1;
+      }
+    });
+    sortByDateASC = true;
+    sortByDateDSC = false;
+  } else if (sortByDateASC) {
+    items.sort((a, b) {
+      if (a.dateCreated != null && b.dateCreated != null) {
+        return b.dateCreated.compareTo(a.dateCreated);
+      } else {
+        return -1;
+      }
+    });
+    sortByDateASC = false;
+    sortByDateDSC = true;
+  }
+  return {
+    'items': items,
+    'sortByDateASC': sortByDateASC,
+    'sortByDateDSC': sortByDateDSC
+  };
+}
+
+Map<String, dynamic> _sortItemByName(Map<String, dynamic> arg) {
+  List<Item> items = arg['items'];
+  bool sortByNameASC = arg['sortByNameASC'];
+  bool sortByNameDSC = arg['sortByNameDSC'];
+  if (!sortByNameASC || (!sortByNameASC && !sortByNameDSC)) {
+    items.sort((a, b) {
+      if (a.dateCreated != null && b.dateCreated != null) {
+        return a.name.compareTo(b.name);
+      } else {
+        return -1;
+      }
+    });
+    sortByNameASC = true;
+    sortByNameDSC = false;
+  } else if (sortByNameASC) {
+    items.sort((a, b) {
+      if (a.dateCreated != null && b.dateCreated != null) {
+        return b.name.compareTo(a.name);
+      } else {
+        return -1;
+      }
+    });
+    sortByNameASC = false;
+    sortByNameDSC = true;
+  }
+  return {
+    'items': items,
+    'sortByNameASC': sortByNameASC,
+    'sortByNameDSC': sortByNameDSC
+  };
 }
