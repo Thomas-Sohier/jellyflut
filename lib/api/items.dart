@@ -4,12 +4,14 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
+import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/device.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
 import 'dio.dart';
@@ -275,13 +277,20 @@ void itemProgress(Item item,
 }
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
-    {startTimeTick = 0, int subtitleStreamIndex, int audioStreamIndex}) async {
+    {startTimeTick = 0,
+    int subtitleStreamIndex,
+    int audioStreamIndex,
+    int maxStreamingBitrate}) async {
   var streamModel = StreamModel();
+  var streamingSoftwareDB =
+      await DatabaseService().getSettings(userDB.settingsId);
   var queryParams = <String, dynamic>{};
   queryParams['UserId'] = user.id;
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
+  queryParams['MaxStreamingBitrate'] =
+      maxStreamingBitrate ?? streamingSoftwareDB.maxVideoBitrate;
   queryParams['MediaSourceId'] = itemId;
   if (subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
@@ -372,15 +381,21 @@ Future<String> contructAudioURL(
     var settings = await db.getSettings(userDB.settingsId);
     maxStreamingBitrate = settings.maxVideoBitrate;
   }
+  var streamingSoftwareDB =
+      await DatabaseService().getSettings(userDB.settingsId);
+  var audioCodecDB = streamingSoftwareDB.preferredTranscodeAudioCodec;
   var dInfo = await DeviceInfo().getCurrentDeviceInfo();
   var queryParams = <String, String>{};
   queryParams['UserId'] = user.id;
   queryParams['DeviceId'] = dInfo.id;
-  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate.toString();
+  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate != null
+      ? maxStreamingBitrate.toString()
+      : streamingSoftwareDB.maxAudioBitrate;
   queryParams['Container'] = container;
   queryParams['TranscodingContainer'] = transcodingContainer;
   queryParams['TranscodingProtocol'] = transcodingProtocol;
-  queryParams['AudioCodec'] = audioCodec;
+  queryParams['AudioCodec'] =
+      audioCodecDB != 'auto' ? audioCodecDB : audioCodec;
   queryParams['PlaySessionId'] = Uuid().v1();
   queryParams['StartTimeTicks'] = startTimeTicks.toString();
   queryParams['EnableRedirection'] = enableRedirection.toString();
