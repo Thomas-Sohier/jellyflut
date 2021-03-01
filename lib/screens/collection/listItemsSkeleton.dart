@@ -14,55 +14,33 @@ class ListItemsSkeleton extends StatelessWidget {
   Widget buildSkeletonItemsGrid(BuildContext context) {
     var ratio = aspectRatio();
     var size = MediaQuery.of(context).size;
-    var nbColumn = 3;
-    if (size.width < 1024) {
-      nbColumn = (size.width / 150).round();
-    } else {
-      nbColumn = (size.width / 200).round();
-    }
+    var itemWidth = 150.toDouble();
+    var itemHeight = 150 / ratio;
+    var numberOfItemInRow = (size.width / 150).round();
+    var numberOfRow = (size.height / itemHeight).round() * 2;
+
     return Padding(
         padding: EdgeInsets.all(6),
         child: GridView.builder(
             shrinkWrap: true,
-            physics: ScrollPhysics(),
-            itemCount: 10,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: numberOfItemInRow * numberOfRow,
             padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: nbColumn,
+                crossAxisCount: numberOfItemInRow,
                 childAspectRatio: ratio,
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 5),
             itemBuilder: (context, index) {
-              return Column(
+              return Wrap(
                 children: [
                   Skeleton(
-                    height: 175,
-                    colors: [Colors.white24, Colors.white30, Colors.white24],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Skeleton(
-                    height: 10,
+                    height: itemHeight,
+                    width: itemWidth,
                     colors: [Colors.white24, Colors.white30, Colors.white24],
                   ),
                 ],
               );
-              // Expanded(
-              //     flex: 8,
-              //     child: Skeleton(
-              //       height: double.maxFinite,
-              //       colors: [Colors.white24, Colors.white30, Colors.white24],
-              //     )),
-              // Spacer(
-              //   flex: 1,
-              // ),
-              // Expanded(
-              //     flex: 1,
-              //     child: Skeleton(
-              //       height: double.infinity,
-              //       colors: [Colors.white24, Colors.white30, Colors.white24],
-              //     ))
             }));
   }
 }

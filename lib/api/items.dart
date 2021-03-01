@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
@@ -166,15 +167,17 @@ Future<Category> getResumeItems(
 
   var url = '${server.url}/Users/${user.id}/Items/Resume';
 
-  Response response;
-  var category = Category();
   try {
-    response = await dio.get(url, queryParameters: queryParams);
-    category = Category.fromMap(response.data);
+    var response = await dio.get(url, queryParameters: queryParams);
+    return parseCategory(response.data);
   } catch (e) {
     print(e);
   }
-  return category;
+  return null;
+}
+
+Category parseCategory(Map<String, dynamic> data) {
+  return Category.fromMap(data);
 }
 
 Future<Category> getItems(
@@ -230,15 +233,14 @@ Future<Category> getItems(
 
   var url = '${server.url}/Users/${user.id}/Items';
 
-  Response response;
-  var category = Category();
   try {
-    response = await dio.get(url, queryParameters: queryParams);
-    category = Category.fromMap(response.data);
+    var response =
+        await dio.get<Map<String, dynamic>>(url, queryParameters: queryParams);
+    return foundation.compute(parseCategory, response.data);
   } catch (e) {
     print(e);
   }
-  return category;
+  return null;
 }
 
 void itemProgress(Item item,

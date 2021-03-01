@@ -5,6 +5,7 @@ import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
+import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -85,7 +86,7 @@ class _ListItemsState extends State<ListItems> {
                       }, childCount: listOfItems.items.length)),
                 )
               ])
-            : Container());
+            : ListItemsSkeleton());
   }
 
   Widget sortItems() {
