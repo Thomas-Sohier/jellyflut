@@ -8,6 +8,7 @@ import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../critics.dart';
 
@@ -34,60 +35,84 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(flex: 3, child: Skeleton()),
-                  Expanded(flex: 2, child: Skeleton()),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(child: Skeleton()),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                    child: Skeleton(
-                  nbLine: 5,
-                )),
-              ],
-            ),
-          ]),
-        ),
+            padding: const EdgeInsets.all(12),
+            child: Shimmer.fromColors(
+                baseColor: Colors.grey[300],
+                highlightColor: Colors.grey[100],
+                child: Column(children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              flex: 3,
+                              child: Container(
+                                height: 20,
+                                width: double.maxFinite,
+                                color: Colors.white,
+                              )),
+                          Spacer(),
+                          Expanded(
+                              flex: 2,
+                              child: Container(
+                                height: 20,
+                                width: double.maxFinite,
+                                color: Colors.white,
+                              ))
+                        ],
+                      )),
+                  ListView.builder(
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 20),
+                      itemBuilder: (context, index) => Container(
+                            height: 20,
+                            margin: EdgeInsets.only(top: 5),
+                            width: double.maxFinite,
+                            color: Colors.white,
+                          ))
+                ]))),
         Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5.0),
-                  bottomRight: Radius.circular(5.0)),
-              gradient: LinearGradient(
-                begin: Alignment(-1, -2),
-                end: Alignment(-1, -0.8),
-                colors: [Colors.black12, Colors.grey[100]],
-              ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(5.0),
+                bottomRight: Radius.circular(5.0)),
+            gradient: LinearGradient(
+              begin: Alignment(-1, -2),
+              end: Alignment(-1, -0.8),
+              colors: [Colors.black12, Colors.grey[100]],
             ),
-            padding: EdgeInsets.fromLTRB(12, 5, 12, 5),
-            child: Column(
-              children: [
-                Row(
+          ),
+          padding: EdgeInsets.fromLTRB(12, 5, 12, 5),
+          child: Column(children: [
+            Shimmer.fromColors(
+                baseColor: Colors.grey[300],
+                highlightColor: Colors.grey[100],
+                child: Row(
                   children: [
-                    Expanded(flex: 1, child: Skeleton()),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    ),
                     Spacer(
                       flex: 3,
                     ),
-                    Expanded(flex: 1, child: Skeleton())
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    )
                   ],
-                )
-              ],
-            )),
+                ))
+          ]),
+        ),
       ],
     ));
   }

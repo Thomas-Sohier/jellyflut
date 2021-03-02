@@ -69,7 +69,7 @@ Widget body(
       child: ListView(
           padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
           children: [
-            futureItemDetails(item: item, size: size),
+            buildElements(item: item, size: size, context: context),
             SizedBox(
               height: 20,
             ),
@@ -84,16 +84,14 @@ Widget futureItemDetails({@required Item item, @required Size size}) {
     future: _getItemsCustom(itemId: item.id),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
-        return detailsElements(
-            size: size, item: snapshot.data[1], context: context);
-      } else {
-        return _placeHolderBody(item, size);
+        return buildCard(snapshot.data[1], size, context);
       }
+      return _placeHolderBody(item, size);
     },
   );
 }
 
-Widget detailsElements(
+Widget buildElements(
     {@required Size size,
     @required Item item,
     @required BuildContext context}) {
@@ -104,7 +102,7 @@ Widget detailsElements(
         SizedBox(height: size.height * 0.10),
         if (item?.imageBlurHashes?.logo != null) logo(item, size),
         SizedBox(height: size.height * 0.05),
-        buildCard(item, size, context),
+        futureItemDetails(item: item, size: size),
       ]);
 }
 
@@ -127,7 +125,7 @@ Widget buildCard(Item item, Size size, BuildContext context) {
   if (item.id != null) {
     return card(item, size, context);
   }
-  return _placeHolderBody(item, size);
+  return Container();
 }
 
 Widget card(Item item, Size size, BuildContext context) {
@@ -155,21 +153,11 @@ Widget card(Item item, Size size, BuildContext context) {
 }
 
 Widget _placeHolderBody(Item item, Size size) {
-  return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(height: size.height * 0.10),
-        SizedBox(
-          height: 100,
-        ), // Logo
-        Container(
-            padding: EdgeInsets.only(top: 25),
-            child: CardItemWithChild(
-              item,
-              isSkeleton: true,
-            ))
-      ]);
+  return Container(
+      child: CardItemWithChild(
+    item,
+    isSkeleton: true,
+  ));
 }
 
 Future _getItemsCustom({@required String itemId}) async {

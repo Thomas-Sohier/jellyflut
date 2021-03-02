@@ -30,7 +30,7 @@ dependencies:
     git:
       url: https://github.com/markst/Flutter-AssetsAudioPlayer
       ref: master
-  better_player: ^0.0.59
+  better_player: ^0.0.61
   cached_network_image: ^2.5.0
   carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
@@ -47,7 +47,8 @@ dependencies:
   permission_handler: ^5.0.1+1
   provider: ^4.3.3
   settings_ui: ^0.6.0
-  shared_preferences: ^0.5.12+4 
+  shared_preferences: ^0.5.12+4
+  shimmer: ^1.1.2
   splashscreen: ^1.3.5
   sqflite: ^1.3.2+3
   uuid: ^2.2.2
