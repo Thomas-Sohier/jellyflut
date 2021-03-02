@@ -90,10 +90,10 @@ class MusicPlayer extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggle() {
+  Future<void> toggle() async {
     _musicPlayer.assetsAudioPlayer.isPlaying.value
-        ? _musicPlayer.assetsAudioPlayer.pause()
-        : _musicPlayer.assetsAudioPlayer.play();
+        ? await _musicPlayer.assetsAudioPlayer.pause()
+        : await _musicPlayer.assetsAudioPlayer.play();
     notifyListeners();
   }
 

@@ -32,14 +32,15 @@ class ListItemsSkeleton extends StatelessWidget {
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 5),
             itemBuilder: (context, index) {
-              return Wrap(
-                children: [
+              return ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: Wrap(children: [
                   Skeleton(
                     height: itemHeight,
                     width: itemWidth,
                     colors: [Colors.white24, Colors.white30, Colors.white24],
                   ),
-                ],
+                ]),
               );
             }));
   }
