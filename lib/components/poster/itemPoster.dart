@@ -12,12 +12,14 @@ class ItemPoster extends StatelessWidget {
   ItemPoster(this.item,
       {this.textColor = Colors.white,
       this.heroTag,
+      this.widgetAspectRatio,
       this.showName = true,
       this.showParent = true,
       this.type = 'Primary',
       this.boxFit = BoxFit.cover});
 
   final Item item;
+  final double widgetAspectRatio;
   final String heroTag;
   final Color textColor;
   final bool showName;
@@ -38,7 +40,9 @@ class ItemPoster extends StatelessWidget {
     var posterHeroTag = heroTag ?? item.id + Uuid().v4();
     return GestureDetector(
         onTap: () => _onTap(posterHeroTag),
-        child: body(posterHeroTag, context));
+        child: AspectRatio(
+            aspectRatio: widgetAspectRatio ?? item.getPrimaryAspectRatio(),
+            child: body(posterHeroTag, context)));
   }
 
   Widget body(String heroTag, BuildContext context) {
@@ -84,8 +88,8 @@ class ItemPoster extends StatelessWidget {
             showParent ? item.parentName() : item.name,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                color: textColor, fontWeight: FontWeight.w700, fontSize: 16),
+            maxLines: 1,
+            style: TextStyle(color: textColor, fontSize: 14),
           ),
         )
     ]);

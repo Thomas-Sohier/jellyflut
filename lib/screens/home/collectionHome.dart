@@ -6,7 +6,6 @@ import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CollectionHome extends StatefulWidget {
@@ -69,7 +68,6 @@ class _CollectionHomeState extends State<CollectionHome> {
   }
 
   Widget placeholder() {
-    var screenWidth = MediaQuery.of(context).size.width;
     return Shimmer.fromColors(
         highlightColor: Colors.grey[700],
         baseColor: Colors.grey[300],
@@ -84,7 +82,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
                         height: 30,
-                        width: screenWidth * 0.3,
+                        width: 70,
                         color: Colors.white30,
                       )),
                   Spacer(),
@@ -134,13 +132,11 @@ class _CollectionHomeState extends State<CollectionHome> {
         itemBuilder: (context, index) {
           var _item = items[index];
           return Padding(
-              padding: const EdgeInsets.all(8),
-              child: AspectRatio(
-                aspectRatio: aspectRatio(type: _item.type),
-                child: ItemPoster(
-                  _item,
-                ),
-              ));
+            padding: const EdgeInsets.all(8),
+            child: ItemPoster(
+              _item,
+            ),
+          );
         });
   }
 

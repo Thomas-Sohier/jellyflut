@@ -32,127 +32,129 @@ final playableItems = [
 ];
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
+  Size size;
+  String heroTag;
+  Item item;
+
+  @override
+  void initState() {
+    heroTag = widget.heroTag;
+    item = widget.item;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
+
     return MusicPlayerFAB(
         child: Scaffold(
             extendBody: true,
             backgroundColor: Colors.transparent,
-            body: body(
-                heroTag: widget.heroTag,
-                size: size,
-                item: widget.item,
-                context: context)));
+            body: body()));
   }
-}
 
-Widget body(
-    {@required Item item,
-    @required String heroTag,
-    @required Size size,
-    @required BuildContext context}) {
-  return Stack(alignment: Alignment.center, children: [
-    Hero(tag: heroTag, child: BackgroundImage(item: item)),
-    ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 600),
-      child: ListView(
-          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-          children: [
-            buildElements(item: item, size: size, context: context),
-            SizedBox(
-              height: 20,
-            ),
-            Collection(item),
-          ]),
-    ),
-  ]);
-}
-
-Widget buildElements(
-    {@required Size size,
-    @required Item item,
-    @required BuildContext context}) {
-  return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(height: size.height * 0.10),
-        if (item?.imageBlurHashes?.logo != null) logo(item, size),
-        SizedBox(height: size.height * 0.05),
-        futureItemDetails(item: item, size: size),
-      ]);
-}
-
-Widget logo(Item item, Size size) {
-  return Container(
-      width: size.width,
-      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-      constraints: BoxConstraints(maxWidth: 400),
-      height: 100,
-      child: AsyncImage(
-        item.correctImageId(searchType: 'logo'),
-        item.correctImageTags(searchType: 'logo'),
-        item.imageBlurHashes,
-        boxFit: BoxFit.contain,
-        tag: 'Logo',
-      ));
-}
-
-Widget futureItemDetails({@required Item item, @required Size size}) {
-  return FutureBuilder<dynamic>(
-    future: _getItemsCustom(itemId: item.id),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return buildCard(snapshot.data[1], size, context);
-      }
-      return _placeHolderBody(item, size);
-    },
-  );
-}
-
-Widget buildCard(Item item, Size size, BuildContext context) {
-  if (item.id != null) {
-    return card(item, size, context);
-  }
-  return Container();
-}
-
-Widget card(Item item, Size size, BuildContext context) {
-  return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
-    Container(
-        padding: EdgeInsets.only(top: 25), child: CardItemWithChild(item)),
-    playableItems.contains(item.type.trim().toLowerCase())
-        ? Positioned.fill(
-            child: Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: size.width * 0.5),
-              child: PaletteButton(
-                'Play',
-                () {
-                  item.playItem(context);
-                },
-                item: item,
-                icon: Icons.play_circle_outline,
+  Widget body() {
+    return Stack(alignment: Alignment.center, children: [
+      Hero(tag: heroTag, child: BackgroundImage(item: item)),
+      ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 600),
+        child: ListView(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+            children: [
+              buildElements(),
+              SizedBox(
+                height: 20,
               ),
-            ),
-          ))
-        : Container()
-  ]);
-}
+              Collection(item),
+            ]),
+      ),
+    ]);
+  }
 
-Widget _placeHolderBody(Item item, Size size) {
-  return Container(
-      child: CardItemWithChild(
-    item,
-    isSkeleton: true,
-  ));
-}
+  Widget buildElements() {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: size.height * 0.10),
+          if (item?.imageBlurHashes?.logo != null) logo(item, size),
+          SizedBox(height: size.height * 0.05),
+          futureItemDetails(item: item),
+        ]);
+  }
 
-Future _getItemsCustom({@required String itemId}) async {
-  var futures = <Future>[];
-  futures.add(Future.delayed(Duration(milliseconds: 400)));
-  futures.add(getItem(itemId));
-  return Future.wait(futures);
+  Widget logo(Item item, Size size) {
+    return Container(
+        width: size.width,
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        constraints: BoxConstraints(maxWidth: 400),
+        height: 100,
+        child: AsyncImage(
+          item.correctImageId(searchType: 'logo'),
+          item.correctImageTags(searchType: 'logo'),
+          item.imageBlurHashes,
+          boxFit: BoxFit.contain,
+          tag: 'Logo',
+        ));
+  }
+
+  Widget futureItemDetails({@required Item item}) {
+    return FutureBuilder<dynamic>(
+      future: _getItemsCustom(itemId: item.id),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return buildCard(snapshot.data[1]);
+        }
+        return _placeHolderBody(item, size);
+      },
+    );
+  }
+
+  Widget buildCard(Item detailedItem) {
+    if (detailedItem.id != null) {
+      return card(detailedItem);
+    }
+    return Container();
+  }
+
+  Widget card(Item detailedItem) {
+    return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
+      Container(
+          padding: EdgeInsets.only(top: 25),
+          child: CardItemWithChild(detailedItem)),
+      playableItems.contains(item.type.trim().toLowerCase())
+          ? Positioned.fill(
+              child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: size.width * 0.5),
+                child: PaletteButton(
+                  'Play',
+                  () {
+                    item.playItem();
+                  },
+                  item: item,
+                  icon: Icons.play_circle_outline,
+                ),
+              ),
+            ))
+          : Container()
+    ]);
+  }
+
+  Widget _placeHolderBody(Item item, Size size) {
+    return Container(
+        child: CardItemWithChild(
+      item,
+      isSkeleton: true,
+    ));
+  }
+
+  Future _getItemsCustom({@required String itemId}) async {
+    var futures = <Future>[];
+    futures.add(Future.delayed(Duration(milliseconds: 400)));
+    futures.add(getItem(itemId));
+    return Future.wait(futures);
+  }
 }

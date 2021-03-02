@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:shimmer/shimmer.dart';
@@ -45,11 +44,10 @@ class Resume extends StatelessWidget {
                 var _item = items[index];
                 return Padding(
                     padding: const EdgeInsets.all(8),
-                    child: AspectRatio(
-                        aspectRatio: 14 / 9,
-                        child: ItemPoster(
-                          _item,
-                        )));
+                    child: ItemPoster(
+                      _item,
+                      widgetAspectRatio: 14 / 9,
+                    ));
               },
             ))
       ],
@@ -57,7 +55,6 @@ class Resume extends StatelessWidget {
   }
 
   Widget placeholder() {
-    var screenWidth = MediaQuery.of(navigatorKey.currentContext).size.width;
     return Shimmer.fromColors(
         highlightColor: Colors.grey[700],
         baseColor: Colors.grey[300],
@@ -70,7 +67,7 @@ class Resume extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
                     height: 30,
-                    width: screenWidth * 0.3,
+                    width: 70,
                     color: Colors.white30,
                   )),
               Padding(

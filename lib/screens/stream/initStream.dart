@@ -8,10 +8,11 @@ import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/screens/stream/streamVLC.dart';
 
+import '../../main.dart';
+
 VlcPlayerController _controller;
 
-void automaticStreamingSoftwareChooser(
-    {@required Item item, @required BuildContext context}) async {
+void automaticStreamingSoftwareChooser({@required Item item}) async {
   var streamingSoftwareDB =
       await DatabaseService().getSettings(userDB.settingsId);
   var streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
@@ -22,7 +23,7 @@ void automaticStreamingSoftwareChooser(
       var url = await item.getItemURL(directPlay: true);
       var _controller = initVlcController(url, item);
       await Navigator.push(
-          context,
+          navigatorKey.currentContext,
           MaterialPageRoute(
               builder: (context) =>
                   StreamVLC(controller: _controller, showControls: true)));
@@ -30,7 +31,7 @@ void automaticStreamingSoftwareChooser(
     case StreamingSoftwareName.exoplayer:
       var url = await item.getItemURL();
       await Navigator.push(
-          context,
+          navigatorKey.currentContext,
           MaterialPageRoute(
               builder: (context) => Stream(item: item, streamUrl: url)));
       break;

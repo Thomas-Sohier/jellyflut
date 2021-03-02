@@ -6,7 +6,6 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -74,7 +73,7 @@ class _ListItemsState extends State<ListItems> {
                   sliver: SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
-                              aspectRatio(type: listOfItems.items.first.type),
+                              listOfItems.items.first.getPrimaryAspectRatio(),
                           crossAxisCount: numberOfItemRow,
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5),

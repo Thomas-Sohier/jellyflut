@@ -143,7 +143,7 @@ Future<Category> getResumeItems(
     int limit = 12,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo',
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes',
     String excludeLocationTypes = '',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
@@ -194,7 +194,7 @@ Future<Category> getItems(
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'Chapters, DateCreated',
+    String fields = 'Chapters, DateCreated, ImageBlurHashes',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {

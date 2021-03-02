@@ -47,7 +47,7 @@ Future<List<Item>> getLatestMedia({
   String parentId,
   int limit = 16,
   String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
-  String enableImageTypes = 'Primary,Backdrop,Thumb',
+  String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
   int imageTypeLimit = 1,
 }) async {
   var queryParams = <String, dynamic>{};

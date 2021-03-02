@@ -11,6 +11,7 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -644,19 +645,19 @@ class Item {
   ///
   /// If Book open Epub reader
   /// If Video open video player
-  void playItem(BuildContext context) async {
+  void playItem() async {
     var musicPlayer = MusicPlayer();
     if (type == 'Episode' ||
         type == 'Season' ||
         type == 'Series' ||
         type == 'Movie') {
-      await automaticStreamingSoftwareChooser(item: this, context: context);
+      await automaticStreamingSoftwareChooser(item: this);
     } else if (type == 'Audio') {
       musicPlayer.playRemoteItem(this);
     } else if (type == 'MusicAlbum') {
       musicPlayer.playPlaylist(id);
     } else if (type == 'Book') {
-      readBook(context);
+      readBook();
     }
   }
 
@@ -717,13 +718,13 @@ class Item {
     return finalUrl;
   }
 
-  void readBook(BuildContext context) async {
+  void readBook() async {
     var path = await getEbook(this);
     if (path != null) {
       //var sharedPreferences = await SharedPreferences.getInstance();
 
       Fereader.setConfig(
-        themeColor: Theme.of(context).primaryColor,
+        themeColor: Theme.of(navigatorKey.currentContext).primaryColor,
         scrollDirection: EpubScrollDirection.VERTICAL,
         allowSharing: true,
         enableTts: true,

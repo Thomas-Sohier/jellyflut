@@ -23,10 +23,12 @@ class SearchProvider extends ChangeNotifier {
 
   void showResult() {
     _showResults = true;
+    notifyListeners();
   }
 
   void hideResult() {
     _showResults = false;
+    notifyListeners();
   }
 
   void addSearchResult(Map<String, List<Item>> searchResult) {
