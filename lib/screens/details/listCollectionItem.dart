@@ -36,9 +36,7 @@ class ListCollectionItem extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 28),
                       ),
                     ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child: carouselSlider(snapshot.data.items))
+                  carouselSlider(snapshot.data.items)
                 ]);
           }
           return Container();

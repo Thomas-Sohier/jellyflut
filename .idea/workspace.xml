@@ -33,18 +33,15 @@
   <component name="ChangeListManager">
     <list default="true" id="bccb1bd0-4fde-4697-870b-00d0e3550fd5" name="Default Changelist" comment="Better name for interceptor">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/collectionHome.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/collectionHome.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home/home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/asyncImage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/asyncImage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[aefcfe88]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Pixel_3a_API_30_x86]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -149,10 +146,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="581" y="292" width="748" height="521" key="#main.dart/0.27.1920.1053@0.27.1920.1053" timestamp="1612476147611" />
-    <state x="100" y="100" width="1720" height="850" key="AVDManager" timestamp="1614181426586">
+    <state x="100" y="100" width="1720" height="850" key="AVDManager" timestamp="1614719007481">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="100" y="100" width="1720" height="850" key="AVDManager/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1614181426586" />
+    <state x="100" y="100" width="1720" height="850" key="AVDManager/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1614719007481" />
     <state x="100" y="300" width="977" height="680" key="AVDManager/0.27.1920.1053@0.27.1920.1053" timestamp="1612519145250" />
     <state x="999" y="462" width="424" height="483" key="FileChooserDialogImpl" timestamp="1612442171284">
       <screen x="0" y="27" width="1920" height="1053" />

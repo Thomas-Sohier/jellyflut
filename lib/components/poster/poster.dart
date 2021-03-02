@@ -4,7 +4,7 @@ import 'package:jellyflut/models/item.dart';
 import '../asyncImage.dart';
 
 class Poster extends StatelessWidget {
-  final String type;
+  final String tag;
   final BoxFit boxFit;
   final Item item;
   final bool showParent;
@@ -12,7 +12,7 @@ class Poster extends StatelessWidget {
   const Poster(
       {Key key,
       this.showParent = false,
-      @required this.type,
+      @required this.tag,
       @required this.boxFit,
       @required this.item})
       : super(key: key);
@@ -23,7 +23,7 @@ class Poster extends StatelessWidget {
       showParent ? item.getParentId() : item.getIdBasedOnImage(),
       item.imageTags.primary,
       item.imageBlurHashes,
-      tag: type,
+      tag: tag,
       boxFit: boxFit,
     );
   }

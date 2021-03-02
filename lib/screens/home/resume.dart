@@ -46,6 +46,7 @@ class Resume extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: ItemPoster(
                       _item,
+                      tag: 'Backdrop',
                       widgetAspectRatio: 14 / 9,
                     ));
               },

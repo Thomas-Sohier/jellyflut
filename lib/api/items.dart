@@ -138,7 +138,7 @@ Future<Category> getResumeItems(
     String sortBy = '',
     String sortOrder = '',
     String mediaType = 'Video',
-    String enableImageTypes = 'Primary,Backdrop,Thumb',
+    String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
     String includeItemTypes,
     int limit = 12,
     int startIndex = 0,

@@ -53,7 +53,7 @@ Widget listPeoples(List<Person> peoples) {
                 Expanded(
                     flex: 5,
                     child: Hero(
-                      tag: '${people.id}-person',
+                      tag: '${people.id}-$index-person',
                       child: AspectRatio(
                           aspectRatio: 2 / 3,
                           child: AsyncImage(

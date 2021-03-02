@@ -15,7 +15,7 @@ class ItemPoster extends StatelessWidget {
       this.widgetAspectRatio,
       this.showName = true,
       this.showParent = true,
-      this.type = 'Primary',
+      this.tag = 'Primary',
       this.boxFit = BoxFit.cover});
 
   final Item item;
@@ -24,7 +24,7 @@ class ItemPoster extends StatelessWidget {
   final Color textColor;
   final bool showName;
   final bool showParent;
-  final String type;
+  final String tag;
   final BoxFit boxFit;
 
   void _onTap(String heroTag) {
@@ -54,13 +54,14 @@ class ItemPoster extends StatelessWidget {
           children: [
             Flexible(
               child: AspectRatio(
-                  aspectRatio: item.getPrimaryAspectRatio(),
+                  aspectRatio:
+                      widgetAspectRatio ?? item.getPrimaryAspectRatio(),
                   child: Stack(fit: StackFit.expand, children: [
                     Hero(
                         tag: heroTag,
                         child: Poster(
                             showParent: showParent,
-                            type: type,
+                            tag: tag,
                             boxFit: boxFit,
                             item: item)),
                     Stack(
