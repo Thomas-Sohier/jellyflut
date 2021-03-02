@@ -34,13 +34,12 @@ class _SongControlsState extends State<SongControls> {
   Widget build(BuildContext context) {
     return Consumer<MusicPlayer>(builder: (context, mp, child) {
       musicPlayer = mp;
-      return body();
+      return controls();
     });
   }
 
-  Widget body() {
-    return Container(
-        child: Column(children: [
+  Widget controls() {
+    return Column(children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +67,7 @@ class _SongControlsState extends State<SongControls> {
                     boxShadow: shadows,
                     shape: BoxShape.circle),
                 child: InkWell(
-                  onTap: () => musicPlayer.toggle(),
+                  onTap: () async => await musicPlayer.toggle(),
                   child: Icon(
                     musicPlayer.assetsAudioPlayer.isPlaying.value
                         ? Icons.pause
@@ -95,6 +94,6 @@ class _SongControlsState extends State<SongControls> {
           ),
         ],
       ),
-    ]));
+    ]);
   }
 }

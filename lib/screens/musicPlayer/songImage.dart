@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/songControls.dart';
+import 'package:jellyflut/screens/musicPlayer/songSlider.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
@@ -25,7 +26,6 @@ class SongImage extends StatefulWidget {
 
 class _SongImageState extends State<SongImage> {
   MusicPlayer musicPlayer;
-  int _playBackTime;
   double posx = 100.0;
   double posy = 100.0;
 
@@ -33,8 +33,6 @@ class _SongImageState extends State<SongImage> {
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.currentMusicDuration().toInt() ?? 0;
-    playerListener();
   }
 
   @override
@@ -53,7 +51,6 @@ class _SongImageState extends State<SongImage> {
   }
 
   Widget imageSingleAsync(double size) {
-    var sliderSize = _playBackTime / musicPlayer.currentMusicMaxDuration();
     return Stack(
       alignment: Alignment.topCenter,
       clipBehavior: Clip.hardEdge,
@@ -84,16 +81,12 @@ class _SongImageState extends State<SongImage> {
                                 height: size,
                               )
                             : placeholder(size),
-                        if (!sliderSize.isNaN)
-                          Positioned.fill(
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: FractionallySizedBox(
-                                      widthFactor: sliderSize,
-                                      child: Container(
-                                        color: widget.albumColors[1]
-                                            .withAlpha(150),
-                                      )))),
+                        Positioned.fill(
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: SongSlider(
+                                  albumColors: widget.albumColors,
+                                ))),
                       ],
                     ),
                   ),
@@ -132,16 +125,6 @@ class _SongImageState extends State<SongImage> {
             image: imageProvider,
           ),
         ));
-  }
-
-  void playerListener() {
-    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.isPlaying && mounted) {
-        setState(() {
-          _playBackTime = event.currentPosition.inMilliseconds.toInt();
-        });
-      }
-    });
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
