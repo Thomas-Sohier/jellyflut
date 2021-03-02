@@ -59,12 +59,12 @@ String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
     return null;
   } else if (imageBlurHashes.primary != null) {
     return imageBlurHashes.primary.values.first;
-  } else if (imageBlurHashes.thumb != null) {
-    return imageBlurHashes.thumb.values.first;
   } else if (imageBlurHashes.backdrop != null) {
     return imageBlurHashes.backdrop.values.first;
   } else if (imageBlurHashes.art != null) {
     return imageBlurHashes.art.values.first;
+  } else if (imageBlurHashes.thumb != null) {
+    return imageBlurHashes.thumb.values.first;
   }
   return null;
 }

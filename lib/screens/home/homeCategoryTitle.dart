@@ -66,26 +66,9 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
                 border: Border.all(width: 2, color: _focusColor),
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             child: Row(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _node.hasFocus
-                      ? Container(
-                          width: 45,
-                          height: 5,
-                          margin: EdgeInsets.only(bottom: 5),
-                          decoration: BoxDecoration(
-                              color: jellyLightPurple,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                        )
-                      : Container(),
-                  Text(
-                    widget.item.name,
-                    style: TextStyle(color: Colors.white, fontSize: 28),
-                  ),
-                ],
+              Text(
+                widget.item.name,
+                style: TextStyle(color: Colors.white, fontSize: 28),
               ),
               Spacer(),
               InkWell(

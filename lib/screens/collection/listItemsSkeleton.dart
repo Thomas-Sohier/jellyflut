@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ListItemsSkeleton extends StatelessWidget {
   final count;
@@ -21,27 +22,28 @@ class ListItemsSkeleton extends StatelessWidget {
 
     return Padding(
         padding: EdgeInsets.all(6),
-        child: GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: numberOfItemInRow * numberOfRow,
-            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: numberOfItemInRow,
-                childAspectRatio: ratio,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 5),
-            itemBuilder: (context, index) {
-              return ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: Wrap(children: [
-                  Skeleton(
-                    height: itemHeight,
-                    width: itemWidth,
-                    colors: [Colors.white24, Colors.white30, Colors.white24],
+        child: Shimmer.fromColors(
+          highlightColor: Colors.grey[700],
+          baseColor: Colors.grey[300],
+          child: GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: numberOfItemInRow * numberOfRow,
+              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: numberOfItemInRow,
+                  childAspectRatio: ratio,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 5),
+              itemBuilder: (context, index) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  child: Container(
+                    height: 20,
+                    color: Colors.white30,
                   ),
-                ]),
-              );
-            }));
+                );
+              }),
+        ));
   }
 }

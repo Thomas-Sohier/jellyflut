@@ -22,13 +22,7 @@ const double gapSize = 20;
 class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-            child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 600),
-                child: Column(
-                  children: [showCollection(widget.item)],
-                ))));
+    return showCollection(widget.item);
   }
 
   Widget showCollection(Item item) {

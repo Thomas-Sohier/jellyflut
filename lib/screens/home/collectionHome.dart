@@ -4,11 +4,10 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CollectionHome extends StatefulWidget {
   final Item item;
@@ -27,9 +26,7 @@ class _CollectionHomeState extends State<CollectionHome> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: MultiProvider(providers: [
-        ChangeNotifierProvider(create: (context) => ListOfItems()),
-      ], child: buildAllCategory()),
+      child: buildAllCategory(),
     );
   }
 
@@ -49,7 +46,8 @@ class _CollectionHomeState extends State<CollectionHome> {
           parentId: widget?.item?.id,
           fields: 'DateCreated, DateAdded, ImageTags'),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData &&
+            snapshot.connectionState == ConnectionState.done) {
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +62,69 @@ class _CollectionHomeState extends State<CollectionHome> {
                 )
               ]);
         } else {
-          return Container();
+          return placeholder();
         }
       },
     );
+  }
+
+  Widget placeholder() {
+    var screenWidth = MediaQuery.of(context).size.width;
+    return Shimmer.fromColors(
+        highlightColor: Colors.grey[700],
+        baseColor: Colors.grey[300],
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                        height: 30,
+                        width: screenWidth * 0.3,
+                        color: Colors.white30,
+                      )),
+                  Spacer(),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            color: Colors.white30,
+                          ))),
+                ],
+              ),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: SizedBox(
+                              height: 200,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: 3,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 4, 8, 4),
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5)),
+                                          child: Container(
+                                            height: 200,
+                                            width: 200 * (2 / 3),
+                                            color: Colors.white30,
+                                          )))))),
+                    ],
+                  ))
+            ]));
   }
 
   Widget displayItems(List<Item> items) {

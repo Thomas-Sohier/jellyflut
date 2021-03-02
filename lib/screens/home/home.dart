@@ -9,6 +9,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
+import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:provider/provider.dart';
@@ -37,43 +38,44 @@ class _HomeState extends State<Home> {
               body: Background(
                   child: RefreshIndicator(
                       onRefresh: () => _refreshItems(),
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                              child: SizedBox(height: statusBarHeight + 10)),
-                          SliverToBoxAdapter(
-                            child: Stack(children: [
-                              SearchResult(),
-                              Consumer<SearchProvider>(
-                                builder: (context, value, child) {
-                                  return Visibility(
-                                      visible: !SearchProvider().showResults,
-                                      child: headerBar());
-                                },
-                              )
-                            ]),
+                      child: Column(children: [
+                        SizedBox(height: statusBarHeight + 10),
+                        Stack(children: [
+                          SearchResult(),
+                          Consumer<SearchProvider>(
+                            builder: (context, value, child) {
+                              return Visibility(
+                                  visible: !SearchProvider().showResults,
+                                  child: headerBar());
+                            },
                           ),
-                          // Resume(),
-                          FutureBuilder<Category>(
+                        ]),
+                        SizedBox(height: 10),
+                        FutureBuilder<Category>(
                             future: getCategory(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData &&
                                   snapshot.data.items != null) {
-                                return buildCategory(snapshot.data);
+                                return Expanded(
+                                    child: CustomScrollView(slivers: [
+                                  SliverToBoxAdapter(
+                                    child: SizedBox(
+                                      height: 10,
+                                    ),
+                                  ),
+                                  SliverToBoxAdapter(child: Resume()),
+                                  buildCategory(snapshot.data),
+                                ]));
                               } else if (snapshot.connectionState ==
                                       ConnectionState.done &&
                                   snapshot.error != null) {
                                 return noConnectivity(snapshot.error);
                               }
-                              return SliverFillRemaining(
-                                hasScrollBody: false,
-                                child:
-                                    Center(child: CircularProgressIndicator()),
+                              return Center(
+                                child: CircularProgressIndicator(),
                               );
-                            },
-                          ),
-                        ],
-                      )))),
+                            })
+                      ])))),
         ));
   }
 
@@ -110,24 +112,22 @@ class _HomeState extends State<Home> {
   }
 
   Widget noConnectivity(SocketException error) {
-    return SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Icon(
-              Icons.wifi_off,
-              color: Colors.white,
-              size: 50,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                error.message,
-                style: TextStyle(color: Colors.white70, fontSize: 16),
-              ),
-            )
-          ]),
-        ));
+    return Center(
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Icon(
+          Icons.wifi_off,
+          color: Colors.white,
+          size: 50,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            error.message,
+            style: TextStyle(color: Colors.white70, fontSize: 16),
+          ),
+        )
+      ]),
+    );
   }
 
   Widget searchIcon() {

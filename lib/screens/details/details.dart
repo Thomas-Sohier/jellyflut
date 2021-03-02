@@ -33,16 +33,6 @@ final playableItems = [
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return MusicPlayerFAB(
@@ -79,18 +69,6 @@ Widget body(
   ]);
 }
 
-Widget futureItemDetails({@required Item item, @required Size size}) {
-  return FutureBuilder<dynamic>(
-    future: _getItemsCustom(itemId: item.id),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return buildCard(snapshot.data[1], size, context);
-      }
-      return _placeHolderBody(item, size);
-    },
-  );
-}
-
 Widget buildElements(
     {@required Size size,
     @required Item item,
@@ -119,6 +97,18 @@ Widget logo(Item item, Size size) {
         boxFit: BoxFit.contain,
         tag: 'Logo',
       ));
+}
+
+Widget futureItemDetails({@required Item item, @required Size size}) {
+  return FutureBuilder<dynamic>(
+    future: _getItemsCustom(itemId: item.id),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        return buildCard(snapshot.data[1], size, context);
+      }
+      return _placeHolderBody(item, size);
+    },
+  );
 }
 
 Widget buildCard(Item item, Size size, BuildContext context) {

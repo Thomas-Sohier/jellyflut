@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/card/cardInfosChild.dart';
-import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
