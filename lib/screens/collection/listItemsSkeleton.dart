@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,7 +14,6 @@ class ListItemsSkeleton extends StatelessWidget {
   Widget buildSkeletonItemsGrid(BuildContext context) {
     var ratio = aspectRatio();
     var size = MediaQuery.of(context).size;
-    var itemWidth = 150.toDouble();
     var itemHeight = 150 / ratio;
     var numberOfItemInRow = (size.width / 150).round();
     var numberOfRow = (size.height / itemHeight).round() * 2;

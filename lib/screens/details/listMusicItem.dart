@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/components/skeleton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
