@@ -5,6 +5,7 @@ import 'package:jellyflut/models/userDB.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:jellyflut/models/server.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 final tableServer = 'server';
 final tableUser = 'user';
@@ -19,6 +20,12 @@ class DatabaseService {
   }
 
   DatabaseService._internal() {
+    if (Platform.isWindows || Platform.isLinux) {
+      // Initialize FFI
+      sqfliteFfiInit();
+      // Change the default factory
+      databaseFactory = databaseFactoryFfi;
+    }
     initDatabase();
   }
 
