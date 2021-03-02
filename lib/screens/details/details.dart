@@ -57,29 +57,29 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   Widget body() {
     return Stack(alignment: Alignment.center, children: [
       Hero(tag: heroTag, child: BackgroundImage(item: item)),
-      ListView(children: [
-        buildElements(),
-        SizedBox(
-          height: 20,
-        ),
-        Collection(item),
-      ]),
+      Container(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          constraints: BoxConstraints(maxWidth: 600),
+          child: ListView(children: [
+            buildElements(),
+            SizedBox(
+              height: 20,
+            ),
+            Collection(item),
+          ])),
     ]);
   }
 
   Widget buildElements() {
-    return Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        constraints: BoxConstraints(maxWidth: 600),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: size.height * 0.10),
-              if (item?.imageBlurHashes?.logo != null) logo(item, size),
-              SizedBox(height: size.height * 0.05),
-              futureItemDetails(item: item),
-            ]));
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: size.height * 0.10),
+          if (item?.imageBlurHashes?.logo != null) logo(item, size),
+          SizedBox(height: size.height * 0.05),
+          futureItemDetails(item: item),
+        ]);
   }
 
   Widget logo(Item item, Size size) {

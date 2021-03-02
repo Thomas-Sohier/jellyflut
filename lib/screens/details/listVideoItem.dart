@@ -18,17 +18,14 @@ class ListVideoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 40),
-        constraints: BoxConstraints(maxWidth: 600),
-        child: FutureBuilder<dynamic>(
-            future: _getEpisodeCustom(seriesId: item.seriesId, itemId: item.id),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return body(snapshot.data[1]);
-              }
-              return placeholderBody();
-            }));
+    return FutureBuilder<dynamic>(
+        future: _getEpisodeCustom(seriesId: item.seriesId, itemId: item.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return body(snapshot.data[1]);
+          }
+          return placeholderBody();
+        });
   }
 
   Widget body(Category category) {
