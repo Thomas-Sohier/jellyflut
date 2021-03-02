@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/theme.dart';
 
 class HomeCategoryTitle extends StatefulWidget {
   HomeCategoryTitle(this.item, {@required this.onTap});

@@ -12,7 +12,8 @@ class Resume extends StatelessWidget {
     return FutureBuilder<Category>(
         future: getResumeItems(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
             var _items = snapshot.data.items;
             if (_items != null && _items.isNotEmpty) {
               return body(_items);
