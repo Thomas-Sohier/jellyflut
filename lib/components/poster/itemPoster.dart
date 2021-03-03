@@ -39,7 +39,6 @@ class _ItemPosterState extends State<ItemPoster>
   FocusNode _node;
   AnimationController _controller;
   Animation<double> _animation;
-  int _focusAlpha = 100;
   Color _focusColor;
 
   @override
