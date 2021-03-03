@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/slideRightRoute.dart';
-import 'package:jellyflut/screens/settings/settings.dart';
 
 class BackButton extends StatefulWidget {
   @override

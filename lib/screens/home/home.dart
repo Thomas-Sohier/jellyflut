@@ -4,16 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/SearchButton.dart';
 import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
-import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
-import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:provider/provider.dart';
 
 import 'background.dart';
