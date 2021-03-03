@@ -121,7 +121,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       Container(
           padding: EdgeInsets.only(top: 25),
           child: CardItemWithChild(detailedItem)),
-      playableItems.contains(item.type.trim().toLowerCase())
+      playableItems.contains(detailedItem.type.trim().toLowerCase())
           ? Positioned.fill(
               child: Align(
               alignment: Alignment.topCenter,
@@ -130,9 +130,9 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 child: PaletteButton(
                   'Play',
                   () {
-                    item.playItem();
+                    detailedItem.playItem();
                   },
-                  item: item,
+                  item: detailedItem,
                   icon: Icons.play_circle_outline,
                 ),
               ),
