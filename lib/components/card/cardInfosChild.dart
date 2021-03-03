@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jellyflut/components/card/TabButton.dart';
 import 'package:jellyflut/components/expandedSection.dart';
+import 'package:jellyflut/components/infosButton.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/components/unorderedList.dart';
 import 'package:jellyflut/models/item.dart';
@@ -53,17 +55,10 @@ class _CardInfosState extends State<CardInfos> {
               Text(printDuration(Duration(microseconds: item.getDuration()))),
             Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      onTap: () => setState(() {
-                            _infos = !_infos;
-                          }),
-                      child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(Icons.info_outline))),
-                ))
+                child: InfosButton(
+                    onTap: () => setState(() {
+                          _infos = !_infos;
+                        })))
           ],
         ),
         details(item, context),
@@ -151,25 +146,24 @@ Widget tabs(Item item, BuildContext context) {
           child: Column(
             children: [
               TabBar(tabs: [
-                Tab(
+                TabButton(
                   icon: Icon(
-                    Icons.info,
+                    Icons.info_outline,
                     color: Colors.black,
                   ),
                 ),
-                if (!isPerson)
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                  ),
-                Tab(
+                TabButton(
                   icon: Icon(
-                    Icons.edit,
+                    Icons.person_outline,
                     color: Colors.black,
                   ),
-                )
+                ),
+                TabButton(
+                  icon: Icon(
+                    Icons.edit_outlined,
+                    color: Colors.black,
+                  ),
+                ),
               ]),
               Flexible(
                   child: TabBarView(children: [

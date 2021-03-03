@@ -11,13 +11,13 @@ class Resume extends StatelessWidget {
     return FutureBuilder<Category>(
         future: getResumeItems(),
         builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             var _items = snapshot.data.items;
             if (_items != null && _items.isNotEmpty) {
               return body(_items);
+            } else {
+              return Container();
             }
-            return Container();
           }
           return placeholder();
         });
@@ -38,7 +38,8 @@ class Resume extends StatelessWidget {
         SizedBox(
             height: 200,
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var _item = items[index];

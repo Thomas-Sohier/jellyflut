@@ -8,7 +8,9 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:uuid/uuid.dart';
 
-class ItemPoster extends StatelessWidget {
+import '../../globals.dart';
+
+class ItemPoster extends StatefulWidget {
   ItemPoster(this.item,
       {this.textColor = Colors.white,
       this.heroTag,
@@ -27,22 +29,84 @@ class ItemPoster extends StatelessWidget {
   final String tag;
   final BoxFit boxFit;
 
+  @override
+  _ItemPosterState createState() => _ItemPosterState();
+}
+
+class _ItemPosterState extends State<ItemPoster>
+    with SingleTickerProviderStateMixin {
+  // Dpad navigation
+  FocusNode _node;
+  AnimationController _controller;
+  Animation<double> _animation;
+  int _focusAlpha = 100;
+  Color _focusColor;
+
+  @override
+  void initState() {
+    _node = FocusNode();
+    _focusColor = Colors.transparent;
+    _node.addListener(_onFocusChange);
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 100),
+        vsync: this,
+        lowerBound: 0.9,
+        upperBound: 1);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    super.initState();
+  }
+
+  void _onFocusChange() {
+    if (_node.hasFocus) {
+      _controller.forward();
+      setState(() {
+        _focusColor = Colors.white;
+      });
+    } else {
+      _controller.reverse();
+      setState(() {
+        _focusColor = Colors.transparent;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _node.dispose();
+    super.dispose();
+  }
+
   void _onTap(String heroTag) {
     Navigator.push(
       navigatorKey.currentContext,
       MaterialPageRoute(
-          builder: (context) => Details(item: item, heroTag: heroTag)),
+          builder: (context) => Details(item: widget.item, heroTag: heroTag)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    var posterHeroTag = heroTag ?? item.id + Uuid().v4();
-    return GestureDetector(
-        onTap: () => _onTap(posterHeroTag),
-        child: AspectRatio(
-            aspectRatio: widgetAspectRatio ?? item.getPrimaryAspectRatio(),
-            child: body(posterHeroTag, context)));
+    var posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
+    return RawMaterialButton(
+        onPressed: () => _onTap(posterHeroTag),
+        focusNode: _node,
+        focusColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        focusElevation: 0,
+        autofocus: false,
+        child: isAndroidTv
+            ? ScaleTransition(
+                scale: _animation,
+                alignment: Alignment.center,
+                child: AspectRatio(
+                    aspectRatio: widget.widgetAspectRatio ??
+                        widget.item.getPrimaryAspectRatio(),
+                    child: body(posterHeroTag, context)))
+            : AspectRatio(
+                aspectRatio: widget.widgetAspectRatio ??
+                    widget.item.getPrimaryAspectRatio(),
+                child: body(posterHeroTag, context)));
   }
 
   Widget body(String heroTag, BuildContext context) {
@@ -54,25 +118,26 @@ class ItemPoster extends StatelessWidget {
           children: [
             Flexible(
               child: AspectRatio(
-                  aspectRatio:
-                      widgetAspectRatio ?? item.getPrimaryAspectRatio(),
+                  aspectRatio: widget.widgetAspectRatio ??
+                      widget.item.getPrimaryAspectRatio(),
                   child: Stack(fit: StackFit.expand, children: [
                     Hero(
                         tag: heroTag,
                         child: Poster(
-                            showParent: showParent,
-                            tag: tag,
-                            boxFit: boxFit,
-                            item: item)),
+                            showParent: widget.showParent,
+                            tag: widget.tag,
+                            focusColor: _focusColor,
+                            boxFit: widget.boxFit,
+                            item: widget.item)),
                     Stack(
                       children: [
-                        if (item.isNew())
+                        if (widget.item.isNew())
                           Positioned(top: 8, left: 0, child: newBanner()),
-                        if (item.isPlayed())
+                        if (widget.item.isPlayed())
                           Positioned(top: 8, right: 0, child: playedBanner()),
                       ],
                     ),
-                    if (item.hasProgress())
+                    if (widget.item.hasProgress())
                       Positioned.fill(
                           child: Align(
                               alignment: Alignment.bottomCenter,
@@ -82,15 +147,15 @@ class ItemPoster extends StatelessWidget {
           ],
         ),
       ),
-      if (showName)
+      if (widget.showName)
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Text(
-            showParent ? item.parentName() : item.name,
+            widget.showParent ? widget.item.parentName() : widget.item.name,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             maxLines: 1,
-            style: TextStyle(color: textColor, fontSize: 14),
+            style: TextStyle(color: widget.textColor, fontSize: 14),
           ),
         )
     ]);
@@ -126,6 +191,6 @@ class ItemPoster extends StatelessWidget {
         heightFactor: 0.2,
         child: Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: ProgressBar(item: item)));
+            child: ProgressBar(item: widget.item)));
   }
 }

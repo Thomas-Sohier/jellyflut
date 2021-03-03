@@ -662,14 +662,11 @@ class Item {
   }
 
   Future<String> getItemURL({bool directPlay = false}) async {
-    var streamModel = StreamModel();
-
     await bitrateTest(size: 500000);
     await bitrateTest(size: 1000000);
     await bitrateTest(size: 3000000);
 
     if (type == 'Episode' || type == 'Movie') {
-      streamModel.setItem(this);
       return _getStreamURL(this, directPlay);
     } else if (type == 'Season' || type == 'Series') {
       return _getFirstUnplayedItemURL(directPlay);

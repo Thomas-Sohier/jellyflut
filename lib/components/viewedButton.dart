@@ -18,17 +18,50 @@ class ViewedButton extends StatefulWidget {
 }
 
 class _ViewedButtonState extends State<ViewedButton> {
+  FocusNode _node;
+  Color _focusColor;
+
+  @override
+  void initState() {
+    _focusColor = Colors.transparent;
+    _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
+    _node.addListener(_onFocusChange);
+    super.initState();
+  }
+
+  void _onFocusChange() {
+    if (_node.hasFocus) {
+      setState(() {
+        _focusColor = Colors.green;
+      });
+    } else {
+      setState(() {
+        _focusColor = Colors.transparent;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
-      child: button(),
-    );
+        color: Colors.transparent,
+        child: Container(
+            foregroundDecoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(width: 2, color: _focusColor)),
+            child: button()));
   }
 
   Widget button() {
     if (widget.item.isPlayed()) {
       return InkWell(
+          focusNode: _node,
           borderRadius: BorderRadius.all(Radius.circular(30)),
           onTap: () => unsetItemViewed(),
           child: Padding(
@@ -40,6 +73,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           ));
     } else {
       return InkWell(
+          focusNode: _node,
           borderRadius: BorderRadius.all(Radius.circular(30)),
           onTap: () => setItemViewed(),
           child: Padding(

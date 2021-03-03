@@ -8,6 +8,7 @@ import 'package:jellyflut/models/settingsDB.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/screens/settings/BackButton.dart' as bb;
 import 'package:package_info/package_info.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -32,10 +33,10 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(
-          title: Text('Settings'),
-          brightness: Brightness.dark,
-          backgroundColor: Color(0xFF252525),
-        ),
+            title: Text('Settings'),
+            brightness: Brightness.dark,
+            backgroundColor: Color(0xFF252525),
+            leading: bb.BackButton()),
         body: FutureBuilder(
             future: getSettingsInfos(),
             builder: (context, snapshot) {

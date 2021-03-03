@@ -8,6 +8,8 @@ import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
+import 'package:jellyflut/screens/home/SearchButton.dart';
+import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
@@ -28,6 +30,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
     return ChangeNotifierProvider.value(
         value: searchResult,
         child: MusicPlayerFAB(
@@ -37,40 +40,39 @@ class _HomeState extends State<Home> {
               body: Background(
                   child: RefreshIndicator(
                       onRefresh: () => _refreshItems(),
-                      child: FutureBuilder<Category>(
-                          future: getCategory(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData &&
-                                snapshot.data.items != null) {
-                              return ListView(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  children: [
-                                    SizedBox(height: 10),
-                                    Stack(children: [
-                                      SearchResult(),
-                                      Consumer<SearchProvider>(
-                                        builder: (context, value, child) {
-                                          return Visibility(
-                                              visible:
-                                                  !searchResult.showResults,
-                                              child: headerBar());
-                                        },
-                                      ),
-                                    ]),
-                                    SizedBox(height: 10),
-                                    Resume(),
-                                    buildCategory(snapshot.data),
-                                  ]);
-                            } else if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                snapshot.error != null) {
-                              return noConnectivity(snapshot.error);
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          })))),
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                              child: SizedBox(height: statusBarHeight + 10)),
+                          SliverToBoxAdapter(
+                            child: Stack(children: [
+                              SearchResult(),
+                              Consumer<SearchProvider>(
+                                builder: (context, value, child) {
+                                  return Visibility(
+                                      visible: !SearchProvider().showResults,
+                                      child: headerBar());
+                                },
+                              )
+                            ]),
+                          ),
+                          // Resume(),
+                          FutureBuilder<Category>(
+                            future: getCategory(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.data.items != null) {
+                                return buildCategory(snapshot.data);
+                              } else if (snapshot.hasError) {
+                                return noConnectivity(snapshot.error);
+                              }
+                              return SliverToBoxAdapter(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ],
+                      )))),
         ));
   }
 
@@ -99,15 +101,16 @@ class _HomeState extends State<Home> {
           ),
         ),
         Spacer(),
-        searchIcon(),
-        settingsIcon(),
+        SearchButton(),
+        SettingsButton(),
         userIcon()
       ],
     );
   }
 
   Widget noConnectivity(SocketException error) {
-    return Center(
+    return SliverToBoxAdapter(
+        child: Center(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Icon(
           Icons.wifi_off,
@@ -122,41 +125,7 @@ class _HomeState extends State<Home> {
           ),
         )
       ]),
-    );
-  }
-
-  Widget searchIcon() {
-    return InkWell(
-      onTap: () => searchResult.showResult(),
-      radius: 60,
-      borderRadius: BorderRadius.all(Radius.circular(80)),
-      child: Padding(
-          padding: const EdgeInsets.all(6),
-          child: Icon(
-            Icons.search,
-            color: Colors.white,
-            size: 28,
-          )),
-    );
-  }
-
-  Widget settingsIcon() {
-    return InkWell(
-      onTap: () => Navigator.push(
-          context,
-          SlideRightRoute(
-            page: Settings(),
-          )),
-      radius: 60,
-      borderRadius: BorderRadius.all(Radius.circular(80)),
-      child: Padding(
-          padding: const EdgeInsets.all(6),
-          child: Icon(
-            Icons.settings,
-            color: Colors.white,
-            size: 28,
-          )),
-    );
+    ));
   }
 
   Widget userIcon() {
@@ -173,14 +142,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildCategory(Category category) {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: category.items.length,
-        itemBuilder: (context, index) {
-          var _item = category.items[index];
-          return CollectionHome(_item);
-        });
+    return SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+      var _item = category.items[index];
+      return CollectionHome(_item);
+    }, childCount: category.items.length));
   }
 
   Future<Null> _refreshItems() async {

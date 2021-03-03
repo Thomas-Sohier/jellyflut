@@ -84,7 +84,7 @@ class Jellyflut extends StatelessWidget {
               navigatorKey: navigatorKey,
               theme: ThemeData(
                 primarySwatch: jellyPurple,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+                visualDensity: VisualDensity.comfortable,
               ),
               home: MyApp(),
               routes: {

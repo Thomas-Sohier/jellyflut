@@ -25,10 +25,16 @@ class _ExpandedSectionState extends State<ExpandedSection>
   void prepareAnimations() {
     expandController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    expandController.addListener(_expandListener);
     animation = CurvedAnimation(
       parent: expandController,
       curve: Curves.fastOutSlowIn,
     );
+  }
+
+  // Avoir selectable items behind card
+  void _expandListener() {
+    if (expandController.isDismissed) setState(() {});
   }
 
   void _runExpandCheck() {
@@ -53,7 +59,9 @@ class _ExpandedSectionState extends State<ExpandedSection>
 
   @override
   Widget build(BuildContext context) {
-    return SizeTransition(
-        axisAlignment: 1.0, sizeFactor: animation, child: widget.child);
+    return expandController.status != AnimationStatus.dismissed
+        ? SizeTransition(
+            axisAlignment: 1.0, sizeFactor: animation, child: widget.child)
+        : Container();
   }
 }

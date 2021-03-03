@@ -45,6 +45,7 @@ class _StreamVLCState extends State<StreamVLC>
   //
   List<double> playbackSpeeds = [0.5, 1.0, 2.0];
   int playbackSpeedIndex = 1;
+  Orientation currentOrientation;
 
   @override
   bool get wantKeepAlive => true;
@@ -53,13 +54,21 @@ class _StreamVLCState extends State<StreamVLC>
   void initState() {
     Wakelock.enable();
     streamModel = StreamModel();
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     _controller = widget.controller;
     _controller.addListener(listener);
     _startProgressTimer();
+    SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    currentOrientation = MediaQuery.of(context).orientation;
+    if (currentOrientation == Orientation.portrait) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    }
   }
 
   @override
@@ -68,8 +77,10 @@ class _StreamVLCState extends State<StreamVLC>
     _controller.removeListener(listener);
     _timer?.cancel();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    if (currentOrientation == Orientation.portrait) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    }
     super.dispose();
   }
 
