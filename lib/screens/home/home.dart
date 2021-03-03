@@ -10,6 +10,7 @@ import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/SearchButton.dart';
 import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/collectionHome.dart';
+import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,7 @@ class _HomeState extends State<Home> {
                               )
                             ]),
                           ),
-                          // Resume(),
+                          SliverToBoxAdapter(child: Resume()),
                           FutureBuilder<Category>(
                             future: getCategory(),
                             builder: (context, snapshot) {

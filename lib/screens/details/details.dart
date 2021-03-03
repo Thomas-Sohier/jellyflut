@@ -60,7 +60,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       Container(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
           constraints: BoxConstraints(maxWidth: 600),
-          child: ListView(children: [
+          child: ListView(cacheExtent: 1000, children: [
             buildElements(),
             SizedBox(
               height: 20,

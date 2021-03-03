@@ -38,8 +38,7 @@ class Resume extends StatelessWidget {
         SizedBox(
             height: 200,
             child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var _item = items[index];

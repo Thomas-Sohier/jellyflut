@@ -40,10 +40,12 @@ class _ItemPosterState extends State<ItemPoster>
   AnimationController _controller;
   Animation<double> _animation;
   Color _focusColor;
+  String posterHeroTag;
 
   @override
   void initState() {
     _node = FocusNode();
+    posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
     _focusColor = Colors.transparent;
     _node.addListener(_onFocusChange);
     _controller = AnimationController(
@@ -86,12 +88,13 @@ class _ItemPosterState extends State<ItemPoster>
 
   @override
   Widget build(BuildContext context) {
-    var posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
     return RawMaterialButton(
         onPressed: () => _onTap(posterHeroTag),
         focusNode: _node,
         focusColor: Colors.transparent,
         splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
         child: isAndroidTv
@@ -111,52 +114,54 @@ class _ItemPosterState extends State<ItemPoster>
   Widget body(String heroTag, BuildContext context) {
     return Column(children: [
       Expanded(
+        flex: 9,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: AspectRatio(
-                  aspectRatio: widget.widgetAspectRatio ??
-                      widget.item.getPrimaryAspectRatio(),
-                  child: Stack(fit: StackFit.expand, children: [
-                    Hero(
-                        tag: heroTag,
-                        child: Poster(
-                            showParent: widget.showParent,
-                            tag: widget.tag,
-                            focusColor: _focusColor,
-                            boxFit: widget.boxFit,
-                            item: widget.item)),
-                    Stack(
-                      children: [
-                        if (widget.item.isNew())
-                          Positioned(top: 8, left: 0, child: newBanner()),
-                        if (widget.item.isPlayed())
-                          Positioned(top: 8, right: 0, child: playedBanner()),
-                      ],
-                    ),
-                    if (widget.item.hasProgress())
-                      Positioned.fill(
-                          child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: progressBar())),
-                  ])),
+            AspectRatio(
+              aspectRatio: widget.widgetAspectRatio ??
+                  widget.item.getPrimaryAspectRatio(),
+              child: Stack(fit: StackFit.expand, children: [
+                Hero(
+                    tag: heroTag,
+                    child: Poster(
+                        showParent: widget.showParent,
+                        tag: widget.tag,
+                        focusColor: _focusColor,
+                        boxFit: widget.boxFit,
+                        item: widget.item)),
+                Stack(
+                  children: [
+                    if (widget.item.isNew())
+                      Positioned(top: 8, left: 0, child: newBanner()),
+                    if (widget.item.isPlayed())
+                      Positioned(top: 8, right: 0, child: playedBanner()),
+                  ],
+                ),
+                if (widget.item.hasProgress())
+                  Positioned.fill(
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: progressBar())),
+              ]),
             ),
           ],
         ),
       ),
       if (widget.showName)
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            widget.showParent ? widget.item.parentName() : widget.item.name,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            style: TextStyle(color: widget.textColor, fontSize: 14),
-          ),
-        )
+        Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                widget.showParent ? widget.item.parentName() : widget.item.name,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextStyle(color: widget.textColor, fontSize: 14),
+              ),
+            ))
     ]);
   }
 
