@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsVLC.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -45,7 +46,8 @@ class _StreamVLCState extends State<StreamVLC>
   //
   List<double> playbackSpeeds = [0.5, 1.0, 2.0];
   int playbackSpeedIndex = 1;
-  Orientation currentOrientation;
+  final Orientation currentOrientation =
+      MediaQuery.of(navigatorKey.currentContext).orientation;
 
   @override
   bool get wantKeepAlive => true;
@@ -57,18 +59,14 @@ class _StreamVLCState extends State<StreamVLC>
     _controller = widget.controller;
     _controller.addListener(listener);
     _startProgressTimer();
+    // Hide device overlays
+    // device orientation
     SystemChrome.setEnabledSystemUIOverlays([]);
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    currentOrientation = MediaQuery.of(context).orientation;
     if (currentOrientation == Orientation.portrait) {
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     }
+    super.initState();
   }
 
   @override
@@ -76,10 +74,11 @@ class _StreamVLCState extends State<StreamVLC>
     Wakelock.disable();
     _controller.removeListener(listener);
     _timer?.cancel();
+    // Show device overlays
+    // device orientation
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     if (currentOrientation == Orientation.portrait) {
-      SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      SystemChrome.setPreferredOrientations([]);
     }
     super.dispose();
   }

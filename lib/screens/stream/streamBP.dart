@@ -1,14 +1,19 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsBP.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:wakelock/wakelock.dart';
+
+import '../../main.dart';
 
 class Stream extends StatefulWidget {
   final Item item;
@@ -28,6 +33,8 @@ class _StreamState extends State<Stream> {
   Timer _timer;
   final GlobalKey _betterPlayerKey = GlobalKey();
   var aspectRatio;
+  final Orientation currentOrientation =
+      MediaQuery.of(navigatorKey.currentContext).orientation;
 
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource.network(
@@ -50,28 +57,42 @@ class _StreamState extends State<Stream> {
     return Future.value(true);
   }
 
+  void playerError() {
+    if (_betterPlayerController.videoPlayerController.value.hasError) {
+      print(
+          _betterPlayerController.videoPlayerController.value.errorDescription);
+    }
+  }
+
   @override
   void initState() {
     Wakelock.enable();
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
     _startProgressTimer();
+    // Hide device overlays
+    // device orientation
     SystemChrome.setEnabledSystemUIOverlays([]);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    if (currentOrientation == Orientation.portrait) {
+      SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    }
     super.initState();
   }
 
   @override
-  Future<void> dispose() async {
-    await Wakelock.disable();
-    await deleteActiveEncoding();
-    await _placeholderStreamController.close();
+  void dispose() {
+    Wakelock.disable();
+    deleteActiveEncoding();
+    _placeholderStreamController.close();
     _timer?.cancel();
-    streamModel.betterPlayerController.dispose();
-    await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    _betterPlayerController?.dispose();
+    // Show device overlays
+    // device orientation
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    if (currentOrientation == Orientation.portrait) {
+      SystemChrome.setPreferredOrientations([]);
+    }
     super.dispose();
   }
 
@@ -120,6 +141,31 @@ class _StreamState extends State<Stream> {
                     .round(),
                 subtitlesIndex: 0));
   }
+
+  BetterPlayerConfiguration setupPlayerControllerConfiguration(
+      {double aspectRatio = 16 / 9,
+      int startAt = 0,
+      BetterPlayerControlsConfiguration customConfiguration}) {
+    return BetterPlayerConfiguration(
+        aspectRatio: aspectRatio,
+        eventListener: (event) {
+          if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
+            Navigator.pop(context);
+            showToast(event.parameters.toString(),
+                toastLength: Toast.LENGTH_LONG);
+          }
+        },
+        fit: BoxFit.contain,
+        autoPlay: true,
+        autoDispose: true,
+        looping: false,
+        fullScreenByDefault: false,
+        allowedScreenSleep: false,
+        subtitlesConfiguration:
+            BetterPlayerSubtitlesConfiguration(fontSize: 18),
+        startAt: Duration(microseconds: startAt),
+        controlsConfiguration: customConfiguration ?? configuration());
+  }
 }
 
 BetterPlayerControlsConfiguration configuration() {
@@ -137,23 +183,6 @@ BetterPlayerControlsConfiguration configuration() {
     customControlsBuilder: (controller) => ControlsBP(),
     controlBarHeight: 40,
   );
-}
-
-BetterPlayerConfiguration setupPlayerControllerConfiguration(
-    {double aspectRatio = 16 / 9,
-    int startAt = 0,
-    BetterPlayerControlsConfiguration customConfiguration}) {
-  return BetterPlayerConfiguration(
-      aspectRatio: aspectRatio,
-      fit: BoxFit.contain,
-      autoPlay: true,
-      autoDispose: true,
-      looping: false,
-      fullScreenByDefault: false,
-      allowedScreenSleep: false,
-      subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(fontSize: 18),
-      startAt: Duration(microseconds: startAt),
-      controlsConfiguration: customConfiguration ?? configuration());
 }
 
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {

@@ -32,9 +32,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bccb1bd0-4fde-4697-870b-00d0e3550fd5" name="Default Changelist" comment="Better name for interceptor">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/asyncImage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/asyncImage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,10 +185,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1874" height="268" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1612476157764" />
-    <state x="456" y="197" key="SettingsEditor" timestamp="1612442121265">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="691" y="87" key="SettingsEditor" timestamp="1614786561492">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="456" y="170" key="SettingsEditor/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1606913265550" />
+    <state x="691" y="87" key="SettingsEditor/0.0.1920.1050/1920.-121.1920.1170@0.0.1920.1050" timestamp="1614786561492" />
     <state x="456" y="197" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1612442121265" />
     <state x="555" y="285" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1612476760711">
       <screen x="0" y="27" width="1920" height="1053" />
