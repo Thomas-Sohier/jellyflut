@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsBP.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/toast.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../../main.dart';
@@ -31,6 +31,7 @@ class _StreamState extends State<Stream> {
   BetterPlayerDataSource dataSource;
   StreamController<bool> _placeholderStreamController;
   Timer _timer;
+  FToast fToast;
   final GlobalKey _betterPlayerKey = GlobalKey();
   var aspectRatio;
   final Orientation currentOrientation =
@@ -70,6 +71,8 @@ class _StreamState extends State<Stream> {
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
     _startProgressTimer();
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     // Hide device overlays
     // device orientation
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -151,8 +154,8 @@ class _StreamState extends State<Stream> {
         eventListener: (event) {
           if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
             Navigator.pop(context);
-            showToast(event.parameters.toString(),
-                toastLength: Toast.LENGTH_LONG);
+            showToast(event.parameters.toString(), fToast,
+                duration: Duration(seconds: 3));
           }
         },
         fit: BoxFit.contain,

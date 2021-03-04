@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/toast.dart';
 
 class ItemDialogActions extends StatelessWidget {
   final Item item;
@@ -76,7 +79,9 @@ class ItemDialogActions extends StatelessWidget {
     musicPlayer.addPlaylist(
         item, musicPlayer.assetsAudioPlayer.playlist?.audios?.length);
     Navigator.pop(context);
-    showToast('${_item.name} added to playlist');
+    var fToast = FToast();
+    fToast.init(context);
+    showToast('${_item.name} added to playlist', fToast);
   }
 
   Widget _dialogListField(String text, VoidCallback onTap,

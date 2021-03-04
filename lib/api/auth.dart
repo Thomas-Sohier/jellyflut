@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:jellyflut/api/dio.dart';
 import 'package:jellyflut/api/interceptor.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/database/database.dart.bak';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/models/settingsDB.dart';

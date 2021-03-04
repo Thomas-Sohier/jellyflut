@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/stream.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:better_player/src/hls/better_player_hls_audio_track.dart';
 
@@ -25,6 +28,7 @@ class _ControlsBPState extends State<ControlsBP> {
   int subtitleSelectedIndex;
   int audioSelectedIndex;
   StreamModel streamModel;
+  FToast fToast;
 
   final Shader linearGradient = LinearGradient(
     begin: Alignment.topLeft,
@@ -44,6 +48,8 @@ class _ControlsBPState extends State<ControlsBP> {
         });
       }
     });
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     super.initState();
   }
 
@@ -322,7 +328,7 @@ class _ControlsBPState extends State<ControlsBP> {
             );
           });
     } else {
-      showToast('No subtitles found');
+      showToast('No subtitles found', fToast);
     }
   }
 
@@ -367,7 +373,7 @@ class _ControlsBPState extends State<ControlsBP> {
     } else if (remoteAudios != null && remoteAudios.isNotEmpty) {
       dialogRemoteAudio(remoteAudios);
     } else {
-      showToast('No audios found');
+      showToast('No audios found', fToast);
     }
   }
 

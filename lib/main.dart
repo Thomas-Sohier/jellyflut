@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/database/database.dart.bak';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
@@ -24,7 +24,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Future<Widget> initMain() async {
     var futures = <Future>[];
-    DatabaseService();
+    // DatabaseService();
     isAndroidTv = await detectAndroidTv();
     futures.add(isAuth());
     futures.add(Future.delayed(Duration(seconds: 2)));

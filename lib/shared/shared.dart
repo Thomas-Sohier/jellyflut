@@ -45,19 +45,6 @@ Widget gradientMask({@required Widget child, double radius = 0.5}) {
   );
 }
 
-void showToast(String msg,
-    {toastLength = Toast.LENGTH_SHORT, timeInSecForIosWeb = 1}) {
-  Fluttertoast.cancel();
-  Fluttertoast.showToast(
-      msg: msg,
-      toastLength: toastLength,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: Colors.grey[300],
-      textColor: Colors.black,
-      fontSize: 16.0);
-}
-
 double aspectRatio({String type}) {
   if (type == 'MusicAlbum') {
     return 1 / 1;

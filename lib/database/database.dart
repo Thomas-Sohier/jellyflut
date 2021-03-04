@@ -1,137 +1,68 @@
-import 'dart:async';
+// this annotation tells moor to prepare a database class that uses the tables we just defined. (Modes in our case)
+
 import 'dart:io';
-import 'package:jellyflut/models/settingsDB.dart';
-import 'package:jellyflut/models/userDB.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:jellyflut/models/server.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-final tableServer = 'server';
-final tableUser = 'user';
-final tableSettings = 'settings';
+import 'package:jellyflut/database/tables/server.dart';
+import 'package:jellyflut/database/tables/setting.dart';
+import 'package:jellyflut/database/tables/user.dart';
+import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
-class DatabaseService {
-  static final DatabaseService _instance = DatabaseService._internal();
-  Future<Database> database;
+part 'database.g.dart';
 
-  factory DatabaseService() {
-    return _instance;
-  }
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
+  });
+}
 
-  DatabaseService._internal() {
-    if (Platform.isWindows || Platform.isLinux) {
-      // Initialize FFI
-      sqfliteFfiInit();
-      // Change the default factory
-      databaseFactory = databaseFactoryFfi;
-    }
-    initDatabase();
-  }
+@UseMoor(
+    tables: [Servers, Users, Settings],
+    daos: [ServersDao, UsersDao, SettingsDao])
+class Database extends _$Database {
+  // we tell the database where to store the data with this constructor
+  Database() : super(_openConnection());
 
-  /// delete the db, create the folder and returnes its path
-  Future<String> initDb(String dbName) async {
-    var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, dbName);
+  // you should bump this number whenever you change or add a table definition. Migrations
+  // are covered later in this readme.
+  @override
+  int get schemaVersion => 1;
+}
 
-    // Make sure the directory exists
-    try {
-      await Directory(databasesPath).create(recursive: true);
-    } catch (_) {}
-    return path;
-  }
+@UseDao(tables: [Servers])
+class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
+  ServersDao(Database db) : super(db);
+  Future<List<Server>> get allWatchingServers => select(servers).get();
+  Stream<List<Server>> get watchAllServers => select(servers).watch();
+  Future<int> createEntry(Server server) => into(servers).insert(server);
+  Future<bool> updateEntry(Server server) => update(servers).replace(server);
+  Future<int> deleteEntry(Server server) => delete(servers).delete(server);
+}
 
-  void initDatabase() async {
-    database = openDatabase(
-      await initDb('jellyflut.db'),
-      // When the database is first created, create a table to store data.
-      onCreate: (db, version) {
-        db.execute('''CREATE TABLE $tableServer(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url VARCHAR,
-            name VARCHAR);
-          ''');
-        db.execute('''CREATE TABLE $tableUser(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            settingsId INTEGER,
-            serverId INTEGER,
-            name VARCHAR,
-            apiKey VARCHAR);
-          ''');
-        db.execute('''CREATE TABLE $tableSettings(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            preferredPlayer VARCHAR DEFAULT 'exoplayer',
-            maxVideoBitrate INTEGER DEFAULT 140000000,
-            preferredTranscodeAudioCodec VARCHAR DEFAULT 'auto',
-            maxAudioBitrate INTEGER DEFAULT 320000);
-          ''');
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 6,
+@UseDao(tables: [Users])
+class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
+  UsersDao(Database db) : super(db);
+  Future<List<User>> get allWatchingUsers => select(users).get();
+  Stream<List<User>> get watchAllUsers => select(users).watch();
+  Future<int> createUser(User user) => into(users).insert(user);
+  Future<bool> updateUser(User user) => update(users).replace(user);
+  Future<int> deleteUser(User user) => delete(users).delete(user);
+}
 
-      // V1 : add Server & User table
-      // V2 : edit table Server, added apiKey
-      // V3 : add Settings table
-      // V4 : add default value to Settings table
-      // V5 : add new settings
-      // V6 : add link user to settings
-    );
-  }
-
-  Future<int> insertServer(Server server) async {
-    var db = await database;
-    var id = await db.insert(tableServer, server.toMap());
-    return id;
-  }
-
-  Future<Server> getServer(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableServer, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return Server.fromMap(datas.first);
-    }
-    return null;
-  }
-
-  Future<int> insertUser(UserDB userDB) async {
-    var db = await database;
-    var id = await db.insert(tableUser, userDB.toMap());
-    return id;
-  }
-
-  Future<UserDB> getUser(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableUser, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return UserDB.fromMap(datas.first);
-    }
-    return null;
-  }
-
-  Future<int> insertSettings(SettingsDB settingsDB) async {
-    var db = await database;
-    var id = await db.insert(tableSettings, settingsDB.toMapDB(),
-        nullColumnHack: 'id');
-    return id;
-  }
-
-  Future<int> updateSettings(SettingsDB settingsDB) async {
-    var db = await database;
-    var id = await db.update(tableSettings, settingsDB.toMap(),
-        where: 'id = ?', whereArgs: [settingsDB.id]);
-    return id;
-  }
-
-  Future<SettingsDB> getSettings(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableSettings, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return SettingsDB.fromMap(datas.first);
-    }
-    return null;
-  }
+@UseDao(tables: [Settings])
+class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
+  SettingsDao(Database db) : super(db);
+  Future<List<Setting>> get allWatchingSettings => select(settings).get();
+  Stream<List<Setting>> get watchAllSettings => select(settings).watch();
+  Future<int> createEntry(Setting setting) => into(settings).insert(setting);
+  Future<bool> updateEntry(Setting setting) =>
+      update(settings).replace(setting);
+  Future<int> deleteEntry(Setting setting) => delete(settings).delete(setting);
 }

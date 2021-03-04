@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/database/database.dart.bak';
 import 'package:jellyflut/models/codecProfile.dart';
 import 'package:jellyflut/models/condition.dart';
 import 'package:jellyflut/models/deviceCodecs.dart';
