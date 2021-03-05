@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
           borderRadius: BorderRadius.all(Radius.circular(14)),
           child: CachedNetworkImage(
             imageUrl:
-                '${server.url}/Users/${user.id}/Images/Primary?quality=90',
+                '${server.url}/Users/${userJellyfin.id}/Images/Primary?quality=90',
             width: 28,
           ),
         ));

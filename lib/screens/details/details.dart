@@ -7,6 +7,7 @@ import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
+import './detailHeaderBar.dart';
 
 import 'collection.dart';
 
@@ -32,7 +33,7 @@ final playableItems = [
 ];
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  Size size;
+  MediaQueryData mediaQuery;
   String heroTag;
   Item item;
 
@@ -45,7 +46,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
+    mediaQuery = MediaQuery.of(context);
 
     return MusicPlayerFAB(
         child: Scaffold(
@@ -55,31 +56,28 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   Widget body() {
-    return Stack(alignment: Alignment.center, children: [
+    return Stack(alignment: Alignment.topCenter, children: [
       Hero(tag: heroTag, child: BackgroundImage(item: item)),
-      Container(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-          constraints: BoxConstraints(maxWidth: 600),
-          child: ListView(cacheExtent: 1000, children: [
-            buildElements(),
-            SizedBox(
-              height: 20,
-            ),
-            Collection(item),
-          ])),
+      Stack(alignment: Alignment.topCenter, children: [
+        SingleChildScrollView(
+            child: Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                constraints: BoxConstraints(maxWidth: 600),
+                child: Column(children: [
+                  SizedBox(height: mediaQuery.size.height * 0.10),
+                  if (item?.imageBlurHashes?.logo != null)
+                    logo(item, mediaQuery.size),
+                  if (item?.imageBlurHashes?.logo != null)
+                    SizedBox(height: mediaQuery.size.height * 0.05),
+                  futureItemDetails(item: item),
+                  Collection(item),
+                ]))),
+        DetailHeaderBar(
+          color: Colors.white,
+          height: mediaQuery.padding.top + mediaQuery.size.height * 0.05,
+        )
+      ]),
     ]);
-  }
-
-  Widget buildElements() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: size.height * 0.10),
-          if (item?.imageBlurHashes?.logo != null) logo(item, size),
-          SizedBox(height: size.height * 0.05),
-          futureItemDetails(item: item),
-        ]);
   }
 
   Widget logo(Item item, Size size) {
@@ -104,7 +102,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         if (snapshot.hasData) {
           return buildCard(snapshot.data[1]);
         }
-        return _placeHolderBody(item, size);
+        return _placeHolderBody(item, mediaQuery.size);
       },
     );
   }
@@ -126,7 +124,8 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
               child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: size.width * 0.5),
+                constraints:
+                    BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
                 child: PaletteButton(
                   'Play',
                   () {

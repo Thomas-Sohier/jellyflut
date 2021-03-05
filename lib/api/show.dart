@@ -6,7 +6,7 @@ import 'dio.dart';
 Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   var queryParams = <String, dynamic>{};
   queryParams['seasonId'] = seasonId;
-  queryParams['userId'] = user.id;
+  queryParams['userId'] = userJellyfin.id;
   queryParams['Fields'] =
       'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams';
 

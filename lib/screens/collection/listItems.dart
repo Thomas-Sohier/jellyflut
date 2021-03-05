@@ -60,6 +60,10 @@ class _ListItemsState extends State<ListItems> {
         builder: (context, listOfItems, child) => listOfItems.items.isNotEmpty
             ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
                 SliverToBoxAdapter(
+                    child: SizedBox(
+                  height: size.height * 0.12,
+                )),
+                SliverToBoxAdapter(
                   child: Column(children: [
                     if (listOfItems.getParentItem().collectionType ==
                             'movies' ||

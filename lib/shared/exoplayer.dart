@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart.bak';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/codecProfile.dart';
 import 'package:jellyflut/models/condition.dart';
 import 'package:jellyflut/models/deviceCodecs.dart';
@@ -78,8 +78,8 @@ const subtitleProfiles = [
 
 Future<DeviceProfile> getExoplayerProfile() async {
   var profile = DeviceProfile();
-  var db = DatabaseService();
-  var settings = await db.getSettings(userDB.settingsId);
+  var db = AppDatabase().getDatabase;
+  var settings = await db.settingsDao.getSettingsById(userApp.settingsId);
 
   if (savedDeviceProfile != null) {
     return savedDeviceProfile;

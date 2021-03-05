@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
-import 'package:jellyflut/database/database.dart.bak';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/toast.dart';
@@ -25,12 +25,10 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-  DatabaseService databaseService;
   FToast fToast;
 
   @override
   void initState() {
-    databaseService = DatabaseService();
     fToast = FToast();
     fToast.init(navigatorKey.currentState.context);
     super.initState();

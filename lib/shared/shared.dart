@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
