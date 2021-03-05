@@ -42,7 +42,7 @@ class _CollectionMainState extends State<CollectionMain> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context);
+    var headerHeight = 64.toDouble();
     listOfItems.setParentItem(widget.item);
 
     return Scaffold(
@@ -53,10 +53,12 @@ class _CollectionMainState extends State<CollectionMain> {
               widget.item.collectionType == 'books')
             ChangeNotifierProvider.value(
                 value: carrousselModel, child: CarrousselBackGroundImage()),
-          ChangeNotifierProvider.value(value: listOfItems, child: ListItems()),
+          ChangeNotifierProvider.value(
+              value: listOfItems,
+              child: ListItems(headerBarHeight: headerHeight)),
           DetailHeaderBar(
             color: Colors.white,
-            height: size.size.height * 0.1,
+            height: headerHeight,
           ),
         ])));
   }

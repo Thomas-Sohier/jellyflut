@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/screens/musicPlayer/songPlaylist.dart';
 
 class SongHeaderBar extends StatelessWidget {
@@ -11,8 +12,10 @@ class SongHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight =
+        MediaQuery.of(navigatorKey.currentContext).padding.top;
     return SizedBox(
-      height: height,
+      height: statusBarHeight + height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

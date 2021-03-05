@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/main.dart';
 
 class DetailHeaderBar extends StatelessWidget {
   final double height;
@@ -9,8 +10,10 @@ class DetailHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var statusBarHeight =
+        MediaQuery.of(navigatorKey.currentContext).padding.top;
     return Container(
-      height: height,
+      height: statusBarHeight + height,
       padding: EdgeInsets.only(left: 10, right: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -26,7 +29,7 @@ class DetailHeaderBar extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InkWell(
             onTap: () => Navigator.pop(context),

@@ -61,10 +61,10 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       Stack(alignment: Alignment.topCenter, children: [
         SingleChildScrollView(
             child: Container(
+                width: double.infinity,
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                constraints: BoxConstraints(maxWidth: 600),
                 child: Column(children: [
-                  SizedBox(height: mediaQuery.size.height * 0.10),
+                  SizedBox(height: 64),
                   if (item?.imageBlurHashes?.logo != null)
                     logo(item, mediaQuery.size),
                   if (item?.imageBlurHashes?.logo != null)
@@ -74,7 +74,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 ]))),
         DetailHeaderBar(
           color: Colors.white,
-          height: mediaQuery.padding.top + mediaQuery.size.height * 0.05,
+          height: 64,
         )
       ]),
     ]);
@@ -142,10 +142,11 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   Widget _placeHolderBody(Item item, Size size) {
     return Container(
+        constraints: BoxConstraints(maxWidth: 600),
         child: CardItemWithChild(
-      item,
-      isSkeleton: true,
-    ));
+          item,
+          isSkeleton: true,
+        ));
   }
 
   Future _getItemsCustom({@required String itemId}) async {

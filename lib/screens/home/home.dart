@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: 20,
+          width: 8,
         ),
         Hero(
             tag: 'logo',

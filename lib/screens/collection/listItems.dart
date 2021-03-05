@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ListItems extends StatefulWidget {
-  const ListItems({Key key}) : super(key: key);
+  final double headerBarHeight;
+  const ListItems({Key key, this.headerBarHeight = 64}) : super(key: key);
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -61,7 +62,7 @@ class _ListItemsState extends State<ListItems> {
             ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
                 SliverToBoxAdapter(
                     child: SizedBox(
-                  height: size.height * 0.12,
+                  height: widget.headerBarHeight,
                 )),
                 SliverToBoxAdapter(
                   child: Column(children: [
