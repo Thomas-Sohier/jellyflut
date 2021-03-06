@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
 import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/toast.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({this.onPressed});
@@ -22,48 +25,43 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-  DatabaseService databaseService;
-  String _username = '';
-  String _password = '';
-
-  _LoginFormState() {
-    _usernameFilter.addListener(_usernameListen);
-    _passwordFilter.addListener(_passwordListen);
-  }
+  FToast fToast;
 
   @override
   void initState() {
-    databaseService = DatabaseService();
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     super.initState();
   }
 
-  void _usernameListen() {
-    if (_usernameFilter.text.isEmpty) {
-      _username = '';
-    } else {
-      _username = _usernameFilter.text;
-    }
-  }
-
-  void _passwordListen() {
-    if (_passwordFilter.text.isEmpty) {
-      _password = '';
-    } else {
-      _password = _passwordFilter.text;
-    }
-  }
+  Widget toast = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(25.0),
+      color: Colors.greenAccent,
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.check),
+        SizedBox(
+          width: 12.0,
+        ),
+        Text("This is a Custom Toast"),
+      ],
+    ),
+  );
 
   void _loginPressed() async {
-    _username = _usernameFilter.text;
-    _password = _passwordFilter.text;
+    var username = _usernameFilter.text;
+    var password = _passwordFilter.text;
 
-    await login(_username, _password)
+    await login(username, password)
         .then((AuthenticationResponse response) async {
       if (response == null) return null;
-      await create(_username, response);
+      await create(username, response);
       return Navigator.pushReplacementNamed(context, '/home');
-    }).catchError((onError) =>
-            showToast(onError.toString(), toastLength: Toast.LENGTH_LONG));
+    }).catchError((onError) => log(onError.toString()));
   }
 
   @override

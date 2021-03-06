@@ -13,8 +13,10 @@ import '../../main.dart';
 VlcPlayerController _controller;
 
 void automaticStreamingSoftwareChooser({@required Item item}) async {
-  var streamingSoftwareDB =
-      await DatabaseService().getSettings(userDB.settingsId);
+  var streamingSoftwareDB = await AppDatabase()
+      .getDatabase
+      .settingsDao
+      .getSettingsById(userApp.settingsId);
   var streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
       e.toString() ==
       'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);

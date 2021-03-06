@@ -1,0 +1,57 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --target lib\main.dart -d windows --dart-define=flutter.inspector.structuredErrors=true --start-paused --web-server-debug-protocol ws --web-server-debug-backend-protocol ws --web-allow-expose-url --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/ --devtools-server-address http://127.0.0.1:9100/
+
+## exception
+
+RPCError: getIsolate: (112) Service has disappeared
+
+```
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.0.0, on Microsoft Windows [version 10.0.19042.804], locale fr-FR)
+    • Flutter version 2.0.0 at C:\Users\icecu\Documents\flutter
+    • Framework revision 60bd88df91 (2 days ago), 2021-03-03 09:13:17 -0800
+    • Engine revision 40441def69
+    • Dart version 2.12.0
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.2)
+    • Android SDK at C:\Users\icecu\AppData\Local\Android\sdk
+    • Platform android-30, build-tools 30.0.2
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b01)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+
+[✓] Visual Studio - develop for Windows (Visual Studio Community 2019 16.9.0)
+    • Visual Studio at C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+    • Visual Studio Community 2019 version 16.9.31025.194
+    • Windows 10 SDK version 10.0.19041.0
+
+[✓] Android Studio (version 4.1.0)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b01)
+
+[✓] VS Code (version 1.54.0)
+    • VS Code at C:\Users\icecu\AppData\Local\Programs\Microsoft VS Code
+    • Flutter extension version 3.17.0
+
+[✓] Connected device (3 available)
+    • Windows (desktop) • windows • windows-x64    • Microsoft Windows [version 10.0.19042.804]
+    • Chrome (web)      • chrome  • web-javascript • Google Chrome 88.0.4324.190
+    • Edge (web)        • edge    • web-javascript • Microsoft Edge 88.0.705.81
+
+• No issues found!
+```

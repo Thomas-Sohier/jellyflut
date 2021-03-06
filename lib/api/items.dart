@@ -119,7 +119,7 @@ Future<Item> getItem(String itemId,
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${user.id}/Items/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/Items/${itemId}';
 
   Response response;
   var item = Item();
@@ -165,7 +165,7 @@ Future<Category> getResumeItems(
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${user.id}/Items/Resume';
+  var url = '${server.url}/Users/${userJellyfin.id}/Items/Resume';
 
   try {
     var response = await dio.get(url, queryParameters: queryParams);
@@ -231,7 +231,7 @@ Future<Category> getItems(
       ? queryParams['CollapseBoxSetItems'] = collapseBoxSetItems
       : null;
 
-  var url = '${server.url}/Users/${user.id}/Items';
+  var url = '${server.url}/Users/${userJellyfin.id}/Items';
 
   try {
     var response =
@@ -280,10 +280,12 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
     int audioStreamIndex,
     int maxStreamingBitrate}) async {
   var streamModel = StreamModel();
-  var streamingSoftwareDB =
-      await DatabaseService().getSettings(userDB.settingsId);
+  var streamingSoftwareDB = await AppDatabase()
+      .getDatabase
+      .settingsDao
+      .getSettingsById(userApp.settingsId);
   var queryParams = <String, dynamic>{};
-  queryParams['UserId'] = user.id;
+  queryParams['UserId'] = userJellyfin.id;
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
@@ -348,7 +350,7 @@ Future<Category> searchItems(
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['ImageTypeLimit'] = imageTypeLimit;
 
-  var url = '${server.url}/Users/${user.id}/Items';
+  var url = '${server.url}/Users/${userJellyfin.id}/Items';
 
   Response response;
   var category = Category();
@@ -374,21 +376,21 @@ Future<String> contructAudioURL(
     int startTimeTicks = 0,
     bool enableRedirection = true,
     bool enableRemoteMedia = false}) async {
-  if (maxStreamingBitrate == null) {
-    var db = DatabaseService();
-    var settings = await db.getSettings(userDB.settingsId);
-    maxStreamingBitrate = settings.maxVideoBitrate;
-  }
-  var streamingSoftwareDB =
-      await DatabaseService().getSettings(userDB.settingsId);
-  var audioCodecDB = streamingSoftwareDB.preferredTranscodeAudioCodec;
+  // Get users settings
+  var settings = await AppDatabase()
+      .getDatabase
+      .settingsDao
+      .getSettingsById(userApp.settingsId);
+
+  maxStreamingBitrate ??= settings.maxVideoBitrate;
+  var audioCodecDB = settings.preferredTranscodeAudioCodec;
   var dInfo = await DeviceInfo().getCurrentDeviceInfo();
   var queryParams = <String, String>{};
-  queryParams['UserId'] = user.id;
+  queryParams['UserId'] = userJellyfin.id;
   queryParams['DeviceId'] = dInfo.id;
   queryParams['MaxStreamingBitrate'] = maxStreamingBitrate != null
       ? maxStreamingBitrate.toString()
-      : streamingSoftwareDB.maxAudioBitrate;
+      : settings.maxAudioBitrate;
   queryParams['Container'] = container;
   queryParams['TranscodingContainer'] = transcodingContainer;
   queryParams['TranscodingProtocol'] = transcodingProtocol;

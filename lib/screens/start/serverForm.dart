@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/server.dart';
 
 class ServerForm extends StatefulWidget {
   ServerForm({this.onPressed});
@@ -20,11 +20,7 @@ class _ServerFormState extends State<ServerForm> {
   final FocusNode urlFocusNode = FocusNode();
 
   void addServer() {
-    var s = Server();
-    s.name = _serverNameFilter.text;
-    s.url = _urlFilter.text;
-
-    server = s;
+    server = Server(name: _serverNameFilter.text, url: _urlFilter.text);
     widget.onPressed();
   }
 

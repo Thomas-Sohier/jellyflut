@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/user.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/toast.dart';
 
 class FavButton extends StatefulWidget {
   final Item item;
@@ -19,6 +21,7 @@ class FavButton extends StatefulWidget {
 }
 
 class _FavButtonState extends State<FavButton> {
+  var fToast;
   FocusNode _node;
   Color _focusColor;
 
@@ -27,6 +30,8 @@ class _FavButtonState extends State<FavButton> {
     _focusColor = Colors.transparent;
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     super.initState();
   }
 
@@ -89,7 +94,7 @@ class _FavButtonState extends State<FavButton> {
           setState(() {
             widget.item.userData.isFavorite = json['IsFavorite'];
           }),
-          showToast('${widget.item.name} added to favorite')
+          showToast('${widget.item.name} added to favorite', fToast)
         });
   }
 
@@ -98,7 +103,7 @@ class _FavButtonState extends State<FavButton> {
           setState(() {
             widget.item.userData.isFavorite = json['IsFavorite'];
           }),
-          showToast('${widget.item.name} removed from favorite')
+          showToast('${widget.item.name} removed from favorite', fToast)
         });
   }
 }

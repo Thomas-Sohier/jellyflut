@@ -4,11 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
-import 'package:jellyflut/models/settingsDB.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/screens/settings/BackButton.dart' as bb;
+import 'package:moor/moor.dart';
 import 'package:package_info/package_info.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -18,13 +18,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  SettingsDB settingsDB;
+  Setting setting;
   PackageInfo packageInfo;
-  DatabaseService databaseService;
+  Database db;
 
   @override
   void initState() {
-    databaseService = DatabaseService();
+    db = AppDatabase().getDatabase;
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _SettingsState extends State<Settings> {
                       tiles: [
                         SettingsTile(
                           title: 'Preferred player',
-                          subtitle: settingsDB.preferredPlayer,
+                          subtitle: setting.preferredPlayer,
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                           onPressed: (BuildContext context) =>
@@ -61,7 +61,7 @@ class _SettingsState extends State<Settings> {
                         ),
                         SettingsTile(
                           title: 'Max bitrate',
-                          subtitle: settingsDB.maxVideoBitrate.toString(),
+                          subtitle: setting.maxVideoBitrate.toString(),
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                           enabled: false,
@@ -77,7 +77,7 @@ class _SettingsState extends State<Settings> {
                       tiles: [
                         SettingsTile(
                           title: 'Transcode codec',
-                          subtitle: settingsDB.preferredTranscodeAudioCodec,
+                          subtitle: setting.preferredTranscodeAudioCodec,
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                           onPressed: (BuildContext context) =>
@@ -85,7 +85,7 @@ class _SettingsState extends State<Settings> {
                         ),
                         SettingsTile(
                           title: 'Max bitrate',
-                          subtitle: settingsDB.maxAudioBitrate.toString(),
+                          subtitle: setting.maxAudioBitrate.toString(),
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                           enabled: false,
@@ -101,7 +101,7 @@ class _SettingsState extends State<Settings> {
                       tiles: [
                         SettingsTile(
                           title: 'Version',
-                          subtitle: packageInfo.version,
+                          subtitle: packageInfo?.version ?? 'unknow',
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                         ),
@@ -119,7 +119,7 @@ class _SettingsState extends State<Settings> {
   }
 
   Future<void> getSettingsInfos() async {
-    settingsDB = await databaseService.getSettings(userDB.settingsId);
+    setting = await db.settingsDao.getSettingsById(userApp.settingsId);
     packageInfo = await PackageInfo.fromPlatform();
   }
 
@@ -133,8 +133,8 @@ class _SettingsState extends State<Settings> {
           title: Text('Select preferred video player',
               style: TextStyle(color: Colors.white)),
           content: Container(
-            width: double.maxFinite,
-            height: 250,
+            width: 250,
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
               itemCount: StreamingSoftwareName.values.length,
               itemBuilder: (context, index) {
@@ -166,8 +166,10 @@ class _SettingsState extends State<Settings> {
     );
     if (selectedEnum != null) {
       var selectedValue = selectedEnum.toLowerCase();
-      settingsDB.preferredPlayer = selectedValue;
-      await databaseService.updateSettings(settingsDB);
+      var newSetting = setting
+          .toCompanion(true)
+          .copyWith(preferredPlayer: Value(selectedValue));
+      var x = await db.settingsDao.updateSettings(newSetting);
       setState(() {});
     }
   }
@@ -182,8 +184,8 @@ class _SettingsState extends State<Settings> {
           title: Text('Select preferred transcode audio codec',
               style: TextStyle(color: Colors.white)),
           content: Container(
-            width: double.maxFinite,
-            height: 250,
+            width: 250,
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
               itemCount: TranscodeAudioCodecName.values.length,
               itemBuilder: (context, index) {
@@ -215,8 +217,10 @@ class _SettingsState extends State<Settings> {
     );
     if (selectedEnum != null) {
       var selectedValue = selectedEnum.toLowerCase();
-      settingsDB.preferredTranscodeAudioCodec = selectedValue;
-      await databaseService.updateSettings(settingsDB);
+      var newSetting = setting
+          .toCompanion(true)
+          .copyWith(preferredTranscodeAudioCodec: Value(selectedValue));
+      await db.settingsDao.updateSettings(newSetting);
       setState(() {});
     }
   }

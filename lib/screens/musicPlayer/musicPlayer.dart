@@ -55,7 +55,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
               children: [
                 SongBackground(color: Colors.grey[900]),
                 Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,

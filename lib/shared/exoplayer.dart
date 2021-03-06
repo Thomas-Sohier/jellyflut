@@ -78,8 +78,8 @@ const subtitleProfiles = [
 
 Future<DeviceProfile> getExoplayerProfile() async {
   var profile = DeviceProfile();
-  var db = DatabaseService();
-  var settings = await db.getSettings(userDB.settingsId);
+  var db = AppDatabase().getDatabase;
+  var settings = await db.settingsDao.getSettingsById(userApp.settingsId);
 
   if (savedDeviceProfile != null) {
     return savedDeviceProfile;

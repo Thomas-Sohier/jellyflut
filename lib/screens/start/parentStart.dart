@@ -50,6 +50,7 @@ class _ParentStartState extends State<ParentStart> {
           SizedBox(height: size.height * 0.05),
           Stack(children: [
             Container(
+                constraints: BoxConstraints(maxWidth: 600),
                 padding: EdgeInsets.only(top: 25),
                 child: Card(
                     margin: EdgeInsets.fromLTRB(20, 0, 20, 0),

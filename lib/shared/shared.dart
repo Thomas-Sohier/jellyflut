@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,19 +42,6 @@ Widget gradientMask({@required Widget child, double radius = 0.5}) {
     },
     child: child,
   );
-}
-
-void showToast(String msg,
-    {toastLength = Toast.LENGTH_SHORT, timeInSecForIosWeb = 1}) {
-  Fluttertoast.cancel();
-  Fluttertoast.showToast(
-      msg: msg,
-      toastLength: toastLength,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: timeInSecForIosWeb,
-      backgroundColor: Colors.grey[300],
-      textColor: Colors.black,
-      fontSize: 16.0);
 }
 
 double aspectRatio({String type}) {

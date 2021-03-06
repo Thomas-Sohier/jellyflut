@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/user.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/toast.dart';
 
 class ViewedButton extends StatefulWidget {
   final Item item;
@@ -18,6 +20,7 @@ class ViewedButton extends StatefulWidget {
 }
 
 class _ViewedButtonState extends State<ViewedButton> {
+  var fToast;
   FocusNode _node;
   Color _focusColor;
 
@@ -26,6 +29,8 @@ class _ViewedButtonState extends State<ViewedButton> {
     _focusColor = Colors.transparent;
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     super.initState();
   }
 
@@ -91,7 +96,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData.played = json['Played'];
           }),
-          showToast('${widget.item.name} marked as viewed')
+          showToast('${widget.item.name} marked as viewed', fToast)
         });
   }
 
@@ -100,7 +105,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData.played = json['Played'];
           }),
-          showToast('${widget.item.name} marked as unviewed')
+          showToast('${widget.item.name} marked as unviewed', fToast)
         });
   }
 }

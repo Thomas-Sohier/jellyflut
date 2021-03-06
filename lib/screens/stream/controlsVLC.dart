@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/stream.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/mediaStream.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/toast.dart';
 
 class ControlsVLC extends StatefulWidget {
   ControlsVLC({Key key, this.controller}) : super(key: key);
@@ -28,12 +31,14 @@ class _ControlsVLCState extends State<ControlsVLC> {
   bool _visible = false;
   StreamModel streamModel;
   Timer _timer;
+  FToast fToast;
 
   @override
   void initState() {
     streamModel = StreamModel();
     controller = widget.controller;
-
+    fToast = FToast();
+    fToast.init(navigatorKey.currentState.context);
     super.initState();
   }
 
@@ -481,7 +486,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
       );
       await controller.castToRenderer(selectedCastDeviceName);
     } else {
-      showToast('No Display Device Found!');
+      showToast('No Display Device Found!', fToast);
     }
   }
 }

@@ -8,14 +8,7 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/models/settingsDB.dart';
-import 'package:jellyflut/models/userDB.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-Future<bool> isLoggedIn() async {
-  var prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('isLoggedIn') ?? false;
-}
 
 Future<AuthenticationResponse> login(String username, String password) async {
   var login = '/Users/authenticatebyname';
@@ -42,40 +35,43 @@ Future<AuthenticationResponse> login(String username, String password) async {
 }
 
 void create(String name, AuthenticationResponse authenticationResponse) async {
-  var databaseService = DatabaseService();
-  var serverId = await databaseService.insertServer(server);
-  var settingId = await databaseService.insertSettings(SettingsDB());
-  userDB = UserDB(
-      settingsId: settingId,
-      serverId: serverId,
+  var db = AppDatabase().getDatabase;
+  var serverCompanion =
+      await ServersCompanion.insert(url: server.url, name: server.name);
+
+  var serverId = await db.serversDao.createServer(serverCompanion);
+  var settingsId = await db.settingsDao.createSettings(SettingsCompanion());
+
+  var userCompanion = await UsersCompanion.insert(
       name: name,
-      apiKey: authenticationResponse.accessToken);
-  var userId = await databaseService.insertUser(userDB);
-  userDB.id = userId;
-  await saveToSharedPreferences(serverId, settingId,
+      apiKey: authenticationResponse.accessToken,
+      settingsId: settingsId,
+      serverId: serverId);
+  var userId = await db.usersDao.createUser(userCompanion);
+  await saveToSharedPreferences(serverId, settingsId, userId,
       authenticationResponse.user.id, authenticationResponse.accessToken);
   await saveToGlobals();
 }
 
-Future<void> saveToSharedPreferences(
-    int serverId, int settingId, String userId, String apiKey) async {
+Future<void> saveToSharedPreferences(int serverId, int settingId, int userAppId,
+    String userJellyfinId, String apiKey) async {
   var sharedPreferences = await SharedPreferences.getInstance();
   await sharedPreferences.setString('apiKey', apiKey);
   await sharedPreferences.setBool('isLoggedIn', true);
   await sharedPreferences.setInt('serverId', serverId);
   await sharedPreferences.setInt('settingId', settingId);
-  await sharedPreferences.setString('userId', userId);
-  await sharedPreferences.setInt('userDBID', userDB.id);
+  await sharedPreferences.setString('userJellyfinId', userJellyfinId);
+  await sharedPreferences.setInt('userAppId', userAppId);
 }
 
 Future<void> saveToGlobals() async {
-  var databaseService = DatabaseService();
+  var db = AppDatabase().getDatabase;
   var sharedPreferences = await SharedPreferences.getInstance();
   var serverID = sharedPreferences.getInt('serverId');
-  server = await databaseService.getServer(serverID);
-  var userDBID = sharedPreferences.getInt('userDBID');
-  userDB = await databaseService.getUser(userDBID);
+  server = await db.serversDao.getServerById(serverID);
+  var userAppId = sharedPreferences.getInt('userAppId');
+  userApp = await db.usersDao.getUserById(userAppId);
   apiKey = sharedPreferences.getString('apiKey');
-  var userID = sharedPreferences.getString('userId');
-  user = await getUserById(userID: userID);
+  var userJellyfinId = sharedPreferences.getString('userJellyfinId');
+  userJellyfin = await getUserById(userID: userJellyfinId);
 }

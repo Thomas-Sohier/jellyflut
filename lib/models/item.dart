@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
@@ -774,8 +774,10 @@ class Item {
   }
 
   Future<String> createMusicURL() async {
-    var streamingSoftwareDB =
-        await DatabaseService().getSettings(userDB.settingsId);
+    var streamingSoftwareDB = await db.AppDatabase()
+        .getDatabase
+        .settingsDao
+        .getSettingsById(userApp.settingsId);
     var streamingSoftware = TranscodeAudioCodecName.values.firstWhere((e) =>
         e.toString() ==
         'TranscodeAudioCodecName.' +

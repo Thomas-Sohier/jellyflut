@@ -7,6 +7,7 @@ import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
+import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 
 class CollectionMain extends StatefulWidget {
   final Item item;
@@ -41,7 +42,7 @@ class _CollectionMainState extends State<CollectionMain> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context);
+    var headerHeight = 64.toDouble();
     listOfItems.setParentItem(widget.item);
 
     return Scaffold(
@@ -52,10 +53,13 @@ class _CollectionMainState extends State<CollectionMain> {
               widget.item.collectionType == 'books')
             ChangeNotifierProvider.value(
                 value: carrousselModel, child: CarrousselBackGroundImage()),
-          Padding(
-              padding: EdgeInsets.only(top: size.padding.top),
-              child: ChangeNotifierProvider.value(
-                  value: listOfItems, child: ListItems()))
+          ChangeNotifierProvider.value(
+              value: listOfItems,
+              child: ListItems(headerBarHeight: headerHeight)),
+          DetailHeaderBar(
+            color: Colors.white,
+            height: headerHeight,
+          ),
         ])));
   }
 }

@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ListItems extends StatefulWidget {
-  const ListItems({Key key}) : super(key: key);
+  final double headerBarHeight;
+  const ListItems({Key key, this.headerBarHeight = 64}) : super(key: key);
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -59,6 +60,10 @@ class _ListItemsState extends State<ListItems> {
     return Consumer<ListOfItems>(
         builder: (context, listOfItems, child) => listOfItems.items.isNotEmpty
             ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
+                SliverToBoxAdapter(
+                    child: SizedBox(
+                  height: widget.headerBarHeight,
+                )),
                 SliverToBoxAdapter(
                   child: Column(children: [
                     if (listOfItems.getParentItem().collectionType ==

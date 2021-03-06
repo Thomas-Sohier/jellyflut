@@ -1,137 +1,100 @@
-import 'dart:async';
+// this annotation tells moor to prepare a database class that uses the tables we just defined. (Modes in our case)
+
 import 'dart:io';
-import 'package:jellyflut/models/settingsDB.dart';
-import 'package:jellyflut/models/userDB.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:jellyflut/models/server.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-final tableServer = 'server';
-final tableUser = 'user';
-final tableSettings = 'settings';
+import 'package:jellyflut/database/tables/server.dart';
+import 'package:jellyflut/database/tables/setting.dart';
+import 'package:jellyflut/database/tables/user.dart';
+import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
-class DatabaseService {
-  static final DatabaseService _instance = DatabaseService._internal();
-  Future<Database> database;
+part 'database.g.dart';
 
-  factory DatabaseService() {
-    return _instance;
+class AppDatabase {
+  final Database _database = Database();
+
+  static final AppDatabase _appDatabase = AppDatabase._internal();
+
+  factory AppDatabase() {
+    return _appDatabase;
   }
 
-  DatabaseService._internal() {
-    if (Platform.isWindows || Platform.isLinux) {
-      // Initialize FFI
-      sqfliteFfiInit();
-      // Change the default factory
-      databaseFactory = databaseFactoryFfi;
-    }
-    initDatabase();
-  }
+  AppDatabase._internal();
 
-  /// delete the db, create the folder and returnes its path
-  Future<String> initDb(String dbName) async {
-    var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, dbName);
+  Database get getDatabase => _database;
+}
 
-    // Make sure the directory exists
-    try {
-      await Directory(databasesPath).create(recursive: true);
-    } catch (_) {}
-    return path;
-  }
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
+  });
+}
 
-  void initDatabase() async {
-    database = openDatabase(
-      await initDb('jellyflut.db'),
-      // When the database is first created, create a table to store data.
-      onCreate: (db, version) {
-        db.execute('''CREATE TABLE $tableServer(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url VARCHAR,
-            name VARCHAR);
-          ''');
-        db.execute('''CREATE TABLE $tableUser(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            settingsId INTEGER,
-            serverId INTEGER,
-            name VARCHAR,
-            apiKey VARCHAR);
-          ''');
-        db.execute('''CREATE TABLE $tableSettings(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            preferredPlayer VARCHAR DEFAULT 'exoplayer',
-            maxVideoBitrate INTEGER DEFAULT 140000000,
-            preferredTranscodeAudioCodec VARCHAR DEFAULT 'auto',
-            maxAudioBitrate INTEGER DEFAULT 320000);
-          ''');
-      },
-      // Set the version. This executes the onCreate function and provides a
-      // path to perform database upgrades and downgrades.
-      version: 6,
+@UseMoor(
+    tables: [Servers, Users, Settings],
+    daos: [ServersDao, UsersDao, SettingsDao])
+class Database extends _$Database {
+  // we tell the database where to store the data with this constructor
+  Database() : super(_openConnection());
 
-      // V1 : add Server & User table
-      // V2 : edit table Server, added apiKey
-      // V3 : add Settings table
-      // V4 : add default value to Settings table
-      // V5 : add new settings
-      // V6 : add link user to settings
-    );
-  }
+  // you should bump this number whenever you change or add a table definition. Migrations
+  // are covered later in this readme.
+  @override
+  int get schemaVersion => 1;
+}
 
-  Future<int> insertServer(Server server) async {
-    var db = await database;
-    var id = await db.insert(tableServer, server.toMap());
-    return id;
-  }
+@UseDao(tables: [Servers])
+class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
+  ServersDao(Database db) : super(db);
+  Future<List<Server>> get allWatchingServers => select(servers).get();
+  Stream<List<Server>> get watchAllServers => select(servers).watch();
+  Future<Server> getServerById(int serverId) =>
+      (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();
+  Stream<Server> watchServerById(int serverId) =>
+      (select(servers)..where((tbl) => tbl.id.equals(serverId))).watchSingle();
+  Future<int> createServer(ServersCompanion server) =>
+      into(servers).insert(server);
+  Future<bool> updateserver(ServersCompanion server) =>
+      update(servers).replace(server);
+  Future<int> deleteServer(ServersCompanion server) =>
+      delete(servers).delete(server);
+}
 
-  Future<Server> getServer(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableServer, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return Server.fromMap(datas.first);
-    }
-    return null;
-  }
+@UseDao(tables: [Users])
+class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
+  UsersDao(Database db) : super(db);
+  Future<List<User>> get allWatchingUsers => select(users).get();
+  Stream<List<User>> get watchAllUsers => select(users).watch();
+  Future<User> getUserById(int userId) =>
+      (select(users)..where((tbl) => tbl.id.equals(userId))).getSingle();
+  Stream<User> watchUserById(int userId) =>
+      (select(users)..where((tbl) => tbl.id.equals(userId))).watchSingle();
+  Future<int> createUser(UsersCompanion user) => into(users).insert(user);
+  Future<bool> updateUser(UsersCompanion user) => update(users).replace(user);
+  Future<int> deleteUser(UsersCompanion user) => delete(users).delete(user);
+}
 
-  Future<int> insertUser(UserDB userDB) async {
-    var db = await database;
-    var id = await db.insert(tableUser, userDB.toMap());
-    return id;
-  }
-
-  Future<UserDB> getUser(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableUser, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return UserDB.fromMap(datas.first);
-    }
-    return null;
-  }
-
-  Future<int> insertSettings(SettingsDB settingsDB) async {
-    var db = await database;
-    var id = await db.insert(tableSettings, settingsDB.toMapDB(),
-        nullColumnHack: 'id');
-    return id;
-  }
-
-  Future<int> updateSettings(SettingsDB settingsDB) async {
-    var db = await database;
-    var id = await db.update(tableSettings, settingsDB.toMap(),
-        where: 'id = ?', whereArgs: [settingsDB.id]);
-    return id;
-  }
-
-  Future<SettingsDB> getSettings(int id) async {
-    var db = await database;
-    List<Map> datas =
-        await db.query(tableSettings, where: 'id = ?', whereArgs: [id]);
-    if (datas.isNotEmpty) {
-      return SettingsDB.fromMap(datas.first);
-    }
-    return null;
-  }
+@UseDao(tables: [Settings])
+class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
+  SettingsDao(Database db) : super(db);
+  Future<List<Setting>> get allWatchingSettings => select(settings).get();
+  Stream<List<Setting>> get watchAllSettings => select(settings).watch();
+  Future<Setting> getSettingsById(int settingsId) =>
+      (select(settings)..where((tbl) => tbl.id.equals(settingsId))).getSingle();
+  Stream<Setting> watchSettingsById(int settingsId) =>
+      (select(settings)..where((tbl) => tbl.id.equals(settingsId)))
+          .watchSingle();
+  Future<int> createSettings(SettingsCompanion setting) =>
+      into(settings).insert(setting);
+  Future<bool> updateSettings(SettingsCompanion setting) =>
+      update(settings).replace(setting);
+  Future<int> deleteSettings(SettingsCompanion setting) =>
+      delete(settings).delete(setting);
 }
