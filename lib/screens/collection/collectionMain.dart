@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';

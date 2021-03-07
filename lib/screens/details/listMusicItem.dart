@@ -50,7 +50,7 @@ Widget body(Category category) {
   } else {
     // fill the map, foreach disc we add its music
     discsIds.forEach((id) {
-      discs['${id}'] =
+      discs['$id'] =
           category.items.where((item) => item.parentIndexNumber == id).toList();
     });
 
@@ -98,7 +98,7 @@ Widget listTitle(String index, List<Item> items) {
             child: Icon(Icons.album),
           ),
           Text(
-            'Disc ${index}',
+            'Disc $index',
             style: TextStyle(
                 color: Colors.black, fontSize: 22, fontWeight: FontWeight.w700),
           ),

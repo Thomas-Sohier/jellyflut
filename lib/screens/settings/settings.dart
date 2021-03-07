@@ -169,7 +169,7 @@ class _SettingsState extends State<Settings> {
       var newSetting = setting
           .toCompanion(true)
           .copyWith(preferredPlayer: Value(selectedValue));
-      var x = await db.settingsDao.updateSettings(newSetting);
+      await db.settingsDao.updateSettings(newSetting);
       setState(() {});
     }
   }

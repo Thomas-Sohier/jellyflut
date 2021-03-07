@@ -66,7 +66,7 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
 
   var extension = p.extension(playBackInfos.mediaSources.first.path);
 
-  var url = 'Videos/${item.id}/stream${extension}';
+  var url = 'Videos/${item.id}/stream$extension';
 
   var uri = Uri.https(
       server.url.replaceAll(RegExp('https?://'), ''), url, queryParam);
@@ -100,7 +100,7 @@ Future<String> getNewAudioSource(int audioIndex,
     var uri = Uri.parse(url);
     var queryParams = Map<String, String>.from(uri.queryParameters);
     queryParams['AudioStreamIndex'] = audioIndex.toString();
-    return await Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
+    return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
             Uri.parse(url).path, queryParams)
         .toString();
   }
@@ -120,7 +120,7 @@ Future<String> getNewSubtitleSource(int subtitleIndex,
     var uri = Uri.parse(url);
     var queryParams = Map<String, String>.from(uri.queryParameters);
     queryParams['SubtitleStreamIndex'] = subtitleIndex.toString();
-    return await Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
+    return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
             Uri.parse(url).path, queryParams)
         .toString();
   }
@@ -147,7 +147,7 @@ Future<String> getSubtitleURL(
 
   var uri = Uri.https(
       server.url.replaceAll(RegExp('http?s://'), ''),
-      '/Videos/${mediaSourceId}/${itemId}/Subtitles/${subtitleId}/0/Stream.${parsedCodec}',
+      '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec',
       queryParam);
   return uri.origin + uri.path;
 }

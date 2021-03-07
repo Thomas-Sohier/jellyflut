@@ -20,7 +20,8 @@ class _ServerFormState extends State<ServerForm> {
   final FocusNode urlFocusNode = FocusNode();
 
   void addServer() {
-    server = Server(name: _serverNameFilter.text, url: _urlFilter.text);
+    server =
+        Server(name: _serverNameFilter.text, url: _urlFilter.text, id: null);
     widget.onPressed();
   }
 
@@ -39,6 +40,8 @@ class _ServerFormState extends State<ServerForm> {
           'server name',
           textInputAction: TextInputAction.next,
           autofocus: true,
+          colorFocus: Theme.of(context).accentColor,
+          colorUnfocus: Colors.grey[200],
           onSubmitted: (_) => FocusScope.of(context).requestFocus(urlFocusNode),
           controller: _serverNameFilter,
         ),
@@ -48,6 +51,8 @@ class _ServerFormState extends State<ServerForm> {
           autofocus: false,
           textInputAction: TextInputAction.done,
           focusNode: urlFocusNode,
+          colorFocus: Theme.of(context).accentColor,
+          colorUnfocus: Colors.grey[200],
           onSubmitted: (_) {
             FocusScope.of(context).nextFocus();
             addServer();

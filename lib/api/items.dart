@@ -25,11 +25,11 @@ String getItemImageUrl(String itemId, String imageTag,
     finalType = _fallBackImg(imageBlurHashes, type);
   }
   if (type == 'Logo') {
-    return '${server.url}/Items/${itemId}/Images/${finalType}?quality=${quality}&tag=${imageTag}';
+    return '${server.url}/Items/$itemId/Images/$finalType?quality=$quality&tag=$imageTag';
   } else if (type == 'Backdrop') {
-    return '${server.url}/Items/${itemId}/Images/${finalType}?maxWidth=800&tag=${imageTag}&quality=${quality}';
+    return '${server.url}/Items/$itemId/Images/$finalType?maxWidth=800&tag=$imageTag&quality=$quality';
   } else {
-    return '${server.url}/Items/${itemId}/Images/${finalType}?maxHeight=${maxHeight}&maxWidth=${maxWidth}&tag=${imageTag}&quality=${quality}';
+    return '${server.url}/Items/$itemId/Images/$finalType?maxHeight=$maxHeight&maxWidth=$maxWidth&tag=$imageTag&quality=$quality';
   }
 }
 
@@ -75,7 +75,7 @@ String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
 }
 
 Future<int> deleteItem(String itemId) async {
-  var url = '${server.url}/Items/${itemId}';
+  var url = '${server.url}/Items/$itemId';
 
   var response = Response();
   try {
@@ -119,7 +119,7 @@ Future<Item> getItem(String itemId,
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/Items/$itemId';
 
   Response response;
   var item = Item();
@@ -303,7 +303,7 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
     queryParams['AudioStreamIndex'] = streamModel.audioStreamIndex;
   }
 
-  var url = '${server.url}/Items/${itemId}/PlaybackInfo';
+  var url = '${server.url}/Items/$itemId/PlaybackInfo';
 
   Response response;
   var playBackInfos = PlayBackInfos();
@@ -402,7 +402,7 @@ Future<String> contructAudioURL(
   queryParams['EnableRemoteMedia'] = enableRemoteMedia.toString();
   queryParams['api_key'] = apiKey;
 
-  var url = 'Audio/${itemId}/universal';
+  var url = 'Audio/$itemId/universal';
 
   var uri = Uri.https(
       server.url.replaceAll(RegExp('https?://'), ''), url, queryParams);

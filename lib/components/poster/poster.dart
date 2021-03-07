@@ -8,6 +8,7 @@ class Poster extends StatelessWidget {
   final String tag;
   final BoxFit boxFit;
   final Item item;
+  final bool isFocus;
   final Color focusColor;
   final bool showParent;
 
@@ -16,13 +17,14 @@ class Poster extends StatelessWidget {
       this.showParent = false,
       @required this.tag,
       @required this.boxFit,
+      @required this.isFocus,
       @required this.focusColor,
       @required this.item})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return isAndroidTv
+    return isFocus
         ? Container(
             decoration: BoxDecoration(
                 border: Border.all(width: 2, color: focusColor),
@@ -37,12 +39,14 @@ class Poster extends StatelessWidget {
                   tag: tag,
                   boxFit: boxFit,
                 )))
-        : AsyncImage(
-            showParent ? item.getParentId() : item.getIdBasedOnImage(),
-            item.imageTags.primary,
-            item.imageBlurHashes,
-            tag: tag,
-            boxFit: boxFit,
-          );
+        : AspectRatio(
+            aspectRatio: item.getPrimaryAspectRatio(),
+            child: AsyncImage(
+              showParent ? item.getParentId() : item.getIdBasedOnImage(),
+              item.imageTags.primary,
+              item.imageBlurHashes,
+              tag: tag,
+              boxFit: boxFit,
+            ));
   }
 }

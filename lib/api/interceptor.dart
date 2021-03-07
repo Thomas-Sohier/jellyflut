@@ -13,7 +13,7 @@ Future<String> authHeader() async {
   var token = apiKey;
 
   var auth =
-      'MediaBrowser Client=\"${name}\", Device=\"${host}\", DeviceId=\"${id}\", Version=\"${version}\"';
-  if (apiKey != null) auth = auth + ', Token="${token}"';
+      'MediaBrowser Client=\"$name\", Device=\"$host\", DeviceId=\"$id\", Version=\"$version\"';
+  if (apiKey != null) auth = auth + ', Token="$token"';
   return auth;
 }

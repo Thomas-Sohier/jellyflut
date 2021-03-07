@@ -9,7 +9,6 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/controlsBP.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/toast.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -70,7 +69,6 @@ class _StreamState extends State<Stream> {
     Wakelock.enable();
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
-    _startProgressTimer();
     fToast = FToast();
     fToast.init(navigatorKey.currentState.context);
     // Hide device overlays
@@ -86,9 +84,9 @@ class _StreamState extends State<Stream> {
   @override
   void dispose() {
     Wakelock.disable();
-    deleteActiveEncoding();
+    // deleteActiveEncoding();
     _placeholderStreamController.close();
-    _timer?.cancel();
+    // _timer?.cancel();
     _betterPlayerController?.dispose();
     // Show device overlays
     // device orientation
@@ -156,6 +154,13 @@ class _StreamState extends State<Stream> {
             Navigator.pop(context);
             showToast(event.parameters.toString(), fToast,
                 duration: Duration(seconds: 3));
+          } else if (event.betterPlayerEventType ==
+              BetterPlayerEventType.initialized) {
+            _startProgressTimer();
+          } else if (event.betterPlayerEventType ==
+              BetterPlayerEventType.finished) {
+            deleteActiveEncoding();
+            _timer?.cancel();
           }
         },
         fit: BoxFit.contain,

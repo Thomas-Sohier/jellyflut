@@ -22,7 +22,7 @@ class UnorderedList extends StatelessWidget {
       itemBuilder: (context, index) {
         var text = texts[index];
         return Text(
-          '• ${text}',
+          '• $text',
           style: TextStyle(color: textColor, fontSize: textSize),
         );
       },

@@ -11,26 +11,26 @@ class BackgroundImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Container(
-            foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
-            child: AsyncImage(
-              item.correctImageId(),
-              item.correctImageTags(),
-              item.imageBlurHashes,
-              boxFit: BoxFit.cover,
-            )),
-        foregroundDecoration: BoxDecoration(
+      foregroundDecoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.black,
-              Colors.transparent,
-              Colors.transparent,
-              Colors.black
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0, 0.2, 0.7, 1],
-          ),
-        ));
+        colors: [
+          Colors.black,
+          Colors.transparent,
+          Colors.transparent,
+          Colors.black
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: [0, 0.2, 0.7, 1],
+      )),
+      child: Container(
+          foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
+          child: AsyncImage(
+            item.correctImageId(),
+            item.correctImageTags(),
+            item.imageBlurHashes,
+            boxFit: BoxFit.cover,
+          )),
+    );
   }
 }

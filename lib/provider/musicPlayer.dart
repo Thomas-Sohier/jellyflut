@@ -105,7 +105,7 @@ class MusicPlayer extends ChangeNotifier {
           .toList()
           .sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
       value.items.asMap().forEach((index, Item _item) async {
-        await addPlaylist(_item, index);
+        addPlaylist(_item, index);
       });
     }).then((_) => assetsAudioPlayer.playlistPlayAtIndex(0));
   }

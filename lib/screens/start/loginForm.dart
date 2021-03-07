@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/toast.dart';
@@ -34,24 +31,6 @@ class _LoginFormState extends State<LoginForm> {
     super.initState();
   }
 
-  Widget toast = Container(
-    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.greenAccent,
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.check),
-        SizedBox(
-          width: 12.0,
-        ),
-        Text("This is a Custom Toast"),
-      ],
-    ),
-  );
-
   void _loginPressed() async {
     var username = _usernameFilter.text;
     var password = _passwordFilter.text;
@@ -59,9 +38,11 @@ class _LoginFormState extends State<LoginForm> {
     await login(username, password)
         .then((AuthenticationResponse response) async {
       if (response == null) return null;
-      await create(username, response);
+      create(username, response);
       return Navigator.pushReplacementNamed(context, '/home');
-    }).catchError((onError) => log(onError.toString()));
+    }).catchError((onError) {
+      showToast(onError.toString(), fToast);
+    });
   }
 
   @override
@@ -77,7 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                 Positioned.fill(
                     child: Align(
                         alignment: Alignment.centerLeft,
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: widget.onPressed,
                           child: Icon(Icons.arrow_back_ios),
                         ))),
@@ -95,6 +76,8 @@ class _LoginFormState extends State<LoginForm> {
           'username',
           controller: _usernameFilter,
           autofocus: false,
+          colorFocus: Theme.of(context).accentColor,
+          colorUnfocus: Colors.grey[200],
           textInputAction: TextInputAction.next,
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
@@ -105,6 +88,8 @@ class _LoginFormState extends State<LoginForm> {
           controller: _passwordFilter,
           obscureText: true,
           autofocus: false,
+          colorFocus: Theme.of(context).accentColor,
+          colorUnfocus: Colors.grey[200],
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _loginPressed(),
           focusNode: passwordFocusNode,

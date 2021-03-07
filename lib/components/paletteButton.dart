@@ -30,58 +30,49 @@ class PaletteButton extends StatefulWidget {
 
 class _PaletteButtonState extends State<PaletteButton> {
   FocusNode _node;
-  Color _focusColor;
 
   @override
   void initState() {
-    _focusColor = Colors.transparent;
     _node = FocusNode();
-    _node.addListener(_onFocusChange);
     super.initState();
-  }
-
-  void _onFocusChange() {
-    if (_node.hasFocus) {
-      setState(() {
-        _focusColor = Colors.white;
-      });
-    } else {
-      setState(() {
-        _focusColor = Colors.transparent;
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
-    return RawMaterialButton(
-        onPressed: widget.onPressed,
-        focusNode: _node,
-        focusColor: Colors.transparent,
-        focusElevation: 0,
+    return TextButton(
         autofocus: false,
-        child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(width: 2, color: _focusColor),
-                boxShadow: [
-                  if (_node.hasFocus)
-                    BoxShadow(
-                        color: Colors.black38, spreadRadius: 4, blurRadius: 4)
-                ],
-                borderRadius: borderRadius),
-            constraints: const BoxConstraints(
-                minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
-            child: FlatButton(
+        focusNode: _node,
+        onPressed: widget.onPressed,
+        style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
-                onPressed: widget.onPressed,
-                shape: RoundedRectangleBorder(borderRadius: borderRadius),
-                textColor: Colors.black,
-                color: Colors.transparent,
-                child: widget.item == null
-                    ? buttonDefault(widget.text, widget.icon, borderRadius)
-                    : generatedPalette(
-                        widget.item, widget.text, widget.icon, borderRadius))));
+                shape: StadiumBorder(),
+                backgroundColor: Colors.transparent,
+                textStyle: TextStyle(color: Colors.black))
+            .copyWith(side: MaterialStateProperty.resolveWith<BorderSide>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered) ||
+                states.contains(MaterialState.focused)) {
+              return BorderSide(
+                width: 2,
+                color: Colors.white,
+              );
+            }
+            return null; // defer to the default
+          },
+        )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered) ||
+                states.contains(MaterialState.focused)) {
+              return 6;
+            }
+            return null; // defer to the default
+          },
+        )),
+        child: widget.item == null
+            ? buttonDefault(widget.text, widget.icon, borderRadius)
+            : generatedPalette(
+                widget.item, widget.text, widget.icon, borderRadius));
   }
 
   Widget generatedPalette(
@@ -139,7 +130,7 @@ class _PaletteButtonState extends State<PaletteButton> {
         return AnimatedSwitcher(
             duration: const Duration(milliseconds: 1500),
             transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(child: child, opacity: animation);
+              return FadeTransition(opacity: animation, child: child);
             },
             switchInCurve: Curves.easeInToLinear,
             child: child);
@@ -157,7 +148,6 @@ class _PaletteButtonState extends State<PaletteButton> {
                 minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
             decoration: BoxDecoration(
               color: Colors.grey.shade200.withOpacity(0.5),
-              border: Border.all(width: 2, color: _focusColor),
               borderRadius: borderRadius,
             ),
             alignment: Alignment.center,

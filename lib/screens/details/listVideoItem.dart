@@ -185,8 +185,7 @@ class ListVideoItem extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                             child: GestureDetector(
                                 onTap: () async {
-                                  await automaticStreamingSoftwareChooser(
-                                      item: item);
+                                  automaticStreamingSoftwareChooser(item: item);
                                 },
                                 child: Icon(
                                   Icons.play_circle_outline,

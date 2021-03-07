@@ -97,18 +97,13 @@ class _ItemPosterState extends State<ItemPoster>
         highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
-        child: isAndroidTv
-            ? ScaleTransition(
-                scale: _animation,
-                alignment: Alignment.center,
-                child: AspectRatio(
-                    aspectRatio: widget.widgetAspectRatio ??
-                        widget.item.getPrimaryAspectRatio(),
-                    child: body(posterHeroTag, context)))
-            : AspectRatio(
+        child: ScaleTransition(
+            scale: _animation,
+            alignment: Alignment.center,
+            child: AspectRatio(
                 aspectRatio: widget.widgetAspectRatio ??
                     widget.item.getPrimaryAspectRatio(),
-                child: body(posterHeroTag, context)));
+                child: body(posterHeroTag, context))));
   }
 
   Widget body(String heroTag, BuildContext context) {
@@ -128,6 +123,7 @@ class _ItemPosterState extends State<ItemPoster>
                     child: Poster(
                         showParent: widget.showParent,
                         tag: widget.tag,
+                        isFocus: _node.hasFocus,
                         focusColor: _focusColor,
                         boxFit: widget.boxFit,
                         item: widget.item)),

@@ -42,13 +42,11 @@ class Resume extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var _item = items[index];
-                return Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: ItemPoster(
-                      _item,
-                      tag: 'Backdrop',
-                      widgetAspectRatio: 14 / 9,
-                    ));
+                return ItemPoster(
+                  _item,
+                  tag: 'Backdrop',
+                  widgetAspectRatio: 14 / 9,
+                );
               },
             ))
       ],

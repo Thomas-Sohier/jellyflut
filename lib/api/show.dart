@@ -10,7 +10,7 @@ Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   queryParams['Fields'] =
       'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams';
 
-  var url = '${server.url}/Shows/${parentId}/Episodes';
+  var url = '${server.url}/Shows/$parentId/Episodes';
 
   Response response;
   var category = Category();

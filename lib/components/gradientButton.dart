@@ -34,13 +34,12 @@ class _GradienButtonState extends State<GradienButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
         onPressed: widget.onPressed,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            side: BorderSide(color: Colors.transparent)),
-        textColor: Colors.black,
-        color: Colors.transparent,
+        style: TextButton.styleFrom(
+            shape: StadiumBorder(),
+            backgroundColor: Colors.transparent,
+            textStyle: TextStyle(color: Colors.black)),
         child: customPalette(
             widget.color1, widget.color2, widget.text, widget.icon));
   }

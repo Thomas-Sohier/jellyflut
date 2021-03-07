@@ -71,10 +71,11 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
               ),
               Spacer(),
               InkWell(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  child: Icon(Icons.chevron_right_rounded,
-                      color: Colors.white, size: 42),
-                  onTap: widget.onTap),
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                onTap: widget.onTap,
+                child: Icon(Icons.chevron_right_rounded,
+                    color: Colors.white, size: 42),
+              ),
             ])));
   }
 }

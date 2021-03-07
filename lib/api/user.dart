@@ -14,7 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dio.dart';
 
 Future<User> getUserById({@required String userID}) async {
-  var url = '${server.url}/Users/${userID}';
+  var url = '${server.url}/Users/$userID';
 
   Response response;
   var currentUser;
@@ -110,7 +110,7 @@ Future<String> getEbook(Item item) async {
   var queryParams = <String, dynamic>{};
   queryParams['api_key'] = apiKey;
 
-  var url = '${server.url}/Items/${item.id}/Download?api_key=${apiKey}';
+  var url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
 
   var dowloadPath = await getStoragePathItem(item);
   await downloadFile(url, dowloadPath);
@@ -125,7 +125,7 @@ Future<bool> isEbookDownloaded(Item item) async {
 Future<String> getStoragePathItem(Item item) async {
   var storageDir = await getTemporaryDirectory();
   var storageDirPath = storageDir.path;
-  return '${storageDirPath}/${item.name}.epub';
+  return '$storageDirPath/${item.name}.epub';
 }
 
 Future<bool> requestStorage() async {
@@ -142,7 +142,7 @@ Future<bool> requestStorage() async {
 }
 
 Future<Map<String, dynamic>> viewItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/$itemId';
 
   Response response;
   try {
@@ -154,7 +154,7 @@ Future<Map<String, dynamic>> viewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unviewItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/$itemId';
 
   Response response;
   try {
@@ -166,7 +166,7 @@ Future<Map<String, dynamic>> unviewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> favItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/$itemId';
 
   Response response;
   try {
@@ -178,7 +178,7 @@ Future<Map<String, dynamic>> favItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unfavItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/${itemId}';
+  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/$itemId';
 
   Response response;
   try {

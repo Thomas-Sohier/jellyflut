@@ -131,11 +131,8 @@ class _CollectionHomeState extends State<CollectionHome> {
         itemCount: items.length,
         itemBuilder: (context, index) {
           var _item = items[index];
-          return Padding(
-            padding: const EdgeInsets.all(8),
-            child: ItemPoster(
-              _item,
-            ),
+          return ItemPoster(
+            _item,
           );
         });
   }

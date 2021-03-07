@@ -651,7 +651,7 @@ class Item {
         type == 'Season' ||
         type == 'Series' ||
         type == 'Movie') {
-      await automaticStreamingSoftwareChooser(item: this);
+      automaticStreamingSoftwareChooser(item: this);
     } else if (type == 'Audio') {
       musicPlayer.playRemoteItem(this);
     } else if (type == 'MusicAlbum') {
@@ -782,7 +782,7 @@ class Item {
         e.toString() ==
         'TranscodeAudioCodecName.' +
             streamingSoftwareDB.preferredTranscodeAudioCodec);
-    return '${server.url}/Audio/${id}/stream.${streamingSoftware}';
+    return '${server.url}/Audio/$id/stream.$streamingSoftware';
   }
 
   List<MediaStream> getMediaStreamFromType({@required String type}) {

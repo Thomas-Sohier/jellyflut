@@ -18,7 +18,7 @@ Future<AuthenticationResponse> login(String username, String password) async {
   Response response;
   AuthenticationResponse authenticationResponse;
   try {
-    response = await dio.post('${server.url}${login}',
+    response = await dio.post('${server.url}$login',
         data: data,
         // X-Emby-Authorization needs to be set manually here
         // I don't know why...
@@ -37,12 +37,12 @@ Future<AuthenticationResponse> login(String username, String password) async {
 void create(String name, AuthenticationResponse authenticationResponse) async {
   var db = AppDatabase().getDatabase;
   var serverCompanion =
-      await ServersCompanion.insert(url: server.url, name: server.name);
+      ServersCompanion.insert(url: server.url, name: server.name);
 
   var serverId = await db.serversDao.createServer(serverCompanion);
   var settingsId = await db.settingsDao.createSettings(SettingsCompanion());
 
-  var userCompanion = await UsersCompanion.insert(
+  var userCompanion = UsersCompanion.insert(
       name: name,
       apiKey: authenticationResponse.accessToken,
       settingsId: settingsId,
