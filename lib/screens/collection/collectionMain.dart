@@ -42,7 +42,8 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     var headerHeight = 64.toDouble();
-    listOfItems.setParentItem(widget.item);
+    listOfItems.setParentItem(widget.item.id);
+    listOfItems.setTypeOfItems([widget.item.getCollectionType()]);
 
     return Scaffold(
         backgroundColor: Colors.transparent,

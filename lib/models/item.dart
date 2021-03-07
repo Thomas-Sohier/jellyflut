@@ -580,6 +580,8 @@ class Item {
       return 'MusicAlbum';
     } else if (collectionType == 'books') {
       return 'Book';
+    } else if (collectionType == 'homevideos') {
+      return 'Photo, Video';
     } else {
       return collectionType;
     }
@@ -650,7 +652,8 @@ class Item {
     if (type == 'Episode' ||
         type == 'Season' ||
         type == 'Series' ||
-        type == 'Movie') {
+        type == 'Movie' ||
+        type == 'Video') {
       automaticStreamingSoftwareChooser(item: this);
     } else if (type == 'Audio') {
       musicPlayer.playRemoteItem(this);
@@ -666,7 +669,7 @@ class Item {
     await bitrateTest(size: 1000000);
     await bitrateTest(size: 3000000);
 
-    if (type == 'Episode' || type == 'Movie') {
+    if (type == 'Episode' || type == 'Movie' || type == 'Video') {
       return _getStreamURL(this, directPlay);
     } else if (type == 'Season' || type == 'Series') {
       return _getFirstUnplayedItemURL(directPlay);

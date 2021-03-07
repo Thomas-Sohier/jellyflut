@@ -66,10 +66,9 @@ class _ListItemsState extends State<ListItems> {
                 )),
                 SliverToBoxAdapter(
                   child: Column(children: [
-                    if (listOfItems.getParentItem().collectionType ==
-                            'movies' ||
-                        listOfItems.getParentItem().collectionType == 'books')
-                      head(listOfItems.getParentItem(), context),
+                    if (listOfItems.getTypeOfItems() == 'movies' ||
+                        listOfItems.getTypeOfItems() == 'books')
+                      head(context),
                     sortItems(),
                   ]),
                 ),
@@ -120,7 +119,7 @@ class _ListItemsState extends State<ListItems> {
     );
   }
 
-  Widget head(Item item, BuildContext context) {
+  Widget head(BuildContext context) {
     return FutureBuilder<List<Item>>(
         future: listOfItems.getheaderItems(),
         builder: (context, snapshot) {

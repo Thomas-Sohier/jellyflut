@@ -51,6 +51,9 @@ double aspectRatio({String type}) {
   if (type == 'Backdrop') {
     return 16 / 9;
   }
+  if (type == 'Photo') {
+    return 1 / 1;
+  }
   return 2 / 3;
 }
 

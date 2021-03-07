@@ -37,9 +37,30 @@ class _GradienButtonState extends State<GradienButton> {
     return TextButton(
         onPressed: widget.onPressed,
         style: TextButton.styleFrom(
-            shape: StadiumBorder(),
-            backgroundColor: Colors.transparent,
-            textStyle: TextStyle(color: Colors.black)),
+                shape: StadiumBorder(),
+                padding: EdgeInsets.zero,
+                backgroundColor: Colors.transparent,
+                textStyle: TextStyle(color: Colors.black))
+            .copyWith(side: MaterialStateProperty.resolveWith<BorderSide>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered) ||
+                states.contains(MaterialState.focused)) {
+              return BorderSide(
+                width: 2,
+                color: Colors.white,
+              );
+            }
+            return null; // defer to the default
+          },
+        )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered) ||
+                states.contains(MaterialState.focused)) {
+              return 6;
+            }
+            return null; // defer to the default
+          },
+        )),
         child: customPalette(
             widget.color1, widget.color2, widget.text, widget.icon));
   }

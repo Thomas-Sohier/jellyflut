@@ -3,6 +3,7 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -95,19 +96,23 @@ class _ItemPosterState extends State<ItemPoster>
         highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
-        child: ScaleTransition(
-            scale: _animation,
-            alignment: Alignment.center,
-            child: AspectRatio(
+        child: isAndroidTv
+            ? ScaleTransition(
+                scale: _animation,
+                alignment: Alignment.center,
+                child: AspectRatio(
+                    aspectRatio: widget.widgetAspectRatio ??
+                        widget.item.getPrimaryAspectRatio(),
+                    child: body(posterHeroTag, context)))
+            : AspectRatio(
                 aspectRatio: widget.widgetAspectRatio ??
                     widget.item.getPrimaryAspectRatio(),
-                child: body(posterHeroTag, context))));
+                child: body(posterHeroTag, context)));
   }
 
   Widget body(String heroTag, BuildContext context) {
     return Column(children: [
       Expanded(
-        flex: 9,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -144,18 +149,16 @@ class _ItemPosterState extends State<ItemPoster>
         ),
       ),
       if (widget.showName)
-        Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                widget.showParent ? widget.item.parentName() : widget.item.name,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: TextStyle(color: widget.textColor, fontSize: 14),
-              ),
-            ))
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            widget.showParent ? widget.item.parentName() : widget.item.name,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: TextStyle(color: widget.textColor, fontSize: 14),
+          ),
+        )
     ]);
   }
 

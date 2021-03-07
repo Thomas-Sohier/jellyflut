@@ -6,7 +6,8 @@ import 'package:jellyflut/models/item.dart';
 class ListOfItems extends ChangeNotifier {
   List<Item> _items = <Item>[];
   final List<Item> _headerItems = <Item>[];
-  Item _parentItem;
+  String _parentItemId;
+  List<String> _typeOfItems;
   bool _sortByNameASC = false;
   bool _sortByNameDSC = false;
   bool _sortByDateASC = false;
@@ -40,12 +41,20 @@ class ListOfItems extends ChangeNotifier {
     _items.clear();
   }
 
-  Item getParentItem() {
-    return _parentItem;
+  String getParentItem() {
+    return _parentItemId;
   }
 
-  void setParentItem(Item parentItem) {
-    _parentItem = parentItem;
+  void setParentItem(String parentItemId) {
+    _parentItemId = parentItemId;
+  }
+
+  List<String> getTypeOfItems() {
+    return _typeOfItems;
+  }
+
+  void setTypeOfItems(List<String> typeOfItems) {
+    _typeOfItems = typeOfItems;
   }
 
   Future<List<Item>> getheaderItems() async {
@@ -55,7 +64,7 @@ class ListOfItems extends ChangeNotifier {
     var fields =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
     var category = await getItems(
-        parentId: _parentItem.id,
+        parentId: _parentItemId,
         limit: 5,
         fields: fields,
         filter: filter,
@@ -88,15 +97,19 @@ class ListOfItems extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showMoreItem() {
+  void showMoreItem({String filter}) {
     if (blockItemsLoading == false) {
       blockItemsLoading = true;
       getItems(
-              parentId: _parentItem.id,
-              sortBy: 'Name',
-              fields: 'DateCreated, DateAdded',
+              parentId: _parentItemId,
+              sortBy: 'SortName',
+              fields:
+                  'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
+              imageTypeLimit: 1,
+              filter: filter,
+              includeItemTypes: _typeOfItems.join(', '),
               startIndex: startIndex,
-              includeItemTypes: _parentItem.getCollectionType(),
+              // includeItemTypes: _typeOfItems,
               limit: 100)
           .then((_category) {
         addNewItems(_category.items);

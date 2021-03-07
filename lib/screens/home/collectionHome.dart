@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/user.dart';
+import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/models/item.dart';
@@ -129,12 +130,9 @@ class _CollectionHomeState extends State<CollectionHome> {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
-        itemBuilder: (context, index) {
-          var _item = items[index];
-          return ItemPoster(
-            _item,
-          );
-        });
+        itemBuilder: (context, index) => ItemPoster(
+              items[index],
+            ));
   }
 
   dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, {String key}) {
