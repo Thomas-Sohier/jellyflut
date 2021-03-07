@@ -1,0 +1,31 @@
+# Build apk.
+name: Build workflow - build apk
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+env:
+  KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+  KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+  ALIAS: ${{ secrets.ALIAS }}
+  KEY_PATH: key.jks
+
+jobs:
+  test:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - run: flutter build apk --debug          # debug
+    - run: flutter build apk --profile        # profile
+    - run: flutter build apk --split-per-abi  # release (per arch)
+
+    - name: Create a Release APK
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/app/outputs/apk/release/*.apk"
+        token: ${{ secrets.GITHUB_TOKEN }}
