@@ -21,7 +21,7 @@ jobs:
     - run: flutter analyze .
 
   build:
-    if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'main')
+    if: startsWith(github.ref, 'refs/tags/v') && github.event.base_ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
