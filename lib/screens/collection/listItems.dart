@@ -66,8 +66,8 @@ class _ListItemsState extends State<ListItems> {
                 )),
                 SliverToBoxAdapter(
                   child: Column(children: [
-                    if (listOfItems.getTypeOfItems() == 'movies' ||
-                        listOfItems.getTypeOfItems() == 'books')
+                    if (listOfItems.getTypeOfItems().contains('movies') ||
+                        listOfItems.getTypeOfItems().contains('books'))
                       head(context),
                     sortItems(),
                   ]),
