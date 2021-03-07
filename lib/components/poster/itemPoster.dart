@@ -8,8 +8,6 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../globals.dart';
-
 class ItemPoster extends StatefulWidget {
   ItemPoster(this.item,
       {this.textColor = Colors.white,

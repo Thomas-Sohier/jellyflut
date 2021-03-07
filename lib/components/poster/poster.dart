@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 
 import '../asyncImage.dart';
