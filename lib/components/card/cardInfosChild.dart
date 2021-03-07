@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jellyflut/components/card/TabButton.dart';
+import 'package:jellyflut/components/card/tabButton.dart';
 import 'package:jellyflut/components/expandedSection.dart';
 import 'package:jellyflut/components/infosButton.dart';
 import 'package:jellyflut/components/peoplesList.dart';
