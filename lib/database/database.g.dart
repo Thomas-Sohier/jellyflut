@@ -15,12 +15,12 @@ class Server extends DataClass implements Insertable<Server> {
   factory Server.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return Server(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      url: stringType.mapFromDatabaseResponse(data['${effectivePrefix}url']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      url: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}url']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
     );
   }
   @override
@@ -84,7 +84,7 @@ class Server extends DataClass implements Insertable<Server> {
   int get hashCode =>
       $mrjf($mrjc(id.hashCode, $mrjc(url.hashCode, name.hashCode)));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Server &&
           other.id == this.id &&
@@ -159,46 +159,31 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   final String _alias;
   $ServersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _urlMeta = const VerificationMeta('url');
-  GeneratedTextColumn _url;
+  GeneratedColumn<String> _url;
   @override
-  GeneratedTextColumn get url => _url ??= _constructUrl();
-  GeneratedTextColumn _constructUrl() {
-    return GeneratedTextColumn(
-      'url',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get url =>
+      _url ??= GeneratedColumn<String>('url', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, name];
   @override
-  $ServersTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'servers';
   @override
-  String get $tableName => _alias ?? 'servers';
-  @override
-  final String actualTableName = 'servers';
+  String get actualTableName => 'servers';
   @override
   VerificationContext validateIntegrity(Insertable<Server> instance,
       {bool isInserting = false}) {
@@ -226,8 +211,8 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Server.fromData(data, _db, prefix: effectivePrefix);
+    return Server.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -251,17 +236,16 @@ class User extends DataClass implements Insertable<User> {
   factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return User(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      apiKey:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}api_key']),
-      settingsId: intType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      apiKey: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}api_key']),
+      settingsId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}settings_id']),
-      serverId:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}server_id']),
+      serverId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}server_id']),
     );
   }
   @override
@@ -352,7 +336,7 @@ class User extends DataClass implements Insertable<User> {
           $mrjc(apiKey.hashCode,
               $mrjc(settingsId.hashCode, serverId.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is User &&
           other.id == this.id &&
@@ -455,71 +439,44 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   final String _alias;
   $UsersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
+  GeneratedColumn<String> _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get name =>
+      _name ??= GeneratedColumn<String>('name', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
-  GeneratedTextColumn _apiKey;
+  GeneratedColumn<String> _apiKey;
   @override
-  GeneratedTextColumn get apiKey => _apiKey ??= _constructApiKey();
-  GeneratedTextColumn _constructApiKey() {
-    return GeneratedTextColumn(
-      'api_key',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<String> get apiKey =>
+      _apiKey ??= GeneratedColumn<String>('api_key', aliasedName, false,
+          typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
-  GeneratedIntColumn _settingsId;
+  GeneratedColumn<int> _settingsId;
   @override
-  GeneratedIntColumn get settingsId => _settingsId ??= _constructSettingsId();
-  GeneratedIntColumn _constructSettingsId() {
-    return GeneratedIntColumn(
-      'settings_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get settingsId =>
+      _settingsId ??= GeneratedColumn<int>('settings_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
-  GeneratedIntColumn _serverId;
+  GeneratedColumn<int> _serverId;
   @override
-  GeneratedIntColumn get serverId => _serverId ??= _constructServerId();
-  GeneratedIntColumn _constructServerId() {
-    return GeneratedIntColumn(
-      'server_id',
-      $tableName,
-      false,
-    );
-  }
-
+  GeneratedColumn<int> get serverId =>
+      _serverId ??= GeneratedColumn<int>('server_id', aliasedName, false,
+          typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, name, apiKey, settingsId, serverId];
   @override
-  $UsersTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'users';
   @override
-  String get $tableName => _alias ?? 'users';
-  @override
-  final String actualTableName = 'users';
+  String get actualTableName => 'users';
   @override
   VerificationContext validateIntegrity(Insertable<User> instance,
       {bool isInserting = false}) {
@@ -561,8 +518,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   User map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return User.fromData(data, _db, prefix: effectivePrefix);
+    return User.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -586,17 +543,15 @@ class Setting extends DataClass implements Insertable<Setting> {
   factory Setting.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return Setting(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      preferredPlayer: stringType
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      preferredPlayer: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}preferred_player']),
-      preferredTranscodeAudioCodec: stringType.mapFromDatabaseResponse(
+      preferredTranscodeAudioCodec: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}preferred_transcode_audio_codec']),
-      maxVideoBitrate: intType
+      maxVideoBitrate: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}max_video_bitrate']),
-      maxAudioBitrate: intType
+      maxAudioBitrate: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}max_audio_bitrate']),
     );
   }
@@ -701,7 +656,7 @@ class Setting extends DataClass implements Insertable<Setting> {
           $mrjc(preferredTranscodeAudioCodec.hashCode,
               $mrjc(maxVideoBitrate.hashCode, maxAudioBitrate.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Setting &&
           other.id == this.id &&
@@ -806,60 +761,50 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   final String _alias;
   $SettingsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
+  GeneratedColumn<int> _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  GeneratedColumn<int> get id =>
+      _id ??= GeneratedColumn<int>('id', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _preferredPlayerMeta =
       const VerificationMeta('preferredPlayer');
-  GeneratedTextColumn _preferredPlayer;
+  GeneratedColumn<String> _preferredPlayer;
   @override
-  GeneratedTextColumn get preferredPlayer =>
-      _preferredPlayer ??= _constructPreferredPlayer();
-  GeneratedTextColumn _constructPreferredPlayer() {
-    return GeneratedTextColumn('preferred_player', $tableName, false,
-        defaultValue: const Constant('exoplayer'));
-  }
-
+  GeneratedColumn<String> get preferredPlayer => _preferredPlayer ??=
+      GeneratedColumn<String>('preferred_player', aliasedName, false,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          defaultValue: const Constant('exoplayer'));
   final VerificationMeta _preferredTranscodeAudioCodecMeta =
       const VerificationMeta('preferredTranscodeAudioCodec');
-  GeneratedTextColumn _preferredTranscodeAudioCodec;
+  GeneratedColumn<String> _preferredTranscodeAudioCodec;
   @override
-  GeneratedTextColumn get preferredTranscodeAudioCodec =>
-      _preferredTranscodeAudioCodec ??=
-          _constructPreferredTranscodeAudioCodec();
-  GeneratedTextColumn _constructPreferredTranscodeAudioCodec() {
-    return GeneratedTextColumn(
-        'preferred_transcode_audio_codec', $tableName, false,
-        defaultValue: const Constant('auto'));
-  }
-
+  GeneratedColumn<String> get preferredTranscodeAudioCodec =>
+      _preferredTranscodeAudioCodec ??= GeneratedColumn<String>(
+          'preferred_transcode_audio_codec', aliasedName, false,
+          typeName: 'TEXT',
+          requiredDuringInsert: false,
+          defaultValue: const Constant('auto'));
   final VerificationMeta _maxVideoBitrateMeta =
       const VerificationMeta('maxVideoBitrate');
-  GeneratedIntColumn _maxVideoBitrate;
+  GeneratedColumn<int> _maxVideoBitrate;
   @override
-  GeneratedIntColumn get maxVideoBitrate =>
-      _maxVideoBitrate ??= _constructMaxVideoBitrate();
-  GeneratedIntColumn _constructMaxVideoBitrate() {
-    return GeneratedIntColumn('max_video_bitrate', $tableName, false,
-        defaultValue: const Constant(140000000));
-  }
-
+  GeneratedColumn<int> get maxVideoBitrate => _maxVideoBitrate ??=
+      GeneratedColumn<int>('max_video_bitrate', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultValue: const Constant(140000000));
   final VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
-  GeneratedIntColumn _maxAudioBitrate;
+  GeneratedColumn<int> _maxAudioBitrate;
   @override
-  GeneratedIntColumn get maxAudioBitrate =>
-      _maxAudioBitrate ??= _constructMaxAudioBitrate();
-  GeneratedIntColumn _constructMaxAudioBitrate() {
-    return GeneratedIntColumn('max_audio_bitrate', $tableName, false,
-        defaultValue: const Constant(320000));
-  }
-
+  GeneratedColumn<int> get maxAudioBitrate => _maxAudioBitrate ??=
+      GeneratedColumn<int>('max_audio_bitrate', aliasedName, false,
+          typeName: 'INTEGER',
+          requiredDuringInsert: false,
+          defaultValue: const Constant(320000));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -869,11 +814,9 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
         maxAudioBitrate
       ];
   @override
-  $SettingsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'settings';
   @override
-  String get $tableName => _alias ?? 'settings';
-  @override
-  final String actualTableName = 'settings';
+  String get actualTableName => 'settings';
   @override
   VerificationContext validateIntegrity(Insertable<Setting> instance,
       {bool isInserting = false}) {
@@ -914,8 +857,8 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Setting.fromData(data, _db, prefix: effectivePrefix);
+    return Setting.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -949,12 +892,12 @@ abstract class _$Database extends GeneratedDatabase {
 // DaoGenerator
 // **************************************************************************
 
-mixin _$ServersDaoMixin on DatabaseAccessor<Database> {
-  $ServersTable get servers => attachedDatabase.servers;
-}
 mixin _$UsersDaoMixin on DatabaseAccessor<Database> {
   $UsersTable get users => attachedDatabase.users;
 }
 mixin _$SettingsDaoMixin on DatabaseAccessor<Database> {
   $SettingsTable get settings => attachedDatabase.settings;
+}
+mixin _$ServersDaoMixin on DatabaseAccessor<Database> {
+  $ServersTable get servers => attachedDatabase.servers;
 }

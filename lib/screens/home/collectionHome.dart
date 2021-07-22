@@ -47,6 +47,8 @@ class _CollectionHomeState extends State<CollectionHome> {
       builder: (context, snapshot) {
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
+          // If no element in category then we hide it
+          if (snapshot.data.isEmpty) return Container();
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

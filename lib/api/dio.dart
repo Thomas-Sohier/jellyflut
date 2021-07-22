@@ -1,4 +1,6 @@
 // or new Dio with a BaseOptions instance.
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 import '../globals.dart';
@@ -12,7 +14,8 @@ BaseOptions options = BaseOptions(
 Dio dio = Dio(options)
   ..interceptors.addAll(
     [
-      InterceptorsWrapper(onRequest: (RequestOptions requestOptions) async {
+      InterceptorsWrapper(onRequest: (RequestOptions requestOptions,
+          RequestInterceptorHandler handler) async {
         dio.interceptors.requestLock.lock();
         var token = apiKey;
         var authEmby = await authHeader();
@@ -21,9 +24,8 @@ Dio dio = Dio(options)
           requestOptions.queryParameters['api_key'] = token;
         }
         requestOptions.headers['X-Emby-Authorization'] = authEmby;
+        handler.next(requestOptions);
         dio.interceptors.requestLock.unlock();
-        return requestOptions;
-      }),
-      // other interceptor
+      })
     ],
   );

@@ -83,25 +83,24 @@ class ItemDialogActions extends StatelessWidget {
   }
 
   Widget _dialogListField(String text, VoidCallback onTap,
-      {double paddingTop = 10,
-      double paddingBottom = 10,
+      {IconData icon,
       Color splashColor,
       Color fontColor,
-      IconData icon,
+      double paddingTop = 10,
+      double paddingBottom = 10,
       double fontSize = 18}) {
     return InkWell(
       onTap: onTap,
       splashColor: splashColor,
       child: Row(
         children: [
-          if (icon != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Icon(
-                icon,
-                color: fontColor,
-              ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Icon(
+              icon,
+              color: fontColor,
             ),
+          ),
           Padding(
             padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom),
             child: Text(

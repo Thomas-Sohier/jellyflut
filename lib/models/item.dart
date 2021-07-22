@@ -4,14 +4,13 @@
 
 import 'dart:convert';
 
-import 'package:fereader/fereader.dart';
+// import 'package:fereader/fereader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart' as db;
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
@@ -723,12 +722,12 @@ class Item {
     if (path != null) {
       //var sharedPreferences = await SharedPreferences.getInstance();
 
-      Fereader.setConfig(
-        themeColor: Theme.of(navigatorKey.currentContext).primaryColor,
-        scrollDirection: EpubScrollDirection.VERTICAL,
-        allowSharing: true,
-        enableTts: true,
-      );
+      // Fereader.setConfig(
+      //   themeColor: Theme.of(navigatorKey.currentContext).primaryColor,
+      //   scrollDirection: EpubScrollDirection.VERTICAL,
+      //   allowSharing: true,
+      //   enableTts: true,
+      // );
 
       //TODO save locator
       /* dynamic book;
@@ -742,9 +741,9 @@ class Item {
         sharedPreferences.setString(path, locator);
       });
       */
-      Fereader.open(
-        path,
-      );
+      // Fereader.open(
+      //   path,
+      // );
     }
   }
 

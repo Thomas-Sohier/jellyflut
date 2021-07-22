@@ -50,23 +50,6 @@ class Database extends _$Database {
   int get schemaVersion => 1;
 }
 
-@UseDao(tables: [Servers])
-class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
-  ServersDao(Database db) : super(db);
-  Future<List<Server>> get allWatchingServers => select(servers).get();
-  Stream<List<Server>> get watchAllServers => select(servers).watch();
-  Future<Server> getServerById(int serverId) =>
-      (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();
-  Stream<Server> watchServerById(int serverId) =>
-      (select(servers)..where((tbl) => tbl.id.equals(serverId))).watchSingle();
-  Future<int> createServer(ServersCompanion server) =>
-      into(servers).insert(server);
-  Future<bool> updateserver(ServersCompanion server) =>
-      update(servers).replace(server);
-  Future<int> deleteServer(ServersCompanion server) =>
-      delete(servers).delete(server);
-}
-
 @UseDao(tables: [Users])
 class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
   UsersDao(Database db) : super(db);
@@ -97,4 +80,21 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
       update(settings).replace(setting);
   Future<int> deleteSettings(SettingsCompanion setting) =>
       delete(settings).delete(setting);
+}
+
+@UseDao(tables: [Servers])
+class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
+  ServersDao(Database db) : super(db);
+  Future<List<Server>> get allWatchingServers => select(servers).get();
+  Stream<List<Server>> get watchAllServers => select(servers).watch();
+  Future<Server> getServerById(int serverId) =>
+      (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();
+  Stream<Server> watchServerById(int serverId) =>
+      (select(servers)..where((tbl) => tbl.id.equals(serverId))).watchSingle();
+  Future<int> createServer(ServersCompanion server) =>
+      into(servers).insert(server);
+  Future<bool> updateserver(ServersCompanion server) =>
+      update(servers).replace(server);
+  Future<int> deleteServer(ServersCompanion server) =>
+      delete(servers).delete(server);
 }

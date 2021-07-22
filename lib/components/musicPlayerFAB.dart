@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart'
@@ -22,9 +24,10 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.assetsAudioPlayer?.current?.value?.audio
-            ?.duration?.inMilliseconds ??
-        0;
+    _playBackTime = musicPlayer.assetsAudioPlayer.current.hasValue
+        ? musicPlayer
+            .assetsAudioPlayer.current.value?.audio?.duration?.inMilliseconds
+        : 0;
     playerListener();
   }
 
@@ -148,7 +151,8 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   bool isInit() {
-    if (musicPlayer.assetsAudioPlayer != null) {
+    if (musicPlayer.assetsAudioPlayer != null &&
+        musicPlayer.assetsAudioPlayer.current.hasValue) {
       return musicPlayer.assetsAudioPlayer.current.value != null ||
           musicPlayer.assetsAudioPlayer.isPlaying.value;
     }

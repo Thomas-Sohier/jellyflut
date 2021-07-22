@@ -41,12 +41,9 @@ void automaticStreamingSoftwareChooser({@required Item item}) async {
 }
 
 VlcPlayerController initVlcController(String url, Item item) {
-  return VlcPlayerController.network(
+  var vlcPlayerController = VlcPlayerController.network(
     url,
     autoPlay: true,
-    onInit: () async {
-      await _controller.startRendererScanning();
-    },
     options: VlcPlayerOptions(
         advanced: VlcAdvancedOptions([
           VlcAdvancedOptions.networkCaching(2000),
@@ -55,4 +52,10 @@ VlcPlayerController initVlcController(String url, Item item) {
           '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
         ]),
   );
+
+  vlcPlayerController.addOnInitListener(() async {
+    await vlcPlayerController.startRendererScanning();
+  });
+
+  return vlcPlayerController;
 }

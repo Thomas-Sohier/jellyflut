@@ -12,7 +12,6 @@ import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/shared/toast.dart';
 import 'package:provider/provider.dart';
-import 'package:better_player/src/hls/better_player_hls_audio_track.dart';
 
 class ControlsBP extends StatefulWidget {
   const ControlsBP();
@@ -364,7 +363,8 @@ class _ControlsBPState extends State<ControlsBP> {
   }
 
   void changeAudio(BuildContext context) {
-    var hlsAudios = streamModel.betterPlayerController.betterPlayerAudioTracks;
+    var hlsAudios =
+        streamModel.betterPlayerController.betterPlayerAsmsAudioTracks;
     var remoteAudios = streamModel.item.mediaStreams
         .where((element) => element.type.trim().toLowerCase() == 'audio')
         .toList();
@@ -426,7 +426,7 @@ class _ControlsBPState extends State<ControlsBP> {
         });
   }
 
-  void dialogHLSAudio(List<BetterPlayerHlsAudioTrack> audios) {
+  void dialogHLSAudio(List<BetterPlayerAsmsAudioTrack> audios) {
     showDialog(
         context: context,
         builder: (BuildContext context) {

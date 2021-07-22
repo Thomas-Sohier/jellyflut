@@ -24,13 +24,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  SearchProvider searchResult = SearchProvider();
+  SearchProvider searchProvider;
+
+  @override
+  void initState() {
+    searchProvider = SearchProvider();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var statusBarHeight = MediaQuery.of(context).padding.top;
-    return ChangeNotifierProvider.value(
-        value: searchResult,
+    return ChangeNotifierProvider<SearchProvider>.value(
+        value: searchProvider,
         child: MusicPlayerFAB(
           child: Scaffold(
               extendBody: true,

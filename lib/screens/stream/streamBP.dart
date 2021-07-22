@@ -40,9 +40,6 @@ class _StreamState extends State<Stream> {
     dataSource = BetterPlayerDataSource.network(
       widget.streamUrl,
       subtitles: await getSubtitles(streamModel.item),
-      useHlsTracks: false,
-      useHlsAudioTracks: false,
-      useHlsSubtitles: false,
     );
     aspectRatio = streamModel.item.getAspectRatio();
 

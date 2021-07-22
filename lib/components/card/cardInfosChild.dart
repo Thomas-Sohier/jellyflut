@@ -21,7 +21,7 @@ class CardInfos extends StatefulWidget {
   State<StatefulWidget> createState() => _CardInfosState();
 }
 
-bool _infos;
+bool _infos = false;
 var audioValue;
 var subValue;
 var audioList;
