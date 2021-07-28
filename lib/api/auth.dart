@@ -28,7 +28,7 @@ Future<AuthenticationResponse> login(String username, String password) async {
     log(dioError.message);
     return Future.error(dioError.error);
   } catch (e) {
-    log(e);
+    log(e.toString());
     return Future.error(e);
   }
   return authenticationResponse;
@@ -68,10 +68,10 @@ Future<void> saveToGlobals() async {
   var db = AppDatabase().getDatabase;
   var sharedPreferences = await SharedPreferences.getInstance();
   var serverID = sharedPreferences.getInt('serverId');
-  server = await db.serversDao.getServerById(serverID);
+  server = await db.serversDao.getServerById(serverID!);
   var userAppId = sharedPreferences.getInt('userAppId');
-  userApp = await db.usersDao.getUserById(userAppId);
+  userApp = await db.usersDao.getUserById(userAppId!);
   apiKey = sharedPreferences.getString('apiKey');
   var userJellyfinId = sharedPreferences.getString('userJellyfinId');
-  userJellyfin = await getUserById(userID: userJellyfinId);
+  userJellyfin = await getUserById(userID: userJellyfinId!);
 }

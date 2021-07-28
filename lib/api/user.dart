@@ -29,7 +29,7 @@ Future<User> getUserById({@required String userID}) async {
 }
 
 Future<User> getCurrentUser() async {
-  var url = '${server.url}/Users/${userJellyfin.id}';
+  var url = '${server.url}/Users/${userJellyfin!.id}';
 
   Response response;
   var currentUser;
@@ -57,7 +57,7 @@ Future<List<Item>> getLatestMedia({
   queryParams['ImageTypeLimit'] = imageTypeLimit;
   queryParams['EnableImageTypes'] = enableImageTypes;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items/Latest';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items/Latest';
 
   Response response;
   var items = <Item>[];
@@ -77,7 +77,7 @@ Future<Category> getCategory({String parentId, int limit = 10}) async {
   queryParams['Limit'] = limit;
   if (parentId != null) queryParams['ParentId'] = parentId;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items';
 
   Response response;
   var category = Category();
@@ -142,7 +142,7 @@ Future<bool> requestStorage() async {
 }
 
 Future<Map<String, dynamic>> viewItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/$itemId';
+  var url = '${server.url}/Users/${userJellyfin!.id}/PlayedItems/$itemId';
 
   Response response;
   try {
@@ -154,7 +154,7 @@ Future<Map<String, dynamic>> viewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unviewItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/PlayedItems/$itemId';
+  var url = '${server.url}/Users/${userJellyfin!.id}/PlayedItems/$itemId';
 
   Response response;
   try {
@@ -166,7 +166,7 @@ Future<Map<String, dynamic>> unviewItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> favItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/$itemId';
+  var url = '${server.url}/Users/${userJellyfin!.id}/FavoriteItems/$itemId';
 
   Response response;
   try {
@@ -178,7 +178,7 @@ Future<Map<String, dynamic>> favItem(String itemId) async {
 }
 
 Future<Map<String, dynamic>> unfavItem(String itemId) async {
-  var url = '${server.url}/Users/${userJellyfin.id}/FavoriteItems/$itemId';
+  var url = '${server.url}/Users/${userJellyfin!.id}/FavoriteItems/$itemId';
 
   Response response;
   try {

@@ -15,7 +15,7 @@ import '../globals.dart';
 import 'dio.dart';
 
 String getItemImageUrl(String itemId, String imageTag,
-    {ImageBlurHashes imageBlurHashes,
+    {ImageBlurHashes? imageBlurHashes,
     int maxHeight = 1920,
     int maxWidth = 1080,
     String type = 'Primary',
@@ -34,7 +34,7 @@ String getItemImageUrl(String itemId, String imageTag,
 }
 
 String _fallBackImg(ImageBlurHashes imageBlurHashes, String tag) {
-  String hash;
+  var hash = 'hash';
   if (tag == 'Primary') {
     hash = _fallBackPrimary(imageBlurHashes);
   } else if (tag == 'Backdrop') {
@@ -93,7 +93,7 @@ Future<Item> getItem(String itemId,
     String sortOrder = 'Ascending',
     String mediaType = 'Audio%2CVideo',
     String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
-    String includeItemTypes,
+    String? includeItemTypes,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
@@ -119,17 +119,15 @@ Future<Item> getItem(String itemId,
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items/$itemId';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items/$itemId';
 
-  Response response;
-  var item = Item();
   try {
-    response = await dio.get(url, queryParameters: queryParams);
-    item = Item.fromMap(response.data);
+    var response = await dio.get(url, queryParameters: queryParams);
+    return Item.fromMap(response.data);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return item;
 }
 
 Future<Category> getResumeItems(
@@ -139,7 +137,7 @@ Future<Category> getResumeItems(
     String sortOrder = '',
     String mediaType = 'Video',
     String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
-    String includeItemTypes,
+    String? includeItemTypes,
     int limit = 12,
     int startIndex = 0,
     int imageTypeLimit = 1,
@@ -165,15 +163,15 @@ Future<Category> getResumeItems(
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items/Resume';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items/Resume';
 
   try {
     var response = await dio.get(url, queryParameters: queryParams);
     return parseCategory(response.data);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return null;
 }
 
 Category parseCategory(Map<String, dynamic> data) {
@@ -181,16 +179,16 @@ Category parseCategory(Map<String, dynamic> data) {
 }
 
 Future<Category> getItems(
-    {String parentId,
-    String filter,
+    {String? parentId,
+    String? filter,
     bool recursive = true,
     String sortBy = 'PremiereDate',
     String sortOrder = 'Ascending',
-    String mediaType,
+    String? mediaType,
     String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
-    String includeItemTypes,
-    String albumArtistIds,
-    String personIds,
+    String? includeItemTypes,
+    String? albumArtistIds,
+    String? personIds,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
@@ -199,48 +197,38 @@ Future<Category> getItems(
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
   var queryParams = <String, dynamic>{};
-  parentId != null ? queryParams['ParentId'] = parentId : null;
-  filter != null ? queryParams['Filters'] = filter : null;
-  recursive != null ? queryParams['Recursive'] = recursive : null;
-  sortBy != null ? queryParams['SortBy'] = sortBy : null;
-  sortOrder != null ? queryParams['SortOrder'] = sortOrder : null;
-  includeItemTypes != null
-      ? queryParams['IncludeItemTypes'] = includeItemTypes
-      : null;
-  imageTypeLimit != null
-      ? queryParams['ImageTypeLimit'] = imageTypeLimit
-      : null;
-  enableImageTypes != null
-      ? queryParams['EnableImageTypes'] = enableImageTypes
-      : null;
-  startIndex != null ? queryParams['StartIndex'] = startIndex : null;
-  mediaType != null ? queryParams['MediaTypes'] = mediaType : null;
-  limit != null ? queryParams['Limit'] = limit : null;
-  fields != null ? queryParams['Fields'] = fields : null;
-  excludeLocationTypes != null
-      ? queryParams['ExcludeLocationTypes'] = excludeLocationTypes
-      : null;
   albumArtistIds != null
       ? queryParams['AlbumArtistIds'] = albumArtistIds
       : null;
+  includeItemTypes != null
+      ? queryParams['IncludeItemTypes'] = includeItemTypes
+      : null;
   personIds != null ? queryParams['PersonIds'] = personIds : null;
-  enableTotalRecordCount != null
-      ? queryParams['EnableTotalRecordCount'] = enableTotalRecordCount
-      : null;
-  collapseBoxSetItems != null
-      ? queryParams['CollapseBoxSetItems'] = collapseBoxSetItems
-      : null;
+  parentId != null ? queryParams['ParentId'] = parentId : null;
+  filter != null ? queryParams['Filters'] = filter : null;
+  mediaType != null ? queryParams['MediaTypes'] = mediaType : null;
+  queryParams['SortBy'] = sortBy;
+  queryParams['SortOrder'] = sortOrder;
+  queryParams['ImageTypeLimit'] = imageTypeLimit;
+  queryParams['EnableImageTypes'] = enableImageTypes;
+  queryParams['StartIndex'] = startIndex;
+  queryParams['Recursive'] = recursive;
+  queryParams['Limit'] = limit;
+  queryParams['Fields'] = fields;
+  queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
+  queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
+  queryParams['CollapseBoxSetItems'] = collapseBoxSetItems;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items';
 
   try {
     var response =
         await dio.get<Map<String, dynamic>>(url, queryParameters: queryParams);
-    return foundation.compute(parseCategory, response.data);
+    return foundation.compute(parseCategory, response.data!);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return null;
 }
 
 void itemProgress(Item item,
@@ -249,7 +237,7 @@ void itemProgress(Item item,
     bool canSeek = true,
     int positionTicks = 0,
     int volumeLevel = 100,
-    int subtitlesIndex}) {
+    int? subtitlesIndex}) {
   var mediaPlayedInfos = MediaPlayedInfos();
   mediaPlayedInfos.isMuted = isMuted;
   mediaPlayedInfos.isPaused = isPaused;
@@ -263,11 +251,11 @@ void itemProgress(Item item,
   var url = '${server.url}/Sessions/Playing/Progress';
 
   var _mediaPlayedInfos = mediaPlayedInfos.toJson();
-  _mediaPlayedInfos.removeWhere((key, value) => key == null || value == null);
+  _mediaPlayedInfos.removeWhere((key, value) => value == null);
 
   var _json = json.encode(_mediaPlayedInfos);
 
-  dio.options.contentType = 'application/json';
+  dio.options.contentType = 'apthrow (e.toString());plication/json';
   dio
       .post(url, data: _json)
       .then((_) => print('progress ok'))
@@ -276,52 +264,45 @@ void itemProgress(Item item,
 
 Future<PlayBackInfos> playbackInfos(String json, String itemId,
     {startTimeTick = 0,
-    int subtitleStreamIndex,
-    int audioStreamIndex,
-    int maxStreamingBitrate}) async {
+    int? subtitleStreamIndex,
+    int? audioStreamIndex,
+    int? maxStreamingBitrate}) async {
   var streamModel = StreamModel();
-  var streamingSoftwareDB = await AppDatabase()
-      .getDatabase
-      .settingsDao
-      .getSettingsById(userApp.settingsId);
   var queryParams = <String, dynamic>{};
-  queryParams['UserId'] = userJellyfin.id;
+  queryParams['UserId'] = userJellyfin!.id;
   queryParams['StartTimeTicks'] = startTimeTick;
   queryParams['IsPlayback'] = true;
   queryParams['AutoOpenLiveStream'] = true;
-  queryParams['MaxStreamingBitrate'] =
-      maxStreamingBitrate ?? streamingSoftwareDB.maxVideoBitrate;
+  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
   queryParams['MediaSourceId'] = itemId;
   if (subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
-  } else if (streamModel.subtitleStreamIndex != null) {
+  } else {
     queryParams['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex;
   }
   if (audioStreamIndex != null) {
     queryParams['AudioStreamIndex'] = audioStreamIndex;
-  } else if (streamModel.audioStreamIndex != null) {
+  } else {
     queryParams['AudioStreamIndex'] = streamModel.audioStreamIndex;
   }
 
   var url = '${server.url}/Items/$itemId/PlaybackInfo';
 
-  Response response;
-  var playBackInfos = PlayBackInfos();
   try {
-    response = await dio.post(
+    var response = await dio.post(
       url,
       queryParameters: queryParams,
       data: json,
     );
-    playBackInfos = PlayBackInfos.fromMap(response.data);
+    return PlayBackInfos.fromMap(response.data);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return playBackInfos;
 }
 
 Future<Category> searchItems(
-    {@required String searchTerm,
+    {required String searchTerm,
     bool includePeople = false,
     bool includeMedia = true,
     bool includeGenres = false,
@@ -334,7 +315,7 @@ Future<Category> searchItems(
     bool recursive = true,
     bool enableTotalRecordCount = false,
     int imageTypeLimit = 1,
-    String mediaTypes}) async {
+    String? mediaTypes}) async {
   var queryParams = <String, dynamic>{};
   queryParams['searchTerm'] = searchTerm;
   queryParams['IncludePeople'] = includePeople;
@@ -350,25 +331,23 @@ Future<Category> searchItems(
   queryParams['EnableTotalRecordCount'] = enableTotalRecordCount;
   queryParams['ImageTypeLimit'] = imageTypeLimit;
 
-  var url = '${server.url}/Users/${userJellyfin.id}/Items';
+  var url = '${server.url}/Users/${userJellyfin!.id}/Items';
 
-  Response response;
-  var category = Category();
   try {
-    response = await dio.get(
+    var response = await dio.get(
       url,
       queryParameters: queryParams,
     );
-    category = Category.fromMap(response.data);
+    return Category.fromMap(response.data);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return category;
 }
 
 Future<String> contructAudioURL(
-    {@required String itemId,
-    int maxStreamingBitrate,
+    {required String itemId,
+    int? maxStreamingBitrate,
     String container = 'opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg',
     String transcodingContainer = 'ts',
     String transcodingProtocol = 'hls',
@@ -380,17 +359,15 @@ Future<String> contructAudioURL(
   var settings = await AppDatabase()
       .getDatabase
       .settingsDao
-      .getSettingsById(userApp.settingsId);
+      .getSettingsById(userApp!.settingsId);
 
   maxStreamingBitrate ??= settings.maxVideoBitrate;
   var audioCodecDB = settings.preferredTranscodeAudioCodec;
   var dInfo = await DeviceInfo().getCurrentDeviceInfo();
   var queryParams = <String, String>{};
-  queryParams['UserId'] = userJellyfin.id;
+  queryParams['UserId'] = userJellyfin!.id;
   queryParams['DeviceId'] = dInfo.id;
-  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate != null
-      ? maxStreamingBitrate.toString()
-      : settings.maxAudioBitrate;
+  queryParams['MaxStreamingBitrate'] = maxStreamingBitrate.toString();
   queryParams['Container'] = container;
   queryParams['TranscodingContainer'] = transcodingContainer;
   queryParams['TranscodingProtocol'] = transcodingProtocol;
@@ -400,7 +377,7 @@ Future<String> contructAudioURL(
   queryParams['StartTimeTicks'] = startTimeTicks.toString();
   queryParams['EnableRedirection'] = enableRedirection.toString();
   queryParams['EnableRemoteMedia'] = enableRemoteMedia.toString();
-  queryParams['api_key'] = apiKey;
+  queryParams['api_key'] = apiKey!;
 
   var url = 'Audio/$itemId/universal';
 

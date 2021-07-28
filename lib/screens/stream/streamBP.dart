@@ -158,7 +158,7 @@ class _StreamState extends State<Stream> {
           } else if (event.betterPlayerEventType ==
               BetterPlayerEventType.finished) {
             deleteActiveEncoding();
-            _timer?.cancel();
+            _timer.cancel();
           }
         },
         fit: BoxFit.contain,
