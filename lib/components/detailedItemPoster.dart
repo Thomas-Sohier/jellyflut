@@ -25,6 +25,8 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
         padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
         child: Text(widget.item.name,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: widget.textColor,
                 fontWeight: FontWeight.w600,

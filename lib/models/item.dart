@@ -11,9 +11,11 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart' as db;
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/epub/epubReader.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -659,7 +661,8 @@ class Item {
     } else if (type == 'MusicAlbum') {
       musicPlayer.playPlaylist(id);
     } else if (type == 'Book') {
-      readBook();
+      await Navigator.pushReplacement(navigatorKey.currentContext,
+          MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));
     }
   }
 
@@ -715,36 +718,6 @@ class Item {
     streamModel.setPlaybackInfos(backInfos);
     streamModel.setURL(finalUrl);
     return finalUrl;
-  }
-
-  void readBook() async {
-    var path = await getEbook(this);
-    if (path != null) {
-      //var sharedPreferences = await SharedPreferences.getInstance();
-
-      // Fereader.setConfig(
-      //   themeColor: Theme.of(navigatorKey.currentContext).primaryColor,
-      //   scrollDirection: EpubScrollDirection.VERTICAL,
-      //   allowSharing: true,
-      //   enableTts: true,
-      // );
-
-      //TODO save locator
-      /* dynamic book;
-      if (sharedPreferences.getString(path) != null) {
-        book = json.decode(sharedPreferences.getString(path));
-      }
-
-      // Get locator which you can save in your database
-      Fereader.locatorStream.listen((locator) {
-        print('prout: ' + locator);
-        sharedPreferences.setString(path, locator);
-      });
-      */
-      // Fereader.open(
-      //   path,
-      // );
-    }
   }
 
   String concatenateGenre({int maxGenre}) {

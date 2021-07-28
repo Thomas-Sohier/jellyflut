@@ -36,6 +36,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
+      title: Text(''),
+      loadingText: Text(''),
+      styleTextUnderTheLoader: TextStyle(fontSize: 16),
+      useLoader: false,
+      loadingTextPadding: EdgeInsets.all(2),
       navigateAfterFuture: initMain(),
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Color(0xFF252525),

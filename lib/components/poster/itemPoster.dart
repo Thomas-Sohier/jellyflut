@@ -185,7 +185,7 @@ class _ItemPosterState extends State<ItemPoster>
               maxLines: 1,
               style: TextStyle(color: widget.textColor, fontSize: 16),
             ),
-            if (!widget.item.isFolder &&
+            if (widget.item.isFolder != null &&
                 widget.item.indexNumber != null &&
                 widget.item.parentIndexNumber != null)
               Text(
