@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
@@ -71,6 +72,7 @@ class _CollectionHomeState extends State<CollectionHome> {
 
   Widget placeholder() {
     return Shimmer.fromColors(
+        enabled: shimmerAnimation,
         highlightColor: Colors.grey[700],
         baseColor: Colors.grey[300],
         child: Column(

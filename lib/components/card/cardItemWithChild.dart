@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/card/cardInfosChild.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
@@ -36,6 +37,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
         Padding(
             padding: const EdgeInsets.all(12),
             child: Shimmer.fromColors(
+                enabled: shimmerAnimation,
                 baseColor: Colors.grey[300],
                 highlightColor: Colors.grey[100],
                 child: Column(children: [
@@ -87,6 +89,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
           padding: EdgeInsets.fromLTRB(12, 5, 12, 5),
           child: Column(children: [
             Shimmer.fromColors(
+                enabled: shimmerAnimation,
                 baseColor: Colors.grey[300],
                 highlightColor: Colors.grey[100],
                 child: Row(

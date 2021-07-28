@@ -61,7 +61,6 @@ class Jellyflut extends StatelessWidget {
                 LogicalKeyboardKey.enter,
                 LogicalKeyboardKey.space,
                 LogicalKeyboardKey.mediaPlayPause,
-                LogicalKeyboardKey.mediaSelect,
                 LogicalKeyboardKey.mediaPlay,
               }): const ActivateIntent(),
               LogicalKeySet(LogicalKeyboardKey.arrowDown):

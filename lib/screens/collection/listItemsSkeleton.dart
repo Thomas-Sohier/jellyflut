@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -21,6 +22,7 @@ class ListItemsSkeleton extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.all(6),
         child: Shimmer.fromColors(
+          enabled: shimmerAnimation,
           highlightColor: Colors.grey[700],
           baseColor: Colors.grey[300],
           child: GridView.builder(

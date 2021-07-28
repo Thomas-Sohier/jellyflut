@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:shimmer/shimmer.dart';
@@ -44,8 +45,9 @@ class Resume extends StatelessWidget {
                 var _item = items[index];
                 return ItemPoster(
                   _item,
-                  tag: 'Backdrop',
-                  widgetAspectRatio: 14 / 9,
+                  showLogo: true,
+                  showParent: false,
+                  widgetAspectRatio: 16 / 9,
                 );
               },
             ))
@@ -55,6 +57,7 @@ class Resume extends StatelessWidget {
 
   Widget placeholder() {
     return Shimmer.fromColors(
+        enabled: shimmerAnimation,
         highlightColor: Colors.grey[700],
         baseColor: Colors.grey[300],
         child: Column(

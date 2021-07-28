@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
@@ -48,6 +49,7 @@ class ListVideoItem extends StatelessWidget {
     return Card(
         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Shimmer.fromColors(
+            enabled: shimmerAnimation,
             baseColor: Colors.grey[100],
             highlightColor: Colors.grey[300],
             child: ListView.builder(

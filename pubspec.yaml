@@ -59,11 +59,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.0.6
-  # flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: 
+    git:
+      url: git://github.com/SimonIT/flutter_launcher_icons.git
+      ref: scaling
   flutter_native_splash: ^1.2.0
   intl: ^0.17.0
   moor_generator: ^4.4.1
   pedantic: ^1.11.1
+
+dependency_overrides:
+  args: ^2.1.1
 
 # The following section is specific to Flutter.
 flutter:

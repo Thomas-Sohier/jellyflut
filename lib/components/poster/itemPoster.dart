@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
@@ -16,6 +17,7 @@ class ItemPoster extends StatefulWidget {
       this.widgetAspectRatio,
       this.showName = true,
       this.showParent = true,
+      this.showLogo = false,
       this.tag = 'Primary',
       this.boxFit = BoxFit.cover});
 
@@ -25,6 +27,7 @@ class ItemPoster extends StatefulWidget {
   final Color textColor;
   final bool showName;
   final bool showParent;
+  final bool showLogo;
   final String tag;
   final BoxFit boxFit;
 
@@ -138,28 +141,63 @@ class _ItemPosterState extends State<ItemPoster>
                       Positioned(top: 8, right: 0, child: playedBanner()),
                   ],
                 ),
-                if (widget.item.hasProgress())
-                  Positioned.fill(
-                      child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: progressBar())),
+                if (widget.showLogo) logo(),
+                if (widget.item.hasProgress()) progress(),
               ]),
             ),
           ],
         ),
       ),
-      if (widget.showName)
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            widget.showParent ? widget.item.parentName() : widget.item.name,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            style: TextStyle(color: widget.textColor, fontSize: 14),
-          ),
-        )
+      if (widget.showName) name()
     ]);
+  }
+
+  Widget progress() {
+    return Positioned.fill(
+        child: Align(alignment: Alignment.bottomCenter, child: progressBar()));
+  }
+
+  Widget logo() {
+    return Positioned.fill(
+        child: Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: AsyncImage(
+                widget.item.correctImageId(searchType: 'logo'),
+                widget.item.correctImageTags(searchType: 'logo'),
+                widget.item.imageBlurHashes,
+                boxFit: BoxFit.contain,
+                tag: 'Logo',
+              ),
+            )));
+  }
+
+  Widget name() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Column(
+          children: [
+            Text(
+              widget.showParent ? widget.item.parentName() : widget.item.name,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              style: TextStyle(color: widget.textColor, fontSize: 16),
+            ),
+            if (!widget.item.isFolder &&
+                widget.item.indexNumber != null &&
+                widget.item.parentIndexNumber != null)
+              Text(
+                'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextStyle(
+                    color: widget.textColor.withOpacity(0.8), fontSize: 12),
+              ),
+          ],
+        ));
   }
 
   Widget newBanner() {

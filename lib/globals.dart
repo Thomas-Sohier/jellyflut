@@ -11,3 +11,4 @@ Server server;
 String apiKey;
 DeviceProfile savedDeviceProfile;
 bool isAndroidTv;
+bool shimmerAnimation = false;
