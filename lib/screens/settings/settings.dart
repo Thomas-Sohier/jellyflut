@@ -34,7 +34,8 @@ class _SettingsState extends State<Settings> {
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(
             title: Text('Settings'),
-            brightness: Brightness.dark,
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
             backgroundColor: Color(0xFF252525),
             leading: bb.BackButton()),
         body: FutureBuilder(

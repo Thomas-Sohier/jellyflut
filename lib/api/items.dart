@@ -77,7 +77,7 @@ String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
 Future<int> deleteItem(String itemId) async {
   var url = '${server.url}/Items/$itemId';
 
-  var response = Response();
+  var response;
   try {
     response = await dio.delete(url);
   } catch (e) {

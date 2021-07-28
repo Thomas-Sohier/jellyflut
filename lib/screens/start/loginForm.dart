@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
           'username',
           controller: _usernameFilter,
           autofocus: false,
-          colorFocus: Theme.of(context).accentColor,
+          colorFocus: Theme.of(context).colorScheme.secondary,
           colorUnfocus: Colors.grey[200],
           textInputAction: TextInputAction.next,
           onSubmitted: (_) =>
@@ -88,7 +88,7 @@ class _LoginFormState extends State<LoginForm> {
           controller: _passwordFilter,
           obscureText: true,
           autofocus: false,
-          colorFocus: Theme.of(context).accentColor,
+          colorFocus: Theme.of(context).colorScheme.secondary,
           colorUnfocus: Colors.grey[200],
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _loginPressed(),

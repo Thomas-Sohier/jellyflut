@@ -1,4 +1,6 @@
 // or new Dio with a BaseOptions instance.
+// ignore_for_file: unused_import
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';

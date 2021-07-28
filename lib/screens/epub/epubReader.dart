@@ -1,8 +1,8 @@
+// ignore: unused_import
 import 'dart:developer';
 
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/globals.dart';
@@ -96,21 +96,21 @@ class _EpubReaderPageState extends State<EpubReaderPage> {
         ),
       );
 
-  void _showCurrentEpubCfi(context) {
-    final cfi = _epubReaderController.generateEpubCfi();
+  // void _showCurrentEpubCfi(context) {
+  //   final cfi = _epubReaderController.generateEpubCfi();
 
-    if (cfi != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(cfi),
-          action: SnackBarAction(
-            label: 'GO',
-            onPressed: () {
-              _epubReaderController.gotoEpubCfi(cfi);
-            },
-          ),
-        ),
-      );
-    }
-  }
+  //   if (cfi != null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(cfi),
+  //         action: SnackBarAction(
+  //           label: 'GO',
+  //           onPressed: () {
+  //             _epubReaderController.gotoEpubCfi(cfi);
+  //           },
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 }

@@ -2,6 +2,8 @@
 //
 //     final media = itemFromMap(jsonString);
 
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 
 // import 'package:fereader/fereader.dart';

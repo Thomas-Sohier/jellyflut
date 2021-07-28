@@ -10,8 +10,6 @@ import 'package:jellyflut/screens/stream/streamVLC.dart';
 
 import '../../main.dart';
 
-VlcPlayerController _controller;
-
 void automaticStreamingSoftwareChooser({@required Item item}) async {
   var streamingSoftwareDB = await AppDatabase()
       .getDatabase
