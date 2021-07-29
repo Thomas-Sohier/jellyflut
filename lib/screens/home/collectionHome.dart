@@ -43,13 +43,13 @@ class _CollectionHomeState extends State<CollectionHome> {
   Widget buildAllCategory() {
     return FutureBuilder<List<Item>>(
       future: getLatestMedia(
-          parentId: widget?.item?.id,
+          parentId: widget.item.id,
           fields: 'DateCreated, DateAdded, ImageTags'),
       builder: (context, snapshot) {
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
           // If no element in category then we hide it
-          if (snapshot.data.isEmpty) return Container();
+          if (snapshot.data!.isEmpty) return Container();
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                         onTap: slideToPageDetail)),
                 SizedBox(
                   height: 200,
-                  child: displayItems(snapshot.data),
+                  child: displayItems(snapshot.data!),
                 )
               ]);
         } else {
@@ -73,8 +73,8 @@ class _CollectionHomeState extends State<CollectionHome> {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        highlightColor: Colors.grey[700],
-        baseColor: Colors.grey[300],
+        highlightColor: Colors.grey[700]!,
+        baseColor: Colors.grey[300]!,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,11 +138,8 @@ class _CollectionHomeState extends State<CollectionHome> {
             ));
   }
 
-  dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, {String key}) {
+  dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, String? key) {
     key ??= bhPrimary.keys.first;
-    if (bhPrimary != null || key != null) {
-      return bhPrimary[key];
-    }
-    return '';
+    return bhPrimary[key];
   }
 }

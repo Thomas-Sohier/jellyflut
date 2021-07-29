@@ -10,7 +10,7 @@ class ViewedButton extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   const ViewedButton(this.item,
-      {Key key, this.padding = const EdgeInsets.all(10)})
+      {Key? key, this.padding = const EdgeInsets.all(10)})
       : super(key: key);
 
   @override
@@ -20,9 +20,9 @@ class ViewedButton extends StatefulWidget {
 }
 
 class _ViewedButtonState extends State<ViewedButton> {
-  var fToast;
-  FocusNode _node;
-  Color _focusColor;
+  late var fToast;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _ViewedButtonState extends State<ViewedButton> {
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     super.initState();
   }
 
@@ -94,7 +94,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   void setItemViewed() {
     viewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            widget.item.userData.played = json['Played'];
+            widget.item.userData?.played = json['Played'];
           }),
           showToast('${widget.item.name} marked as viewed', fToast)
         });
@@ -103,7 +103,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   void unsetItemViewed() {
     unviewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            widget.item.userData.played = json['Played'];
+            widget.item.userData?.played = json['Played'];
           }),
           showToast('${widget.item.name} marked as unviewed', fToast)
         });

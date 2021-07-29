@@ -6,14 +6,13 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/itemDialog.dart';
-import 'package:jellyflut/screens/form/editItemInfos.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListMusicItem extends StatelessWidget {
   final Item item;
 
-  const ListMusicItem({@required this.item});
+  const ListMusicItem({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +36,8 @@ Widget body(Category category) {
   discsIds = [
     ...{
       ...category.items
-          .map((e) => e.parentIndexNumber)
-          .where((element) => element != null)
+          .where((element) => element.parentIndexNumber != null)
+          .map((e) => e.parentIndexNumber!)
     }
   ];
 
@@ -46,7 +45,7 @@ Widget body(Category category) {
   // else we sort each discs
   if (discsIds.isEmpty || discsIds.length == 1) {
     category.items.sort((a, b) => b.indexNumber != null && a.indexNumber != null
-        ? a.indexNumber.compareTo(b.indexNumber)
+        ? a.indexNumber!.compareTo(b.indexNumber!)
         : 0);
   } else {
     // fill the map, foreach disc we add its music
@@ -56,11 +55,11 @@ Widget body(Category category) {
     });
 
     discs.values.forEach((element) => element
-        .sort((a, b) => a.parentIndexNumber.compareTo(b.parentIndexNumber)));
+        .sort((a, b) => a.parentIndexNumber!.compareTo(b.parentIndexNumber!)));
 
     discs.values.forEach((element) => element.sort((a, b) =>
         b.indexNumber != null && a.indexNumber != null
-            ? a.indexNumber.compareTo(b.indexNumber)
+            ? a.indexNumber!.compareTo(b.indexNumber!)
             : 0));
 
     discs.forEach((key, value) => children.add(Column(children: [
@@ -84,7 +83,7 @@ Widget listTitle(String index, List<Item> items) {
       decoration: BoxDecoration(
           color: Colors.grey[200],
           gradient: LinearGradient(
-            colors: [Colors.grey[200], Colors.grey[500]],
+            colors: [Colors.grey[200]!, Colors.grey[500]!],
             begin: Alignment.center,
             end: Alignment.bottomCenter,
             stops: [0.7, 1],
@@ -119,7 +118,7 @@ Widget listCard(List<Item> items) {
         itemCount: items.length,
         itemBuilder: (context, index) {
           var item = items[index];
-          return item.isFolder ? Container() : listItem(index, item, context);
+          return item.isFolder! ? Container() : listItem(index, item, context);
         },
       ));
 }
@@ -169,7 +168,7 @@ Widget listItem(int index, Item item, BuildContext context) {
                             fontWeight: FontWeight.w600)),
                     item.artists != null
                         ? Text(
-                            item.artists
+                            item.artists!
                                 .map((e) => e.name)
                                 .join(', ')
                                 .toString(),
@@ -199,8 +198,8 @@ Widget placeholderBody() {
       margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
       child: Shimmer.fromColors(
           enabled: shimmerAnimation,
-          baseColor: Colors.grey[100],
-          highlightColor: Colors.grey[300],
+          baseColor: Colors.grey[100]!,
+          highlightColor: Colors.grey[300]!,
           child: ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.all(0),
@@ -267,16 +266,7 @@ Widget actionIcons(Item item, {fav = true, view = true}) {
   );
 }
 
-Widget animate(Item item) {
-  Animation<Offset> _offsetAnimation;
-
-  return SlideTransition(
-    position: _offsetAnimation,
-    child: EditItemInfos(item),
-  );
-}
-
-Future _getMusicCustom({@required String itemId}) async {
+Future _getMusicCustom({required String itemId}) async {
   var futures = <Future>[];
   futures.add(Future.delayed(Duration(milliseconds: 400)));
   futures.add(getItems(parentId: itemId));

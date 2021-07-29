@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 class SongPlaylist extends StatefulWidget {
   final Color backgroundColor;
   final Color color;
-  SongPlaylist({Key key, @required this.backgroundColor, @required this.color})
+  SongPlaylist({Key? key, required this.backgroundColor, required this.color})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class SongPlaylist extends StatefulWidget {
 }
 
 class _SongPlaylistState extends State<SongPlaylist> {
-  MusicPlayer musicPlayer;
+  late MusicPlayer musicPlayer;
 
   @override
   void initState() {
@@ -51,18 +51,18 @@ class _SongPlaylistState extends State<SongPlaylist> {
                     padding: EdgeInsets.zero,
                     scrollDirection: Axis.vertical,
                     itemCount:
-                        musicPlayer.assetsAudioPlayer.playlist.numberOfItems,
+                        musicPlayer.assetsAudioPlayer.playlist!.numberOfItems,
                     itemBuilder: (context, index) => playlistListItem(
                         index,
                         musicPlayer
-                            .assetsAudioPlayer.playlist.audios[index].metas)),
+                            .assetsAudioPlayer.playlist!.audios[index].metas)),
               ));
         }));
   }
 
   Widget playlistListItem(int index, Metas metas) {
     return Dismissible(
-      key: ValueKey(metas.id + Uuid().v1()),
+      key: ValueKey(metas.id! + Uuid().v1()),
       onDismissed: (direction) {
         musicPlayer.removePlaylistItemAtIndex(index);
       },
@@ -104,7 +104,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                     musicPlayer
-                        .assetsAudioPlayer.playlist.audios[index].metas.title,
+                        .assetsAudioPlayer.playlist!.audios[index].metas.title!,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 16,
@@ -113,7 +113,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
               ),
               Text(
                   musicPlayer
-                      .assetsAudioPlayer.playlist.audios[index].metas.artist,
+                      .assetsAudioPlayer.playlist!.audios[index].metas.artist!,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 14,
@@ -121,7 +121,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
                       color: widget.color)),
               Text(
                   musicPlayer
-                      .assetsAudioPlayer.playlist.audios[index].metas.album,
+                      .assetsAudioPlayer.playlist!.audios[index].metas.album!,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 14,

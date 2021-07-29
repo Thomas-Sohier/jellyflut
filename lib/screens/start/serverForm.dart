@@ -5,7 +5,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 
 class ServerForm extends StatefulWidget {
-  ServerForm({this.onPressed});
+  ServerForm({required this.onPressed});
 
   final VoidCallback onPressed;
   @override
@@ -20,8 +20,7 @@ class _ServerFormState extends State<ServerForm> {
   final FocusNode urlFocusNode = FocusNode();
 
   void addServer() {
-    server =
-        Server(name: _serverNameFilter.text, url: _urlFilter.text, id: null);
+    server = Server(name: _serverNameFilter.text, url: _urlFilter.text, id: 0);
     widget.onPressed();
   }
 
@@ -41,7 +40,7 @@ class _ServerFormState extends State<ServerForm> {
           textInputAction: TextInputAction.next,
           autofocus: true,
           colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200],
+          colorUnfocus: Colors.grey[200]!,
           onSubmitted: (_) => FocusScope.of(context).requestFocus(urlFocusNode),
           controller: _serverNameFilter,
         ),
@@ -52,7 +51,7 @@ class _ServerFormState extends State<ServerForm> {
           textInputAction: TextInputAction.done,
           focusNode: urlFocusNode,
           colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200],
+          colorUnfocus: Colors.grey[200]!,
           onSubmitted: (_) {
             FocusScope.of(context).nextFocus();
             addServer();

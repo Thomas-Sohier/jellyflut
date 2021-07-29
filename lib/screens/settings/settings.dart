@@ -18,9 +18,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  Setting setting;
-  PackageInfo packageInfo;
-  Database db;
+  late Setting setting;
+  late PackageInfo packageInfo;
+  late Database db;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _SettingsState extends State<Settings> {
                       tiles: [
                         SettingsTile(
                           title: 'Version',
-                          subtitle: packageInfo?.version ?? 'unknow',
+                          subtitle: packageInfo.version,
                           titleTextStyle: TextStyle(color: Colors.white),
                           subtitleTextStyle: TextStyle(color: Colors.white60),
                         ),
@@ -120,7 +120,7 @@ class _SettingsState extends State<Settings> {
   }
 
   Future<void> getSettingsInfos() async {
-    setting = await db.settingsDao.getSettingsById(userApp.settingsId);
+    setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
     packageInfo = await PackageInfo.fromPlatform();
   }
 

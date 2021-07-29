@@ -8,9 +8,9 @@ class SearchButton extends StatefulWidget {
 }
 
 class _SearchButtonState extends State<SearchButton> {
-  SearchProvider searchProvider;
-  FocusNode _node;
-  Color _focusColor;
+  late SearchProvider searchProvider;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {

@@ -22,12 +22,12 @@ class ControlsBP extends StatefulWidget {
 
 class _ControlsBPState extends State<ControlsBP> {
   bool _visible = false;
-  Timer _timer;
+  late Timer _timer;
   int _playBackTime = 0;
-  int subtitleSelectedIndex;
-  int audioSelectedIndex;
-  StreamModel streamModel;
-  FToast fToast;
+  late int subtitleSelectedIndex;
+  late int audioSelectedIndex;
+  late StreamModel streamModel;
+  late FToast fToast;
 
   final Shader linearGradient = LinearGradient(
     begin: Alignment.topLeft,
@@ -38,23 +38,24 @@ class _ControlsBPState extends State<ControlsBP> {
   @override
   void initState() {
     streamModel = StreamModel();
-    streamModel.betterPlayerController.videoPlayerController.addListener(() {
+    streamModel.betterPlayerController!.videoPlayerController!.addListener(() {
       if (mounted) {
         setState(() {
-          _playBackTime = streamModel.betterPlayerController
-                  .videoPlayerController.value.position.inSeconds ??
-              0;
+          _playBackTime = streamModel.betterPlayerController != null
+              ? streamModel.betterPlayerController!.videoPlayerController!.value
+                  .position.inSeconds
+              : 0;
         });
       }
     });
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -70,7 +71,7 @@ class _ControlsBPState extends State<ControlsBP> {
             ))));
   }
 
-  Widget visibility({@required Widget child}) {
+  Widget visibility({required Widget child}) {
     return Material(
         color: Colors.transparent,
         child: Visibility(
@@ -119,16 +120,16 @@ class _ControlsBPState extends State<ControlsBP> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      streamModel.item.name,
+                      streamModel.item!.name,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.white),
                     ),
-                    streamModel.item.hasParent() != null
+                    streamModel.item?.hasParent() != null
                         ? Text(
-                            streamModel.item.parentName(),
+                            streamModel.item!.parentName(),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -147,7 +148,7 @@ class _ControlsBPState extends State<ControlsBP> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: streamModel.isDirectPlay
+                      child: streamModel.isDirectPlay!
                           ? gradientMask(
                               child: Icon(Icons.play_for_work,
                                   color: Colors.white))
@@ -157,9 +158,9 @@ class _ControlsBPState extends State<ControlsBP> {
                               color: Colors.white,
                             ))),
                   InkWell(
-                    onTap: () => streamModel.betterPlayerController
+                    onTap: () => streamModel.betterPlayerController!
                         .enablePictureInPicture(streamModel
-                            .betterPlayerController.betterPlayerGlobalKey),
+                            .betterPlayerController!.betterPlayerGlobalKey!),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -201,22 +202,22 @@ class _ControlsBPState extends State<ControlsBP> {
   }
 
   Widget bottomRow() {
-    var _controller = streamModel.betterPlayerController.videoPlayerController;
+    var _controller = streamModel.betterPlayerController!.videoPlayerController;
     return Row(children: [
       InkWell(
           onTap: () {
             setState(() {
-              streamModel.betterPlayerController.videoPlayerController.value
+              streamModel.betterPlayerController!.videoPlayerController!.value
                       .isPlaying
-                  ? StreamModel().betterPlayerController.pause()
-                  : StreamModel().betterPlayerController.play();
+                  ? StreamModel().betterPlayerController!.pause()
+                  : StreamModel().betterPlayerController!.play();
             });
           },
           borderRadius: BorderRadius.all(Radius.circular(50)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(
-              streamModel.betterPlayerController.videoPlayerController.value
+              streamModel.betterPlayerController!.videoPlayerController!.value
                       .isPlaying
                   ? Icons.pause
                   : Icons.play_arrow,
@@ -235,8 +236,8 @@ class _ControlsBPState extends State<ControlsBP> {
             activeColor: Colors.white,
             inactiveColor: Colors.white30,
             min: 0,
-            max: _controller.value.duration.inSeconds.toDouble() != 0
-                ? _controller.value.duration.inSeconds.toDouble()
+            max: _controller?.value.duration?.inSeconds.toDouble() != 0
+                ? _controller!.value.duration!.inSeconds.toDouble()
                 : _playBackTime.toDouble() + 1,
             value: _playBackTime.toDouble(),
             onChanged: (value) {
@@ -245,14 +246,14 @@ class _ControlsBPState extends State<ControlsBP> {
               });
             },
             onChangeEnd: (value) {
-              _controller.seekTo(Duration(seconds: _playBackTime));
+              _controller!.seekTo(Duration(seconds: _playBackTime));
             },
           )),
       Container(
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Text(
             printDuration(
-                Duration(seconds: _controller.value.duration.inSeconds)),
+                Duration(seconds: _controller!.value.duration!.inSeconds)),
             style: TextStyle(color: Colors.white),
           )),
       // InkWell(
@@ -276,7 +277,6 @@ class _ControlsBPState extends State<ControlsBP> {
 
   Future<void> autoHideControl() async {
     if (streamModel.betterPlayerController != null) {
-      if (_timer != null) _timer.cancel();
       setState(() {
         _visible = !_visible;
       });
@@ -289,10 +289,10 @@ class _ControlsBPState extends State<ControlsBP> {
   }
 
   void changeSubtitle(BuildContext context) {
-    var subtitles = streamModel.item.mediaStreams
+    var subtitles = streamModel.item!.mediaStreams!
         .where((element) => element.type.trim().toLowerCase() == 'subtitle')
         .toList();
-    if (subtitles != null && subtitles.isNotEmpty) {
+    if (subtitles.isNotEmpty) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -308,7 +308,7 @@ class _ControlsBPState extends State<ControlsBP> {
                       selected: isSubtitleSelected(index, subtitles),
                       title: Text(
                         index < subtitles.length
-                            ? subtitles[index].displayTitle
+                            ? subtitles[index].displayTitle!
                             : 'Disable',
                       ),
                       onTap: () {
@@ -339,8 +339,7 @@ class _ControlsBPState extends State<ControlsBP> {
       return false;
     } else if (subtitleSelectedIndex == index) {
       return true;
-    } else if (subtitleSelectedIndex == null &&
-        listSubtitles[index].isDefault) {
+    } else if (listSubtitles[index].isDefault!) {
       return true;
     }
     return false;
@@ -348,14 +347,14 @@ class _ControlsBPState extends State<ControlsBP> {
 
   void disableSubtitles(int index) {
     subtitleSelectedIndex = index;
-    streamModel.betterPlayerController.subtitlesLines.clear();
+    streamModel.betterPlayerController!.subtitlesLines.clear();
   }
 
   void setSubtitles(int index, List<MediaStream> listSubtitles) async {
-    var _itemId = StreamModel().item.id;
+    var _itemId = StreamModel().item!.id;
     var sub = listSubtitles[index];
-    var url = await getSubtitleURL(_itemId, 'vtt', sub.index);
-    await streamModel.betterPlayerController.setupSubtitleSource(
+    var url = await getSubtitleURL(_itemId, 'vtt', sub.index!);
+    await streamModel.betterPlayerController!.setupSubtitleSource(
         BetterPlayerSubtitlesSource(
             type: BetterPlayerSubtitlesSourceType.network,
             urls: [url],
@@ -364,10 +363,12 @@ class _ControlsBPState extends State<ControlsBP> {
 
   void changeAudio(BuildContext context) {
     var hlsAudios =
-        streamModel.betterPlayerController.betterPlayerAsmsAudioTracks;
-    var remoteAudios = streamModel.item.mediaStreams
-        .where((element) => element.type.trim().toLowerCase() == 'audio')
-        .toList();
+        streamModel.betterPlayerController?.betterPlayerAsmsAudioTracks;
+    var remoteAudios = streamModel.item?.mediaStreams != null
+        ? streamModel.item!.mediaStreams!
+            .where((element) => element.type.trim().toLowerCase() == 'audio')
+            .toList()
+        : null;
     if (hlsAudios != null && hlsAudios.isNotEmpty) {
       dialogHLSAudio(hlsAudios);
     } else if (remoteAudios != null && remoteAudios.isNotEmpty) {
@@ -380,7 +381,7 @@ class _ControlsBPState extends State<ControlsBP> {
   bool isAudioSelected(int index, List<MediaStream> listAudios) {
     if (audioSelectedIndex == index) {
       return true;
-    } else if (audioSelectedIndex == null && listAudios[index].isDefault) {
+    } else if (listAudios[index].isDefault!) {
       return true;
     }
     return false;
@@ -401,13 +402,13 @@ class _ControlsBPState extends State<ControlsBP> {
                   return ListTile(
                     selected: isAudioSelected(index, audios),
                     title: Text(
-                      audios[index].displayTitle,
+                      audios[index].displayTitle!,
                     ),
                     onTap: () async {
-                      await getNewAudioSource(audios[index].index,
+                      await getNewAudioSource(audios[index].index!,
                               playbackTick: await streamModel
-                                  .betterPlayerController
-                                  .videoPlayerController
+                                  .betterPlayerController!
+                                  .videoPlayerController!
                                   .position)
                           .then((url) {
                         changeAudioTrack(url);
@@ -441,10 +442,10 @@ class _ControlsBPState extends State<ControlsBP> {
                   return ListTile(
                     selected: audios[index].id == index,
                     title: Text(
-                      audios[index].label,
+                      audios[index].label!,
                     ),
                     onTap: () {
-                      streamModel.betterPlayerController
+                      streamModel.betterPlayerController!
                           .setAudioTrack(audios[index]);
                       Navigator.pop(
                         context,
@@ -460,17 +461,17 @@ class _ControlsBPState extends State<ControlsBP> {
   }
 
   void changeAudioTrack(String url) async {
-    var tick = streamModel.betterPlayerController.videoPlayerController.value
+    var tick = streamModel.betterPlayerController!.videoPlayerController!.value
         .position.inMicroseconds;
     var dataSource = BetterPlayerDataSource.network(url,
-        subtitles: await getSubtitles(streamModel.item));
+        subtitles: await getSubtitles(streamModel.item!));
 
     // BetterPlayerDataSource.file(url);
 
-    streamModel.betterPlayerController.betterPlayerSubtitlesSourceList.clear();
-    await streamModel.betterPlayerController.setupDataSource(dataSource);
-    streamModel.betterPlayerController.playNextVideo();
-    await streamModel.betterPlayerController
+    streamModel.betterPlayerController!.betterPlayerSubtitlesSourceList.clear();
+    await streamModel.betterPlayerController!.setupDataSource(dataSource);
+    streamModel.betterPlayerController!.playNextVideo();
+    await streamModel.betterPlayerController!
         .seekTo(Duration(microseconds: tick));
   }
 }

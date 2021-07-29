@@ -7,8 +7,8 @@ class BackButton extends StatefulWidget {
 }
 
 class _BackButtonState extends State<BackButton> {
-  FocusNode _node;
-  Color _focusColor;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {

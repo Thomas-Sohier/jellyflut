@@ -6,7 +6,7 @@ import 'package:jellyflut/models/item.dart';
 class BackgroundImage extends StatelessWidget {
   final Item item;
 
-  const BackgroundImage({Key key, @required this.item}) : super(key: key);
+  const BackgroundImage({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class BackgroundImage extends StatelessWidget {
           foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
           child: AsyncImage(
             item.correctImageId(),
-            item.correctImageTags(),
-            item.imageBlurHashes,
+            item.correctImageTags()!,
+            item.imageBlurHashes!,
             boxFit: BoxFit.cover,
           )),
     );

@@ -13,8 +13,8 @@ class Resume extends StatelessWidget {
         future: getResumeItems(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var _items = snapshot.data.items;
-            if (_items != null && _items.isNotEmpty) {
+            var _items = snapshot.data!.items;
+            if (_items.isNotEmpty) {
               return body(_items);
             } else {
               return Container();
@@ -58,8 +58,8 @@ class Resume extends StatelessWidget {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        highlightColor: Colors.grey[700],
-        baseColor: Colors.grey[300],
+        highlightColor: Colors.grey[700]!,
+        baseColor: Colors.grey[300]!,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

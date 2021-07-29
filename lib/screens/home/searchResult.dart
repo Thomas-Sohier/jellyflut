@@ -12,17 +12,17 @@ class SearchResult extends StatefulWidget {
   _SearchResultState createState() => _SearchResultState();
 }
 
-TextEditingController searchController = TextEditingController();
-FocusNode _focusNode;
-
 class _SearchResultState extends State<SearchResult> {
   var searchProvider = SearchProvider();
   var items;
+  late TextEditingController _searchController;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _searchController = TextEditingController();
     // searchBarListener();
   }
 
@@ -71,7 +71,7 @@ class _SearchResultState extends State<SearchResult> {
     });
   }
 
-  Widget resultCard({@required Widget child}) {
+  Widget resultCard({required Widget child}) {
     return Container(
         width: double.maxFinite,
         child: Card(
@@ -115,7 +115,7 @@ class _SearchResultState extends State<SearchResult> {
           padding: EdgeInsets.only(left: 5, right: 5),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.deepPurple[300].withAlpha(150)),
+              color: Colors.deepPurple[300]!.withAlpha(150)),
           child: Row(children: [Expanded(child: searchField()), searchIcon()])),
     );
   }
@@ -140,7 +140,7 @@ class _SearchResultState extends State<SearchResult> {
   Widget clearIcon() {
     return InkWell(
         onTap: () {
-          searchController.clear();
+          _searchController.clear();
           searchProvider.clearSearchResult();
           if (!_focusNode.hasFocus) {
             setState(() {
@@ -167,7 +167,7 @@ class _SearchResultState extends State<SearchResult> {
       onFieldSubmitted: (value) => searchItemsFuture(value),
       textAlignVertical: TextAlignVertical.center,
       cursorColor: Colors.white,
-      controller: searchController,
+      controller: _searchController,
       focusNode: _focusNode,
       style: TextStyle(color: Colors.white, fontSize: 16),
       decoration: InputDecoration(

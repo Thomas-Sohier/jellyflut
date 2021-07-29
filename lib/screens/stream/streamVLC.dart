@@ -15,11 +15,10 @@ class StreamVLC extends StatefulWidget {
   final bool showControls;
 
   StreamVLC({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.showControls = true,
-  })  : assert(controller != null, 'You must provide a vlc controller'),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _StreamVLCState();
@@ -27,9 +26,9 @@ class StreamVLC extends StatefulWidget {
 
 class _StreamVLCState extends State<StreamVLC>
     with AutomaticKeepAliveClientMixin {
-  VlcPlayerController _controller;
-  StreamModel streamModel;
-  Timer _timer;
+  late VlcPlayerController _controller;
+  late StreamModel streamModel;
+  late Timer _timer;
 
   //
   final double initSnapshotRightPosition = 10;
@@ -47,7 +46,7 @@ class _StreamVLCState extends State<StreamVLC>
   List<double> playbackSpeeds = [0.5, 1.0, 2.0];
   int playbackSpeedIndex = 1;
   final Orientation currentOrientation =
-      MediaQuery.of(navigatorKey.currentContext).orientation;
+      MediaQuery.of(navigatorKey.currentContext!).orientation;
 
   @override
   bool get wantKeepAlive => true;
@@ -73,7 +72,7 @@ class _StreamVLCState extends State<StreamVLC>
   void dispose() {
     Wakelock.disable();
     _controller.removeListener(listener);
-    _timer?.cancel();
+    _timer.cancel();
     // Show device overlays
     // device orientation
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
@@ -89,20 +88,16 @@ class _StreamVLCState extends State<StreamVLC>
     if (_controller.value.isInitialized) {
       var oPosition = _controller.value.position;
       var oDuration = _controller.value.duration;
-      if (oPosition != null && oDuration != null) {
-        if (oDuration.inHours == 0) {
-          var strPosition = oPosition.toString().split('.')[0];
-          var strDuration = oDuration.toString().split('.')[0];
-          position =
-              "${strPosition.split(':')[1]}:${strPosition.split(':')[2]}";
-          duration =
-              "${strDuration.split(':')[1]}:${strDuration.split(':')[2]}";
-        } else {
-          position = oPosition.toString().split('.')[0];
-          duration = oDuration.toString().split('.')[0];
-        }
-        sliderValue = _controller.value.position.inSeconds.toDouble();
+      if (oDuration.inHours == 0) {
+        var strPosition = oPosition.toString().split('.')[0];
+        var strDuration = oDuration.toString().split('.')[0];
+        position = "${strPosition.split(':')[1]}:${strPosition.split(':')[2]}";
+        duration = "${strDuration.split(':')[1]}:${strDuration.split(':')[2]}";
+      } else {
+        position = oPosition.toString().split('.')[0];
+        duration = oDuration.toString().split('.')[0];
       }
+      sliderValue = _controller.value.position.inSeconds.toDouble();
       numberOfCaptions = _controller.value.spuTracksCount;
       numberOfAudioTracks = _controller.value.audioTracksCount;
       setState(() {});
@@ -125,11 +120,11 @@ class _StreamVLCState extends State<StreamVLC>
               children: <Widget>[
                 VlcPlayer(
                   controller: _controller,
-                  aspectRatio: streamModel.item.getAspectRatio(),
+                  aspectRatio: streamModel.item!.getAspectRatio(),
                   placeholder: Center(child: CircularProgressIndicator()),
                 ),
                 SizedBox(
-                    height: size.width / streamModel.item.getAspectRatio(),
+                    height: size.width / streamModel.item!.getAspectRatio(),
                     child: ControlsVLC(
                       controller: _controller,
                     )),
@@ -141,7 +136,7 @@ class _StreamVLCState extends State<StreamVLC>
     ));
   }
 
-  Widget gradientMask({@required Widget child}) {
+  Widget gradientMask({required Widget child}) {
     return ShaderMask(
       shaderCallback: (Rect bounds) {
         return RadialGradient(
@@ -158,7 +153,7 @@ class _StreamVLCState extends State<StreamVLC>
   void _startProgressTimer() {
     _timer = Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => itemProgress(streamModel.item,
+        (Timer t) => itemProgress(streamModel.item!,
             canSeek: true,
             isMuted: _controller.value.volume > 0 ? true : false,
             isPaused: !_controller.value.isPlaying,

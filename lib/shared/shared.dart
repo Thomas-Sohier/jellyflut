@@ -30,7 +30,7 @@ Future<bool> detectAndroidTv() async {
   return false;
 }
 
-Widget gradientMask({@required Widget child, double radius = 0.5}) {
+Widget gradientMask({required Widget child, double radius = 0.5}) {
   return ShaderMask(
     shaderCallback: (Rect bounds) {
       return RadialGradient(
@@ -44,7 +44,7 @@ Widget gradientMask({@required Widget child, double radius = 0.5}) {
   );
 }
 
-double aspectRatio({String type}) {
+double aspectRatio({String? type}) {
   if (type == 'MusicAlbum') {
     return 1 / 1;
   }

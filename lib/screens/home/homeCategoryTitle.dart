@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
 
 class HomeCategoryTitle extends StatefulWidget {
-  HomeCategoryTitle(this.item, {@required this.onTap});
+  HomeCategoryTitle(this.item, {required this.onTap});
 
   final Item item;
   final VoidCallback onTap;
@@ -17,11 +17,8 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
       BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
   final BoxShadow boxShadowColor2 =
       BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
-  String heroTag;
-  FocusNode _node;
-  Color _focusColor;
-
-  Widget image;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {

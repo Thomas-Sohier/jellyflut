@@ -24,7 +24,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  SearchProvider searchProvider;
+  late SearchProvider searchProvider;
 
   @override
   void initState() {
@@ -64,11 +64,11 @@ class _HomeState extends State<Home> {
                           FutureBuilder<Category>(
                             future: getCategory(),
                             builder: (context, snapshot) {
-                              if (snapshot.hasData &&
-                                  snapshot.data.items != null) {
-                                return buildCategory(snapshot.data);
+                              if (snapshot.hasData) {
+                                return buildCategory(snapshot.data!);
                               } else if (snapshot.hasError) {
-                                return noConnectivity(snapshot.error);
+                                return noConnectivity(
+                                    SocketException(snapshot.error.toString()));
                               }
                               return SliverToBoxAdapter(
                                 child: CircularProgressIndicator(),

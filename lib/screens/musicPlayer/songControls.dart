@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class SongControls extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  SongControls({Key key, @required this.color, @required this.backgroundColor})
+  SongControls({Key? key, required this.color, required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class SongControls extends StatefulWidget {
 }
 
 class _SongControlsState extends State<SongControls> {
-  MusicPlayer musicPlayer;
+  late MusicPlayer musicPlayer;
   List<BoxShadow> shadows = [
     BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)
   ];

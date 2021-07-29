@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void showToast(String msg, FToast fToast, {Duration duration}) {
+void showToast(String msg, FToast fToast, {Duration? duration}) {
   duration = duration ?? Duration(seconds: 1);
   fToast.removeCustomToast();
 

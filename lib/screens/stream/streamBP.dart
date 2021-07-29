@@ -18,30 +18,30 @@ class Stream extends StatefulWidget {
   final Item item;
   final String streamUrl;
 
-  const Stream({@required this.item, @required this.streamUrl});
+  const Stream({required this.item, required this.streamUrl});
 
   @override
   _StreamState createState() => _StreamState();
 }
 
 class _StreamState extends State<Stream> {
-  StreamModel streamModel;
-  BetterPlayerController _betterPlayerController;
-  BetterPlayerDataSource dataSource;
-  StreamController<bool> _placeholderStreamController;
-  Timer _timer;
-  FToast fToast;
+  late StreamModel streamModel;
+  late BetterPlayerController _betterPlayerController;
+  late BetterPlayerDataSource dataSource;
+  late StreamController<bool> _placeholderStreamController;
+  late Timer _timer;
+  late FToast fToast;
   final GlobalKey _betterPlayerKey = GlobalKey();
   var aspectRatio;
   final Orientation currentOrientation =
-      MediaQuery.of(navigatorKey.currentContext).orientation;
+      MediaQuery.of(navigatorKey.currentContext!).orientation;
 
   Future<bool> setupData() async {
     dataSource = BetterPlayerDataSource.network(
       widget.streamUrl,
-      subtitles: await getSubtitles(streamModel.item),
+      subtitles: await getSubtitles(streamModel.item!),
     );
-    aspectRatio = streamModel.item.getAspectRatio();
+    aspectRatio = streamModel.item!.getAspectRatio();
 
     _betterPlayerController = BetterPlayerController(
         setupPlayerControllerConfiguration(
@@ -55,9 +55,9 @@ class _StreamState extends State<Stream> {
   }
 
   void playerError() {
-    if (_betterPlayerController.videoPlayerController.value.hasError) {
-      print(
-          _betterPlayerController.videoPlayerController.value.errorDescription);
+    if (_betterPlayerController.videoPlayerController!.value.hasError) {
+      print(_betterPlayerController
+          .videoPlayerController!.value.errorDescription);
     }
   }
 
@@ -67,7 +67,7 @@ class _StreamState extends State<Stream> {
     _placeholderStreamController = StreamController.broadcast();
     streamModel = StreamModel();
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     // Hide device overlays
     // device orientation
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -84,7 +84,7 @@ class _StreamState extends State<Stream> {
     // deleteActiveEncoding();
     _placeholderStreamController.close();
     // _timer?.cancel();
-    _betterPlayerController?.dispose();
+    _betterPlayerController.dispose();
     // Show device overlays
     // device orientation
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
@@ -108,7 +108,7 @@ class _StreamState extends State<Stream> {
                   aspectRatio: aspectRatio,
                   child: BetterPlayer(
                       key: _betterPlayerKey,
-                      controller: streamModel.betterPlayerController)),
+                      controller: streamModel.betterPlayerController!)),
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -121,30 +121,27 @@ class _StreamState extends State<Stream> {
   void _startProgressTimer() {
     _timer = Timer.periodic(
         Duration(seconds: 15),
-        (Timer
-                t) =>
-            itemProgress(streamModel.item,
-                canSeek: true,
-                isMuted:
-                    streamModel.betterPlayerController.videoPlayerController.value
-                                .volume >
-                            0
-                        ? true
-                        : false,
-                isPaused: !streamModel.betterPlayerController.videoPlayerController
-                    .value.isPlaying,
-                positionTicks: streamModel.betterPlayerController
-                    .videoPlayerController.value.position.inMicroseconds,
-                volumeLevel: streamModel
-                    .betterPlayerController.videoPlayerController.value.volume
-                    .round(),
-                subtitlesIndex: 0));
+        (Timer t) => itemProgress(streamModel.item!,
+            canSeek: true,
+            isMuted:
+                streamModel.betterPlayerController!.videoPlayerController!.value.volume >
+                        0
+                    ? true
+                    : false,
+            isPaused: !streamModel
+                .betterPlayerController!.videoPlayerController!.value.isPlaying,
+            positionTicks: streamModel.betterPlayerController!
+                .videoPlayerController!.value.position.inMicroseconds,
+            volumeLevel: streamModel
+                .betterPlayerController!.videoPlayerController!.value.volume
+                .round(),
+            subtitlesIndex: 0));
   }
 
   BetterPlayerConfiguration setupPlayerControllerConfiguration(
       {double aspectRatio = 16 / 9,
       int startAt = 0,
-      BetterPlayerControlsConfiguration customConfiguration}) {
+      required BetterPlayerControlsConfiguration customConfiguration}) {
     return BetterPlayerConfiguration(
         aspectRatio: aspectRatio,
         eventListener: (event) {
@@ -170,7 +167,7 @@ class _StreamState extends State<Stream> {
         subtitlesConfiguration:
             BetterPlayerSubtitlesConfiguration(fontSize: 18),
         startAt: Duration(microseconds: startAt),
-        controlsConfiguration: customConfiguration ?? configuration());
+        controlsConfiguration: customConfiguration);
   }
 }
 
@@ -193,14 +190,14 @@ BetterPlayerControlsConfiguration configuration() {
 
 Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
   var asyncSubs = StreamModel()
-      .playBackInfos
+      .playBackInfos!
       .getSubtitles()
       .map((sub) async => BetterPlayerSubtitlesSource(
           type: BetterPlayerSubtitlesSourceType.network,
           urls: [
-            sub.isExternal
+            sub.isExternal != null
                 ? sub.deliveryUrl
-                : await getSubtitleURL(item.id, 'vtt', sub.index)
+                : await getSubtitleURL(item.id, 'vtt', sub.index!)
           ],
           selectedByDefault: StreamModel().subtitleStreamIndex == sub.index,
           name: '${sub.language} - ${sub.title}'))

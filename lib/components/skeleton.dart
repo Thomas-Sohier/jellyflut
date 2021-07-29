@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 
 class Skeleton extends StatefulWidget {
   final double height;
-  final double width;
+  final double? width;
   final int nbLine;
   final List<Color> colors;
 
   Skeleton(
-      {Key key,
-      this.height = 15,
+      {this.height = 15,
       this.width,
       this.nbLine = 1,
-      this.colors = const [Colors.black12, Colors.black26, Colors.black12]})
-      : super(key: key);
+      this.colors = const [Colors.black12, Colors.black26, Colors.black12]});
 
   @override
   SkeletonState createState() => SkeletonState();
@@ -20,9 +18,8 @@ class Skeleton extends StatefulWidget {
 
 class SkeletonState extends State<Skeleton>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
-  Animation gradientPosition;
+  late AnimationController _controller;
+  late Animation gradientPosition;
 
   @override
   void initState() {

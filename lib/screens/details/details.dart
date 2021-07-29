@@ -17,7 +17,7 @@ import 'collection.dart';
 class Details extends StatefulWidget {
   final Item item;
   final String heroTag;
-  const Details({@required this.item, @required this.heroTag});
+  const Details({required this.item, required this.heroTag});
 
   @override
   State<StatefulWidget> createState() {
@@ -37,13 +37,13 @@ final playableItems = [
 ];
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  PageController pageController;
-  MediaQueryData mediaQuery;
-  String heroTag;
-  Item item;
+  late PageController pageController;
+  late MediaQueryData mediaQuery;
+  late String heroTag;
+  late Item item;
 
   // Items for photos
-  ListOfItems listOfItems;
+  late ListOfItems listOfItems;
 
   @override
   void initState() {
@@ -88,8 +88,8 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Column(children: [
           SizedBox(height: 64),
-          if (item?.imageBlurHashes?.logo != null) logo(item, mediaQuery.size),
-          if (item?.imageBlurHashes?.logo != null)
+          if (item.imageBlurHashes?.logo != null) logo(item, mediaQuery.size),
+          if (item.imageBlurHashes?.logo != null)
             SizedBox(height: mediaQuery.size.height * 0.05),
           futureItemDetails(item: item),
           Collection(item),
@@ -101,7 +101,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       return PhotoView(
         heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
         imageProvider: NetworkImage(
-            getItemImageUrl(item.correctImageId(), item.correctImageTags())),
+            getItemImageUrl(item.correctImageId(), item.correctImageTags()!)),
       );
     }
     var startAt = listOfItems.items.indexOf(item);
@@ -112,7 +112,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         var _item = listOfItems.items[index];
         return PhotoViewGalleryPageOptions(
           imageProvider: NetworkImage(getItemImageUrl(
-              _item.correctImageId(), _item.correctImageTags())),
+              _item.correctImageId(), _item.correctImageTags()!)),
           initialScale: PhotoViewComputedScale.contained,
         );
       },
@@ -124,7 +124,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
           child: CircularProgressIndicator(
             value: event == null
                 ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       ),
@@ -140,14 +140,14 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         height: 100,
         child: AsyncImage(
           item.correctImageId(searchType: 'logo'),
-          item.correctImageTags(searchType: 'logo'),
-          item.imageBlurHashes,
+          item.correctImageTags(searchType: 'logo')!,
+          item.imageBlurHashes!,
           boxFit: BoxFit.contain,
           tag: 'Logo',
         ));
   }
 
-  Widget futureItemDetails({@required Item item}) {
+  Widget futureItemDetails({required Item item}) {
     return FutureBuilder<dynamic>(
       future: _getItemsCustom(itemId: item.id),
       builder: (context, snapshot) {
@@ -160,10 +160,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   Widget buildCard(Item detailedItem) {
-    if (detailedItem.id != null) {
-      return card(detailedItem);
-    }
-    return Container();
+    return card(detailedItem);
   }
 
   Widget card(Item detailedItem) {
@@ -201,7 +198,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         ));
   }
 
-  Future _getItemsCustom({@required String itemId}) async {
+  Future _getItemsCustom({required String itemId}) async {
     var futures = <Future>[];
     futures.add(Future.delayed(Duration(milliseconds: 400)));
     futures.add(getItem(itemId));

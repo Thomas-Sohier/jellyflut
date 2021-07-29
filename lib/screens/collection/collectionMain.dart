@@ -11,7 +11,7 @@ import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 class CollectionMain extends StatefulWidget {
   final Item item;
 
-  const CollectionMain({@required this.item});
+  const CollectionMain({required this.item});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,8 +24,8 @@ class _CollectionMainState extends State<CollectionMain> {
   var itemsToShow = <Item>[];
 
   // Provider
-  ListOfItems listOfItems;
-  CarrousselModel carrousselModel;
+  late ListOfItems listOfItems;
+  late CarrousselModel carrousselModel;
 
   @override
   void initState() {

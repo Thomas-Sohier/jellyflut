@@ -6,12 +6,12 @@ class DetailHeaderBar extends StatelessWidget {
   final double height;
   final Color color;
 
-  DetailHeaderBar({Key key, @required this.height, @required this.color})
+  DetailHeaderBar({Key? key, required this.height, required this.color})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     var statusBarHeight =
-        MediaQuery.of(navigatorKey.currentContext).padding.top;
+        MediaQuery.of(navigatorKey.currentContext!).padding.top;
     return Container(
       height: statusBarHeight + height,
       padding: EdgeInsets.only(left: 10, right: 10),

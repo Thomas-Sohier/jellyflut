@@ -8,10 +8,10 @@ class AsyncImage extends StatelessWidget {
   AsyncImage(this.itemId, this.imageTag, this.blurHash,
       {this.tag = 'Primary', this.boxFit = BoxFit.fitHeight, this.placeholder});
 
+  final String imageTag;
   final String itemId;
   final ImageBlurHashes blurHash;
   final String tag;
-  final String imageTag;
   final BoxFit boxFit;
   final Widget? placeholder;
 

@@ -10,18 +10,18 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayer extends StatefulWidget {
-  MusicPlayer({Key key}) : super(key: key);
+  MusicPlayer({Key? key}) : super(key: key);
 
   @override
   _MusicPlayerState createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
-  music_player_provider.MusicPlayer musicPlayer;
-  Color backgroundColor1;
-  Color backgroundColor2;
-  Color foregroundColor;
-  int musicPlayerIndex;
+  late music_player_provider.MusicPlayer musicPlayer;
+  late Color backgroundColor1;
+  late Color backgroundColor2;
+  late Color foregroundColor;
+  late int musicPlayerIndex;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     backgroundColor2 = jellyLightBLue.shade50;
     foregroundColor = Colors.black;
     musicPlayer = music_player_provider.MusicPlayer();
-    musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value.index;
+    musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
     setAlbumPrimaryColor();
     setForegroundColorFromBackground();
     playerListener();
@@ -53,7 +53,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
             value: musicPlayer,
             child: Stack(
               children: [
-                SongBackground(color: Colors.grey[900]),
+                SongBackground(color: Colors.grey[900]!),
                 Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Column(
@@ -80,7 +80,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   void setAlbumPrimaryColor() {
     var url = musicPlayer
-        .assetsAudioPlayer.current.value.audio.audio.metas.image.path;
+        .assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
     PaletteGenerator.fromImageProvider(NetworkImage(url))
         .then((PaletteGenerator value) => setState(() => {
               setBackground(
@@ -101,8 +101,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   void playerListener() {
     musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.current != null && musicPlayerIndex != event.current.index) {
-        musicPlayerIndex = event.current.index;
+      if (event.current != null && musicPlayerIndex != event.current?.index) {
+        musicPlayerIndex = event.current!.index;
         setAlbumPrimaryColor();
       }
     });

@@ -47,7 +47,7 @@ class Item {
     this.originalTitle,
     this.serverId,
     required this.id,
-    required this.indexNumber,
+    this.indexNumber,
     this.parentIndexNumber,
     this.etag,
     this.collectionType,
@@ -115,7 +115,7 @@ class Item {
   String? originalTitle;
   String? serverId;
   String id;
-  int indexNumber;
+  int? indexNumber;
   int? parentIndexNumber;
   String? etag;
   String? collectionType;
@@ -502,7 +502,7 @@ class Item {
   /// Return playback position in microsecond as [int]
   /// Return [0] if not specified
   int getPlaybackPosition() {
-    if (userData != null && userData!.playbackPositionTicks != null) {
+    if (userData != null) {
       return (userData!.playbackPositionTicks / 10).round();
     }
     return 0;
@@ -703,7 +703,7 @@ class Item {
     // remove all item without an index to avoid sort error
     category.items.removeWhere((element) => element.indexNumber == null);
     // sort by index to get the next item to stream
-    category.items.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
+    category.items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
     var itemToPlay = category.items.firstWhere(
         (element) => !element.userData!.played,
         orElse: () => category.items.first);

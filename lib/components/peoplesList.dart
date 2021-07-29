@@ -75,7 +75,7 @@ Widget listPeoples(List<Person> peoples) {
                 Flexible(
                     fit: FlexFit.loose,
                     child: Text(
-                      people.name ?? '-',
+                      people.name,
                       overflow: TextOverflow.clip,
                       softWrap: false,
                       style: TextStyle(color: Colors.black, fontSize: 16),
@@ -83,7 +83,7 @@ Widget listPeoples(List<Person> peoples) {
                 Flexible(
                     fit: FlexFit.loose,
                     child: Text(
-                      people.role ?? '-',
+                      people.role,
                       overflow: TextOverflow.clip,
                       softWrap: false,
                       style: TextStyle(color: Colors.black54, fontSize: 12),

@@ -9,7 +9,7 @@ import 'package:jellyflut/shared/shared.dart';
 class SongInfos extends StatefulWidget {
   final double height;
   final Color color;
-  SongInfos({Key key, @required this.height, @required this.color})
+  SongInfos({Key? key, required this.height, required this.color})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class SongInfos extends StatefulWidget {
 }
 
 class _SongInfosState extends State<SongInfos> {
-  MusicPlayer musicPlayer;
+  late MusicPlayer musicPlayer;
 
   @override
   void initState() {
@@ -68,11 +68,11 @@ class _SongInfosState extends State<SongInfos> {
           ),
           FutureBuilder<Item>(
             future: getItem(musicPlayer
-                .assetsAudioPlayer.current.value.audio.audio.metas.id),
+                .assetsAudioPlayer.current.value!.audio.audio.metas.id!),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return FavButton(
-                  snapshot.data,
+                  snapshot.data!,
                   size: 42,
                   padding: EdgeInsets.all(10),
                 );

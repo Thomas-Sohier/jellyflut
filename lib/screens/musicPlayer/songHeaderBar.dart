@@ -8,12 +8,12 @@ class SongHeaderBar extends StatelessWidget {
   final double height;
   final Color color;
 
-  SongHeaderBar({Key key, @required this.height, @required this.color})
+  SongHeaderBar({Key? key, required this.height, required this.color})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     var statusBarHeight =
-        MediaQuery.of(navigatorKey.currentContext).padding.top;
+        MediaQuery.of(navigatorKey.currentContext!).padding.top;
     return SizedBox(
       height: statusBarHeight + height,
       child: Row(
@@ -35,7 +35,7 @@ class SongHeaderBar extends StatelessWidget {
                   context,
                   SlideRightRoute(
                     page: SongPlaylist(
-                      backgroundColor: Colors.grey[900],
+                      backgroundColor: Colors.grey[900]!,
                       color: color,
                     ),
                   )),

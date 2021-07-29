@@ -4,21 +4,21 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 class SongSlider extends StatefulWidget {
   final List<Color> albumColors;
 
-  SongSlider({Key key, @required this.albumColors}) : super(key: key);
+  SongSlider({Key? key, required this.albumColors}) : super(key: key);
 
   @override
   _SongSliderState createState() => _SongSliderState();
 }
 
 class _SongSliderState extends State<SongSlider> {
-  MusicPlayer musicPlayer;
-  int _playBackTime;
+  late MusicPlayer musicPlayer;
+  late int _playBackTime;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.currentMusicDuration().toInt() ?? 0;
+    _playBackTime = musicPlayer.currentMusicDuration().toInt();
     playerListener();
   }
 

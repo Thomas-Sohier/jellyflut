@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 
 class ListItems extends StatefulWidget {
   final double headerBarHeight;
-  const ListItems({Key key, this.headerBarHeight = 64}) : super(key: key);
+  const ListItems({Key? key, this.headerBarHeight = 64}) : super(key: key);
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -19,13 +19,13 @@ class ListItems extends StatefulWidget {
 
 class _ListItemsState extends State<ListItems> {
   // Scroll controller
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   // Carousel provider
-  CarrousselModel carrousselModel;
+  late CarrousselModel carrousselModel;
 
   // Items
-  ListOfItems listOfItems;
+  late ListOfItems listOfItems;
 
   @override
   void initState() {
@@ -66,8 +66,9 @@ class _ListItemsState extends State<ListItems> {
                 )),
                 SliverToBoxAdapter(
                   child: Column(children: [
-                    if (listOfItems.getTypeOfItems().contains('movie') ||
-                        listOfItems.getTypeOfItems().contains('Book'))
+                    if (listOfItems.getTypeOfItems() != null &&
+                        (listOfItems.getTypeOfItems()!.contains('movie') ||
+                            listOfItems.getTypeOfItems()!.contains('Book')))
                       head(context),
                     sortItems(),
                   ]),
@@ -124,7 +125,7 @@ class _ListItemsState extends State<ListItems> {
         future: listOfItems.getheaderItems(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return carouselSlider(snapshot.data);
+            return carouselSlider(snapshot.data!);
           }
           return Container();
         });

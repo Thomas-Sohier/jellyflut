@@ -155,8 +155,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   bool isInit() {
-    if (musicPlayer.assetsAudioPlayer != null &&
-        musicPlayer.assetsAudioPlayer.current.hasValue) {
+    if (musicPlayer.assetsAudioPlayer.current.hasValue) {
       return musicPlayer.assetsAudioPlayer.current.value != null ||
           musicPlayer.assetsAudioPlayer.isPlaying.value;
     }

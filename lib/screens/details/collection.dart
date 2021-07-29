@@ -32,11 +32,11 @@ class _CollectionState extends State<Collection> {
   Widget showCollection(Item item) {
     var size = MediaQuery.of(context).size;
     if (item.isFolder != null) {
-      if (item.isFolder && item.type == 'MusicAlbum') {
+      if (item.isFolder! && item.type == 'MusicAlbum') {
         return ListMusicItem(item: item);
-      } else if (item.isFolder && item.type == 'Season') {
+      } else if (item.isFolder! && item.type == 'Season') {
         return ListVideoItem(item: item);
-      } else if (item.isFolder) {
+      } else if (item.isFolder!) {
         return ListCollectionItem(item: item);
       }
     } else if (item.type == 'MusicArtist') {
@@ -92,6 +92,6 @@ Future collectionItems(Item item) {
     return getItems(
         parentId: item.id, limit: 100, fields: 'ImageTags', filter: 'IsFolder');
   } else {
-    return getShowSeasonEpisode(item.seriesId, item.id);
+    return getShowSeasonEpisode(item.seriesId!, item.id);
   }
 }

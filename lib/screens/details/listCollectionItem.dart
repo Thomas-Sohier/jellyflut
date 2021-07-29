@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
@@ -8,22 +7,17 @@ import 'package:uuid/uuid.dart';
 
 class ListCollectionItem extends StatelessWidget {
   final Item item;
-  final String title;
-  final Future<Category> future;
+  final String? title;
+  final Future<Category>? future;
 
-  const ListCollectionItem({@required this.item, this.title, this.future});
+  const ListCollectionItem({required this.item, this.title, this.future});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-        future: future ??
-            getItems(
-                parentId: item.id,
-                limit: 100,
-                fields: 'ImageTags',
-                filter: 'IsFolder'),
+        future: future,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data.items.isNotEmpty) {
+          if (snapshot.hasData && snapshot.data!.items.isNotEmpty) {
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -31,12 +25,12 @@ class ListCollectionItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        title,
+                        title!,
                         textAlign: TextAlign.start,
                         style: TextStyle(color: Colors.white, fontSize: 28),
                       ),
                     ),
-                  carouselSlider(snapshot.data.items)
+                  carouselSlider(snapshot.data!.items)
                 ]);
           }
           return Container();

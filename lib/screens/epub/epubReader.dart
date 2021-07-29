@@ -13,14 +13,14 @@ import 'dart:io' as io;
 class EpubReaderPage extends StatefulWidget {
   final Item item;
 
-  const EpubReaderPage({Key key, @required this.item}) : super(key: key);
+  const EpubReaderPage({Key? key, required this.item}) : super(key: key);
 
   @override
   _EpubReaderPageState createState() => _EpubReaderPageState();
 }
 
 class _EpubReaderPageState extends State<EpubReaderPage> {
-  EpubController _epubReaderController;
+  late EpubController _epubReaderController;
 
   @override
   void initState() {

@@ -15,12 +15,12 @@ import 'details.dart';
 class ListVideoItem extends StatelessWidget {
   final Item item;
 
-  const ListVideoItem({@required this.item});
+  const ListVideoItem({required this.item});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-        future: _getEpisodeCustom(seriesId: item.seriesId, itemId: item.id),
+        future: _getEpisodeCustom(seriesId: item.seriesId!, itemId: item.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return body(snapshot.data[1]);
@@ -36,7 +36,7 @@ class ListVideoItem extends StatelessWidget {
           shrinkWrap: true,
           padding: EdgeInsets.all(0),
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: category.items == null ? 0 : category.items.length,
+          itemCount: category.items.length,
           itemBuilder: (context, index) {
             var item = category.items[index];
             var heroTag = item.id + Uuid().v4();
@@ -50,8 +50,8 @@ class ListVideoItem extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Shimmer.fromColors(
             enabled: shimmerAnimation,
-            baseColor: Colors.grey[100],
-            highlightColor: Colors.grey[300],
+            baseColor: Colors.grey[100]!,
+            highlightColor: Colors.grey[300]!,
             child: ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.all(0),
@@ -215,7 +215,7 @@ class ListVideoItem extends StatelessWidget {
   }
 
   Future _getEpisodeCustom(
-      {@required String seriesId, @required String itemId}) async {
+      {required String seriesId, required String itemId}) async {
     var futures = <Future>[];
     futures.add(Future.delayed(Duration(milliseconds: 400)));
     futures.add(getShowSeasonEpisode(seriesId, itemId));

@@ -9,8 +9,8 @@ class SettingsButton extends StatefulWidget {
 }
 
 class _SettingsButtonState extends State<SettingsButton> {
-  FocusNode _node;
-  Color _focusColor;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {

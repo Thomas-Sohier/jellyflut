@@ -8,7 +8,7 @@ import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class LoginForm extends StatefulWidget {
-  LoginForm({this.onPressed});
+  LoginForm({required this.onPressed});
 
   final VoidCallback onPressed;
 
@@ -22,12 +22,12 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameFilter = TextEditingController();
   final TextEditingController _passwordFilter = TextEditingController();
   final FocusNode passwordFocusNode = FocusNode();
-  FToast fToast;
+  late FToast fToast;
 
   @override
   void initState() {
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     super.initState();
   }
 
@@ -37,7 +37,6 @@ class _LoginFormState extends State<LoginForm> {
 
     await login(username, password)
         .then((AuthenticationResponse response) async {
-      if (response == null) return null;
       create(username, response);
       return Navigator.pushReplacementNamed(context, '/home');
     }).catchError((onError) {
@@ -77,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
           controller: _usernameFilter,
           autofocus: false,
           colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200],
+          colorUnfocus: Colors.grey[200]!,
           textInputAction: TextInputAction.next,
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
@@ -89,7 +88,7 @@ class _LoginFormState extends State<LoginForm> {
           obscureText: true,
           autofocus: false,
           colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200],
+          colorUnfocus: Colors.grey[200]!,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _loginPressed(),
           focusNode: passwordFocusNode,

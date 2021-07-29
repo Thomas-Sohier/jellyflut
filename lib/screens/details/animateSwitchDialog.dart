@@ -15,7 +15,7 @@ class AnimateSwitchDialog extends StatefulWidget {
 }
 
 const double gapSize = 20;
-bool _first;
+late bool _first;
 
 class _CollectionState extends State<AnimateSwitchDialog> {
   @override

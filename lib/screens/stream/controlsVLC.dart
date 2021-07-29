@@ -12,7 +12,7 @@ import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class ControlsVLC extends StatefulWidget {
-  ControlsVLC({Key key, this.controller}) : super(key: key);
+  ControlsVLC({Key? key, required this.controller}) : super(key: key);
 
   final VlcPlayerController controller;
 
@@ -27,24 +27,24 @@ class _ControlsVLCState extends State<ControlsVLC> {
     colors: [jellyLightBLue, jellyLightPurple],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-  VlcPlayerController controller;
   bool _visible = false;
-  StreamModel streamModel;
-  Timer _timer;
-  FToast fToast;
+  late VlcPlayerController controller;
+  late StreamModel streamModel;
+  late Timer _timer;
+  late FToast fToast;
 
   @override
   void initState() {
     streamModel = StreamModel();
     controller = widget.controller;
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -58,7 +58,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
         )));
   }
 
-  Widget visibility({@required Widget child}) {
+  Widget visibility({required Widget child}) {
     return Material(
         color: Colors.transparent,
         child: Visibility(
@@ -107,16 +107,16 @@ class _ControlsVLCState extends State<ControlsVLC> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      streamModel.item.name,
+                      streamModel.item!.name,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.white),
                     ),
-                    streamModel.item.hasParent() != null
+                    streamModel.item?.hasParent() != null
                         ? Text(
-                            streamModel.item.parentName(),
+                            streamModel.item!.parentName(),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -135,7 +135,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: streamModel.isDirectPlay
+                      child: streamModel.isDirectPlay!
                           ? gradientMask(
                               child: Icon(Icons.play_for_work,
                                   color: Colors.white))
@@ -252,7 +252,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
   }
 
   Future<void> autoHideControl() async {
-    if (_timer != null) _timer.cancel();
+    _timer.cancel();
     setState(() {
       _visible = !_visible;
     });
@@ -267,14 +267,16 @@ class _ControlsVLCState extends State<ControlsVLC> {
     if (!controller.value.isPlaying) return;
 
     var subtitleTracks = await controller.getSpuTracks();
-    var subtitlesRemoteTracks = streamModel.item.mediaStreams
-        .where((element) => element.type.trim().toLowerCase() == 'subtitle')
-        .toList();
+    var subtitlesRemoteTracks = streamModel.item != null
+        ? streamModel.item!.mediaStreams!
+            .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+            .toList()
+        : null;
 
-    if (streamModel.isDirectPlay) {
+    if (streamModel.isDirectPlay!) {
       setEmbedSubtitlesTracks(subtitleTracks);
     } else {
-      setRemoteSubtitlesTracks(subtitlesRemoteTracks);
+      setRemoteSubtitlesTracks(subtitlesRemoteTracks!);
     }
   }
 
@@ -330,7 +332,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
                 return ListTile(
                   title: Text(
                     index < subtitlesRemoteTracks.length
-                        ? subtitlesRemoteTracks[index].displayTitle
+                        ? subtitlesRemoteTracks[index].displayTitle!
                         : 'Disable',
                   ),
                   onTap: () {
@@ -349,7 +351,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
       },
     );
     if (selectedSub != null) {
-      var url = await getNewSubtitleSource(selectedSub.index,
+      var url = await getNewSubtitleSource(selectedSub.index!,
           playbackTick: controller.value.position);
       await controller.setMediaFromNetwork(url, autoPlay: true);
     }
@@ -359,14 +361,16 @@ class _ControlsVLCState extends State<ControlsVLC> {
     if (!controller.value.isPlaying) return;
 
     var audioTracks = await controller.getAudioTracks();
-    var remoteAudiosTracks = streamModel.item.mediaStreams
-        .where((element) => element.type.trim().toLowerCase() == 'audio')
-        .toList();
+    var remoteAudiosTracks = streamModel.item != null
+        ? streamModel.item!.mediaStreams!
+            .where((element) => element.type.trim().toLowerCase() == 'audio')
+            .toList()
+        : null;
     //
-    if (streamModel.isDirectPlay) {
+    if (streamModel.isDirectPlay!) {
       setEmbedAudioTracks(audioTracks);
     } else {
-      setRemoteAudiosTracks(remoteAudiosTracks);
+      setRemoteAudiosTracks(remoteAudiosTracks!);
     }
   }
 
@@ -423,7 +427,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
                 return ListTile(
                   title: Text(
                     index < remoteAudiosTracks.length
-                        ? remoteAudiosTracks[index].displayTitle
+                        ? remoteAudiosTracks[index].displayTitle!
                         : 'Disable',
                   ),
                   onTap: () {
@@ -442,7 +446,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
       },
     );
     if (selectedAudioTrack != null) {
-      var url = await getNewAudioSource(selectedAudioTrack.index,
+      var url = await getNewAudioSource(selectedAudioTrack.index!,
           playbackTick: controller.value.position);
       await controller.setMediaFromNetwork(url, autoPlay: true);
     }
@@ -451,7 +455,7 @@ class _ControlsVLCState extends State<ControlsVLC> {
   void _getRendererDevices() async {
     var castDevices = await controller.getRendererDevices();
     //
-    if (castDevices != null && castDevices.isNotEmpty) {
+    if (castDevices.isNotEmpty) {
       var selectedCastDeviceName = await showDialog(
         context: context,
         builder: (BuildContext context) {

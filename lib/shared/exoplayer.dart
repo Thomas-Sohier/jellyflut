@@ -79,10 +79,10 @@ const subtitleProfiles = [
 Future<DeviceProfile> getExoplayerProfile() async {
   var profile = DeviceProfile();
   var db = AppDatabase().getDatabase;
-  var settings = await db.settingsDao.getSettingsById(userApp.settingsId);
+  var settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
 
   if (savedDeviceProfile != null) {
-    return savedDeviceProfile;
+    return savedDeviceProfile!;
   }
 
   profile.name = 'Android ${settings.preferredPlayer}';
@@ -94,15 +94,15 @@ Future<DeviceProfile> getExoplayerProfile() async {
   profile.directPlayProfiles = [];
   profile.codecProfiles = [];
 
-  subtitleProfiles.forEach((sp) => profile.subtitleProfiles
+  subtitleProfiles.forEach((sp) => profile.subtitleProfiles!
       .add(SubtitleProfile(format: sp, method: 'Embed')));
 
   var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
 
-  externalSubtitleProfiles.forEach((sp) => profile.subtitleProfiles
+  externalSubtitleProfiles.forEach((sp) => profile.subtitleProfiles!
       .add(SubtitleProfile(format: sp, method: 'External')));
 
-  profile.subtitleProfiles
+  profile.subtitleProfiles!
       .add(SubtitleProfile(format: 'dvdsub', method: 'Encode'));
 
   var resultString = await platform.invokeMethod('getListOfCodec');
@@ -111,7 +111,7 @@ Future<DeviceProfile> getExoplayerProfile() async {
   var videoCodecs = <Codec>[];
   var audioCodecs = <Codec>[];
 
-  codecs.audioCodecs.forEach((audioCodec) {
+  codecs.audioCodecs!.forEach((audioCodec) {
     audioCodecs.add(audioCodec);
 
     var profiles = audioCodec.profiles.join('|');
@@ -124,32 +124,26 @@ Future<DeviceProfile> getExoplayerProfile() async {
         property: 'AudioBitrate',
         value: audioCodec.maxBitrate.toString()));
 
-    if (profiles != null) {
-      conditions.add(Condition(
-          condition: 'EqualsAny',
-          property: 'AudioProfile',
-          value: profiles.toString()));
-    }
+    conditions.add(Condition(
+        condition: 'EqualsAny',
+        property: 'AudioProfile',
+        value: profiles.toString()));
 
-    if (maxChannels != null) {
-      conditions.add(Condition(
-          condition: 'LessThanEqual',
-          property: 'AudioChannels',
-          value: maxChannels.toString()));
-    }
+    conditions.add(Condition(
+        condition: 'LessThanEqual',
+        property: 'AudioChannels',
+        value: maxChannels.toString()));
 
-    if (maxSampleRate != null) {
-      conditions.add(Condition(
-          condition: 'LessThanEqual',
-          property: 'AudioSampleRate',
-          value: maxSampleRate.toString()));
-    }
+    conditions.add(Condition(
+        condition: 'LessThanEqual',
+        property: 'AudioSampleRate',
+        value: maxSampleRate.toString()));
 
-    profile.codecProfiles.add(CodecProfile(
+    profile.codecProfiles!.add(CodecProfile(
         type: 'Audio', codec: audioCodec.codec, conditions: conditions));
   });
 
-  codecs.videoCodecs.forEach((videoCodec) {
+  codecs.videoCodecs!.forEach((videoCodec) {
     videoCodecs.add(videoCodec);
 
     var profiles = videoCodec.profiles.join('|');
@@ -164,12 +158,10 @@ Future<DeviceProfile> getExoplayerProfile() async {
         property: 'VideoBitrate',
         value: videoCodec.maxBitrate.toString()));
 
-    if (profiles != null) {
-      conditions.add(Condition(
-          condition: 'EqualsAny',
-          property: 'VideoProfile',
-          value: profiles.toString()));
-    }
+    conditions.add(Condition(
+        condition: 'EqualsAny',
+        property: 'VideoProfile',
+        value: profiles.toString()));
 
     if (maxLevel != null) {
       conditions.add(Condition(
@@ -179,28 +171,28 @@ Future<DeviceProfile> getExoplayerProfile() async {
     }
 
     if (conditions.isNotEmpty) {
-      profile.codecProfiles.add(CodecProfile(
+      profile.codecProfiles!.add(CodecProfile(
           type: 'Video', codec: videoCodec.codec, conditions: conditions));
     }
   });
 
   videoProfiles.forEach((key, value) {
-    profile.directPlayProfiles.add(DirectPlayProfile(
+    profile.directPlayProfiles!.add(DirectPlayProfile(
         container: key,
         type: 'Video',
-        videoCodec: videoProfiles[key]
+        videoCodec: videoProfiles[key]!
             .where((codec) => videoCodecs.map((e) => e.codec).contains(codec))
             .join(','),
-        audioCodec: audioProfiles[key]
+        audioCodec: audioProfiles[key]!
             .where((codec) => audioCodecs.map((e) => e.codec).contains(codec))
             .join(',')));
   });
 
   audioProfiles.forEach((key, value) {
-    profile.directPlayProfiles.add(DirectPlayProfile(
+    profile.directPlayProfiles!.add(DirectPlayProfile(
         container: key,
         type: 'Audio',
-        audioCodec: audioProfiles[key]
+        audioCodec: audioProfiles[key]!
             .where((codec) => audioCodecs.map((e) => e.codec).contains(codec))
             .join(',')));
   });
@@ -216,7 +208,7 @@ List<TranscodingProfile> getTRanscodingProfiles(List<Codec> audioCodecs) {
   transcodingProfiles.add(TranscodingProfile(
       container: 'ts',
       type: 'Video',
-      audioCodec: audioProfiles['ts']
+      audioCodec: audioProfiles['ts']!
           .where((codec) => audioCodecs.map((e) => e.codec).contains(codec))
           .join(','),
       videoCodec: 'h264',
@@ -226,7 +218,7 @@ List<TranscodingProfile> getTRanscodingProfiles(List<Codec> audioCodecs) {
   transcodingProfiles.add(TranscodingProfile(
       container: 'mkv',
       type: 'Video',
-      audioCodec: audioProfiles['mkv']
+      audioCodec: audioProfiles['mkv']!
           .where((codec) => audioCodecs.map((e) => e.codec).contains(codec))
           .join(','),
       videoCodec: 'h264',

@@ -3,8 +3,6 @@ import 'package:jellyflut/models/device.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/deviceProfileParent.dart';
 import 'package:jellyflut/models/item.dart';

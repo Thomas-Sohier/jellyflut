@@ -98,12 +98,12 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void playPlaylist(String parentId) {
-    assetsAudioPlayer.playlist?.audios?.clear();
+    assetsAudioPlayer.playlist?.audios.clear();
     getItems(parentId: parentId).then((value) {
       value.items
           .where((_item) => _item.isFolder == false)
           .toList()
-          .sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
+          .sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
       value.items.asMap().forEach((index, Item _item) async {
         addPlaylist(_item, index);
       });

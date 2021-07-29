@@ -31,7 +31,7 @@ class Poster extends StatelessWidget {
                 aspectRatio: item.getPrimaryAspectRatio(),
                 child: AsyncImage(
                   showParent ? item.getParentId() : item.getIdBasedOnImage(),
-                  item.imageTags!.primary!,
+                  item.imageTags?.primary ?? '',
                   item.imageBlurHashes!,
                   tag: tag,
                   boxFit: boxFit,
@@ -40,7 +40,7 @@ class Poster extends StatelessWidget {
             aspectRatio: item.getPrimaryAspectRatio(),
             child: AsyncImage(
               showParent ? item.getParentId() : item.getIdBasedOnImage(),
-              item.imageTags!.primary!,
+              item.imageTags?.primary ?? '',
               item.imageBlurHashes!,
               tag: tag,
               boxFit: boxFit,

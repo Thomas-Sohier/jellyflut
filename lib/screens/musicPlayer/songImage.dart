@@ -14,10 +14,10 @@ class SongImage extends StatefulWidget {
   final List<Color> albumColors;
 
   SongImage(
-      {Key key,
-      @required this.height,
-      @required this.color,
-      @required this.albumColors})
+      {Key? key,
+      required this.height,
+      required this.color,
+      required this.albumColors})
       : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class SongImage extends StatefulWidget {
 }
 
 class _SongImageState extends State<SongImage> {
-  MusicPlayer musicPlayer;
+  late MusicPlayer musicPlayer;
   double posx = 100.0;
   double posy = 100.0;
 
@@ -45,7 +45,7 @@ class _SongImageState extends State<SongImage> {
     var height = widget.height > 600 ? 600 : widget.height;
     var singleSize = height * 0.8;
     return Container(
-        height: height,
+        height: height.toDouble(),
         width: double.maxFinite,
         child: imageSingleAsync(singleSize));
   }
@@ -70,7 +70,7 @@ class _SongImageState extends State<SongImage> {
                         musicPlayer.getCurrentAudioImagePath() != null
                             ? OctoImage(
                                 image: CachedNetworkImageProvider(
-                                    musicPlayer.getCurrentAudioImagePath()),
+                                    musicPlayer.getCurrentAudioImagePath()!),
                                 placeholderBuilder: (_) => placeholder(size),
                                 errorBuilder: (context, error, e) =>
                                     placeholder(size),
@@ -128,11 +128,11 @@ class _SongImageState extends State<SongImage> {
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
-    final widgetWidth = context.size.width;
-    final RenderBox box = context.findRenderObject();
+    final widgetWidth = context.size?.width;
+    final box = context.findRenderObject() as RenderBox;
     final localOffset = box.globalToLocal(details.globalPosition);
     posx = localOffset.dx;
-    var percentWidth = posx / widgetWidth;
+    var percentWidth = posx / widgetWidth!;
     var duration = musicPlayer.currentMusicMaxDuration() * percentWidth;
     if (duration > 0 && duration < musicPlayer.currentMusicMaxDuration()) {
       musicPlayer.assetsAudioPlayer

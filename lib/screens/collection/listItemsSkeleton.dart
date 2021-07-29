@@ -23,8 +23,8 @@ class ListItemsSkeleton extends StatelessWidget {
         padding: EdgeInsets.all(6),
         child: Shimmer.fromColors(
           enabled: shimmerAnimation,
-          highlightColor: Colors.grey[700],
-          baseColor: Colors.grey[300],
+          highlightColor: Colors.grey[700]!,
+          baseColor: Colors.grey[300]!,
           child: GridView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),

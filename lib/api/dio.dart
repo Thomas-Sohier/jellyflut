@@ -22,7 +22,7 @@ Dio dio = Dio(options)
         var token = apiKey;
         var authEmby = await authHeader();
         if (token != null) {
-          requestOptions.queryParameters ??= <String, dynamic>{};
+          requestOptions.queryParameters;
           requestOptions.queryParameters['api_key'] = token;
         }
         requestOptions.headers['X-Emby-Authorization'] = authEmby;

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:jellyflut/models/category.dart';
 import '../globals.dart';
 import 'dio.dart';

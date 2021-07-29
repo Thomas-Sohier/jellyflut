@@ -51,7 +51,7 @@ class _LatestState extends State<Latest> {
   List<Widget> displayLatestMedia(List<Item> medias) {
     var latestMedia = <Widget>[];
     medias.forEach((Item media) {
-      var firstKey = media.imageBlurHashes.primary.entries.first.key;
+      var firstKey = media.imageBlurHashes!.primary!.entries.first.key;
       latestMedia.add(
         Container(
           height: listViewHeight,
@@ -74,7 +74,7 @@ class _LatestState extends State<Latest> {
                         aspectRatio: 16 / 9,
                         child: BlurHash(
                             imageFit: BoxFit.cover,
-                            hash: media.imageBlurHashes.primary[firstKey]))),
+                            hash: media.imageBlurHashes!.primary![firstKey]))),
                 Text(
                   media.name,
                   overflow: TextOverflow.ellipsis,

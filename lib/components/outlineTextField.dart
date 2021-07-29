@@ -8,7 +8,7 @@ class OutlineTextField extends StatefulWidget {
       this.obscureText = false,
       this.textInputAction,
       this.onSubmitted,
-      this.autofocus,
+      this.autofocus = false,
       this.focusNode,
       this.borderRadius = 30,
       this.colorUnfocus = const Color(0xFF333333),
@@ -16,17 +16,17 @@ class OutlineTextField extends StatefulWidget {
       this.prefixIcon});
 
   final String text;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final bool obscureText;
   final bool autofocus;
-  final TextInputAction textInputAction;
-  final Function onSubmitted;
-  final FocusNode focusNode;
-  final TextEditingController controller;
+  final TextInputAction? textInputAction;
+  final Function(String)? onSubmitted;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
   final double borderRadius;
   final Color colorUnfocus;
   final Color colorFocus;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   State<StatefulWidget> createState() => _OutlineTextFieldState();

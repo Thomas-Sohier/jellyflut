@@ -8,9 +8,7 @@ class UnorderedList extends StatelessWidget {
   final double textSize;
 
   const UnorderedList(
-      {@required this.texts,
-      this.textColor = Colors.black,
-      this.textSize = 16});
+      {required this.texts, this.textColor = Colors.black, this.textSize = 16});
 
   @override
   Widget build(BuildContext context) {
