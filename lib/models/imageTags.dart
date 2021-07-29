@@ -3,7 +3,7 @@ class ImageTags {
     this.primary,
   });
 
-  String primary;
+  String? primary;
 
   factory ImageTags.fromMap(Map<String, dynamic> json) => ImageTags(
         primary: json['Primary'],

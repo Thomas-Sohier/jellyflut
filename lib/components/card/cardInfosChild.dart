@@ -41,15 +41,15 @@ class _CardInfosState extends State<CardInfos> {
     var item = widget.item;
     return Column(
       children: [
-        if (item?.mediaSources != null) sourceDropdown(item),
+        if (item.mediaSources != null) sourceDropdown(item),
         Row(
           children: [
             actionIcons(item),
             Spacer(),
-            if (item.userData.playbackPositionTicks != null)
+            if (item.userData?.playbackPositionTicks != null)
               Text(printDuration(Duration(
-                      microseconds:
-                          (item.userData.playbackPositionTicks / 10).round())) +
+                      microseconds: (item.userData!.playbackPositionTicks / 10)
+                          .round())) +
                   ' - '),
             if (item.runTimeTicks != null)
               Text(printDuration(Duration(microseconds: item.getDuration()))),
@@ -90,11 +90,13 @@ class _CardInfosState extends State<CardInfos> {
                   isExpanded: true,
                   style: TextStyle(color: Colors.black),
                   hint: Text('Audio'),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      setAudioStreamIndex(item, newValue);
-                      audioValue = newValue;
-                    });
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        setAudioStreamIndex(item, newValue);
+                        audioValue = newValue;
+                      });
+                    }
                   },
                   items: audioList),
             ))),
@@ -122,11 +124,13 @@ class _CardInfosState extends State<CardInfos> {
                     isExpanded: true,
                     style: TextStyle(color: Colors.black),
                     hint: Text('Subtitles'),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        setSubStreamIndex(item, newValue);
-                        subValue = newValue;
-                      });
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          setSubStreamIndex(item, newValue);
+                          subValue = newValue;
+                        });
+                      }
                     },
                     items: subList),
               ),
@@ -174,7 +178,7 @@ Widget tabs(Item item, BuildContext context) {
                 if (!isPerson)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: PeoplesList(item.people),
+                    child: PeoplesList(item.people!),
                   ),
                 Material(
                     color: Colors.transparent,
@@ -208,10 +212,10 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               UnorderedList(
-                  texts: item.mediaStreams
+                  texts: item.mediaStreams!
                       .where((element) =>
                           element.type.trim().toLowerCase() == 'video')
-                      .map((e) => e.displayTitle + ', ' + e.codec)
+                      .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList()),
             ],
           ),
@@ -223,7 +227,7 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               Text(
-                item.container,
+                item.container!,
                 style: valueStyle,
               ),
             ],
@@ -236,7 +240,7 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               Text(
-                formatter.format(item.dateCreated),
+                formatter.format(item.dateCreated!),
                 style: valueStyle,
               ),
             ],
@@ -251,10 +255,10 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               UnorderedList(
-                  texts: item.mediaStreams
+                  texts: item.mediaStreams!
                       .where((element) =>
                           element.type.trim().toLowerCase() == 'subtitle')
-                      .map((e) => e.displayTitle + ', ' + e.codec)
+                      .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList())
             ],
           ),
@@ -268,10 +272,10 @@ Widget infos(Item item, BuildContext context) {
                 style: titleStyle,
               ),
               UnorderedList(
-                  texts: item.mediaStreams
+                  texts: item.mediaStreams!
                       .where((element) =>
                           element.type.trim().toLowerCase() == 'audio')
-                      .map((e) => e.displayTitle + ', ' + e.codec)
+                      .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList()),
             ],
           )
@@ -282,24 +286,24 @@ List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
   if (item.mediaSources == null) return <DropdownMenuItem<String>>[];
 
   // Find the default sub to choose
-  var audioList = item.mediaSources.first.mediaStreams
+  var audioList = item.mediaSources!.first.mediaStreams!
       .where((element) => element.type.trim().toLowerCase() == 'audio')
       .toList();
 
   var defaultAudio = audioList.firstWhere(
-    (element) => element.isDefault,
+    (element) => element.isDefault!,
     orElse: () => audioList.first,
   );
   audioValue = defaultAudio.displayTitle;
-  StreamModel().setAudioStreamIndex(defaultAudio.index);
+  StreamModel().setAudioStreamIndex(defaultAudio.index!);
 
   // Find all audio to fill dropdown
   var audioDropdownList = audioList
       .map((e) => e.displayTitle)
-      .map<DropdownMenuItem<String>>((String value) {
+      .map<DropdownMenuItem<String>>((String? value) {
     return DropdownMenuItem<String>(
       value: value,
-      child: Text(value),
+      child: Text(value ?? 'Unknown'),
     );
   }).toList();
 
@@ -307,35 +311,35 @@ List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
 }
 
 void setAudioStreamIndex(Item item, String audioDisplayTitle) {
-  var selectedAudio = item.mediaSources.first.mediaStreams
+  var selectedAudio = item.mediaSources!.first.mediaStreams!
       .where((element) => element.type.trim().toLowerCase() == 'audio')
       .firstWhere((element) => element.displayTitle == audioDisplayTitle);
-  StreamModel().setAudioStreamIndex(selectedAudio.index);
+  StreamModel().setAudioStreamIndex(selectedAudio.index!);
 }
 
 List<DropdownMenuItem<String>> subDropdownItems(Item item) {
   if (item.mediaSources == null) return <DropdownMenuItem<String>>[];
 
   // Find the default sub to choose
-  var subList = item.mediaSources.first.mediaStreams
+  var subList = item.mediaSources!.first.mediaStreams!
       .where((element) => element.type.trim().toLowerCase() == 'subtitle')
       .toList();
   if (subList.isNotEmpty) {
     var defaultSub = subList.firstWhere(
-      (element) => element.isDefault,
+      (element) => element.isDefault!,
       orElse: () => subList.first,
     );
     subValue = defaultSub.displayTitle;
-    StreamModel().setSubtitleStreamIndex(defaultSub.index);
+    StreamModel().setSubtitleStreamIndex(defaultSub.index!);
   }
 
   // Find all subtitles to fill dropdown
   var subDropdownList = subList
       .map((e) => e.displayTitle)
-      .map<DropdownMenuItem<String>>((String value) {
+      .map<DropdownMenuItem<String>>((String? value) {
     return DropdownMenuItem<String>(
       value: value,
-      child: Text(value),
+      child: Text(value ?? 'Unknown'),
     );
   }).toList();
 
@@ -343,8 +347,8 @@ List<DropdownMenuItem<String>> subDropdownItems(Item item) {
 }
 
 void setSubStreamIndex(Item item, String subDisplayTitle) {
-  var selectedSub = item.mediaSources.first.mediaStreams
+  var selectedSub = item.mediaSources!.first.mediaStreams!
       .where((element) => element.type.trim().toLowerCase() == 'subtitle')
       .firstWhere((element) => element.displayTitle == subDisplayTitle);
-  StreamModel().setSubtitleStreamIndex(selectedSub.index);
+  StreamModel().setSubtitleStreamIndex(selectedSub.index!);
 }

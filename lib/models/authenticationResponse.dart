@@ -15,10 +15,10 @@ String authenticationResponseToMap(AuthenticationResponse data) =>
 
 class AuthenticationResponse {
   AuthenticationResponse({
-    this.user,
-    this.sessionInfo,
-    this.accessToken,
-    this.serverId,
+    required this.user,
+    required this.sessionInfo,
+    required this.accessToken,
+    required this.serverId,
   });
 
   User user;

@@ -1,17 +1,17 @@
 class UserData {
   UserData({
-    this.playbackPositionTicks,
-    this.playCount,
-    this.isFavorite,
+    required this.playbackPositionTicks,
+    required this.playCount,
+    required this.isFavorite,
     this.lastPlayedDate,
-    this.played,
-    this.key,
+    required this.played,
+    required this.key,
   });
 
   int playbackPositionTicks;
   int playCount;
   bool isFavorite;
-  DateTime lastPlayedDate;
+  DateTime? lastPlayedDate;
   bool played;
   String key;
 
@@ -30,7 +30,7 @@ class UserData {
         'PlaybackPositionTicks': playbackPositionTicks,
         'PlayCount': playCount,
         'IsFavorite': isFavorite,
-        'LastPlayedDate': lastPlayedDate.toIso8601String(),
+        'LastPlayedDate': lastPlayedDate?.toIso8601String(),
         'Played': played,
         'Key': key,
       };

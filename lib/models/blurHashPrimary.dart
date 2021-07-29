@@ -1,6 +1,6 @@
 class BlurHashPrimary {
   BlurHashPrimary({
-    this.primary,
+    required this.primary,
   });
 
   Map<String, String> primary;

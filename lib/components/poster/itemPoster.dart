@@ -22,8 +22,8 @@ class ItemPoster extends StatefulWidget {
       this.boxFit = BoxFit.cover});
 
   final Item item;
-  final double widgetAspectRatio;
-  final String heroTag;
+  final String? heroTag;
+  final double? widgetAspectRatio;
   final Color textColor;
   final bool showName;
   final bool showParent;
@@ -38,11 +38,11 @@ class ItemPoster extends StatefulWidget {
 class _ItemPosterState extends State<ItemPoster>
     with SingleTickerProviderStateMixin {
   // Dpad navigation
-  FocusNode _node;
-  AnimationController _controller;
-  Animation<double> _animation;
-  Color _focusColor;
-  String posterHeroTag;
+  late FocusNode _node;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  late Color _focusColor;
+  late String posterHeroTag;
 
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _ItemPosterState extends State<ItemPoster>
 
   void _onTap(String heroTag) {
     Navigator.push(
-      navigatorKey.currentContext,
+      navigatorKey.currentContext!,
       MaterialPageRoute(
           builder: (context) => Details(item: widget.item, heroTag: heroTag)),
     );
@@ -165,8 +165,8 @@ class _ItemPosterState extends State<ItemPoster>
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: AsyncImage(
                 widget.item.correctImageId(searchType: 'logo'),
-                widget.item.correctImageTags(searchType: 'logo'),
-                widget.item.imageBlurHashes,
+                widget.item.correctImageTags(searchType: 'logo')!,
+                widget.item.imageBlurHashes!,
                 boxFit: BoxFit.contain,
                 tag: 'Logo',
               ),
@@ -186,7 +186,6 @@ class _ItemPosterState extends State<ItemPoster>
               style: TextStyle(color: widget.textColor, fontSize: 16),
             ),
             if (widget.item.isFolder != null &&
-                widget.item.indexNumber != null &&
                 widget.item.parentIndexNumber != null)
               Text(
                 'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
@@ -202,7 +201,7 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget newBanner() {
     return CustomPaint(
-        painter: LeftBanner(color: Colors.red[700]),
+        painter: LeftBanner(color: Colors.red[700]!),
         child: Container(
             padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
             child: Text('NEW',
@@ -214,7 +213,7 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget playedBanner() {
     return CustomPaint(
-        painter: RightBanner(color: Colors.green[700]),
+        painter: RightBanner(color: Colors.green[700]!),
         child: Container(
             padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
             child: Icon(

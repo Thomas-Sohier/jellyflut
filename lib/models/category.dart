@@ -12,9 +12,9 @@ String categoryToMap(Category data) => json.encode(data.toMap());
 
 class Category {
   Category({
-    this.items,
-    this.totalRecordCount,
-    this.startIndex,
+    required this.items,
+    required this.totalRecordCount,
+    required this.startIndex,
   });
 
   List<Item> items;

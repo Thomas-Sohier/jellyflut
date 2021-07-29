@@ -17,19 +17,19 @@ class PaletteButton extends StatefulWidget {
     this.icon,
   });
 
-  final Widget child;
-  final Item item;
+  final Widget? child;
+  final Item? item;
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
 }
 
 class _PaletteButtonState extends State<PaletteButton> {
-  FocusNode _node;
+  late FocusNode _node;
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _PaletteButtonState extends State<PaletteButton> {
                 color: Colors.white,
               );
             }
-            return null; // defer to the default
+            return BorderSide(width: 0); // defer to the default
           },
         )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
           (Set<MaterialState> states) {
@@ -66,25 +66,23 @@ class _PaletteButtonState extends State<PaletteButton> {
                 states.contains(MaterialState.focused)) {
               return 6;
             }
-            return null; // defer to the default
+            return 0; // defer to the default
           },
         )),
         child: widget.item == null
-            ? buttonDefault(widget.text, widget.icon, borderRadius)
-            : generatedPalette(
-                widget.item, widget.text, widget.icon, borderRadius));
+            ? buttonDefault(borderRadius)
+            : generatedPalette(borderRadius));
   }
 
-  Widget generatedPalette(
-      Item item, String text, IconData icon, BorderRadius borderRadius) {
+  Widget generatedPalette(BorderRadius borderRadius) {
     return FutureBuilder<PaletteGenerator>(
       future: gePalette(getItemImageUrl(
-          item.correctImageId(), item.correctImageTags(),
-          imageBlurHashes: item.imageBlurHashes)),
+          widget.item!.correctImageId(), widget.item!.correctImageTags()!,
+          imageBlurHashes: widget.item!.imageBlurHashes)),
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          var paletteColor = snapshot.data.paletteColors;
+          var paletteColor = snapshot.data!.paletteColors;
           var foregroundColor = paletteColor[0].color.computeLuminance() > 0.5
               ? Colors.black
               : Colors.white;
@@ -108,24 +106,24 @@ class _PaletteButtonState extends State<PaletteButton> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        text,
+                        widget.text,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: foregroundColor, fontSize: 18),
                       ),
-                      if (icon != null)
+                      if (widget.icon != null)
                         Padding(
                           padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: Icon(
-                            icon,
+                            widget.icon,
                             color: foregroundColor,
                           ),
                         )
                     ])),
           );
         } else if (snapshot.hasError) {
-          return buttonDefault(text, icon, borderRadius);
+          return buttonDefault(borderRadius);
         } else {
-          child = buttonDefault(text, icon, borderRadius);
+          child = buttonDefault(borderRadius);
         }
         return AnimatedSwitcher(
             duration: const Duration(milliseconds: 1500),
@@ -138,7 +136,7 @@ class _PaletteButtonState extends State<PaletteButton> {
     );
   }
 
-  Widget buttonDefault(String text, IconData icon, BorderRadius borderRadius) {
+  Widget buttonDefault(BorderRadius borderRadius) {
     return ClipRRect(
       borderRadius: borderRadius,
       child: BackdropFilter(
@@ -156,15 +154,15 @@ class _PaletteButtonState extends State<PaletteButton> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    text,
+                    widget.text,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
-                  if (icon != null)
+                  if (widget.icon != null)
                     Padding(
                       padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                       child: Icon(
-                        icon,
+                        widget.icon,
                         color: Colors.black,
                       ),
                     )

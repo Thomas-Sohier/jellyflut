@@ -11,8 +11,7 @@ class FavButton extends StatefulWidget {
   final double size;
 
   const FavButton(this.item,
-      {Key key, this.padding = const EdgeInsets.all(10), this.size = 26})
-      : super(key: key);
+      {this.padding = const EdgeInsets.all(10), this.size = 26});
 
   @override
   State<StatefulWidget> createState() {
@@ -22,8 +21,8 @@ class FavButton extends StatefulWidget {
 
 class _FavButtonState extends State<FavButton> {
   var fToast;
-  FocusNode _node;
-  Color _focusColor;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {
@@ -31,7 +30,7 @@ class _FavButtonState extends State<FavButton> {
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
     fToast = FToast();
-    fToast.init(navigatorKey.currentState.context);
+    fToast.init(navigatorKey.currentState!.context);
     super.initState();
   }
 
@@ -92,7 +91,7 @@ class _FavButtonState extends State<FavButton> {
   void setItemFav() {
     favItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            widget.item.userData.isFavorite = json['IsFavorite'];
+            widget.item.userData!.isFavorite = json['IsFavorite'];
           }),
           showToast('${widget.item.name} added to favorite', fToast)
         });
@@ -101,7 +100,7 @@ class _FavButtonState extends State<FavButton> {
   void unsetItemFav() {
     unfavItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
-            widget.item.userData.isFavorite = json['IsFavorite'];
+            widget.item.userData!.isFavorite = json['IsFavorite'];
           }),
           showToast('${widget.item.name} removed from favorite', fToast)
         });

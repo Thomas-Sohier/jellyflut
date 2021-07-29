@@ -12,24 +12,26 @@ import 'package:provider/provider.dart';
 class MusicPlayerFAB extends StatefulWidget {
   final Widget child;
 
-  const MusicPlayerFAB({@required this.child});
+  const MusicPlayerFAB({required this.child});
 
   @override
   State<StatefulWidget> createState() => _MusicPlayerFABState();
 }
 
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
-  int _playBackTime;
-  MusicPlayer musicPlayer;
+  late int _playBackTime;
+  late MusicPlayer musicPlayer;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.assetsAudioPlayer.current.hasValue
-        ? musicPlayer
-            .assetsAudioPlayer.current.value?.audio?.duration?.inMilliseconds
-        : 0;
+    if (musicPlayer.assetsAudioPlayer.current.hasValue) {
+      _playBackTime = musicPlayer
+          .assetsAudioPlayer.current.value!.audio.duration.inMilliseconds;
+    } else {
+      _playBackTime = 0;
+    }
     playerListener();
   }
 

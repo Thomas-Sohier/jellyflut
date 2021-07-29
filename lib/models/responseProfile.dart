@@ -1,8 +1,8 @@
 class ResponseProfile {
   ResponseProfile({
-    this.type,
-    this.container,
-    this.mimeType,
+    required this.type,
+    required this.container,
+    required this.mimeType,
   });
 
   Type type;

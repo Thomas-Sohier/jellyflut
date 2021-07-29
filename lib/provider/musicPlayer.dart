@@ -18,8 +18,8 @@ class MusicPlayer extends ChangeNotifier {
   String currentMusicTitle() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
         null) {
-      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
-          .audio.audio.metas.title;
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
+          .audio.audio.metas.title!;
     }
     return 'msuic playing';
   }
@@ -27,8 +27,8 @@ class MusicPlayer extends ChangeNotifier {
   String currentMusicArtist() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
         null) {
-      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
-          .audio.audio.metas.artist;
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
+          .audio.audio.metas.artist!;
     }
     return 'No';
   }
@@ -36,7 +36,7 @@ class MusicPlayer extends ChangeNotifier {
   double currentMusicMaxDuration() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
         null) {
-      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current
+      return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
           .audio.duration.inMilliseconds
           .toDouble();
     }
@@ -53,10 +53,10 @@ class MusicPlayer extends ChangeNotifier {
     return 0;
   }
 
-  String getCurrentAudioImagePath() {
+  String? getCurrentAudioImagePath() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
         null) {
-      return assetsAudioPlayer.current.value.audio.audio.metas.image.path;
+      return assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
     }
     return null;
   }
@@ -66,7 +66,7 @@ class MusicPlayer extends ChangeNotifier {
     if (assetsAudioPlayer.playlist == null) {
       await assetsAudioPlayer.open(audio);
     } else {
-      assetsAudioPlayer.playlist.insert(index, audio);
+      assetsAudioPlayer.playlist!.insert(index, audio);
     }
   }
 
@@ -76,7 +76,7 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void removePlaylistItemAtIndex(int index) {
-    assetsAudioPlayer.playlist.removeAtIndex(index);
+    assetsAudioPlayer.playlist!.removeAtIndex(index);
     notifyListeners();
   }
 
@@ -128,10 +128,10 @@ class MusicPlayer extends ChangeNotifier {
       metas: Metas(
         id: item.id,
         title: item.name,
-        artist: item.artists.map((e) => e.name).join(', ').toString(),
+        artist: item.artists!.map((e) => e.name).join(', ').toString(),
         album: item.album,
         image: MetasImage.network(getItemImageUrl(
-            item.correctImageId(), item.correctImageTags(),
+            item.correctImageId(), item.correctImageTags()!,
             imageBlurHashes: item.imageBlurHashes)),
       ),
     );

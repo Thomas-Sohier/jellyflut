@@ -3,7 +3,7 @@ import 'package:jellyflut/models/device.dart';
 
 Future<String> authHeader() async {
   // device infos
-  var device = await DeviceInfo().getCurrentDeviceInfo();
+  var device = await DeviceInfo.getCurrentDeviceInfo();
 
   // data
   var name = 'jellyflut';

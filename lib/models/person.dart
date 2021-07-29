@@ -4,12 +4,12 @@ import 'imageBlurHashes.dart';
 
 class Person {
   Person({
-    this.name,
-    this.id,
-    this.role,
-    this.type,
-    this.primaryImageTag,
-    this.imageBlurHashes,
+    required this.name,
+    required this.id,
+    required this.role,
+    required this.type,
+    required this.primaryImageTag,
+    required this.imageBlurHashes,
   });
 
   String name;
@@ -23,11 +23,9 @@ class Person {
         name: json['Name'],
         id: json['Id'],
         role: json['Role'],
-        type: personTypeValues.map[json['Type']],
+        type: json['Type'],
         primaryImageTag: json['PrimaryImageTag'],
-        imageBlurHashes: json['ImageBlurHashes'] == null
-            ? null
-            : ImageBlurHashes.fromMap(json['ImageBlurHashes']),
+        imageBlurHashes: ImageBlurHashes.fromMap(json['ImageBlurHashes']),
       );
 
   Map<String, dynamic> toMap() => {
@@ -36,7 +34,6 @@ class Person {
         'Role': role,
         'Type': personTypeValues.reverse[type],
         'PrimaryImageTag': primaryImageTag,
-        'ImageBlurHashes':
-            imageBlurHashes == null ? null : imageBlurHashes.toMap(),
+        'ImageBlurHashes': imageBlurHashes.toMap(),
       };
 }

@@ -13,106 +13,102 @@ class AsyncImage extends StatelessWidget {
   final String tag;
   final String imageTag;
   final BoxFit boxFit;
-  final Widget placeholder;
+  final Widget? placeholder;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        child: body(itemId, imageTag, blurHash, tag, boxFit, placeholder));
+        borderRadius: BorderRadius.all(Radius.circular(5)), child: body());
   }
-}
 
-Widget body(String itemId, String imageTag, ImageBlurHashes blurHash,
-    String tag, BoxFit boxFit, Widget placeholder) {
-  var hash = _fallBackBlurHash(blurHash, tag);
-  var url =
-      getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash);
-  return OctoImage(
-    image: CachedNetworkImageProvider(url),
-    placeholderBuilder: imagePlaceholder(hash, tag),
-    errorBuilder: imagePlaceholderError(hash, tag),
-    fit: boxFit,
-    fadeInDuration: Duration(milliseconds: 300),
-    height: double.maxFinite,
-    width: double.maxFinite,
-  );
-}
+  Widget body() {
+    var hash = _fallBackBlurHash(blurHash, tag);
+    var url =
+        getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash);
+    return OctoImage(
+      image: CachedNetworkImageProvider(url),
+      placeholderBuilder: imagePlaceholder(hash),
+      errorBuilder: imagePlaceholderError(hash),
+      fit: boxFit,
+      fadeInDuration: Duration(milliseconds: 300),
+      height: double.maxFinite,
+      width: double.maxFinite,
+    );
+  }
 
-Widget Function(BuildContext, Object, StackTrace) imagePlaceholderError(
-    String hash, String logo) {
-  if (hash != null) {
-    if (logo != 'Logo') {
-      return OctoError.blurHash(hash, icon: Icons.warning_amber_rounded);
+  Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(
+      String? hash) {
+    if (hash != null) {
+      if (tag != 'Logo') {
+        return OctoError.blurHash(hash, icon: Icons.warning_amber_rounded);
+      }
+      return (_, o, e) => Container();
     }
-    return (_, o, e) => Container();
+    return (_, o, e) => noPhotoActor();
   }
-  return (_, o, e) => noPhotoActor();
-}
 
-Widget Function(BuildContext) imagePlaceholder(String hash, String logo) {
-  if (hash != null) {
-    if (logo != 'Logo') {
-      return OctoPlaceholder.blurHash(
-        hash,
-      );
+  Widget Function(BuildContext) imagePlaceholder(String? hash) {
+    if (hash != null) {
+      if (tag != 'Logo') {
+        return OctoPlaceholder.blurHash(
+          hash,
+        );
+      }
+      return (_) => Container();
     }
-    return (_) => Container();
+    return (_) => noPhotoActor();
   }
-  return (_) => noPhotoActor();
-}
 
-Widget noPhotoActor() {
-  return Container(
-    color: Colors.grey[800],
-    child: Center(
-      child: Icon(
-        Icons.no_photography,
-        color: Colors.white,
+  Widget noPhotoActor() {
+    return Container(
+      color: Colors.grey[800],
+      child: Center(
+        child: Icon(
+          Icons.no_photography,
+          color: Colors.white,
+        ),
       ),
-    ),
-  );
-}
-
-String _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
-  // TODO add enum
-  if (tag == 'Primary') {
-    return _fallBackBlurHashPrimary(imageBlurHashes);
-  } else if (tag == 'Logo') {
-    return _fallBackBlurHashLogo(imageBlurHashes);
-  } else if (tag == 'Backdrop') {
-    return imageBlurHashes.backdrop.values.first;
-  } else if (tag == 'Thumb') {
-    return imageBlurHashes.thumb.values.first;
-  } else if (tag == 'Art') {
-    return imageBlurHashes.art.values.first;
-  } else if (tag == 'Banner') {
-    return imageBlurHashes.banner.values.first;
+    );
   }
-  return null;
-}
 
-String _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-  if (imageBlurHashes == null) {
+  String? _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
+    // TODO add enum
+    if (tag == 'Primary') {
+      return _fallBackBlurHashPrimary(imageBlurHashes);
+    } else if (tag == 'Logo') {
+      return _fallBackBlurHashLogo(imageBlurHashes);
+    } else if (tag == 'Backdrop') {
+      return imageBlurHashes.backdrop?.values.first;
+    } else if (tag == 'Thumb') {
+      return imageBlurHashes.thumb?.values.first;
+    } else if (tag == 'Art') {
+      return imageBlurHashes.art?.values.first;
+    } else if (tag == 'Banner') {
+      return imageBlurHashes.banner?.values.first;
+    }
     return null;
-  } else if (imageBlurHashes.primary != null &&
-      imageBlurHashes.primary.isNotEmpty) {
-    return imageBlurHashes.primary.values.first;
-  } else if (imageBlurHashes.backdrop != null &&
-      imageBlurHashes.backdrop.isNotEmpty) {
-    return imageBlurHashes.backdrop.values.first;
-  } else if (imageBlurHashes.art != null && imageBlurHashes.art.isNotEmpty) {
-    return imageBlurHashes.art.values.first;
-  } else if (imageBlurHashes.thumb != null &&
-      imageBlurHashes.thumb.isNotEmpty) {
-    return imageBlurHashes.thumb.values.first;
   }
-  return null;
-}
 
-String _fallBackBlurHashLogo(ImageBlurHashes imageBlurHashes) {
-  if (imageBlurHashes.logo != null) {
-    return imageBlurHashes.logo.values.first;
+  String? _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
+    if (imageBlurHashes.primary != null &&
+        imageBlurHashes.primary!.isNotEmpty) {
+      return imageBlurHashes.primary!.values.first;
+    } else if (imageBlurHashes.backdrop != null &&
+        imageBlurHashes.backdrop!.isNotEmpty) {
+      return imageBlurHashes.backdrop!.values.first;
+    } else if (imageBlurHashes.art != null && imageBlurHashes.art!.isNotEmpty) {
+      return imageBlurHashes.art!.values.first;
+    } else if (imageBlurHashes.thumb != null &&
+        imageBlurHashes.thumb!.isNotEmpty) {
+      return imageBlurHashes.thumb!.values.first;
+    }
+    return null;
   }
-  return null;
+
+  String? _fallBackBlurHashLogo(ImageBlurHashes imageBlurHashes) {
+    if (imageBlurHashes.logo != null) {
+      return imageBlurHashes.logo!.values.first;
+    }
+    return null;
+  }
 }

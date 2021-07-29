@@ -1,6 +1,6 @@
 class ArtistItems {
   ArtistItems({
-    this.artistItems,
+    required this.artistItems,
   });
 
   Map<String, dynamic> artistItems;

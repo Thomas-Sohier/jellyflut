@@ -12,7 +12,7 @@ class DeviceProfileParent {
     this.deviceProfile,
   });
 
-  DeviceProfile deviceProfile;
+  DeviceProfile? deviceProfile;
 
   factory DeviceProfileParent.fromMap(Map<String, dynamic> json) =>
       DeviceProfileParent(
@@ -22,6 +22,6 @@ class DeviceProfileParent {
       );
 
   Map<String, dynamic> toMap() => {
-        'DeviceProfile': deviceProfile == null ? null : deviceProfile.toMap(),
+        'DeviceProfile': deviceProfile == null ? null : deviceProfile?.toMap(),
       };
 }

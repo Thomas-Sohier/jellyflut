@@ -1,7 +1,7 @@
 class BufferedRange {
   BufferedRange({
-    this.start,
-    this.end,
+    required this.start,
+    required this.end,
   });
 
   int start;

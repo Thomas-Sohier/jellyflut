@@ -5,9 +5,9 @@ class ProviderIds {
     this.zap2It,
   });
 
-  String imdb;
-  String tvdb;
-  String zap2It;
+  String? imdb;
+  String? tvdb;
+  String? zap2It;
 
   factory ProviderIds.fromMap(Map<String, dynamic> json) => ProviderIds(
         imdb: json['Imdb'],

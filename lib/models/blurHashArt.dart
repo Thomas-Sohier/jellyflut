@@ -1,6 +1,6 @@
 class BlurHashArt {
   BlurHashArt({
-    this.art,
+    required this.art,
   });
 
   Map<String, String> art;

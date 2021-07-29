@@ -29,13 +29,13 @@ class CarrousselBackGroundImage extends StatelessWidget {
             ),
           ),
           child: FutureBuilder<Item>(
-              future: getItem(carrousselModel.itemId),
+              future: getItem(carrousselModel.itemId!),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return AsyncImage(
-                    snapshot.data.id,
-                    snapshot.data.imageTags.primary,
-                    snapshot.data.imageBlurHashes,
+                    snapshot.data!.id,
+                    snapshot.data!.imageTags!.primary!,
+                    snapshot.data!.imageBlurHashes!,
                     tag: 'Primary',
                     boxFit: BoxFit.fitHeight,
                   );

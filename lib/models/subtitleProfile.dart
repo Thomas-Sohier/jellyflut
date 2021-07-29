@@ -1,7 +1,7 @@
 class SubtitleProfile {
   SubtitleProfile({
-    this.format,
-    this.method,
+    required this.format,
+    required this.method,
   });
 
   String format;

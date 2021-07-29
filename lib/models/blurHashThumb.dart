@@ -1,6 +1,6 @@
 class BlurHashThumb {
   BlurHashThumb({
-    this.thumb,
+    required this.thumb,
   });
 
   Map<String, String> thumb;

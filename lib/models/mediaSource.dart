@@ -38,38 +38,38 @@ class MediaSource {
     this.defaultAudioStreamIndex,
   });
 
-  String protocol;
-  String id;
-  String path;
-  String type;
-  String container;
-  int size;
-  String name;
-  bool isRemote;
-  String eTag;
-  int runTimeTicks;
-  bool readAtNativeFramerate;
-  bool ignoreDts;
-  bool ignoreIndex;
-  bool genPtsInput;
-  bool supportsTranscoding;
-  bool supportsDirectStream;
-  bool supportsDirectPlay;
-  bool isInfiniteStream;
-  bool requiresOpening;
-  bool requiresClosing;
-  bool requiresLooping;
-  bool supportsProbing;
-  String videoType;
-  List<MediaStream> mediaStreams;
-  List<dynamic> mediaAttachments;
-  List<dynamic> formats;
-  int bitrate;
-  RequiredHttpHeaders requiredHttpHeaders;
-  String transcodingUrl;
-  String transcodingSubProtocol;
-  String transcodingContainer;
-  int defaultAudioStreamIndex;
+  String? protocol;
+  String? id;
+  String? path;
+  String? type;
+  String? container;
+  int? size;
+  String? name;
+  bool? isRemote;
+  String? eTag;
+  int? runTimeTicks;
+  bool? readAtNativeFramerate;
+  bool? ignoreDts;
+  bool? ignoreIndex;
+  bool? genPtsInput;
+  bool? supportsTranscoding;
+  bool? supportsDirectStream;
+  bool? supportsDirectPlay;
+  bool? isInfiniteStream;
+  bool? requiresOpening;
+  bool? requiresClosing;
+  bool? requiresLooping;
+  bool? supportsProbing;
+  String? videoType;
+  List<MediaStream>? mediaStreams;
+  List<dynamic>? mediaAttachments;
+  List<dynamic>? formats;
+  int? bitrate;
+  RequiredHttpHeaders? requiredHttpHeaders;
+  String? transcodingUrl;
+  String? transcodingSubProtocol;
+  String? transcodingContainer;
+  int? defaultAudioStreamIndex;
 
   factory MediaSource.fromMap(Map<String, dynamic> json) => MediaSource(
         protocol: json['Protocol'],
@@ -141,15 +141,15 @@ class MediaSource {
         'VideoType': videoType,
         'MediaStreams': mediaStreams == null
             ? null
-            : List<dynamic>.from(mediaStreams.map((x) => x.toMap())),
+            : List<dynamic>.from(mediaStreams!.map((x) => x.toMap())),
         'MediaAttachments': mediaAttachments == null
             ? null
-            : List<dynamic>.from(mediaAttachments.map((x) => x)),
+            : List<dynamic>.from(mediaAttachments!.map((x) => x)),
         'Formats':
-            formats == null ? null : List<dynamic>.from(formats.map((x) => x)),
+            formats == null ? null : List<dynamic>.from(formats!.map((x) => x)),
         'Bitrate': bitrate,
         'RequiredHttpHeaders':
-            requiredHttpHeaders == null ? null : requiredHttpHeaders.toMap(),
+            requiredHttpHeaders == null ? null : requiredHttpHeaders!.toMap(),
         'TranscodingUrl': transcodingUrl,
         'TranscodingSubProtocol': transcodingSubProtocol,
         'TranscodingContainer': transcodingContainer,

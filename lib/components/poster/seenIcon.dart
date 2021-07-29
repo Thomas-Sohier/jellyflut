@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SeenIcon extends StatelessWidget {
-  const SeenIcon({Key key}) : super(key: key);
+  const SeenIcon();
 
   @override
   Widget build(BuildContext context) {

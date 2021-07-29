@@ -47,7 +47,7 @@ class Critics extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Row(children: [
-            criticRating(item.criticRating),
+            criticRating(item.criticRating!),
             Text(item.criticRating.toString(),
                 style: TextStyle(fontSize: 16, color: textColor))
           ]),

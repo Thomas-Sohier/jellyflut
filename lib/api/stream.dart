@@ -18,10 +18,10 @@ import 'dio.dart';
 const platform = MethodChannel('com.example.jellyflut/videoPlayer');
 
 Future<int> deleteActiveEncoding() async {
-  var info = await DeviceInfo().getCurrentDeviceInfo();
+  var info = await DeviceInfo.getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['deviceId'] = info.id;
-  queryParam['PlaySessionId'] = StreamModel().playBackInfos.playSessionId;
+  queryParam['PlaySessionId'] = StreamModel().playBackInfos!.playSessionId;
 
   var url = '${server.url}/Videos/ActiveEncodings';
 
@@ -41,29 +41,31 @@ Future<int> deleteActiveEncoding() async {
 }
 
 Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-    {int startTick = 0, int audioStreamIndex, int subtitleStreamIndex}) async {
+    {int startTick = 0,
+    int? audioStreamIndex,
+    int? subtitleStreamIndex}) async {
   var streamModel = StreamModel();
-  var info = await DeviceInfo().getCurrentDeviceInfo();
+  var info = await DeviceInfo.getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['StartTimeTicks'] = startTick.toString();
   queryParam['Static'] = true.toString();
   queryParam['MediaSourceId'] = item.id;
   queryParam['DeviceId'] = info.id;
-  queryParam['Tag'] = playBackInfos.mediaSources.first.eTag;
+  queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
-  } else if (streamModel.subtitleStreamIndex != null) {
+  } else {
     queryParam['SubtitleStreamIndex'] =
         streamModel.subtitleStreamIndex.toString();
   }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
-  } else if (streamModel.audioStreamIndex != null) {
+  } else {
     queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex.toString();
   }
-  queryParam['api_key'] = apiKey;
+  queryParam['api_key'] = apiKey!;
 
-  var extension = p.extension(playBackInfos.mediaSources.first.path);
+  var extension = p.extension(playBackInfos.mediaSources.first.path!);
 
   var url = 'Videos/${item.id}/stream$extension';
 
@@ -88,42 +90,42 @@ Future<String> isCodecSupported() async {
 }
 
 Future<String> getNewAudioSource(int audioIndex,
-    {Duration playbackTick}) async {
+    {Duration? playbackTick}) async {
   var streamModel = StreamModel();
   var item = streamModel.item;
   var backInfos = streamModel.playBackInfos;
-  var startTick = playbackTick.inMicroseconds * 10;
+  var startTick = playbackTick != null ? playbackTick.inMicroseconds * 10 : 0;
 
-  if (backInfos.mediaSources.first.transcodingUrl != null) {
+  if (backInfos!.mediaSources.first.transcodingUrl != null) {
     var url = backInfos.mediaSources.first.transcodingUrl;
-    var uri = Uri.parse(url);
+    var uri = Uri.parse(url!);
     var queryParams = Map<String, String>.from(uri.queryParameters);
     queryParams['AudioStreamIndex'] = audioIndex.toString();
     return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
             Uri.parse(url).path, queryParams)
         .toString();
   }
-  return createURL(item, backInfos,
+  return createURL(item!, backInfos,
       startTick: startTick, audioStreamIndex: audioIndex);
 }
 
 Future<String> getNewSubtitleSource(int subtitleIndex,
-    {Duration playbackTick}) async {
+    {Duration? playbackTick}) async {
   var streamModel = StreamModel();
   var item = streamModel.item;
   var backInfos = streamModel.playBackInfos;
-  var startTick = playbackTick.inMicroseconds * 10;
+  var startTick = playbackTick != null ? playbackTick.inMicroseconds * 10 : 0;
 
-  if (backInfos.mediaSources.first.transcodingUrl != null) {
+  if (backInfos!.mediaSources.first.transcodingUrl != null) {
     var url = backInfos.mediaSources.first.transcodingUrl;
-    var uri = Uri.parse(url);
+    var uri = Uri.parse(url!);
     var queryParams = Map<String, String>.from(uri.queryParameters);
     queryParams['SubtitleStreamIndex'] = subtitleIndex.toString();
     return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
             Uri.parse(url).path, queryParams)
         .toString();
   }
-  return createURL(item, backInfos,
+  return createURL(item!, backInfos,
       startTick: startTick, subtitleStreamIndex: subtitleIndex);
 }
 
@@ -142,7 +144,7 @@ Future<String> getSubtitleURL(
   var parsedCodec = codec.substring(codec.indexOf('.') + 1);
 
   var queryParam = <String, String>{};
-  queryParam['api_key'] = apiKey;
+  queryParam['api_key'] = apiKey!;
 
   var uri = Uri.https(
       server.url.replaceAll(RegExp('http?s://'), ''),
@@ -151,17 +153,16 @@ Future<String> getSubtitleURL(
   return uri.origin + uri.path;
 }
 
-Future<dynamic> bitrateTest({@required int size}) async {
+Future<dynamic> bitrateTest({required int size}) async {
   var queryParams = <String, dynamic>{};
   queryParams['Size'] = size;
 
   var url = '${server.url}/Playback/BitrateTest';
 
-  Response response;
   try {
-    response = await dio.get(url, queryParameters: queryParams);
+    return await dio.get(url, queryParameters: queryParams)
+      ..data;
   } catch (e) {
     print(e);
   }
-  return response.data;
 }

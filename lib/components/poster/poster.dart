@@ -12,14 +12,12 @@ class Poster extends StatelessWidget {
   final bool showParent;
 
   const Poster(
-      {Key key,
-      this.showParent = false,
-      @required this.tag,
-      @required this.boxFit,
-      @required this.isFocus,
-      @required this.focusColor,
-      @required this.item})
-      : super(key: key);
+      {this.showParent = false,
+      required this.tag,
+      required this.boxFit,
+      required this.isFocus,
+      required this.focusColor,
+      required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +31,8 @@ class Poster extends StatelessWidget {
                 aspectRatio: item.getPrimaryAspectRatio(),
                 child: AsyncImage(
                   showParent ? item.getParentId() : item.getIdBasedOnImage(),
-                  item.imageTags.primary,
-                  item.imageBlurHashes,
+                  item.imageTags!.primary!,
+                  item.imageBlurHashes!,
                   tag: tag,
                   boxFit: boxFit,
                 )))
@@ -42,8 +40,8 @@ class Poster extends StatelessWidget {
             aspectRatio: item.getPrimaryAspectRatio(),
             child: AsyncImage(
               showParent ? item.getParentId() : item.getIdBasedOnImage(),
-              item.imageTags.primary,
-              item.imageBlurHashes,
+              item.imageTags!.primary!,
+              item.imageBlurHashes!,
               tag: tag,
               boxFit: boxFit,
             ));

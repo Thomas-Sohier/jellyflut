@@ -10,7 +10,7 @@ import 'package:jellyflut/shared/toast.dart';
 
 class ItemDialogActions extends StatelessWidget {
   final Item item;
-  final VoidCallback switchWidget;
+  final VoidCallback? switchWidget;
 
   const ItemDialogActions(this.item, this.switchWidget);
 
@@ -52,7 +52,7 @@ class ItemDialogActions extends StatelessWidget {
         _dialogListField(
             'Delete',
             () => deleteDialogItem(item, context).then((value) {
-                  if (value) {
+                  if (value != null) {
                     deleteItem(item.id).then((int statusCode) {
                       if (statusCode == HttpStatus.noContent) {
                         Navigator.pop(context);
@@ -66,8 +66,8 @@ class ItemDialogActions extends StatelessWidget {
                 }),
             fontSize: _fontSize,
             icon: Icons.delete_outline,
-            splashColor: Colors.red[200],
-            fontColor: Colors.red[800]),
+            splashColor: Colors.red[200]!,
+            fontColor: Colors.red[800]!),
       ],
     );
   }
@@ -75,17 +75,17 @@ class ItemDialogActions extends StatelessWidget {
   void _addItemToPlaylist(Item _item, BuildContext context) async {
     var musicPlayer = MusicPlayer();
     musicPlayer.addPlaylist(
-        item, musicPlayer.assetsAudioPlayer.playlist?.audios?.length);
+        item, musicPlayer.assetsAudioPlayer.playlist!.audios.length);
     Navigator.pop(context);
     var fToast = FToast();
     fToast.init(context);
     showToast('${_item.name} added to playlist', fToast);
   }
 
-  Widget _dialogListField(String text, VoidCallback onTap,
-      {IconData icon,
-      Color splashColor,
-      Color fontColor,
+  Widget _dialogListField(String text, VoidCallback? onTap,
+      {required IconData icon,
+      Color? splashColor,
+      Color? fontColor,
       double paddingTop = 10,
       double paddingBottom = 10,
       double fontSize = 18}) {
@@ -114,7 +114,7 @@ class ItemDialogActions extends StatelessWidget {
   }
 }
 
-Future<bool> deleteDialogItem(Item item, BuildContext context) async {
+Future<bool?> deleteDialogItem(Item item, BuildContext context) async {
   return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -175,10 +175,10 @@ Future<bool> deleteDialogItem(Item item, BuildContext context) async {
 }
 
 Future<Item> getAlbum(Item item) async {
-  return await getItem(item.albumId);
+  return await getItem(item.albumId!);
 }
 
 Future<Item> getArtist(Item item) async {
-  var val = item.artistItems.first.artistItems['Id'];
+  var val = item.artistItems!.first.artistItems['Id'];
   return await getItem(val);
 }

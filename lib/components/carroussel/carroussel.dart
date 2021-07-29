@@ -34,7 +34,7 @@ class _CarousselItemState extends State<CarousselItem> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => setFirstPoster());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => setFirstPoster());
     return _buildCarousel(widget.items);
   }
 
@@ -119,7 +119,7 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
                                 child: SingleChildScrollView(
                                     scrollDirection: Axis.vertical,
                                     child: Text(
-                                      removeAllHtmlTags(item.overview),
+                                      removeAllHtmlTags(item.overview!),
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 17),

@@ -4,18 +4,18 @@ import 'configuration.dart';
 
 class User {
   User({
-    this.name,
-    this.serverId,
-    this.id,
-    this.primaryImageTag,
-    this.hasPassword,
-    this.hasConfiguredPassword,
-    this.hasConfiguredEasyPassword,
-    this.enableAutoLogin,
-    this.lastLoginDate,
-    this.lastActivityDate,
-    this.configuration,
-    this.policy,
+    required this.name,
+    required this.serverId,
+    required this.id,
+    required this.primaryImageTag,
+    required this.hasPassword,
+    required this.hasConfiguredPassword,
+    required this.hasConfiguredEasyPassword,
+    required this.enableAutoLogin,
+    required this.lastLoginDate,
+    required this.lastActivityDate,
+    required this.configuration,
+    required this.policy,
   });
 
   String name;

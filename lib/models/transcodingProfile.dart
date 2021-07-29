@@ -11,15 +11,15 @@ class TranscodingProfile {
     this.videoCodec,
   });
 
-  String container;
-  String type;
-  String audioCodec;
-  String context;
-  String protocol;
-  String maxAudioChannels;
-  int minSegments;
-  bool breakOnNonKeyFrames;
-  String videoCodec;
+  String? container;
+  String? type;
+  String? audioCodec;
+  String? context;
+  String? protocol;
+  String? maxAudioChannels;
+  int? minSegments;
+  bool? breakOnNonKeyFrames;
+  String? videoCodec;
 
   factory TranscodingProfile.fromMap(Map<String, dynamic> json) =>
       TranscodingProfile(

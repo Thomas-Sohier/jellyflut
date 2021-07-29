@@ -68,54 +68,54 @@ class Season {
     this.lockData,
   });
 
-  String name;
-  String serverId;
-  String id;
-  String etag;
-  DateTime dateCreated;
-  DateTime dateLastMediaAdded;
-  bool canDelete;
-  bool canDownload;
-  String sortName;
-  DateTime premiereDate;
-  List<ExternalUrl> externalUrls;
-  String path;
-  bool enableMediaSourceDisplay;
-  String overview;
-  List<dynamic> taglines;
-  List<String> genres;
-  double communityRating;
-  int cumulativeRunTimeTicks;
-  int runTimeTicks;
-  String playAccess;
-  int productionYear;
-  List<dynamic> remoteTrailers;
-  ProviderIds providerIds;
-  bool isFolder;
-  String parentId;
-  String type;
-  List<Person> people;
-  List<GenreItem> studios;
-  List<GenreItem> genreItems;
-  int localTrailerCount;
-  UserData userData;
-  int recursiveItemCount;
-  int childCount;
-  int specialFeatureCount;
-  String displayPreferencesId;
-  String status;
-  String airTime;
-  List<String> airDays;
-  List<dynamic> tags;
-  double primaryImageAspectRatio;
-  ImageTags imageTags;
-  List<String> backdropImageTags;
-  List<dynamic> screenshotImageTags;
-  SeasonImageBlurHashes imageBlurHashes;
-  String locationType;
-  DateTime endDate;
-  List<dynamic> lockedFields;
-  bool lockData;
+  String? name;
+  String? serverId;
+  String? id;
+  String? etag;
+  DateTime? dateCreated;
+  DateTime? dateLastMediaAdded;
+  bool? canDelete;
+  bool? canDownload;
+  String? sortName;
+  DateTime? premiereDate;
+  List<ExternalUrl>? externalUrls;
+  String? path;
+  bool? enableMediaSourceDisplay;
+  String? overview;
+  List<dynamic>? taglines;
+  List<String>? genres;
+  double? communityRating;
+  int? cumulativeRunTimeTicks;
+  int? runTimeTicks;
+  String? playAccess;
+  int? productionYear;
+  List<dynamic>? remoteTrailers;
+  ProviderIds? providerIds;
+  bool? isFolder;
+  String? parentId;
+  String? type;
+  List<Person>? people;
+  List<GenreItem>? studios;
+  List<GenreItem>? genreItems;
+  int? localTrailerCount;
+  UserData? userData;
+  int? recursiveItemCount;
+  int? childCount;
+  int? specialFeatureCount;
+  String? displayPreferencesId;
+  String? status;
+  String? airTime;
+  List<String>? airDays;
+  List<dynamic>? tags;
+  double? primaryImageAspectRatio;
+  ImageTags? imageTags;
+  List<String>? backdropImageTags;
+  List<dynamic>? screenshotImageTags;
+  SeasonImageBlurHashes? imageBlurHashes;
+  String? locationType;
+  DateTime? endDate;
+  List<dynamic>? lockedFields;
+  bool? lockData;
 
   factory Season.fromMap(Map<String, dynamic> json) => Season(
         name: json['Name'],
@@ -179,51 +179,69 @@ class Season {
         'ServerId': serverId,
         'Id': id,
         'Etag': etag,
-        'DateCreated': dateCreated.toIso8601String(),
-        'DateLastMediaAdded': dateLastMediaAdded.toIso8601String(),
+        'DateCreated': dateCreated?.toIso8601String(),
+        'DateLastMediaAdded': dateLastMediaAdded?.toIso8601String(),
         'CanDelete': canDelete,
         'CanDownload': canDownload,
         'SortName': sortName,
-        'PremiereDate': premiereDate.toIso8601String(),
-        'ExternalUrls': List<dynamic>.from(externalUrls.map((x) => x.toMap())),
+        'PremiereDate': premiereDate?.toIso8601String(),
+        'ExternalUrls': externalUrls != null
+            ? List<dynamic>.from(externalUrls!.map((x) => x.toMap()))
+            : null,
         'Path': path,
         'EnableMediaSourceDisplay': enableMediaSourceDisplay,
         'Overview': overview,
-        'Taglines': List<dynamic>.from(taglines.map((x) => x)),
-        'Genres': List<dynamic>.from(genres.map((x) => x)),
+        'Taglines': taglines != null
+            ? List<dynamic>.from(taglines!.map((x) => x))
+            : null,
+        'Genres':
+            genres != null ? List<dynamic>.from(genres!.map((x) => x)) : null,
         'CommunityRating': communityRating,
         'CumulativeRunTimeTicks': cumulativeRunTimeTicks,
         'RunTimeTicks': runTimeTicks,
         'PlayAccess': playAccess,
         'ProductionYear': productionYear,
-        'RemoteTrailers': List<dynamic>.from(remoteTrailers.map((x) => x)),
-        'ProviderIds': providerIds.toMap(),
+        'RemoteTrailers': remoteTrailers != null
+            ? List<dynamic>.from(remoteTrailers!.map((x) => x))
+            : null,
+        'ProviderIds': providerIds?.toMap(),
         'IsFolder': isFolder,
         'ParentId': parentId,
         'Type': type,
-        'People': List<dynamic>.from(people.map((x) => x.toMap())),
-        'Studios': List<dynamic>.from(studios.map((x) => x.toMap())),
-        'GenreItems': List<dynamic>.from(genreItems.map((x) => x.toMap())),
+        'People': people != null
+            ? List<dynamic>.from(people!.map((x) => x.toMap()))
+            : null,
+        'Studios': studios != null
+            ? List<dynamic>.from(studios!.map((x) => x.toMap()))
+            : null,
+        'GenreItems': genreItems != null
+            ? List<dynamic>.from(genreItems!.map((x) => x.toMap()))
+            : null,
         'LocalTrailerCount': localTrailerCount,
-        'UserData': userData.toMap(),
+        'UserData': userData != null ? userData!.toMap() : null,
         'RecursiveItemCount': recursiveItemCount,
         'ChildCount': childCount,
         'SpecialFeatureCount': specialFeatureCount,
         'DisplayPreferencesId': displayPreferencesId,
         'Status': status,
         'AirTime': airTime,
-        'AirDays': List<dynamic>.from(airDays.map((x) => x)),
-        'Tags': List<dynamic>.from(tags.map((x) => x)),
+        'AirDays':
+            airDays != null ? List<dynamic>.from(airDays!.map((x) => x)) : null,
+        'Tags': tags != null ? List<dynamic>.from(tags!.map((x) => x)) : null,
         'PrimaryImageAspectRatio': primaryImageAspectRatio,
-        'ImageTags': imageTags.toMap(),
-        'BackdropImageTags':
-            List<dynamic>.from(backdropImageTags.map((x) => x)),
-        'ScreenshotImageTags':
-            List<dynamic>.from(screenshotImageTags.map((x) => x)),
-        'ImageBlurHashes': imageBlurHashes.toMap(),
+        'ImageTags': imageTags?.toMap(),
+        'BackdropImageTags': backdropImageTags != null
+            ? List<dynamic>.from(backdropImageTags!.map((x) => x))
+            : null,
+        'ScreenshotImageTags': screenshotImageTags != null
+            ? List<dynamic>.from(screenshotImageTags!.map((x) => x))
+            : null,
+        'ImageBlurHashes': imageBlurHashes?.toMap(),
         'LocationType': locationType,
-        'EndDate': endDate.toIso8601String(),
-        'LockedFields': List<dynamic>.from(lockedFields.map((x) => x)),
+        'EndDate': endDate?.toIso8601String(),
+        'LockedFields': lockedFields != null
+            ? List<dynamic>.from(lockedFields!.map((x) => x))
+            : null,
         'LockData': lockData,
       };
 }

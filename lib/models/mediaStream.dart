@@ -23,7 +23,7 @@ class MediaStream {
     this.averageFrameRate,
     this.realFrameRate,
     this.profile,
-    this.type,
+    required this.type,
     this.aspectRatio,
     this.index,
     this.isExternal,
@@ -42,44 +42,44 @@ class MediaStream {
     this.localizedForced,
   });
 
-  String codec;
-  Language language;
-  String colorTransfer;
-  String colorPrimaries;
-  String timeBase;
-  String codecTimeBase;
-  String videoRange;
-  String displayTitle;
-  String nalLengthSize;
-  bool isInterlaced;
-  bool isAvc;
-  int bitRate;
-  int bitDepth;
-  int refFrames;
-  bool isDefault;
-  bool isForced;
-  int height;
-  int width;
-  double averageFrameRate;
-  double realFrameRate;
-  String profile;
+  String? codec;
+  Language? language;
+  String? colorTransfer;
+  String? colorPrimaries;
+  String? timeBase;
+  String? codecTimeBase;
+  String? videoRange;
+  String? displayTitle;
+  String? nalLengthSize;
+  bool? isInterlaced;
+  bool? isAvc;
+  int? bitRate;
+  int? bitDepth;
+  int? refFrames;
+  bool? isDefault;
+  bool? isForced;
+  int? height;
+  int? width;
+  double? averageFrameRate;
+  double? realFrameRate;
+  String? profile;
   String type;
-  String aspectRatio;
-  int index;
-  bool isExternal;
-  String deliveryMethod;
-  String deliveryUrl;
-  bool isTextSubtitleStream;
-  bool supportsExternalStream;
-  String pixelFormat;
-  int level;
-  String channelLayout;
-  int channels;
-  int sampleRate;
-  String title;
-  String localizedUndefined;
-  String localizedDefault;
-  String localizedForced;
+  String? aspectRatio;
+  int? index;
+  bool? isExternal;
+  String? deliveryMethod;
+  String? deliveryUrl;
+  bool? isTextSubtitleStream;
+  bool? supportsExternalStream;
+  String? pixelFormat;
+  int? level;
+  String? channelLayout;
+  int? channels;
+  int? sampleRate;
+  String? title;
+  String? localizedUndefined;
+  String? localizedDefault;
+  String? localizedForced;
 
   factory MediaStream.fromMap(Map<String, dynamic> json) => MediaStream(
         codec: json['Codec'],

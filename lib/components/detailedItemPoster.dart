@@ -11,7 +11,8 @@ class DetailedItemPoster extends StatefulWidget {
   final Color textColor;
   final String heroTag;
 
-  const DetailedItemPoster({this.item, this.textColor, this.heroTag});
+  const DetailedItemPoster(
+      {required this.item, required this.textColor, required this.heroTag});
 
   @override
   _DetailedItemPosterState createState() => _DetailedItemPosterState();
@@ -78,7 +79,8 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                   child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Text(
-                                        removeAllHtmlTags(widget.item.overview),
+                                        removeAllHtmlTags(
+                                            widget.item.overview!),
                                         overflow: TextOverflow.clip,
                                         style: TextStyle(
                                             color: Colors.black, fontSize: 17),

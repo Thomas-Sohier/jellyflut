@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RightBanner extends CustomPainter {
   Color color;
 
-  RightBanner({this.color});
+  RightBanner({required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {

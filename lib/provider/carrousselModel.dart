@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CarrousselModel extends ChangeNotifier {
-  String itemId;
+  String? itemId;
 
   // Singleton
   static final CarrousselModel _carrousselModel = CarrousselModel._internal();

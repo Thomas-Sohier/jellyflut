@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
@@ -13,7 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'dio.dart';
 
-Future<User> getUserById({@required String userID}) async {
+Future<User> getUserById({required String userID}) async {
   var url = '${server.url}/Users/$userID';
 
   Response response;
@@ -22,8 +21,8 @@ Future<User> getUserById({@required String userID}) async {
     response = await dio.get(url);
     currentUser = User.fromMap(response.data);
   } catch (e) {
-    log(e);
-    return Future.error(e);
+    log(e.toString());
+    rethrow;
   }
   return currentUser;
 }
@@ -37,14 +36,14 @@ Future<User> getCurrentUser() async {
     response = await dio.get(url);
     currentUser = User.fromMap(response.data);
   } catch (e) {
-    log(e);
-    return Future.error(e);
+    log(e.toString());
+    rethrow;
   }
   return currentUser;
 }
 
 Future<List<Item>> getLatestMedia({
-  String parentId,
+  String? parentId,
   int limit = 16,
   String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
   String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
@@ -66,32 +65,29 @@ Future<List<Item>> getLatestMedia({
     final List t = response.data;
     items = t.map((item) => Item.fromMap(item)).toList();
   } catch (e) {
-    log(e);
-    return Future.error(e);
+    log(e.toString());
+    rethrow;
   }
   return items;
 }
 
-Future<Category> getCategory({String parentId, int limit = 10}) async {
+Future<Category> getCategory({String? parentId, int limit = 10}) async {
   var queryParams = <String, dynamic>{};
   queryParams['Limit'] = limit;
   if (parentId != null) queryParams['ParentId'] = parentId;
 
   var url = '${server.url}/Users/${userJellyfin!.id}/Items';
 
-  Response response;
-  var category = Category();
   try {
-    response = await dio.get(url, queryParameters: queryParams);
-    category = Category.fromMap(response.data);
+    var response = await dio.get(url, queryParameters: queryParams);
+    return Category.fromMap(response.data);
   } on DioError catch (dioError, _) {
     log(dioError.message);
-    return Future.error(dioError.error);
+    rethrow;
   } catch (e) {
-    log(e);
-    return Future.error(e);
+    log(e.toString());
+    rethrow;
   }
-  return category;
 }
 
 Future<String> getEbook(Item item) async {
@@ -99,7 +95,7 @@ Future<String> getEbook(Item item) async {
   // If not we cancel
   var hasStorage = await requestStorage();
   if (!hasStorage) {
-    return null;
+    throw ('Cannot acces storage');
   }
 
   // Check if ebook is already present
@@ -144,49 +140,49 @@ Future<bool> requestStorage() async {
 Future<Map<String, dynamic>> viewItem(String itemId) async {
   var url = '${server.url}/Users/${userJellyfin!.id}/PlayedItems/$itemId';
 
-  Response response;
   try {
-    response = await dio.post(url);
+    var response = await dio.post(url);
+    return response.data;
   } catch (e) {
     print(e);
+    throw ('Cannot get item, ' + e.toString());
   }
-  return response.data;
 }
 
 Future<Map<String, dynamic>> unviewItem(String itemId) async {
   var url = '${server.url}/Users/${userJellyfin!.id}/PlayedItems/$itemId';
 
-  Response response;
   try {
-    response = await dio.delete(url);
+    var response = await dio.delete(url);
+    return response.data;
   } catch (e) {
     print(e);
+    throw ('Cannot get item, ' + e.toString());
   }
-  return response.data;
 }
 
 Future<Map<String, dynamic>> favItem(String itemId) async {
   var url = '${server.url}/Users/${userJellyfin!.id}/FavoriteItems/$itemId';
 
-  Response response;
   try {
-    response = await dio.post(url);
+    var response = await dio.post(url);
+    return response.data;
   } catch (e) {
     print(e);
+    throw ('Cannot get item, ' + e.toString());
   }
-  return response.data;
 }
 
 Future<Map<String, dynamic>> unfavItem(String itemId) async {
   var url = '${server.url}/Users/${userJellyfin!.id}/FavoriteItems/$itemId';
 
-  Response response;
   try {
-    response = await dio.delete(url);
+    var response = await dio.delete(url);
+    return response.data;
   } catch (e) {
     print(e);
+    throw ('Cannot get item, ' + e.toString());
   }
-  return response.data;
 }
 
 String datePlayedFromDate(DateTime dateTime) {

@@ -18,16 +18,16 @@ class DeviceProfile {
     this.responseProfiles,
   });
 
-  String name;
-  int maxStreamingBitrate;
-  int maxStaticBitrate;
-  int musicStreamingTranscodingBitrate;
-  List<DirectPlayProfile> directPlayProfiles;
-  List<TranscodingProfile> transcodingProfiles;
-  List<dynamic> containerProfiles;
-  List<CodecProfile> codecProfiles;
-  List<SubtitleProfile> subtitleProfiles;
-  List<ResponseProfile> responseProfiles;
+  String? name;
+  int? maxStreamingBitrate;
+  int? maxStaticBitrate;
+  int? musicStreamingTranscodingBitrate;
+  List<DirectPlayProfile>? directPlayProfiles;
+  List<TranscodingProfile>? transcodingProfiles;
+  List<dynamic>? containerProfiles;
+  List<CodecProfile>? codecProfiles;
+  List<SubtitleProfile>? subtitleProfiles;
+  List<ResponseProfile>? responseProfiles;
 
   factory DeviceProfile.fromMap(Map<String, dynamic> json) => DeviceProfile(
         name: json['Name'],
@@ -61,30 +61,27 @@ class DeviceProfile {
       );
 
   Map<String, dynamic> toMap() => {
-        if (name != null) 'Name': name,
-        if (maxStreamingBitrate != null)
-          'MaxStreamingBitrate': maxStreamingBitrate,
-        if (maxStaticBitrate != null) 'MaxStaticBitrate': maxStaticBitrate,
-        if (musicStreamingTranscodingBitrate != null)
-          'MusicStreamingTranscodingBitrate': musicStreamingTranscodingBitrate,
-        if (directPlayProfiles != null)
-          'DirectPlayProfiles':
-              List<dynamic>.from(directPlayProfiles.map((x) => x.toMap())),
-        if (transcodingProfiles != null)
-          'TranscodingProfiles':
-              List<dynamic>.from(transcodingProfiles.map((x) => x.toMap())),
-        if (containerProfiles != null)
-          'ContainerProfiles':
-              List<dynamic>.from(containerProfiles.map((x) => x)),
-        if (codecProfiles != null)
-          'CodecProfiles':
-              List<dynamic>.from(codecProfiles.map((x) => x.toMap())),
-        if (subtitleProfiles != null)
-          'SubtitleProfiles':
-              List<dynamic>.from(subtitleProfiles.map((x) => x.toMap())),
-        if (responseProfiles != null)
-          'ResponseProfiles': responseProfiles == null
-              ? null
-              : List<dynamic>.from(responseProfiles.map((x) => x.toMap())),
+        'Name': name,
+        'MaxStreamingBitrate': maxStreamingBitrate,
+        'MaxStaticBitrate': maxStaticBitrate,
+        'MusicStreamingTranscodingBitrate': musicStreamingTranscodingBitrate,
+        'DirectPlayProfiles': directPlayProfiles != null
+            ? List<dynamic>.from(directPlayProfiles!.map((x) => x.toMap()))
+            : null,
+        'TranscodingProfiles': directPlayProfiles != null
+            ? List<dynamic>.from(transcodingProfiles!.map((x) => x.toMap()))
+            : null,
+        'ContainerProfiles': directPlayProfiles != null
+            ? List<dynamic>.from(containerProfiles!.map((x) => x))
+            : null,
+        'CodecProfiles': directPlayProfiles != null
+            ? List<dynamic>.from(codecProfiles!.map((x) => x.toMap()))
+            : null,
+        'SubtitleProfiles': directPlayProfiles != null
+            ? List<dynamic>.from(subtitleProfiles!.map((x) => x.toMap()))
+            : null,
+        'ResponseProfiles': responseProfiles != null
+            ? List<dynamic>.from(responseProfiles!.map((x) => x.toMap()))
+            : null,
       };
 }

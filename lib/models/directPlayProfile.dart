@@ -6,10 +6,10 @@ class DirectPlayProfile {
     this.audioCodec,
   });
 
-  String container;
-  String type;
-  String videoCodec;
-  String audioCodec;
+  String? container;
+  String? type;
+  String? videoCodec;
+  String? audioCodec;
 
   factory DirectPlayProfile.fromMap(Map<String, dynamic> json) =>
       DirectPlayProfile(

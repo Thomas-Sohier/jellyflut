@@ -5,7 +5,7 @@ class InfiniteAnimation extends StatefulWidget {
   final int durationInSeconds;
 
   InfiniteAnimation({
-    @required this.child,
+    required this.child,
     this.durationInSeconds = 2,
   });
 
@@ -15,8 +15,8 @@ class InfiniteAnimation extends StatefulWidget {
 
 class _InfiniteAnimationState extends State<InfiniteAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
-  Animation<double> animation;
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   @override
   void initState() {

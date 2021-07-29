@@ -12,13 +12,11 @@ Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
 
   var url = '${server.url}/Shows/$parentId/Episodes';
 
-  Response response;
-  var category = Category();
   try {
-    response = await dio.get(url, queryParameters: queryParams);
-    category = Category.fromMap(response.data);
+    var response = await dio.get(url, queryParameters: queryParams);
+    return Category.fromMap(response.data);
   } catch (e) {
     print(e);
+    rethrow;
   }
-  return category;
 }

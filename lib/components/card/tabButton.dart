@@ -6,8 +6,7 @@ class TabButton extends StatefulWidget {
   final Icon icon;
 
   const TabButton(
-      {Key key, @required this.icon, this.padding = const EdgeInsets.all(10)})
-      : super(key: key);
+      {required this.icon, this.padding = const EdgeInsets.all(10)});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,8 +15,8 @@ class TabButton extends StatefulWidget {
 }
 
 class _TabButtonState extends State<TabButton> {
-  FocusNode _node;
-  Color _focusColor;
+  late FocusNode _node;
+  late Color _focusColor;
 
   @override
   void initState() {

@@ -1,6 +1,6 @@
 class BlurHashBanner {
   BlurHashBanner({
-    this.banner,
+    required this.banner,
   });
 
   Map<String, String> banner;

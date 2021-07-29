@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Background extends ChangeNotifier {
   /// Internal, private state of the background.
-  Image _image;
+  late Image _image;
 
   /// The current image
   Image get image => _image;
@@ -16,9 +16,9 @@ class Background extends ChangeNotifier {
   }
 
   /// Removes image from the background.
-  void remove() {
-    _image = null;
-    // This call tells the widgets that are listening to this model to rebuild.
-    notifyListeners();
-  }
+  // void remove() {
+  //   _image = null;
+  //   // This call tells the widgets that are listening to this model to rebuild.
+  //   notifyListeners();
+  // }
 }

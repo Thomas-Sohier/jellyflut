@@ -1,9 +1,9 @@
 class PlayState {
   PlayState({
-    this.canSeek,
-    this.isPaused,
-    this.isMuted,
-    this.repeatMode,
+    required this.canSeek,
+    required this.isPaused,
+    required this.isMuted,
+    required this.repeatMode,
   });
 
   bool canSeek;

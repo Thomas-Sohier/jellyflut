@@ -13,14 +13,14 @@ class GradienButton extends StatefulWidget {
       this.color1 = const Color(0xFFa95dc3),
       this.color2 = const Color(0xFF04a2db)});
 
-  final Widget child;
-  final Item item;
+  final Widget? child;
+  final Item? item;
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
   final Color color1;
   final Color color2;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   State<StatefulWidget> createState() => _GradienButtonState();
@@ -50,7 +50,7 @@ class _GradienButtonState extends State<GradienButton> {
                 color: Colors.white,
               );
             }
-            return null; // defer to the default
+            return BorderSide(width: 0);
           },
         )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
           (Set<MaterialState> states) {
@@ -58,46 +58,44 @@ class _GradienButtonState extends State<GradienButton> {
                 states.contains(MaterialState.focused)) {
               return 6;
             }
-            return null; // defer to the default
+            return 0;
           },
         )),
-        child: customPalette(
-            widget.color1, widget.color2, widget.text, widget.icon));
+        child: customPalette());
   }
-}
 
-Widget customPalette(
-    Color jellyPurple, Color color2, String text, IconData icon) {
-  return Ink(
-    key: ValueKey<int>(1),
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-          colors: [jellyPurple, color2],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight),
-      borderRadius: BorderRadius.all(Radius.circular(80.0)),
-    ),
-    child: Container(
-        height: 50,
-        constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
-        alignment: Alignment.center,
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              if (icon != null)
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: Icon(
-                    icon,
-                    color: Colors.white,
-                  ),
-                )
-            ])),
-  );
+  Widget customPalette() {
+    return Ink(
+      key: ValueKey<int>(1),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [widget.color1, widget.color2],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight),
+        borderRadius: BorderRadius.all(Radius.circular(80.0)),
+      ),
+      child: Container(
+          height: 50,
+          constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
+          alignment: Alignment.center,
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.text,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                if (widget.icon != null)
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                    child: Icon(
+                      widget.icon,
+                      color: Colors.white,
+                    ),
+                  )
+              ])),
+    );
+  }
 }

@@ -39,43 +39,43 @@ class Policy {
     this.syncPlayAccess,
   });
 
-  bool isAdministrator;
-  bool isHidden;
-  bool isDisabled;
-  List<dynamic> blockedTags;
-  bool enableUserPreferenceAccess;
-  List<dynamic> accessSchedules;
-  List<dynamic> blockUnratedItems;
-  bool enableRemoteControlOfOtherUsers;
-  bool enableSharedDeviceControl;
-  bool enableRemoteAccess;
-  bool enableLiveTvManagement;
-  bool enableLiveTvAccess;
-  bool enableMediaPlayback;
-  bool enableAudioPlaybackTranscoding;
-  bool enableVideoPlaybackTranscoding;
-  bool enablePlaybackRemuxing;
-  bool forceRemoteSourceTranscoding;
-  bool enableContentDeletion;
-  List<dynamic> enableContentDeletionFromFolders;
-  bool enableContentDownloading;
-  bool enableSyncTranscoding;
-  bool enableMediaConversion;
-  List<dynamic> enabledDevices;
-  bool enableAllDevices;
-  List<dynamic> enabledChannels;
-  bool enableAllChannels;
-  List<dynamic> enabledFolders;
-  bool enableAllFolders;
-  int invalidLoginAttemptCount;
-  int loginAttemptsBeforeLockout;
-  bool enablePublicSharing;
-  List<dynamic> blockedMediaFolders;
-  List<dynamic> blockedChannels;
-  int remoteClientBitrateLimit;
-  String authenticationProviderId;
-  String passwordResetProviderId;
-  String syncPlayAccess;
+  bool? isAdministrator;
+  bool? isHidden;
+  bool? isDisabled;
+  List<dynamic>? blockedTags;
+  bool? enableUserPreferenceAccess;
+  List<dynamic>? accessSchedules;
+  List<dynamic>? blockUnratedItems;
+  bool? enableRemoteControlOfOtherUsers;
+  bool? enableSharedDeviceControl;
+  bool? enableRemoteAccess;
+  bool? enableLiveTvManagement;
+  bool? enableLiveTvAccess;
+  bool? enableMediaPlayback;
+  bool? enableAudioPlaybackTranscoding;
+  bool? enableVideoPlaybackTranscoding;
+  bool? enablePlaybackRemuxing;
+  bool? forceRemoteSourceTranscoding;
+  bool? enableContentDeletion;
+  List<dynamic>? enableContentDeletionFromFolders;
+  bool? enableContentDownloading;
+  bool? enableSyncTranscoding;
+  bool? enableMediaConversion;
+  List<dynamic>? enabledDevices;
+  bool? enableAllDevices;
+  List<dynamic>? enabledChannels;
+  bool? enableAllChannels;
+  List<dynamic>? enabledFolders;
+  bool? enableAllFolders;
+  int? invalidLoginAttemptCount;
+  int? loginAttemptsBeforeLockout;
+  bool? enablePublicSharing;
+  List<dynamic>? blockedMediaFolders;
+  List<dynamic>? blockedChannels;
+  int? remoteClientBitrateLimit;
+  String? authenticationProviderId;
+  String? passwordResetProviderId;
+  String? syncPlayAccess;
 
   factory Policy.fromMap(Map<String, dynamic> json) => Policy(
         isAdministrator: json['IsAdministrator'],
@@ -130,11 +130,16 @@ class Policy {
         'IsAdministrator': isAdministrator,
         'IsHidden': isHidden,
         'IsDisabled': isDisabled,
-        'BlockedTags': List<dynamic>.from(blockedTags.map((x) => x)),
+        'BlockedTags': blockedTags != null
+            ? List<dynamic>.from(blockedTags!.map((x) => x))
+            : null,
         'EnableUserPreferenceAccess': enableUserPreferenceAccess,
-        'AccessSchedules': List<dynamic>.from(accessSchedules.map((x) => x)),
-        'BlockUnratedItems':
-            List<dynamic>.from(blockUnratedItems.map((x) => x)),
+        'AccessSchedules': accessSchedules != null
+            ? List<dynamic>.from(accessSchedules!.map((x) => x))
+            : null,
+        'BlockUnratedItems': blockUnratedItems != null
+            ? List<dynamic>.from(blockUnratedItems!.map((x) => x))
+            : null,
         'EnableRemoteControlOfOtherUsers': enableRemoteControlOfOtherUsers,
         'EnableSharedDeviceControl': enableSharedDeviceControl,
         'EnableRemoteAccess': enableRemoteAccess,
@@ -147,22 +152,34 @@ class Policy {
         'ForceRemoteSourceTranscoding': forceRemoteSourceTranscoding,
         'EnableContentDeletion': enableContentDeletion,
         'EnableContentDeletionFromFolders':
-            List<dynamic>.from(enableContentDeletionFromFolders.map((x) => x)),
+            enableContentDeletionFromFolders != null
+                ? List<dynamic>.from(
+                    enableContentDeletionFromFolders!.map((x) => x))
+                : null,
         'EnableContentDownloading': enableContentDownloading,
         'EnableSyncTranscoding': enableSyncTranscoding,
         'EnableMediaConversion': enableMediaConversion,
-        'EnabledDevices': List<dynamic>.from(enabledDevices.map((x) => x)),
+        'EnabledDevices': enabledDevices != null
+            ? List<dynamic>.from(enabledDevices!.map((x) => x))
+            : null,
         'EnableAllDevices': enableAllDevices,
-        'EnabledChannels': List<dynamic>.from(enabledChannels.map((x) => x)),
+        'EnabledChannels': enabledChannels != null
+            ? List<dynamic>.from(enabledChannels!.map((x) => x))
+            : null,
         'EnableAllChannels': enableAllChannels,
-        'EnabledFolders': List<dynamic>.from(enabledFolders.map((x) => x)),
+        'EnabledFolders': enabledFolders != null
+            ? List<dynamic>.from(enabledFolders!.map((x) => x))
+            : null,
         'EnableAllFolders': enableAllFolders,
         'InvalidLoginAttemptCount': invalidLoginAttemptCount,
         'LoginAttemptsBeforeLockout': loginAttemptsBeforeLockout,
         'EnablePublicSharing': enablePublicSharing,
-        'BlockedMediaFolders':
-            List<dynamic>.from(blockedMediaFolders.map((x) => x)),
-        'BlockedChannels': List<dynamic>.from(blockedChannels.map((x) => x)),
+        'BlockedMediaFolders': blockedMediaFolders != null
+            ? List<dynamic>.from(blockedMediaFolders!.map((x) => x))
+            : null,
+        'BlockedChannels': blockedChannels != null
+            ? List<dynamic>.from(blockedChannels!.map((x) => x))
+            : null,
         'RemoteClientBitrateLimit': remoteClientBitrateLimit,
         'AuthenticationProviderId': authenticationProviderId,
         'PasswordResetProviderId': passwordResetProviderId,

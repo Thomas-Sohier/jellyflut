@@ -1,6 +1,6 @@
 class Artist {
   Artist({
-    this.name,
+    required this.name,
   });
 
   String name;

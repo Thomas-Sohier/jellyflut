@@ -1,6 +1,6 @@
 class BlurHashBackdrop {
   BlurHashBackdrop({
-    this.backdrop,
+    required this.backdrop,
   });
 
   Map<String, String> backdrop;

@@ -4,8 +4,8 @@ class GenreItem {
     this.id,
   });
 
-  String name;
-  String id;
+  String? name;
+  String? id;
 
   factory GenreItem.fromMap(Map<String, dynamic> json) => GenreItem(
         name: json['Name'],

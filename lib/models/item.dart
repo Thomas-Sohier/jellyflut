@@ -43,11 +43,11 @@ String itemToMap(Item data) => json.encode(data.toMap());
 
 class Item {
   Item({
-    this.name,
+    required this.name,
     this.originalTitle,
     this.serverId,
-    this.id,
-    this.indexNumber,
+    required this.id,
+    required this.indexNumber,
     this.parentIndexNumber,
     this.etag,
     this.collectionType,
@@ -78,7 +78,7 @@ class Item {
     this.parentId,
     this.seriesId,
     this.seasonId,
-    this.type,
+    required this.type,
     this.artists,
     this.artistItems,
     this.album,
@@ -112,72 +112,72 @@ class Item {
     this.height,
   });
   String name;
-  String originalTitle;
-  String serverId;
+  String? originalTitle;
+  String? serverId;
   String id;
   int indexNumber;
-  int parentIndexNumber;
-  String etag;
-  String collectionType;
-  DateTime dateCreated;
-  bool canDelete;
-  bool canDownload;
-  bool hasSubtitles;
-  String container;
-  String sortName;
-  DateTime premiereDate;
-  List<ExternalUrl> externalUrls;
-  List<MediaSource> mediaSources;
-  int criticRating;
-  List<String> productionLocations;
-  String path;
-  bool enableMediaSourceDisplay;
-  String overview;
-  List<dynamic> taglines;
-  List<String> genres;
-  double communityRating;
-  int runTimeTicks;
-  String playAccess;
-  int productionYear;
-  List<ExternalUrl> remoteTrailers;
-  ProviderIds providerIds;
-  bool isHd;
-  bool isFolder;
-  String parentId;
-  String seriesId;
-  String seasonId;
+  int? parentIndexNumber;
+  String? etag;
+  String? collectionType;
+  DateTime? dateCreated;
+  bool? canDelete;
+  bool? canDownload;
+  bool? hasSubtitles;
+  String? container;
+  String? sortName;
+  DateTime? premiereDate;
+  List<ExternalUrl>? externalUrls;
+  List<MediaSource>? mediaSources;
+  int? criticRating;
+  List<String>? productionLocations;
+  String? path;
+  bool? enableMediaSourceDisplay;
+  String? overview;
+  List<dynamic>? taglines;
+  List<String>? genres;
+  double? communityRating;
+  int? runTimeTicks;
+  String? playAccess;
+  int? productionYear;
+  List<ExternalUrl>? remoteTrailers;
+  ProviderIds? providerIds;
+  bool? isHd;
+  bool? isFolder;
+  String? parentId;
+  String? seriesId;
+  String? seasonId;
   String type;
-  List<Artist> artists;
-  List<ArtistItems> artistItems;
-  String album;
-  String albumId;
-  String albumPrimaryImageTag;
-  String albumArtist;
-  List<AlbumArtists> albumArtists;
-  List<Person> people;
-  List<GenreItem> studios;
-  List<GenreItem> genreItems;
-  int localTrailerCount;
-  UserData userData;
-  int specialFeatureCount;
-  String displayPreferencesId;
-  List<dynamic> tags;
-  double primaryImageAspectRatio;
-  List<MediaStream> mediaStreams;
-  String videoType;
-  ImageTags imageTags;
-  String seriesPrimaryImageTag;
-  String seriesName;
-  List<String> backdropImageTags;
-  List<dynamic> screenshotImageTags;
-  ImageBlurHashes imageBlurHashes;
-  List<Chapter> chapters;
-  String locationType;
-  Type mediaType;
-  List<dynamic> lockedFields;
-  bool lockData;
-  int width;
-  int height;
+  List<Artist>? artists;
+  List<ArtistItems>? artistItems;
+  String? album;
+  String? albumId;
+  String? albumPrimaryImageTag;
+  String? albumArtist;
+  List<AlbumArtists>? albumArtists;
+  List<Person>? people;
+  List<GenreItem>? studios;
+  List<GenreItem>? genreItems;
+  int? localTrailerCount;
+  UserData? userData;
+  int? specialFeatureCount;
+  String? displayPreferencesId;
+  List<dynamic>? tags;
+  double? primaryImageAspectRatio;
+  List<MediaStream>? mediaStreams;
+  String? videoType;
+  ImageTags? imageTags;
+  String? seriesPrimaryImageTag;
+  String? seriesName;
+  List<String>? backdropImageTags;
+  List<dynamic>? screenshotImageTags;
+  ImageBlurHashes? imageBlurHashes;
+  List<Chapter>? chapters;
+  String? locationType;
+  Type? mediaType;
+  List<dynamic>? lockedFields;
+  bool? lockData;
+  int? width;
+  int? height;
 
   factory Item.fromMap(Map<String, dynamic> json) => Item(
         name: json['Name'],
@@ -322,33 +322,38 @@ class Item {
       'ParentIndexNumber': parentIndexNumber,
       'Etag': etag,
       'CollectionType': collectionType,
-      'DateCreated': dateCreated == null ?? dateCreated.toIso8601String(),
+      'DateCreated': dateCreated?.toIso8601String(),
       'CanDelete': canDelete,
       'CanDownload': canDownload,
       'HasSubtitles': hasSubtitles,
       'Container': container,
       'SortName': sortName,
-      'PremiereDate': premiereDate == null ?? premiereDate.toIso8601String(),
-      'ExternalUrls': externalUrls == null ??
-          List<dynamic>.from(externalUrls.map((x) => x.toMap())),
-      'MediaSources': mediaSources == null ??
-          List<dynamic>.from(mediaSources.map((x) => x.toMap())),
+      'PremiereDate': premiereDate?.toIso8601String(),
+      'ExternalUrls': externalUrls != null
+          ? List<dynamic>.from(externalUrls!.map((x) => x.toMap()))
+          : null,
+      'MediaSources': mediaSources != null
+          ? List<dynamic>.from(mediaSources!.map((x) => x.toMap()))
+          : null,
       'CriticRating': criticRating,
-      'ProductionLocations': productionLocations == null ??
-          List<dynamic>.from(productionLocations.map((x) => x)),
+      'ProductionLocations': productionLocations != null
+          ? List<dynamic>.from(productionLocations!.map((x) => x))
+          : null,
       'Path': path,
       'EnableMediaSourceDisplay': enableMediaSourceDisplay,
       'Overview': overview,
       'Taglines':
-          taglines == null ?? List<dynamic>.from(taglines.map((x) => x)),
-      'Genres': genres == null ?? List<dynamic>.from(genres.map((x) => x)),
+          taglines != null ? List<dynamic>.from(taglines!.map((x) => x)) : null,
+      'Genres':
+          genres != null ? List<dynamic>.from(genres!.map((x) => x)) : null,
       'CommunityRating': communityRating,
       'RunTimeTicks': runTimeTicks,
       'PlayAccess': playAccess,
       'ProductionYear': productionYear,
-      'RemoteTrailers': remoteTrailers == null ??
-          List<dynamic>.from(remoteTrailers.map((x) => x.toMap())),
-      'ProviderIds': providerIds == null ?? providerIds.toMap(),
+      'RemoteTrailers': remoteTrailers != null
+          ? List<dynamic>.from(remoteTrailers!.map((x) => x.toMap()))
+          : null,
+      'ProviderIds': providerIds?.toMap(),
       'IsHD': isHd,
       'IsFolder': isFolder,
       'ParentId': parentId,
@@ -360,35 +365,43 @@ class Item {
       'AlbumPrimaryImageTag': albumPrimaryImageTag,
       'AlbumArtist': albumArtist,
       'AlbumArtists': albumArtists,
-      'People':
-          people == null ?? List<dynamic>.from(people.map((x) => x.toMap())),
-      'Studios':
-          studios == null ?? List<dynamic>.from(studios.map((x) => x.toMap())),
-      'GenreItems': genreItems == null ??
-          List<dynamic>.from(genreItems.map((x) => x.toMap())),
+      'People': people != null
+          ? List<dynamic>.from(people!.map((x) => x.toMap()))
+          : null,
+      'Studios': studios != null
+          ? List<dynamic>.from(studios!.map((x) => x.toMap()))
+          : null,
+      'GenreItems': genreItems != null
+          ? List<dynamic>.from(genreItems!.map((x) => x.toMap()))
+          : null,
       'LocalTrailerCount': localTrailerCount,
-      'UserData': userData == null ?? userData.toMap(),
+      'UserData': userData?.toMap(),
       'SpecialFeatureCount': specialFeatureCount,
       'DisplayPreferencesId': displayPreferencesId,
-      'Tags': tags == null ?? List<dynamic>.from(tags.map((x) => x)),
+      'Tags': tags != null ? List<dynamic>.from(tags!.map((x) => x)) : null,
       'PrimaryImageAspectRatio': primaryImageAspectRatio,
-      'MediaStreams': mediaStreams == null ??
-          List<dynamic>.from(mediaStreams.map((x) => x.toMap())),
+      'MediaStreams': mediaStreams != null
+          ? List<dynamic>.from(mediaStreams!.map((x) => x.toMap()))
+          : null,
       'VideoType': videoType,
-      'ImageTags': imageTags == null ?? imageTags.toMap(),
+      'ImageTags': imageTags?.toMap(),
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
       'SeriesName': seriesName,
-      'BackdropImageTags': backdropImageTags == null ??
-          List<dynamic>.from(backdropImageTags.map((x) => x)),
-      'ScreenshotImageTags': screenshotImageTags == null ??
-          List<dynamic>.from(screenshotImageTags.map((x) => x)),
-      'ImageBlurHashes': imageBlurHashes.toMap(),
-      'Chapters': chapters == null ??
-          List<dynamic>.from(chapters.map((x) => x.toMap())),
+      'BackdropImageTags': backdropImageTags != null
+          ? List<dynamic>.from(backdropImageTags!.map((x) => x))
+          : null,
+      'ScreenshotImageTags': screenshotImageTags != null
+          ? List<dynamic>.from(screenshotImageTags!.map((x) => x))
+          : null,
+      'ImageBlurHashes': imageBlurHashes?.toMap(),
+      'Chapters': chapters != null
+          ? List<dynamic>.from(chapters!.map((x) => x.toMap()))
+          : null,
       'LocationType': locationType,
       'MediaType': typeValues.reverse[mediaType],
-      'LockedFields': lockedFields == null ??
-          List<dynamic>.from(lockedFields.map((x) => x)),
+      'LockedFields': lockedFields != null
+          ? List<dynamic>.from(lockedFields!.map((x) => x))
+          : null,
       'LockData': lockData,
       'Width': width,
       'Height': height,
@@ -404,7 +417,7 @@ class Item {
     if (dateCreated == null) {
       return false;
     }
-    var difference = dateCreated.difference(DateTime.now());
+    var difference = dateCreated!.difference(DateTime.now());
     return difference.inDays < -3 ? false : true;
   }
 
@@ -414,7 +427,7 @@ class Item {
   /// Return [false] if is not played or [null]
   bool isPlayed() {
     if (userData != null) {
-      return userData.played;
+      return userData!.played;
     }
     return false;
   }
@@ -425,7 +438,7 @@ class Item {
   /// Return [false] if is not favorite or [null]
   bool isFavorite() {
     if (userData != null) {
-      return userData.isFavorite;
+      return userData!.isFavorite;
     }
     return false;
   }
@@ -435,8 +448,8 @@ class Item {
   /// Return [true] if played
   /// Return [false] is is not played
   bool hasProgress() {
-    if (userData.playbackPositionTicks != null &&
-        userData.playbackPositionTicks > 0) {
+    if (userData?.playbackPositionTicks != null &&
+        userData!.playbackPositionTicks > 0) {
       return true;
     }
     return false;
@@ -447,7 +460,8 @@ class Item {
   /// Return the [duration] if known
   /// Return [0] if not known
   int getDuration() {
-    return (runTimeTicks / 10).round();
+    if (runTimeTicks == null) return 0;
+    return (runTimeTicks! / 10).round();
   }
 
   /// Get item aspect ratio
@@ -456,16 +470,16 @@ class Item {
   /// If not specified return [16/9] as default value
   double getAspectRatio() {
     MediaStream mediaStream;
-    if (mediaStreams != null && mediaStreams.isNotEmpty) {
-      mediaStream = mediaStreams.firstWhere(
+    if (mediaStreams != null && mediaStreams!.isNotEmpty) {
+      mediaStream = mediaStreams!.firstWhere(
           (element) => element.type.trim().toLowerCase() == 'video');
 
       // If aspect ratio is specified then we use it
       // else we calculate it
-      if (mediaStream.aspectRatio.isNotEmpty) {
-        return calculateAspectRatio(mediaStream.aspectRatio);
+      if (mediaStream.aspectRatio!.isNotEmpty) {
+        return calculateAspectRatio(mediaStream.aspectRatio!);
       }
-      return (mediaStream.width / mediaStream.height);
+      return (mediaStream.width! / mediaStream.height!);
     }
     return 16 / 9;
   }
@@ -473,10 +487,9 @@ class Item {
   /// Parse aspect ratio (jellyfin format) from string to double
   ///
   /// Return aspect ratio from video as [double] value
-  /// If not specified return [null] as default value
+  /// If not specified return [0] as default value
   double calculateAspectRatio(String aspectRatio) {
-    if (aspectRatio == null) return null;
-    if (aspectRatio.isEmpty) return null;
+    if (aspectRatio.isEmpty) return 0;
     var separatorIndex = aspectRatio.indexOf(':');
     var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));
     var secondValue = double.parse(
@@ -487,23 +500,23 @@ class Item {
   /// Playback position last time played
   ///
   /// Return playback position in microsecond as [int]
-  /// Return [null] if not specified
+  /// Return [0] if not specified
   int getPlaybackPosition() {
-    if (userData.playbackPositionTicks != null) {
-      return (userData.playbackPositionTicks / 10).round();
+    if (userData != null && userData!.playbackPositionTicks != null) {
+      return (userData!.playbackPositionTicks / 10).round();
     }
-    return null;
+    return 0;
   }
 
   /// Percent of time played
   ///
   /// Return percent og time played as [double]
-  /// Return [null] if not specified
+  /// Return [0] if not specified
   double getPercentPlayed() {
-    if (userData.playbackPositionTicks != null || runTimeTicks != null) {
-      return userData.playbackPositionTicks / runTimeTicks;
+    if (userData != null || runTimeTicks != null) {
+      return userData!.playbackPositionTicks / runTimeTicks!;
     }
-    return null;
+    return 0;
   }
 
   /// Get primary image aspect ratio. Useful to show poster of item
@@ -514,8 +527,8 @@ class Item {
   /// Else return an aspect ratio based on type if not defined
   double getPrimaryAspectRatio() {
     if (primaryImageAspectRatio != null) {
-      if (primaryImageAspectRatio > 0.0) {
-        return primaryImageAspectRatio;
+      if (primaryImageAspectRatio! > 0.0) {
+        return primaryImageAspectRatio!;
       }
       return aspectRatio(type: type);
     }
@@ -530,8 +543,8 @@ class Item {
   /// Return parent id if there is no primary image set
   String getIdBasedOnImage() {
     if (type == 'Season') {
-      if (imageTags.primary != null) return id;
-      return seriesId;
+      if (imageTags!.primary != null) return id;
+      return seriesId!;
     }
     return id;
   }
@@ -543,16 +556,16 @@ class Item {
   /// Return [true] if parents
   /// Return [false] is no parents found
   bool hasParent() {
-    var hasSerieParent = seriesName != null ? seriesName.isNotEmpty : false;
-    var hasAlbumParent = albumId != null ? albumId.isNotEmpty : false;
-    var hasSeasonParent = seasonId != null ? seasonId.isNotEmpty : false;
+    var hasSerieParent = seriesName != null ? seriesName!.isNotEmpty : false;
+    var hasAlbumParent = albumId != null ? albumId!.isNotEmpty : false;
+    var hasSeasonParent = seasonId != null ? seasonId!.isNotEmpty : false;
     return hasSerieParent || hasAlbumParent || hasSeasonParent;
   }
 
   String getParentId() {
-    if (seriesId != null && seriesId.isNotEmpty) return seriesId;
-    if (seasonId != null && seasonId.isNotEmpty) return seasonId;
-    if (albumId != null && albumId.isNotEmpty) return albumId;
+    if (seriesId != null && seriesId!.isNotEmpty) return seriesId!;
+    if (seasonId != null && seasonId!.isNotEmpty) return seasonId!;
+    if (albumId != null && albumId!.isNotEmpty) return albumId!;
     return id;
   }
 
@@ -563,8 +576,8 @@ class Item {
   /// Return parents name if not null
   /// ELse return empty string
   String parentName() {
-    if (seriesName != null && seriesName.isNotEmpty) return seriesName;
-    if (album != null && album.isNotEmpty) return album;
+    if (seriesName != null && seriesName!.isNotEmpty) return seriesName!;
+    if (album != null && album!.isNotEmpty) return album!;
     return name;
   }
 
@@ -586,7 +599,7 @@ class Item {
     } else if (collectionType == 'homevideos') {
       return 'Photo, Video';
     } else {
-      return collectionType;
+      return collectionType!;
     }
   }
 
@@ -600,15 +613,15 @@ class Item {
     if (searchType.toLowerCase().trim() == 'logo' &&
         (type == 'Season' || type == 'Episode' || type == 'Album')) {
       if (type == 'Season' || type == 'Episode') {
-        return seriesId;
+        return seriesId!;
       } else if (type == 'Album') {
-        return albumId;
+        return albumId!;
       }
-    } else if (imageTags.toMap().values.every((element) => element == null)) {
+    } else if (imageTags!.toMap().values.every((element) => element == null)) {
       if (type == 'Season') {
-        return seriesId;
+        return seriesId!;
       } else if (type == 'Album' || type == 'Audio') {
-        return albumId;
+        return albumId!;
       } else {
         return id;
       }
@@ -624,24 +637,24 @@ class Item {
   ///
   /// Return imageTag as [String] if found
   /// Else return [null]
-  String correctImageTags({String searchType = 'Primary'}) {
+  String? correctImageTags({String searchType = 'Primary'}) {
     if (searchType.toLowerCase().trim() == 'logo' &&
         (type == 'Season' || type == 'Episode' || type == 'Album')) {
       if (type == 'Season' || type == 'Episode') {
-        return seriesPrimaryImageTag;
+        return seriesPrimaryImageTag!;
       } else if (type == 'Album') {
-        return albumPrimaryImageTag;
+        return albumPrimaryImageTag!;
       }
-    } else if (imageTags.toMap().values.every((element) => element == null)) {
+    } else if (imageTags!.toMap().values.every((element) => element == null)) {
       if (type == 'Season') {
-        return seriesPrimaryImageTag;
+        return seriesPrimaryImageTag!;
       } else if (type == 'Album') {
-        return albumPrimaryImageTag;
+        return albumPrimaryImageTag!;
       } else {
         return null;
       }
     } else {
-      return imageTags.primary;
+      return imageTags!.primary;
     }
     return null;
   }
@@ -663,7 +676,7 @@ class Item {
     } else if (type == 'MusicAlbum') {
       musicPlayer.playPlaylist(id);
     } else if (type == 'Book') {
-      await Navigator.pushReplacement(navigatorKey.currentContext,
+      await Navigator.pushReplacement(navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));
     }
   }
@@ -680,7 +693,7 @@ class Item {
     } else if (type == 'Audio') {
       return _getStreamURL(this, directPlay);
     } else {
-      return null;
+      throw ('Cannot find the type of file');
     }
   }
 
@@ -692,7 +705,7 @@ class Item {
     // sort by index to get the next item to stream
     category.items.sort((a, b) => a.indexNumber.compareTo(b.indexNumber));
     var itemToPlay = category.items.firstWhere(
-        (element) => !element.userData.played,
+        (element) => !element.userData!.played,
         orElse: () => category.items.first);
     return _getStreamURL(itemToPlay, directPlay);
   }
@@ -701,7 +714,7 @@ class Item {
     var streamModel = StreamModel();
     var data = await isCodecSupported();
     var backInfos = await playbackInfos(data, item.id,
-        startTimeTick: item.userData.playbackPositionTicks);
+        startTimeTick: item.userData!.playbackPositionTicks);
     var completeTranscodeUrl;
     var finalUrl;
 
@@ -712,7 +725,7 @@ class Item {
     }
     finalUrl = completeTranscodeUrl ??
         await createURL(item, backInfos,
-            startTick: item.userData.playbackPositionTicks);
+            startTick: item.userData!.playbackPositionTicks);
 
     // Current item, playbackinfos, stream url and direct play bool
     streamModel.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
@@ -722,26 +735,26 @@ class Item {
     return finalUrl;
   }
 
-  String concatenateGenre({int maxGenre}) {
-    var max = genres.length;
+  String concatenateGenre({int? maxGenre}) {
+    var max = genres!.length;
     if (maxGenre != null) {
-      max = genres.length > maxGenre ? maxGenre : genres.length;
+      max = genres!.length > maxGenre ? maxGenre : genres!.length;
     }
 
     if (genres != null) {
-      return genres.getRange(0, max).join(', ').toString();
+      return genres!.getRange(0, max).join(', ').toString();
     }
     return '';
   }
 
-  String concatenateArtists({int maxArtists}) {
-    var max = artists.length;
+  String concatenateArtists({int? maxArtists}) {
+    var max = artists!.length;
     if (maxArtists != null) {
-      max = artists.length > maxArtists ? maxArtists : artists.length;
+      max = artists!.length > maxArtists ? maxArtists : artists!.length;
     }
 
     if (artists != null) {
-      return artists.getRange(0, max).map((e) => e.name).join(', ').toString();
+      return artists!.getRange(0, max).map((e) => e.name).join(', ').toString();
     }
     return '';
   }
@@ -754,7 +767,7 @@ class Item {
     var streamingSoftwareDB = await db.AppDatabase()
         .getDatabase
         .settingsDao
-        .getSettingsById(userApp.settingsId);
+        .getSettingsById(userApp!.settingsId);
     var streamingSoftware = TranscodeAudioCodecName.values.firstWhere((e) =>
         e.toString() ==
         'TranscodeAudioCodecName.' +
@@ -762,8 +775,8 @@ class Item {
     return '${server.url}/Audio/$id/stream.$streamingSoftware';
   }
 
-  List<MediaStream> getMediaStreamFromType({@required String type}) {
-    return mediaStreams
+  List<MediaStream> getMediaStreamFromType({required String type}) {
+    return mediaStreams!
         .where((element) => element.type.trim().toLowerCase() == type)
         .toList();
   }

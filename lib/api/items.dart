@@ -363,7 +363,7 @@ Future<String> contructAudioURL(
 
   maxStreamingBitrate ??= settings.maxVideoBitrate;
   var audioCodecDB = settings.preferredTranscodeAudioCodec;
-  var dInfo = await DeviceInfo().getCurrentDeviceInfo();
+  var dInfo = await DeviceInfo.getCurrentDeviceInfo();
   var queryParams = <String, String>{};
   queryParams['UserId'] = userJellyfin!.id;
   queryParams['DeviceId'] = dInfo.id;

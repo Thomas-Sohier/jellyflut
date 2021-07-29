@@ -7,22 +7,24 @@ class DeviceInfo {
   String model;
   String id;
 
-  DeviceInfo({this.host, this.model, this.id});
+  DeviceInfo({required this.host, required this.model, required this.id});
 
-  Future<DeviceInfo> getCurrentDeviceInfo() async {
+  static Future<DeviceInfo> getCurrentDeviceInfo() async {
     var deviceInfoPlugin = DeviceInfoPlugin();
-    var deviceInfo = DeviceInfo();
     if (Platform.isAndroid) {
       var androidInfo = await deviceInfoPlugin.androidInfo;
-      deviceInfo.host = androidInfo.host;
-      deviceInfo.id = androidInfo.id;
-      deviceInfo.model = androidInfo.model;
+      var host = androidInfo.host;
+      var id = androidInfo.id;
+      var model = androidInfo.model;
+      return DeviceInfo(host: host, model: model, id: id);
     } else if (Platform.isIOS) {
       var iosInfo = await deviceInfoPlugin.iosInfo;
-      deviceInfo.host = iosInfo.localizedModel;
-      deviceInfo.id = iosInfo.identifierForVendor;
-      deviceInfo.model = iosInfo.model;
+      var host = iosInfo.localizedModel;
+      var id = iosInfo.identifierForVendor;
+      var model = iosInfo.model;
+      return DeviceInfo(host: host, model: model, id: id);
+    } else {
+      return DeviceInfo(host: 'Unknown', model: 'Unknown', id: 'Unkonwn');
     }
-    return deviceInfo;
   }
 }

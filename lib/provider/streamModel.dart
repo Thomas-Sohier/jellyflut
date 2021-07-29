@@ -4,24 +4,24 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 
 class StreamModel extends ChangeNotifier {
-  Item _item = Item();
-  PlayBackInfos _playBackInfos = PlayBackInfos();
-  String _url;
-  BetterPlayerController _betterPlayerController;
-  bool _isDirectPlay;
-  int _audioStreamIndex;
-  int _subtitleStreamIndex;
+  Item? _item;
+  PlayBackInfos? _playBackInfos;
+  String? _url;
+  BetterPlayerController? _betterPlayerController;
+  bool? _isDirectPlay;
+  int? _audioStreamIndex;
+  int? _subtitleStreamIndex;
 
   // Singleton
   static final StreamModel _streamProvider = StreamModel._internal();
 
-  Item get item => _item;
-  PlayBackInfos get playBackInfos => _playBackInfos;
-  String get url => _url;
-  BetterPlayerController get betterPlayerController => _betterPlayerController;
-  bool get isDirectPlay => _isDirectPlay;
-  int get audioStreamIndex => _audioStreamIndex;
-  int get subtitleStreamIndex => _subtitleStreamIndex;
+  Item? get item => _item;
+  PlayBackInfos? get playBackInfos => _playBackInfos;
+  String? get url => _url;
+  BetterPlayerController? get betterPlayerController => _betterPlayerController;
+  bool? get isDirectPlay => _isDirectPlay;
+  int? get audioStreamIndex => _audioStreamIndex;
+  int? get subtitleStreamIndex => _subtitleStreamIndex;
 
   factory StreamModel() {
     return _streamProvider;

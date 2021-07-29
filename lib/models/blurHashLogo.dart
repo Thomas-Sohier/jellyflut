@@ -1,6 +1,6 @@
 class BlurHashLogo {
   BlurHashLogo({
-    this.logo,
+    required this.logo,
   });
 
   Map<String, String> logo;

@@ -1,6 +1,6 @@
 class Backdrop {
   Backdrop({
-    this.backdrop,
+    required this.backdrop,
   });
 
   Map<String, String> backdrop;

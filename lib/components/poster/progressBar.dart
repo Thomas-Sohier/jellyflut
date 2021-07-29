@@ -4,7 +4,7 @@ import 'package:jellyflut/models/item.dart';
 class ProgressBar extends StatelessWidget {
   final Item item;
 
-  const ProgressBar({Key key, @required this.item}) : super(key: key);
+  const ProgressBar({required this.item});
   @override
   Widget build(BuildContext context) {
     return Stack(

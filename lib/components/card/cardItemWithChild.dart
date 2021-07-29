@@ -38,8 +38,8 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
             padding: const EdgeInsets.all(12),
             child: Shimmer.fromColors(
                 enabled: shimmerAnimation,
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[100],
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
                 child: Column(children: [
                   Padding(
                       padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
@@ -83,15 +83,15 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
             gradient: LinearGradient(
               begin: Alignment(-1, -2),
               end: Alignment(-1, -0.8),
-              colors: [Colors.black12, Colors.grey[100]],
+              colors: [Colors.black12, Colors.grey[100]!],
             ),
           ),
           padding: EdgeInsets.fromLTRB(12, 5, 12, 5),
           child: Column(children: [
             Shimmer.fromColors(
                 enabled: shimmerAnimation,
-                baseColor: Colors.grey[300],
-                highlightColor: Colors.grey[100],
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
                 child: Row(
                   children: [
                     Expanded(
@@ -135,7 +135,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(flex: 4, child: titleHeader()),
-                        if (item.genres != null && item.genres.isNotEmpty)
+                        if (item.genres != null && item.genres!.isNotEmpty)
                           Expanded(
                               flex: 2,
                               child: Text(item.concatenateGenre(maxGenre: 3),
@@ -150,7 +150,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                       Padding(
                           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                           child: Critics(item)),
-                    if (item.artists != null && item.artists.isNotEmpty)
+                    if (item.artists != null && item.artists!.isNotEmpty)
                       Row(
                         children: [
                           Expanded(
@@ -171,7 +171,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                           Expanded(
                               child: Padding(
                                   padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
-                                  child: Text(removeAllHtmlTags(item.overview),
+                                  child: Text(removeAllHtmlTags(item.overview!),
                                       textAlign: TextAlign.justify,
                                       overflow: TextOverflow.clip,
                                       style: TextStyle(
@@ -188,7 +188,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
                     gradient: LinearGradient(
                       begin: Alignment(-1, -2),
                       end: Alignment(-1, -0.8),
-                      colors: [Colors.black12, Colors.grey[100]],
+                      colors: [Colors.black12, Colors.grey[100]!],
                     ),
                   ),
                   padding: EdgeInsets.all(5),
@@ -215,7 +215,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
     return InkWell(
         onTap: () async {
           var parentItem = await getItem(widget.item.getParentId());
-          return Navigator.pushReplacement(
+          await Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) =>

@@ -11,43 +11,38 @@ class Server extends DataClass implements Insertable<Server> {
   final int id;
   final String url;
   final String name;
-  Server({@required this.id, @required this.url, @required this.name});
+  Server({required this.id, required this.url, required this.name});
   factory Server.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
+      {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Server(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       url: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}url']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
       name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || url != null) {
-      map['url'] = Variable<String>(url);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
+    map['id'] = Variable<int>(id);
+    map['url'] = Variable<String>(url);
+    map['name'] = Variable<String>(name);
     return map;
   }
 
   ServersCompanion toCompanion(bool nullToAbsent) {
     return ServersCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      url: url == null && nullToAbsent ? const Value.absent() : Value(url),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      id: Value(id),
+      url: Value(url),
+      name: Value(name),
     );
   }
 
   factory Server.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
+      {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Server(
       id: serializer.fromJson<int>(json['id']),
@@ -56,7 +51,7 @@ class Server extends DataClass implements Insertable<Server> {
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
@@ -65,7 +60,7 @@ class Server extends DataClass implements Insertable<Server> {
     };
   }
 
-  Server copyWith({int id, String url, String name}) => Server(
+  Server copyWith({int? id, String? url, String? name}) => Server(
         id: id ?? this.id,
         url: url ?? this.url,
         name: name ?? this.name,
@@ -103,14 +98,14 @@ class ServersCompanion extends UpdateCompanion<Server> {
   });
   ServersCompanion.insert({
     this.id = const Value.absent(),
-    @required String url,
-    @required String name,
+    required String url,
+    required String name,
   })  : url = Value(url),
         name = Value(name);
   static Insertable<Server> custom({
-    Expression<int> id,
-    Expression<String> url,
-    Expression<String> name,
+    Expression<int>? id,
+    Expression<String>? url,
+    Expression<String>? name,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -120,7 +115,7 @@ class ServersCompanion extends UpdateCompanion<Server> {
   }
 
   ServersCompanion copyWith(
-      {Value<int> id, Value<String> url, Value<String> name}) {
+      {Value<int>? id, Value<String>? url, Value<String>? name}) {
     return ServersCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
@@ -156,28 +151,22 @@ class ServersCompanion extends UpdateCompanion<Server> {
 
 class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   final GeneratedDatabase _db;
-  final String _alias;
+  final String? _alias;
   $ServersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedColumn<int> _id;
-  @override
-  GeneratedColumn<int> get id =>
-      _id ??= GeneratedColumn<int>('id', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _urlMeta = const VerificationMeta('url');
-  GeneratedColumn<String> _url;
-  @override
-  GeneratedColumn<String> get url =>
-      _url ??= GeneratedColumn<String>('url', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
+  late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
+      'url', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedColumn<String> _name;
-  @override
-  GeneratedColumn<String> get name =>
-      _name ??= GeneratedColumn<String>('name', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, name];
   @override
@@ -190,17 +179,17 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('url')) {
       context.handle(
-          _urlMeta, url.isAcceptableOrUnknown(data['url'], _urlMeta));
+          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
@@ -210,7 +199,7 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Server map(Map<String, dynamic> data, {String tablePrefix}) {
+  Server map(Map<String, dynamic> data, {String? tablePrefix}) {
     return Server.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
@@ -228,64 +217,50 @@ class User extends DataClass implements Insertable<User> {
   final int settingsId;
   final int serverId;
   User(
-      {@required this.id,
-      @required this.name,
-      @required this.apiKey,
-      @required this.settingsId,
-      @required this.serverId});
+      {required this.id,
+      required this.name,
+      required this.apiKey,
+      required this.settingsId,
+      required this.serverId});
   factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
+      {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return User(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       apiKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}api_key']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}api_key'])!,
       settingsId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}settings_id']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}settings_id'])!,
       serverId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}server_id']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}server_id'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
-    if (!nullToAbsent || apiKey != null) {
-      map['api_key'] = Variable<String>(apiKey);
-    }
-    if (!nullToAbsent || settingsId != null) {
-      map['settings_id'] = Variable<int>(settingsId);
-    }
-    if (!nullToAbsent || serverId != null) {
-      map['server_id'] = Variable<int>(serverId);
-    }
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['api_key'] = Variable<String>(apiKey);
+    map['settings_id'] = Variable<int>(settingsId);
+    map['server_id'] = Variable<int>(serverId);
     return map;
   }
 
   UsersCompanion toCompanion(bool nullToAbsent) {
     return UsersCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      apiKey:
-          apiKey == null && nullToAbsent ? const Value.absent() : Value(apiKey),
-      settingsId: settingsId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(settingsId),
-      serverId: serverId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(serverId),
+      id: Value(id),
+      name: Value(name),
+      apiKey: Value(apiKey),
+      settingsId: Value(settingsId),
+      serverId: Value(serverId),
     );
   }
 
   factory User.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
+      {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return User(
       id: serializer.fromJson<int>(json['id']),
@@ -296,7 +271,7 @@ class User extends DataClass implements Insertable<User> {
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
@@ -308,7 +283,11 @@ class User extends DataClass implements Insertable<User> {
   }
 
   User copyWith(
-          {int id, String name, String apiKey, int settingsId, int serverId}) =>
+          {int? id,
+          String? name,
+          String? apiKey,
+          int? settingsId,
+          int? serverId}) =>
       User(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -361,20 +340,20 @@ class UsersCompanion extends UpdateCompanion<User> {
   });
   UsersCompanion.insert({
     this.id = const Value.absent(),
-    @required String name,
-    @required String apiKey,
-    @required int settingsId,
-    @required int serverId,
+    required String name,
+    required String apiKey,
+    required int settingsId,
+    required int serverId,
   })  : name = Value(name),
         apiKey = Value(apiKey),
         settingsId = Value(settingsId),
         serverId = Value(serverId);
   static Insertable<User> custom({
-    Expression<int> id,
-    Expression<String> name,
-    Expression<String> apiKey,
-    Expression<int> settingsId,
-    Expression<int> serverId,
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? apiKey,
+    Expression<int>? settingsId,
+    Expression<int>? serverId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -386,11 +365,11 @@ class UsersCompanion extends UpdateCompanion<User> {
   }
 
   UsersCompanion copyWith(
-      {Value<int> id,
-      Value<String> name,
-      Value<String> apiKey,
-      Value<int> settingsId,
-      Value<int> serverId}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? apiKey,
+      Value<int>? settingsId,
+      Value<int>? serverId}) {
     return UsersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -436,40 +415,30 @@ class UsersCompanion extends UpdateCompanion<User> {
 
 class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   final GeneratedDatabase _db;
-  final String _alias;
+  final String? _alias;
   $UsersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedColumn<int> _id;
-  @override
-  GeneratedColumn<int> get id =>
-      _id ??= GeneratedColumn<int>('id', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedColumn<String> _name;
-  @override
-  GeneratedColumn<String> get name =>
-      _name ??= GeneratedColumn<String>('name', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
-  GeneratedColumn<String> _apiKey;
-  @override
-  GeneratedColumn<String> get apiKey =>
-      _apiKey ??= GeneratedColumn<String>('api_key', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
+  late final GeneratedColumn<String?> apiKey = GeneratedColumn<String?>(
+      'api_key', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
-  GeneratedColumn<int> _settingsId;
-  @override
-  GeneratedColumn<int> get settingsId =>
-      _settingsId ??= GeneratedColumn<int>('settings_id', aliasedName, false,
-          typeName: 'INTEGER', requiredDuringInsert: true);
+  late final GeneratedColumn<int?> settingsId = GeneratedColumn<int?>(
+      'settings_id', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
-  GeneratedColumn<int> _serverId;
-  @override
-  GeneratedColumn<int> get serverId =>
-      _serverId ??= GeneratedColumn<int>('server_id', aliasedName, false,
-          typeName: 'INTEGER', requiredDuringInsert: true);
+  late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>(
+      'server_id', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, name, apiKey, settingsId, serverId];
@@ -483,17 +452,17 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('api_key')) {
       context.handle(_apiKeyMeta,
-          apiKey.isAcceptableOrUnknown(data['api_key'], _apiKeyMeta));
+          apiKey.isAcceptableOrUnknown(data['api_key']!, _apiKeyMeta));
     } else if (isInserting) {
       context.missing(_apiKeyMeta);
     }
@@ -501,13 +470,13 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
       context.handle(
           _settingsIdMeta,
           settingsId.isAcceptableOrUnknown(
-              data['settings_id'], _settingsIdMeta));
+              data['settings_id']!, _settingsIdMeta));
     } else if (isInserting) {
       context.missing(_settingsIdMeta);
     }
     if (data.containsKey('server_id')) {
       context.handle(_serverIdMeta,
-          serverId.isAcceptableOrUnknown(data['server_id'], _serverIdMeta));
+          serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta));
     } else if (isInserting) {
       context.missing(_serverIdMeta);
     }
@@ -517,7 +486,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  User map(Map<String, dynamic> data, {String tablePrefix}) {
+  User map(Map<String, dynamic> data, {String? tablePrefix}) {
     return User.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
@@ -535,69 +504,51 @@ class Setting extends DataClass implements Insertable<Setting> {
   final int maxVideoBitrate;
   final int maxAudioBitrate;
   Setting(
-      {@required this.id,
-      @required this.preferredPlayer,
-      @required this.preferredTranscodeAudioCodec,
-      @required this.maxVideoBitrate,
-      @required this.maxAudioBitrate});
+      {required this.id,
+      required this.preferredPlayer,
+      required this.preferredTranscodeAudioCodec,
+      required this.maxVideoBitrate,
+      required this.maxAudioBitrate});
   factory Setting.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
+      {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Setting(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       preferredPlayer: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}preferred_player']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}preferred_player'])!,
       preferredTranscodeAudioCodec: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}preferred_transcode_audio_codec']),
-      maxVideoBitrate: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}max_video_bitrate']),
-      maxAudioBitrate: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}max_audio_bitrate']),
+          data['${effectivePrefix}preferred_transcode_audio_codec'])!,
+      maxVideoBitrate: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}max_video_bitrate'])!,
+      maxAudioBitrate: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}max_audio_bitrate'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || preferredPlayer != null) {
-      map['preferred_player'] = Variable<String>(preferredPlayer);
-    }
-    if (!nullToAbsent || preferredTranscodeAudioCodec != null) {
-      map['preferred_transcode_audio_codec'] =
-          Variable<String>(preferredTranscodeAudioCodec);
-    }
-    if (!nullToAbsent || maxVideoBitrate != null) {
-      map['max_video_bitrate'] = Variable<int>(maxVideoBitrate);
-    }
-    if (!nullToAbsent || maxAudioBitrate != null) {
-      map['max_audio_bitrate'] = Variable<int>(maxAudioBitrate);
-    }
+    map['id'] = Variable<int>(id);
+    map['preferred_player'] = Variable<String>(preferredPlayer);
+    map['preferred_transcode_audio_codec'] =
+        Variable<String>(preferredTranscodeAudioCodec);
+    map['max_video_bitrate'] = Variable<int>(maxVideoBitrate);
+    map['max_audio_bitrate'] = Variable<int>(maxAudioBitrate);
     return map;
   }
 
   SettingsCompanion toCompanion(bool nullToAbsent) {
     return SettingsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      preferredPlayer: preferredPlayer == null && nullToAbsent
-          ? const Value.absent()
-          : Value(preferredPlayer),
-      preferredTranscodeAudioCodec:
-          preferredTranscodeAudioCodec == null && nullToAbsent
-              ? const Value.absent()
-              : Value(preferredTranscodeAudioCodec),
-      maxVideoBitrate: maxVideoBitrate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(maxVideoBitrate),
-      maxAudioBitrate: maxAudioBitrate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(maxAudioBitrate),
+      id: Value(id),
+      preferredPlayer: Value(preferredPlayer),
+      preferredTranscodeAudioCodec: Value(preferredTranscodeAudioCodec),
+      maxVideoBitrate: Value(maxVideoBitrate),
+      maxAudioBitrate: Value(maxAudioBitrate),
     );
   }
 
   factory Setting.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
+      {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Setting(
       id: serializer.fromJson<int>(json['id']),
@@ -609,7 +560,7 @@ class Setting extends DataClass implements Insertable<Setting> {
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
@@ -622,11 +573,11 @@ class Setting extends DataClass implements Insertable<Setting> {
   }
 
   Setting copyWith(
-          {int id,
-          String preferredPlayer,
-          String preferredTranscodeAudioCodec,
-          int maxVideoBitrate,
-          int maxAudioBitrate}) =>
+          {int? id,
+          String? preferredPlayer,
+          String? preferredTranscodeAudioCodec,
+          int? maxVideoBitrate,
+          int? maxAudioBitrate}) =>
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -688,11 +639,11 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.maxAudioBitrate = const Value.absent(),
   });
   static Insertable<Setting> custom({
-    Expression<int> id,
-    Expression<String> preferredPlayer,
-    Expression<String> preferredTranscodeAudioCodec,
-    Expression<int> maxVideoBitrate,
-    Expression<int> maxAudioBitrate,
+    Expression<int>? id,
+    Expression<String>? preferredPlayer,
+    Expression<String>? preferredTranscodeAudioCodec,
+    Expression<int>? maxVideoBitrate,
+    Expression<int>? maxAudioBitrate,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -705,11 +656,11 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   }
 
   SettingsCompanion copyWith(
-      {Value<int> id,
-      Value<String> preferredPlayer,
-      Value<String> preferredTranscodeAudioCodec,
-      Value<int> maxVideoBitrate,
-      Value<int> maxAudioBitrate}) {
+      {Value<int>? id,
+      Value<String>? preferredPlayer,
+      Value<String>? preferredTranscodeAudioCodec,
+      Value<int>? maxVideoBitrate,
+      Value<int>? maxAudioBitrate}) {
     return SettingsCompanion(
       id: id ?? this.id,
       preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -758,53 +709,43 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 
 class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   final GeneratedDatabase _db;
-  final String _alias;
+  final String? _alias;
   $SettingsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedColumn<int> _id;
-  @override
-  GeneratedColumn<int> get id =>
-      _id ??= GeneratedColumn<int>('id', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _preferredPlayerMeta =
       const VerificationMeta('preferredPlayer');
-  GeneratedColumn<String> _preferredPlayer;
-  @override
-  GeneratedColumn<String> get preferredPlayer => _preferredPlayer ??=
-      GeneratedColumn<String>('preferred_player', aliasedName, false,
+  late final GeneratedColumn<String?> preferredPlayer =
+      GeneratedColumn<String?>('preferred_player', aliasedName, false,
           typeName: 'TEXT',
           requiredDuringInsert: false,
           defaultValue: const Constant('exoplayer'));
   final VerificationMeta _preferredTranscodeAudioCodecMeta =
       const VerificationMeta('preferredTranscodeAudioCodec');
-  GeneratedColumn<String> _preferredTranscodeAudioCodec;
-  @override
-  GeneratedColumn<String> get preferredTranscodeAudioCodec =>
-      _preferredTranscodeAudioCodec ??= GeneratedColumn<String>(
+  late final GeneratedColumn<String?> preferredTranscodeAudioCodec =
+      GeneratedColumn<String?>(
           'preferred_transcode_audio_codec', aliasedName, false,
           typeName: 'TEXT',
           requiredDuringInsert: false,
           defaultValue: const Constant('auto'));
   final VerificationMeta _maxVideoBitrateMeta =
       const VerificationMeta('maxVideoBitrate');
-  GeneratedColumn<int> _maxVideoBitrate;
-  @override
-  GeneratedColumn<int> get maxVideoBitrate => _maxVideoBitrate ??=
-      GeneratedColumn<int>('max_video_bitrate', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultValue: const Constant(140000000));
+  late final GeneratedColumn<int?> maxVideoBitrate = GeneratedColumn<int?>(
+      'max_video_bitrate', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(140000000));
   final VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
-  GeneratedColumn<int> _maxAudioBitrate;
-  @override
-  GeneratedColumn<int> get maxAudioBitrate => _maxAudioBitrate ??=
-      GeneratedColumn<int>('max_audio_bitrate', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultValue: const Constant(320000));
+  late final GeneratedColumn<int?> maxAudioBitrate = GeneratedColumn<int?>(
+      'max_audio_bitrate', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(320000));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -823,32 +764,32 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('preferred_player')) {
       context.handle(
           _preferredPlayerMeta,
           preferredPlayer.isAcceptableOrUnknown(
-              data['preferred_player'], _preferredPlayerMeta));
+              data['preferred_player']!, _preferredPlayerMeta));
     }
     if (data.containsKey('preferred_transcode_audio_codec')) {
       context.handle(
           _preferredTranscodeAudioCodecMeta,
           preferredTranscodeAudioCodec.isAcceptableOrUnknown(
-              data['preferred_transcode_audio_codec'],
+              data['preferred_transcode_audio_codec']!,
               _preferredTranscodeAudioCodecMeta));
     }
     if (data.containsKey('max_video_bitrate')) {
       context.handle(
           _maxVideoBitrateMeta,
           maxVideoBitrate.isAcceptableOrUnknown(
-              data['max_video_bitrate'], _maxVideoBitrateMeta));
+              data['max_video_bitrate']!, _maxVideoBitrateMeta));
     }
     if (data.containsKey('max_audio_bitrate')) {
       context.handle(
           _maxAudioBitrateMeta,
           maxAudioBitrate.isAcceptableOrUnknown(
-              data['max_audio_bitrate'], _maxAudioBitrateMeta));
+              data['max_audio_bitrate']!, _maxAudioBitrateMeta));
     }
     return context;
   }
@@ -856,7 +797,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Setting map(Map<String, dynamic> data, {String tablePrefix}) {
+  Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
     return Setting.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
@@ -869,18 +810,12 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $ServersTable _servers;
-  $ServersTable get servers => _servers ??= $ServersTable(this);
-  $UsersTable _users;
-  $UsersTable get users => _users ??= $UsersTable(this);
-  $SettingsTable _settings;
-  $SettingsTable get settings => _settings ??= $SettingsTable(this);
-  ServersDao _serversDao;
-  ServersDao get serversDao => _serversDao ??= ServersDao(this as Database);
-  UsersDao _usersDao;
-  UsersDao get usersDao => _usersDao ??= UsersDao(this as Database);
-  SettingsDao _settingsDao;
-  SettingsDao get settingsDao => _settingsDao ??= SettingsDao(this as Database);
+  late final $ServersTable servers = $ServersTable(this);
+  late final $UsersTable users = $UsersTable(this);
+  late final $SettingsTable settings = $SettingsTable(this);
+  late final ServersDao serversDao = ServersDao(this as Database);
+  late final UsersDao usersDao = UsersDao(this as Database);
+  late final SettingsDao settingsDao = SettingsDao(this as Database);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

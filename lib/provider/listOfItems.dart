@@ -6,8 +6,8 @@ import 'package:jellyflut/models/item.dart';
 class ListOfItems extends ChangeNotifier {
   List<Item> _items = <Item>[];
   final List<Item> _headerItems = <Item>[];
-  String _parentItemId;
-  List<String> _typeOfItems;
+  String? _parentItemId;
+  List<String>? _typeOfItems;
   bool _sortByNameASC = false;
   bool _sortByNameDSC = false;
   bool _sortByDateASC = false;
@@ -41,7 +41,7 @@ class ListOfItems extends ChangeNotifier {
     _items.clear();
   }
 
-  String getParentItem() {
+  String? getParentItem() {
     return _parentItemId;
   }
 
@@ -49,7 +49,7 @@ class ListOfItems extends ChangeNotifier {
     _parentItemId = parentItemId;
   }
 
-  List<String> getTypeOfItems() {
+  List<String>? getTypeOfItems() {
     return _typeOfItems;
   }
 
@@ -97,7 +97,7 @@ class ListOfItems extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showMoreItem({String filter}) {
+  void showMoreItem({String? filter}) {
     if (blockItemsLoading == false) {
       blockItemsLoading = true;
       getItems(
@@ -107,7 +107,7 @@ class ListOfItems extends ChangeNotifier {
                   'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
               imageTypeLimit: 1,
               filter: filter,
-              includeItemTypes: _typeOfItems.join(', '),
+              includeItemTypes: _typeOfItems?.join(', '),
               startIndex: startIndex,
               // includeItemTypes: _typeOfItems,
               limit: 100)
@@ -131,7 +131,7 @@ Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
   if (!sortByDateASC || (!sortByDateASC && !sortByDateDSC)) {
     items.sort((a, b) {
       if (a.dateCreated != null && b.dateCreated != null) {
-        return a.dateCreated.compareTo(b.dateCreated);
+        return a.dateCreated!.compareTo(b.dateCreated!);
       } else {
         return -1;
       }
@@ -141,7 +141,7 @@ Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
   } else if (sortByDateASC) {
     items.sort((a, b) {
       if (a.dateCreated != null && b.dateCreated != null) {
-        return b.dateCreated.compareTo(a.dateCreated);
+        return b.dateCreated!.compareTo(a.dateCreated!);
       } else {
         return -1;
       }

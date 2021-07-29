@@ -1,8 +1,8 @@
 class Chapter {
   Chapter({
-    this.startPositionTicks,
-    this.name,
-    this.imageDateModified,
+    required this.startPositionTicks,
+    required this.name,
+    required this.imageDateModified,
   });
 
   int startPositionTicks;

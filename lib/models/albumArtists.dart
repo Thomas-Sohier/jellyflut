@@ -1,6 +1,6 @@
 class AlbumArtists {
   AlbumArtists({
-    this.albumArtists,
+    required this.albumArtists,
   });
 
   Map<String, dynamic> albumArtists;

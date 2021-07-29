@@ -15,8 +15,8 @@ class DeviceCodecs {
     this.audioCodecs,
   });
 
-  List<Codec> videoCodecs;
-  List<Codec> audioCodecs;
+  List<Codec>? videoCodecs;
+  List<Codec>? audioCodecs;
 
   factory DeviceCodecs.fromMap(Map<String, dynamic> json) => DeviceCodecs(
         videoCodecs: json['videoCodecs'] == null
@@ -30,23 +30,25 @@ class DeviceCodecs {
       );
 
   Map<String, dynamic> toMap() => {
-        if (videoCodecs != null)
-          'videoCodecs': List<dynamic>.from(videoCodecs.map((x) => x.toMap())),
-        if (audioCodecs != null)
-          'audioCodecs': List<dynamic>.from(audioCodecs.map((x) => x.toMap())),
+        'videoCodecs': videoCodecs != null
+            ? List<dynamic>.from(videoCodecs!.map((x) => x.toMap()))
+            : null,
+        'audioCodecs': audioCodecs != null
+            ? List<dynamic>.from(audioCodecs!.map((x) => x.toMap()))
+            : null,
       };
 }
 
 class Codec {
   Codec({
-    this.mimeType,
-    this.codec,
-    this.isAudio,
-    this.profiles,
-    this.levels,
-    this.maxBitrate,
-    this.maxChannels,
-    this.maxSampleRate,
+    required this.mimeType,
+    required this.codec,
+    required this.isAudio,
+    required this.profiles,
+    required this.levels,
+    required this.maxBitrate,
+    required this.maxChannels,
+    required this.maxSampleRate,
   });
 
   String mimeType;
@@ -62,26 +64,21 @@ class Codec {
         mimeType: json['mimeType'],
         codec: json['codec'],
         isAudio: json['isAudio'],
-        profiles: json['profiles'] == null
-            ? null
-            : List<String>.from(json['profiles'].map((x) => x)),
-        levels: json['levels'] == null
-            ? null
-            : List<int>.from(json['levels'].map((x) => x)),
+        profiles: List<String>.from(json['profiles'].map((x) => x)),
+        levels: List<int>.from(json['levels'].map((x) => x)),
         maxBitrate: json['maxBitrate'],
         maxChannels: json['maxChannels'],
         maxSampleRate: json['maxSampleRate'],
       );
 
   Map<String, dynamic> toMap() => {
-        if (mimeType != null) 'mimeType': mimeType,
-        if (codec != null) 'codec': codec,
-        if (isAudio != null) 'isAudio': isAudio,
-        if (profiles != null)
-          'profiles': List<dynamic>.from(profiles.map((x) => x)),
-        if (levels != null) 'levels': List<dynamic>.from(levels.map((x) => x)),
-        if (maxBitrate != null) 'maxBitrate': maxBitrate,
-        if (maxChannels != null) 'maxChannels': maxChannels,
-        if (maxSampleRate != null) 'maxSampleRate': maxSampleRate,
+        'mimeType': mimeType,
+        'codec': codec,
+        'isAudio': isAudio,
+        'profiles': List<dynamic>.from(profiles.map((x) => x)),
+        'levels': List<dynamic>.from(levels.map((x) => x)),
+        'maxBitrate': maxBitrate,
+        'maxChannels': maxChannels,
+        'maxSampleRate': maxSampleRate,
       };
 }

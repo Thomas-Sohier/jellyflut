@@ -34,24 +34,24 @@ class MediaPlayedInfos {
     this.eventName,
   });
 
-  int volumeLevel;
-  bool isMuted;
-  bool isPaused;
-  String repeatMode;
-  String shuffleMode;
-  int maxStreamingBitrate;
-  int positionTicks;
-  double playbackStartTimeTicks;
-  int subtitleStreamIndex;
-  int audioStreamIndex;
-  List<BufferedRange> bufferedRanges;
-  String playMethod;
-  String playSessionId;
-  String playlistItemId;
-  String mediaSourceId;
-  bool canSeek;
-  String itemId;
-  String eventName;
+  int? volumeLevel;
+  bool? isMuted;
+  bool? isPaused;
+  String? repeatMode;
+  String? shuffleMode;
+  int? maxStreamingBitrate;
+  int? positionTicks;
+  double? playbackStartTimeTicks;
+  int? subtitleStreamIndex;
+  int? audioStreamIndex;
+  List<BufferedRange>? bufferedRanges;
+  String? playMethod;
+  String? playSessionId;
+  String? playlistItemId;
+  String? mediaSourceId;
+  bool? canSeek;
+  String? itemId;
+  String? eventName;
 
   factory MediaPlayedInfos.fromJson(Map<String, dynamic> json) =>
       MediaPlayedInfos(
@@ -93,7 +93,7 @@ class MediaPlayedInfos {
         'AudioStreamIndex': audioStreamIndex,
         'BufferedRanges': bufferedRanges == null
             ? null
-            : List<dynamic>.from(bufferedRanges.map((x) => x.toJson())),
+            : List<dynamic>.from(bufferedRanges!.map((x) => x.toJson())),
         'PlayMethod': playMethod,
         'PlaySessionId': playSessionId,
         'PlaylistItemId': playlistItemId,

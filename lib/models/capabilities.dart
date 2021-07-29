@@ -1,11 +1,11 @@
 class Capabilities {
   Capabilities({
-    this.playableMediaTypes,
-    this.supportedCommands,
-    this.supportsMediaControl,
-    this.supportsContentUploading,
-    this.supportsPersistentIdentifier,
-    this.supportsSync,
+    required this.playableMediaTypes,
+    required this.supportedCommands,
+    required this.supportsMediaControl,
+    required this.supportsContentUploading,
+    required this.supportsPersistentIdentifier,
+    required this.supportsSync,
   });
 
   List<dynamic> playableMediaTypes;
