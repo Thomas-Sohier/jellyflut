@@ -152,15 +152,11 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       future: _getItemsCustom(itemId: item.id),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return buildCard(snapshot.data[1]);
+          return card(snapshot.data[1]);
         }
         return _placeHolderBody(item, mediaQuery.size);
       },
     );
-  }
-
-  Widget buildCard(Item detailedItem) {
-    return card(detailedItem);
   }
 
   Widget card(Item detailedItem) {

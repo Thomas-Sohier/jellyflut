@@ -20,8 +20,8 @@ Future<User> getUserById({required String userID}) async {
   try {
     response = await dio.get(url);
     currentUser = User.fromMap(response.data);
-  } catch (e) {
-    log(e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
   return currentUser;
@@ -35,8 +35,8 @@ Future<User> getCurrentUser() async {
   try {
     response = await dio.get(url);
     currentUser = User.fromMap(response.data);
-  } catch (e) {
-    log(e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
   return currentUser;
@@ -64,8 +64,8 @@ Future<List<Item>> getLatestMedia({
     response = await dio.get(url, queryParameters: queryParams);
     final List t = response.data;
     items = t.map((item) => Item.fromMap(item)).toList();
-  } catch (e) {
-    log(e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
   return items;
@@ -84,8 +84,8 @@ Future<Category> getCategory({String? parentId, int limit = 10}) async {
   } on DioError catch (dioError, _) {
     log(dioError.message);
     rethrow;
-  } catch (e) {
-    log(e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -143,9 +143,9 @@ Future<Map<String, dynamic>> viewItem(String itemId) async {
   try {
     var response = await dio.post(url);
     return response.data;
-  } catch (e) {
-    print(e);
-    throw ('Cannot get item, ' + e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
 }
 
@@ -155,9 +155,9 @@ Future<Map<String, dynamic>> unviewItem(String itemId) async {
   try {
     var response = await dio.delete(url);
     return response.data;
-  } catch (e) {
-    print(e);
-    throw ('Cannot get item, ' + e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
 }
 
@@ -167,9 +167,9 @@ Future<Map<String, dynamic>> favItem(String itemId) async {
   try {
     var response = await dio.post(url);
     return response.data;
-  } catch (e) {
-    print(e);
-    throw ('Cannot get item, ' + e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
 }
 
@@ -179,9 +179,9 @@ Future<Map<String, dynamic>> unfavItem(String itemId) async {
   try {
     var response = await dio.delete(url);
     return response.data;
-  } catch (e) {
-    print(e);
-    throw ('Cannot get item, ' + e.toString());
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
 }
 

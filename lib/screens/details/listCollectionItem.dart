@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
@@ -15,7 +16,12 @@ class ListCollectionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-        future: future,
+        future: future ??
+            getItems(
+                parentId: item.id,
+                limit: 100,
+                fields: 'ImageTags',
+                filter: 'IsFolder'),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.items.isNotEmpty) {
             return Column(

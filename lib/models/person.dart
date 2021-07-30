@@ -1,3 +1,4 @@
+import 'package:epub_view/epub_view.dart';
 import 'package:jellyflut/shared/enums.dart';
 
 import 'imageBlurHashes.dart';
@@ -16,14 +17,14 @@ class Person {
   String id;
   String role;
   PersonType type;
-  String primaryImageTag;
+  String? primaryImageTag;
   ImageBlurHashes imageBlurHashes;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
         name: json['Name'],
         id: json['Id'],
         role: json['Role'],
-        type: json['Type'],
+        type: EnumFromString<PersonType>(PersonType.values).get(json['Type'])!,
         primaryImageTag: json['PrimaryImageTag'],
         imageBlurHashes: ImageBlurHashes.fromMap(json['ImageBlurHashes']),
       );
@@ -32,7 +33,7 @@ class Person {
         'Name': name,
         'Id': id,
         'Role': role,
-        'Type': personTypeValues.reverse[type],
+        'Type': type,
         'PrimaryImageTag': primaryImageTag,
         'ImageBlurHashes': imageBlurHashes.toMap(),
       };

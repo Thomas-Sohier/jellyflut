@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:jellyflut/models/category.dart';
 import '../globals.dart';
 import 'dio.dart';
@@ -14,8 +16,8 @@ Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   try {
     var response = await dio.get(url, queryParameters: queryParams);
     return Category.fromMap(response.data);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }

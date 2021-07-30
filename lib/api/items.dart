@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/MediaPlayedInfos.dart';
@@ -12,7 +13,7 @@ import 'package:uuid/uuid.dart';
 import '../globals.dart';
 import 'dio.dart';
 
-String getItemImageUrl(String itemId, String imageTag,
+String getItemImageUrl(String itemId, String? imageTag,
     {ImageBlurHashes? imageBlurHashes,
     int maxHeight = 1920,
     int maxWidth = 1080,
@@ -75,13 +76,13 @@ String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
 Future<int> deleteItem(String itemId) async {
   var url = '${server.url}/Items/$itemId';
 
-  var response;
   try {
-    response = await dio.delete(url);
-  } catch (e) {
-    print(e);
+    var response = await dio.delete(url);
+    return response.statusCode!;
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
-  return response.statusCode;
 }
 
 Future<Item> getItem(String itemId,
@@ -122,8 +123,8 @@ Future<Item> getItem(String itemId,
   try {
     var response = await dio.get(url, queryParameters: queryParams);
     return Item.fromMap(response.data);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -166,8 +167,8 @@ Future<Category> getResumeItems(
   try {
     var response = await dio.get(url, queryParameters: queryParams);
     return parseCategory(response.data);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -223,8 +224,8 @@ Future<Category> getItems(
     var response =
         await dio.get<Map<String, dynamic>>(url, queryParameters: queryParams);
     return foundation.compute(parseCategory, response.data!);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -293,8 +294,8 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
       data: json,
     );
     return PlayBackInfos.fromMap(response.data);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -337,8 +338,8 @@ Future<Category> searchItems(
       queryParameters: queryParams,
     );
     return Category.fromMap(response.data);
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }

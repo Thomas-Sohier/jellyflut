@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:jellyflut/models/device.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
@@ -32,8 +33,8 @@ Future<int> deleteActiveEncoding() async {
       throw ('Stream encoding cannot be deleted, ${response.data}');
     }
     return response.statusCode!;
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
 }
@@ -160,7 +161,8 @@ Future<dynamic> bitrateTest({required int size}) async {
   try {
     return await dio.get(url, queryParameters: queryParams)
       ..data;
-  } catch (e) {
-    print(e);
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
 }

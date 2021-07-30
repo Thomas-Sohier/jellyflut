@@ -24,12 +24,12 @@ Future<AuthenticationResponse> login(String username, String password) async {
         // I don't know why...
         options: Options(headers: {'X-Emby-Authorization': authEmby}));
     authenticationResponse = AuthenticationResponse.fromMap(response.data);
-  } on DioError catch (dioError, _) {
-    log(dioError.message);
-    return Future.error(dioError.error);
-  } catch (e) {
-    log(e.toString());
-    return Future.error(e);
+  } on DioError catch (dioError, stacktrace) {
+    log(dioError.message, stackTrace: stacktrace, level: 5);
+    rethrow;
+  } catch (e, stacktrace) {
+    log(e.toString(), stackTrace: stacktrace, level: 5);
+    rethrow;
   }
   return authenticationResponse;
 }
