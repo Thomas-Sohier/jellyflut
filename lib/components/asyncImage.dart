@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
@@ -10,7 +12,7 @@ class AsyncImage extends StatelessWidget {
 
   final String? imageTag;
   final String itemId;
-  final ImageBlurHashes blurHash;
+  final ImageBlurHashes? blurHash;
   final String tag;
   final BoxFit boxFit;
   final Widget? placeholder;
@@ -71,9 +73,11 @@ class AsyncImage extends StatelessWidget {
     );
   }
 
-  String? _fallBackBlurHash(ImageBlurHashes imageBlurHashes, String tag) {
+  String? _fallBackBlurHash(ImageBlurHashes? imageBlurHashes, String tag) {
     // TODO add enum
-    if (tag == 'Primary') {
+    if (imageBlurHashes == null) {
+      return null;
+    } else if (tag == 'Primary') {
       return _fallBackBlurHashPrimary(imageBlurHashes);
     } else if (tag == 'Logo') {
       return _fallBackBlurHashLogo(imageBlurHashes);
@@ -90,16 +94,13 @@ class AsyncImage extends StatelessWidget {
   }
 
   String? _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-    if (imageBlurHashes.primary != null &&
-        imageBlurHashes.primary!.isNotEmpty) {
+    if (imageBlurHashes.primary != null) {
       return imageBlurHashes.primary!.values.first;
-    } else if (imageBlurHashes.backdrop != null &&
-        imageBlurHashes.backdrop!.isNotEmpty) {
+    } else if (imageBlurHashes.backdrop != null) {
       return imageBlurHashes.backdrop!.values.first;
-    } else if (imageBlurHashes.art != null && imageBlurHashes.art!.isNotEmpty) {
+    } else if (imageBlurHashes.art != null) {
       return imageBlurHashes.art!.values.first;
-    } else if (imageBlurHashes.thumb != null &&
-        imageBlurHashes.thumb!.isNotEmpty) {
+    } else if (imageBlurHashes.thumb != null) {
       return imageBlurHashes.thumb!.values.first;
     }
     return null;

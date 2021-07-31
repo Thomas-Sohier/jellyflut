@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/auth.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,14 +45,14 @@ Widget gradientMask({required Widget child, double radius = 0.5}) {
   );
 }
 
-double aspectRatio({String? type}) {
-  if (type == 'MusicAlbum') {
+double aspectRatio({ItemType? type}) {
+  if (type == ItemType.MUSICALBUM) {
     return 1 / 1;
   }
-  if (type == 'Backdrop') {
-    return 16 / 9;
-  }
-  if (type == 'Photo') {
+  // if (type == ItemType.BACKDROP) {
+  //   return 16 / 9;
+  // }
+  if (type == ItemType.PHOTO) {
     return 1 / 1;
   }
   return 2 / 3;

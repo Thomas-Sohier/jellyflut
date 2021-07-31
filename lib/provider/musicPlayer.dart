@@ -131,7 +131,7 @@ class MusicPlayer extends ChangeNotifier {
         artist: item.artists!.map((e) => e.name).join(', ').toString(),
         album: item.album,
         image: MetasImage.network(getItemImageUrl(
-            item.correctImageId(), item.correctImageTags()!,
+            item.correctImageId(), item.correctImageTags(),
             imageBlurHashes: item.imageBlurHashes)),
       ),
     );

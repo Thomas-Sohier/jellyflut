@@ -77,7 +77,7 @@ class _PaletteButtonState extends State<PaletteButton> {
   Widget generatedPalette(BorderRadius borderRadius) {
     return FutureBuilder<PaletteGenerator>(
       future: gePalette(getItemImageUrl(
-          widget.item!.correctImageId(), widget.item!.correctImageTags()!,
+          widget.item!.correctImageId(), widget.item!.correctImageTags(),
           imageBlurHashes: widget.item!.imageBlurHashes)),
       builder: (context, snapshot) {
         Widget child;

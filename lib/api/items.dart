@@ -223,6 +223,7 @@ Future<Category> getItems(
   try {
     var response =
         await dio.get<Map<String, dynamic>>(url, queryParameters: queryParams);
+    if (response.data == null) throw ('Missing data');
     return foundation.compute(parseCategory, response.data!);
   } catch (e, stacktrace) {
     log(e.toString(), stackTrace: stacktrace, level: 5);

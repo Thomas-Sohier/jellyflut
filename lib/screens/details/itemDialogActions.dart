@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/toast.dart';
@@ -22,14 +23,14 @@ class ItemDialogActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        item.type == 'Audio'
+        item.type == ItemType.AUDIO
             ? _dialogListField(
                 'Add to playlist', () => _addItemToPlaylist(item, context),
                 fontSize: _fontSize, icon: Icons.playlist_add)
             : Container(),
         _dialogListField('Edit Infos', switchWidget,
             fontSize: _fontSize, icon: Icons.info_outline),
-        item.type == 'Audio'
+        item.type == ItemType.AUDIO
             ? _dialogListField('See artist', () async {
                 var artist = await getArtist(item);
                 await Navigator.pushReplacement(
@@ -39,7 +40,7 @@ class ItemDialogActions extends StatelessWidget {
                             Details(item: artist, heroTag: '')));
               }, fontSize: _fontSize, icon: Icons.person_outline)
             : Container(),
-        item.type == 'Audio'
+        item.type == ItemType.AUDIO
             ? _dialogListField('See album', () async {
                 var album = await getAlbum(item);
                 await Navigator.pushReplacement(

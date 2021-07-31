@@ -6,6 +6,7 @@ import 'package:jellyflut/components/card/cardItemWithChild.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:photo_view/photo_view.dart';
@@ -26,14 +27,14 @@ class Details extends StatefulWidget {
 }
 
 final playableItems = [
-  'musicalbum',
-  'music',
-  'movie',
-  'series',
-  'season',
-  'episode',
-  'book',
-  'video'
+  ItemType.MUSICALBUM,
+  ItemType.MUSICVIDEO,
+  ItemType.MOVIE,
+  ItemType.SERIES,
+  ItemType.SEASON,
+  ItemType.EPISODE,
+  ItemType.BOOK,
+  ItemType.VIDEO
 ];
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
@@ -66,7 +67,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         child: Scaffold(
             extendBody: true,
             backgroundColor: Colors.transparent,
-            body: item.type != 'Photo' ? body() : photoItem()));
+            body: item.type != ItemType.PHOTO ? body() : photoItem()));
   }
 
   Widget body() {
@@ -140,7 +141,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         height: 100,
         child: AsyncImage(
           item.correctImageId(searchType: 'logo'),
-          item.correctImageTags(searchType: 'logo')!,
+          item.correctImageTags(searchType: 'logo'),
           item.imageBlurHashes!,
           boxFit: BoxFit.contain,
           tag: 'Logo',
@@ -164,7 +165,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       Container(
           padding: EdgeInsets.only(top: 25),
           child: CardItemWithChild(detailedItem)),
-      playableItems.contains(detailedItem.type.trim().toLowerCase())
+      playableItems.contains(detailedItem.type)
           ? Positioned.fill(
               child: Align(
               alignment: Alignment.topCenter,

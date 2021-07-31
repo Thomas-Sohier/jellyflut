@@ -6,6 +6,7 @@ import 'package:jellyflut/components/infosButton.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/components/unorderedList.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -141,7 +142,7 @@ class _CardInfosState extends State<CardInfos> {
 }
 
 Widget tabs(Item item, BuildContext context) {
-  var isPerson = item.type.trim().toLowerCase() == 'person';
+  var isPerson = item.type == ItemType.PERSON;
   return DefaultTabController(
       // The number of tabs / content sections to display.
       length: isPerson ? 2 : 3,

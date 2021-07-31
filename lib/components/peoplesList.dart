@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/imageTags.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/models/person.dart';
 import 'package:jellyflut/screens/details/details.dart';
 
@@ -35,7 +36,7 @@ Widget listPeoples(List<Person> peoples) {
           id: people.id,
           imageBlurHashes: people.imageBlurHashes,
           imageTags: ImageTags(primary: people.primaryImageTag),
-          type: 'Person');
+          type: ItemType.PERSON);
       return Container(
         width: 100,
         padding: EdgeInsets.only(left: 5, right: 5),

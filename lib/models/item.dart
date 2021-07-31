@@ -7,6 +7,7 @@
 import 'dart:convert';
 
 // import 'package:fereader/fereader.dart';
+import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
@@ -15,6 +16,7 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
+import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
@@ -146,7 +148,7 @@ class Item {
   String? parentId;
   String? seriesId;
   String? seasonId;
-  String type;
+  ItemType type;
   List<Artist>? artists;
   List<ArtistItems>? artistItems;
   String? album;
@@ -238,7 +240,7 @@ class Item {
         parentId: json['ParentId'],
         seriesId: json['SeriesId'],
         seasonId: json['SeasonId'],
-        type: json['Type'],
+        type: EnumFromString<ItemType>(ItemType.values).get(json['Type'])!,
         artists: json['Artists'] == null
             ? null
             : List<Artist>.from(json['Artists'].map((x) => Artist.fromMap(x))),
@@ -542,7 +544,7 @@ class Item {
   /// Return id if type do not have parent
   /// Return parent id if there is no primary image set
   String getIdBasedOnImage() {
-    if (type == 'Season') {
+    if (type == ItemType.SEASON) {
       if (imageTags!.primary != null) return id;
       return seriesId!;
     }
@@ -610,23 +612,27 @@ class Item {
   /// Return id as [String] if found
   /// Else return item's id as [String]
   String correctImageId({String searchType = 'Primary'}) {
-    if (searchType.toLowerCase().trim() == 'logo' &&
-        (type == 'Season' || type == 'Episode' || type == 'Album')) {
-      if (type == 'Season' || type == 'Episode') {
-        return seriesId!;
-      } else if (type == 'Album') {
-        return albumId!;
+    // If of type logo we return only parent logo
+    if (searchType.toLowerCase().trim() == 'logo') {
+      switch (type) {
+        case ItemType.SEASON:
+        case ItemType.EPISODE:
+          return seriesId ?? id;
+        case ItemType.MUSICALBUM:
+          return albumId ?? id;
+        default:
+          return id;
       }
     } else if (imageTags!.toMap().values.every((element) => element == null)) {
-      if (type == 'Season') {
-        return seriesId!;
-      } else if (type == 'Album' || type == 'Audio') {
-        return albumId!;
-      } else {
-        return id;
+      switch (type) {
+        case ItemType.SEASON:
+          return seriesId ?? id;
+        case ItemType.MUSICALBUM:
+        case ItemType.AUDIO:
+          return albumId ?? id;
+        default:
+          return id;
       }
-    } else {
-      return id;
     }
     return id;
   }
@@ -638,23 +644,27 @@ class Item {
   /// Return imageTag as [String] if found
   /// Else return [null]
   String? correctImageTags({String searchType = 'Primary'}) {
-    if (searchType.toLowerCase().trim() == 'logo' &&
-        (type == 'Season' || type == 'Episode' || type == 'Album')) {
-      if (type == 'Season' || type == 'Episode') {
-        return seriesPrimaryImageTag!;
-      } else if (type == 'Album') {
-        return albumPrimaryImageTag!;
+    // If of type logo we return only parent logo
+    if (searchType.toLowerCase().trim() == 'logo') {
+      switch (type) {
+        case ItemType.SEASON:
+        case ItemType.EPISODE:
+          return seriesPrimaryImageTag;
+        case ItemType.MUSICALBUM:
+          return albumPrimaryImageTag;
+        default:
+          return null;
       }
     } else if (imageTags!.toMap().values.every((element) => element == null)) {
-      if (type == 'Season') {
-        return seriesPrimaryImageTag!;
-      } else if (type == 'Album') {
-        return albumPrimaryImageTag!;
-      } else {
-        return null;
+      switch (type) {
+        case ItemType.SEASON:
+          return seriesPrimaryImageTag;
+        case ItemType.MUSICALBUM:
+        case ItemType.AUDIO:
+          return albumPrimaryImageTag;
+        default:
+          return null;
       }
-    } else {
-      return imageTags!.primary;
     }
     return null;
   }
@@ -665,17 +675,17 @@ class Item {
   /// If Video open video player
   void playItem() async {
     var musicPlayer = MusicPlayer();
-    if (type == 'Episode' ||
-        type == 'Season' ||
-        type == 'Series' ||
-        type == 'Movie' ||
-        type == 'Video') {
+    if (type == ItemType.EPISODE ||
+        type == ItemType.SEASON ||
+        type == ItemType.SERIES ||
+        type == ItemType.MOVIE ||
+        type == ItemType.VIDEO) {
       automaticStreamingSoftwareChooser(item: this);
-    } else if (type == 'Audio') {
+    } else if (type == ItemType.AUDIO) {
       musicPlayer.playRemoteItem(this);
-    } else if (type == 'MusicAlbum') {
+    } else if (type == ItemType.MUSICALBUM) {
       musicPlayer.playPlaylist(id);
-    } else if (type == 'Book') {
+    } else if (type == ItemType.BOOK) {
       await Navigator.pushReplacement(navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));
     }
@@ -686,11 +696,13 @@ class Item {
     await bitrateTest(size: 1000000);
     await bitrateTest(size: 3000000);
 
-    if (type == 'Episode' || type == 'Movie' || type == 'Video') {
+    if (type == ItemType.EPISODE ||
+        type == ItemType.MOVIE ||
+        type == ItemType.VIDEO) {
       return _getStreamURL(this, directPlay);
-    } else if (type == 'Season' || type == 'Series') {
+    } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
       return _getFirstUnplayedItemURL(directPlay);
-    } else if (type == 'Audio') {
+    } else if (type == ItemType.AUDIO) {
       return _getStreamURL(this, directPlay);
     } else {
       throw ('Cannot find the type of file');
