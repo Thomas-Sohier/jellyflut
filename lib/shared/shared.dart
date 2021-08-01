@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/models/itemType.dart';
@@ -17,16 +14,6 @@ Future<bool> isAuth() async {
   if (isLogged) {
     await saveToGlobals();
     return true;
-  }
-  return false;
-}
-
-Future<bool> detectAndroidTv() async {
-  if (Platform.isAndroid) {
-    var androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
-    var _isAndroidTv =
-        androidDeviceInfo.systemFeatures.contains('android.software.leanback');
-    return _isAndroidTv;
   }
   return false;
 }

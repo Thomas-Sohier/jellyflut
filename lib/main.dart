@@ -8,8 +8,6 @@ import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-import 'globals.dart';
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Jellyflut());
@@ -22,7 +20,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<Widget> initMain() async {
-    isAndroidTv = await detectAndroidTv();
     var futures = <Future>[];
     futures.add(isAuth());
     futures.add(Future.delayed(Duration(seconds: 2)));
@@ -86,6 +83,7 @@ class Jellyflut extends StatelessWidget {
               navigatorKey: navigatorKey,
               theme: ThemeData(
                 primarySwatch: jellyPurple,
+                brightness: Brightness.light,
                 visualDensity: VisualDensity.comfortable,
               ),
               home: MyApp(),

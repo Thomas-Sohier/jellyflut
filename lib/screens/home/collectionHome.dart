@@ -20,17 +20,22 @@ class CollectionHome extends StatefulWidget {
   }
 }
 
-class _CollectionHomeState extends State<CollectionHome> {
+class _CollectionHomeState extends State<CollectionHome>
+    with AutomaticKeepAliveClientMixin {
   double height = 220;
   final double gapSize = 20;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Material(
       color: Colors.transparent,
       child: buildAllCategory(),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void slideToPageDetail() {
     Navigator.push(

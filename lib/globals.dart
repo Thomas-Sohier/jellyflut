@@ -10,5 +10,4 @@ User? userApp;
 Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');
 String? apiKey;
 DeviceProfile? savedDeviceProfile;
-bool isAndroidTv = false;
 bool shimmerAnimation = false;

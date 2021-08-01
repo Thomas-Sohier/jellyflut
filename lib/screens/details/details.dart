@@ -27,6 +27,7 @@ class Details extends StatefulWidget {
 }
 
 final playableItems = [
+  ItemType.AUDIO,
   ItemType.MUSICALBUM,
   ItemType.MUSICVIDEO,
   ItemType.MOVIE,
@@ -165,24 +166,23 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       Container(
           padding: EdgeInsets.only(top: 25),
           child: CardItemWithChild(detailedItem)),
-      playableItems.contains(detailedItem.type)
-          ? Positioned.fill(
-              child: Align(
+      Positioned.fill(
+          child: Align(
               alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
-                child: PaletteButton(
-                  'Play',
-                  () {
-                    detailedItem.playItem();
-                  },
-                  item: detailedItem,
-                  icon: Icons.play_circle_outline,
-                ),
-              ),
-            ))
-          : Container()
+              child: playableItems.contains(detailedItem.type)
+                  ? ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
+                      child: PaletteButton(
+                        'Play',
+                        () {
+                          detailedItem.playItem();
+                        },
+                        item: detailedItem,
+                        icon: Icons.play_circle_outline,
+                      ),
+                    )
+                  : Container()))
     ]);
   }
 

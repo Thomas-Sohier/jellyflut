@@ -4,7 +4,6 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -40,7 +39,6 @@ class _ItemPosterState extends State<ItemPoster>
   // Dpad navigation
   late FocusNode _node;
   late AnimationController _controller;
-  late Animation<double> _animation;
   late Color _focusColor;
   late String posterHeroTag;
 
@@ -55,7 +53,6 @@ class _ItemPosterState extends State<ItemPoster>
         vsync: this,
         lowerBound: 0.9,
         upperBound: 1);
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
     super.initState();
   }
 
@@ -99,18 +96,10 @@ class _ItemPosterState extends State<ItemPoster>
         highlightColor: Colors.transparent,
         focusElevation: 0,
         autofocus: false,
-        child: isAndroidTv
-            ? ScaleTransition(
-                scale: _animation,
-                alignment: Alignment.center,
-                child: AspectRatio(
-                    aspectRatio: widget.widgetAspectRatio ??
-                        widget.item.getPrimaryAspectRatio(),
-                    child: body(posterHeroTag, context)))
-            : AspectRatio(
-                aspectRatio: widget.widgetAspectRatio ??
-                    widget.item.getPrimaryAspectRatio(),
-                child: body(posterHeroTag, context)));
+        child: AspectRatio(
+            aspectRatio:
+                widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
+            child: body(posterHeroTag, context)));
   }
 
   Widget body(String heroTag, BuildContext context) {
