@@ -1,3 +1,4 @@
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
+  DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Jellyflut());
 }

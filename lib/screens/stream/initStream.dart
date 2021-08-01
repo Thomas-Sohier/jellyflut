@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -7,6 +11,7 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/screens/stream/streamBP.dart';
 import 'package:jellyflut/screens/stream/streamVLC.dart';
+import 'package:jellyflut/screens/stream/streamVLCcomputer.dart';
 
 import '../../main.dart';
 
@@ -20,22 +25,41 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
       'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
   switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
-      var url = await item.getItemURL(directPlay: true);
-      var _controller = initVlcController(url, item);
-      await Navigator.push(
-          navigatorKey.currentContext!,
-          MaterialPageRoute(
-              builder: (context) =>
-                  StreamVLC(controller: _controller, showControls: true)));
+      initVLCMediaPlayer(item);
       break;
     case StreamingSoftwareName.exoplayer:
-      var url = await item.getItemURL();
-      await Navigator.push(
-          navigatorKey.currentContext!,
-          MaterialPageRoute(
-              builder: (context) => Stream(item: item, streamUrl: url)));
+      initExoPlayerMediaPlayer(item);
       break;
   }
+}
+
+void initVLCMediaPlayer(Item item) async {
+  var url = await item.getItemURL(directPlay: true);
+  if (Platform.isLinux || Platform.isWindows) {
+    var playerId = Random().nextInt(10000);
+    var player = Player(id: playerId);
+    var media = Media.network(url);
+    await Navigator.push(
+        navigatorKey.currentContext!,
+        MaterialPageRoute(
+            builder: (context) => StreamVLCComputer(
+                playerId: playerId, media: media, player: player)));
+  } else {
+    var _controller = initVlcController(url, item);
+    await Navigator.push(
+        navigatorKey.currentContext!,
+        MaterialPageRoute(
+            builder: (context) =>
+                StreamVLC(controller: _controller, showControls: true)));
+  }
+}
+
+void initExoPlayerMediaPlayer(Item item) async {
+  var url = await item.getItemURL();
+  await Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(
+          builder: (context) => Stream(item: item, streamUrl: url)));
 }
 
 VlcPlayerController initVlcController(String url, Item item) {
