@@ -36,26 +36,26 @@ class DeviceProfile {
         musicStreamingTranscodingBitrate:
             json['MusicStreamingTranscodingBitrate'],
         directPlayProfiles: json['DirectPlayProfiles'] == null
-            ? null
+            ? []
             : List<DirectPlayProfile>.from(json['DirectPlayProfiles']
                 .map((x) => DirectPlayProfile.fromMap(x))),
         transcodingProfiles: json['TranscodingProfiles'] == null
-            ? null
+            ? []
             : List<TranscodingProfile>.from(json['TranscodingProfiles']
                 .map((x) => TranscodingProfile.fromMap(x))),
         containerProfiles: json['ContainerProfiles'] == null
-            ? null
+            ? []
             : List<dynamic>.from(json['ContainerProfiles'].map((x) => x)),
         codecProfiles: json['CodecProfiles'] == null
-            ? null
+            ? []
             : List<CodecProfile>.from(
                 json['CodecProfiles'].map((x) => CodecProfile.fromMap(x))),
         subtitleProfiles: json['SubtitleProfiles'] == null
-            ? null
+            ? []
             : List<SubtitleProfile>.from(json['SubtitleProfiles']
                 .map((x) => SubtitleProfile.fromMap(x))),
         responseProfiles: json['ResponseProfiles'] == null
-            ? null
+            ? []
             : List<ResponseProfile>.from(json['ResponseProfiles']
                 .map((x) => ResponseProfile.fromMap(x))),
       );
@@ -67,21 +67,21 @@ class DeviceProfile {
         'MusicStreamingTranscodingBitrate': musicStreamingTranscodingBitrate,
         'DirectPlayProfiles': directPlayProfiles != null
             ? List<dynamic>.from(directPlayProfiles!.map((x) => x.toMap()))
-            : null,
-        'TranscodingProfiles': directPlayProfiles != null
+            : [],
+        'TranscodingProfiles': transcodingProfiles != null
             ? List<dynamic>.from(transcodingProfiles!.map((x) => x.toMap()))
-            : null,
-        'ContainerProfiles': directPlayProfiles != null
+            : [],
+        'ContainerProfiles': containerProfiles != null
             ? List<dynamic>.from(containerProfiles!.map((x) => x))
-            : null,
-        'CodecProfiles': directPlayProfiles != null
+            : [],
+        'CodecProfiles': codecProfiles != null
             ? List<dynamic>.from(codecProfiles!.map((x) => x.toMap()))
-            : null,
-        'SubtitleProfiles': directPlayProfiles != null
+            : [],
+        'SubtitleProfiles': subtitleProfiles != null
             ? List<dynamic>.from(subtitleProfiles!.map((x) => x.toMap()))
-            : null,
+            : [],
         'ResponseProfiles': responseProfiles != null
             ? List<dynamic>.from(responseProfiles!.map((x) => x.toMap()))
-            : null,
+            : [],
       };
 }

@@ -26,7 +26,12 @@ module:
 dependencies:
   flutter:
     sdk: flutter
+  splashscreen:
+    git:
+      url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
+      ref: master
   assets_audio_player: ^3.0.3+6
+  audio_video_progress_bar: ^0.6.2
   better_player: ^0.0.72
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
@@ -49,10 +54,6 @@ dependencies:
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
-  splashscreen:
-    git:
-      url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
-      ref: master
   sqlite3_flutter_libs: ^0.5.0
   uuid: ^3.0.4
   wakelock: ^0.5.2
@@ -60,11 +61,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.0.6
-  flutter_launcher_icons: 
+  flutter_launcher_icons:
     git:
       url: git://github.com/SimonIT/flutter_launcher_icons.git
       ref: scaling
+  build_runner: ^2.0.6
   flutter_native_splash: ^1.2.0
   intl: ^0.17.0
   moor_generator: ^4.4.1

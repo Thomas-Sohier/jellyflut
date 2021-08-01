@@ -46,14 +46,10 @@ Widget gradientMask({required Widget child, double radius = 0.5}) {
 }
 
 double aspectRatio({ItemType? type}) {
-  if (type == ItemType.MUSICALBUM) {
+  if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
     return 1 / 1;
-  }
-  // if (type == ItemType.BACKDROP) {
-  //   return 16 / 9;
-  // }
-  if (type == ItemType.PHOTO) {
-    return 1 / 1;
+  } else if (type == ItemType.PHOTO) {
+    return 4 / 3;
   }
   return 2 / 3;
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,7 +22,7 @@ class ControlsBP extends StatefulWidget {
 }
 
 class _ControlsBPState extends State<ControlsBP> {
-  bool _visible = false;
+  bool _visible = true;
   late Timer _timer;
   int _playBackTime = 0;
   late int subtitleSelectedIndex;
@@ -50,6 +51,11 @@ class _ControlsBPState extends State<ControlsBP> {
     });
     fToast = FToast();
     fToast.init(navigatorKey.currentState!.context);
+    _timer = Timer(
+        Duration(seconds: 5),
+        () => setState(() {
+              _visible = false;
+            }));
     super.initState();
   }
 
@@ -224,38 +230,24 @@ class _ControlsBPState extends State<ControlsBP> {
               color: Colors.white,
             ),
           )),
-      Container(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Text(
-            printDuration(Duration(seconds: _playBackTime)),
-            style: TextStyle(color: Colors.white),
-          )),
       Expanded(
           flex: 1,
-          child: Slider(
-            activeColor: Colors.white,
-            inactiveColor: Colors.white30,
-            min: 0,
-            max: _controller?.value.duration?.inSeconds.toDouble() != 0
-                ? _controller!.value.duration!.inSeconds.toDouble()
-                : _playBackTime.toDouble() + 1,
-            value: _playBackTime.toDouble(),
-            onChanged: (value) {
-              setState(() {
-                _playBackTime = value.toInt();
-              });
-            },
-            onChangeEnd: (value) {
-              _controller!.seekTo(Duration(seconds: _playBackTime));
+          child: ProgressBar(
+            progress: Duration(seconds: _playBackTime),
+            buffered: getBufferingDuration(),
+            total: getTotalDuration(),
+            progressBarColor: jellyLightPurple,
+            baseBarColor: Colors.white.withOpacity(0.24),
+            bufferedBarColor: Colors.white.withOpacity(0.24),
+            thumbColor: Colors.white,
+            timeLabelTextStyle: TextStyle(color: Colors.white),
+            barHeight: 3.0,
+            thumbRadius: 5.0,
+            onSeek: (duration) {
+              _controller!.seekTo(duration);
             },
           )),
-      Container(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Text(
-            printDuration(
-                Duration(seconds: _controller!.value.duration!.inSeconds)),
-            style: TextStyle(color: Colors.white),
-          )),
+
       // InkWell(
       //     onTap: () {
       //       setState(() {
@@ -277,6 +269,7 @@ class _ControlsBPState extends State<ControlsBP> {
 
   Future<void> autoHideControl() async {
     if (streamModel.betterPlayerController != null) {
+      _timer.cancel();
       setState(() {
         _visible = !_visible;
       });
@@ -285,6 +278,35 @@ class _ControlsBPState extends State<ControlsBP> {
           () => setState(() {
                 _visible = false;
               }));
+    }
+  }
+
+  /// get buffering duration
+  /// return Duration of zero seconds if error
+  Duration getBufferingDuration() {
+    try {
+      final duration = streamModel
+          .betterPlayerController!.videoPlayerController?.value.buffered
+          .map((element) =>
+              element.end.inMilliseconds - element.start.inMilliseconds)
+          .reduce((value, element) => value + element);
+      if (duration == null) return Duration(seconds: 0);
+      return Duration(milliseconds: duration);
+    } catch (e) {
+      return Duration(seconds: 0);
+    }
+  }
+
+  /// return max duration of current item
+  /// return current playback time plus one second if max unknown
+  Duration getTotalDuration() {
+    try {
+      final duration = streamModel
+          .betterPlayerController!.videoPlayerController?.value.duration;
+      if (duration == null) return Duration(seconds: _playBackTime + 1);
+      return duration;
+    } catch (e) {
+      return Duration(seconds: _playBackTime + 1);
     }
   }
 

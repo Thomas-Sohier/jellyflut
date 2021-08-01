@@ -57,8 +57,8 @@ class Codec {
   List<String> profiles;
   List<int> levels;
   int maxBitrate;
-  int maxChannels;
-  int maxSampleRate;
+  int? maxChannels;
+  int? maxSampleRate;
 
   factory Codec.fromMap(Map<String, dynamic> json) => Codec(
         mimeType: json['mimeType'],

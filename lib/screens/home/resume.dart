@@ -4,6 +4,7 @@ import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Resume extends StatelessWidget {
@@ -58,8 +59,8 @@ class Resume extends StatelessWidget {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        highlightColor: Colors.grey[700]!,
-        baseColor: Colors.grey[300]!,
+        baseColor: shimmerColor1,
+        highlightColor: shimmerColor2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

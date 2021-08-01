@@ -7,6 +7,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,8 +51,8 @@ class ListVideoItem extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Shimmer.fromColors(
             enabled: shimmerAnimation,
-            baseColor: Colors.grey[100]!,
-            highlightColor: Colors.grey[300]!,
+            baseColor: shimmerColor1,
+            highlightColor: shimmerColor2,
             child: ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.all(0),

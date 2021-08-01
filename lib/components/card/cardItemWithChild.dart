@@ -8,6 +8,7 @@ import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../critics.dart';
@@ -38,8 +39,8 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
             padding: const EdgeInsets.all(12),
             child: Shimmer.fromColors(
                 enabled: shimmerAnimation,
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
+                baseColor: shimmerColor1,
+                highlightColor: shimmerColor2,
                 child: Column(children: [
                   Padding(
                       padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
@@ -90,8 +91,8 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
           child: Column(children: [
             Shimmer.fromColors(
                 enabled: shimmerAnimation,
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
+                baseColor: shimmerColor1,
+                highlightColor: shimmerColor2,
                 child: Row(
                   children: [
                     Expanded(

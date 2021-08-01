@@ -7,6 +7,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CollectionHome extends StatefulWidget {
@@ -19,9 +20,10 @@ class CollectionHome extends StatefulWidget {
   }
 }
 
-const double gapSize = 20;
-
 class _CollectionHomeState extends State<CollectionHome> {
+  double height = 220;
+  final double gapSize = 20;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -59,7 +61,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                     child: HomeCategoryTitle(widget.item,
                         onTap: slideToPageDetail)),
                 SizedBox(
-                  height: 200,
+                  height: height,
                   child: displayItems(snapshot.data!),
                 )
               ]);
@@ -73,8 +75,8 @@ class _CollectionHomeState extends State<CollectionHome> {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        highlightColor: Colors.grey[700]!,
-        baseColor: Colors.grey[300]!,
+        baseColor: shimmerColor1,
+        highlightColor: shimmerColor2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +109,7 @@ class _CollectionHomeState extends State<CollectionHome> {
                     children: [
                       Expanded(
                           child: SizedBox(
-                              height: 200,
+                              height: height,
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: 3,
@@ -120,8 +122,8 @@ class _CollectionHomeState extends State<CollectionHome> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)),
                                           child: Container(
-                                            height: 200,
-                                            width: 200 * (2 / 3),
+                                            height: height,
+                                            width: height * (2 / 3),
                                             color: Colors.white30,
                                           )))))),
                     ],

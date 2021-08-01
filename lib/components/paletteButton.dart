@@ -29,6 +29,15 @@ class PaletteButton extends StatefulWidget {
 }
 
 class _PaletteButtonState extends State<PaletteButton> {
+  // variable for both button
+  // size
+  final double minWidth = 88.0;
+  final double minHeight = 36.0;
+  final double maxWidth = 200;
+  final double maxHeight = 50;
+  // padding of icon if one
+  final EdgeInsets padding = EdgeInsets.fromLTRB(5, 0, 5, 0);
+
   late FocusNode _node;
 
   @override
@@ -58,7 +67,8 @@ class _PaletteButtonState extends State<PaletteButton> {
                 color: Colors.white,
               );
             }
-            return BorderSide(width: 0); // defer to the default
+            return BorderSide(
+                width: 0, color: Colors.transparent); // defer to the default
           },
         )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
           (Set<MaterialState> states) {
@@ -95,11 +105,11 @@ class _PaletteButtonState extends State<PaletteButton> {
                     end: Alignment.bottomRight),
                 borderRadius: borderRadius),
             child: Container(
-                constraints: const BoxConstraints(
-                    minWidth: 88.0,
-                    minHeight: 36.0,
-                    maxWidth: 200,
-                    maxHeight: 50),
+                constraints: BoxConstraints(
+                    minWidth: minWidth,
+                    minHeight: minHeight,
+                    maxWidth: maxWidth,
+                    maxHeight: maxHeight),
                 alignment: Alignment.center,
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,7 +122,7 @@ class _PaletteButtonState extends State<PaletteButton> {
                       ),
                       if (widget.icon != null)
                         Padding(
-                          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          padding: padding,
                           child: Icon(
                             widget.icon,
                             color: foregroundColor,
@@ -130,7 +140,7 @@ class _PaletteButtonState extends State<PaletteButton> {
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(opacity: animation, child: child);
             },
-            switchInCurve: Curves.easeInToLinear,
+            switchInCurve: Curves.easeInOutBack,
             child: child);
       },
     );
@@ -142,8 +152,11 @@ class _PaletteButtonState extends State<PaletteButton> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
-            constraints: const BoxConstraints(
-                minWidth: 88.0, minHeight: 36.0, maxWidth: 200, maxHeight: 50),
+            constraints: BoxConstraints(
+                minWidth: minWidth,
+                minHeight: minHeight,
+                maxWidth: maxWidth,
+                maxHeight: maxHeight),
             decoration: BoxDecoration(
               color: Colors.grey.shade200.withOpacity(0.5),
               borderRadius: borderRadius,
@@ -160,7 +173,7 @@ class _PaletteButtonState extends State<PaletteButton> {
                   ),
                   if (widget.icon != null)
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      padding: padding,
                       child: Icon(
                         widget.icon,
                         color: Colors.black,

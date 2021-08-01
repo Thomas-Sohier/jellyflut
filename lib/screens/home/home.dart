@@ -71,7 +71,8 @@ class _HomeState extends State<Home> {
                                     SocketException(snapshot.error.toString()));
                               }
                               return SliverToBoxAdapter(
-                                child: CircularProgressIndicator(),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
                               );
                             },
                           ),

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
-MaterialColor jellyLightPurple = MaterialColor(0xFFa95dc3, jellyLightPurpleMap);
-MaterialColor jellyLightBLue = MaterialColor(0xFF04a2db, jellyLightBlueMap);
-MaterialColor jellyDarkPurple = MaterialColor(0xFF3E2247, jellyDarkPurpleMap);
-MaterialColor jellyDarkBlue = MaterialColor(0xFF003C50, jellyDarkBlueMap);
-MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
+// App main color
+final MaterialColor jellyLightPurple =
+    MaterialColor(0xFFa95dc3, jellyLightPurpleMap);
+final MaterialColor jellyLightBLue =
+    MaterialColor(0xFF04a2db, jellyLightBlueMap);
+final MaterialColor jellyDarkPurple =
+    MaterialColor(0xFF3E2247, jellyDarkPurpleMap);
+final MaterialColor jellyDarkBlue = MaterialColor(0xFF003C50, jellyDarkBlueMap);
+final MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
+
+// Shimmering color
+final Color shimmerColor1 = Colors.grey[300]!;
+final Color shimmerColor2 = Colors.grey[300]!;
 
 Map<int, Color> jellyPurpleMap = {
   50: Color.fromRGBO(130, 81, 145, .1),
