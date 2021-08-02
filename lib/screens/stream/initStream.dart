@@ -37,7 +37,11 @@ void initVLCMediaPlayer(Item item) async {
   var url = await item.getItemURL(directPlay: true);
   if (Platform.isLinux || Platform.isWindows) {
     var playerId = Random().nextInt(10000);
-    var player = Player(id: playerId);
+    var player = Player(id: playerId, commandlineArguments: [
+      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
+      '--fullscreen',
+      '--embedded-video'
+    ]);
     var media = Media.network(url);
     await Navigator.push(
         navigatorKey.currentContext!,

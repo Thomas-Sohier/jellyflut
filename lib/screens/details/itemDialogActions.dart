@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
@@ -17,6 +18,8 @@ class ItemDialogActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fToast = FToast();
+    fToast.init(navigatorKey.currentState!.context);
     var _fontSize = 18.0;
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -33,11 +36,15 @@ class ItemDialogActions extends StatelessWidget {
         item.type == ItemType.AUDIO
             ? _dialogListField('See artist', () async {
                 var artist = await getArtist(item);
-                await Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            Details(item: artist, heroTag: '')));
+                if (artist == null) {
+                  showToast('Canno get artist', fToast);
+                } else {
+                  await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Details(item: artist, heroTag: '')));
+                }
               }, fontSize: _fontSize, icon: Icons.person_outline)
             : Container(),
         item.type == ItemType.AUDIO
@@ -179,7 +186,7 @@ Future<Item> getAlbum(Item item) async {
   return await getItem(item.albumId!);
 }
 
-Future<Item> getArtist(Item item) async {
-  var val = item.artistItems!.first.artistItems['Id'];
+Future<Item?> getArtist(Item item) async {
+  var val = item.artistItems?.first.artistItems['Id'];
   return await getItem(val);
 }
