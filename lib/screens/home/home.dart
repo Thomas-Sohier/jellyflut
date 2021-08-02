@@ -9,7 +9,7 @@ import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/home/SearchButton.dart';
 import 'package:jellyflut/screens/home/SettingsButton.dart';
-import 'package:jellyflut/screens/home/collectionHome.dart';
+import 'package:jellyflut/screens/home/homeCategories.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight = MediaQuery.of(context).padding.top;
     return ChangeNotifierProvider<SearchProvider>.value(
         value: searchProvider,
         child: MusicPlayerFAB(
@@ -43,42 +42,42 @@ class _HomeState extends State<Home> {
               backgroundColor: Colors.transparent,
               body: Background(
                   child: RefreshIndicator(
-                      onRefresh: () => _refreshItems(),
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                              child: SizedBox(height: statusBarHeight + 10)),
-                          SliverToBoxAdapter(
-                            child: Stack(children: [
-                              SearchResult(),
-                              Consumer<SearchProvider>(
-                                builder: (context, value, child) {
-                                  return Visibility(
-                                      visible: !SearchProvider().showResults,
-                                      child: headerBar());
-                                },
-                              )
-                            ]),
-                          ),
-                          SliverToBoxAdapter(child: Resume()),
-                          FutureBuilder<Category>(
-                            future: getCategory(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return buildCategory(snapshot.data!);
-                              } else if (snapshot.hasError) {
-                                return noConnectivity(
-                                    SocketException(snapshot.error.toString()));
-                              }
-                              return SliverToBoxAdapter(
-                                child:
-                                    Center(child: CircularProgressIndicator()),
-                              );
-                            },
-                          ),
-                        ],
-                      )))),
+                      onRefresh: () => _refreshItems(), child: sliverItems()))),
         ));
+  }
+
+  Widget sliverItems() {
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+        SliverToBoxAdapter(
+          child: Stack(children: [
+            SearchResult(),
+            Consumer<SearchProvider>(
+              builder: (context, value, child) {
+                return Visibility(
+                    visible: !SearchProvider().showResults, child: headerBar());
+              },
+            )
+          ]),
+        ),
+        SliverToBoxAdapter(child: Resume()),
+        FutureBuilder<Category>(
+          future: getCategory(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return buildCategory(snapshot.data!);
+            } else if (snapshot.hasError) {
+              return noConnectivity(SocketException(snapshot.error.toString()));
+            }
+            return SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator()),
+            );
+          },
+        ),
+      ],
+    );
   }
 
   Widget headerBar() {
@@ -150,7 +149,7 @@ class _HomeState extends State<Home> {
     return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
       var _item = category.items[index];
-      return CollectionHome(_item);
+      return HomeCategories(_item);
     }, childCount: category.items.length));
   }
 

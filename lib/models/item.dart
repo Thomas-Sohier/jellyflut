@@ -457,6 +457,21 @@ class Item {
     return false;
   }
 
+  bool hasGenres() {
+    if (genres != null) return genres!.isNotEmpty;
+    return false;
+  }
+
+  bool hasArtists() {
+    if (artists != null) return artists!.isNotEmpty;
+    return false;
+  }
+
+  bool hasOverview() {
+    if (overview != null) return overview!.isNotEmpty;
+    return false;
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

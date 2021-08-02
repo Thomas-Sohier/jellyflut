@@ -54,13 +54,16 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
   } else {
-    queryParam['SubtitleStreamIndex'] =
-        streamModel.subtitleStreamIndex.toString();
+    queryParam['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex != null
+        ? streamModel.subtitleStreamIndex.toString()
+        : '0';
   }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
   } else {
-    queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex.toString();
+    queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex != null
+        ? streamModel.audioStreamIndex.toString()
+        : '0';
   }
   queryParam['api_key'] = apiKey!;
 

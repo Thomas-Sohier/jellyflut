@@ -10,17 +10,17 @@ import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class CollectionHome extends StatefulWidget {
+class HomeCategories extends StatefulWidget {
   final Item item;
-  const CollectionHome(this.item);
+  const HomeCategories(this.item);
 
   @override
   State<StatefulWidget> createState() {
-    return _CollectionHomeState();
+    return _HomeCategoriesState();
   }
 }
 
-class _CollectionHomeState extends State<CollectionHome>
+class _HomeCategoriesState extends State<HomeCategories>
     with AutomaticKeepAliveClientMixin {
   double height = 220;
   final double gapSize = 20;
@@ -49,32 +49,36 @@ class _CollectionHomeState extends State<CollectionHome>
 
   Widget buildAllCategory() {
     return FutureBuilder<List<Item>>(
-      future: getLatestMedia(
-          parentId: widget.item.id,
-          fields: 'DateCreated, DateAdded, ImageTags'),
-      builder: (context, snapshot) {
-        if (snapshot.hasData &&
-            snapshot.connectionState == ConnectionState.done) {
-          // If no element in category then we hide it
-          if (snapshot.data!.isEmpty) return Container();
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                    child: HomeCategoryTitle(widget.item,
-                        onTap: slideToPageDetail)),
-                SizedBox(
-                  height: height,
-                  child: displayItems(snapshot.data!),
-                )
-              ]);
-        } else {
-          return placeholder();
-        }
-      },
-    );
+        future: getLatestMedia(
+            parentId: widget.item.id,
+            fields: 'DateCreated, DateAdded, ImageTags'),
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            // If no element in category then we hide it
+            if (snapshot.data!.isEmpty) {
+              return Container();
+            }
+            return buildCategory(snapshot.data!);
+          } else {
+            return placeholder();
+          }
+        });
+  }
+
+  Widget buildCategory(List<Item> items) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+              child: HomeCategoryTitle(widget.item, onTap: slideToPageDetail)),
+          SizedBox(
+            height: height,
+            child: displayItems(items),
+          )
+        ]);
   }
 
   Widget placeholder() {

@@ -14,6 +14,9 @@ final MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
 final Color shimmerColor1 = Colors.grey[300]!;
 final Color shimmerColor2 = Colors.grey[300]!;
 
+// components colors
+final Color cardBackgroundColor = Colors.white;
+
 Map<int, Color> jellyPurpleMap = {
   50: Color.fromRGBO(130, 81, 145, .1),
   100: Color.fromRGBO(130, 81, 145, .2),

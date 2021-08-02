@@ -92,13 +92,17 @@ class AsyncImage extends StatelessWidget {
   }
 
   String? _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-    if (imageBlurHashes.primary != null) {
+    if (imageBlurHashes.primary != null &&
+        imageBlurHashes.primary!.values.isNotEmpty) {
       return imageBlurHashes.primary!.values.first;
-    } else if (imageBlurHashes.backdrop != null) {
+    } else if (imageBlurHashes.backdrop != null &&
+        imageBlurHashes.backdrop!.values.isNotEmpty) {
       return imageBlurHashes.backdrop!.values.first;
-    } else if (imageBlurHashes.art != null) {
+    } else if (imageBlurHashes.art != null &&
+        imageBlurHashes.art!.values.isNotEmpty) {
       return imageBlurHashes.art!.values.first;
-    } else if (imageBlurHashes.thumb != null) {
+    } else if (imageBlurHashes.thumb != null &&
+        imageBlurHashes.thumb!.values.isNotEmpty) {
       return imageBlurHashes.thumb!.values.first;
     }
     return null;

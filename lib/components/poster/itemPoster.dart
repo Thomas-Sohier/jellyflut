@@ -35,12 +35,15 @@ class ItemPoster extends StatefulWidget {
 }
 
 class _ItemPosterState extends State<ItemPoster>
-    with SingleTickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   // Dpad navigation
   late FocusNode _node;
   late AnimationController _controller;
   late Color _focusColor;
   late String posterHeroTag;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

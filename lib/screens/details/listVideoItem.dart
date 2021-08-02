@@ -20,95 +20,94 @@ class ListVideoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-        future: _getEpisodeCustom(seriesId: item.seriesId!, itemId: item.id),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return body(snapshot.data[1]);
-          }
-          return placeholderBody();
-        });
+    return Card(
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: FutureBuilder<dynamic>(
+            future:
+                _getEpisodeCustom(seriesId: item.seriesId!, itemId: item.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return body(snapshot.data[1]);
+              }
+              return placeholderBody();
+            }));
   }
 
   Widget body(Category category) {
-    return Card(
-        margin: EdgeInsets.zero,
-        child: ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(0),
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: category.items.length,
-          itemBuilder: (context, index) {
-            var item = category.items[index];
-            var heroTag = item.id + Uuid().v4();
-            return videoItem(index, context, item, heroTag);
-          },
-        ));
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: EdgeInsets.all(0),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: category.items.length,
+      itemBuilder: (context, index) {
+        var item = category.items[index];
+        var heroTag = item.id + Uuid().v4();
+        return videoItem(index, context, item, heroTag);
+      },
+    );
   }
 
   Widget placeholderBody() {
-    return Card(
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Shimmer.fromColors(
-            enabled: shimmerAnimation,
-            baseColor: shimmerColor1,
-            highlightColor: shimmerColor2,
-            child: ListView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(0),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 16),
-                      child: Container(
-                        height: 40,
-                        width: 20,
+    return Shimmer.fromColors(
+        enabled: shimmerAnimation,
+        baseColor: shimmerColor1,
+        highlightColor: shimmerColor2,
+        child: ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 16),
+                  child: Container(
+                    height: 40,
+                    width: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 20,
+                        margin: EdgeInsets.only(top: 5),
+                        width: double.infinity,
                         color: Colors.white,
                       ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.only(top: 5),
-                            width: double.infinity,
-                            color: Colors.white,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.only(top: 5),
-                            width: double.infinity,
-                            color: Colors.white,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.only(top: 5),
-                            width: double.infinity,
-                            color: Colors.white,
-                          )
-                        ],
+                      Container(
+                        height: 20,
+                        margin: EdgeInsets.only(top: 5),
+                        width: double.infinity,
+                        color: Colors.white,
                       ),
+                      Container(
+                        height: 20,
+                        margin: EdgeInsets.only(top: 5),
+                        width: double.infinity,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      color: Colors.white,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ]),
-                );
-              },
-            )));
+                  ),
+                ),
+              ]),
+            );
+          },
+        ));
   }
 
   Widget videoItem(int index, BuildContext context, Item item, String heroTag) {

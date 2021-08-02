@@ -157,12 +157,13 @@ Widget tabs(Item item, BuildContext context) {
                     color: Colors.black,
                   ),
                 ),
-                TabButton(
-                  icon: Icon(
-                    Icons.person_outline,
-                    color: Colors.black,
+                if (!isPerson)
+                  TabButton(
+                    icon: Icon(
+                      Icons.person_outline,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
                 TabButton(
                   icon: Icon(
                     Icons.edit_outlined,

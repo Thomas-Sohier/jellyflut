@@ -93,7 +93,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
           if (item.imageBlurHashes?.logo != null) logo(item, mediaQuery.size),
           if (item.imageBlurHashes?.logo != null)
             SizedBox(height: mediaQuery.size.height * 0.05),
-          futureItemDetails(item: item),
+          card(item),
           Collection(item),
         ]));
   }
@@ -149,50 +149,28 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         ));
   }
 
-  Widget futureItemDetails({required Item item}) {
-    return FutureBuilder<dynamic>(
-      future: _getItemsCustom(itemId: item.id),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return card(snapshot.data[1]);
-        }
-        return _placeHolderBody(item, mediaQuery.size);
-      },
-    );
-  }
-
-  Widget card(Item detailedItem) {
+  Widget card(Item item) {
     return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
       Container(
-          padding: EdgeInsets.only(top: 25),
-          child: CardItemWithChild(detailedItem)),
+          padding: EdgeInsets.only(top: 25), child: CardItemWithChild(item)),
       Positioned.fill(
           child: Align(
               alignment: Alignment.topCenter,
-              child: playableItems.contains(detailedItem.type)
+              child: playableItems.contains(item.type)
                   ? ConstrainedBox(
                       constraints:
                           BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
                       child: PaletteButton(
                         'Play',
                         () {
-                          detailedItem.playItem();
+                          item.playItem();
                         },
-                        item: detailedItem,
+                        item: item,
                         icon: Icons.play_circle_outline,
                       ),
                     )
                   : Container()))
     ]);
-  }
-
-  Widget _placeHolderBody(Item item, Size size) {
-    return Container(
-        constraints: BoxConstraints(maxWidth: 600),
-        child: CardItemWithChild(
-          item,
-          isSkeleton: true,
-        ));
   }
 
   Future _getItemsCustom({required String itemId}) async {
