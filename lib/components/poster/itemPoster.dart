@@ -90,6 +90,7 @@ class _ItemPosterState extends State<ItemPoster>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RawMaterialButton(
         onPressed: () => _onTap(posterHeroTag),
         focusNode: _node,

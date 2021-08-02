@@ -172,11 +172,4 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                   : Container()))
     ]);
   }
-
-  Future _getItemsCustom({required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 400)));
-    futures.add(getItem(itemId));
-    return Future.wait(futures);
-  }
 }
