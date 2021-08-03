@@ -78,7 +78,7 @@ jobs:
         with:
           channel: master
       - run: flutter config --enable-linux-desktop
-      - run: sudo apt-get install ninja-build
+      - run: sudo apt-get install ninja-build clang
       - run: flutter build linux
       
       - name: Create a linux app-bundle
