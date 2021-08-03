@@ -60,7 +60,7 @@ class _StreamVLCState extends State<StreamVLC>
     _startProgressTimer();
     // Hide device overlays
     // device orientation
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
+    SystemChrome.setPreferredOrientations([]);
     if (currentOrientation == Orientation.portrait) {
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -75,11 +75,7 @@ class _StreamVLCState extends State<StreamVLC>
     _timer.cancel();
     // Show device overlays
     // device orientation
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
-        overlays: SystemUiOverlay.values);
-    if (currentOrientation == Orientation.portrait) {
-      SystemChrome.setPreferredOrientations([]);
-    }
+    SystemChrome.setPreferredOrientations([]);
     super.dispose();
   }
 

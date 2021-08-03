@@ -70,7 +70,7 @@ class _StreamState extends State<Stream> {
     fToast.init(navigatorKey.currentState!.context);
     // Hide device overlays
     // device orientation
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setPreferredOrientations([]);
     if (currentOrientation == Orientation.portrait) {
       SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -87,11 +87,7 @@ class _StreamState extends State<Stream> {
     _betterPlayerController.dispose();
     // Show device overlays
     // device orientation
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive,
-        overlays: SystemUiOverlay.values);
-    if (currentOrientation == Orientation.portrait) {
-      SystemChrome.setPreferredOrientations([]);
-    }
+    SystemChrome.setPreferredOrientations([]);
     super.dispose();
   }
 
