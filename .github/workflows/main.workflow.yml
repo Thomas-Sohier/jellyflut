@@ -63,7 +63,7 @@ jobs:
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/x64/Release/Runner/*.exe"
+          artifacts: "build/windows/release/Runner/*.exe"
           tag: v1.1.22-test
           token: ${{ secrets.GITHUB_TOKEN }}
       
