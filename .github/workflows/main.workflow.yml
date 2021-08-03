@@ -59,7 +59,7 @@ jobs:
         with:
           channel: stable
       - run: flutter config --enable-windows-desktop
-      - run: flutter build windows
+      - run: flutter build windows --verbose
       
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
