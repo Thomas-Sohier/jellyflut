@@ -62,9 +62,6 @@ class _RenderInnerShadow extends RenderProxyBox {
       ..saveLayer(rectInner, Paint())
       ..translate(dx, dy);
     context.paintChild(child!, offset);
-    context.canvas
-      ..restore()
-      ..restore()
-      ..restore();
+    context.canvas..restore()..restore()..restore();
   }
 }
