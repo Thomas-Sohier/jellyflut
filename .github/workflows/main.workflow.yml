@@ -60,10 +60,11 @@ jobs:
           channel: master
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
-      - name: Create a Release APK
+      - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/windows/x64/Release/Runner/*.exe"
+          tag: v1.1.21
           token: ${{ secrets.GITHUB_TOKEN }}
       
   build-linux:
