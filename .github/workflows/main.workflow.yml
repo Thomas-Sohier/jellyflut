@@ -60,12 +60,17 @@ jobs:
           channel: master
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
+      - name: Create a Release APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/windows/x64/Release/Runner/*.exe"
+          token: ${{ secrets.GITHUB_TOKEN }}
       
   build-linux:
     # if: startsWith(github.ref, 'refs/tags/v')
     # needs: test
     
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
@@ -73,3 +78,10 @@ jobs:
           channel: master
       - run: flutter config --enable-linux-desktop
       - run: flutter build linux
+      
+      - name: Create a linux app-bundle
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          path: 'build/linux/x64/release/bundle'
+          filename: 'release-linux.zip'
