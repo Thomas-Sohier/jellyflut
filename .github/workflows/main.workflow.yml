@@ -64,7 +64,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/windows/x64/Release/Runner/*.exe"
-          tag: v1.1.21
+          tag: v1.1.22-test
           token: ${{ secrets.GITHUB_TOKEN }}
       
   build-linux:
