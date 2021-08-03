@@ -80,7 +80,7 @@ jobs:
           channel: master
       - run: flutter config --enable-linux-desktop
       - run: sudo apt-get install ninja-build clang libgtk-3-dev vlc libvlc-dev
-      - run: flutter build linux --verbose
+      - run: flutter build linux
       
       - name: Create a linux app-bundle
         uses: thedoctor0/zip-release@master
