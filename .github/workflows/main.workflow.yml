@@ -49,8 +49,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
    
   build-windows:
-    # if: startsWith(github.ref, 'refs/tags/v')
-    # needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
     
     runs-on: windows-latest
     steps:
@@ -64,13 +64,12 @@ jobs:
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/release/Runner/*.exe"
-          tag: v1.1.22-test
+          artifacts: "build/windows/x64/release/*.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
       
   build-linux:
-    # if: startsWith(github.ref, 'refs/tags/v')
-    # needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
     
     runs-on: ubuntu-latest
     steps:
@@ -93,5 +92,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/linux/x64/release/release-linux.zip"
-          tag: v1.1.22-test
           token: ${{ secrets.GITHUB_TOKEN }}
