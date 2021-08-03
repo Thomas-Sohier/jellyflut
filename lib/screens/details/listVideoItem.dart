@@ -217,7 +217,7 @@ class ListVideoItem extends StatelessWidget {
   Future _getEpisodeCustom(
       {required String seriesId, required String itemId}) async {
     var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 400)));
+    futures.add(Future.delayed(Duration(milliseconds: 800)));
     futures.add(getShowSeasonEpisode(seriesId, itemId));
     return Future.wait(futures);
   }

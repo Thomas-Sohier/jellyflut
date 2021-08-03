@@ -237,7 +237,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
 
   Future _getItemsCustom({required String itemId}) async {
     var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 400)));
+    futures.add(Future.delayed(Duration(milliseconds: 800)));
     futures.add(getItem(itemId));
     return Future.wait(futures);
   }

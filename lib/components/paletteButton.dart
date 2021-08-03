@@ -28,7 +28,8 @@ class PaletteButton extends StatefulWidget {
   State<StatefulWidget> createState() => _PaletteButtonState();
 }
 
-class _PaletteButtonState extends State<PaletteButton> {
+class _PaletteButtonState extends State<PaletteButton>
+    with AutomaticKeepAliveClientMixin {
   // variable for both button
   // size
   final double minWidth = 88.0;
@@ -41,6 +42,9 @@ class _PaletteButtonState extends State<PaletteButton> {
   late FocusNode _node;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     _node = FocusNode();
     super.initState();
@@ -48,6 +52,7 @@ class _PaletteButtonState extends State<PaletteButton> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
     return TextButton(
         autofocus: false,

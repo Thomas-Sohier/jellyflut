@@ -472,6 +472,11 @@ class Item {
     return false;
   }
 
+  bool hasLogo() {
+    if (imageBlurHashes?.logo != null) return imageBlurHashes!.logo!.isNotEmpty;
+    return false;
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

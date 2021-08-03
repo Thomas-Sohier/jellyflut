@@ -24,10 +24,12 @@ const double gapSize = 20;
 class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(maxWidth: 600),
-      padding: const EdgeInsets.only(top: 16),
-      child: showCollection(widget.item),
+    return Align(
+      alignment: Alignment.topCenter, //or choose another Alignment
+      child: Container(
+          constraints: BoxConstraints(maxWidth: 600),
+          padding: const EdgeInsets.only(top: 16),
+          child: showCollection(widget.item)),
     );
   }
 
