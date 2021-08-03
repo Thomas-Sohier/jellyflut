@@ -75,7 +75,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     return Stack(alignment: Alignment.topCenter, children: [
       Hero(tag: heroTag, child: BackgroundImage(item: item)),
       Stack(alignment: Alignment.topCenter, children: [
-        SingleChildScrollView(child: playableItem()),
+        playableItem(),
         DetailHeaderBar(
           color: Colors.white,
           height: 64,
@@ -86,13 +86,10 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   Widget playableItem() {
     return Container(
-        width: double.infinity,
+        alignment: Alignment.topCenter,
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: Column(children: [
-          SizedBox(height: 64),
-          if (item.imageBlurHashes?.logo != null) logo(item, mediaQuery.size),
-          if (item.imageBlurHashes?.logo != null)
-            SizedBox(height: mediaQuery.size.height * 0.05),
+        child: ListView(children: [
+          if (item.hasLogo()) logo(item, mediaQuery.size),
           card(item),
           Collection(item),
         ]));
@@ -135,8 +132,10 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   Widget logo(Item item, Size size) {
+    final margin = size.height * 0.05;
     return Container(
         width: size.width,
+        margin: EdgeInsets.only(top: margin, bottom: margin),
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         constraints: BoxConstraints(maxWidth: 400),
         height: 100,
@@ -150,26 +149,27 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   Widget card(Item item) {
-    return Stack(clipBehavior: Clip.hardEdge, children: <Widget>[
-      Container(
-          padding: EdgeInsets.only(top: 25), child: CardItemWithChild(item)),
-      Positioned.fill(
-          child: Align(
-              alignment: Alignment.topCenter,
-              child: playableItems.contains(item.type)
-                  ? ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
-                      child: PaletteButton(
-                        'Play',
-                        () {
-                          item.playItem();
-                        },
-                        item: item,
-                        icon: Icons.play_circle_outline,
-                      ),
-                    )
-                  : Container()))
-    ]);
+    return Stack(
+        clipBehavior: Clip.hardEdge,
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.only(top: 25),
+              child: CardItemWithChild(item)),
+          playableItems.contains(item.type)
+              ? ConstrainedBox(
+                  constraints:
+                      BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
+                  child: PaletteButton(
+                    'Play',
+                    () {
+                      item.playItem();
+                    },
+                    item: item,
+                    icon: Icons.play_circle_outline,
+                  ),
+                )
+              : Container()
+        ]);
   }
 }

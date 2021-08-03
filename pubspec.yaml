@@ -75,7 +75,7 @@ dev_dependencies:
 
 dependency_overrides:
   args: ^2.1.1
-  audio_video_progress_bar: ^0.6.2
+  audio_video_progress_bar: ^0.7.0
 
 # The following section is specific to Flutter.
 flutter:

@@ -269,7 +269,7 @@ Widget actionIcons(Item item, {fav = true, view = true}) {
 
 Future _getMusicCustom({required String itemId}) async {
   var futures = <Future>[];
-  futures.add(Future.delayed(Duration(milliseconds: 400)));
+  futures.add(Future.delayed(Duration(milliseconds: 800)));
   futures.add(getItems(parentId: itemId));
   return Future.wait(futures);
 }
