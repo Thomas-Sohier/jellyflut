@@ -49,8 +49,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
    
   build-windows:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: test
+    # if: startsWith(github.ref, 'refs/tags/v')
+    # needs: test
     
     runs-on: windows-latest
     steps:
@@ -60,3 +60,16 @@ jobs:
           channel: master
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
+      
+  build-linux:
+    # if: startsWith(github.ref, 'refs/tags/v')
+    # needs: test
+    
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: master
+      - run: flutter config --enable-linux-desktop
+      - run: flutter build linux
