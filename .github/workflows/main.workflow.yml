@@ -78,7 +78,7 @@ jobs:
         with:
           channel: stable
       - run: flutter config --enable-linux-desktop
-      - run: sudo apt install ninja-build clang libgtk-3-dev vlc libvlc-dev
+      - run: apt install vlc libvlc-dev ninja-build clang libgtk-3-dev
       - run: flutter build linux --release --verbose
       
       - name: Create a linux app-bundle
