@@ -60,6 +60,7 @@ jobs:
           channel: master
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
+      
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
@@ -87,3 +88,10 @@ jobs:
           type: 'zip'
           path: 'build/linux/x64/release/bundle'
           filename: 'release-linux.zip'
+          
+      - name: Create a Release Linux
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/linux/x64/release/release-linux.zip"
+          tag: v1.1.22-test
+          token: ${{ secrets.GITHUB_TOKEN }}
