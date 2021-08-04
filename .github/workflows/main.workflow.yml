@@ -47,6 +47,7 @@ jobs:
       with:
         artifacts: " build/app/outputs/flutter-apk/*.apk"
         token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
    
   build-windows:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -66,6 +67,7 @@ jobs:
         with:
           artifacts: "build/windows/runner/Release/*.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
       
   build-linux:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -93,3 +95,4 @@ jobs:
         with:
           artifacts: "build/linux/x64/release/release-linux.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
