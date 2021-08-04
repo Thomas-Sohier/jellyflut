@@ -83,7 +83,9 @@ class CommonStream {
     _initListener();
   }
 
-  void disposeStream() {}
+  void disposeStream() {
+    _dispose();
+  }
 
   static CommonStream parseVLCController(
       {required VlcPlayerController vlcPlayerController,
