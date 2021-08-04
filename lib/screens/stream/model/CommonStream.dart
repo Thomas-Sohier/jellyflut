@@ -2,7 +2,6 @@ import 'package:better_player/better_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
 
