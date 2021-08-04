@@ -1,6 +1,8 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
 
@@ -9,8 +11,8 @@ class CommonStream {
   final Function _play;
   final Function _isPlaying;
   final Function(Duration) _seekTo;
-  final Duration _bufferingDuration;
-  final Duration _duration;
+  final Function _bufferingDuration;
+  final Function _duration;
   final Function _currentPosition;
   final bool? _isInit;
   final Function _pip;
@@ -60,11 +62,11 @@ class CommonStream {
   }
 
   Duration getBufferingDuration() {
-    return _bufferingDuration;
+    return _bufferingDuration();
   }
 
   Duration getDuration() {
-    return _duration;
+    return _duration();
   }
 
   Duration getCurrentPosition() {
@@ -88,15 +90,16 @@ class CommonStream {
   }
 
   static CommonStream parseVLCController(
-      {required VlcPlayerController vlcPlayerController,
+      {required Item item,
+      required VlcPlayerController vlcPlayerController,
       required VoidCallback listener}) {
     return CommonStream._(
         pause: vlcPlayerController.pause,
         play: vlcPlayerController.play,
         isPlaying: () => vlcPlayerController.value.isPlaying,
         seekTo: vlcPlayerController.seekTo,
-        duration: vlcPlayerController.value.duration,
-        bufferingDuration:
+        duration: () => vlcPlayerController.value.duration,
+        bufferingDuration: () =>
             CommonStreamVLC.getBufferingDurationVLC(vlcPlayerController),
         currentPosition: () => vlcPlayerController.value.position,
         isInit: vlcPlayerController.value.isInitialized,
@@ -107,7 +110,8 @@ class CommonStream {
   }
 
   static CommonStream parseBetterPlayerController(
-      {required BetterPlayerController betterPlayerController,
+      {required Item item,
+      required BetterPlayerController betterPlayerController,
       required VoidCallback listener}) {
     return CommonStream._(
         pause: betterPlayerController.pause,
@@ -115,8 +119,9 @@ class CommonStream {
         isPlaying: () =>
             betterPlayerController.videoPlayerController!.value.isPlaying,
         seekTo: betterPlayerController.seekTo,
-        duration: betterPlayerController.videoPlayerController!.value.duration,
-        bufferingDuration:
+        duration: () =>
+            betterPlayerController.videoPlayerController!.value.duration,
+        bufferingDuration: () =>
             CommonStreamBP.getBufferingDurationBP(betterPlayerController),
         currentPosition: () =>
             betterPlayerController.videoPlayerController!.value.position,

@@ -6,14 +6,14 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:flutter_vlc_player_platform_interface/flutter_vlc_player_platform_interface.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
+import 'package:jellyflut/screens/stream/model/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
+import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/screens/stream/streamVLC.dart';
 import 'package:jellyflut/screens/stream/streamVLCcomputer.dart';
 
 import '../../main.dart';
@@ -52,24 +52,41 @@ void initVLCMediaPlayer(Item item) async {
             builder: (context) => StreamVLCComputer(
                 playerId: playerId, media: media, player: player)));
   } else {
-    var _controller = initVlcController(url, item);
+    final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
+
+    vlcPlayerController.addOnInitListener(() async {
+      await vlcPlayerController.startRendererScanning();
+    });
+
+    final player = Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        VlcPlayer(
+          controller: vlcPlayerController,
+          aspectRatio: item.getAspectRatio(),
+          placeholder: Center(child: CircularProgressIndicator()),
+        ),
+        Expanded(child: CommonControls()),
+      ],
+    );
+
     await Navigator.push(
         navigatorKey.currentContext!,
         MaterialPageRoute(
-            builder: (context) =>
-                StreamVLC(controller: _controller, showControls: true)));
+            builder: (context) => Stream(player: player, item: item)));
   }
 }
 
 void initExoPlayerMediaPlayer(Item item) async {
-  var url = await item.getItemURL();
+  // Setup data with Better Player
+  final betterPlayerController = await CommonStreamBP.setupData(item: item);
 
-  final betterPlayerController =
-      await CommonStreamBP.setupData(streamURL: url, item: item);
-
+  // Init widget player to use in Stream widget
   final playerBP = BetterPlayer(
       key: betterPlayerController.betterPlayerGlobalKey,
       controller: betterPlayerController);
+
+  // Redirect to player page
   await Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(
@@ -77,23 +94,4 @@ void initExoPlayerMediaPlayer(Item item) async {
                 player: playerBP,
                 item: item,
               )));
-}
-
-VlcPlayerController initVlcController(String url, Item item) {
-  var vlcPlayerController = VlcPlayerController.network(
-    url,
-    autoPlay: true,
-    options: VlcPlayerOptions(
-        advanced: VlcAdvancedOptions([
-          VlcAdvancedOptions.networkCaching(2000),
-        ]),
-        extras: [
-          '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
-        ]),
-  );
-  vlcPlayerController.addOnInitListener(() async {
-    await vlcPlayerController.startRendererScanning();
-  });
-
-  return vlcPlayerController;
 }

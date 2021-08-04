@@ -8,7 +8,7 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/commonControls.dart';
+import 'package:jellyflut/screens/stream/model/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStream.dart';
 
 /// CommonStream Better Player specific code
@@ -28,8 +28,8 @@ class CommonStreamBP {
     }
   }
 
-  static Future<BetterPlayerController> setupData(
-      {required String streamURL, required Item item}) async {
+  static Future<BetterPlayerController> setupData({required Item item}) async {
+    final streamURL = await item.getItemURL();
     final dataSource = BetterPlayerDataSource.network(
       streamURL,
       //subtitles: await getSubtitles(item),
@@ -59,7 +59,9 @@ class CommonStreamBP {
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     final commonStream = CommonStream.parseBetterPlayerController(
-        betterPlayerController: _betterPlayerController, listener: () => {});
+        betterPlayerController: _betterPlayerController,
+        listener: () => {},
+        item: item);
     StreamModel().setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }

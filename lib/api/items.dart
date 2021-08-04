@@ -255,7 +255,7 @@ void itemProgress(Item item,
 
   var _json = json.encode(_mediaPlayedInfos);
 
-  dio.options.contentType = 'apthrow (e.toString());plication/json';
+  dio.options.contentType = 'application/json';
   dio
       .post(url, data: _json)
       .then((_) => print('progress ok'))
