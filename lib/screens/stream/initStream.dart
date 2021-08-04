@@ -14,7 +14,6 @@ import 'package:jellyflut/screens/stream/model/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/screens/stream/streamVLCcomputer.dart';
 
 import '../../main.dart';
 
@@ -37,44 +36,68 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
 }
 
 void initVLCMediaPlayer(Item item) async {
-  var url = await item.getItemURL(directPlay: true);
+  var playerWidget;
   if (Platform.isLinux || Platform.isWindows) {
-    var playerId = Random().nextInt(10000);
-    var player = Player(id: playerId, commandlineArguments: [
-      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
-      '--fullscreen',
-      '--embedded-video'
-    ]);
-    var media = Media.network(url);
-    await Navigator.push(
-        navigatorKey.currentContext!,
-        MaterialPageRoute(
-            builder: (context) => StreamVLCComputer(
-                playerId: playerId, media: media, player: player)));
+    final url = await item.getItemURL(directPlay: true);
+    playerWidget = initVlcComputerPlayer(url, item);
   } else {
-    final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
-
-    vlcPlayerController.addOnInitListener(() async {
-      await vlcPlayerController.startRendererScanning();
-    });
-
-    final player = Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        VlcPlayer(
-          controller: vlcPlayerController,
-          aspectRatio: item.getAspectRatio(),
-          placeholder: Center(child: CircularProgressIndicator()),
-        ),
-        Expanded(child: CommonControls()),
-      ],
-    );
-
-    await Navigator.push(
-        navigatorKey.currentContext!,
-        MaterialPageRoute(
-            builder: (context) => Stream(player: player, item: item)));
+    playerWidget = await initVlcPHonePlayer(item);
   }
+  await Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute(
+          builder: (context) => Stream(player: playerWidget, item: item)));
+}
+
+Widget initVlcComputerPlayer(String url, Item item) {
+  final size = MediaQuery.of(navigatorKey.currentContext!).size;
+  final playerId = Random().nextInt(10000);
+  final player = Player(id: playerId, commandlineArguments: [
+    '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
+    '--fullscreen',
+    '--embedded-video'
+  ]);
+  final media = Media.network(url);
+  final playerWidget = Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      Video(
+        playerId: playerId,
+        height: size.height,
+        width: size.width,
+        scale: 1.0, // default
+        showControls: false,
+      ),
+      Expanded(child: CommonControls()),
+    ],
+  );
+
+  player.open(
+    media,
+    autoStart: true, // default
+  );
+
+  return playerWidget;
+}
+
+Future<Widget> initVlcPHonePlayer(Item item) async {
+  final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
+
+  vlcPlayerController.addOnInitListener(() async {
+    await vlcPlayerController.startRendererScanning();
+  });
+
+  return Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      VlcPlayer(
+        controller: vlcPlayerController,
+        aspectRatio: item.getAspectRatio(),
+        placeholder: Center(child: CircularProgressIndicator()),
+      ),
+      Expanded(child: CommonControls()),
+    ],
+  );
 }
 
 void initExoPlayerMediaPlayer(Item item) async {
