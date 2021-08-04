@@ -13,7 +13,7 @@ import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/shared/toast.dart';
 import 'package:provider/provider.dart';
-
+/*
 class ControlsBP extends StatefulWidget {
   const ControlsBP();
 
@@ -497,3 +497,4 @@ class _ControlsBPState extends State<ControlsBP> {
         .seekTo(Duration(microseconds: tick));
   }
 }
+*/

@@ -13,18 +13,19 @@ import 'package:jellyflut/shared/toast.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../../main.dart';
+/*
 
-class Stream extends StatefulWidget {
+class StreamBP extends StatefulWidget {
   final Item item;
   final String streamUrl;
 
-  const Stream({required this.item, required this.streamUrl});
+  const StreamBP({required this.item, required this.streamUrl});
 
   @override
-  _StreamState createState() => _StreamState();
+  _StreamBPState createState() => _StreamBPState();
 }
 
-class _StreamState extends State<Stream> {
+class _StreamBPState extends State<StreamBP> {
   late StreamModel streamModel;
   late BetterPlayerController _betterPlayerController;
   late BetterPlayerDataSource dataSource;
@@ -200,3 +201,5 @@ Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
       .toList();
   return Future.wait(asyncSubs);
 }
+
+*/

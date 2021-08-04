@@ -1,15 +1,18 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:flutter_vlc_player_platform_interface/flutter_vlc_player_platform_interface.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
-import 'package:jellyflut/screens/stream/streamBP.dart';
+import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
+import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:jellyflut/screens/stream/streamVLC.dart';
 import 'package:jellyflut/screens/stream/streamVLCcomputer.dart';
 
@@ -60,10 +63,20 @@ void initVLCMediaPlayer(Item item) async {
 
 void initExoPlayerMediaPlayer(Item item) async {
   var url = await item.getItemURL();
+
+  final betterPlayerController =
+      await CommonStreamBP.setupData(streamURL: url, item: item);
+
+  final playerBP = BetterPlayer(
+      key: betterPlayerController.betterPlayerGlobalKey,
+      controller: betterPlayerController);
   await Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(
-          builder: (context) => Stream(item: item, streamUrl: url)));
+          builder: (context) => Stream(
+                player: playerBP,
+                item: item,
+              )));
 }
 
 VlcPlayerController initVlcController(String url, Item item) {
@@ -78,7 +91,6 @@ VlcPlayerController initVlcController(String url, Item item) {
           '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
         ]),
   );
-
   vlcPlayerController.addOnInitListener(() async {
     await vlcPlayerController.startRendererScanning();
   });
