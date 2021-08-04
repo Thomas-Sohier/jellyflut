@@ -27,21 +27,21 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
       'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
   switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
-      initVLCMediaPlayer(item);
+      _initVLCMediaPlayer(item);
       break;
     case StreamingSoftwareName.exoplayer:
-      initExoPlayerMediaPlayer(item);
+      _initExoPlayerMediaPlayer(item);
       break;
   }
 }
 
-void initVLCMediaPlayer(Item item) async {
+void _initVLCMediaPlayer(Item item) async {
   var playerWidget;
   if (Platform.isLinux || Platform.isWindows) {
     final url = await item.getItemURL(directPlay: true);
-    playerWidget = initVlcComputerPlayer(url, item);
+    playerWidget = _initVlcComputerPlayer(url, item);
   } else {
-    playerWidget = await initVlcPHonePlayer(item);
+    playerWidget = await _initVlcPHonePlayer(item);
   }
   await Navigator.push(
       navigatorKey.currentContext!,
@@ -49,7 +49,7 @@ void initVLCMediaPlayer(Item item) async {
           builder: (context) => Stream(player: playerWidget, item: item)));
 }
 
-Widget initVlcComputerPlayer(String url, Item item) {
+Widget _initVlcComputerPlayer(String url, Item item) {
   final size = MediaQuery.of(navigatorKey.currentContext!).size;
   final playerId = Random().nextInt(10000);
   final player = Player(id: playerId, commandlineArguments: [
@@ -80,7 +80,7 @@ Widget initVlcComputerPlayer(String url, Item item) {
   return playerWidget;
 }
 
-Future<Widget> initVlcPHonePlayer(Item item) async {
+Future<Widget> _initVlcPHonePlayer(Item item) async {
   final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
 
   vlcPlayerController.addOnInitListener(() async {
@@ -100,7 +100,7 @@ Future<Widget> initVlcPHonePlayer(Item item) async {
   );
 }
 
-void initExoPlayerMediaPlayer(Item item) async {
+void _initExoPlayerMediaPlayer(Item item) async {
   // Setup data with Better Player
   final betterPlayerController = await CommonStreamBP.setupData(item: item);
 
