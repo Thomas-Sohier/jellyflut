@@ -61,11 +61,18 @@ jobs:
           channel: stable
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows --verbose
+
+      - name: Create a windows app-bundle
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          path: 'build/windows/runner/Release'
+          filename: 'release-windows.zip'
       
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/runner/Release/*.exe"
+          artifacts: "build/windows/runner/release-windows.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       
