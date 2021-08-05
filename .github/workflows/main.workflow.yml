@@ -67,12 +67,13 @@ jobs:
         with:
           type: 'zip'
           path: 'build/windows/runner/Release'
+          directory: 'build/windows/runner'
           filename: 'release-windows.zip'
       
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/runner/Release/release-windows.zip"
+          artifacts: "build/windows/runner/release-windows.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       
@@ -95,6 +96,7 @@ jobs:
         with:
           type: 'zip'
           path: 'build/linux/x64/release/bundle'
+          directory: 'build/linux/x64/release'
           filename: 'release-linux.zip'
           
       - name: Create a Release Linux
