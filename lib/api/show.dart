@@ -9,7 +9,7 @@ Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {
   queryParams['seasonId'] = seasonId;
   queryParams['userId'] = userJellyfin!.id;
   queryParams['Fields'] =
-      'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams';
+      'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
 
   var url = '${server.url}/Shows/$parentId/Episodes';
 

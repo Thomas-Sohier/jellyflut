@@ -96,7 +96,7 @@ Future<Item> getItem(String itemId,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'Chapters, People',
+    String fields = 'Chapters,People,Height,Width',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
@@ -140,7 +140,8 @@ Future<Category> getResumeItems(
     int limit = 12,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes',
+    String fields =
+        'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
     String excludeLocationTypes = '',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
@@ -191,7 +192,7 @@ Future<Category> getItems(
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'Chapters, DateCreated, ImageBlurHashes',
+    String fields = 'Chapters,DateCreated,ImageBlurHashes,Height,Width',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {
@@ -311,7 +312,7 @@ Future<Category> searchItems(
     String includeItemTypes = 'Movie',
     int limit = 24,
     String fields =
-        'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount',
+        'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
     bool recursive = true,
     bool enableTotalRecordCount = false,
     int imageTypeLimit = 1,

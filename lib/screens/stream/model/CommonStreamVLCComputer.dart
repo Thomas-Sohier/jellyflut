@@ -2,27 +2,29 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/model/CommonStream.dart';
 
 class CommonStreamVLCComputer {
   static Future<Player> setupData({required Item item}) async {
+    final size = MediaQuery.of(navigatorKey.currentContext!).size;
     final streamURL = await item.getItemURL(directPlay: true);
 
     final playerId = Random().nextInt(10000);
-    final player = Player(id: playerId, commandlineArguments: [
-      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
-      // '--fullscreen',
-      '--embedded-video'
-    ]);
+    final player = Player(
+        id: playerId,
+        videoWidth: item.height ?? size.height.toInt(),
+        videoHeight: item.width ?? size.width.toInt(),
+        commandlineArguments: [
+          '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
+        ]);
     final media = Media.network(streamURL);
 
-    player.open(
-      media,
-      autoStart: true, // default
-    );
+    player.open(media);
 
     // create timer to save progress
     final timer = _startProgressTimer(item, player);

@@ -56,10 +56,11 @@ Future<Widget> _initVlcComputerPlayer(Item item) async {
     children: <Widget>[
       Video(
         playerId: player.id,
-        height: size.height,
-        width: size.width,
-        scale: 1.0, // default
-        showControls: false,
+        height: item.height != null
+            ? item.height!.toDouble()
+            : size.height.toDouble(),
+        width:
+            item.width != null ? item.width!.toDouble() : size.width.toDouble(),
       ),
       CommonControls(isComputer: true),
     ],
