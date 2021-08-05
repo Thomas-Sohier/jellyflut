@@ -4,6 +4,8 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/details/details.dart';
+import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class SongInfos extends StatefulWidget {
@@ -43,14 +45,26 @@ class _SongInfosState extends State<SongInfos> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(musicPlayer.currentMusicArtist(),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: widget.color,
-                  )),
+              GestureDetector(
+                onTap: () async {
+                  var artist = await getArtist(musicPlayer.getItemPlayed()!);
+                  if (artist != null) {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Details(item: artist, heroTag: '')));
+                  }
+                },
+                child: Text(musicPlayer.currentMusicArtist(),
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: widget.color,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(

@@ -5,6 +5,7 @@ import 'package:jellyflut/models/item.dart';
 
 class MusicPlayer extends ChangeNotifier {
   AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
+  Item? _item;
 
   // Singleton
   static final MusicPlayer _musicPlayer = MusicPlayer._internal();
@@ -14,6 +15,10 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   MusicPlayer._internal();
+
+  Item? getItemPlayed() {
+    return _item;
+  }
 
   String currentMusicTitle() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
@@ -111,6 +116,7 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void playRemoteItem(Item item) async {
+    _item = item;
     await getItem(item.id).then((Item _item) async => {
           _musicPlayer.assetsAudioPlayer
               .open(
@@ -123,6 +129,7 @@ class MusicPlayer extends ChangeNotifier {
 
   Future<Audio> _createAudioNetwork(Item item) async {
     var url = await contructAudioURL(itemId: item.id);
+    _item = item;
     return Audio.network(
       url,
       metas: Metas(

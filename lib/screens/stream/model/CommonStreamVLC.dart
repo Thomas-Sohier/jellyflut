@@ -21,7 +21,7 @@ class CommonStreamVLC {
   }
 
   static Future<VlcPlayerController> setupData({required Item item}) async {
-    final streamURL = await item.getItemURL();
+    final streamURL = await item.getItemURL(directPlay: true);
 
     // Create vlcPlayerController
     final vlcPlayerController = VlcPlayerController.network(

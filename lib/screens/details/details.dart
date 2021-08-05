@@ -90,6 +90,11 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: ListView(children: [
           if (item.hasLogo()) logo(item, mediaQuery.size),
+          if (!item.hasLogo())
+            SizedBox(
+              height: 64,
+              width: double.infinity,
+            ),
           card(item),
           Collection(item),
         ]));

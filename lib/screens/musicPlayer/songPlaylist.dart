@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,6 +19,10 @@ class SongPlaylist extends StatefulWidget {
 
 class _SongPlaylistState extends State<SongPlaylist> {
   late MusicPlayer musicPlayer;
+  final ThemeData settingsThemeData = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: jellyPurple,
+  );
 
   @override
   void initState() {
@@ -31,33 +36,35 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: widget.backgroundColor,
-        appBar: AppBar(
-          title: Text('Playlist'),
-          systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-          backgroundColor: widget.backgroundColor,
-        ),
-        body: Consumer<MusicPlayer>(builder: (context, mp, child) {
-          musicPlayer = mp;
-          return GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: widget.color,
-              child: ChangeNotifierProvider.value(
-                value: musicPlayer,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    itemCount:
-                        musicPlayer.assetsAudioPlayer.playlist!.numberOfItems,
-                    itemBuilder: (context, index) => playlistListItem(
-                        index,
-                        musicPlayer
-                            .assetsAudioPlayer.playlist!.audios[index].metas)),
-              ));
-        }));
+    return Theme(
+        data: settingsThemeData,
+        child: Scaffold(
+            backgroundColor: widget.backgroundColor,
+            appBar: AppBar(
+              title: Text('Playlist'),
+              systemOverlayStyle:
+                  SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+              backgroundColor: widget.backgroundColor,
+            ),
+            body: Consumer<MusicPlayer>(builder: (context, mp, child) {
+              musicPlayer = mp;
+              return GlowingOverscrollIndicator(
+                  axisDirection: AxisDirection.down,
+                  color: widget.color,
+                  child: ChangeNotifierProvider.value(
+                    value: musicPlayer,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: musicPlayer
+                            .assetsAudioPlayer.playlist!.numberOfItems,
+                        itemBuilder: (context, index) => playlistListItem(
+                            index,
+                            musicPlayer.assetsAudioPlayer.playlist!
+                                .audios[index].metas)),
+                  ));
+            })));
   }
 
   Widget playlistListItem(int index, Metas metas) {
@@ -111,22 +118,28 @@ class _SongPlaylistState extends State<SongPlaylist> {
                         fontWeight: FontWeight.w600,
                         color: widget.color)),
               ),
-              Text(
-                  musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.artist!,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: widget.color)),
-              Text(
-                  musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.album!,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: widget.color))
+              if (musicPlayer
+                      .assetsAudioPlayer.playlist!.audios[index].metas.artist !=
+                  null)
+                Text(
+                    musicPlayer.assetsAudioPlayer.playlist!.audios[index].metas
+                        .artist!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: widget.color)),
+              if (musicPlayer
+                      .assetsAudioPlayer.playlist!.audios[index].metas.album !=
+                  null)
+                Text(
+                    musicPlayer
+                        .assetsAudioPlayer.playlist!.audios[index].metas.album!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: widget.color))
             ],
           ),
         )

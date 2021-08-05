@@ -718,7 +718,8 @@ class Item {
 
     if (type == ItemType.EPISODE ||
         type == ItemType.MOVIE ||
-        type == ItemType.VIDEO) {
+        type == ItemType.VIDEO ||
+        type == ItemType.MUSICVIDEO) {
       return _getStreamURL(this, directPlay);
     } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
       return _getFirstUnplayedItemURL(directPlay);

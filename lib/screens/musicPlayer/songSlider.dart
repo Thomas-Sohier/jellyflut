@@ -31,7 +31,7 @@ class _SongSliderState extends State<SongSlider> {
   Widget build(BuildContext context) {
     var sliderSize = _playBackTime / musicPlayer.currentMusicMaxDuration();
     return FractionallySizedBox(
-        widthFactor: sliderSize,
+        widthFactor: sliderSize < 0 ? 0 : sliderSize,
         child: Container(
           color: widget.albumColors[1].withAlpha(150),
         ));
