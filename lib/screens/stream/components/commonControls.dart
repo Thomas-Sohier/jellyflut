@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
+import 'package:jellyflut/screens/stream/components/videoPlayerprogressBar.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/shared/toast.dart';
@@ -48,6 +50,7 @@ class _CommonControlsState extends State<CommonControls> {
   @override
   void dispose() {
     _timer.cancel();
+    streamModel.timer?.cancel();
     super.dispose();
   }
 
@@ -199,49 +202,10 @@ class _CommonControlsState extends State<CommonControls> {
 
   Widget bottomRow() {
     return Row(children: [
-      Expanded(flex: 1, child: playPauseButton()),
-      Expanded(
-          flex: 9,
-          child: ProgressBar(
-            progress: streamModel.commonStream!.getCurrentPosition(),
-            buffered: streamModel.commonStream!.getBufferingDuration(),
-            total: streamModel.commonStream!.getDuration(),
-            progressBarColor: jellyLightPurple,
-            baseBarColor: Colors.white.withOpacity(0.24),
-            bufferedBarColor: Colors.white.withOpacity(0.24),
-            thumbColor: Colors.white,
-            timeLabelTextStyle: TextStyle(color: Colors.white),
-            barHeight: 3.0,
-            thumbRadius: 5.0,
-            onSeek: (duration) {
-              streamModel.commonStream!.seekTo(duration);
-            },
-          )),
-      Spacer(
-        flex: 1,
-      )
+      Expanded(flex: 1, child: PlayPauseButton()),
+      Expanded(flex: 9, child: VideoPlayerProgressBar()),
+      Spacer(flex: 1)
     ]);
-  }
-
-  Widget playPauseButton() {
-    return InkWell(
-        onTap: () {
-          setState(() {
-            streamModel.commonStream!.isPlaying()
-                ? streamModel.commonStream!.pause()
-                : streamModel.commonStream!.play();
-          });
-        },
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            streamModel.commonStream!.isPlaying()
-                ? Icons.pause
-                : Icons.play_arrow,
-            color: Colors.white,
-          ),
-        ));
   }
 
   Future<void> autoHideControl() async {

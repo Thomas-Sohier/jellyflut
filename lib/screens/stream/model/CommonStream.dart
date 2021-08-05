@@ -16,6 +16,8 @@ class CommonStream {
   final bool? _isInit;
   final Function _pip;
   final VoidCallback _initListener;
+  final Function(VoidCallback) _addListener;
+  final Function(VoidCallback) _removeListener;
   final Function _dispose;
   final Object controller;
 
@@ -30,6 +32,8 @@ class CommonStream {
       required isInit,
       required pip,
       required initListener,
+      required addListener,
+      required removeListener,
       required dispose,
       required this.controller})
       : _play = play,
@@ -42,6 +46,8 @@ class CommonStream {
         _isInit = isInit,
         _pip = pip,
         _initListener = initListener,
+        _addListener = addListener,
+        _removeListener = removeListener,
         _dispose = dispose;
 
   void play() {
@@ -84,6 +90,14 @@ class CommonStream {
     _initListener();
   }
 
+  void addListener(VoidCallback listener) {
+    _addListener(listener);
+  }
+
+  void removeListener(VoidCallback listener) {
+    _removeListener(listener);
+  }
+
   void disposeStream() {
     _dispose();
   }
@@ -104,6 +118,8 @@ class CommonStream {
         isInit: vlcPlayerController.value.isInitialized,
         pip: () => throw ('Not supported on VLC player'),
         initListener: () => vlcPlayerController.addListener(listener),
+        addListener: vlcPlayerController.addListener,
+        removeListener: vlcPlayerController.removeListener,
         dispose: () => vlcPlayerController.dispose(),
         controller: vlcPlayerController);
   }
@@ -129,6 +145,9 @@ class CommonStream {
             betterPlayerController.betterPlayerGlobalKey!),
         initListener: () =>
             betterPlayerController.videoPlayerController!.addListener(listener),
+        addListener: betterPlayerController.videoPlayerController!.addListener,
+        removeListener:
+            betterPlayerController.videoPlayerController!.removeListener,
         dispose: () => betterPlayerController.dispose(),
         controller: betterPlayerController);
   }

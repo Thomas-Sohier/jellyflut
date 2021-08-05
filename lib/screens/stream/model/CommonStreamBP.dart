@@ -8,7 +8,7 @@ import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/model/commonControls.dart';
+import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStream.dart';
 
 /// CommonStream Better Player specific code

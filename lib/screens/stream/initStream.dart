@@ -10,7 +10,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
-import 'package:jellyflut/screens/stream/model/commonControls.dart';
+import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
@@ -41,7 +41,7 @@ void _initVLCMediaPlayer(Item item) async {
     final url = await item.getItemURL(directPlay: true);
     playerWidget = _initVlcComputerPlayer(url, item);
   } else {
-    playerWidget = await _initVlcPHonePlayer(item);
+    playerWidget = await _initVlcPhonePlayer(item);
   }
   await Navigator.push(
       navigatorKey.currentContext!,
@@ -80,7 +80,7 @@ Widget _initVlcComputerPlayer(String url, Item item) {
   return playerWidget;
 }
 
-Future<Widget> _initVlcPHonePlayer(Item item) async {
+Future<Widget> _initVlcPhonePlayer(Item item) async {
   final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
 
   vlcPlayerController.addOnInitListener(() async {
@@ -95,7 +95,7 @@ Future<Widget> _initVlcPHonePlayer(Item item) async {
         aspectRatio: item.getAspectRatio(),
         placeholder: Center(child: CircularProgressIndicator()),
       ),
-      Expanded(child: CommonControls()),
+      CommonControls(),
     ],
   );
 }
