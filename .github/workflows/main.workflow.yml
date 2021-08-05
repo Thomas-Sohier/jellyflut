@@ -67,7 +67,6 @@ jobs:
         with:
           type: 'zip'
           path: 'build/windows/runner/Release'
-          directory: 'build/windows/runner/Release'
           filename: 'release-windows.zip'
       
       - name: Create a Release Windows 
@@ -98,7 +97,6 @@ jobs:
         with:
           type: 'zip'
           path: 'build/linux/x64/release/bundle'
-          directory: 'build/linux/x64/release/bundle'
           filename: 'release-linux.zip'
           
       - name: Create a Release Linux
