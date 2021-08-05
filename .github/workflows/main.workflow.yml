@@ -72,7 +72,7 @@ jobs:
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/runner/release-windows.zip"
+          artifacts: "release-windows.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       
@@ -102,6 +102,6 @@ jobs:
       - name: Create a Release Linux
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/linux/x64/release/release-linux.zip"
+          artifacts: "release-linux.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
