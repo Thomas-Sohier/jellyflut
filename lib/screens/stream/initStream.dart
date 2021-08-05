@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
