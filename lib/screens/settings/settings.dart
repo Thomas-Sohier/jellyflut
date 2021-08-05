@@ -7,7 +7,7 @@ import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
-import 'package:jellyflut/screens/settings/BackButton.dart' as bb;
+import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:moor/moor.dart';
 import 'package:package_info/package_info.dart';
 import 'package:settings_ui/settings_ui.dart';

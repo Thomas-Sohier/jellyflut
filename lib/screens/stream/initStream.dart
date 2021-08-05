@@ -13,6 +13,7 @@ import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
+import 'package:jellyflut/screens/stream/model/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
 
 import '../../main.dart';
@@ -38,8 +39,7 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
 void _initVLCMediaPlayer(Item item) async {
   var playerWidget;
   if (Platform.isLinux || Platform.isWindows) {
-    final url = await item.getItemURL(directPlay: true);
-    playerWidget = _initVlcComputerPlayer(url, item);
+    playerWidget = await _initVlcComputerPlayer(item);
   } else {
     playerWidget = await _initVlcPhonePlayer(item);
   }
@@ -49,35 +49,22 @@ void _initVLCMediaPlayer(Item item) async {
           builder: (context) => Stream(player: playerWidget, item: item)));
 }
 
-Widget _initVlcComputerPlayer(String url, Item item) {
+Future<Widget> _initVlcComputerPlayer(Item item) async {
+  final player = await CommonStreamVLCComputer.setupData(item: item);
   final size = MediaQuery.of(navigatorKey.currentContext!).size;
-  final playerId = Random().nextInt(10000);
-  final player = Player(id: playerId, commandlineArguments: [
-    '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
-    '--fullscreen',
-    '--embedded-video'
-  ]);
-  final media = Media.network(url);
-  final playerWidget = Stack(
+  return Stack(
     alignment: Alignment.center,
     children: <Widget>[
       Video(
-        playerId: playerId,
+        playerId: player.id,
         height: size.height,
         width: size.width,
         scale: 1.0, // default
         showControls: false,
       ),
-      Expanded(child: CommonControls()),
+      CommonControls(isComputer: true),
     ],
   );
-
-  player.open(
-    media,
-    autoStart: true, // default
-  );
-
-  return playerWidget;
 }
 
 Future<Widget> _initVlcPhonePlayer(Item item) async {

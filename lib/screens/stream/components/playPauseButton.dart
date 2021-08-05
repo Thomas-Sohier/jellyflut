@@ -11,7 +11,7 @@ class PlayPauseButton extends StatefulWidget {
 class _PlayPauseButtonState extends State<PlayPauseButton> {
   late StreamModel streamModel;
   late VoidCallback listener;
-  bool isPlaying = false;
+  bool isPlaying = true;
 
   @override
   void initState() {

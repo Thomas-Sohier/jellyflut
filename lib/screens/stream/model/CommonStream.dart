@@ -1,9 +1,11 @@
 import 'package:better_player/better_player.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/model/CommonStreamVLC.dart';
+import 'package:jellyflut/screens/stream/model/CommonStreamVLCComputer.dart';
 
 class CommonStream {
   final Function _pause;
@@ -150,5 +152,26 @@ class CommonStream {
             betterPlayerController.videoPlayerController!.removeListener,
         dispose: () => betterPlayerController.dispose(),
         controller: betterPlayerController);
+  }
+
+  static CommonStream parseVlcComputerController(
+      {required Item item,
+      required Player player,
+      required VoidCallback listener}) {
+    return CommonStream._(
+        pause: player.pause,
+        play: player.play,
+        isPlaying: () => player.playback.isPlaying,
+        seekTo: player.seek,
+        duration: () => player.position.duration,
+        bufferingDuration: () => Duration(seconds: 0),
+        currentPosition: () => player.position.position,
+        isInit: true,
+        pip: () => {},
+        initListener: () => {},
+        addListener: CommonStreamVLCComputer.addListener,
+        removeListener: (_) => {},
+        dispose: () => player.dispose(),
+        controller: player);
   }
 }

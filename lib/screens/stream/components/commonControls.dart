@@ -12,7 +12,9 @@ import 'package:jellyflut/shared/toast.dart';
 import 'package:provider/provider.dart';
 
 class CommonControls extends StatefulWidget {
-  const CommonControls({Key? key}) : super(key: key);
+  final bool isComputer;
+
+  const CommonControls({Key? key, this.isComputer = false}) : super(key: key);
 
   @override
   _CommonControlsState createState() => _CommonControlsState();
@@ -105,6 +107,10 @@ class _CommonControlsState extends State<CommonControls> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (widget.isComputer)
+            BackButton(
+              color: Colors.white,
+            ),
           Expanded(
               flex: 6,
               child: Padding(
