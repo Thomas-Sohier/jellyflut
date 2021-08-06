@@ -1,3 +1,5 @@
+import 'package:epub_view/epub_view.dart';
+import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/shared/enums.dart';
 
 class MediaStream {
@@ -25,7 +27,7 @@ class MediaStream {
     this.profile,
     required this.type,
     this.aspectRatio,
-    this.index,
+    required this.index,
     this.isExternal,
     this.deliveryMethod,
     this.deliveryUrl,
@@ -63,9 +65,9 @@ class MediaStream {
   double? averageFrameRate;
   double? realFrameRate;
   String? profile;
-  String type;
+  MediaStreamType type;
   String? aspectRatio;
-  int? index;
+  int index;
   bool? isExternal;
   String? deliveryMethod;
   String? deliveryUrl;
@@ -107,7 +109,8 @@ class MediaStream {
             ? null
             : json['RealFrameRate'].toDouble(),
         profile: json['Profile'],
-        type: json['Type'],
+        type: EnumFromString<MediaStreamType>(MediaStreamType.values)
+            .get(json['Type'])!,
         aspectRatio: json['AspectRatio'],
         index: json['Index'],
         isExternal: json['IsExternal'],
@@ -166,4 +169,9 @@ class MediaStream {
         'localizedDefault': localizedDefault,
         'localizedForced': localizedForced,
       };
+
+  bool isRemote() {
+    if (isExternal != null) return isExternal!;
+    return true;
+  }
 }

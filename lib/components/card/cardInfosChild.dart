@@ -7,6 +7,7 @@ import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/components/unorderedList.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
+import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -215,8 +216,7 @@ Widget infos(Item item, BuildContext context) {
               ),
               UnorderedList(
                   texts: item.mediaStreams!
-                      .where((element) =>
-                          element.type.trim().toLowerCase() == 'video')
+                      .where((element) => element.type == MediaStreamType.VIDEO)
                       .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList()),
             ],
@@ -258,8 +258,8 @@ Widget infos(Item item, BuildContext context) {
               ),
               UnorderedList(
                   texts: item.mediaStreams!
-                      .where((element) =>
-                          element.type.trim().toLowerCase() == 'subtitle')
+                      .where(
+                          (element) => element.type == MediaStreamType.SUBTITLE)
                       .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList())
             ],
@@ -275,8 +275,7 @@ Widget infos(Item item, BuildContext context) {
               ),
               UnorderedList(
                   texts: item.mediaStreams!
-                      .where((element) =>
-                          element.type.trim().toLowerCase() == 'audio')
+                      .where((element) => element.type == MediaStreamType.AUDIO)
                       .map((e) => e.displayTitle! + ', ' + e.codec!)
                       .toList()),
             ],
@@ -289,7 +288,7 @@ List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
 
   // Find the default sub to choose
   var audioList = item.mediaSources!.first.mediaStreams!
-      .where((element) => element.type.trim().toLowerCase() == 'audio')
+      .where((element) => element.type == MediaStreamType.AUDIO)
       .toList();
 
   var defaultAudio = audioList.firstWhere(
@@ -297,7 +296,7 @@ List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
     orElse: () => audioList.first,
   );
   audioValue = defaultAudio.displayTitle;
-  StreamModel().setAudioStreamIndex(defaultAudio.index!);
+  StreamModel().setAudioStreamIndex(defaultAudio.index);
 
   // Find all audio to fill dropdown
   var audioDropdownList = audioList
@@ -314,9 +313,9 @@ List<DropdownMenuItem<String>> audioDropdownItems(Item item) {
 
 void setAudioStreamIndex(Item item, String audioDisplayTitle) {
   var selectedAudio = item.mediaSources!.first.mediaStreams!
-      .where((element) => element.type.trim().toLowerCase() == 'audio')
+      .where((element) => element.type == MediaStreamType.AUDIO)
       .firstWhere((element) => element.displayTitle == audioDisplayTitle);
-  StreamModel().setAudioStreamIndex(selectedAudio.index!);
+  StreamModel().setAudioStreamIndex(selectedAudio.index);
 }
 
 List<DropdownMenuItem<String>> subDropdownItems(Item item) {
@@ -324,7 +323,7 @@ List<DropdownMenuItem<String>> subDropdownItems(Item item) {
 
   // Find the default sub to choose
   var subList = item.mediaSources!.first.mediaStreams!
-      .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+      .where((element) => element.type == MediaStreamType.SUBTITLE)
       .toList();
   if (subList.isNotEmpty) {
     var defaultSub = subList.firstWhere(
@@ -332,7 +331,7 @@ List<DropdownMenuItem<String>> subDropdownItems(Item item) {
       orElse: () => subList.first,
     );
     subValue = defaultSub.displayTitle;
-    StreamModel().setSubtitleStreamIndex(defaultSub.index!);
+    StreamModel().setSubtitleStreamIndex(defaultSub.index);
   }
 
   // Find all subtitles to fill dropdown
@@ -350,7 +349,7 @@ List<DropdownMenuItem<String>> subDropdownItems(Item item) {
 
 void setSubStreamIndex(Item item, String subDisplayTitle) {
   var selectedSub = item.mediaSources!.first.mediaStreams!
-      .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+      .where((element) => element.type == MediaStreamType.SUBTITLE)
       .firstWhere((element) => element.displayTitle == subDisplayTitle);
-  StreamModel().setSubtitleStreamIndex(selectedSub.index!);
+  StreamModel().setSubtitleStreamIndex(selectedSub.index);
 }
