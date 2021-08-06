@@ -169,9 +169,9 @@ class CommonStreamBP {
   }
 
   static void setSubtitle(
-      int trackIndex, BetterPlayerController betterPlayerController) {
+      Subtitle subtitle, BetterPlayerController betterPlayerController) {
     betterPlayerController.setupSubtitleSource(
-        betterPlayerController.betterPlayerSubtitlesSourceList[trackIndex]);
+        betterPlayerController.betterPlayerSubtitlesSourceList[subtitle.index]);
   }
 
 /*

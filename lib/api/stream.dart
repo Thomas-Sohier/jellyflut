@@ -53,17 +53,15 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
-  } else {
-    queryParam['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex != null
-        ? streamModel.subtitleStreamIndex.toString()
-        : '0';
+  } else if (streamModel.selectedSubtitleTrack != null) {
+    queryParam['SubtitleStreamIndex'] =
+        streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex.toString();
   }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
-  } else {
-    queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex != null
-        ? streamModel.audioStreamIndex.toString()
-        : '0';
+  } else if (streamModel.selectedAudioTrack != null) {
+    queryParam['AudioStreamIndex'] =
+        streamModel.selectedAudioTrack!.jellyfinSubtitleIndex.toString();
   }
   queryParam['api_key'] = apiKey!;
 

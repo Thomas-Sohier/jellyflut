@@ -19,8 +19,9 @@ class CommonStream {
   final Function _currentPosition;
   final bool? _isInit;
   final Function _pip;
+  final Future<bool> _hasPip;
   final Function _getSubtitles;
-  final Function(int) _setSubtitle;
+  final Function(Subtitle) _setSubtitle;
   final VoidCallback _disableSubtitles;
   final Function _getAudioTracks;
   final Function(AudioTrack) _setAudioTrack;
@@ -40,6 +41,7 @@ class CommonStream {
       required currentPosition,
       required isInit,
       required pip,
+      required hasPip,
       required getSubtitles,
       required setSubtitle,
       required disableSubtitles,
@@ -59,6 +61,7 @@ class CommonStream {
         _currentPosition = currentPosition,
         _isInit = isInit,
         _pip = pip,
+        _hasPip = hasPip,
         _getSubtitles = getSubtitles,
         _setSubtitle = setSubtitle,
         _disableSubtitles = disableSubtitles,
@@ -101,6 +104,10 @@ class CommonStream {
     return _isInit;
   }
 
+  Future<bool> hasPip() {
+    return _hasPip;
+  }
+
   void pip() {
     _pip();
   }
@@ -109,8 +116,8 @@ class CommonStream {
     return _getSubtitles();
   }
 
-  void setSubtitle(int trackIndex) {
-    return _setSubtitle(trackIndex);
+  void setSubtitle(Subtitle subtitle) {
+    return _setSubtitle(subtitle);
   }
 
   void disableSubtitles() {
@@ -155,10 +162,11 @@ class CommonStream {
             CommonStreamVLC.getBufferingDurationVLC(vlcPlayerController),
         currentPosition: () => vlcPlayerController.value.position,
         isInit: vlcPlayerController.value.isInitialized,
+        hasPip: Future.value(false),
         pip: () => throw ('Not supported on VLC player'),
         getSubtitles: () => CommonStreamVLC.getSubtitles(vlcPlayerController),
-        setSubtitle: (trackIndex) =>
-            CommonStreamVLC.setSubtitle(trackIndex, vlcPlayerController),
+        setSubtitle: (subtitle) =>
+            CommonStreamVLC.setSubtitle(subtitle, vlcPlayerController),
         disableSubtitles: () => vlcPlayerController.setSpuTrack(-1),
         getAudioTracks: () =>
             CommonStreamVLC.getAudioTracks(vlcPlayerController),
@@ -188,11 +196,12 @@ class CommonStream {
         currentPosition: () =>
             betterPlayerController.videoPlayerController!.value.position,
         isInit: betterPlayerController.isVideoInitialized(),
+        hasPip: betterPlayerController.isPictureInPictureSupported(),
         pip: () => betterPlayerController.enablePictureInPicture(
             betterPlayerController.betterPlayerGlobalKey!),
         getSubtitles: () => CommonStreamBP.getSubtitles(betterPlayerController),
-        setSubtitle: (trackIndex) =>
-            CommonStreamBP.setSubtitle(trackIndex, betterPlayerController),
+        setSubtitle: (subtitle) =>
+            CommonStreamBP.setSubtitle(subtitle, betterPlayerController),
         disableSubtitles: () => betterPlayerController.subtitlesLines.clear(),
         getAudioTracks: () =>
             CommonStreamBP.getAudioTracks(betterPlayerController),
@@ -219,6 +228,7 @@ class CommonStream {
         bufferingDuration: () => Duration(seconds: 0),
         currentPosition: () => player.position.position,
         isInit: true,
+        hasPip: false,
         pip: () => {},
         getSubtitles: Future.wait([]),
         setSubtitle: () => {},
