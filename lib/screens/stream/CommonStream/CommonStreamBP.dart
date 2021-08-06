@@ -224,11 +224,9 @@ class CommonStreamBP {
     var dataSource = BetterPlayerDataSource.network(newUrl,
         subtitles: _getSubtitlesBP(streamModel.item!));
     betterPlayerController.betterPlayerSubtitlesSourceList.clear();
-    // await betterPlayerController.setupDataSource(dataSource);
-    // betterPlayerController.playNextVideo();
-    // await betterPlayerController.clearCache();
-    await betterPlayerController.videoPlayerController!
-        .setNetworkDataSource(newUrl);
+    await betterPlayerController.clearCache();
+    await betterPlayerController.setupDataSource(dataSource);
+    betterPlayerController.playNextVideo();
     await betterPlayerController.videoPlayerController!.play();
     await betterPlayerController.seekTo(Duration(microseconds: tick));
   }
