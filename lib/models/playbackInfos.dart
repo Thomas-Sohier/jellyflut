@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:jellyflut/models/mediaStream.dart';
+import 'package:jellyflut/models/mediaStreamType.dart';
 
 import 'mediaSource.dart';
 
@@ -32,7 +33,7 @@ class PlayBackInfos {
   List<MediaStream> getSubtitles() {
     return mediaSources.first.mediaStreams != null
         ? mediaSources.first.mediaStreams!
-            .where((element) => element.type.trim().toLowerCase() == 'subtitle')
+            .where((element) => element.type == MediaStreamType.SUBTITLE)
             .toList()
         : [];
   }

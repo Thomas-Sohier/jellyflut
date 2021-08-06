@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
-import 'package:jellyflut/screens/stream/model/CommonStream.dart';
+import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 
 class StreamModel extends ChangeNotifier {
   Item? _item;

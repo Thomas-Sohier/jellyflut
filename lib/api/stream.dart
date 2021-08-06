@@ -131,8 +131,7 @@ Future<String> getNewSubtitleSource(int subtitleIndex,
       startTick: startTick, subtitleStreamIndex: subtitleIndex);
 }
 
-Future<String> getSubtitleURL(
-    String itemId, String codec, int subtitleId) async {
+String getSubtitleURL(String itemId, String codec, int subtitleId) {
   var mediaSourceId = itemId.substring(0, 8) +
       '-' +
       itemId.substring(8, 12) +
