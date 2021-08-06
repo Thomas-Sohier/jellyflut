@@ -155,9 +155,8 @@ class CommonStream {
   }
 
   static CommonStream parseVlcComputerController(
-      {required Item item,
-      required Player player,
-      required VoidCallback listener}) {
+      {required Item item, required Player player, VoidCallback? listener}) {
+    final commonStreamVLCComputer = CommonStreamVLCComputer();
     return CommonStream._(
         pause: player.pause,
         play: player.play,
@@ -169,13 +168,11 @@ class CommonStream {
         isInit: true,
         pip: () => {},
         initListener: () => {},
-        addListener: CommonStreamVLCComputer.addListener,
-        removeListener: (_) => {},
+        addListener: commonStreamVLCComputer.addListener,
+        removeListener: (_) => commonStreamVLCComputer.removeListener(),
         dispose: () {
           player.stop();
-          Future.delayed(Duration(seconds: 3), () {
-            player.dispose();
-          });
+          Future.delayed(Duration(milliseconds: 200), player.dispose);
         },
         controller: player);
   }

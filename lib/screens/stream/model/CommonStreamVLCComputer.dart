@@ -2,23 +2,24 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/main.dart';
+import 'package:desktop_window/desktop_window.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/model/CommonStream.dart';
 
 class CommonStreamVLCComputer {
+  static List<Timer> timers = [];
+
   static Future<Player> setupData({required Item item}) async {
-    final size = MediaQuery.of(navigatorKey.currentContext!).size;
+    final size = await DesktopWindow.getWindowSize();
     final streamURL = await item.getItemURL(directPlay: true);
 
     final playerId = Random().nextInt(10000);
     final player = Player(
         id: playerId,
-        videoWidth: item.height ?? size.height.toInt(),
-        videoHeight: item.width ?? size.width.toInt(),
+        videoWidth: item.width ?? size.width.toInt(),
+        videoHeight: item.height ?? size.height.toInt(),
         commandlineArguments: [
           '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
         ]);
@@ -38,8 +39,14 @@ class CommonStreamVLCComputer {
     return Future.value(player);
   }
 
-  static void addListener(void Function() listener) {
-    Timer.periodic(Duration(milliseconds: 100), (i) => listener());
+  void addListener(void Function() listener) {
+    final timer =
+        Timer.periodic(Duration(milliseconds: 100), (i) => listener());
+    timers.add(timer);
+  }
+
+  void removeListener() {
+    timers.forEach((t) => t.cancel());
   }
 
   static Timer _startProgressTimer(Item item, Player player) {

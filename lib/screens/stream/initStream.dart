@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -50,17 +51,14 @@ void _initVLCMediaPlayer(Item item) async {
 
 Future<Widget> _initVlcComputerPlayer(Item item) async {
   final player = await CommonStreamVLCComputer.setupData(item: item);
-  final size = MediaQuery.of(navigatorKey.currentContext!).size;
+
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
       Video(
         playerId: player.id,
-        height: item.height != null
-            ? item.height!.toDouble()
-            : size.height.toDouble(),
-        width:
-            item.width != null ? item.width!.toDouble() : size.width.toDouble(),
+        height: player.videoHeight.toDouble(),
+        width: player.videoWidth.toDouble(),
       ),
       CommonControls(isComputer: true),
     ],
