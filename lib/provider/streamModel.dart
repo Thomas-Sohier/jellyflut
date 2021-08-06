@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/playbackInfos.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/screens/stream/model/audiotrack.dart';
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 class StreamModel extends ChangeNotifier {
   Item? _item;
@@ -11,8 +13,8 @@ class StreamModel extends ChangeNotifier {
   String? _url;
   CommonStream? _commonStream;
   bool? _isDirectPlay;
-  int? _audioStreamIndex;
-  int? _subtitleStreamIndex;
+  AudioTrack? _selectedAudioTrack;
+  Subtitle? _selectedSubtitleTrack;
   Timer? _timer;
 
   // Singleton
@@ -23,8 +25,8 @@ class StreamModel extends ChangeNotifier {
   String? get url => _url;
   CommonStream? get commonStream => _commonStream;
   bool? get isDirectPlay => _isDirectPlay;
-  int? get audioStreamIndex => _audioStreamIndex;
-  int? get subtitleStreamIndex => _subtitleStreamIndex;
+  AudioTrack? get selectedAudioTrack => _selectedAudioTrack;
+  Subtitle? get selectedSubtitleTrack => _selectedSubtitleTrack;
   Timer? get timer => _timer;
 
   factory StreamModel() {
@@ -53,12 +55,12 @@ class StreamModel extends ChangeNotifier {
     _isDirectPlay = isDirectPlay;
   }
 
-  void setAudioStreamIndex(int audioStreamIndex) {
-    _audioStreamIndex = audioStreamIndex;
+  void setAudioStreamIndex(AudioTrack? audioTrack) {
+    _selectedAudioTrack = audioTrack;
   }
 
-  void setSubtitleStreamIndex(int subtitleStreamIndex) {
-    _subtitleStreamIndex = subtitleStreamIndex;
+  void setSubtitleStreamIndex(Subtitle? subtitleTrack) {
+    _selectedSubtitleTrack = subtitleTrack;
   }
 
   void setTimer(Timer timer) {

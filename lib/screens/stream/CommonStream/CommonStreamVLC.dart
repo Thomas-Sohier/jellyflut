@@ -70,14 +70,19 @@ class CommonStreamVLC {
     // ignore: omit_local_variable_types
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = await vlcPlayerController.getSpuTracks();
-    subtitles.forEach((key, value) =>
-        parsedSubtitiles.add(Subtitle(index: key, name: value)));
+    for (var i = 0; i < subtitles.length; i++) {
+      final subtitleKey = subtitles.keys.elementAt(i);
+      parsedSubtitiles.add(Subtitle(
+          index: i,
+          jellyfinSubtitleIndex: subtitleKey,
+          name: subtitles[subtitleKey]!));
+    }
     return parsedSubtitiles;
   }
 
   static void setSubtitle(
-      int trackIndex, VlcPlayerController vlcPlayerController) {
-    vlcPlayerController.setSpuTrack(trackIndex);
+      Subtitle subtitle, VlcPlayerController vlcPlayerController) {
+    vlcPlayerController.setSpuTrack(subtitle.jellyfinSubtitleIndex!);
   }
 
   static Future<List<AudioTrack>> getAudioTracks(
@@ -85,13 +90,18 @@ class CommonStreamVLC {
     // ignore: omit_local_variable_types
     final List<AudioTrack> parsedAudioTracks = [];
     final audioTracks = await vlcPlayerController.getAudioTracks();
-    audioTracks.forEach((key, value) =>
-        parsedAudioTracks.add(AudioTrack(index: key, name: value)));
+    for (var i = 0; i < audioTracks.length; i++) {
+      final audioTrackKey = audioTracks.keys.elementAt(i);
+      parsedAudioTracks.add(AudioTrack(
+          index: i,
+          jellyfinSubtitleIndex: audioTrackKey,
+          name: audioTracks[audioTrackKey]!));
+    }
     return parsedAudioTracks;
   }
 
   static void setAudioTrack(
       AudioTrack trackIndex, VlcPlayerController vlcPlayerController) {
-    vlcPlayerController.setAudioTrack(trackIndex.index);
+    vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
   }
 }

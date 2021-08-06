@@ -25,8 +25,8 @@ class CommonControls extends StatefulWidget {
 class _CommonControlsState extends State<CommonControls> {
   bool _visible = true;
   late Timer _timer;
-  int subtitleSelectedIndex = 0;
-  int audioSelectedIndex = 0;
+  late int subtitleSelectedIndex;
+  late int audioSelectedIndex;
   late StreamModel streamModel;
   late FToast fToast;
 
@@ -42,6 +42,8 @@ class _CommonControlsState extends State<CommonControls> {
     streamModel.commonStream?.initListener();
     fToast = FToast();
     fToast.init(navigatorKey.currentState!.context);
+    subtitleSelectedIndex = streamModel.selectedSubtitleTrack!.index;
+    audioSelectedIndex = streamModel.selectedAudioTrack!.index;
     _timer = Timer(
         Duration(seconds: 5),
         () => setState(() {
@@ -159,23 +161,29 @@ class _CommonControlsState extends State<CommonControls> {
                               Icons.cloud_outlined,
                               color: Colors.white,
                             ))),
-                  InkWell(
-                    onTap: () {
-                      try {
-                        streamModel.commonStream?.pip();
-                      } catch (message) {
-                        showToast(message.toString(), fToast);
-                      }
-                    },
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.picture_in_picture,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  FutureBuilder<bool>(
+                      future: streamModel.commonStream!.hasPip(),
+                      builder: (context, snapshot) =>
+                          snapshot.hasData && snapshot.data!
+                              ? InkWell(
+                                  onTap: () {
+                                    try {
+                                      streamModel.commonStream?.pip();
+                                    } catch (message) {
+                                      showToast(message.toString(), fToast);
+                                    }
+                                  },
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.picture_in_picture,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Container()),
                   InkWell(
                     onTap: () {
                       changeSubtitle(context);
@@ -265,7 +273,7 @@ class _CommonControlsState extends State<CommonControls> {
       onTap: () {
         index < subtitles.length
             ? setSubtitle(subtitles[index])
-            : disableSubtitles(index);
+            : disableSubtitles(subtitles[index]);
         Navigator.pop(
           context,
           index < subtitles.length ? subtitles[index] : -1,
@@ -281,32 +289,16 @@ class _CommonControlsState extends State<CommonControls> {
     return subtitleSelectedIndex == index;
   }
 
-  void disableSubtitles(int index) {
-    subtitleSelectedIndex = index;
+  void disableSubtitles(Subtitle subtitle) {
+    subtitleSelectedIndex = subtitle.index;
     streamModel.commonStream!.disableSubtitles();
   }
 
   void setSubtitle(Subtitle subtitle) async {
     subtitleSelectedIndex = subtitle.index;
-    streamModel.commonStream!.setSubtitle(subtitle.index);
+    streamModel.setSubtitleStreamIndex(subtitle);
+    streamModel.commonStream!.setSubtitle(subtitle);
   }
-
-  // void changeAudio(BuildContext context) {
-  //   var hlsAudios =
-  //       streamModel.betterPlayerController?.betterPlayerAsmsAudioTracks;
-  //   var remoteAudios = streamModel.item?.mediaStreams != null
-  //       ? streamModel.item!.mediaStreams!
-  //           .where((element) => element.type.trim().toLowerCase() == 'audio')
-  //           .toList()
-  //       : null;
-  //   if (hlsAudios != null && hlsAudios.isNotEmpty) {
-  //     dialogHLSAudio(hlsAudios);
-  //   } else if (remoteAudios != null && remoteAudios.isNotEmpty) {
-  //     dialogRemoteAudio(remoteAudios);
-  //   } else {
-  //     showToast('No audios found', fToast);
-  //   }
-  // }
 
   void changeAudio(BuildContext context) {
     showDialog(
@@ -338,7 +330,7 @@ class _CommonControlsState extends State<CommonControls> {
 
   Widget _audioTracksListTile(int index, List<AudioTrack> audioTracks) {
     return ListTile(
-        selected: isAudioSelected(index),
+        selected: isAudioSelected(audioTracks[index]),
         title: Text(
           audioTracks[index].name,
         ),
@@ -351,29 +343,13 @@ class _CommonControlsState extends State<CommonControls> {
         });
   }
 
-  bool isAudioSelected(int trackIndex) {
-    return subtitleSelectedIndex == trackIndex;
+  bool isAudioSelected(AudioTrack audioTrack) {
+    return audioSelectedIndex == audioTrack.index;
   }
 
   void setAudioTrack(AudioTrack audioTrack) async {
     audioSelectedIndex = audioTrack.index;
+    streamModel.setAudioStreamIndex(audioTrack);
     streamModel.commonStream!.setAudioTrack(audioTrack);
   }
-
-/*
-  void changeAudioTrack(String url) async {
-    var tick = streamModel.betterPlayerController!.videoPlayerController!.value
-        .position.inMicroseconds;
-    var dataSource = BetterPlayerDataSource.network(url,
-        subtitles: await getSubtitles(streamModel.item!));
-
-    // BetterPlayerDataSource.file(url);
-
-    streamModel.betterPlayerController!.betterPlayerSubtitlesSourceList.clear();
-    await streamModel.betterPlayerController!.setupDataSource(dataSource);
-    streamModel.betterPlayerController!.playNextVideo();
-    await streamModel.betterPlayerController!
-        .seekTo(Duration(microseconds: tick));
-  }
-  */
 }

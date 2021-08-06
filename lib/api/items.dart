@@ -278,12 +278,14 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
   if (subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
   } else {
-    queryParams['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex;
+    queryParams['SubtitleStreamIndex'] =
+        streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex;
   }
   if (audioStreamIndex != null) {
     queryParams['AudioStreamIndex'] = audioStreamIndex;
   } else {
-    queryParams['AudioStreamIndex'] = streamModel.audioStreamIndex;
+    queryParams['AudioStreamIndex'] =
+        streamModel.selectedAudioTrack!.jellyfinSubtitleIndex;
   }
 
   var url = '${server.url}/Items/$itemId/PlaybackInfo';
