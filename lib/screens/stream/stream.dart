@@ -51,11 +51,7 @@ class _StreamState extends State<Stream> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Center(
-          child: AspectRatio(
-        aspectRatio: widget.item.getAspectRatio(),
-        child: widget.player,
-      )),
+      body: Center(child: widget.player),
     );
   }
 }

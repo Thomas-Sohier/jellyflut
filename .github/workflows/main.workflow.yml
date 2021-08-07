@@ -60,7 +60,7 @@ jobs:
         with:
           channel: stable
       - run: flutter config --enable-windows-desktop
-      - run: flutter build windows --verbose
+      - run: flutter build windows
 
       - name: Create a windows app-bundle
         uses: thedoctor0/zip-release@master
@@ -72,7 +72,7 @@ jobs:
       - name: Create a Release Windows 
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/windows/runner/Release/release-windows.zip"
+          artifacts: "release-windows.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       
@@ -88,7 +88,7 @@ jobs:
           channel: stable
       - run: flutter config --enable-linux-desktop
       - run: sudo apt install vlc libvlc-dev ninja-build clang libgtk-3-dev
-      - run: flutter build linux --release --verbose
+      - run: flutter build linux --release
       
       - name: Create a linux app-bundle
         uses: thedoctor0/zip-release@master
@@ -100,6 +100,6 @@ jobs:
       - name: Create a Release Linux
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/linux/x64/release/release-linux.zip"
+          artifacts: "release-linux.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true

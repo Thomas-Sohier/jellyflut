@@ -42,8 +42,8 @@ class _CommonControlsState extends State<CommonControls> {
     streamModel.commonStream?.initListener();
     fToast = FToast();
     fToast.init(navigatorKey.currentState!.context);
-    subtitleSelectedIndex = streamModel.selectedSubtitleTrack!.index;
-    audioSelectedIndex = streamModel.selectedAudioTrack!.index;
+    subtitleSelectedIndex = streamModel.selectedSubtitleTrack?.index ?? 0;
+    audioSelectedIndex = streamModel.selectedAudioTrack?.index ?? 0;
     _timer = Timer(
         Duration(seconds: 5),
         () => setState(() {
@@ -64,11 +64,15 @@ class _CommonControlsState extends State<CommonControls> {
     return ChangeNotifierProvider.value(
         value: streamModel,
         child: GestureDetector(
-            onTap: () => autoHideControl(),
-            child: visibility(
-                child: Stack(
-              children: [blackGradient(), controls()],
-            ))));
+          onTap: () {
+            autoHideControl();
+          },
+          behavior: HitTestBehavior.translucent,
+          child: visibility(
+              child: Stack(
+            children: [blackGradient(), controls()],
+          )),
+        ));
   }
 
   Widget visibility({required Widget child}) {

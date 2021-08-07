@@ -80,12 +80,15 @@ Future<Widget> _initVlcPhonePlayer(Item item) async {
 
   return Stack(
     alignment: Alignment.center,
+    clipBehavior: Clip.none,
     children: <Widget>[
-      VlcPlayer(
-        controller: vlcPlayerController,
-        aspectRatio: item.getAspectRatio(),
-        placeholder: Center(child: CircularProgressIndicator()),
-      ),
+      InteractiveViewer(
+          clipBehavior: Clip.none,
+          child: VlcPlayer(
+            controller: vlcPlayerController,
+            aspectRatio: item.getAspectRatio(),
+            placeholder: Center(child: CircularProgressIndicator()),
+          )),
       CommonControls(),
     ],
   );
@@ -96,9 +99,17 @@ void _initExoPlayerMediaPlayer(Item item) async {
   final betterPlayerController = await CommonStreamBP.setupData(item: item);
 
   // Init widget player to use in Stream widget
-  final playerBP = BetterPlayer(
-      key: betterPlayerController.betterPlayerGlobalKey,
-      controller: betterPlayerController);
+  final playerBP = Stack(
+    alignment: Alignment.center,
+    clipBehavior: Clip.none,
+    children: <Widget>[
+      InteractiveViewer(
+          child: BetterPlayer(
+              key: betterPlayerController.betterPlayerGlobalKey,
+              controller: betterPlayerController)),
+      CommonControls(),
+    ],
+  );
 
   // Redirect to player page
   await Navigator.push(
