@@ -2,10 +2,12 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 
 class MusicPlayer extends ChangeNotifier {
   AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
   Item? _item;
+  CommonPlayer? _commonPlayer;
 
   // Singleton
   static final MusicPlayer _musicPlayer = MusicPlayer._internal();
@@ -16,9 +18,9 @@ class MusicPlayer extends ChangeNotifier {
 
   MusicPlayer._internal();
 
-  Item? getItemPlayed() {
-    return _item;
-  }
+  CommonPlayer? get getCommonPlayer => _commonPlayer;
+  set setCommonPlayer(CommonPlayer cp) => _commonPlayer = cp;
+  Item? get getItemPlayer => _item;
 
   String currentMusicTitle() {
     if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
