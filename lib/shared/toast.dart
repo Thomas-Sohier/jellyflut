@@ -1,17 +1,27 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void showToast(String msg, FToast fToast, {Duration? duration}) {
+  final borderRadius = BorderRadius.all(Radius.circular(25));
   duration = duration ?? Duration(seconds: 1);
-  fToast.removeCustomToast();
+  //fToast.removeCustomToast();
 
   // Toast widget
-  Widget toast = Container(
-    color: Colors.grey[300],
-    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-    child: Text(msg),
-  );
+  Widget toast = ClipRRect(
+      borderRadius: borderRadius,
+      child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                color: Colors.grey.shade200.withOpacity(0.5)),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            child: Text(msg),
+          )));
 
   fToast.showToast(
     child: toast,
