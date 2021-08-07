@@ -72,81 +72,25 @@ class CommonStream {
         _removeListener = removeListener,
         _dispose = dispose;
 
-  void play() {
-    _play();
-  }
-
-  void pause() {
-    _pause();
-  }
-
-  bool isPlaying() {
-    return _isPlaying();
-  }
-
-  void seekTo(Duration duration) {
-    _seekTo(duration);
-  }
-
-  Duration getBufferingDuration() {
-    return _bufferingDuration();
-  }
-
-  Duration getDuration() {
-    return _duration();
-  }
-
-  Duration getCurrentPosition() {
-    return _currentPosition();
-  }
-
-  bool? isInit() {
-    return _isInit;
-  }
-
-  Future<bool> hasPip() {
-    return _hasPip;
-  }
-
-  void pip() {
-    _pip();
-  }
-
-  Future<List<Subtitle>> getSubtitles() {
-    return _getSubtitles();
-  }
-
-  void setSubtitle(Subtitle subtitle) {
-    return _setSubtitle(subtitle);
-  }
-
-  void disableSubtitles() {
-    _disableSubtitles();
-  }
-
-  Future<List<AudioTrack>> getAudioTracks() {
-    return _getAudioTracks();
-  }
-
-  void setAudioTrack(AudioTrack audioTrack) {
-    return _setAudioTrack(audioTrack);
-  }
-
-  void initListener() {
-    _initListener();
-  }
-
-  void addListener(VoidCallback listener) {
-    _addListener(listener);
-  }
-
-  void removeListener(VoidCallback listener) {
-    _removeListener(listener);
-  }
-
-  void disposeStream() {
-    _dispose();
-  }
+  void play() => _play();
+  void pause() => _pause();
+  bool isPlaying() => _isPlaying();
+  void seekTo(Duration duration) => _seekTo(duration);
+  Duration getBufferingDuration() => _bufferingDuration();
+  Duration getDuration() => _duration();
+  Duration getCurrentPosition() => _currentPosition();
+  bool? isInit() => _isInit;
+  Future<bool> hasPip() => _hasPip;
+  void pip() => _pip();
+  Future<List<Subtitle>> getSubtitles() => _getSubtitles();
+  void setSubtitle(Subtitle subtitle) => _setSubtitle(subtitle);
+  void disableSubtitles() => _disableSubtitles();
+  Future<List<AudioTrack>> getAudioTracks() => _getAudioTracks();
+  void setAudioTrack(AudioTrack audioTrack) => _setAudioTrack(audioTrack);
+  void initListener() => _initListener();
+  void addListener(VoidCallback listener) => _addListener(listener);
+  void removeListener(VoidCallback listener) => _removeListener(listener);
+  void disposeStream() => _dispose();
 
   static CommonStream parseVLCController(
       {required Item item,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/screens/musicPlayer/songPlaylist.dart';
+import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
 
 class SongHeaderBar extends StatelessWidget {
   final double height;
