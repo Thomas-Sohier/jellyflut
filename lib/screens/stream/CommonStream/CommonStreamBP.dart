@@ -9,7 +9,6 @@ import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
@@ -128,7 +127,8 @@ class CommonStreamBP {
       enableQualities: false,
       showControlsOnInitialize: true,
       playerTheme: BetterPlayerTheme.custom,
-      customControlsBuilder: (controller) => CommonControls(),
+      // customControlsBuilder: (controller) => CommonControls(),
+      customControlsBuilder: (controller) => Container(),
       controlBarHeight: 40,
     );
   }

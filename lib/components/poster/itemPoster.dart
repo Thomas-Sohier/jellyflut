@@ -158,7 +158,7 @@ class _ItemPosterState extends State<ItemPoster>
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: AsyncImage(
                 widget.item.correctImageId(searchType: 'logo'),
-                widget.item.correctImageTags(searchType: 'logo')!,
+                widget.item.correctImageTags(searchType: 'logo') ?? '',
                 widget.item.imageBlurHashes!,
                 boxFit: BoxFit.contain,
                 tag: 'Logo',
