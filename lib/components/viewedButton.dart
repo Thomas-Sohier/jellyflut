@@ -30,7 +30,7 @@ class _ViewedButtonState extends State<ViewedButton> {
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
     fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
+    fToast.init(context);
     super.initState();
   }
 
