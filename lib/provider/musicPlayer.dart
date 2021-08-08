@@ -1,13 +1,11 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 
 class MusicPlayer extends ChangeNotifier {
   Item? _item;
+  // ignore: prefer_final_fields
   List<MusicItem> _musicItems = [];
   MusicItem? _currentlyPlayedMusicItem;
   CommonPlayer? _commonPlayer;

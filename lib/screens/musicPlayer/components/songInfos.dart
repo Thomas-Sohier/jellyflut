@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/screens/details/details.dart';
-import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 

@@ -717,7 +717,7 @@ class Item {
             assetsAudioPlayer: assetsAudioPlayer);
       }
       musicPlayer.setCommonPlayer(commonPlayer);
-      musicPlayer.getCommonPlayer!.playRemoteAudio(this);
+      await musicPlayer.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       // musicPlayer.playPlaylist(id);
     } else if (type == ItemType.BOOK) {
