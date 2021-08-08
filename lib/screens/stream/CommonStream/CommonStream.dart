@@ -174,10 +174,18 @@ class CommonStream {
         isInit: true,
         hasPip: Future.value(false),
         pip: () => {},
-        getSubtitles: () => Future.wait([]),
+        getSubtitles: () {
+          // ignore: omit_local_variable_types
+          final List<Subtitle> subtitles = [];
+          return Future.value(subtitles);
+        },
         setSubtitle: (_) => {},
         disableSubtitles: () => {},
-        getAudioTracks: () => {},
+        getAudioTracks: () {
+          // ignore: omit_local_variable_types
+          final List<AudioTrack> audioTracks = [];
+          return Future.value(audioTracks);
+        },
         setAudioTrack: (_) => {},
         initListener: () => {},
         addListener: commonStreamVLCComputer.addListener,
