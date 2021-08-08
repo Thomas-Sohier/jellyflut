@@ -51,7 +51,7 @@ class _SongControlsState extends State<SongControls> {
                   boxShadow: shadows,
                   shape: BoxShape.circle),
               child: InkWell(
-                onTap: () => musicPlayer.assetsAudioPlayer.previous(),
+                // onTap: () => musicPlayer.assetsAudioPlayer.previous(),
                 child: Icon(
                   Icons.skip_previous,
                   color: widget.color,
@@ -67,9 +67,9 @@ class _SongControlsState extends State<SongControls> {
                     boxShadow: shadows,
                     shape: BoxShape.circle),
                 child: InkWell(
-                  onTap: () async => await musicPlayer.toggle(),
+                  onTap: () => musicPlayer.toggle(),
                   child: Icon(
-                    musicPlayer.assetsAudioPlayer.isPlaying.value
+                    musicPlayer.getCommonPlayer!.isPlaying()
                         ? Icons.pause
                         : Icons.play_arrow,
                     color: widget.color,
@@ -84,7 +84,7 @@ class _SongControlsState extends State<SongControls> {
                 boxShadow: shadows,
                 shape: BoxShape.circle),
             child: InkWell(
-              onTap: () => musicPlayer.assetsAudioPlayer.next(),
+              // onTap: () => musicPlayer.assetsAudioPlayer.next(),
               child: Icon(
                 Icons.skip_next,
                 color: widget.color,

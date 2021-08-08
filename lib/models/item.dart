@@ -5,8 +5,11 @@
 // ignore_for_file: unused_import
 
 import 'dart:convert';
+import 'dart:io';
 
 // import 'package:fereader/fereader.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,6 +24,7 @@ import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
+import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -703,9 +707,19 @@ class Item {
         type == ItemType.VIDEO) {
       automaticStreamingSoftwareChooser(item: this);
     } else if (type == ItemType.AUDIO) {
-      musicPlayer.playRemoteItem(this);
+      var commonPlayer;
+      if (Platform.isLinux || Platform.isWindows) {
+        final player = vlc.Player(id: 123);
+        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
+      } else {
+        final assetsAudioPlayer = AssetsAudioPlayer();
+        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
+            assetsAudioPlayer: assetsAudioPlayer);
+      }
+      musicPlayer.setCommonPlayer(commonPlayer);
+      musicPlayer.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      musicPlayer.playPlaylist(id);
+      // musicPlayer.playPlaylist(id);
     } else if (type == ItemType.BOOK) {
       await Navigator.pushReplacement(navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));

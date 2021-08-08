@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 
@@ -12,14 +13,13 @@ class SongSlider extends StatefulWidget {
 
 class _SongSliderState extends State<SongSlider> {
   late MusicPlayer musicPlayer;
-  late int _playBackTime;
+  late Duration musicDuration;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    _playBackTime = musicPlayer.currentMusicDuration().toInt();
-    playerListener();
+    // playerListener();
   }
 
   @override
@@ -29,21 +29,32 @@ class _SongSliderState extends State<SongSlider> {
 
   @override
   Widget build(BuildContext context) {
-    var sliderSize = _playBackTime / musicPlayer.currentMusicMaxDuration();
-    return FractionallySizedBox(
-        widthFactor: sliderSize < 0 ? 0 : sliderSize,
-        child: Container(
-          color: widget.albumColors[1].withAlpha(150),
-        ));
+    return StreamBuilder<Duration?>(
+      stream: musicPlayer.getCommonPlayer!.getCurrentPosition(),
+      builder: (context, snapshot) => FractionallySizedBox(
+          widthFactor: getSliderSize(snapshot.data),
+          child: Container(
+            color: Colors.amber,
+          )),
+    );
   }
 
-  void playerListener() {
-    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.isPlaying && mounted) {
-        setState(() {
-          _playBackTime = event.currentPosition.inMilliseconds.toInt();
-        });
-      }
-    });
+  double getSliderSize(Duration? currentPosition) {
+    if (currentPosition == null ||
+        musicPlayer.getCommonPlayer?.getDuration() == null) {
+      return 0;
+    }
+    return currentPosition.inMilliseconds.toDouble() /
+        musicPlayer.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
   }
+
+  // void playerListener() {
+  //   musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
+  //     if (event.isPlaying && mounted) {
+  //       setState(() {
+  //         _playBackTime = event.currentPosition.inMilliseconds.toInt();
+  //       });
+  //     }
+  //   });
+  // }
 }

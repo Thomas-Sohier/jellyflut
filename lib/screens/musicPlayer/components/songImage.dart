@@ -67,20 +67,20 @@ class _SongImageState extends State<SongImage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        musicPlayer.getCurrentAudioImagePath() != null
-                            ? OctoImage(
-                                image: CachedNetworkImageProvider(
-                                    musicPlayer.getCurrentAudioImagePath()!),
-                                placeholderBuilder: (_) => placeholder(size),
-                                errorBuilder: (context, error, e) =>
-                                    placeholder(size),
-                                fadeInDuration: Duration(milliseconds: 300),
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                                width: size,
-                                height: size,
-                              )
-                            : placeholder(size),
+                        // musicPlayer.getCurrentAudioImagePath() != null
+                        //     ? OctoImage(
+                        //         image: CachedNetworkImageProvider(
+                        //             musicPlayer.getCurrentAudioImagePath()!),
+                        //         placeholderBuilder: (_) => placeholder(size),
+                        //         errorBuilder: (context, error, e) =>
+                        //             placeholder(size),
+                        //         fadeInDuration: Duration(milliseconds: 300),
+                        //         fit: BoxFit.cover,
+                        //         alignment: Alignment.center,
+                        //         width: size,
+                        //         height: size,
+                        //       )
+                        //     : placeholder(size),
                         Positioned.fill(
                             child: Align(
                                 alignment: Alignment.centerLeft,
@@ -133,10 +133,10 @@ class _SongImageState extends State<SongImage> {
     final localOffset = box.globalToLocal(details.globalPosition);
     posx = localOffset.dx;
     var percentWidth = posx / widgetWidth!;
-    var duration = musicPlayer.currentMusicMaxDuration() * percentWidth;
-    if (duration > 0 && duration < musicPlayer.currentMusicMaxDuration()) {
-      musicPlayer.assetsAudioPlayer
-          .seek(Duration(milliseconds: duration.toInt()));
+    var duration = musicPlayer.getCommonPlayer!.getDuration() * percentWidth;
+    if (duration.inMilliseconds > 0 &&
+        duration < musicPlayer.getCommonPlayer!.getDuration()) {
+      musicPlayer.getCommonPlayer!.seekTo(duration);
     }
   }
 }
