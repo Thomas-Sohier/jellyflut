@@ -743,6 +743,10 @@ class Item {
     } else {
       throw ('Cannot find the type of file');
     }
+
+    if (type == ItemType.AUDIO) {
+      return createMusicURL();
+    }
     return getStreamURL(item, directPlay);
   }
 

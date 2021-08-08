@@ -1,44 +1,14 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 
 class CommonPlayerVLCComputer {
-  static List<Timer> timers = [];
-
-  static Future<Player> setupData({required Item item}) async {
-    final size = MediaQuery.of(navigatorKey.currentContext!).size;
-    final streamURL = await item.getItemURL(directPlay: true);
-
-    final playerId = Random().nextInt(10000);
-    final player = Player(
-        id: playerId,
-        videoWidth: item.width ?? size.width.toInt(),
-        videoHeight: item.height ?? size.height.toInt(),
-        commandlineArguments: [
-          '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
-        ]);
-    final media = Media.network(streamURL);
-
-    player.open(media);
-
-    // create timer to save progress
-    final timer = _startProgressTimer(item, player);
-    StreamModel().setTimer(timer);
-
-    // create common stream controller
-    final commonStream = CommonStream.parseVlcComputerController(
-        item: item, player: player, listener: () => {});
-
-    StreamModel().setCommonStream(commonStream);
-    return Future.value(player);
-  }
+  static List<Timer> _timers = [];
+  final MusicPlayer _musicPlayer = MusicPlayer();
 
   Stream<Duration?> getPosition(Player player) {
     final streamController = StreamController<Duration?>.broadcast();
@@ -48,31 +18,60 @@ class CommonPlayerVLCComputer {
     return streamController.stream;
   }
 
-  void playRemoteAudio(Item item, Player player) async {
-    final streamURL = await item.getItemURL(directPlay: true);
-    final media = Media.network(streamURL);
-    player.open(media);
+  Future<void> playRemoteAudio(Item item, Player player) async {
+    final musicItemIndex = _musicPlayer.getPlayList().length + 1;
+    final streamURL = await contructAudioURL(itemId: item.id);
+    final musicItem =
+        await MusicItem.parseFromItem(musicItemIndex, streamURL, item);
+    final insertedIndex = _musicPlayer.insertIntoPlaylist(musicItem);
+    final playlist = Playlist(
+        medias: _getPlaylistMusicItemAsMedia(),
+        playlistMode: PlaylistMode.single);
+    player.open(playlist, autoStart: false);
+    player.jump(insertedIndex);
+    _musicPlayer.setCurrentMusic(musicItem);
   }
+
+  List<Media> _getPlaylistMusicItemAsMedia() {
+    return _musicPlayer.getMusicItems
+        .map((MusicItem musicItem) => Media.network(musicItem.url))
+        .toList();
+  }
+
+  void playAtIndex(int index, Player player) {
+    player.jump(index);
+  }
+
+  /// play previous track
+  /// return index of current media
+  int previous(Player player) {
+    player.back();
+    return player.current.index ?? 0;
+  }
+
+  /// play next track
+  /// return index of current media
+  int next(Player player) {
+    player.next();
+    return player.current.index ?? 0;
+  }
+
+  // MusicItem metasToMusicItem(Map<String, String> metas) {
+  //   return MusicItem(
+  //       id: 0,
+  //       title: metas['title'],
+  //       artist: metas['artist'],
+  //       album: metas['album'],
+  //       image: null);
+  // }
 
   void addListener(void Function() listener) {
     final timer =
         Timer.periodic(Duration(milliseconds: 100), (i) => listener());
-    timers.add(timer);
+    _timers.add(timer);
   }
 
   void removeListener() {
-    timers.forEach((t) => t.cancel());
-  }
-
-  static Timer _startProgressTimer(Item item, Player player) {
-    return Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) => itemProgress(item,
-            canSeek: player.playback.isSeekable,
-            isMuted: player.general.volume > 0 ? true : false,
-            isPaused: !player.playback.isPlaying,
-            positionTicks: player.position.position?.inMicroseconds ?? 0,
-            volumeLevel: player.general.volume.round(),
-            subtitlesIndex: 0));
+    _timers.forEach((t) => t.cancel());
   }
 }

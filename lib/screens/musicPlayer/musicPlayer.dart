@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songBackground.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songImage.dart';
-import 'package:jellyflut/screens/musicPlayer/components/songInfos.dart';
 import 'package:jellyflut/provider/musicPlayer.dart' as music_player_provider;
 import 'package:jellyflut/shared/theme.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -26,12 +25,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   void initState() {
     super.initState();
-    backgroundColor1 = jellyLightPurple.shade500;
-    backgroundColor2 = jellyLightBLue.shade50;
+    backgroundColor1 = jellyLightPurple;
+    backgroundColor2 = jellyDarkPurple;
     foregroundColor = Colors.black;
     musicPlayer = music_player_provider.MusicPlayer();
     // musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
-    // setAlbumPrimaryColor();
+    setAlbumPrimaryColor();
     setForegroundColorFromBackground();
     // playerListener();
   }
@@ -43,7 +42,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight = MediaQuery.of(context).padding.top;
+    return Consumer<music_player_provider.MusicPlayer>(
+        builder: (context, mp, child) {
+      return player();
+    });
+  }
+
+  Widget player() {
+    var statusBarHeight =
+        MediaQuery.of(context).padding.top == 0 ? 12.toDouble() : 12.toDouble();
     var size = MediaQuery.of(context).size;
     var height = size.height - statusBarHeight;
     return Scaffold(
@@ -67,7 +74,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             height: height * 0.05, color: Colors.white),
                         // SongInfos(height: height * 0.30, color: Colors.white),
                         SongImage(
-                            height: height * 0.55,
+                            height: height * 0.95,
                             color: foregroundColor,
                             albumColors: [backgroundColor1, backgroundColor2]),
                         // SongControls(height: height * 0.10, color: foregroundColor),
@@ -78,16 +85,17 @@ class _MusicPlayerState extends State<MusicPlayer> {
             )));
   }
 
-  // void setAlbumPrimaryColor() {
-  //   var url = musicPlayer
-  //       .assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
-  //   PaletteGenerator.fromImageProvider(NetworkImage(url))
-  //       .then((PaletteGenerator value) => setState(() => {
-  //             setBackground(
-  //                 value.paletteColors[0].color, value.paletteColors[1].color),
-  //             setForegroundColorFromBackground()
-  //           }));
-  // }
+  void setAlbumPrimaryColor() {
+    final image = musicPlayer.getCurrentMusic?.image;
+    if (image != null) {
+      PaletteGenerator.fromImageProvider(MemoryImage(image))
+          .then((PaletteGenerator value) => setState(() => {
+                setBackground(
+                    value.paletteColors[0].color, value.paletteColors[1].color),
+                setForegroundColorFromBackground()
+              }));
+    }
+  }
 
   void setBackground(Color color1, Color color2) {
     backgroundColor1 = color1;
