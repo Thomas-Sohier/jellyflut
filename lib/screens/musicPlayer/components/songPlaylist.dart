@@ -52,18 +52,21 @@ class _SongPlaylistState extends State<SongPlaylist> {
                   axisDirection: AxisDirection.down,
                   color: widget.color,
                   child: ChangeNotifierProvider.value(
-                    value: musicPlayer,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: musicPlayer
-                            .assetsAudioPlayer.playlist!.numberOfItems,
-                        itemBuilder: (context, index) => playlistListItem(
-                            index,
-                            musicPlayer.assetsAudioPlayer.playlist!
-                                .audios[index].metas)),
-                  ));
+                      value: musicPlayer,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          // itemCount: musicPlayer
+                          //     .assetsAudioPlayer.playlist!.numberOfItems,
+                          // itemBuilder: (context, index) => playlistListItem(
+                          //     index,
+                          //     musicPlayer.assetsAudioPlayer.playlist!
+                          //         .audios[index].metas)),
+                          itemCount: 3,
+                          itemBuilder: (context, index) => Container(
+                                height: 200,
+                              ))));
             })));
   }
 
@@ -71,7 +74,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
     return Dismissible(
       key: ValueKey(metas.id! + Uuid().v1()),
       onDismissed: (direction) {
-        musicPlayer.removePlaylistItemAtIndex(index);
+        // musicPlayer.removePlaylistItemAtIndex(index);
       },
       child: Column(
         children: [
@@ -82,7 +85,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
               thickness: 0.5,
             ),
           InkWell(
-              onTap: () => musicPlayer.playAtIndex(index),
+              // onTap: () => musicPlayer.playAtIndex(index),
               child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: playlistItem(index)))
@@ -109,37 +112,37 @@ class _SongPlaylistState extends State<SongPlaylist> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                    musicPlayer
-                        .assetsAudioPlayer.playlist!.audios[index].metas.title!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: widget.color)),
+                // child: Text(
+                //     musicPlayer
+                //         .assetsAudioPlayer.playlist!.audios[index].metas.title!,
+                //     overflow: TextOverflow.ellipsis,
+                //     style: TextStyle(
+                //         fontSize: 16,
+                //         fontWeight: FontWeight.w600,
+                //         color: widget.color)),
               ),
-              if (musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.artist !=
-                  null)
-                Text(
-                    musicPlayer.assetsAudioPlayer.playlist!.audios[index].metas
-                        .artist!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: widget.color)),
-              if (musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.album !=
-                  null)
-                Text(
-                    musicPlayer
-                        .assetsAudioPlayer.playlist!.audios[index].metas.album!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: widget.color))
+              // if (musicPlayer
+              //         .assetsAudioPlayer.playlist!.audios[index].metas.artist !=
+              //     null)
+              //   Text(
+              //       musicPlayer.assetsAudioPlayer.playlist!.audios[index].metas
+              //           .artist!,
+              //       overflow: TextOverflow.ellipsis,
+              //       style: TextStyle(
+              //           fontSize: 14,
+              //           fontWeight: FontWeight.normal,
+              //           color: widget.color)),
+              // if (musicPlayer
+              //         .assetsAudioPlayer.playlist!.audios[index].metas.album !=
+              //     null)
+              //   Text(
+              //       musicPlayer
+              //           .assetsAudioPlayer.playlist!.audios[index].metas.album!,
+              //       overflow: TextOverflow.ellipsis,
+              //       style: TextStyle(
+              //           fontSize: 14,
+              //           fontWeight: FontWeight.normal,
+              //           color: widget.color))
             ],
           ),
         )

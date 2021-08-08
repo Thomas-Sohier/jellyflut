@@ -1,15 +1,9 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/musicPlayer/commonPlayer/CommonPlayerVLCComputer.dart';
-import 'package:jellyflut/screens/stream/CommonStream/CommonStreamBP.dart';
-import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
-import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
-import 'package:jellyflut/screens/stream/model/audiotrack.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerAssetsAudioPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerVLCComputer.dart';
 
 class CommonPlayer {
   final Function _pause;
@@ -19,7 +13,8 @@ class CommonPlayer {
   final Function _bufferingDuration;
   final Function _duration;
   final Stream<Duration?> _currentPosition;
-  final bool? _isInit;
+  final Function(Item) _playRemoteAudio;
+  final bool _isInit;
   final Function _dispose;
   final Object controller;
 
@@ -31,6 +26,7 @@ class CommonPlayer {
       required bufferingDuration,
       required duration,
       required currentPosition,
+      required playRemoteAudio,
       required isInit,
       required dispose,
       required this.controller})
@@ -41,6 +37,7 @@ class CommonPlayer {
         _bufferingDuration = bufferingDuration,
         _duration = duration,
         _currentPosition = currentPosition,
+        _playRemoteAudio = playRemoteAudio,
         _isInit = isInit,
         _dispose = dispose;
 
@@ -51,13 +48,12 @@ class CommonPlayer {
   Duration getBufferingDuration() => _bufferingDuration();
   Duration getDuration() => _duration();
   Stream<Duration?> getCurrentPosition() => _currentPosition;
-  bool? isInit() => _isInit;
+  void playRemoteAudio(Item item) => _playRemoteAudio(item);
+  bool isInit() => _isInit;
   void disposeStream() => _dispose();
 
   static CommonPlayer parseAssetsAudioPlayer(
-      {required Item item,
-      required AssetsAudioPlayer assetsAudioPlayer,
-      required VoidCallback listener}) {
+      {required AssetsAudioPlayer assetsAudioPlayer}) {
     return CommonPlayer._(
         pause: assetsAudioPlayer.pause,
         play: assetsAudioPlayer.play,
@@ -66,13 +62,16 @@ class CommonPlayer {
         duration: () => assetsAudioPlayer.current.value!.audio.duration,
         bufferingDuration: () => Duration(seconds: 0),
         currentPosition: assetsAudioPlayer.currentPosition,
-        isInit: () => true,
+        playRemoteAudio: (Item item) async => assetsAudioPlayer.open(
+              await CommonPlayerAssetsAudioPlayer.createAudioNetwork(item),
+              showNotification: true,
+            ),
+        isInit: true,
         dispose: () => assetsAudioPlayer.dispose(),
         controller: assetsAudioPlayer);
   }
 
-  static CommonPlayer parseVlcComputerController(
-      {required Item item, required Player player, VoidCallback? listener}) {
+  static CommonPlayer parseVlcComputerController({required Player player}) {
     final commonPlayerVLCComputer = CommonPlayerVLCComputer();
     return CommonPlayer._(
         pause: player.pause,
@@ -81,7 +80,9 @@ class CommonPlayer {
         seekTo: player.seek,
         duration: () => player.position.duration,
         bufferingDuration: () => Duration(seconds: 0),
-        currentPosition: () => commonPlayerVLCComputer.getPosition(player),
+        currentPosition: commonPlayerVLCComputer.getPosition(player),
+        playRemoteAudio: (Item item) =>
+            commonPlayerVLCComputer.playRemoteAudio(item, player),
         isInit: true,
         dispose: () {
           player.stop();

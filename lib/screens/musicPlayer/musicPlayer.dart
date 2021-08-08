@@ -30,10 +30,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
     backgroundColor2 = jellyLightBLue.shade50;
     foregroundColor = Colors.black;
     musicPlayer = music_player_provider.MusicPlayer();
-    musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
-    setAlbumPrimaryColor();
+    // musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
+    // setAlbumPrimaryColor();
     setForegroundColorFromBackground();
-    playerListener();
+    // playerListener();
   }
 
   @override
@@ -65,7 +65,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         ),
                         SongHeaderBar(
                             height: height * 0.05, color: Colors.white),
-                        SongInfos(height: height * 0.30, color: Colors.white),
+                        // SongInfos(height: height * 0.30, color: Colors.white),
                         SongImage(
                             height: height * 0.55,
                             color: foregroundColor,
@@ -78,16 +78,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
             )));
   }
 
-  void setAlbumPrimaryColor() {
-    var url = musicPlayer
-        .assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
-    PaletteGenerator.fromImageProvider(NetworkImage(url))
-        .then((PaletteGenerator value) => setState(() => {
-              setBackground(
-                  value.paletteColors[0].color, value.paletteColors[1].color),
-              setForegroundColorFromBackground()
-            }));
-  }
+  // void setAlbumPrimaryColor() {
+  //   var url = musicPlayer
+  //       .assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
+  //   PaletteGenerator.fromImageProvider(NetworkImage(url))
+  //       .then((PaletteGenerator value) => setState(() => {
+  //             setBackground(
+  //                 value.paletteColors[0].color, value.paletteColors[1].color),
+  //             setForegroundColorFromBackground()
+  //           }));
+  // }
 
   void setBackground(Color color1, Color color2) {
     backgroundColor1 = color1;
@@ -99,12 +99,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
         backgroundColor1.computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 
-  void playerListener() {
-    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.current != null && musicPlayerIndex != event.current?.index) {
-        musicPlayerIndex = event.current!.index;
-        setAlbumPrimaryColor();
-      }
-    });
-  }
+  // void playerListener() {
+  //   musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
+  //     if (event.current != null && musicPlayerIndex != event.current?.index) {
+  //       musicPlayerIndex = event.current!.index;
+  //       setAlbumPrimaryColor();
+  //     }
+  //   });
+  // }
 }

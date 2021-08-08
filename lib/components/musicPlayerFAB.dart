@@ -19,20 +19,16 @@ class MusicPlayerFAB extends StatefulWidget {
 }
 
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
-  late int _playBackTime;
+  late Duration musicDuration;
   late MusicPlayer musicPlayer;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicPlayer();
-    if (musicPlayer.assetsAudioPlayer.current.hasValue) {
-      _playBackTime = musicPlayer
-          .assetsAudioPlayer.current.value!.audio.duration.inMilliseconds;
-    } else {
-      _playBackTime = 0;
-    }
-    playerListener();
+    musicDuration =
+        musicPlayer.getCommonPlayer?.getDuration() ?? Duration(seconds: 0);
+    // playerListener();
   }
 
   @override
@@ -50,12 +46,14 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
             bottom: 15,
             right: 15,
             child: Consumer<MusicPlayer>(
-                builder: (context, musicPlayer, child) => isInit()
-                    ? body(musicPlayer)
-                    : Container(
-                        height: 0,
-                        width: 0,
-                      )))
+                builder: (context, musicPlayer, child) =>
+                    musicPlayer.getCommonPlayer != null &&
+                            musicPlayer.getCommonPlayer!.isInit()
+                        ? body(musicPlayer)
+                        : Container(
+                            height: 0,
+                            width: 0,
+                          )))
       ],
     );
   }
@@ -94,29 +92,28 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          // Expanded(
+                          //     child: Text(
+                          //   musicPlayer.currentMusicTitle(),
+                          //   overflow: TextOverflow.ellipsis,
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(color: Colors.white),
+                          // )),
                           Expanded(
-                              child: Text(
-                            musicPlayer.currentMusicTitle(),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
-                          )),
-                          Expanded(
-                              child: Slider(
-                                  activeColor: Colors.white,
-                                  inactiveColor: Colors.white12,
-                                  value: _playBackTime.toDouble(),
-                                  min: 0,
-                                  max: musicPlayer.currentMusicMaxDuration() <=
-                                          _playBackTime.toDouble()
-                                      ? _playBackTime.toDouble() + 1
-                                      : musicPlayer.currentMusicMaxDuration(),
-                                  onChangeEnd: (value) {
-                                    musicPlayer.assetsAudioPlayer.seek(
-                                        Duration(milliseconds: value.toInt()));
-                                  },
-                                  onChanged: (value) =>
-                                      _playBackTime = value.toInt()))
+                              child: StreamBuilder<Duration?>(
+                                  stream: musicPlayer.getCommonPlayer!
+                                      .getCurrentPosition(),
+                                  builder: (context, snapshot) => Slider(
+                                        activeColor: Colors.white,
+                                        inactiveColor: Colors.white12,
+                                        value: getSliderSize(snapshot.data),
+                                        min: 0,
+                                        max: getSliderMaxSize(snapshot.data),
+                                        onChanged: (value) {
+                                          musicPlayer.seekTo(Duration(
+                                              milliseconds: value.toInt()));
+                                        },
+                                      )))
                         ],
                       )),
                   Expanded(
@@ -130,7 +127,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                               child: InkWell(
                                 onTap: () => musicPlayer.toggle(),
                                 child: Icon(
-                                  musicPlayer.assetsAudioPlayer.isPlaying.value
+                                  musicPlayer.getCommonPlayer!.isPlaying()
                                       ? Icons.pause_circle_filled_outlined
                                       : Icons.play_circle_fill_outlined,
                                   color: Colors.white,
@@ -144,21 +141,27 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
             )));
   }
 
-  void playerListener() {
-    musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-      if (event.isPlaying && mounted) {
-        setState(() {
-          _playBackTime = event.currentPosition.inMilliseconds.toInt();
-        });
-      }
-    });
+  double getSliderSize(Duration? currentPosition) {
+    if (currentPosition == null ||
+        musicPlayer.getCommonPlayer?.getDuration() == null) {
+      return 0;
+    }
+    return currentPosition.inMilliseconds.toDouble();
   }
 
-  bool isInit() {
-    if (musicPlayer.assetsAudioPlayer.current.hasValue) {
-      return musicPlayer.assetsAudioPlayer.current.value != null ||
-          musicPlayer.assetsAudioPlayer.isPlaying.value;
+  double getSliderMaxSize(Duration? duration) {
+    if (duration == null ||
+        musicPlayer.getCommonPlayer?.getDuration() == null) {
+      return 0;
     }
-    return false;
+    return musicPlayer.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
   }
+
+  // bool isInit() {
+  //   if (musicPlayer.assetsAudioPlayer.current.hasValue) {
+  //     return musicPlayer.assetsAudioPlayer.current.value != null ||
+  //         musicPlayer.assetsAudioPlayer.isPlaying.value;
+  //   }
+  //   return false;
+  // }
 }

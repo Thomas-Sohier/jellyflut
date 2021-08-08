@@ -15,7 +15,6 @@ class CommonStreamVLCComputer {
   static Future<Player> setupData({required Item item}) async {
     final size = MediaQuery.of(navigatorKey.currentContext!).size;
     final streamURL = await item.getItemURL(directPlay: true);
-
     final playerId = Random().nextInt(10000);
     final player = Player(
         id: playerId,
@@ -25,7 +24,6 @@ class CommonStreamVLCComputer {
           '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
         ]);
     final media = Media.network(streamURL);
-
     player.open(media);
 
     // create timer to save progress

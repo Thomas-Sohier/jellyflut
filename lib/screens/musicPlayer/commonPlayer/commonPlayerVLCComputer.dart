@@ -41,11 +41,17 @@ class CommonPlayerVLCComputer {
   }
 
   Stream<Duration?> getPosition(Player player) {
-    final streamController = StreamController<Duration?>();
+    final streamController = StreamController<Duration?>.broadcast();
     player.positionStream.listen((event) {
       streamController.add(event.position);
     });
     return streamController.stream;
+  }
+
+  void playRemoteAudio(Item item, Player player) async {
+    final streamURL = await item.getItemURL(directPlay: true);
+    final media = Media.network(streamURL);
+    player.open(media);
   }
 
   void addListener(void Function() listener) {
