@@ -33,7 +33,6 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
 
   @override
   void dispose() {
-    // musicPlayer.dispose();
     super.dispose();
   }
 
@@ -92,13 +91,13 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // Expanded(
-                          //     child: Text(
-                          //   musicPlayer.currentMusicTitle(),
-                          //   overflow: TextOverflow.ellipsis,
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(color: Colors.white),
-                          // )),
+                          Expanded(
+                              child: Text(
+                            musicPlayer.getCurrentMusic!.title,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          )),
                           Expanded(
                               child: StreamBuilder<Duration?>(
                                   stream: musicPlayer.getCommonPlayer!

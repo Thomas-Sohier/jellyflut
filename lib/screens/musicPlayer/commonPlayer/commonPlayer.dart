@@ -50,8 +50,8 @@ class CommonPlayer {
         _isInit = isInit,
         _dispose = dispose;
 
-  void play() => _play;
-  void pause() => _pause;
+  void play() => _play();
+  void pause() => _pause();
   bool isPlaying() => _isPlaying();
   void seekTo(Duration duration) => _seekTo(duration);
   int next() => _next();
@@ -77,7 +77,7 @@ class CommonPlayer {
             assetsAudioPlayer.playlistPlayAtIndex(index),
         duration: () => assetsAudioPlayer.current.value!.audio.duration,
         bufferingDuration: () => Duration(seconds: 0),
-        currentPosition: assetsAudioPlayer.currentPosition,
+        currentPosition: assetsAudioPlayer.currentPosition.asBroadcastStream(),
         playRemoteAudio: (Item item) async => assetsAudioPlayer.open(
               await CommonPlayerAssetsAudioPlayer.createAudioNetwork(item),
               showNotification: true,

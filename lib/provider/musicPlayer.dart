@@ -1,4 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
@@ -46,8 +47,9 @@ class MusicPlayer extends ChangeNotifier {
   void toggle() {
     if (_commonPlayer!.isPlaying()) {
       _commonPlayer!.pause();
+    } else {
+      _commonPlayer!.play();
     }
-    _commonPlayer!.play();
     notifyListeners();
   }
 
