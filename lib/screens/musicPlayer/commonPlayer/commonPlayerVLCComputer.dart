@@ -7,7 +7,7 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 
 class CommonPlayerVLCComputer {
-  static List<Timer> _timers = [];
+  static final List<Timer> _timers = [];
   final MusicPlayer _musicPlayer = MusicPlayer();
 
   Stream<Duration?> getPosition(Player player) {
