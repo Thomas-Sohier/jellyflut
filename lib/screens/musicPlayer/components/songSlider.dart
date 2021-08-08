@@ -34,7 +34,7 @@ class _SongSliderState extends State<SongSlider> {
       builder: (context, snapshot) => FractionallySizedBox(
           widthFactor: getSliderSize(snapshot.data),
           child: Container(
-            color: Colors.amber,
+            color: widget.albumColors.first.withAlpha(150),
           )),
     );
   }

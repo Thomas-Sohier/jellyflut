@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 
 class MusicPlayer extends ChangeNotifier {
   Item? _item;
+  List<MusicItem> _musicItems = [];
+  MusicItem? _currentlyPlayedMusicItem;
   CommonPlayer? _commonPlayer;
 
   // Singleton
@@ -18,10 +21,16 @@ class MusicPlayer extends ChangeNotifier {
   MusicPlayer._internal();
 
   CommonPlayer? get getCommonPlayer => _commonPlayer;
+  List<MusicItem> get getMusicItems => _musicItems;
+  MusicItem? get getCurrentMusic => _currentlyPlayedMusicItem;
   Item? get getItemPlayer => _item;
 
   void setCommonPlayer(CommonPlayer cp) {
     _commonPlayer = cp;
+  }
+
+  void setCurrentMusic(MusicItem musicItem) {
+    _currentlyPlayedMusicItem = musicItem;
   }
 
   void play() {
@@ -47,8 +56,47 @@ class MusicPlayer extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playRemoteAudio(Item item) {
-    _commonPlayer!.playRemoteAudio(item);
+  void playAtIndex(int index) {
+    _commonPlayer!.playAtIndex(index);
+    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    notifyListeners();
+  }
+
+  List<MusicItem> getPlayList() {
+    return _musicItems;
+  }
+
+  MusicItem getItemFromPlaylist(int index) {
+    return _musicItems.elementAt(index);
+  }
+
+  /// insert item at end of playlist
+  /// return index as int
+  int insertIntoPlaylist(MusicItem musicItem) {
+    _musicItems.add(musicItem);
+    notifyListeners();
+    return _musicItems.indexOf(musicItem);
+  }
+
+  void deleteFromPlaylist(int index) {
+    _musicItems.removeAt(index);
+    notifyListeners();
+  }
+
+  void next() {
+    final index = _commonPlayer!.next();
+    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    notifyListeners();
+  }
+
+  void previous() {
+    final index = _commonPlayer!.previous();
+    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    notifyListeners();
+  }
+
+  void playRemoteAudio(Item item) async {
+    await _commonPlayer!.playRemoteAudio(item);
     notifyListeners();
   }
 }

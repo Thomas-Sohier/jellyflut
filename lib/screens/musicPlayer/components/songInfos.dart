@@ -7,6 +7,7 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
   final double height;
@@ -24,7 +25,6 @@ class _SongInfosState extends State<SongInfos> {
   @override
   void initState() {
     super.initState();
-    musicPlayer = MusicPlayer();
   }
 
   @override
@@ -34,6 +34,13 @@ class _SongInfosState extends State<SongInfos> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<MusicPlayer>(builder: (context, mp, child) {
+      musicPlayer = mp;
+      return infos();
+    });
+  }
+
+  Widget infos() {
     var height = widget.height;
     return SizedBox(
       height: height,
@@ -45,44 +52,43 @@ class _SongInfosState extends State<SongInfos> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () async {
-                  // var artist = await getArtist(
-                  //     musicPlayer.getCommonPlayer.getItemPlayed()!);
-                  // if (artist != null) {
-                  //   await Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) =>
-                  //               Details(item: artist, heroTag: '')));
-                  // }
-                },
-                // child: Text(musicPlayer.getCommonPlayer.currentMusicArtist(),
-                //     textAlign: TextAlign.center,
-                //     overflow: TextOverflow.ellipsis,
-                //     maxLines: 2,
-                //     style: TextStyle(
-                //       fontSize: 20,
-                //       color: widget.color,
-                //     )),
-              ),
+              if (musicPlayer.getCurrentMusic?.artist != null)
+                GestureDetector(
+                  // onTap: () async {
+                  //   if (musicPlayer.getCurrentMusic?.artist != null) {
+                  //     await Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) =>
+                  //                 Details(item: musicPlayer.getCurrentMusic, heroTag: '')));
+                  //   }
+                  // },
+                  child: Text(musicPlayer.getCurrentMusic!.artist!,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: widget.color,
+                      )),
+                ),
               Padding(
                 padding: const EdgeInsets.only(top: 12),
-                // child: Text(
-                //   musicPlayer.getCommonPlayer.currentMusicTitle(),
-                //   textAlign: TextAlign.center,
-                //   overflow: TextOverflow.ellipsis,
-                //   maxLines: 2,
-                //   style: TextStyle(
-                //       fontSize: 26,
-                //       fontWeight: FontWeight.bold,
-                //       color: widget.color),
-                // ),
+                child: Text(
+                  musicPlayer.getCurrentMusic!.title,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: widget.color),
+                ),
               ),
             ],
           ),
           // FutureBuilder<Item>(
-          //   future: getItem(0),
+          //   future: getItem(musicPlayer.getCurrentMusic!.id),
           //   builder: (context, snapshot) {
           //     if (snapshot.hasData) {
           //       return FavButton(

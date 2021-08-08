@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
+import 'package:jellyflut/screens/musicPlayer/components/songInfos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songSlider.dart';
 import 'package:octo_image/octo_image.dart';
 
@@ -43,14 +44,14 @@ class _SongImageState extends State<SongImage> {
   @override
   Widget build(BuildContext context) {
     var height = widget.height > 600 ? 600 : widget.height;
-    var singleSize = height * 0.8;
     return Container(
-        height: height.toDouble(),
+        height: widget.height.toDouble(),
         width: double.maxFinite,
-        child: imageSingleAsync(singleSize));
+        child: imageSingleAsync(height.toDouble()));
   }
 
-  Widget imageSingleAsync(double size) {
+  Widget imageSingleAsync(double height) {
+    var singleSize = height * 0.6;
     return Stack(
       alignment: Alignment.topCenter,
       clipBehavior: Clip.hardEdge,
@@ -58,41 +59,47 @@ class _SongImageState extends State<SongImage> {
         ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             child: SizedBox(
-                width: size,
-                height: size,
+                width: singleSize,
+                height: height,
                 child: LayoutBuilder(
                   builder: (singleContext, constraints) => GestureDetector(
-                    onTapDown: (TapDownDetails details) =>
-                        onTapDown(singleContext, details),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // musicPlayer.getCurrentAudioImagePath() != null
-                        //     ? OctoImage(
-                        //         image: CachedNetworkImageProvider(
-                        //             musicPlayer.getCurrentAudioImagePath()!),
-                        //         placeholderBuilder: (_) => placeholder(size),
-                        //         errorBuilder: (context, error, e) =>
-                        //             placeholder(size),
-                        //         fadeInDuration: Duration(milliseconds: 300),
-                        //         fit: BoxFit.cover,
-                        //         alignment: Alignment.center,
-                        //         width: size,
-                        //         height: size,
-                        //       )
-                        //     : placeholder(size),
-                        Positioned.fill(
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: SongSlider(
-                                  albumColors: widget.albumColors,
-                                ))),
-                      ],
-                    ),
-                  ),
+                      onTapDown: (TapDownDetails details) =>
+                          onTapDown(singleContext, details),
+                      child: Column(
+                        children: [
+                          SongInfos(height: height * 0.30, color: Colors.white),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              musicPlayer.getCurrentMusic != null
+                                  ? OctoImage(
+                                      image: MemoryImage(
+                                          musicPlayer.getCurrentMusic!.image!),
+                                      placeholderBuilder: (_) =>
+                                          placeholder(singleSize),
+                                      errorBuilder: (context, error, e) =>
+                                          placeholder(singleSize),
+                                      fadeInDuration:
+                                          Duration(milliseconds: 300),
+                                      fit: BoxFit.cover,
+                                      alignment: Alignment.center,
+                                      width: singleSize,
+                                      height: singleSize,
+                                    )
+                                  : placeholder(singleSize),
+                              Positioned.fill(
+                                  child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: SongSlider(
+                                        albumColors: widget.albumColors,
+                                      ))),
+                            ],
+                          ),
+                        ],
+                      )),
                 ))),
         Positioned.fill(
-            top: size - 30,
+            top: (singleSize + height * 0.30) - 30,
             child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SongControls(

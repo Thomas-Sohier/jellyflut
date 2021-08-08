@@ -22,7 +22,6 @@ class _SongControlsState extends State<SongControls> {
   @override
   void initState() {
     super.initState();
-    musicPlayer = MusicPlayer();
   }
 
   @override
@@ -51,7 +50,7 @@ class _SongControlsState extends State<SongControls> {
                   boxShadow: shadows,
                   shape: BoxShape.circle),
               child: InkWell(
-                // onTap: () => musicPlayer.assetsAudioPlayer.previous(),
+                onTap: () => musicPlayer.previous(),
                 child: Icon(
                   Icons.skip_previous,
                   color: widget.color,
@@ -84,7 +83,7 @@ class _SongControlsState extends State<SongControls> {
                 boxShadow: shadows,
                 shape: BoxShape.circle),
             child: InkWell(
-              // onTap: () => musicPlayer.assetsAudioPlayer.next(),
+              onTap: () => musicPlayer.next(),
               child: Icon(
                 Icons.skip_next,
                 color: widget.color,
