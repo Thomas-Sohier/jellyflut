@@ -238,8 +238,6 @@ class _CommonControlsState extends State<CommonControls> {
             }));
   }
 
-// TODO rework with commonstreams
-
   void changeSubtitle(BuildContext context) {
     showDialog(
         context: context,
