@@ -76,11 +76,9 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
 
 Future<String> isCodecSupported() async {
   var result;
-  // TODO finish this method to know if video can be direct play
   if (Platform.isAndroid) {
     var deviceProfile = await getExoplayerProfile();
     result = DeviceProfileParent(deviceProfile: deviceProfile).toMap();
-    // log(result);
   } else if (Platform.isIOS) {
     // TODO make IOS
     result = '';
