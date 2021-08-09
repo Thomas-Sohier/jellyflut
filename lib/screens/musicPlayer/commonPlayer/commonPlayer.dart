@@ -4,20 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerAssetsAudioPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerVLCComputer.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonPlayer {
   final VoidCallback _pause;
   final VoidCallback _play;
-  final Function _isPlaying;
+  final BehaviorSubject<bool> _isPlaying;
   final Function(Duration) _seekTo;
-  final Function _previous;
-  final Function _next;
+  final VoidCallback _previous;
+  final VoidCallback _next;
   final Function(int) _playAtIndex;
   final Function _bufferingDuration;
   final Function _duration;
   final Stream<Duration?> _currentPosition;
+  final BehaviorSubject<int?> _listenPlayingindex;
   final Function(Item) _playRemoteAudio;
-  final bool _isInit;
+  final Function _isInit;
   final Function _dispose;
   final Object controller;
 
@@ -32,6 +34,7 @@ class CommonPlayer {
       required bufferingDuration,
       required duration,
       required currentPosition,
+      required listenPlayingindex,
       required playRemoteAudio,
       required isInit,
       required dispose,
@@ -46,30 +49,33 @@ class CommonPlayer {
         _bufferingDuration = bufferingDuration,
         _duration = duration,
         _currentPosition = currentPosition,
+        _listenPlayingindex = listenPlayingindex,
         _playRemoteAudio = playRemoteAudio,
         _isInit = isInit,
         _dispose = dispose;
 
   void play() => _play();
   void pause() => _pause();
-  bool isPlaying() => _isPlaying();
+  BehaviorSubject<bool> isPlaying() => _isPlaying;
   void seekTo(Duration duration) => _seekTo(duration);
-  int next() => _next();
-  int previous() => _previous();
+  void next() => _next();
+  void previous() => _previous();
   void playAtIndex(int index) => _playAtIndex(index);
   Duration getBufferingDuration() => _bufferingDuration();
   Duration getDuration() => _duration();
   Stream<Duration?> getCurrentPosition() => _currentPosition;
+  BehaviorSubject<int?> listenPlayingindex() => _listenPlayingindex;
   Future<void> playRemoteAudio(Item item) => _playRemoteAudio(item);
-  bool isInit() => _isInit;
+  bool isInit() => _isInit();
   void disposeStream() => _dispose();
 
   static CommonPlayer parseAssetsAudioPlayer(
       {required AssetsAudioPlayer assetsAudioPlayer}) {
+    final commonPlayerAssetsAudioPlayer = CommonPlayerAssetsAudioPlayer();
     return CommonPlayer._(
         pause: assetsAudioPlayer.pause,
         play: assetsAudioPlayer.play,
-        isPlaying: () => assetsAudioPlayer.isPlaying,
+        isPlaying: commonPlayerAssetsAudioPlayer.isPlaying(assetsAudioPlayer),
         seekTo: assetsAudioPlayer.seek,
         next: assetsAudioPlayer.next,
         previous: assetsAudioPlayer.previous,
@@ -78,11 +84,11 @@ class CommonPlayer {
         duration: () => assetsAudioPlayer.current.value!.audio.duration,
         bufferingDuration: () => Duration(seconds: 0),
         currentPosition: assetsAudioPlayer.currentPosition.asBroadcastStream(),
-        playRemoteAudio: (Item item) async => assetsAudioPlayer.open(
-              await CommonPlayerAssetsAudioPlayer.createAudioNetwork(item),
-              showNotification: true,
-            ),
-        isInit: true,
+        listenPlayingindex:
+            commonPlayerAssetsAudioPlayer.listenPlayingIndex(assetsAudioPlayer),
+        playRemoteAudio: (Item item) => commonPlayerAssetsAudioPlayer
+            .playRemoteAudio(assetsAudioPlayer, item),
+        isInit: () => commonPlayerAssetsAudioPlayer.isInit(assetsAudioPlayer),
         dispose: () => assetsAudioPlayer.dispose(),
         controller: assetsAudioPlayer);
   }
@@ -92,18 +98,19 @@ class CommonPlayer {
     return CommonPlayer._(
         pause: player.pause,
         play: player.play,
-        isPlaying: () => player.playback.isPlaying,
+        isPlaying: commonPlayerVLCComputer.isPlaying(player),
         seekTo: player.seek,
-        previous: () => commonPlayerVLCComputer.previous(player),
-        next: () => commonPlayerVLCComputer.next(player),
+        previous: player.back,
+        next: player.next,
         playAtIndex: (int index) =>
             commonPlayerVLCComputer.playAtIndex(index, player),
         duration: () => player.position.duration,
         bufferingDuration: () => Duration(seconds: 0),
         currentPosition: commonPlayerVLCComputer.getPosition(player),
+        listenPlayingindex: commonPlayerVLCComputer.listenPlayingIndex(player),
         playRemoteAudio: (Item item) =>
             commonPlayerVLCComputer.playRemoteAudio(item, player),
-        isInit: true,
+        isInit: () => true,
         dispose: () {
           player.stop();
           Future.delayed(Duration(milliseconds: 200), player.dispose);

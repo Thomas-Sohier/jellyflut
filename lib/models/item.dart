@@ -712,14 +712,24 @@ class Item {
         final player = vlc.Player(id: 123);
         commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
       } else {
-        final assetsAudioPlayer = AssetsAudioPlayer();
+        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
         commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
             assetsAudioPlayer: assetsAudioPlayer);
       }
       musicPlayer.setCommonPlayer(commonPlayer);
       await musicPlayer.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      // musicPlayer.playPlaylist(id);
+      var commonPlayer;
+      if (Platform.isLinux || Platform.isWindows) {
+        final player = vlc.Player(id: 123);
+        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
+      } else {
+        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
+        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
+            assetsAudioPlayer: assetsAudioPlayer);
+      }
+      musicPlayer.setCommonPlayer(commonPlayer);
+      await musicPlayer.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       await Navigator.pushReplacement(navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));

@@ -29,6 +29,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
     backgroundColor2 = jellyDarkPurple;
     foregroundColor = Colors.black;
     musicPlayer = music_player_provider.MusicPlayer();
+    musicPlayer.getCommonPlayer!
+        .listenPlayingindex()
+        .listen((event) => setState(() {
+              musicPlayer.setPlayingIndex(event);
+            }));
     // musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
     setAlbumPrimaryColor();
     setForegroundColorFromBackground();
@@ -74,11 +79,9 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             height: height * 0.05, color: Colors.white),
                         // SongInfos(height: height * 0.30, color: Colors.white),
                         SongImage(
-                            height: height * 0.95,
+                            height: height * 0.90,
                             color: foregroundColor,
                             albumColors: [backgroundColor1, backgroundColor2]),
-                        // SongControls(height: height * 0.10, color: foregroundColor),
-                        // SongPlaylist(height: height * 0.30, color: foregroundColor)
                       ],
                     ))
               ],

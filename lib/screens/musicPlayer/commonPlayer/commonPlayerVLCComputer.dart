@@ -5,6 +5,7 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonPlayerVLCComputer {
   static final List<Timer> _timers = [];
@@ -42,28 +43,18 @@ class CommonPlayerVLCComputer {
     player.jump(index);
   }
 
-  /// play previous track
-  /// return index of current media
-  int previous(Player player) {
-    player.back();
-    return player.current.index ?? 0;
+  BehaviorSubject<bool> isPlaying(Player player) {
+    final streamController = BehaviorSubject<bool>();
+    player.playbackStream
+        .listen((PlaybackState event) => streamController.add(event.isPlaying));
+    return streamController;
   }
 
-  /// play next track
-  /// return index of current media
-  int next(Player player) {
-    player.next();
-    return player.current.index ?? 0;
+  BehaviorSubject<int?> listenPlayingIndex(Player player) {
+    final streamController = BehaviorSubject<int?>();
+    player.currentStream.listen((event) => streamController.add(event.index));
+    return streamController;
   }
-
-  // MusicItem metasToMusicItem(Map<String, String> metas) {
-  //   return MusicItem(
-  //       id: 0,
-  //       title: metas['title'],
-  //       artist: metas['artist'],
-  //       album: metas['album'],
-  //       image: null);
-  // }
 
   void addListener(void Function() listener) {
     final timer =
