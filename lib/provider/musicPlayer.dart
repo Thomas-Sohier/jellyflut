@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
@@ -24,6 +29,15 @@ class MusicPlayer extends ChangeNotifier {
   MusicItem? get getCurrentMusic => _currentlyPlayedMusicItem;
   Item? get getItemPlayer => _item;
 
+  Stream<int?> playingIndex() {
+    return _commonPlayer!.listenPlayingindex();
+  }
+
+  void setPlayingIndex(int? index) {
+    if (index == null) throw ('index null');
+    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+  }
+
   void setCommonPlayer(CommonPlayer cp) {
     _commonPlayer = cp;
   }
@@ -42,15 +56,6 @@ class MusicPlayer extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggle() {
-    if (_commonPlayer!.isPlaying()) {
-      _commonPlayer!.pause();
-    } else {
-      _commonPlayer!.play();
-    }
-    notifyListeners();
-  }
-
   void seekTo(Duration duration) {
     _commonPlayer!.seekTo(duration);
     notifyListeners();
@@ -59,7 +64,8 @@ class MusicPlayer extends ChangeNotifier {
   void playAtIndex(int index) {
     _commonPlayer!.playAtIndex(index);
     _currentlyPlayedMusicItem = _musicItems.elementAt(index);
-    notifyListeners();
+    _commonPlayer!.play();
+    // notifyListeners();
   }
 
   List<MusicItem> getPlayList() {
@@ -84,19 +90,34 @@ class MusicPlayer extends ChangeNotifier {
   }
 
   void next() {
-    final index = _commonPlayer!.next();
-    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    _commonPlayer!.next();
     notifyListeners();
   }
 
   void previous() {
-    final index = _commonPlayer!.previous();
-    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    _commonPlayer!.previous();
     notifyListeners();
   }
 
   void playRemoteAudio(Item item) async {
     await _commonPlayer!.playRemoteAudio(item);
     notifyListeners();
+  }
+
+  Future<void> playPlaylist(Item item) async {
+    await getItems(parentId: item.id).then((value) async {
+      final indexToReturn = _musicItems.length;
+      final items =
+          value.items.where((_item) => _item.isFolder == false).toList();
+      //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
+      for (var index = 0; index < items.length; index++) {
+        final _item = items.elementAt(index);
+        final streamURL = await contructAudioURL(itemId: _item.id);
+        final musicItem =
+            await MusicItem.parseFromItem(index, streamURL, _item);
+        insertIntoPlaylist(musicItem);
+      }
+      return indexToReturn;
+    }).then((int index) => playAtIndex(index));
   }
 }

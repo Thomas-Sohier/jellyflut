@@ -28,6 +28,14 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
     musicPlayer = MusicPlayer();
     musicDuration =
         musicPlayer.getCommonPlayer?.getDuration() ?? Duration(seconds: 0);
+    if (musicPlayer.getCommonPlayer != null) {
+      musicPlayer.getCommonPlayer!
+          .listenPlayingindex()
+          .listen((event) => setState(() {
+                musicPlayer.setPlayingIndex(event);
+              }));
+    }
+    // musicPlayerIn
     // playerListener();
   }
 
@@ -45,14 +53,12 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
             bottom: 15,
             right: 15,
             child: Consumer<MusicPlayer>(
-                builder: (context, musicPlayer, child) =>
-                    musicPlayer.getCommonPlayer != null &&
-                            musicPlayer.getCommonPlayer!.isInit()
-                        ? body(musicPlayer)
-                        : Container(
-                            height: 0,
-                            width: 0,
-                          )))
+                builder: (context, musicPlayer, child) => isInit()
+                    ? body(musicPlayer)
+                    : Container(
+                        height: 0,
+                        width: 0,
+                      )))
       ],
     );
   }
@@ -93,7 +99,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                         children: [
                           Expanded(
                               child: Text(
-                            musicPlayer.getCurrentMusic!.title,
+                            musicPlayer.getCurrentMusic?.title ?? '',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white),
@@ -117,24 +123,22 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                       )),
                   Expanded(
                       flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: InkWell(
-                                onTap: () => musicPlayer.toggle(),
-                                child: Icon(
-                                  musicPlayer.getCommonPlayer!.isPlaying()
-                                      ? Icons.pause_circle_filled_outlined
-                                      : Icons.play_circle_fill_outlined,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                              ))
-                        ],
-                      ))
+                      child: Center(
+                          child: StreamBuilder<bool>(
+                        stream: musicPlayer.getCommonPlayer!.isPlaying(),
+                        builder: (context, snapshot) => InkWell(
+                          onTap: () => isPlaying(snapshot.data)
+                              ? musicPlayer.pause()
+                              : musicPlayer.play(),
+                          child: Icon(
+                            isPlaying(snapshot.data)
+                                ? Icons.pause_circle_filled_outlined
+                                : Icons.play_circle_fill_outlined,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      )))
                 ],
               ),
             )));
@@ -156,11 +160,15 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
     return musicPlayer.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
   }
 
-  // bool isInit() {
-  //   if (musicPlayer.assetsAudioPlayer.current.hasValue) {
-  //     return musicPlayer.assetsAudioPlayer.current.value != null ||
-  //         musicPlayer.assetsAudioPlayer.isPlaying.value;
-  //   }
-  //   return false;
-  // }
+  bool isPlaying(bool? isplaying) {
+    if (isplaying == null) return false;
+    return isplaying;
+  }
+
+  bool isInit() {
+    if (musicPlayer.getCommonPlayer != null) {
+      return musicPlayer.getCommonPlayer!.isInit();
+    }
+    return false;
+  }
 }

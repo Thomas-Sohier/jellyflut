@@ -112,7 +112,11 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "2.1.0"
+=======
+    version: "2.1.1"
+>>>>>>> 65e8f1b (Listening to music on phone and pc works correctly now, but there is still some errors and optimizations to do)
   build_runner_core:
     dependency: transitive
     description:
@@ -133,7 +137,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.1.1"
+    version: "8.1.2"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -274,6 +278,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+<<<<<<< HEAD
   desktop_window:
     dependency: "direct main"
     description:
@@ -281,6 +286,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+=======
+>>>>>>> 65e8f1b (Listening to music on phone and pc works correctly now, but there is still some errors and optimizations to do)
   device_info:
     dependency: "direct main"
     description:
@@ -775,7 +782,7 @@ packages:
     source: hosted
     version: "4.0.0"
   rxdart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: rxdart
       url: "https://pub.dartlang.org"

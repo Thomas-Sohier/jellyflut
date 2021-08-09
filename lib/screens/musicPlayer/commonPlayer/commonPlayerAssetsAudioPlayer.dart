@@ -1,128 +1,54 @@
+import 'dart:async';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonPlayerAssetsAudioPlayer {
-  static Future<Audio> createAudioNetwork(Item item) async {
-    var url = await contructAudioURL(itemId: item.id);
-    return Audio.network(
-      url,
-      metas: Metas(
-        id: item.id,
-        title: item.name,
-        artist: item.artists!.map((e) => e.name).join(', ').toString(),
-        album: item.album,
-        image: MetasImage.network(getItemImageUrl(
-            item.correctImageId(), item.correctImageTags(),
-            imageBlurHashes: item.imageBlurHashes)),
-      ),
-    );
+  final MusicPlayer _musicPlayer = MusicPlayer();
+
+  Future<void> playRemoteAudio(
+      AssetsAudioPlayer assetsAudioPlayer, Item item) async {
+    final musicItemIndex = _musicPlayer.getPlayList().length + 1;
+    final streamURL = await contructAudioURL(itemId: item.id);
+    final musicItem =
+        await MusicItem.parseFromItem(musicItemIndex, streamURL, item);
+    final insertedIndex = _musicPlayer.insertIntoPlaylist(musicItem);
+    final playlist = Playlist(
+        audios: _getPlaylistMusicItemAsMedia(), startIndex: insertedIndex);
+    await assetsAudioPlayer
+        .open(playlist, loopMode: LoopMode.single, showNotification: true)
+        .then((_) => _musicPlayer.setCurrentMusic(musicItem));
   }
 
-  // String currentMusicTitle() {
-  //   if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
-  //       null) {
-  //     return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
-  //         .audio.audio.metas.title!;
-  //   }
-  //   return 'msuic playing';
-  // }
+  List<Audio> _getPlaylistMusicItemAsMedia() {
+    return _musicPlayer.getMusicItems
+        .map((MusicItem musicItem) => Audio.network(musicItem.url ?? ''))
+        .toList();
+  }
 
-  // String currentMusicArtist() {
-  //   if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
-  //       null) {
-  //     return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
-  //         .audio.audio.metas.artist!;
-  //   }
-  //   return 'No';
-  // }
+  bool isInit(AssetsAudioPlayer assetsAudioPlayer) {
+    if (assetsAudioPlayer.current.hasValue) {
+      return assetsAudioPlayer.current.value != null ||
+          assetsAudioPlayer.isPlaying.value;
+    }
+    return false;
+  }
 
-  // double currentMusicMaxDuration() {
-  //   if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
-  //       null) {
-  //     return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current!
-  //         .audio.duration.inMilliseconds
-  //         .toDouble();
-  //   }
-  //   return 0;
-  // }
+  BehaviorSubject<bool> isPlaying(AssetsAudioPlayer assetsAudioPlayer) {
+    final streamController = BehaviorSubject<bool>();
+    assetsAudioPlayer.isPlaying.listen((event) => streamController.add(event));
+    return streamController;
+  }
 
-  // double currentMusicDuration() {
-  //   if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
-  //       null) {
-  //     return _musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value
-  //         .currentPosition.inMilliseconds
-  //         .toDouble();
-  //   }
-  //   return 0;
-  // }
-
-  // String? getCurrentAudioImagePath() {
-  //   if (_musicPlayer.assetsAudioPlayer.realtimePlayingInfos.value.current !=
-  //       null) {
-  //     return assetsAudioPlayer.current.value!.audio.audio.metas.image!.path;
-  //   }
-  //   return null;
-  // }
-
-  // void addPlaylist(Item item, int index) async {
-  //   var audio = await _createAudioNetwork(item);
-  //   if (assetsAudioPlayer.playlist == null) {
-  //     await assetsAudioPlayer.open(audio);
-  //   } else {
-  //     assetsAudioPlayer.playlist!.insert(index, audio);
-  //   }
-  // }
-
-  // void playAtIndex(int index) {
-  //   assetsAudioPlayer.playlistPlayAtIndex(index);
-  //   notifyListeners();
-  // }
-
-  // void removePlaylistItemAtIndex(int index) {
-  //   assetsAudioPlayer.playlist!.removeAtIndex(index);
-  //   notifyListeners();
-  // }
-
-  // void play() {
-  //   _musicPlayer.assetsAudioPlayer.play();
-  //   notifyListeners();
-  // }
-
-  // void pause() {
-  //   _musicPlayer.assetsAudioPlayer.pause();
-  //   notifyListeners();
-  // }
-
-  // Future<void> toggle() async {
-  //   _musicPlayer.assetsAudioPlayer.isPlaying.value
-  //       ? await _musicPlayer.assetsAudioPlayer.pause()
-  //       : await _musicPlayer.assetsAudioPlayer.play();
-  //   notifyListeners();
-  // }
-
-  // void playPlaylist(String parentId) {
-  //   assetsAudioPlayer.playlist?.audios.clear();
-  //   getItems(parentId: parentId).then((value) {
-  //     value.items
-  //         .where((_item) => _item.isFolder == false)
-  //         .toList()
-  //         .sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
-  //     value.items.asMap().forEach((index, Item _item) async {
-  //       addPlaylist(_item, index);
-  //     });
-  //   }).then((_) => assetsAudioPlayer.playlistPlayAtIndex(0));
-  // }
-
-  // void playRemoteItem(Item item) async {
-  //   _item = item;
-  //   await getItem(item.id).then((Item _item) async => {
-  //         _musicPlayer.assetsAudioPlayer
-  //             .open(
-  //               await _createAudioNetwork(item),
-  //               showNotification: true,
-  //             )
-  //             .then((_) => notifyListeners())
-  //       });
-  // }
+  BehaviorSubject<int?> listenPlayingIndex(
+      AssetsAudioPlayer assetsAudioPlayer) {
+    final streamController = BehaviorSubject<int?>();
+    assetsAudioPlayer.current
+        .listen((event) => streamController.add(event?.index));
+    return streamController;
+  }
 }
