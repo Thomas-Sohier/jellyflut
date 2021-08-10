@@ -6,6 +6,8 @@ import 'package:jellyflut/main.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
 import 'package:jellyflut/screens/stream/components/videoPlayerprogressBar.dart';
+import 'package:jellyflut/screens/stream/model/audiotrack.dart';
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:jellyflut/shared/toast.dart';
@@ -40,6 +42,8 @@ class _CommonControlsState extends State<CommonControls> {
     streamModel.commonStream?.initListener();
     fToast = FToast();
     fToast.init(navigatorKey.currentState!.context);
+    subtitleSelectedIndex = streamModel.selectedSubtitleTrack?.index ?? 0;
+    audioSelectedIndex = streamModel.selectedAudioTrack?.index ?? 0;
     _timer = Timer(
         Duration(seconds: 5),
         () => setState(() {
@@ -60,11 +64,15 @@ class _CommonControlsState extends State<CommonControls> {
     return ChangeNotifierProvider.value(
         value: streamModel,
         child: GestureDetector(
-            onTap: () => autoHideControl(),
-            child: visibility(
-                child: Stack(
-              children: [blackGradient(), controls()],
-            ))));
+          onTap: () {
+            autoHideControl();
+          },
+          behavior: HitTestBehavior.translucent,
+          child: visibility(
+              child: Stack(
+            children: [blackGradient(), controls()],
+          )),
+        ));
   }
 
   Widget visibility({required Widget child}) {
@@ -157,26 +165,32 @@ class _CommonControlsState extends State<CommonControls> {
                               Icons.cloud_outlined,
                               color: Colors.white,
                             ))),
+                  FutureBuilder<bool>(
+                      future: streamModel.commonStream!.hasPip(),
+                      builder: (context, snapshot) =>
+                          snapshot.hasData && snapshot.data!
+                              ? InkWell(
+                                  onTap: () {
+                                    try {
+                                      streamModel.commonStream?.pip();
+                                    } catch (message) {
+                                      showToast(message.toString(), fToast);
+                                    }
+                                  },
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.picture_in_picture,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Container()),
                   InkWell(
                     onTap: () {
-                      try {
-                        streamModel.commonStream?.pip();
-                      } catch (message) {
-                        showToast(message.toString(), fToast);
-                      }
-                    },
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.picture_in_picture,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      //changeSubtitle(context);
+                      changeSubtitle(context);
                     },
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     child: Padding(
@@ -187,10 +201,9 @@ class _CommonControlsState extends State<CommonControls> {
                       ),
                     ),
                   ),
-                  // TODO make audio change works
                   InkWell(
                       onTap: () {
-                        //changeAudio(context);
+                        changeAudio(context);
                       },
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       child: Padding(
@@ -225,194 +238,120 @@ class _CommonControlsState extends State<CommonControls> {
             }));
   }
 
-// TODO rework with commonstreams
-/* 
   void changeSubtitle(BuildContext context) {
-    var subtitles = streamModel.item!.mediaStreams!
-        .where((element) => element.type.trim().toLowerCase() == 'subtitle')
-        .toList();
-    if (subtitles.isNotEmpty) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
               title: Text('Select Subtitle'),
               content: Container(
-                width: 250,
-                constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-                child: ListView.builder(
-                  itemCount: subtitles.length + 1,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      selected: isSubtitleSelected(index, subtitles),
-                      title: Text(
-                        index < subtitles.length
-                            ? subtitles[index].displayTitle!
-                            : 'Disable',
-                      ),
-                      onTap: () {
-                        index < subtitles.length
-                            ? setSubtitles(index, subtitles)
-                            : disableSubtitles(index);
-                        Navigator.pop(
-                          context,
-                          index < subtitles.length ? subtitles[index] : -1,
+                  width: 250,
+                  constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
+                  child: FutureBuilder<List<Subtitle>>(
+                      future: streamModel.commonStream!.getSubtitles(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                          final subtitles = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: subtitles.length + 1,
+                            itemBuilder: (context, index) {
+                              return _subtitleListTile(index, subtitles);
+                            },
+                          );
+                        }
+                        return Center(
+                          child: Text('No subtitles found'),
                         );
-                      },
-                    );
-                  },
-                ),
-              ),
-            );
-          });
-    } else {
-      showToast('No subtitles found', fToast);
+                      })));
+        });
+  }
+
+  Widget _subtitleListTile(int index, List<Subtitle> subtitles) {
+    return ListTile(
+      selected: isSelected(index, subtitles),
+      title: Text(
+        index < subtitles.length ? subtitles[index].name : 'Disable',
+      ),
+      onTap: () {
+        index < subtitles.length
+            ? setSubtitle(subtitles[index])
+            : disableSubtitles(subtitles[index]);
+        Navigator.pop(
+          context,
+          index < subtitles.length ? subtitles[index] : -1,
+        );
+      },
+    );
+  }
+
+  bool isSelected(int index, List<Subtitle> subtitles) {
+    if (index < subtitles.length) {
+      return subtitleSelectedIndex == subtitles[index].index;
     }
+    return subtitleSelectedIndex == index;
   }
 
-  bool isSubtitleSelected(int index, List<MediaStream> listSubtitles) {
-    if (subtitleSelectedIndex == listSubtitles.length &&
-        index == listSubtitles.length) {
-      return true;
-    } else if (index + 1 > listSubtitles.length || index < 0) {
-      return false;
-    } else if (subtitleSelectedIndex == index) {
-      return true;
-    } else if (listSubtitles[index].isDefault!) {
-      return true;
-    }
-    return false;
+  void disableSubtitles(Subtitle subtitle) {
+    subtitleSelectedIndex = subtitle.index;
+    streamModel.commonStream!.disableSubtitles();
   }
 
-  void disableSubtitles(int index) {
-    subtitleSelectedIndex = index;
-    streamModel.betterPlayerController!.subtitlesLines.clear();
-  }
-
-  void setSubtitles(int index, List<MediaStream> listSubtitles) async {
-    var _itemId = StreamModel().item!.id;
-    var sub = listSubtitles[index];
-    var url = await getSubtitleURL(_itemId, 'vtt', sub.index!);
-    await streamModel.betterPlayerController!.setupSubtitleSource(
-        BetterPlayerSubtitlesSource(
-            type: BetterPlayerSubtitlesSourceType.network,
-            urls: [url],
-            name: sub.title));
+  void setSubtitle(Subtitle subtitle) async {
+    subtitleSelectedIndex = subtitle.index;
+    streamModel.setSubtitleStreamIndex(subtitle);
+    streamModel.commonStream!.setSubtitle(subtitle);
   }
 
   void changeAudio(BuildContext context) {
-    var hlsAudios =
-        streamModel.betterPlayerController?.betterPlayerAsmsAudioTracks;
-    var remoteAudios = streamModel.item?.mediaStreams != null
-        ? streamModel.item!.mediaStreams!
-            .where((element) => element.type.trim().toLowerCase() == 'audio')
-            .toList()
-        : null;
-    if (hlsAudios != null && hlsAudios.isNotEmpty) {
-      dialogHLSAudio(hlsAudios);
-    } else if (remoteAudios != null && remoteAudios.isNotEmpty) {
-      dialogRemoteAudio(remoteAudios);
-    } else {
-      showToast('No audios found', fToast);
-    }
-  }
-
-  bool isAudioSelected(int index, List<MediaStream> listAudios) {
-    if (audioSelectedIndex == index) {
-      return true;
-    } else if (listAudios[index].isDefault!) {
-      return true;
-    }
-    return false;
-  }
-
-  void dialogRemoteAudio(List<MediaStream> audios) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Select audio source'),
-            content: Container(
-              width: 250,
-              constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-              child: ListView.builder(
-                itemCount: audios.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    selected: isAudioSelected(index, audios),
-                    title: Text(
-                      audios[index].displayTitle!,
-                    ),
-                    onTap: () async {
-                      await getNewAudioSource(audios[index].index!,
-                              playbackTick: await streamModel
-                                  .betterPlayerController!
-                                  .videoPlayerController!
-                                  .position)
-                          .then((url) {
-                        changeAudioTrack(url);
-                        audioSelectedIndex = index;
-                        Navigator.pop(
-                          context,
-                          index < audios.length ? audios[index] : -1,
+              title: Text('Select audio source'),
+              content: Container(
+                  width: 250,
+                  constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
+                  child: FutureBuilder<List<AudioTrack>>(
+                      future: streamModel.commonStream!.getAudioTracks(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                          final audioTracks = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: audioTracks.length,
+                            itemBuilder: (context, index) {
+                              return _audioTracksListTile(index, audioTracks);
+                            },
+                          );
+                        }
+                        return Center(
+                          child: Text('No audio tracks found'),
                         );
-                      });
-                    },
-                  );
-                },
-              ),
-            ),
+                      })));
+        });
+  }
+
+  Widget _audioTracksListTile(int index, List<AudioTrack> audioTracks) {
+    return ListTile(
+        selected: isAudioSelected(audioTracks[index]),
+        title: Text(
+          audioTracks[index].name,
+        ),
+        onTap: () {
+          setAudioTrack(audioTracks[index]);
+          Navigator.pop(
+            context,
+            index < audioTracks.length ? audioTracks[index] : -1,
           );
         });
   }
 
-  void dialogHLSAudio(List<BetterPlayerAsmsAudioTrack> audios) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Select audio source'),
-            content: Container(
-              width: 250,
-              constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-              child: ListView.builder(
-                itemCount: audios.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    selected: audios[index].id == index,
-                    title: Text(
-                      audios[index].label!,
-                    ),
-                    onTap: () {
-                      streamModel.betterPlayerController!
-                          .setAudioTrack(audios[index]);
-                      Navigator.pop(
-                        context,
-                        index < audios.length ? audios[index] : -1,
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          );
-        });
+  bool isAudioSelected(AudioTrack audioTrack) {
+    return audioSelectedIndex == audioTrack.index;
   }
 
-  void changeAudioTrack(String url) async {
-    var tick = streamModel.betterPlayerController!.videoPlayerController!.value
-        .position.inMicroseconds;
-    var dataSource = BetterPlayerDataSource.network(url,
-        subtitles: await getSubtitles(streamModel.item!));
-
-    // BetterPlayerDataSource.file(url);
-
-    streamModel.betterPlayerController!.betterPlayerSubtitlesSourceList.clear();
-    await streamModel.betterPlayerController!.setupDataSource(dataSource);
-    streamModel.betterPlayerController!.playNextVideo();
-    await streamModel.betterPlayerController!
-        .seekTo(Duration(microseconds: tick));
+  void setAudioTrack(AudioTrack audioTrack) async {
+    audioSelectedIndex = audioTrack.index;
+    streamModel.setAudioStreamIndex(audioTrack);
+    streamModel.commonStream!.setAudioTrack(audioTrack);
   }
-
-  */
 }

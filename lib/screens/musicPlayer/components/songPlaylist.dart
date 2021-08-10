@@ -1,8 +1,8 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -52,26 +52,22 @@ class _SongPlaylistState extends State<SongPlaylist> {
                   axisDirection: AxisDirection.down,
                   color: widget.color,
                   child: ChangeNotifierProvider.value(
-                    value: musicPlayer,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: musicPlayer
-                            .assetsAudioPlayer.playlist!.numberOfItems,
-                        itemBuilder: (context, index) => playlistListItem(
-                            index,
-                            musicPlayer.assetsAudioPlayer.playlist!
-                                .audios[index].metas)),
-                  ));
+                      value: musicPlayer,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: musicPlayer.getPlayList().length,
+                          itemBuilder: (context, index) => playlistListItem(
+                              index, musicPlayer.getPlayList()[index]))));
             })));
   }
 
-  Widget playlistListItem(int index, Metas metas) {
+  Widget playlistListItem(int index, MusicItem musicItem) {
     return Dismissible(
-      key: ValueKey(metas.id! + Uuid().v1()),
+      key: ValueKey(musicItem.id.toString() + Uuid().v1()),
       onDismissed: (direction) {
-        musicPlayer.removePlaylistItemAtIndex(index);
+        // musicPlayer.removePlaylistItemAtIndex(index);
       },
       child: Column(
         children: [
@@ -85,13 +81,13 @@ class _SongPlaylistState extends State<SongPlaylist> {
               onTap: () => musicPlayer.playAtIndex(index),
               child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                  child: playlistItem(index)))
+                  child: playlistItem(index, musicItem)))
         ],
       ),
     );
   }
 
-  Widget playlistItem(int index) {
+  Widget playlistItem(int index, MusicItem musicItem) {
     return Row(
       children: [
         Padding(
@@ -109,32 +105,22 @@ class _SongPlaylistState extends State<SongPlaylist> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(
-                    musicPlayer
-                        .assetsAudioPlayer.playlist!.audios[index].metas.title!,
+                child: Text(musicItem.title,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: widget.color)),
               ),
-              if (musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.artist !=
-                  null)
-                Text(
-                    musicPlayer.assetsAudioPlayer.playlist!.audios[index].metas
-                        .artist!,
+              if (musicItem.artist != null)
+                Text(musicItem.artist!,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         color: widget.color)),
-              if (musicPlayer
-                      .assetsAudioPlayer.playlist!.audios[index].metas.album !=
-                  null)
-                Text(
-                    musicPlayer
-                        .assetsAudioPlayer.playlist!.audios[index].metas.album!,
+              if (musicItem.album != null)
+                Text(musicItem.album!,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 14,

@@ -22,7 +22,6 @@ class _SongControlsState extends State<SongControls> {
   @override
   void initState() {
     super.initState();
-    musicPlayer = MusicPlayer();
   }
 
   @override
@@ -51,7 +50,7 @@ class _SongControlsState extends State<SongControls> {
                   boxShadow: shadows,
                   shape: BoxShape.circle),
               child: InkWell(
-                onTap: () => musicPlayer.assetsAudioPlayer.previous(),
+                onTap: () => musicPlayer.previous(),
                 child: Icon(
                   Icons.skip_previous,
                   color: widget.color,
@@ -61,20 +60,26 @@ class _SongControlsState extends State<SongControls> {
           Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
             child: Container(
-                padding: EdgeInsets.all(16),
+                height: 72,
+                width: 72,
                 decoration: BoxDecoration(
                     color: widget.backgroundColor,
                     boxShadow: shadows,
                     shape: BoxShape.circle),
-                child: InkWell(
-                  onTap: () async => await musicPlayer.toggle(),
-                  child: Icon(
-                    musicPlayer.assetsAudioPlayer.isPlaying.value
-                        ? Icons.pause
-                        : Icons.play_arrow,
-                    color: widget.color,
-                    size: 42,
-                  ),
+                child: StreamBuilder<bool>(
+                  stream: musicPlayer.getCommonPlayer!.isPlaying(),
+                  builder: (context, snapshot) => InkWell(
+                      onTap: () => isPlaying(snapshot.data)
+                          ? musicPlayer.pause()
+                          : musicPlayer.play(),
+                      splashColor: Colors.green,
+                      child: Icon(
+                        isPlaying(snapshot.data)
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        color: widget.color,
+                        size: 42,
+                      )),
                 )),
           ),
           Container(
@@ -84,7 +89,7 @@ class _SongControlsState extends State<SongControls> {
                 boxShadow: shadows,
                 shape: BoxShape.circle),
             child: InkWell(
-              onTap: () => musicPlayer.assetsAudioPlayer.next(),
+              onTap: () => musicPlayer.next(),
               child: Icon(
                 Icons.skip_next,
                 color: widget.color,
@@ -95,5 +100,10 @@ class _SongControlsState extends State<SongControls> {
         ],
       ),
     ]);
+  }
+
+  bool isPlaying(bool? isplaying) {
+    if (isplaying == null) return false;
+    return isplaying;
   }
 }

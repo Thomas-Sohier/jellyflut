@@ -53,17 +53,15 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
   queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
   if (subtitleStreamIndex != null) {
     queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
-  } else {
-    queryParam['SubtitleStreamIndex'] = streamModel.subtitleStreamIndex != null
-        ? streamModel.subtitleStreamIndex.toString()
-        : '0';
+  } else if (streamModel.selectedSubtitleTrack != null) {
+    queryParam['SubtitleStreamIndex'] =
+        streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex.toString();
   }
   if (audioStreamIndex != null) {
     queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
-  } else {
-    queryParam['AudioStreamIndex'] = streamModel.audioStreamIndex != null
-        ? streamModel.audioStreamIndex.toString()
-        : '0';
+  } else if (streamModel.selectedAudioTrack != null) {
+    queryParam['AudioStreamIndex'] =
+        streamModel.selectedAudioTrack!.jellyfinSubtitleIndex.toString();
   }
   queryParam['api_key'] = apiKey!;
 
@@ -78,11 +76,9 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
 
 Future<String> isCodecSupported() async {
   var result;
-  // TODO finish this method to know if video can be direct play
   if (Platform.isAndroid) {
     var deviceProfile = await getExoplayerProfile();
     result = DeviceProfileParent(deviceProfile: deviceProfile).toMap();
-    // log(result);
   } else if (Platform.isIOS) {
     // TODO make IOS
     result = '';
@@ -131,8 +127,7 @@ Future<String> getNewSubtitleSource(int subtitleIndex,
       startTick: startTick, subtitleStreamIndex: subtitleIndex);
 }
 
-Future<String> getSubtitleURL(
-    String itemId, String codec, int subtitleId) async {
+String getSubtitleURL(String itemId, String codec, int subtitleId) {
   var mediaSourceId = itemId.substring(0, 8) +
       '-' +
       itemId.substring(8, 12) +

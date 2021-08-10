@@ -7,9 +7,11 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/components/commonControls.dart';
-import 'package:jellyflut/screens/stream/model/CommonStream.dart';
+import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/screens/stream/model/audiotrack.dart';
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP {
@@ -30,10 +32,8 @@ class CommonStreamBP {
 
   static Future<BetterPlayerController> setupData({required Item item}) async {
     final streamURL = await item.getItemURL();
-    final dataSource = BetterPlayerDataSource.network(
-      streamURL,
-      //subtitles: await getSubtitles(item),
-    );
+    final dataSource = BetterPlayerDataSource.network(streamURL,
+        subtitles: _getSubtitlesBP(item));
     final aspectRatio = item.getAspectRatio();
     final _betterPlayerKey = GlobalKey();
     final _betterPlayerController = BetterPlayerController(
@@ -127,25 +127,107 @@ class CommonStreamBP {
       enableQualities: false,
       showControlsOnInitialize: true,
       playerTheme: BetterPlayerTheme.custom,
-      customControlsBuilder: (controller) => CommonControls(),
+      // customControlsBuilder: (controller) => CommonControls(),
+      customControlsBuilder: (controller) => Container(),
       controlBarHeight: 40,
     );
   }
 
-  Future<List<BetterPlayerSubtitlesSource>> getSubtitles(Item item) async {
-    var asyncSubs = StreamModel()
-        .playBackInfos!
-        .getSubtitles()
-        .map((sub) async => BetterPlayerSubtitlesSource(
-            type: BetterPlayerSubtitlesSourceType.network,
-            urls: [
-              sub.isExternal != null
-                  ? sub.deliveryUrl
-                  : await getSubtitleURL(item.id, 'vtt', sub.index!)
-            ],
-            selectedByDefault: StreamModel().subtitleStreamIndex == sub.index,
-            name: '${sub.language} - ${sub.title}'))
+  static List<BetterPlayerSubtitlesSource> _getSubtitlesBP(Item item) {
+    // ignore: omit_local_variable_types
+    final List<BetterPlayerSubtitlesSource> parsedSubtitlesBP = [];
+    var subtitles = item.mediaStreams!
+        .where((element) => element.type == MediaStreamType.SUBTITLE)
         .toList();
-    return Future.wait(asyncSubs);
+
+    for (var i = 0; i < subtitles.length; i++) {
+      final sub = subtitles[i];
+      final subtitleSourceBP = BetterPlayerSubtitlesSource(
+          type: BetterPlayerSubtitlesSourceType.network,
+          urls: [
+            sub.isRemote()
+                ? sub.deliveryUrl
+                : getSubtitleURL(item.id, 'vtt', sub.index)
+          ],
+          selectedByDefault: false,
+          name: '${sub.language} - ${sub.title}');
+      parsedSubtitlesBP.add(subtitleSourceBP);
+    }
+    return parsedSubtitlesBP;
+  }
+
+  static Future<List<Subtitle>> getSubtitles(
+      BetterPlayerController betterPlayerController) async {
+    // ignore: omit_local_variable_types
+    final List<Subtitle> parsedSubtitiles = [];
+    final subtitles = betterPlayerController.betterPlayerSubtitlesSourceList;
+    for (var i = 0; i < subtitles.length - 1; i++) {
+      parsedSubtitiles
+          .add(Subtitle(index: i, name: subtitles[i].name ?? 'Default'));
+    }
+    return parsedSubtitiles;
+  }
+
+  static void setSubtitle(
+      Subtitle subtitle, BetterPlayerController betterPlayerController) {
+    betterPlayerController.setupSubtitleSource(
+        betterPlayerController.betterPlayerSubtitlesSourceList[subtitle.index]);
+  }
+
+/*
+  static List<BetterPlayerSubtitlesSource> _getAudioTracksBP(Item item) {
+    final List<BetterPlayerSubtitlesSource> parsedSubtitlesBP = [];
+    var audioTracks = item.mediaStreams!
+        .where((element) => element.type == MediaStreamType.AUDIO)
+        .toList();
+
+    for (var i = 0; i < audioTracks.length; i++) {
+      final audioTrack = audioTracks[i];
+      final subtitleSourceBP = BetterPlayerAsmsAudioTrack(
+          id: audioTrack.index,
+          url: audioTrack.isRemote()
+              ? audioTrack.deliveryUrl
+              : getAudioURL(item.id, 'vtt', sub.index!));
+      parsedSubtitlesBP.add(subtitleSourceBP);
+    }
+    return parsedSubtitlesBP;
+  }
+  */
+
+  static Future<List<AudioTrack>> getAudioTracks(
+      BetterPlayerController betterPlayerController) async {
+    // ignore: omit_local_variable_types
+    final List<AudioTrack> parsedAudioTrack = [];
+    var audioTracks = StreamModel()
+        .item!
+        .mediaStreams!
+        .where((element) => element.type == MediaStreamType.AUDIO)
+        .toList();
+    ;
+    for (var i = 0; i < audioTracks.length; i++) {
+      parsedAudioTrack.add(AudioTrack(
+          index: i,
+          jellyfinSubtitleIndex: audioTracks[i].index,
+          name: audioTracks[i].displayTitle ?? 'Default'));
+    }
+    return parsedAudioTrack;
+  }
+
+  static void setAudioTrack(AudioTrack audioTrack,
+      BetterPlayerController betterPlayerController) async {
+    final newUrl = await getNewAudioSource(audioTrack.jellyfinSubtitleIndex!,
+        playbackTick:
+            betterPlayerController.videoPlayerController!.value.position);
+    final streamModel = StreamModel();
+    var tick = betterPlayerController
+        .videoPlayerController!.value.position.inMicroseconds;
+    var dataSource = BetterPlayerDataSource.network(newUrl,
+        subtitles: _getSubtitlesBP(streamModel.item!));
+    betterPlayerController.betterPlayerSubtitlesSourceList.clear();
+    await betterPlayerController.clearCache();
+    await betterPlayerController.setupDataSource(dataSource);
+    betterPlayerController.playNextVideo();
+    await betterPlayerController.videoPlayerController!.play();
+    await betterPlayerController.seekTo(Duration(microseconds: tick));
   }
 }

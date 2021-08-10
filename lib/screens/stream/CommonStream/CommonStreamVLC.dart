@@ -4,7 +4,9 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/model/CommonStream.dart';
+import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/screens/stream/model/audiotrack.dart';
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 class CommonStreamVLC {
   static Duration getBufferingDurationVLC(
@@ -61,5 +63,45 @@ class CommonStreamVLC {
             positionTicks: vlcPlayerController.value.position.inMicroseconds,
             volumeLevel: vlcPlayerController.value.volume.round(),
             subtitlesIndex: 0));
+  }
+
+  static Future<List<Subtitle>> getSubtitles(
+      VlcPlayerController vlcPlayerController) async {
+    // ignore: omit_local_variable_types
+    final List<Subtitle> parsedSubtitiles = [];
+    final subtitles = await vlcPlayerController.getSpuTracks();
+    for (var i = 0; i < subtitles.length; i++) {
+      final subtitleKey = subtitles.keys.elementAt(i);
+      parsedSubtitiles.add(Subtitle(
+          index: i,
+          jellyfinSubtitleIndex: subtitleKey,
+          name: subtitles[subtitleKey]!));
+    }
+    return parsedSubtitiles;
+  }
+
+  static void setSubtitle(
+      Subtitle subtitle, VlcPlayerController vlcPlayerController) {
+    vlcPlayerController.setSpuTrack(subtitle.jellyfinSubtitleIndex!);
+  }
+
+  static Future<List<AudioTrack>> getAudioTracks(
+      VlcPlayerController vlcPlayerController) async {
+    // ignore: omit_local_variable_types
+    final List<AudioTrack> parsedAudioTracks = [];
+    final audioTracks = await vlcPlayerController.getAudioTracks();
+    for (var i = 0; i < audioTracks.length; i++) {
+      final audioTrackKey = audioTracks.keys.elementAt(i);
+      parsedAudioTracks.add(AudioTrack(
+          index: i,
+          jellyfinSubtitleIndex: audioTrackKey,
+          name: audioTracks[audioTrackKey]!));
+    }
+    return parsedAudioTracks;
+  }
+
+  static void setAudioTrack(
+      AudioTrack trackIndex, VlcPlayerController vlcPlayerController) {
+    vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
   }
 }

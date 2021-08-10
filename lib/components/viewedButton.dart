@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/user.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/toast.dart';
 
@@ -30,7 +29,7 @@ class _ViewedButtonState extends State<ViewedButton> {
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
     fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
+    fToast.init(context);
     super.initState();
   }
 

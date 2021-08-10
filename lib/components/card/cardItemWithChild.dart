@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/card/cardInfosChild.dart';
+import 'package:jellyflut/components/card/cardInfos.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/components/favButton.dart';

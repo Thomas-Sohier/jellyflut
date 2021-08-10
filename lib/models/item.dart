@@ -5,8 +5,11 @@
 // ignore_for_file: unused_import
 
 import 'dart:convert';
+import 'dart:io';
 
 // import 'package:fereader/fereader.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,9 +20,11 @@ import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/itemType.dart';
+import 'package:jellyflut/models/mediaStreamType.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
+import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -493,8 +498,8 @@ class Item {
   double getAspectRatio() {
     MediaStream mediaStream;
     if (mediaStreams != null && mediaStreams!.isNotEmpty) {
-      mediaStream = mediaStreams!.firstWhere(
-          (element) => element.type.trim().toLowerCase() == 'video');
+      mediaStream = mediaStreams!
+          .firstWhere((element) => element.type == MediaStreamType.VIDEO);
 
       // If aspect ratio is specified then we use it
       // else we calculate it
@@ -702,9 +707,29 @@ class Item {
         type == ItemType.VIDEO) {
       automaticStreamingSoftwareChooser(item: this);
     } else if (type == ItemType.AUDIO) {
-      musicPlayer.playRemoteItem(this);
+      var commonPlayer;
+      if (Platform.isLinux || Platform.isWindows) {
+        final player = vlc.Player(id: 123);
+        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
+      } else {
+        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
+        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
+            assetsAudioPlayer: assetsAudioPlayer);
+      }
+      musicPlayer.setCommonPlayer(commonPlayer);
+      await musicPlayer.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      musicPlayer.playPlaylist(id);
+      var commonPlayer;
+      if (Platform.isLinux || Platform.isWindows) {
+        final player = vlc.Player(id: 123);
+        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
+      } else {
+        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
+        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
+            assetsAudioPlayer: assetsAudioPlayer);
+      }
+      musicPlayer.setCommonPlayer(commonPlayer);
+      await musicPlayer.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       await Navigator.pushReplacement(navigatorKey.currentContext!,
           MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));
@@ -715,35 +740,55 @@ class Item {
     await bitrateTest(size: 500000);
     await bitrateTest(size: 1000000);
     await bitrateTest(size: 3000000);
+    var item;
 
     if (type == ItemType.EPISODE ||
         type == ItemType.MOVIE ||
         type == ItemType.VIDEO ||
-        type == ItemType.MUSICVIDEO) {
-      return _getStreamURL(this, directPlay);
+        type == ItemType.MUSICVIDEO ||
+        type == ItemType.AUDIO) {
+      item = this;
     } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
-      return _getFirstUnplayedItemURL(directPlay);
-    } else if (type == ItemType.AUDIO) {
-      return _getStreamURL(this, directPlay);
+      item = await getFirstUnplayedItem();
     } else {
       throw ('Cannot find the type of file');
     }
+
+    if (type == ItemType.AUDIO) {
+      return createMusicURL();
+    }
+    return getStreamURL(item, directPlay);
   }
 
-  Future<String> _getFirstUnplayedItemURL(bool directPlay) async {
+  Future<Item> getPlayableItemOrLastUnplayed() async {
+    var item;
+
+    if (type == ItemType.EPISODE ||
+        type == ItemType.MOVIE ||
+        type == ItemType.VIDEO ||
+        type == ItemType.MUSICVIDEO ||
+        type == ItemType.AUDIO) {
+      item = this;
+    } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
+      item = await getFirstUnplayedItem();
+    } else {
+      throw ('Cannot find the type of file');
+    }
+    return item;
+  }
+
+  Future<Item> getFirstUnplayedItem() async {
     var category = await getItems(
         parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
     // remove all item without an index to avoid sort error
     category.items.removeWhere((element) => element.indexNumber == null);
     // sort by index to get the next item to stream
     category.items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
-    var itemToPlay = category.items.firstWhere(
-        (element) => !element.userData!.played,
+    return category.items.firstWhere((element) => !element.userData!.played,
         orElse: () => category.items.first);
-    return _getStreamURL(itemToPlay, directPlay);
   }
 
-  Future<String> _getStreamURL(Item item, bool directPlay) async {
+  Future<String> getStreamURL(Item item, bool directPlay) async {
     var streamModel = StreamModel();
     var data = await isCodecSupported();
     var backInfos = await playbackInfos(data, item.id,
@@ -762,7 +807,6 @@ class Item {
 
     // Current item, playbackinfos, stream url and direct play bool
     streamModel.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
-    streamModel.setItem(item);
     streamModel.setPlaybackInfos(backInfos);
     streamModel.setURL(finalUrl);
     return finalUrl;
@@ -808,9 +852,7 @@ class Item {
     return '${server.url}/Audio/$id/stream.$streamingSoftware';
   }
 
-  List<MediaStream> getMediaStreamFromType({required String type}) {
-    return mediaStreams!
-        .where((element) => element.type.trim().toLowerCase() == type)
-        .toList();
+  List<MediaStream> getMediaStreamFromType({required MediaStreamType type}) {
+    return mediaStreams!.where((element) => element.type == type).toList();
   }
 }

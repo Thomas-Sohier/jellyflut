@@ -34,41 +34,45 @@ class _SearchResultState extends State<SearchResult> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SearchProvider>(builder: (context, search, child) {
-      if (search.searchResult.values.any((element) => element.isNotEmpty) &&
-          search.showResults) {
-        return resultCard(
-            child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: resultRows(search.searchResult),
-                )));
-      } else if (search.searchResult.values
-              .every((element) => element.isEmpty) &&
-          search.showResults) {
-        return resultCard(
-            child: Center(
-          child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(children: [
-                Icon(
-                  Icons.movie,
-                  size: 42,
-                  color: Colors.white,
-                ),
-                Text(
-                  'No results...',
-                  style: TextStyle(fontSize: 18, color: Colors.white70),
-                )
-              ])),
-        ));
-      } else {
-        return Container();
-      }
-    });
+    return Center(
+        child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 600),
+            child: Consumer<SearchProvider>(builder: (context, search, child) {
+              if (search.searchResult.values
+                      .any((element) => element.isNotEmpty) &&
+                  search.showResults) {
+                return resultCard(
+                    child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: resultRows(search.searchResult),
+                        )));
+              } else if (search.searchResult.values
+                      .every((element) => element.isEmpty) &&
+                  search.showResults) {
+                return resultCard(
+                    child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(children: [
+                        Icon(
+                          Icons.movie,
+                          size: 42,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'No results...',
+                          style: TextStyle(fontSize: 18, color: Colors.white70),
+                        )
+                      ])),
+                ));
+              } else {
+                return Container();
+              }
+            })));
   }
 
   Widget resultCard({required Widget child}) {

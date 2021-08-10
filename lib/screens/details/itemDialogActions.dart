@@ -6,7 +6,6 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/toast.dart';
 
@@ -81,9 +80,8 @@ class ItemDialogActions extends StatelessWidget {
   }
 
   void _addItemToPlaylist(Item _item, BuildContext context) async {
-    var musicPlayer = MusicPlayer();
-    musicPlayer.addPlaylist(
-        item, musicPlayer.assetsAudioPlayer.playlist!.audios.length);
+    // musicPlayer.addPlaylist(
+    //     item, musicPlayer.assetsAudioPlayer.playlist!.audios.length);
     Navigator.pop(context);
     var fToast = FToast();
     fToast.init(context);

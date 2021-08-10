@@ -5,7 +5,6 @@ import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -187,7 +186,7 @@ class ListVideoItem extends StatelessWidget {
                             padding: const EdgeInsets.fromLTRB(10, 4, 4, 4),
                             child: GestureDetector(
                                 onTap: () async {
-                                  automaticStreamingSoftwareChooser(item: item);
+                                  item.playItem();
                                 },
                                 child: Icon(
                                   Icons.play_circle_outline,

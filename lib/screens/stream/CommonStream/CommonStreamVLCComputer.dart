@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:desktop_window/desktop_window.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
-import 'package:jellyflut/screens/stream/model/CommonStream.dart';
+import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 
 class CommonStreamVLCComputer {
   static List<Timer> timers = [];
 
   static Future<Player> setupData({required Item item}) async {
-    final size = await DesktopWindow.getWindowSize();
+    final size = MediaQuery.of(navigatorKey.currentContext!).size;
     final streamURL = await item.getItemURL(directPlay: true);
-
     final playerId = Random().nextInt(10000);
     final player = Player(
         id: playerId,
@@ -24,7 +24,6 @@ class CommonStreamVLCComputer {
           '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
         ]);
     final media = Media.network(streamURL);
-
     player.open(media);
 
     // create timer to save progress
