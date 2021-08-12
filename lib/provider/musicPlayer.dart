@@ -29,6 +29,15 @@ class MusicPlayer extends ChangeNotifier {
     return _commonPlayer!.listenPlayingindex();
   }
 
+  // TODO rework when playlist will be reordable
+  void moveMusicItem(int oldIndex, int newIndex) {
+    final musicItem = _musicItems.removeAt(oldIndex);
+    _commonPlayer!.removeFromPlaylist(oldIndex);
+    _musicItems.insert(newIndex, musicItem);
+    _commonPlayer!.insertIntoPlaylist(newIndex, musicItem);
+    notifyListeners();
+  }
+
   void setPlayingIndex(int? index) {
     if (index == null) throw ('index null');
     _currentlyPlayedMusicItem = _musicItems.elementAt(index);
@@ -60,8 +69,7 @@ class MusicPlayer extends ChangeNotifier {
   void playAtIndex(int index) {
     _commonPlayer!.playAtIndex(index);
     _currentlyPlayedMusicItem = _musicItems.elementAt(index);
-    _commonPlayer!.play();
-    // notifyListeners();
+    notifyListeners();
   }
 
   List<MusicItem> getPlayList() {
