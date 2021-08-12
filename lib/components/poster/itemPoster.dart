@@ -17,6 +17,7 @@ class ItemPoster extends StatefulWidget {
       this.showName = true,
       this.showParent = true,
       this.showLogo = false,
+      this.clickable = true,
       this.tag = 'Primary',
       this.boxFit = BoxFit.cover});
 
@@ -27,6 +28,7 @@ class ItemPoster extends StatefulWidget {
   final bool showName;
   final bool showParent;
   final bool showLogo;
+  final bool clickable;
   final String tag;
   final BoxFit boxFit;
 
@@ -91,19 +93,25 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return RawMaterialButton(
-        onPressed: () => _onTap(posterHeroTag),
-        focusNode: _node,
-        focusColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        focusElevation: 0,
-        autofocus: false,
-        child: AspectRatio(
-            aspectRatio:
-                widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
-            child: body(posterHeroTag, context)));
+    if (widget.clickable) {
+      return RawMaterialButton(
+          onPressed: () => _onTap(posterHeroTag),
+          focusNode: _node,
+          focusColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          focusElevation: 0,
+          autofocus: false,
+          child: AspectRatio(
+              aspectRatio: widget.widgetAspectRatio ??
+                  widget.item.getPrimaryAspectRatio(),
+              child: body(posterHeroTag, context)));
+    }
+    return AspectRatio(
+        aspectRatio:
+            widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
+        child: body(posterHeroTag, context));
   }
 
   Widget body(String heroTag, BuildContext context) {

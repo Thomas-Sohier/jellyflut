@@ -18,7 +18,7 @@ class Person {
   String role;
   PersonType type;
   String? primaryImageTag;
-  ImageBlurHashes imageBlurHashes;
+  ImageBlurHashes? imageBlurHashes;
 
   factory Person.fromMap(Map<String, dynamic> json) => Person(
         name: json['Name'],
@@ -26,7 +26,9 @@ class Person {
         role: json['Role'],
         type: EnumFromString<PersonType>(PersonType.values).get(json['Type'])!,
         primaryImageTag: json['PrimaryImageTag'],
-        imageBlurHashes: ImageBlurHashes.fromMap(json['ImageBlurHashes']),
+        imageBlurHashes: json['ImageBlurHashes'] != null
+            ? ImageBlurHashes.fromMap(json['ImageBlurHashes'])
+            : json['ImageBlurHashes'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -35,6 +37,6 @@ class Person {
         'Role': role,
         'Type': type,
         'PrimaryImageTag': primaryImageTag,
-        'ImageBlurHashes': imageBlurHashes.toMap(),
+        'ImageBlurHashes': imageBlurHashes?.toMap(),
       };
 }

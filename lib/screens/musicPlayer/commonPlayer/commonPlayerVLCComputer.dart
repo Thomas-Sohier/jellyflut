@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/api/items.dart';
@@ -67,7 +68,13 @@ class CommonPlayerVLCComputer {
   }
 
   void insertIntoPlaylist(int index, MusicItem musicItem, Player player) {
-    player.current.medias.insert(index, Media.network(musicItem.url ?? ''));
+    final correctIndex = index > player.current.medias.length
+        ? player.current.medias.length
+        : index;
+    final currentState = player.current;
+    currentState.medias
+        .insert(correctIndex, Media.network(musicItem.url ?? ''));
+    player.currentController.add(currentState);
   }
 
   void removeFromPlaylist(int index, Player player) {

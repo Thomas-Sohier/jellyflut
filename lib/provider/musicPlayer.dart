@@ -31,10 +31,11 @@ class MusicPlayer extends ChangeNotifier {
 
   // TODO rework when playlist will be reordable
   void moveMusicItem(int oldIndex, int newIndex) {
+    final index = newIndex - 1;
     final musicItem = _musicItems.removeAt(oldIndex);
     _commonPlayer!.removeFromPlaylist(oldIndex);
-    _musicItems.insert(newIndex, musicItem);
-    _commonPlayer!.insertIntoPlaylist(newIndex, musicItem);
+    _musicItems.insert(index, musicItem);
+    _commonPlayer!.insertIntoPlaylist(index, musicItem);
     notifyListeners();
   }
 

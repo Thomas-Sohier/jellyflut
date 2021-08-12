@@ -482,6 +482,11 @@ class Item {
     return false;
   }
 
+  bool hasPeople() {
+    if (people != null) return people!.isNotEmpty;
+    return false;
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

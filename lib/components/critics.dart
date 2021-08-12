@@ -39,6 +39,9 @@ class Critics extends StatelessWidget {
               Icons.star,
               color: Colors.yellow[700],
             ),
+            SizedBox(
+              width: 4,
+            ),
             Text(item.communityRating.toString(),
                 style: TextStyle(fontSize: 16, color: textColor))
           ]),
@@ -48,6 +51,9 @@ class Critics extends StatelessWidget {
           padding: const EdgeInsets.only(right: 10),
           child: Row(children: [
             criticRating(item.criticRating!),
+            SizedBox(
+              width: 4,
+            ),
             Text(item.criticRating.toString(),
                 style: TextStyle(fontSize: 16, color: textColor))
           ]),

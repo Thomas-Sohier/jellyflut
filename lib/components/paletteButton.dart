@@ -12,17 +12,19 @@ class PaletteButton extends StatefulWidget {
     this.text,
     this.onPressed, {
     this.borderRadius = 80.0,
-    this.child,
+    this.minWidth = 88.0,
+    this.maxWidth = 200.0,
     this.item,
     this.icon,
   });
 
-  final Widget? child;
   final Item? item;
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
-  final IconData? icon;
+  final double minWidth;
+  final double maxWidth;
+  final Icon? icon;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
@@ -32,10 +34,10 @@ class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin {
   // variable for both button
   // size
-  final double minWidth = 88.0;
-  final double minHeight = 36.0;
-  final double maxWidth = 200;
-  final double maxHeight = 50;
+  late double minWidth = 88.0;
+  late double minHeight = 36.0;
+  late double maxWidth = 200;
+  late double maxHeight = 50;
   // padding of icon if one
   final EdgeInsets padding = EdgeInsets.fromLTRB(5, 0, 5, 0);
 
@@ -46,6 +48,8 @@ class _PaletteButtonState extends State<PaletteButton>
 
   @override
   void initState() {
+    minWidth = widget.minWidth;
+    maxWidth = widget.maxWidth;
     _node = FocusNode();
     super.initState();
   }
@@ -60,7 +64,9 @@ class _PaletteButtonState extends State<PaletteButton>
         onPressed: widget.onPressed,
         style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
-                shape: StadiumBorder(),
+                shape: RoundedRectangleBorder(
+                  borderRadius: borderRadius, // <-- Radius
+                ),
                 backgroundColor: Colors.transparent,
                 textStyle: TextStyle(color: Colors.black))
             .copyWith(side: MaterialStateProperty.resolveWith<BorderSide>(
@@ -129,7 +135,7 @@ class _PaletteButtonState extends State<PaletteButton>
                         Padding(
                           padding: padding,
                           child: Icon(
-                            widget.icon,
+                            widget.icon!.icon,
                             color: foregroundColor,
                           ),
                         )
@@ -179,10 +185,7 @@ class _PaletteButtonState extends State<PaletteButton>
                   if (widget.icon != null)
                     Padding(
                       padding: padding,
-                      child: Icon(
-                        widget.icon,
-                        color: Colors.black,
-                      ),
+                      child: widget.icon,
                     )
                 ])),
       ),
