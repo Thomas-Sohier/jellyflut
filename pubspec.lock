@@ -113,10 +113,14 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
 <<<<<<< HEAD
+<<<<<<< HEAD
     version: "2.1.0"
 =======
     version: "2.1.1"
 >>>>>>> 65e8f1b (Listening to music on phone and pc works correctly now, but there is still some errors and optimizations to do)
+=======
+    version: "2.1.1"
+>>>>>>> e9952ab9a343114975a92ac6ac84fbbf7c98b275
   build_runner_core:
     dependency: transitive
     description:
@@ -270,13 +274,18 @@ packages:
       name: dart_vlc
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.1.2"
+=======
+    version: "0.1.1"
+>>>>>>> e9952ab9a343114975a92ac6ac84fbbf7c98b275
   dart_vlc_ffi:
     dependency: transitive
     description:
       name: dart_vlc_ffi
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
 <<<<<<< HEAD
     version: "0.1.0"
 <<<<<<< HEAD
@@ -292,6 +301,9 @@ packages:
 =======
     version: "0.1.1"
 >>>>>>> ca047be (add a reordable playlist (WIP))
+=======
+    version: "0.1.0"
+>>>>>>> e9952ab9a343114975a92ac6ac84fbbf7c98b275
   device_info:
     dependency: "direct main"
     description:
