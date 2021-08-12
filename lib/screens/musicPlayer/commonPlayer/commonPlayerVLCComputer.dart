@@ -35,7 +35,7 @@ class CommonPlayerVLCComputer {
 
   List<Media> _getPlaylistMusicItemAsMedia() {
     return _musicPlayer.getMusicItems
-        .map((MusicItem musicItem) => Media.network(musicItem.url))
+        .map((MusicItem musicItem) => Media.network(musicItem.url ?? ''))
         .toList();
   }
 
@@ -64,5 +64,13 @@ class CommonPlayerVLCComputer {
 
   void removeListener() {
     _timers.forEach((t) => t.cancel());
+  }
+
+  void insertIntoPlaylist(int index, MusicItem musicItem, Player player) {
+    player.current.medias.insert(index, Media.network(musicItem.url ?? ''));
+  }
+
+  void removeFromPlaylist(int index, Player player) {
+    player.current.medias.removeAt(index);
   }
 }

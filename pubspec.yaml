@@ -24,23 +24,18 @@ module:
   androidX: true
 
 dependencies:
-  flutter:
-    sdk: flutter
-  splashscreen:
-    git:
-      url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
-      ref: master
   assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.7.0
   better_player: ^0.0.72
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
-  dart_vlc: ^0.1.1
-  desktop_window: ^0.4.0
+  dart_vlc: ^0.1.2
   device_info: ^2.0.2
   dio: ^4.0.0
   epub_view: ^2.2.0
+  flutter:
+    sdk: flutter
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.2
   fluttertoast: ^8.0.8
@@ -57,6 +52,10 @@ dependencies:
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
+  splashscreen:
+    git:
+      url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
+      ref: master
   sqlite3_flutter_libs: ^0.5.0
   uuid: ^3.0.4
   wakelock: ^0.5.3+3

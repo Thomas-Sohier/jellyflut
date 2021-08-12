@@ -270,13 +270,14 @@ packages:
       name: dart_vlc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   dart_vlc_ffi:
     dependency: transitive
     description:
       name: dart_vlc_ffi
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.1.0"
 <<<<<<< HEAD
   desktop_window:
@@ -288,6 +289,9 @@ packages:
     version: "0.4.0"
 =======
 >>>>>>> 65e8f1b (Listening to music on phone and pc works correctly now, but there is still some errors and optimizations to do)
+=======
+    version: "0.1.1"
+>>>>>>> ca047be (add a reordable playlist (WIP))
   device_info:
     dependency: "direct main"
     description:
@@ -515,6 +519,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  implicitly_animated_reorderable_list:
+    dependency: "direct main"
+    description:
+      name: implicitly_animated_reorderable_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   intl:
     dependency: "direct dev"
     description:

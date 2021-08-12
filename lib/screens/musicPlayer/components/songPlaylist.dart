@@ -53,13 +53,16 @@ class _SongPlaylistState extends State<SongPlaylist> {
                   color: widget.color,
                   child: ChangeNotifierProvider.value(
                       value: musicPlayer,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.vertical,
-                          itemCount: musicPlayer.getPlayList().length,
-                          itemBuilder: (context, index) => playlistListItem(
-                              index, musicPlayer.getPlayList()[index]))));
+                      child: ReorderableListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: musicPlayer.getPlayList().length,
+                        itemBuilder: (context, index) => playlistListItem(
+                            index, musicPlayer.getPlayList()[index]),
+                        onReorder: (int oldIndex, int newIndex) =>
+                            musicPlayer.moveMusicItem(oldIndex, newIndex),
+                      )));
             })));
   }
 
@@ -67,8 +70,12 @@ class _SongPlaylistState extends State<SongPlaylist> {
     return Dismissible(
       key: ValueKey(musicItem.id.toString() + Uuid().v1()),
       onDismissed: (direction) {
-        // musicPlayer.removePlaylistItemAtIndex(index);
+        musicPlayer.deleteFromPlaylist(index);
       },
+      background: Container(
+        color: Colors.red,
+      ),
+      dismissThresholds: {DismissDirection.horizontal: 0.3},
       child: Column(
         children: [
           if (index > 0)
