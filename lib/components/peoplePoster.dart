@@ -27,8 +27,6 @@ class _PeoplePosterState extends State<PeoplePoster>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   // Dpad navigation
   late FocusNode _node;
-  late AnimationController _controller;
-  late Color _focusColor;
   late String posterHeroTag;
   late Widget finalPoster;
 
@@ -39,33 +37,11 @@ class _PeoplePosterState extends State<PeoplePoster>
   void initState() {
     finalPoster = widget.bigPoster ? bigPoster() : poster();
     _node = FocusNode();
-    _focusColor = Colors.transparent;
-    _node.addListener(_onFocusChange);
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 100),
-        vsync: this,
-        lowerBound: 0.9,
-        upperBound: 1);
     super.initState();
-  }
-
-  void _onFocusChange() {
-    if (_node.hasFocus) {
-      _controller.forward();
-      setState(() {
-        _focusColor = Colors.white;
-      });
-    } else {
-      _controller.reverse();
-      setState(() {
-        _focusColor = Colors.transparent;
-      });
-    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     _node.dispose();
     super.dispose();
   }
@@ -74,29 +50,21 @@ class _PeoplePosterState extends State<PeoplePoster>
   Widget build(BuildContext context) {
     super.build(context);
     if (widget.clickable) {
-      return RawMaterialButton(
+      return OutlinedButton(
           onPressed: widget.onPressed,
-          focusNode: _node,
-          focusColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          focusElevation: 0,
           autofocus: false,
-          child: nodeAction());
+          focusNode: _node,
+          style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                  ),
+                  backgroundColor: Colors.transparent)
+              .copyWith(side: buttonBorderSide())
+              .copyWith(elevation: buttonElevation()),
+          child: finalPoster);
     }
-    return nodeAction();
-  }
-
-  Widget nodeAction() {
-    return _node.hasFocus
-        ? Container(
-            decoration: BoxDecoration(
-                border: Border.all(width: 2, color: _focusColor),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            padding: EdgeInsets.all(2),
-            child: finalPoster)
-        : finalPoster;
+    return finalPoster;
   }
 
   Widget poster() {
@@ -186,5 +154,32 @@ class _PeoplePosterState extends State<PeoplePoster>
                 ],
               )),
         ));
+  }
+
+  MaterialStateProperty<double> buttonElevation() {
+    return MaterialStateProperty.resolveWith<double>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return 2;
+        }
+        return 0; // defer to the default
+      },
+    );
+  }
+
+  MaterialStateProperty<BorderSide> buttonBorderSide() {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Colors.white,
+          );
+        }
+        return BorderSide(
+            width: 0, color: Colors.transparent); // defer to the default
+      },
+    );
   }
 }

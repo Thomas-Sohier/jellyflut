@@ -48,6 +48,7 @@ class Resume extends StatelessWidget {
                   _item,
                   showLogo: true,
                   showParent: false,
+                  clickable: true,
                   widgetAspectRatio: 16 / 9,
                 );
               },

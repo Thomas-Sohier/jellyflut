@@ -35,28 +35,31 @@ class _PeoplesListState extends State<PeoplesList> {
   }
 
   Widget listPeoples(List<Person> peoples) {
-    return ListView.builder(
-        itemCount: peoples.length,
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) {
-          var person = peoples[index];
-          var item = Item(
-              name: person.name,
-              id: person.id,
-              imageBlurHashes: person.imageBlurHashes,
-              imageTags: ImageTags(primary: person.primaryImageTag),
-              type: ItemType.PERSON);
-          return ScreenTypeLayout.builder(
-              breakpoints: screenBreakpoints,
-              mobile: (BuildContext context) =>
-                  phonePoster(item, person, index),
-              tablet: (BuildContext context) =>
-                  largeScreenTemplate(item, person, index),
-              desktop: (BuildContext context) =>
-                  largeScreenTemplate(item, person, index));
-        });
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ListView.builder(
+          itemCount: peoples.length,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            var person = peoples[index];
+            var item = Item(
+                name: person.name,
+                id: person.id,
+                imageBlurHashes: person.imageBlurHashes,
+                imageTags: ImageTags(primary: person.primaryImageTag),
+                type: ItemType.PERSON);
+            return ScreenTypeLayout.builder(
+                breakpoints: screenBreakpoints,
+                mobile: (BuildContext context) =>
+                    phonePoster(item, person, index),
+                tablet: (BuildContext context) =>
+                    largeScreenTemplate(item, person, index),
+                desktop: (BuildContext context) =>
+                    largeScreenTemplate(item, person, index));
+          }),
+    );
   }
 
   Widget phonePoster(Item item, Person person, int index) {

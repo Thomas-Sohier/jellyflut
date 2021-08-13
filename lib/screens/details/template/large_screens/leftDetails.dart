@@ -34,6 +34,7 @@ class LeftDetails extends StatelessWidget {
                   child: ItemPoster(
                     item,
                     heroTag: heroTag,
+                    widgetAspectRatio: item.getPrimaryAspectRatio(),
                     tag: tag,
                     clickable: false,
                     showParent: false,

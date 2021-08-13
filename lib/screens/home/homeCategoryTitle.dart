@@ -13,31 +13,12 @@ class HomeCategoryTitle extends StatefulWidget {
 
 class _HomeCategoryTitleState extends State<HomeCategoryTitle>
     with SingleTickerProviderStateMixin {
-  final BoxShadow boxShadowColor1 =
-      BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
-  final BoxShadow boxShadowColor2 =
-      BoxShadow(blurRadius: 4, color: Colors.black12, spreadRadius: 2);
   late FocusNode _node;
-  late Color _focusColor;
 
   @override
   void initState() {
-    _focusColor = Colors.transparent;
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
-    _node.addListener(_onFocusChange);
     super.initState();
-  }
-
-  void _onFocusChange() {
-    if (_node.hasFocus) {
-      setState(() {
-        _focusColor = Colors.white;
-      });
-    } else {
-      setState(() {
-        _focusColor = Colors.transparent;
-      });
-    }
   }
 
   @override
@@ -48,31 +29,58 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-        onPressed: widget.onTap,
-        focusNode: _node,
-        focusColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        focusElevation: 0,
-        autofocus: false,
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(width: 2, color: _focusColor),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            child: Row(children: [
-              Text(
-                widget.item.name,
-                style: TextStyle(color: Colors.white, fontSize: 28),
+    return OutlinedButton(
+      onPressed: widget.onTap,
+      autofocus: false,
+      focusNode: _node,
+      style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
-              Spacer(),
-              InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                onTap: widget.onTap,
-                child: Icon(Icons.chevron_right_rounded,
-                    color: Colors.white, size: 42),
-              ),
-            ])));
+              backgroundColor: Colors.transparent)
+          .copyWith(side: buttonBorderSide())
+          .copyWith(padding: buttonPadding()),
+      child: title(),
+    );
+  }
+
+  Widget title() {
+    return Row(children: [
+      Text(
+        widget.item.name,
+        style: TextStyle(color: Colors.white, fontSize: 28),
+      ),
+      Spacer(),
+      InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+        onTap: widget.onTap,
+        child: Icon(Icons.chevron_right_rounded, color: Colors.white, size: 42),
+      ),
+    ]);
+  }
+
+  MaterialStateProperty<BorderSide> buttonBorderSide() {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Colors.white,
+          );
+        }
+        return BorderSide(width: 0, color: Colors.transparent);
+      },
+    );
+  }
+
+  MaterialStateProperty<EdgeInsetsGeometry> buttonPadding() {
+    return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
+        (Set<MaterialState> states) {
+      if (states.contains(MaterialState.focused)) {
+        return EdgeInsets.only(left: 8);
+      }
+      return EdgeInsets.zero;
+    });
   }
 }
