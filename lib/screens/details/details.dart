@@ -43,6 +43,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   late MediaQueryData mediaQuery;
   late String heroTag;
   late Item item;
+  late Future<List<dynamic>> itemsFuture;
 
   // palette color
   var fontColor = Colors.white;
@@ -55,6 +56,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     heroTag = widget.heroTag;
     listOfItems = ListOfItems();
     item = widget.item;
+    itemsFuture = getItemDelayed();
     super.initState();
   }
 
@@ -138,7 +140,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(24, 64, 24, 24),
                         child: FutureBuilder<List<dynamic>>(
-                            future: getItemDelayed(),
+                            future: itemsFuture,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return RightDetails(
@@ -202,7 +204,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                               Padding(
                                   padding: const EdgeInsets.all(24),
                                   child: FutureBuilder<List<dynamic>>(
-                                      future: getItemDelayed(),
+                                      future: itemsFuture,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return RightDetails(

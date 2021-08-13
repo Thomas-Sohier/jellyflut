@@ -25,10 +25,12 @@ class _SettingsState extends State<Settings> {
     brightness: Brightness.dark,
     primaryColor: jellyPurple,
   );
+  late Future<dynamic> settingsInfosFuture;
 
   @override
   void initState() {
     db = AppDatabase().getDatabase;
+    settingsInfosFuture = getSettingsInfos();
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _SettingsState extends State<Settings> {
                 backgroundColor: Color(0xFF252525),
                 leading: bb.BackButton()),
             body: FutureBuilder(
-                future: getSettingsInfos(),
+                future: settingsInfosFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return Center(

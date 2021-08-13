@@ -22,22 +22,14 @@ class HomeCategories extends StatefulWidget {
 
 class _HomeCategoriesState extends State<HomeCategories>
     with AutomaticKeepAliveClientMixin {
-  double height = 220;
+  final double height = 220;
   final double gapSize = 20;
-  late bool hasError = false;
-  late String error;
-  List<Item>? items;
+  late Future<List<Item>> itemsFuture;
 
   @override
   void initState() {
-    getLatestMedia(
-            parentId: widget.item.id,
-            fields: 'DateCreated, DateAdded, ImageTags')
-        .then((List<Item> _items) => setState(() => items = _items))
-        .catchError((onError) {
-      hasError = true;
-      error = onError.toString();
-    });
+    itemsFuture = getLatestMedia(
+        parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
     super.initState();
   }
 
@@ -64,14 +56,19 @@ class _HomeCategoriesState extends State<HomeCategories>
   }
 
   Widget categoryBuilder() {
-    if (items != null && !hasError) {
-      if (items!.isEmpty) {
-        return Container();
-      }
-      return buildCategory(items!);
-    } else {
-      return placeholder();
-    }
+    return FutureBuilder<List<Item>>(
+      future: itemsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.hasError) {
+          if (snapshot.data!.isEmpty) {
+            return Container();
+          }
+          return buildCategory(snapshot.data!);
+        } else {
+          return placeholder();
+        }
+      },
+    );
   }
 
   Widget buildCategory(List<Item> items) {
