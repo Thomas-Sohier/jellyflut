@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
-import 'package:jellyflut/screens/musicPlayer/components/songInfos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songSlider.dart';
 import 'package:octo_image/octo_image.dart';
 

@@ -45,7 +45,6 @@ class RightDetails extends StatelessWidget {
       if (item.hasPeople()) peoples(),
       Collection(item)
     ]);
-    ;
   }
 
   Widget peoples() {

@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 
 class LeftDetails extends StatelessWidget {

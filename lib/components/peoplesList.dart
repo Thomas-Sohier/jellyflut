@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/peoplePoster.dart';
 import 'package:jellyflut/models/imageTags.dart';
 import 'package:jellyflut/models/item.dart';

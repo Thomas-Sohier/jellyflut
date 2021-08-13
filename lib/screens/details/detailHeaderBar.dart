@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/BackButton.dart' as backButton;
+import 'package:jellyflut/components/BackButton.dart' as back_button;
 import 'package:jellyflut/main.dart';
 
 class DetailHeaderBar extends StatelessWidget {
@@ -37,7 +37,7 @@ class DetailHeaderBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [backButton.BackButton()],
+        children: [back_button.BackButton()],
       ),
     );
   }

@@ -3,17 +3,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/card/cardItemWithChild.dart';
-import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/components/paletteButton.dart';
-import 'package:jellyflut/components/peoplesList.dart';
-import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
@@ -23,7 +17,6 @@ import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dar
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/colors.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';

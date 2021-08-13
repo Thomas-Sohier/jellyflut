@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/screens/musicPlayer/components/songBackground.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songImage.dart';
