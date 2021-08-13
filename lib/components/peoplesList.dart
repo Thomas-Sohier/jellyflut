@@ -39,6 +39,7 @@ class _PeoplesListState extends State<PeoplesList> {
         itemCount: peoples.length,
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         itemBuilder: (context, index) {
           var person = peoples[index];
           var item = Item(
@@ -97,7 +98,7 @@ class _PeoplesListState extends State<PeoplesList> {
 
   Widget largeScreenTemplate(Item item, Person person, int index) {
     return Padding(
-        padding: EdgeInsets.only(left: 5, right: 5),
+        padding: EdgeInsets.only(right: 10),
         child: InkWell(
           onTap: () => onTap(item, person),
           child: PeoplePoster(

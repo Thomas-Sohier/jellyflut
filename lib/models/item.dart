@@ -487,6 +487,21 @@ class Item {
     return false;
   }
 
+  bool isPlayable() {
+    final playableItems = [
+      ItemType.AUDIO,
+      ItemType.MUSICALBUM,
+      ItemType.MUSICVIDEO,
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

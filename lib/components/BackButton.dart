@@ -39,6 +39,16 @@ class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              blurRadius: 28,
+              color: Colors.black.withAlpha(20),
+              spreadRadius: 8),
+          BoxShadow(blurRadius: 24, color: Colors.black12, spreadRadius: 1),
+          BoxShadow(blurRadius: 22, color: Colors.black26, spreadRadius: 0)
+        ],
+      ),
       foregroundDecoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(width: 2, color: _focusColor)),

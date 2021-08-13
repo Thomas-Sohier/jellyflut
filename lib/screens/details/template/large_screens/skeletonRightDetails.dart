@@ -11,38 +11,37 @@ class SkeletonRightDetails extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: shimmerColor1,
       highlightColor: shimmerColor2,
-      child: Padding(
+      child: ListView(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 64,
-            ),
-            buttons(),
-            SizedBox(
-              height: 24,
-            ),
-            title(),
-            SizedBox(
-              height: 24,
-            ),
-            infos(),
-            SizedBox(
-              height: 24,
-            ),
-            overview(),
-            SizedBox(
-              height: 24,
-            ),
-            title(),
-            SizedBox(
-              height: 24,
-            ),
-            peoples()
-          ],
-        ),
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: [
+          SizedBox(
+            height: 64,
+          ),
+          buttons(),
+          SizedBox(
+            height: 24,
+          ),
+          title(),
+          SizedBox(
+            height: 24,
+          ),
+          infos(),
+          SizedBox(
+            height: 24,
+          ),
+          overview(),
+          SizedBox(
+            height: 24,
+          ),
+          title(),
+          SizedBox(
+            height: 24,
+          ),
+          peoples()
+        ],
       ),
     );
   }

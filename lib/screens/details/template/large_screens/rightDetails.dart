@@ -3,9 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/collection.dart';
@@ -137,8 +135,8 @@ class RightDetails extends StatelessWidget {
       spacing: 10,
       runSpacing: 10,
       children: [
-        PlayButton(item: item),
-        TrailerButton(item: item),
+        if (item.isPlayable()) PlayButton(item: item),
+        if (item.isPlayable()) TrailerButton(item: item),
         LikeButton(item: item),
         ManageButton(item: item)
       ],

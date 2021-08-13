@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
+import 'package:jellyflut/screens/details/models/detailsColors.dart';
 import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
@@ -26,6 +28,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:rxdart/rxdart.dart';
 import './detailHeaderBar.dart';
 
 import 'collection.dart';
@@ -41,18 +44,6 @@ class Details extends StatefulWidget {
   }
 }
 
-final playableItems = [
-  ItemType.AUDIO,
-  ItemType.MUSICALBUM,
-  ItemType.MUSICVIDEO,
-  ItemType.MOVIE,
-  ItemType.SERIES,
-  ItemType.SEASON,
-  ItemType.EPISODE,
-  ItemType.BOOK,
-  ItemType.VIDEO
-];
-
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
   late PageController pageController;
   late MediaQueryData mediaQuery;
@@ -60,8 +51,6 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   late Item item;
 
   // palette color
-  var color1 = Colors.grey.shade700;
-  var color2 = Colors.grey.shade800;
   var fontColor = Colors.white;
 
   // Items for photos
@@ -72,7 +61,6 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     heroTag = widget.heroTag;
     listOfItems = ListOfItems();
     item = widget.item;
-    getPaletteColorDelayed();
     super.initState();
   }
 
@@ -96,12 +84,14 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   Widget responsiveBuilder() {
     return ScreenTypeLayout.builder(
+        breakpoints: ScreenBreakpoints(tablet: 600, desktop: 720, watch: 300),
         mobile: (BuildContext context) => phoneTemplate(),
-        tablet: (BuildContext context) => largeScreenTemplate(),
+        tablet: (BuildContext context) => tabletScreenTemplate(),
         desktop: (BuildContext context) => largeScreenTemplate());
   }
 
   Widget phoneTemplate() {
+    mediaQuery = MediaQuery.of(context);
     return Stack(alignment: Alignment.topCenter, children: [
       BackgroundImage(
         item: item,
@@ -132,6 +122,53 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     ]);
   }
 
+  Widget tabletScreenTemplate() {
+    return Stack(alignment: Alignment.topCenter, children: [
+      BackgroundImage(
+        item: item,
+        imageType: 'Backdrop',
+      ),
+      ClipRect(
+          child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+        child: StreamBuilder<DetailsColors>(
+            stream: getPaletteColor().stream,
+            builder: (context, colorsDetailsSnapshot) => Stack(
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                            color: colorsDetailsSnapshot.data != null
+                                ? colorsDetailsSnapshot.data!.backgroundColor
+                                    .withOpacity(0.4)
+                                : Colors.grey.shade700.withOpacity(0.4))),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 64, 24, 24),
+                        child: FutureBuilder<List<dynamic>>(
+                            future: getItemDelayed(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return RightDetails(
+                                    item: snapshot.data!.elementAt(0),
+                                    color: colorsDetailsSnapshot
+                                            .data?.backgroundColor ??
+                                        Colors.grey.shade200,
+                                    fontColor:
+                                        colorsDetailsSnapshot.data?.fontColor ??
+                                            Colors.black87);
+                              }
+                              return SkeletonRightDetails();
+                            }))
+                  ],
+                )),
+      )),
+      DetailHeaderBar(
+        color: Colors.white,
+        showDarkGradient: false,
+        height: 64,
+      ),
+    ]);
+  }
+
   Widget largeScreenTemplate() {
     return Stack(alignment: Alignment.topCenter, children: [
       BackgroundImage(
@@ -150,31 +187,44 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                 child: LeftDetails(
                   item: item,
                   heroTag: heroTag,
-                  color: color1,
                 )),
             Expanded(
                 flex: 6,
                 child: ClipRect(
                     child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                        child: Container(
-                            decoration:
-                                BoxDecoration(color: color2.withOpacity(0.4)),
-                            child: Padding(
-                                padding: const EdgeInsets.all(24),
-                                child: FutureBuilder<Item>(
-                                    future: getItem(item.id),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        return Expanded(
-                                            flex: 6,
-                                            child: RightDetails(
-                                                item: snapshot.data!,
-                                                color: color2,
-                                                fontColor: fontColor));
-                                      }
-                                      return SkeletonRightDetails();
-                                    }))))))
+                  filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                  child: StreamBuilder<DetailsColors>(
+                      stream: getPaletteColor().stream,
+                      builder: (context, colorsDetailsSnapshot) => Stack(
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      color: colorsDetailsSnapshot.data != null
+                                          ? colorsDetailsSnapshot
+                                              .data!.backgroundColor
+                                              .withOpacity(0.4)
+                                          : Colors.grey.shade700
+                                              .withOpacity(0.4))),
+                              Padding(
+                                  padding: const EdgeInsets.all(24),
+                                  child: FutureBuilder<List<dynamic>>(
+                                      future: getItemDelayed(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return RightDetails(
+                                              item: snapshot.data!.elementAt(0),
+                                              color: colorsDetailsSnapshot
+                                                      .data?.backgroundColor ??
+                                                  Colors.grey.shade200,
+                                              fontColor: colorsDetailsSnapshot
+                                                      .data?.fontColor ??
+                                                  Colors.black87);
+                                        }
+                                        return SkeletonRightDetails();
+                                      }))
+                            ],
+                          )),
+                )))
           ])),
         ]),
         DetailHeaderBar(
@@ -186,18 +236,24 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
     ]);
   }
 
-  void getPaletteColorDelayed() async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 1200)));
-    futures.add(getPalette(item, 'Primary'));
-    await Future.wait(futures).then((List<dynamic> data) {
-      setState(() {
-        color1 = data[1].elementAt(0).color;
-        color2 = data[1].elementAt(2).color;
-        fontColor =
-            color2.computeLuminance() > 0.5 ? Colors.black87 : Colors.white70;
-      });
+  BehaviorSubject<DetailsColors> getPaletteColor() {
+    final streamController = BehaviorSubject<DetailsColors>();
+    getPalette(item, 'Primary').then((List<PaletteColor> paletteColors) {
+      final backgroundColor = paletteColors.elementAt(0).color;
+      final fontColor = backgroundColor.computeLuminance() > 0.5
+          ? Colors.black87
+          : Colors.white70;
+      streamController.add(DetailsColors(
+          backgroundColor: backgroundColor, fontColor: fontColor));
     });
+    return streamController;
+  }
+
+  Future<List<dynamic>> getItemDelayed() async {
+    final futures = <Future>[];
+    futures.add(getItem(item.id));
+    futures.add(Future.delayed(Duration(milliseconds: 700)));
+    return await Future.wait(futures);
   }
 
   Widget photoItem() {
@@ -259,7 +315,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
           Container(
               padding: EdgeInsets.only(top: 25),
               child: CardItemWithChild(item)),
-          playableItems.contains(item.type)
+          item.isPlayable()
               ? ConstrainedBox(
                   constraints:
                       BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),

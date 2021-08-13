@@ -26,66 +26,70 @@ class _CollectionState extends State<Collection> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter, //or choose another Alignment
-      child: Container(
-          constraints: BoxConstraints(maxWidth: 600),
-          padding: const EdgeInsets.only(top: 16),
-          child: showCollection(widget.item)),
+      child: showCollection(widget.item),
     );
   }
 
   Widget showCollection(Item item) {
-    var size = MediaQuery.of(context).size;
-    if (item.isFolder != null) {
-      if (item.isFolder! && item.type == ItemType.MUSICALBUM) {
+    switch (item.type) {
+      case ItemType.MUSICALBUM:
         return ListMusicItem(item: item);
-      } else if (item.isFolder! && item.type == ItemType.SEASON) {
+      case ItemType.SEASON:
         return ListVideoItem(item: item);
-      } else if (item.isFolder!) {
+      case ItemType.SERIES:
         return ListCollectionItem(item: item);
-      }
-    } else if (item.type == ItemType.MUSICARTIST) {
-      return Column(children: [
-        ListCollectionItem(
-          item: item,
-          future: getItems(
-              includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
-              sortBy: 'ProductionYear,Sortname',
-              albumArtistIds: item.id,
-              fields:
-                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
-        )
-      ]);
-    } else if (item.type == ItemType.PERSON) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        ListCollectionItem(
-          item: item,
-          title: 'Movies',
-          future: getItems(
-              includeItemTypes: getEnumValue(ItemType.MOVIE.toString()),
-              sortBy: 'ProductionYear,Sortname',
-              personIds: item.id,
-              fields:
-                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
-        ),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        ListCollectionItem(
-          item: item,
-          title: 'Series',
-          future: getItems(
-              includeItemTypes: getEnumValue(ItemType.SERIES.toString()),
-              sortBy: 'ProductionYear,Sortname',
-              personIds: item.id,
-              fields:
-                  'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
-        ),
-      ]);
+      case ItemType.MUSICARTIST:
+        return musicArtistItem(item: item);
+      case ItemType.PERSON:
+        return personItem(item: item);
+      default:
+        return Container();
     }
-    return Container();
+  }
+
+  Widget musicArtistItem({required Item item}) {
+    return Column(children: [
+      ListCollectionItem(
+        item: item,
+        future: getItems(
+            includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
+            sortBy: 'ProductionYear,Sortname',
+            albumArtistIds: item.id,
+            fields:
+                'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+      )
+    ]);
+  }
+
+  Widget personItem({required Item item}) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      SizedBox(
+        height: 24,
+      ),
+      ListCollectionItem(
+        item: item,
+        title: 'Movies',
+        future: getItems(
+            includeItemTypes: getEnumValue(ItemType.MOVIE.toString()),
+            sortBy: 'ProductionYear,Sortname',
+            personIds: item.id,
+            fields:
+                'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+      ),
+      SizedBox(
+        height: 24,
+      ),
+      ListCollectionItem(
+        item: item,
+        title: 'Series',
+        future: getItems(
+            includeItemTypes: getEnumValue(ItemType.SERIES.toString()),
+            sortBy: 'ProductionYear,Sortname',
+            personIds: item.id,
+            fields:
+                'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
+      ),
+    ]);
   }
 }
 
