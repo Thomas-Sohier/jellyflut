@@ -5,12 +5,11 @@ import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uuid/uuid.dart';
-
-import 'details.dart';
 
 class ListVideoItem extends StatelessWidget {
   final Item item;

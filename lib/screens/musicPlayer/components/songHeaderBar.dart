@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
@@ -22,6 +23,7 @@ class SongHeaderBar extends StatelessWidget {
     var statusBarHeight =
         MediaQuery.of(navigatorKey.currentContext!).padding.top;
     return ScreenTypeLayout.builder(
+        breakpoints: screenBreakpoints,
         mobile: (BuildContext context) =>
             phoneTemplate(statusBarHeight, context),
         tablet: (BuildContext context) =>

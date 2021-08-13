@@ -3,10 +3,22 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/screens/details/listCollectionItem.dart';
-import 'package:jellyflut/screens/details/listMusicItem.dart';
-import 'package:jellyflut/screens/details/listVideoItem.dart';
+import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listCollectionItem.dart'
+    as small;
+import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listMusicItem.dart'
+    as small;
+import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listVideoItem.dart'
+    as small;
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listCollectionItem.dart'
+    as large;
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listMusicItem.dart'
+    as large;
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listVideoItem.dart'
+    as large;
 import 'package:jellyflut/shared/shared.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+
+import '../../../globals.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
@@ -24,24 +36,52 @@ const double gapSize = 20;
 class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter, //or choose another Alignment
-      child: showCollection(widget.item),
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Align(
+        alignment: Alignment.topCenter, //or choose another Alignment
+        child: responsiveBuilder(),
+      ),
     );
   }
 
-  Widget showCollection(Item item) {
-    switch (item.type) {
+  Widget responsiveBuilder() {
+    return ScreenTypeLayout.builder(
+        breakpoints: screenBreakpoints,
+        mobile: (BuildContext context) => showPhoneCollection(),
+        tablet: (BuildContext context) => showLargeCollection(),
+        desktop: (BuildContext context) => showLargeCollection());
+  }
+
+  Widget showPhoneCollection() {
+    switch (widget.item.type) {
       case ItemType.MUSICALBUM:
-        return ListMusicItem(item: item);
+        return small.ListMusicItem(item: widget.item);
       case ItemType.SEASON:
-        return ListVideoItem(item: item);
+        return small.ListVideoItem(item: widget.item);
       case ItemType.SERIES:
-        return ListCollectionItem(item: item);
+        return small.ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
-        return musicArtistItem(item: item);
+        return musicArtistItem(item: widget.item);
       case ItemType.PERSON:
-        return personItem(item: item);
+        return personItem(item: widget.item);
+      default:
+        return Container();
+    }
+  }
+
+  Widget showLargeCollection() {
+    switch (widget.item.type) {
+      case ItemType.MUSICALBUM:
+        return large.ListMusicItem(item: widget.item);
+      case ItemType.SEASON:
+        return large.ListVideoItem(item: widget.item);
+      case ItemType.SERIES:
+        return large.ListCollectionItem(item: widget.item);
+      case ItemType.MUSICARTIST:
+        return musicArtistItem(item: widget.item);
+      case ItemType.PERSON:
+        return personItem(item: widget.item);
       default:
         return Container();
     }
@@ -49,7 +89,7 @@ class _CollectionState extends State<Collection> {
 
   Widget musicArtistItem({required Item item}) {
     return Column(children: [
-      ListCollectionItem(
+      small.ListCollectionItem(
         item: item,
         future: getItems(
             includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
@@ -66,7 +106,7 @@ class _CollectionState extends State<Collection> {
       SizedBox(
         height: 24,
       ),
-      ListCollectionItem(
+      small.ListCollectionItem(
         item: item,
         title: 'Movies',
         future: getItems(
@@ -79,7 +119,7 @@ class _CollectionState extends State<Collection> {
       SizedBox(
         height: 24,
       ),
-      ListCollectionItem(
+      small.ListCollectionItem(
         item: item,
         title: 'Series',
         future: getItems(

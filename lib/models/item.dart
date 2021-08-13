@@ -502,6 +502,29 @@ class Item {
     return playableItems.contains(type);
   }
 
+  bool canHaveTrailer() {
+    final playableItems = [
+      ItemType.MUSICVIDEO,
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE
+    ];
+    return playableItems.contains(type);
+  }
+
+  bool canBeViewed() {
+    final playableItems = [
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

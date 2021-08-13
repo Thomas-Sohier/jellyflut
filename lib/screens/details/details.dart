@@ -22,9 +22,10 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:rxdart/rxdart.dart';
+import '../../globals.dart';
 import './detailHeaderBar.dart';
 
-import 'collection.dart';
+import 'components/collection.dart';
 
 class Details extends StatefulWidget {
   final Item item;
@@ -77,7 +78,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
 
   Widget responsiveBuilder() {
     return ScreenTypeLayout.builder(
-        breakpoints: ScreenBreakpoints(tablet: 600, desktop: 720, watch: 300),
+        breakpoints: screenBreakpoints,
         mobile: (BuildContext context) => phoneTemplate(),
         tablet: (BuildContext context) => tabletScreenTemplate(),
         desktop: (BuildContext context) => largeScreenTemplate());

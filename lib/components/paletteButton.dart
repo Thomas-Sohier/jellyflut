@@ -69,27 +69,8 @@ class _PaletteButtonState extends State<PaletteButton>
                 ),
                 backgroundColor: Colors.transparent,
                 textStyle: TextStyle(color: Colors.black))
-            .copyWith(side: MaterialStateProperty.resolveWith<BorderSide>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered) ||
-                states.contains(MaterialState.focused)) {
-              return BorderSide(
-                width: 2,
-                color: Colors.white,
-              );
-            }
-            return BorderSide(
-                width: 0, color: Colors.transparent); // defer to the default
-          },
-        )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered) ||
-                states.contains(MaterialState.focused)) {
-              return 6;
-            }
-            return 0; // defer to the default
-          },
-        )),
+            .copyWith(side: buttonBorderSide())
+            .copyWith(elevation: buttonElevation()),
         child: widget.item == null
             ? buttonDefault(borderRadius)
             : generatedPalette(borderRadius));
@@ -189,6 +170,34 @@ class _PaletteButtonState extends State<PaletteButton>
                     )
                 ])),
       ),
+    );
+  }
+
+  MaterialStateProperty<double> buttonElevation() {
+    return MaterialStateProperty.resolveWith<double>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return 6;
+        }
+        return 0; // defer to the default
+      },
+    );
+  }
+
+  MaterialStateProperty<BorderSide> buttonBorderSide() {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Colors.white,
+          );
+        }
+        return BorderSide(
+            width: 0, color: Colors.transparent); // defer to the default
+      },
     );
   }
 }

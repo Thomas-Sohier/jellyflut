@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songImage.dart';
@@ -67,6 +68,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
         body: ChangeNotifierProvider.value(
             value: musicPlayer,
             child: ScreenTypeLayout.builder(
+                breakpoints: screenBreakpoints,
                 mobile: (BuildContext context) =>
                     phoneTemplate(height, statusBarHeight),
                 tablet: (BuildContext context) =>

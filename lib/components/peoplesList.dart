@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/peoplePoster.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/imageTags.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
@@ -48,6 +49,7 @@ class _PeoplesListState extends State<PeoplesList> {
               imageTags: ImageTags(primary: person.primaryImageTag),
               type: ItemType.PERSON);
           return ScreenTypeLayout.builder(
+              breakpoints: screenBreakpoints,
               mobile: (BuildContext context) =>
                   phonePoster(item, person, index),
               tablet: (BuildContext context) =>

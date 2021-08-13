@@ -6,12 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/collection.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/playButton.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/trailerButton.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/viewedButton.dart';
+import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/likeButton.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/manageButon.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/playButton.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/trailerButton.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class RightDetails extends StatelessWidget {
@@ -39,8 +40,22 @@ class RightDetails extends StatelessWidget {
       SizedBox(
         height: 24,
       ),
-      title(),
-      infos(),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          title(),
+          Spacer(),
+          infos(),
+        ],
+      ),
+      if (item.hasRatings())
+        Padding(
+          padding: const EdgeInsets.only(top: 12, bottom: 12),
+          child: Critics(
+            item,
+            textColor: fontColor,
+          ),
+        ),
       overview(),
       if (item.hasPeople()) peoples(),
       Collection(item)
@@ -70,8 +85,9 @@ class RightDetails extends StatelessWidget {
   }
 
   Widget overview() {
+    if (item.overview == null) return Container();
     return Text(
-      item.overview ?? '',
+      item.overview!,
       textAlign: TextAlign.justify,
       style: TextStyle(
           fontSize: 22,
@@ -81,29 +97,34 @@ class RightDetails extends StatelessWidget {
   }
 
   Widget infos() {
-    final timeEnd = formatter
-        .format(DateTime.now().add(Duration(microseconds: item.getDuration())));
-    final duration = printDuration(Duration(microseconds: item.getDuration()));
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: Row(
         children: [
-          Critics(
-            item,
-            textColor: fontColor,
-          ),
-          Spacer(),
-          Text(
-            item.productionYear.toString(),
-            style: TextStyle(color: fontColor, fontSize: 16),
-          ),
-          separator(),
-          Text(duration, style: TextStyle(color: fontColor, fontSize: 16)),
-          separator(),
-          Text('Ends $timeEnd',
-              style: TextStyle(color: fontColor, fontSize: 16)),
+          if (item.productionYear != null)
+            Text(
+              item.productionYear.toString(),
+              style: TextStyle(color: fontColor, fontSize: 16),
+            ),
+          if (item.productionYear != null) separator(),
+          if (item.getDuration() != 0) duration()
         ],
       ),
+    );
+  }
+
+  Widget duration() {
+    final timeEnd = formatter
+        .format(DateTime.now().add(Duration(microseconds: item.getDuration())));
+    final duration = printDuration(Duration(microseconds: item.getDuration()));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(duration, style: TextStyle(color: fontColor, fontSize: 16)),
+        separator(),
+        Text('Ends $timeEnd', style: TextStyle(color: fontColor, fontSize: 16)),
+      ],
     );
   }
 
@@ -135,7 +156,8 @@ class RightDetails extends StatelessWidget {
       runSpacing: 10,
       children: [
         if (item.isPlayable()) PlayButton(item: item),
-        if (item.isPlayable()) TrailerButton(item: item),
+        if (item.canHaveTrailer()) TrailerButton(item: item),
+        if (item.canBeViewed()) ViewedButton(item: item),
         LikeButton(item: item),
         ManageButton(item: item)
       ],
