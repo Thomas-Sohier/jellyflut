@@ -17,8 +17,15 @@ class Tab extends StatefulWidget {
 }
 
 class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
+  late Future<Category> itemsFuture;
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    itemsFuture = getItems(parentId: widget.item.id);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
 
   Widget constructSeasonView() {
     return FutureBuilder<Category>(
-        future: getItems(parentId: widget.item.id),
+        future: itemsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final i = snapshot.data!.items;

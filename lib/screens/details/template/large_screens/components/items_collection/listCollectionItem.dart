@@ -8,7 +8,7 @@ import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uuid/uuid.dart';
 
-class ListCollectionItem extends StatelessWidget {
+class ListCollectionItem extends StatefulWidget {
   final Item item;
   final String? title;
   final Future<Category>? future;
@@ -16,14 +16,28 @@ class ListCollectionItem extends StatelessWidget {
   const ListCollectionItem({required this.item, this.title, this.future});
 
   @override
+  State<StatefulWidget> createState() => _ListCollectionItemState();
+}
+
+class _ListCollectionItemState extends State<ListCollectionItem> {
+  late Future<Category> categoryFuture;
+
+  @override
+  void initState() {
+    categoryFuture = widget.future != null
+        ? widget.future!
+        : getItems(
+            parentId: widget.item.id,
+            limit: 100,
+            fields: 'ImageTags',
+            filter: 'IsFolder');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Category>(
-        future: future ??
-            getItems(
-                parentId: item.id,
-                limit: 100,
-                fields: 'ImageTags',
-                filter: 'IsFolder'),
+        future: categoryFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.items.isNotEmpty) {
             return TabsItems(items: snapshot.data!.items);
