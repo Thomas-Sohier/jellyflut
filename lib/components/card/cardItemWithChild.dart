@@ -230,13 +230,6 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
         overflow: TextOverflow.clip,
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400));
   }
-
-  Future _getItemsCustom({required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 800)));
-    futures.add(getItem(itemId));
-    return Future.wait(futures);
-  }
 }
 
 Widget actionIcons(Item item) {
