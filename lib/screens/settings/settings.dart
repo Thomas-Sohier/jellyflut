@@ -21,10 +21,6 @@ class _SettingsState extends State<Settings> {
   late Setting setting;
   late Database db;
   PackageInfo? packageInfo;
-  final ThemeData settingsThemeData = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: jellyPurple,
-  );
   late Future<dynamic> settingsInfosFuture;
 
   @override
@@ -36,115 +32,107 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: settingsThemeData,
-        child: Scaffold(
+    return Scaffold(
+        backgroundColor: Color(0xFF252525),
+        appBar: AppBar(
+            title: Text('Settings'),
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
             backgroundColor: Color(0xFF252525),
-            appBar: AppBar(
-                title: Text('Settings'),
-                systemOverlayStyle:
-                    SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-                backgroundColor: Color(0xFF252525),
-                leading: bb.BackButton()),
-            body: FutureBuilder(
-                future: settingsInfosFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Center(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 600),
-                        child: SettingsList(
-                          contentPadding: EdgeInsets.only(top: 20),
-                          backgroundColor: Color(0xFF252525),
-                          darkBackgroundColor: Color(0xFF252525),
-                          lightBackgroundColor: Color(0xFF252525),
-                          sections: [
-                            SettingsSection(
-                              title: 'Video Player',
-                              titleTextStyle: TextStyle(
-                                  color: jellyLightBLue,
-                                  fontWeight: FontWeight.bold),
-                              tiles: [
-                                SettingsTile(
-                                  title: 'Preferred player',
-                                  subtitle: setting.preferredPlayer,
-                                  titleTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  subtitleTextStyle:
-                                      TextStyle(color: Colors.white60),
-                                  onPressed: (BuildContext context) =>
-                                      selectVideoPlayer(),
-                                ),
-                                SettingsTile(
-                                  title: 'Max bitrate',
-                                  subtitle: setting.maxVideoBitrate.toString(),
-                                  titleTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  subtitleTextStyle:
-                                      TextStyle(color: Colors.white60),
-                                  enabled: false,
-                                  // onPressed: (BuildContext context) =>
-                                  //     selectVideoPlayer(),
-                                ),
-                              ],
+            leading: bb.BackButton()),
+        body: FutureBuilder(
+            future: settingsInfosFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 600),
+                    child: SettingsList(
+                      contentPadding: EdgeInsets.only(top: 20),
+                      backgroundColor: Color(0xFF252525),
+                      darkBackgroundColor: Color(0xFF252525),
+                      lightBackgroundColor: Color(0xFF252525),
+                      sections: [
+                        SettingsSection(
+                          title: 'Video Player',
+                          titleTextStyle: TextStyle(
+                              color: jellyLightBLue,
+                              fontWeight: FontWeight.bold),
+                          tiles: [
+                            SettingsTile(
+                              title: 'Preferred player',
+                              subtitle: setting.preferredPlayer,
+                              titleTextStyle: TextStyle(color: Colors.white),
+                              subtitleTextStyle:
+                                  TextStyle(color: Colors.white60),
+                              onPressed: (BuildContext context) =>
+                                  selectVideoPlayer(),
                             ),
-                            SettingsSection(
-                              title: 'Audio player',
-                              titleTextStyle: TextStyle(
-                                  color: jellyLightBLue,
-                                  fontWeight: FontWeight.bold),
-                              tiles: [
-                                SettingsTile(
-                                  title: 'Transcode codec',
-                                  subtitle:
-                                      setting.preferredTranscodeAudioCodec,
-                                  titleTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  subtitleTextStyle:
-                                      TextStyle(color: Colors.white60),
-                                  onPressed: (BuildContext context) =>
-                                      selectTranscodeAudioCodec(),
-                                ),
-                                SettingsTile(
-                                  title: 'Max bitrate',
-                                  subtitle: setting.maxAudioBitrate.toString(),
-                                  titleTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  subtitleTextStyle:
-                                      TextStyle(color: Colors.white60),
-                                  enabled: false,
-                                  // onPressed: (BuildContext context) =>
-                                  //     selectVideoPlayer(),
-                                ),
-                              ],
-                            ),
-                            SettingsSection(
-                              title: 'Infos',
-                              titleTextStyle: TextStyle(
-                                  color: jellyLightBLue,
-                                  fontWeight: FontWeight.bold),
-                              tiles: [
-                                SettingsTile(
-                                  title: 'Version',
-                                  subtitle: packageInfo?.version ?? 'Unknown',
-                                  titleTextStyle:
-                                      TextStyle(color: Colors.white),
-                                  subtitleTextStyle:
-                                      TextStyle(color: Colors.white60),
-                                ),
-                              ],
+                            SettingsTile(
+                              title: 'Max bitrate',
+                              subtitle: setting.maxVideoBitrate.toString(),
+                              titleTextStyle: TextStyle(color: Colors.white),
+                              subtitleTextStyle:
+                                  TextStyle(color: Colors.white60),
+                              enabled: false,
+                              // onPressed: (BuildContext context) =>
+                              //     selectVideoPlayer(),
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  }
-                  return Center(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ));
-                })));
+                        SettingsSection(
+                          title: 'Audio player',
+                          titleTextStyle: TextStyle(
+                              color: jellyLightBLue,
+                              fontWeight: FontWeight.bold),
+                          tiles: [
+                            SettingsTile(
+                              title: 'Transcode codec',
+                              subtitle: setting.preferredTranscodeAudioCodec,
+                              titleTextStyle: TextStyle(color: Colors.white),
+                              subtitleTextStyle:
+                                  TextStyle(color: Colors.white60),
+                              onPressed: (BuildContext context) =>
+                                  selectTranscodeAudioCodec(),
+                            ),
+                            SettingsTile(
+                              title: 'Max bitrate',
+                              subtitle: setting.maxAudioBitrate.toString(),
+                              titleTextStyle: TextStyle(color: Colors.white),
+                              subtitleTextStyle:
+                                  TextStyle(color: Colors.white60),
+                              enabled: false,
+                              // onPressed: (BuildContext context) =>
+                              //     selectVideoPlayer(),
+                            ),
+                          ],
+                        ),
+                        SettingsSection(
+                          title: 'Infos',
+                          titleTextStyle: TextStyle(
+                              color: jellyLightBLue,
+                              fontWeight: FontWeight.bold),
+                          tiles: [
+                            SettingsTile(
+                              title: 'Version',
+                              subtitle: packageInfo?.version ?? 'Unknown',
+                              titleTextStyle: TextStyle(color: Colors.white),
+                              subtitleTextStyle:
+                                  TextStyle(color: Colors.white60),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              ));
+            }));
   }
 
   Future<void> getSettingsInfos() async {

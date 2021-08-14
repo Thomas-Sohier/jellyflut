@@ -14,43 +14,6 @@ final MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
 final Color shimmerColor1 = Colors.grey[300]!;
 final Color shimmerColor2 = Colors.grey[300]!;
 
-final ThemeData defaultThemeData = ThemeData(
-    backgroundColor: Colors.grey.shade700.withOpacity(0.4),
-    textTheme: TextTheme(
-      headline1: TextStyle(
-          color: Colors.white.withAlpha(250),
-          fontFamily: 'Poppins',
-          fontSize: 42),
-      headline2: TextStyle(
-          color: Colors.white.withAlpha(240),
-          fontFamily: 'Poppins',
-          fontSize: 38),
-      headline3: TextStyle(
-          color: Colors.white.withAlpha(230),
-          fontFamily: 'Poppins',
-          fontSize: 34),
-      headline4: TextStyle(
-          color: Colors.white.withAlpha(220),
-          fontFamily: 'Poppins',
-          fontSize: 30),
-      headline5: TextStyle(
-          color: Colors.white.withAlpha(220),
-          fontFamily: 'Poppins',
-          fontSize: 28),
-      headline6: TextStyle(
-          color: Colors.white.withAlpha(220),
-          fontFamily: 'Poppins',
-          fontSize: 26),
-      bodyText1: TextStyle(
-          color: Colors.white.withAlpha(210),
-          fontFamily: 'HindMadurai',
-          fontSize: 22),
-      bodyText2: TextStyle(
-          color: Colors.white.withAlpha(210),
-          fontFamily: 'HindMadurai',
-          fontSize: 16),
-    ));
-
 // components colors
 final Color cardBackgroundColor = Colors.white;
 
@@ -118,3 +81,39 @@ Map<int, Color> jellyLightBlueMap = {
   800: Color.fromRGBO(4, 162, 219, .9),
   900: Color.fromRGBO(4, 162, 219, 1),
 };
+
+class Theme {
+  static final ThemeData defaultThemeData = ThemeData(
+      primaryColor: Colors.white,
+      brightness: Brightness.light,
+      visualDensity: VisualDensity.comfortable,
+      accentColor: Colors.white,
+      cardTheme: CardTheme(color: Colors.white),
+      backgroundColor: Colors.grey.shade900,
+      primaryTextTheme: getTextThemeWithColor(Colors.white),
+      textTheme: getTextThemeWithColor(Colors.white));
+
+  static TextTheme getTextThemeWithColor(Color color) {
+    return TextTheme(
+        headline1: TextStyle(
+            color: color.withAlpha(250), fontFamily: 'Poppins', fontSize: 42),
+        headline2: TextStyle(
+            color: color.withAlpha(240), fontFamily: 'Poppins', fontSize: 38),
+        headline3: TextStyle(
+            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 34),
+        headline4: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 30),
+        headline5: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 28),
+        headline6: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 26),
+        bodyText1: TextStyle(
+            color: color.withAlpha(210),
+            fontFamily: 'HindMadurai',
+            fontSize: 22),
+        bodyText2: TextStyle(
+            color: color.withAlpha(210),
+            fontFamily: 'HindMadurai',
+            fontSize: 16));
+  }
+}

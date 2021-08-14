@@ -63,7 +63,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                           padding: EdgeInsets.all(8),
                           child: Column(children: [
                             Row(children: [
-                              Critics(widget.item, textColor: Colors.black),
+                              Critics(item: widget.item),
                               Spacer(),
                               if (widget.item.runTimeTicks != null)
                                 Text(

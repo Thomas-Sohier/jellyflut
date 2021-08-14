@@ -142,7 +142,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
             if (item.hasRatings())
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: Critics(item)),
+                  child: Critics(item: item)),
             if (item.hasArtists()) artists(item),
             if (item.hasOverview()) overview(item)
           ])),

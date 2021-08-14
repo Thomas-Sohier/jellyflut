@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -25,8 +26,26 @@ class _MusicItemState extends State<MusicItem> {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonSelector(
-        node: _node, onPressed: widget.onPressed, child: listItem(widget.item));
+    return Row(
+      children: [
+        Flexible(
+          flex: 8,
+          child: OutlinedButtonSelector(
+              node: _node,
+              onPressed: widget.onPressed,
+              child: listItem(widget.item)),
+        ),
+        Flexible(
+            flex: 1,
+            child: Center(
+              child: FavButton(
+                widget.item,
+                color: Colors.red.shade800,
+                backgroundFocusColor: Colors.white10,
+              ),
+            ))
+      ],
+    );
   }
 
   Widget listItem(Item item) {
@@ -39,19 +58,20 @@ class _MusicItemState extends State<MusicItem> {
             children: [
               Text(item.name,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600))
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 18, fontWeight: FontWeight.bold))
             ],
           ),
           if (item.hasArtists())
             Row(
               children: [
                 Text(item.concatenateArtists().toString(),
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText2!.color,
-                        fontSize: 16))
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(fontSize: 18))
               ],
             ),
           SizedBox(
@@ -60,9 +80,10 @@ class _MusicItemState extends State<MusicItem> {
           Row(
             children: [
               Text(printDuration(Duration(microseconds: item.getDuration())),
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText2!.color,
-                      fontSize: 16))
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: 16))
             ],
           ),
         ],

@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/components/viewedButton.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/itemDialog.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/musicItem.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,11 +16,9 @@ class ListMusicItem extends StatefulWidget {
 
 class _ListMusicItemState extends State<ListMusicItem> {
   late Future<dynamic> musicFuture;
-  late final FocusNode _node;
 
   @override
   void initState() {
-    _node = FocusNode();
     musicFuture = _getMusicCustom(itemId: widget.item.id);
     super.initState();
   }

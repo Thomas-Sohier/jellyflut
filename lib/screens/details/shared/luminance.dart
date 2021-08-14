@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:palette_generator/palette_generator.dart';
 
 class Luminance {
@@ -9,41 +9,8 @@ class Luminance {
         ? Colors.black87
         : Colors.white70;
 
-    return defaultThemeData.copyWith(
+    return personnal_theme.Theme.defaultThemeData.copyWith(
         backgroundColor: backgroundColor,
-        textTheme: TextTheme(
-          headline1: TextStyle(
-              color: fontColor.withAlpha(250),
-              fontFamily: 'Poppins',
-              fontSize: 42),
-          headline2: TextStyle(
-              color: fontColor.withAlpha(240),
-              fontFamily: 'Poppins',
-              fontSize: 38),
-          headline3: TextStyle(
-              color: fontColor.withAlpha(230),
-              fontFamily: 'Poppins',
-              fontSize: 34),
-          headline4: TextStyle(
-              color: fontColor.withAlpha(220),
-              fontFamily: 'Poppins',
-              fontSize: 30),
-          headline5: TextStyle(
-              color: fontColor.withAlpha(220),
-              fontFamily: 'Poppins',
-              fontSize: 28),
-          headline6: TextStyle(
-              color: fontColor.withAlpha(220),
-              fontFamily: 'Poppins',
-              fontSize: 26),
-          bodyText1: TextStyle(
-              color: fontColor.withAlpha(210),
-              fontFamily: 'HindMadurai',
-              fontSize: 22),
-          bodyText2: TextStyle(
-              color: fontColor.withAlpha(210),
-              fontFamily: 'HindMadurai',
-              fontSize: 18),
-        ));
+        textTheme: personnal_theme.Theme.getTextThemeWithColor(fontColor));
   }
 }

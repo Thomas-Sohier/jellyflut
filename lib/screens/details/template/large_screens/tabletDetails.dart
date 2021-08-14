@@ -2,15 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
-import 'package:jellyflut/screens/details/shared/palette.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:palette_generator/palette_generator.dart';
 
 class TabletDetails extends StatefulWidget {
@@ -57,8 +55,9 @@ class _TabletDetailsState extends State<TabletDetails> {
                     child: detailsBuilder(finalDetailsThemeData));
               }
               return Theme(
-                  data: defaultThemeData,
-                  child: detailsBuilder(defaultThemeData));
+                  data: personnal_theme.Theme.defaultThemeData,
+                  child:
+                      detailsBuilder(personnal_theme.Theme.defaultThemeData));
             }),
       )),
       DetailHeaderBar(

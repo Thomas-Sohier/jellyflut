@@ -5,7 +5,7 @@ import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Color(0xFF252525),
       photoSize: 80.0,
-      loaderColor: jellyPurple,
+      loaderColor: personnal_theme.jellyPurple,
     );
   }
 }
@@ -83,11 +83,7 @@ class Jellyflut extends StatelessWidget {
             child: MaterialApp(
               title: 'JellyFlut',
               navigatorKey: navigatorKey,
-              theme: ThemeData(
-                primarySwatch: jellyPurple,
-                brightness: Brightness.light,
-                visualDensity: VisualDensity.comfortable,
-              ),
+              theme: personnal_theme.Theme.defaultThemeData,
               home: MyApp(),
               routes: {
                 '/login': (context) => ParentStart(),

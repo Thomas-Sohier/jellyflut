@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
@@ -44,8 +43,7 @@ class RightDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 12, bottom: 12),
               child: Critics(
-                item,
-                textColor: Theme.of(context).textTheme.bodyText1!.color!,
+                item: item,
               ),
             ),
           Spacer(),

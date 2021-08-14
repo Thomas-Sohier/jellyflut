@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/seasonItem.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/episodeItem.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -64,7 +64,7 @@ class _ListVideoItemState extends State<ListVideoItem> {
       itemCount: category.items.length,
       itemBuilder: (context, index) {
         var item = category.items[index];
-        return SeasonItem(item: item);
+        return EpisodeItem(item: item);
       },
     );
   }

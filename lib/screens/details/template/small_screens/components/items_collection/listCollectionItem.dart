@@ -33,7 +33,7 @@ class ListCollectionItem extends StatelessWidget {
                       child: Text(
                         title!,
                         textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.white, fontSize: 28),
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                     ),
                   carouselSlider(snapshot.data!.items)

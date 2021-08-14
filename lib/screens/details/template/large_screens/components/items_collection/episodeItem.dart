@@ -9,17 +9,17 @@ import 'package:jellyflut/screens/details/template/large_screens/components/item
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
-class SeasonItem extends StatefulWidget {
+class EpisodeItem extends StatefulWidget {
   final bool clickable;
   final Item item;
-  SeasonItem({Key? key, required this.item, this.clickable = true})
+  EpisodeItem({Key? key, required this.item, this.clickable = true})
       : super(key: key);
 
   @override
-  _SeasonItemState createState() => _SeasonItemState();
+  _EpisodeItemState createState() => _EpisodeItemState();
 }
 
-class _SeasonItemState extends State<SeasonItem>
+class _EpisodeItemState extends State<EpisodeItem>
     with SingleTickerProviderStateMixin {
   // Dpad navigation
   late final FocusNode _node;
@@ -51,10 +51,10 @@ class _SeasonItemState extends State<SeasonItem>
     return OutlinedButtonSelector(
         node: _node,
         onPressed: () => _onTap(posterHeroTag),
-        child: seasonItem());
+        child: epsiodeItem());
   }
 
-  Widget seasonItem() {
+  Widget epsiodeItem() {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 2),
       child: SizedBox(
@@ -83,8 +83,10 @@ class _SeasonItemState extends State<SeasonItem>
                           child: Row(
                             children: [
                               if (widget.item.hasRatings())
-                                Critics(widget.item,
-                                    textColor: Colors.white.withAlpha(210)),
+                                Critics(
+                                  item: widget.item,
+                                  fontSize: 18,
+                                ),
                               if (widget.item.getDuration() != 0) duration()
                             ],
                           ),
@@ -101,31 +103,23 @@ class _SeasonItemState extends State<SeasonItem>
   Widget title() {
     return Text('${widget.item.indexNumber} - ${widget.item.name}',
         textAlign: TextAlign.left,
-        style: TextStyle(
-            fontSize: 18,
-            fontFamily: 'HindMadurai',
-            color: Colors.white.withAlpha(210)));
+        style: Theme.of(context)
+            .textTheme
+            .bodyText1!
+            .copyWith(fontSize: 20, fontWeight: FontWeight.bold));
   }
 
   Widget duration() {
     return Text(
         printDuration(Duration(microseconds: widget.item.getDuration())),
-        style: TextStyle(
-            fontSize: 18,
-            fontFamily: 'HindMadurai',
-            color: Colors.white.withAlpha(210)));
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18));
   }
 
   Widget overview() {
     return Expanded(
-      child: Text(
-        widget.item.overview!,
-        textAlign: TextAlign.justify,
-        style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'HindMadurai',
-            color: Colors.white.withAlpha(190)),
-      ),
+      child: Text(widget.item.overview!,
+          textAlign: TextAlign.justify,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)),
     );
   }
 }

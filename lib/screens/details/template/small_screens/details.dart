@@ -7,6 +7,7 @@ import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
+import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:palette_generator/palette_generator.dart';
 
 class Details extends StatefulWidget {
@@ -28,9 +29,20 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  late final ThemeData cardThemeData;
+
+  @override
+  void initState() {
+    cardThemeData = personnal_theme.Theme.defaultThemeData.copyWith(
+        textTheme: personnal_theme.Theme.getTextThemeWithColor(Colors.black),
+        primaryTextTheme:
+            personnal_theme.Theme.getTextThemeWithColor(Colors.black));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return phoneTemplate();
+    return Theme(data: cardThemeData, child: phoneTemplate());
   }
 
   Widget phoneTemplate() {

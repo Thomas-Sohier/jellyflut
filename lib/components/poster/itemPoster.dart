@@ -73,29 +73,29 @@ class _ItemPosterState extends State<ItemPoster>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AspectRatio(
-              aspectRatio: widget.widgetAspectRatio ??
-                  widget.item.getPrimaryAspectRatio(),
-              child: Stack(fit: StackFit.expand, children: [
-                Poster(
-                    showParent: widget.showParent,
-                    tag: widget.tag,
-                    aspectRatio: widget.widgetAspectRatio,
-                    clickable: widget.clickable,
-                    heroTag: posterHeroTag,
-                    boxFit: widget.boxFit,
-                    item: widget.item),
-                Stack(
-                  children: [
-                    if (widget.item.isNew())
-                      Positioned(top: 8, left: 0, child: newBanner()),
-                    if (widget.item.isPlayed())
-                      Positioned(top: 8, right: 0, child: playedBanner()),
-                  ],
-                ),
-                if (widget.showLogo) logo(),
-                if (widget.item.hasProgress()) progress(),
-              ]),
-            ),
+                aspectRatio: widget.widgetAspectRatio ??
+                    widget.item.getPrimaryAspectRatio(),
+                child: Stack(fit: StackFit.expand, children: [
+                  Poster(
+                      showParent: widget.showParent,
+                      tag: widget.tag,
+                      aspectRatio: widget.widgetAspectRatio,
+                      clickable: widget.clickable,
+                      heroTag: posterHeroTag,
+                      boxFit: widget.boxFit,
+                      item: widget.item),
+                  IgnorePointer(
+                      child: Stack(
+                    children: [
+                      if (widget.item.isNew())
+                        Positioned(top: 8, left: 0, child: newBanner()),
+                      if (widget.item.isPlayed())
+                        Positioned(top: 8, right: 0, child: playedBanner()),
+                    ],
+                  )),
+                  if (widget.showLogo) logo(),
+                  if (widget.item.hasProgress()) progress(),
+                ])),
           ],
         ),
       ),
@@ -105,14 +105,17 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget progress() {
     return Positioned.fill(
-        child: Align(alignment: Alignment.bottomCenter, child: progressBar()));
+        child: Align(
+            alignment: Alignment.bottomCenter,
+            child: IgnorePointer(child: progressBar())));
   }
 
   Widget logo() {
     return Positioned.fill(
         child: Align(
             alignment: Alignment.center,
-            child: Padding(
+            child: IgnorePointer(
+                child: Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: AsyncImage(
                 widget.item.correctImageId(searchType: 'logo'),
@@ -121,7 +124,7 @@ class _ItemPosterState extends State<ItemPoster>
                 boxFit: BoxFit.contain,
                 tag: 'Logo',
               ),
-            )));
+            ))));
   }
 
   Widget name() {
@@ -134,7 +137,8 @@ class _ItemPosterState extends State<ItemPoster>
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               maxLines: 1,
-              style: TextStyle(color: widget.textColor, fontSize: 16),
+              style:
+                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
             ),
             if (widget.item.isFolder != null &&
                 widget.item.parentIndexNumber != null)
@@ -143,8 +147,10 @@ class _ItemPosterState extends State<ItemPoster>
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1,
-                style: TextStyle(
-                    color: widget.textColor.withOpacity(0.8), fontSize: 12),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 12),
               ),
           ],
         ));
