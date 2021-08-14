@@ -14,6 +14,43 @@ final MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
 final Color shimmerColor1 = Colors.grey[300]!;
 final Color shimmerColor2 = Colors.grey[300]!;
 
+final ThemeData defaultThemeData = ThemeData(
+    backgroundColor: Colors.grey.shade700.withOpacity(0.4),
+    textTheme: TextTheme(
+      headline1: TextStyle(
+          color: Colors.white.withAlpha(250),
+          fontFamily: 'Poppins',
+          fontSize: 42),
+      headline2: TextStyle(
+          color: Colors.white.withAlpha(240),
+          fontFamily: 'Poppins',
+          fontSize: 38),
+      headline3: TextStyle(
+          color: Colors.white.withAlpha(230),
+          fontFamily: 'Poppins',
+          fontSize: 34),
+      headline4: TextStyle(
+          color: Colors.white.withAlpha(220),
+          fontFamily: 'Poppins',
+          fontSize: 30),
+      headline5: TextStyle(
+          color: Colors.white.withAlpha(220),
+          fontFamily: 'Poppins',
+          fontSize: 28),
+      headline6: TextStyle(
+          color: Colors.white.withAlpha(220),
+          fontFamily: 'Poppins',
+          fontSize: 26),
+      bodyText1: TextStyle(
+          color: Colors.white.withAlpha(210),
+          fontFamily: 'HindMadurai',
+          fontSize: 22),
+      bodyText2: TextStyle(
+          color: Colors.white.withAlpha(210),
+          fontFamily: 'HindMadurai',
+          fontSize: 16),
+    ));
+
 // components colors
 final Color cardBackgroundColor = Colors.white;
 

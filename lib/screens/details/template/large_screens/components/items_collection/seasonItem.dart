@@ -5,6 +5,7 @@ import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/details.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,8 +22,8 @@ class SeasonItem extends StatefulWidget {
 class _SeasonItemState extends State<SeasonItem>
     with SingleTickerProviderStateMixin {
   // Dpad navigation
-  late FocusNode _node;
-  late String posterHeroTag;
+  late final FocusNode _node;
+  late final String posterHeroTag;
 
   @override
   void initState() {
@@ -47,19 +48,9 @@ class _SeasonItemState extends State<SeasonItem>
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-        autofocus: false,
-        focusNode: _node,
+    return OutlinedButtonSelector(
+        node: _node,
         onPressed: () => _onTap(posterHeroTag),
-        style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(4)), // <-- Radius
-                ),
-                backgroundColor: Colors.transparent)
-            .copyWith(side: buttonBorderSide())
-            // .copyWith(elevation: buttonElevation())
-            .copyWith(backgroundColor: buttonColor()),
         child: seasonItem());
   }
 
@@ -135,46 +126,6 @@ class _SeasonItemState extends State<SeasonItem>
             fontFamily: 'HindMadurai',
             color: Colors.white.withAlpha(190)),
       ),
-    );
-  }
-
-  MaterialStateProperty<BorderSide> buttonBorderSide() {
-    return MaterialStateProperty.resolveWith<BorderSide>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
-          return BorderSide(
-            width: 2,
-            color: Colors.white,
-          );
-        }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
-      },
-    );
-  }
-
-  MaterialStateProperty<double> buttonElevation() {
-    return MaterialStateProperty.resolveWith<double>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
-          return 6;
-        }
-        return 0; // defer to the default
-      },
-    );
-  }
-
-  MaterialStateProperty<Color> buttonColor() {
-    return MaterialStateProperty.resolveWith<Color>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
-          return Colors.white12;
-        }
-        return Colors.transparent; // defer to the default
-      },
     );
   }
 }

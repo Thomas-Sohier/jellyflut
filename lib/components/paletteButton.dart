@@ -32,6 +32,7 @@ class PaletteButton extends StatefulWidget {
 
 class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin {
+  late final Future<PaletteGenerator> paletteFuture;
   // variable for both button
   // size
   late double minWidth = 88.0;
@@ -50,6 +51,11 @@ class _PaletteButtonState extends State<PaletteButton>
   void initState() {
     minWidth = widget.minWidth;
     maxWidth = widget.maxWidth;
+    if (widget.item != null) {
+      paletteFuture = gePalette(getItemImageUrl(
+          widget.item!.correctImageId(), widget.item!.correctImageTags(),
+          imageBlurHashes: widget.item!.imageBlurHashes));
+    }
     _node = FocusNode();
     super.initState();
   }
@@ -78,9 +84,7 @@ class _PaletteButtonState extends State<PaletteButton>
 
   Widget generatedPalette(BorderRadius borderRadius) {
     return FutureBuilder<PaletteGenerator>(
-      future: gePalette(getItemImageUrl(
-          widget.item!.correctImageId(), widget.item!.correctImageTags(),
-          imageBlurHashes: widget.item!.imageBlurHashes)),
+      future: paletteFuture,
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {

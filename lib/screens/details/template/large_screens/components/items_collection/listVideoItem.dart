@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/components/viewedButton.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/seasonItem.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:uuid/uuid.dart';
 
 class ListVideoItem extends StatefulWidget {
   final Item item;
@@ -39,23 +33,27 @@ class _ListVideoItemState extends State<ListVideoItem> {
           if (snapshot.hasData) {
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Epsiodes',
-                        style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'HindMadurai',
-                            color: Colors.white.withAlpha(210))),
-                  ),
-                ),
+                title(),
                 body(snapshot.data[1]),
               ],
             );
           }
           return skeletonListItem();
         });
+  }
+
+  Widget title() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text('Epsiodes',
+            style: TextStyle(
+                fontSize: 26,
+                fontFamily: 'HindMadurai',
+                color: Colors.white.withAlpha(210))),
+      ),
+    );
   }
 
   Widget body(Category category) {

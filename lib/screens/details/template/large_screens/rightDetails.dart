@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
+import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
@@ -17,16 +18,12 @@ import 'package:jellyflut/shared/shared.dart';
 
 class RightDetails extends StatelessWidget {
   final Item item;
-  final Color color;
-  final Color fontColor;
   final DateFormat formatter = DateFormat('HH:mm');
 
-  RightDetails(
-      {Key? key,
-      required this.item,
-      this.color = Colors.grey,
-      this.fontColor = Colors.black})
-      : super(key: key);
+  RightDetails({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,63 +37,56 @@ class RightDetails extends StatelessWidget {
       SizedBox(
         height: 24,
       ),
+      title(context),
       Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          title(),
+          if (item.hasRatings())
+            Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 12),
+              child: Critics(
+                item,
+                textColor: Theme.of(context).textTheme.bodyText1!.color!,
+              ),
+            ),
           Spacer(),
-          infos(),
+          infos(context),
         ],
       ),
-      if (item.hasRatings())
-        Padding(
-          padding: const EdgeInsets.only(top: 12, bottom: 12),
-          child: Critics(
-            item,
-            textColor: fontColor,
-          ),
-        ),
-      overview(),
-      if (item.hasPeople()) peoples(),
+      overview(context),
+      if (item.hasPeople()) peoples(context),
       Collection(item)
     ]);
   }
 
-  Widget peoples() {
+  Widget peoples(BuildContext context) {
     return Column(
       children: [
         SizedBox(
           height: 24,
         ),
         Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Cast of ${item.name}',
-              style: TextStyle(color: fontColor.withAlpha(220), fontSize: 22),
-            )),
+          alignment: Alignment.centerLeft,
+          child: Text('Cast of ${item.name}',
+              style: Theme.of(context).textTheme.headline3),
+        ),
         SizedBox(
           height: 8,
         ),
-        SizedBox(
-            height: 230,
-            child: PeoplesList(item.people!, fontColor: fontColor)),
+        SizedBox(height: 230, child: PeoplesList(item.people!)),
       ],
     );
   }
 
-  Widget overview() {
+  Widget overview(BuildContext context) {
     if (item.overview == null) return Container();
     return Text(
       item.overview!,
       textAlign: TextAlign.justify,
-      style: TextStyle(
-          fontSize: 22,
-          fontFamily: 'HindMadurai',
-          color: fontColor.withAlpha(210)),
+      style: Theme.of(context).textTheme.bodyText1,
     );
   }
 
-  Widget infos() {
+  Widget infos(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: Row(
@@ -104,16 +94,16 @@ class RightDetails extends StatelessWidget {
           if (item.productionYear != null)
             Text(
               item.productionYear.toString(),
-              style: TextStyle(color: fontColor, fontSize: 16),
+              style: Theme.of(context).textTheme.bodyText2,
             ),
-          if (item.productionYear != null) separator(),
-          if (item.getDuration() != 0) duration()
+          if (item.productionYear != null) separator(context),
+          if (item.getDuration() != 0) duration(context)
         ],
       ),
     );
   }
 
-  Widget duration() {
+  Widget duration(BuildContext context) {
     final timeEnd = formatter
         .format(DateTime.now().add(Duration(microseconds: item.getDuration())));
     final duration = printDuration(Duration(microseconds: item.getDuration()));
@@ -121,31 +111,27 @@ class RightDetails extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(duration, style: TextStyle(color: fontColor, fontSize: 16)),
-        separator(),
-        Text('Ends $timeEnd', style: TextStyle(color: fontColor, fontSize: 16)),
+        Text(duration, style: Theme.of(context).textTheme.bodyText2),
+        separator(context),
+        Text('Ends $timeEnd', style: Theme.of(context).textTheme.bodyText2),
       ],
     );
   }
 
-  Widget separator() {
+  Widget separator(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
-      child: Text('|', style: TextStyle(color: fontColor, fontSize: 16)),
+      child: Text('|', style: Theme.of(context).textTheme.bodyText2),
     );
   }
 
-  Widget title() {
+  Widget title(BuildContext context) {
     return Align(
         alignment: Alignment.centerLeft,
         child: Text(
           item.name,
           textAlign: TextAlign.left,
-          style: TextStyle(
-              color: fontColor.withAlpha(255),
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              fontSize: 32),
+          style: Theme.of(context).textTheme.headline3,
         ));
   }
 
