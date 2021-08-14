@@ -99,7 +99,10 @@ class _DetailsState extends State<Details> {
                       widget.item.playItem();
                     },
                     item: widget.item,
-                    icon: Icon(Icons.play_circle_outline),
+                    icon: Icon(
+                      Icons.play_circle_outline,
+                      color: Colors.black87,
+                    ),
                   ),
                 )
               : Container()

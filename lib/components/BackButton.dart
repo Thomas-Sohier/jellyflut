@@ -2,19 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class BackButton extends StatefulWidget {
+  final bool shadow;
+
+  const BackButton({Key? key, this.shadow = false}) : super(key: key);
+
   @override
   _BackButtonState createState() => _BackButtonState();
 }
 
 class _BackButtonState extends State<BackButton> {
-  late FocusNode _node;
-  late Color _focusColor;
+  late final FocusNode _node;
+  late final Color _focusColor;
+  late final List<BoxShadow> shadows;
 
   @override
   void initState() {
     _focusColor = Colors.transparent;
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
+    shadows = widget.shadow
+        ? [
+            BoxShadow(
+                blurRadius: 28,
+                color: Colors.black.withAlpha(20),
+                spreadRadius: 8),
+            BoxShadow(blurRadius: 24, color: Colors.black12, spreadRadius: 1),
+            BoxShadow(blurRadius: 22, color: Colors.black26, spreadRadius: 0)
+          ]
+        : [];
     super.initState();
   }
 
@@ -39,16 +54,7 @@ class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-              blurRadius: 28,
-              color: Colors.black.withAlpha(20),
-              spreadRadius: 8),
-          BoxShadow(blurRadius: 24, color: Colors.black12, spreadRadius: 1),
-          BoxShadow(blurRadius: 22, color: Colors.black26, spreadRadius: 0)
-        ],
-      ),
+      decoration: BoxDecoration(boxShadow: shadows),
       foregroundDecoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(width: 2, color: _focusColor)),

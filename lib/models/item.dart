@@ -502,15 +502,17 @@ class Item {
     return playableItems.contains(type);
   }
 
-  bool canHaveTrailer() {
-    final playableItems = [
-      ItemType.MUSICVIDEO,
-      ItemType.MOVIE,
-      ItemType.SERIES,
-      ItemType.SEASON,
-      ItemType.EPISODE
-    ];
-    return playableItems.contains(type);
+  bool hasTrailer() {
+    if (remoteTrailers != null || localTrailerCount != null) {
+      return remoteTrailers != null
+          ? remoteTrailers!.isNotEmpty
+          : localTrailerCount! > 0;
+    }
+    return false;
+  }
+
+  String getTrailer() {
+    return remoteTrailers!.elementAt(0).url!;
   }
 
   bool canBeViewed() {

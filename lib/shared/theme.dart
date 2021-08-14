@@ -85,7 +85,25 @@ Map<int, Color> jellyLightBlueMap = {
 class Theme {
   static final ThemeData defaultThemeData = ThemeData(
       primaryColor: Colors.white,
-      brightness: Brightness.light,
+      primaryColorDark: Colors.grey.shade900,
+      primaryColorLight: Colors.white.withAlpha(220),
+      primaryColorBrightness: Brightness.dark,
+      primarySwatch: jellyPurple,
+      primaryIconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.black),
+      accentIconTheme: IconThemeData(color: Colors.black),
+      inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1)),
+          filled: false,
+          hintStyle: TextStyle(color: Colors.black),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: jellyPurple, width: 2))),
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade900,
+          brightness: Brightness.dark,
+          foregroundColor: Colors.white.withAlpha(220)),
       visualDensity: VisualDensity.comfortable,
       accentColor: Colors.white,
       cardTheme: CardTheme(color: Colors.white),

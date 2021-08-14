@@ -93,8 +93,7 @@ class CommonStream {
   void disposeStream() => _dispose();
 
   static CommonStream parseVLCController(
-      {required Item item,
-      required VlcPlayerController vlcPlayerController,
+      {required VlcPlayerController vlcPlayerController,
       required VoidCallback listener}) {
     return CommonStream._(
         pause: vlcPlayerController.pause,
@@ -124,8 +123,7 @@ class CommonStream {
   }
 
   static CommonStream parseBetterPlayerController(
-      {required Item item,
-      required BetterPlayerController betterPlayerController,
+      {required BetterPlayerController betterPlayerController,
       required VoidCallback listener}) {
     return CommonStream._(
         pause: betterPlayerController.pause,
@@ -161,7 +159,7 @@ class CommonStream {
   }
 
   static CommonStream parseVlcComputerController(
-      {required Item item, required Player player, VoidCallback? listener}) {
+      {required Player player, VoidCallback? listener}) {
     final commonStreamVLCComputer = CommonStreamVLCComputer();
     return CommonStream._(
         pause: player.pause,

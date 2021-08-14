@@ -140,7 +140,7 @@ class RightDetails extends StatelessWidget {
       runSpacing: 10,
       children: [
         if (item.isPlayable()) PlayButton(item: item),
-        if (item.canHaveTrailer()) TrailerButton(item: item),
+        if (item.hasTrailer()) TrailerButton(item: item),
         if (item.canBeViewed()) ViewedButton(item: item),
         LikeButton(item: item),
         ManageButton(item: item)

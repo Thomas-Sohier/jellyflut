@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
@@ -34,12 +33,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFF252525),
-        appBar: AppBar(
-            title: Text('Settings'),
-            systemOverlayStyle:
-                SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-            backgroundColor: Color(0xFF252525),
-            leading: bb.BackButton()),
+        appBar: AppBar(title: Text('Settings'), leading: bb.BackButton()),
         body: FutureBuilder(
             future: settingsInfosFuture,
             builder: (context, snapshot) {
