@@ -44,9 +44,28 @@ class CommonStreamVLC {
 
     // create common stream controller
     final commonStream = CommonStream.parseVLCController(
-        item: item,
-        vlcPlayerController: vlcPlayerController,
-        listener: () => {});
+        vlcPlayerController: vlcPlayerController, listener: () => {});
+
+    StreamModel().setCommonStream(commonStream);
+    return Future.value(vlcPlayerController);
+  }
+
+  static Future<VlcPlayerController> setupDataFromUrl(
+      {required String url}) async {
+    // Create vlcPlayerController
+    final vlcPlayerController = VlcPlayerController.network(
+      url,
+      autoPlay: true,
+      options: VlcPlayerOptions(
+        advanced: VlcAdvancedOptions([
+          VlcAdvancedOptions.networkCaching(2000),
+        ]),
+      ),
+    );
+
+    // create common stream controller
+    final commonStream = CommonStream.parseVLCController(
+        vlcPlayerController: vlcPlayerController, listener: () => {});
 
     StreamModel().setCommonStream(commonStream);
     return Future.value(vlcPlayerController);

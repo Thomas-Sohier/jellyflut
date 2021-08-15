@@ -59,9 +59,28 @@ class CommonStreamBP {
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     final commonStream = CommonStream.parseBetterPlayerController(
-        betterPlayerController: _betterPlayerController,
-        listener: () => {},
-        item: item);
+      betterPlayerController: _betterPlayerController,
+      listener: () => {},
+    );
+    StreamModel().setCommonStream(commonStream);
+    return Future.value(_betterPlayerController);
+  }
+
+  static Future<BetterPlayerController> setupDataFromURl(
+      {required String url}) async {
+    final dataSource = BetterPlayerDataSource.network(url);
+    final aspectRatio = 16 / 9;
+    final _betterPlayerKey = GlobalKey();
+    final _betterPlayerController = BetterPlayerController(
+        _setupPlayerControllerConfiguration(
+            aspectRatio: aspectRatio, customConfiguration: _configuration()));
+
+    await _betterPlayerController.setupDataSource(dataSource);
+    _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
+    final commonStream = CommonStream.parseBetterPlayerController(
+      betterPlayerController: _betterPlayerController,
+      listener: () => {},
+    );
     StreamModel().setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }

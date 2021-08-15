@@ -5,8 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "jellyflut",
+            "name": "jellyflut debug",
             "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "jellyflut profile",
+            "request": "launch",
+            "args": ["--profile"],
             "type": "dart"
         }
     ]

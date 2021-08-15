@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/provider/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
-import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class SongPlaylist extends StatefulWidget {
   final Color backgroundColor;
@@ -19,10 +16,6 @@ class SongPlaylist extends StatefulWidget {
 
 class _SongPlaylistState extends State<SongPlaylist> {
   late MusicPlayer musicPlayer;
-  final ThemeData settingsThemeData = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: jellyPurple,
-  );
 
   @override
   void initState() {
@@ -36,39 +29,54 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: settingsThemeData,
-        child: Scaffold(
-            backgroundColor: widget.backgroundColor,
-            appBar: AppBar(
-              title: Text('Playlist'),
-              systemOverlayStyle:
-                  SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-              backgroundColor: widget.backgroundColor,
-            ),
-            body: Consumer<MusicPlayer>(builder: (context, mp, child) {
-              musicPlayer = mp;
-              return GlowingOverscrollIndicator(
-                  axisDirection: AxisDirection.down,
-                  color: widget.color,
-                  child: ChangeNotifierProvider.value(
-                      value: musicPlayer,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.vertical,
-                          itemCount: musicPlayer.getPlayList().length,
-                          itemBuilder: (context, index) => playlistListItem(
-                              index, musicPlayer.getPlayList()[index]))));
-            })));
+    return Consumer<MusicPlayer>(builder: (context, mp, child) {
+      musicPlayer = mp;
+      return GlowingOverscrollIndicator(
+          axisDirection: AxisDirection.down,
+          color: widget.color,
+          child: ChangeNotifierProvider.value(
+              value: musicPlayer,
+              child: ReorderableListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
+                itemCount: musicPlayer.getPlayList().length,
+                itemBuilder: (context, index) =>
+                    playlistListItem(index, musicPlayer.getPlayList()[index]),
+                onReorder: (int oldIndex, int newIndex) =>
+                    musicPlayer.moveMusicItem(oldIndex, newIndex),
+              )));
+    });
   }
 
   Widget playlistListItem(int index, MusicItem musicItem) {
     return Dismissible(
-      key: ValueKey(musicItem.id.toString() + Uuid().v1()),
+      key: ValueKey(musicItem),
       onDismissed: (direction) {
-        // musicPlayer.removePlaylistItemAtIndex(index);
+        musicPlayer.deleteFromPlaylist(index);
       },
+      direction: DismissDirection.endToStart,
+      background: Container(
+        padding: EdgeInsets.only(right: 48),
+        color: Colors.red,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.delete),
+                  Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              )
+            ]),
+      ),
+      dismissThresholds: {DismissDirection.horizontal: 0.3},
       child: Column(
         children: [
           if (index > 0)

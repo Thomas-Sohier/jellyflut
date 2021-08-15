@@ -482,6 +482,51 @@ class Item {
     return false;
   }
 
+  bool hasPeople() {
+    if (people != null) return people!.isNotEmpty;
+    return false;
+  }
+
+  bool isPlayable() {
+    final playableItems = [
+      ItemType.AUDIO,
+      ItemType.MUSICALBUM,
+      ItemType.MUSICVIDEO,
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
+  bool hasTrailer() {
+    if (remoteTrailers != null || localTrailerCount != null) {
+      return remoteTrailers != null
+          ? remoteTrailers!.isNotEmpty
+          : localTrailerCount! > 0;
+    }
+    return false;
+  }
+
+  String getTrailer() {
+    return remoteTrailers!.elementAt(0).url!;
+  }
+
+  bool canBeViewed() {
+    final playableItems = [
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

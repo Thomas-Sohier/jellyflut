@@ -4,7 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerAssetsAudioPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerVLCComputer.dart';
+import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 import 'package:rxdart/rxdart.dart';
+
+void insertIntoPlaylist(
+    int index, MusicItem musicItem, AssetsAudioPlayer assetsAudioPlayer) {
+  assetsAudioPlayer.playlist!.insert(index, Audio.network(musicItem.url ?? ''));
+}
+
+void removeFromPlaylist(int index, AssetsAudioPlayer assetsAudioPlayer) {
+  assetsAudioPlayer.playlist!.removeAtIndex(index);
+}
 
 class CommonPlayer {
   final VoidCallback _pause;
@@ -16,6 +26,8 @@ class CommonPlayer {
   final Function(int) _playAtIndex;
   final Function _bufferingDuration;
   final Function _duration;
+  final Function _insertIntoPlaylist;
+  final Function _removeFromPlaylist;
   final Stream<Duration?> _currentPosition;
   final BehaviorSubject<int?> _listenPlayingindex;
   final Function(Item) _playRemoteAudio;
@@ -33,6 +45,8 @@ class CommonPlayer {
       required playAtIndex,
       required bufferingDuration,
       required duration,
+      required insertIntoPlaylist,
+      required removeFromPlaylist,
       required currentPosition,
       required listenPlayingindex,
       required playRemoteAudio,
@@ -48,6 +62,8 @@ class CommonPlayer {
         _playAtIndex = playAtIndex,
         _bufferingDuration = bufferingDuration,
         _duration = duration,
+        _insertIntoPlaylist = insertIntoPlaylist,
+        _removeFromPlaylist = removeFromPlaylist,
         _currentPosition = currentPosition,
         _listenPlayingindex = listenPlayingindex,
         _playRemoteAudio = playRemoteAudio,
@@ -63,6 +79,9 @@ class CommonPlayer {
   void playAtIndex(int index) => _playAtIndex(index);
   Duration getBufferingDuration() => _bufferingDuration();
   Duration getDuration() => _duration();
+  void insertIntoPlaylist(int index, MusicItem musicItem) =>
+      _insertIntoPlaylist(index, musicItem);
+  void removeFromPlaylist(int index) => _removeFromPlaylist(index);
   Stream<Duration?> getCurrentPosition() => _currentPosition;
   BehaviorSubject<int?> listenPlayingindex() => _listenPlayingindex;
   Future<void> playRemoteAudio(Item item) => _playRemoteAudio(item);
@@ -83,6 +102,11 @@ class CommonPlayer {
             assetsAudioPlayer.playlistPlayAtIndex(index),
         duration: () => assetsAudioPlayer.current.value!.audio.duration,
         bufferingDuration: () => Duration(seconds: 0),
+        insertIntoPlaylist: (int index, MusicItem musicItem) =>
+            commonPlayerAssetsAudioPlayer.insertIntoPlaylist(
+                index, musicItem, assetsAudioPlayer),
+        removeFromPlaylist: (int index) => commonPlayerAssetsAudioPlayer
+            .removeFromPlaylist(index, assetsAudioPlayer),
         currentPosition: assetsAudioPlayer.currentPosition.asBroadcastStream(),
         listenPlayingindex:
             commonPlayerAssetsAudioPlayer.listenPlayingIndex(assetsAudioPlayer),
@@ -106,6 +130,11 @@ class CommonPlayer {
             commonPlayerVLCComputer.playAtIndex(index, player),
         duration: () => player.position.duration,
         bufferingDuration: () => Duration(seconds: 0),
+        insertIntoPlaylist: (int index, MusicItem musicItem) =>
+            commonPlayerVLCComputer.insertIntoPlaylist(
+                index, musicItem, player),
+        removeFromPlaylist: (int index) =>
+            commonPlayerVLCComputer.removeFromPlaylist(index, player),
         currentPosition: commonPlayerVLCComputer.getPosition(player),
         listenPlayingindex: commonPlayerVLCComputer.listenPlayingIndex(player),
         playRemoteAudio: (Item item) =>

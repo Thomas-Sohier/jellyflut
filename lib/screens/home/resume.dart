@@ -7,22 +7,43 @@ import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class Resume extends StatelessWidget {
+class Resume extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ResumeState();
+  }
+}
+
+class _ResumeState extends State<Resume> {
+  late Future<Category> categoryFuture;
+
+  @override
+  void initState() {
+    categoryFuture = getResumeItems();
+    super.initState();
+  }
+
   @override
   Widget build(Object context) {
+    return categoryBuilder();
+  }
+
+  /// Prevent from re-query the API on resize
+  Widget categoryBuilder() {
     return FutureBuilder<Category>(
-        future: getResumeItems(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var _items = snapshot.data!.items;
-            if (_items.isNotEmpty) {
-              return body(_items);
-            } else {
-              return Container();
-            }
+      future: categoryFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.hasError) {
+          var _items = snapshot.data!.items;
+          if (_items.isNotEmpty) {
+            return body(_items);
+          } else {
+            return Container();
           }
-          return placeholder();
-        });
+        }
+        return placeholder();
+      },
+    );
   }
 
   Widget body(List<Item> items) {
@@ -48,6 +69,7 @@ class Resume extends StatelessWidget {
                   _item,
                   showLogo: true,
                   showParent: false,
+                  clickable: true,
                   widgetAspectRatio: 16 / 9,
                 );
               },

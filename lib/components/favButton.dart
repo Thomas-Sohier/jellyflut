@@ -9,9 +9,14 @@ class FavButton extends StatefulWidget {
   final Item item;
   final EdgeInsetsGeometry padding;
   final double size;
+  final Color color;
+  final Color backgroundFocusColor;
 
   const FavButton(this.item,
-      {this.padding = const EdgeInsets.all(10), this.size = 26});
+      {this.padding = const EdgeInsets.all(10),
+      this.size = 26,
+      this.color = Colors.red,
+      this.backgroundFocusColor = Colors.black12});
 
   @override
   State<StatefulWidget> createState() {
@@ -37,7 +42,7 @@ class _FavButtonState extends State<FavButton> {
   void _onFocusChange() {
     if (_node.hasFocus) {
       setState(() {
-        _focusColor = Colors.red;
+        _focusColor = widget.color;
       });
     } else {
       setState(() {
@@ -68,21 +73,25 @@ class _FavButtonState extends State<FavButton> {
     if (widget.item.isFavorite()) {
       return InkWell(
           focusNode: _node,
+          focusColor: widget.backgroundFocusColor,
+          hoverColor: widget.backgroundFocusColor,
           borderRadius: BorderRadius.all(Radius.circular(30)),
           onTap: () => unsetItemFav(),
           child: Padding(
             padding: widget.padding,
-            child: Icon(Icons.favorite, color: Colors.red, size: widget.size),
+            child: Icon(Icons.favorite, color: widget.color, size: widget.size),
           ));
     } else {
       return InkWell(
         focusNode: _node,
+        focusColor: widget.backgroundFocusColor,
+        hoverColor: widget.backgroundFocusColor,
         borderRadius: BorderRadius.all(Radius.circular(30)),
         onTap: () => setItemFav(),
         child: Padding(
           padding: widget.padding,
-          child:
-              Icon(Icons.favorite_border, color: Colors.red, size: widget.size),
+          child: Icon(Icons.favorite_border,
+              color: widget.color, size: widget.size),
         ),
       );
     }

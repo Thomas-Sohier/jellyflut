@@ -81,3 +81,68 @@ Map<int, Color> jellyLightBlueMap = {
   800: Color.fromRGBO(4, 162, 219, .9),
   900: Color.fromRGBO(4, 162, 219, 1),
 };
+
+class Theme {
+  static final ThemeData defaultThemeData = ThemeData(
+      primaryColor: Colors.white,
+      primaryColorDark: Colors.grey.shade900,
+      primaryColorLight: Colors.white.withAlpha(220),
+      primaryColorBrightness: Brightness.dark,
+      primarySwatch: jellyPurple,
+      primaryIconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.black),
+      accentIconTheme: IconThemeData(color: Colors.black),
+      inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1)),
+          filled: false,
+          hintStyle: TextStyle(color: Colors.black),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: jellyPurple, width: 2))),
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade900,
+          brightness: Brightness.dark,
+          foregroundColor: Colors.white.withAlpha(220),
+          titleTextStyle: TextStyle(
+              color: Colors.white.withAlpha(220),
+              fontFamily: 'Poppins',
+              fontSize: 26)),
+      dialogTheme: DialogTheme(
+          backgroundColor: Colors.grey.shade900,
+          titleTextStyle: TextStyle(
+              color: Colors.white.withAlpha(220),
+              fontFamily: 'Poppins',
+              fontSize: 24),
+          elevation: 4),
+      visualDensity: VisualDensity.standard,
+      accentColor: Colors.white,
+      cardTheme: CardTheme(color: Colors.white),
+      backgroundColor: Colors.grey.shade900,
+      primaryTextTheme: getTextThemeWithColor(Colors.white),
+      textTheme: getTextThemeWithColor(Colors.white));
+
+  static TextTheme getTextThemeWithColor(Color color) {
+    return TextTheme(
+        headline1: TextStyle(
+            color: color.withAlpha(250), fontFamily: 'Poppins', fontSize: 38),
+        headline2: TextStyle(
+            color: color.withAlpha(240), fontFamily: 'Poppins', fontSize: 34),
+        headline3: TextStyle(
+            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 30),
+        headline4: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 26),
+        headline5: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 22),
+        headline6: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 18),
+        bodyText1: TextStyle(
+            color: color.withAlpha(210),
+            fontFamily: 'HindMadurai',
+            fontSize: 22),
+        bodyText2: TextStyle(
+            color: color.withAlpha(210),
+            fontFamily: 'HindMadurai',
+            fontSize: 16));
+  }
+}

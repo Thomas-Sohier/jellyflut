@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
+import 'package:jellyflut/shared/blurhash.dart';
 import 'package:octo_image/octo_image.dart';
 
 class AsyncImage extends StatelessWidget {
@@ -22,7 +23,7 @@ class AsyncImage extends StatelessWidget {
   }
 
   Widget body() {
-    var hash = _fallBackBlurHash(blurHash, tag);
+    var hash = BlurHashUtil.fallBackBlurHash(blurHash, tag);
     var url =
         getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash);
     return OctoImage(
@@ -69,49 +70,5 @@ class AsyncImage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String? _fallBackBlurHash(ImageBlurHashes? imageBlurHashes, String tag) {
-    // TODO add enum
-    if (imageBlurHashes == null) {
-      return null;
-    } else if (tag == 'Primary') {
-      return _fallBackBlurHashPrimary(imageBlurHashes);
-    } else if (tag == 'Logo') {
-      return _fallBackBlurHashLogo(imageBlurHashes);
-    } else if (tag == 'Backdrop') {
-      return imageBlurHashes.backdrop?.values.first;
-    } else if (tag == 'Thumb') {
-      return imageBlurHashes.thumb?.values.first;
-    } else if (tag == 'Art') {
-      return imageBlurHashes.art?.values.first;
-    } else if (tag == 'Banner') {
-      return imageBlurHashes.banner?.values.first;
-    }
-    return null;
-  }
-
-  String? _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-    if (imageBlurHashes.primary != null &&
-        imageBlurHashes.primary!.values.isNotEmpty) {
-      return imageBlurHashes.primary!.values.first;
-    } else if (imageBlurHashes.backdrop != null &&
-        imageBlurHashes.backdrop!.values.isNotEmpty) {
-      return imageBlurHashes.backdrop!.values.first;
-    } else if (imageBlurHashes.art != null &&
-        imageBlurHashes.art!.values.isNotEmpty) {
-      return imageBlurHashes.art!.values.first;
-    } else if (imageBlurHashes.thumb != null &&
-        imageBlurHashes.thumb!.values.isNotEmpty) {
-      return imageBlurHashes.thumb!.values.first;
-    }
-    return null;
-  }
-
-  String? _fallBackBlurHashLogo(ImageBlurHashes imageBlurHashes) {
-    if (imageBlurHashes.logo != null) {
-      return imageBlurHashes.logo!.values.first;
-    }
-    return null;
   }
 }

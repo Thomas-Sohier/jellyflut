@@ -51,4 +51,14 @@ class CommonPlayerAssetsAudioPlayer {
         .listen((event) => streamController.add(event?.index));
     return streamController;
   }
+
+  void insertIntoPlaylist(
+      int index, MusicItem musicItem, AssetsAudioPlayer assetsAudioPlayer) {
+    assetsAudioPlayer.playlist!
+        .insert(index, Audio.network(musicItem.url ?? ''));
+  }
+
+  void removeFromPlaylist(int index, AssetsAudioPlayer assetsAudioPlayer) {
+    assetsAudioPlayer.playlist!.removeAtIndex(index);
+  }
 }

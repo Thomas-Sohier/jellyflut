@@ -3,33 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jellyflut/models/item.dart';
 
 class Critics extends StatelessWidget {
-  Critics(this.item, {this.textColor = Colors.black});
+  Critics({required this.item, this.fontSize = 16, this.iconSize = 20});
 
   final Item item;
-  final Color textColor;
+  final double fontSize;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
-    return body(item, textColor);
-  }
-
-  Widget criticRating(int rating) {
-    if (rating > 50) {
-      return SvgPicture.asset(
-        'img/fresh.svg',
-        semanticsLabel: 'Critic rating',
-        height: 20,
-      );
-    } else {
-      return SvgPicture.asset(
-        'img/rotten.svg',
-        semanticsLabel: 'Critic rating',
-        height: 20,
-      );
-    }
-  }
-
-  Widget body(Item item, Color textColor) {
     return Row(children: [
       if (item.communityRating != null)
         Padding(
@@ -39,8 +20,14 @@ class Critics extends StatelessWidget {
               Icons.star,
               color: Colors.yellow[700],
             ),
+            SizedBox(
+              width: 4,
+            ),
             Text(item.communityRating.toString(),
-                style: TextStyle(fontSize: 16, color: textColor))
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: fontSize))
           ]),
         ),
       if (item.criticRating != null)
@@ -48,10 +35,32 @@ class Critics extends StatelessWidget {
           padding: const EdgeInsets.only(right: 10),
           child: Row(children: [
             criticRating(item.criticRating!),
+            SizedBox(
+              width: 4,
+            ),
             Text(item.criticRating.toString(),
-                style: TextStyle(fontSize: 16, color: textColor))
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: fontSize))
           ]),
         )
     ]);
+  }
+
+  Widget criticRating(int rating) {
+    if (rating > 50) {
+      return SvgPicture.asset(
+        'img/fresh.svg',
+        semanticsLabel: 'Critic rating',
+        height: iconSize,
+      );
+    } else {
+      return SvgPicture.asset(
+        'img/rotten.svg',
+        semanticsLabel: 'Critic rating',
+        height: iconSize,
+      );
+    }
   }
 }

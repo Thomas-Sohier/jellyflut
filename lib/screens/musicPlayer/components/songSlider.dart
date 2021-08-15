@@ -47,14 +47,4 @@ class _SongSliderState extends State<SongSlider> {
     return currentPosition.inMilliseconds.toDouble() /
         musicPlayer.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
   }
-
-  // void playerListener() {
-  //   musicPlayer.assetsAudioPlayer.realtimePlayingInfos.listen((event) {
-  //     if (event.isPlaying && mounted) {
-  //       setState(() {
-  //         _playBackTime = event.currentPosition.inMilliseconds.toInt();
-  //       });
-  //     }
-  //   });
-  // }
 }

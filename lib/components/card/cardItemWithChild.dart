@@ -14,10 +14,9 @@ import 'package:shimmer/shimmer.dart';
 import '../critics.dart';
 
 class CardItemWithChild extends StatefulWidget {
-  CardItemWithChild(this.item, {this.isSkeleton = false});
+  final Future<Item> itemsToLoad;
 
-  final Item item;
-  final bool isSkeleton;
+  CardItemWithChild({required this.itemsToLoad});
 
   @override
   State<StatefulWidget> createState() => _CardItemWithChildState();
@@ -26,25 +25,23 @@ class CardItemWithChild extends StatefulWidget {
 class _CardItemWithChildState extends State<CardItemWithChild> {
   @override
   Widget build(BuildContext context) {
-    var item = widget.item;
     return ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 600),
         child: Card(
             margin: EdgeInsets.zero,
-            child: FutureBuilder<dynamic>(
-              future: _getItemsCustom(itemId: item.id),
+            child: FutureBuilder<Item>(
+              future: widget.itemsToLoad,
               builder: (context, snapshot) {
-                return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: snapshot.hasData
-                        ? cardWithData(snapshot.data[1])
-                        : skeletonCard());
+                if (snapshot.hasData) {
+                  return cardWithData(snapshot.data!);
+                }
+                return skeletonCard();
               },
             )));
   }
 
-  List<Widget> skeletonCard() {
-    return [
+  Widget skeletonCard() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
           padding: const EdgeInsets.fromLTRB(12, 18, 12, 12),
           child: Shimmer.fromColors(
@@ -126,11 +123,11 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
               ))
         ]),
       ),
-    ];
+    ]);
   }
 
-  List<Widget> cardWithData(Item item) {
-    return [
+  Widget cardWithData(Item item) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
           padding: const EdgeInsets.fromLTRB(5, 30, 5, 5),
           child: Column(children: [
@@ -138,14 +135,14 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(flex: 4, child: titleHeader()),
+                Expanded(flex: 4, child: titleHeader(item)),
                 if (item.hasGenres()) Expanded(flex: 2, child: genres(item)),
               ],
             ),
             if (item.hasRatings())
               Padding(
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                  child: Critics(item)),
+                  child: Critics(item: item)),
             if (item.hasArtists()) artists(item),
             if (item.hasOverview()) overview(item)
           ])),
@@ -162,7 +159,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
           ),
           padding: EdgeInsets.all(5),
           child: CardInfos(item))
-    ];
+    ]);
   }
 
   Widget genres(Item item) {
@@ -201,23 +198,22 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
     );
   }
 
-  Widget titleHeader() {
-    var item = widget.item;
+  Widget titleHeader(Item item) {
     if (item.hasParent()) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [title(item.parentName()), subTitle(item.name)],
+        children: [title(item.parentName(), item), subTitle(item.name)],
       );
     } else {
-      return title(item.name, clickable: false);
+      return title(item.name, item, clickable: false);
     }
   }
 
-  Widget title(String title, {clickable = true}) {
+  Widget title(String title, Item item, {clickable = true}) {
     return InkWell(
         onTap: () async {
-          var parentItem = await getItem(widget.item.getParentId());
+          var parentItem = await getItem(item.getParentId());
           await Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -233,13 +229,6 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
     return Text(subTitle,
         overflow: TextOverflow.clip,
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400));
-  }
-
-  Future _getItemsCustom({required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 800)));
-    futures.add(getItem(itemId));
-    return Future.wait(futures);
   }
 }
 

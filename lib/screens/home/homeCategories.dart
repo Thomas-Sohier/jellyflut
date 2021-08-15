@@ -22,15 +22,23 @@ class HomeCategories extends StatefulWidget {
 
 class _HomeCategoriesState extends State<HomeCategories>
     with AutomaticKeepAliveClientMixin {
-  double height = 220;
+  final double height = 220;
   final double gapSize = 20;
+  late Future<List<Item>> itemsFuture;
+
+  @override
+  void initState() {
+    itemsFuture = getLatestMedia(
+        parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Material(
       color: Colors.transparent,
-      child: buildAllCategory(),
+      child: categoryBuilder(),
     );
   }
 
@@ -47,23 +55,20 @@ class _HomeCategoriesState extends State<HomeCategories>
         ));
   }
 
-  Widget buildAllCategory() {
+  Widget categoryBuilder() {
     return FutureBuilder<List<Item>>(
-        future: getLatestMedia(
-            parentId: widget.item.id,
-            fields: 'DateCreated, DateAdded, ImageTags'),
-        builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            // If no element in category then we hide it
-            if (snapshot.data!.isEmpty) {
-              return Container();
-            }
-            return buildCategory(snapshot.data!);
-          } else {
-            return placeholder();
+      future: itemsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.hasError) {
+          if (snapshot.data!.isEmpty) {
+            return Container();
           }
-        });
+          return buildCategory(snapshot.data!);
+        } else {
+          return placeholder();
+        }
+      },
+    );
   }
 
   Widget buildCategory(List<Item> items) {

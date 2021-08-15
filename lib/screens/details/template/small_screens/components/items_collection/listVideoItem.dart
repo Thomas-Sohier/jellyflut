@@ -5,25 +5,35 @@ import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:uuid/uuid.dart';
 
-import 'details.dart';
-
-class ListVideoItem extends StatelessWidget {
+class ListVideoItem extends StatefulWidget {
   final Item item;
 
   const ListVideoItem({required this.item});
+
+  @override
+  _ListVideoItemState createState() => _ListVideoItemState();
+}
+
+class _ListVideoItemState extends State<ListVideoItem> {
+  late final Future<dynamic> episodeDelayed = _getEpisodeCustom(
+      seriesId: widget.item.seriesId!, itemId: widget.item.id);
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: FutureBuilder<dynamic>(
-            future:
-                _getEpisodeCustom(seriesId: item.seriesId!, itemId: item.id),
+            future: episodeDelayed,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return body(snapshot.data[1]);

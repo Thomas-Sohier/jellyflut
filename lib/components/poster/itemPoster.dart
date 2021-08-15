@@ -4,19 +4,18 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
-  ItemPoster(this.item,
+  const ItemPoster(this.item,
       {this.textColor = Colors.white,
       this.heroTag,
       this.widgetAspectRatio,
       this.showName = true,
       this.showParent = true,
       this.showLogo = false,
+      this.clickable = true,
       this.tag = 'Primary',
       this.boxFit = BoxFit.cover});
 
@@ -27,6 +26,7 @@ class ItemPoster extends StatefulWidget {
   final bool showName;
   final bool showParent;
   final bool showLogo;
+  final bool clickable;
   final String tag;
   final BoxFit boxFit;
 
@@ -38,8 +38,6 @@ class _ItemPosterState extends State<ItemPoster>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   // Dpad navigation
   late FocusNode _node;
-  late AnimationController _controller;
-  late Color _focusColor;
   late String posterHeroTag;
 
   @override
@@ -49,64 +47,25 @@ class _ItemPosterState extends State<ItemPoster>
   void initState() {
     _node = FocusNode();
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
-    _focusColor = Colors.transparent;
-    _node.addListener(_onFocusChange);
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 100),
-        vsync: this,
-        lowerBound: 0.9,
-        upperBound: 1);
     super.initState();
-  }
-
-  void _onFocusChange() {
-    if (_node.hasFocus) {
-      _controller.forward();
-      setState(() {
-        _focusColor = Colors.white;
-      });
-    } else {
-      _controller.reverse();
-      setState(() {
-        _focusColor = Colors.transparent;
-      });
-    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     _node.dispose();
     super.dispose();
-  }
-
-  void _onTap(String heroTag) {
-    Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-          builder: (context) => Details(item: widget.item, heroTag: heroTag)),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return RawMaterialButton(
-        onPressed: () => _onTap(posterHeroTag),
-        focusNode: _node,
-        focusColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        focusElevation: 0,
-        autofocus: false,
-        child: AspectRatio(
-            aspectRatio:
-                widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
-            child: body(posterHeroTag, context)));
+    return AspectRatio(
+        aspectRatio:
+            widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
+        child: body(context));
   }
 
-  Widget body(String heroTag, BuildContext context) {
+  Widget body(BuildContext context) {
     return Column(children: [
       Expanded(
         child: Row(
@@ -114,30 +73,29 @@ class _ItemPosterState extends State<ItemPoster>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AspectRatio(
-              aspectRatio: widget.widgetAspectRatio ??
-                  widget.item.getPrimaryAspectRatio(),
-              child: Stack(fit: StackFit.expand, children: [
-                Hero(
-                    tag: heroTag,
-                    child: Poster(
-                        showParent: widget.showParent,
-                        tag: widget.tag,
-                        isFocus: _node.hasFocus,
-                        focusColor: _focusColor,
-                        boxFit: widget.boxFit,
-                        item: widget.item)),
-                Stack(
-                  children: [
-                    if (widget.item.isNew())
-                      Positioned(top: 8, left: 0, child: newBanner()),
-                    if (widget.item.isPlayed())
-                      Positioned(top: 8, right: 0, child: playedBanner()),
-                  ],
-                ),
-                if (widget.showLogo) logo(),
-                if (widget.item.hasProgress()) progress(),
-              ]),
-            ),
+                aspectRatio: widget.widgetAspectRatio ??
+                    widget.item.getPrimaryAspectRatio(),
+                child: Stack(fit: StackFit.expand, children: [
+                  Poster(
+                      showParent: widget.showParent,
+                      tag: widget.tag,
+                      aspectRatio: widget.widgetAspectRatio,
+                      clickable: widget.clickable,
+                      heroTag: posterHeroTag,
+                      boxFit: widget.boxFit,
+                      item: widget.item),
+                  IgnorePointer(
+                      child: Stack(
+                    children: [
+                      if (widget.item.isNew())
+                        Positioned(top: 8, left: 0, child: newBanner()),
+                      if (widget.item.isPlayed())
+                        Positioned(top: 8, right: 0, child: playedBanner()),
+                    ],
+                  )),
+                  if (widget.showLogo) logo(),
+                  if (widget.item.hasProgress()) progress(),
+                ])),
           ],
         ),
       ),
@@ -147,14 +105,17 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget progress() {
     return Positioned.fill(
-        child: Align(alignment: Alignment.bottomCenter, child: progressBar()));
+        child: Align(
+            alignment: Alignment.bottomCenter,
+            child: IgnorePointer(child: progressBar())));
   }
 
   Widget logo() {
     return Positioned.fill(
         child: Align(
             alignment: Alignment.center,
-            child: Padding(
+            child: IgnorePointer(
+                child: Padding(
               padding: const EdgeInsets.only(left: 16, right: 16),
               child: AsyncImage(
                 widget.item.correctImageId(searchType: 'logo'),
@@ -163,7 +124,7 @@ class _ItemPosterState extends State<ItemPoster>
                 boxFit: BoxFit.contain,
                 tag: 'Logo',
               ),
-            )));
+            ))));
   }
 
   Widget name() {
@@ -176,7 +137,8 @@ class _ItemPosterState extends State<ItemPoster>
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               maxLines: 1,
-              style: TextStyle(color: widget.textColor, fontSize: 16),
+              style:
+                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
             ),
             if (widget.item.isFolder != null &&
                 widget.item.parentIndexNumber != null)
@@ -185,8 +147,10 @@ class _ItemPosterState extends State<ItemPoster>
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1,
-                style: TextStyle(
-                    color: widget.textColor.withOpacity(0.8), fontSize: 12),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 12),
               ),
           ],
         ));
@@ -223,5 +187,32 @@ class _ItemPosterState extends State<ItemPoster>
         child: Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: ProgressBar(item: widget.item)));
+  }
+
+  MaterialStateProperty<double> buttonElevation() {
+    return MaterialStateProperty.resolveWith<double>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return 2;
+        }
+        return 0; // defer to the default
+      },
+    );
+  }
+
+  MaterialStateProperty<BorderSide> buttonBorderSide() {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Colors.white,
+          );
+        }
+        return BorderSide(
+            width: 0, color: Colors.transparent); // defer to the default
+      },
+    );
   }
 }

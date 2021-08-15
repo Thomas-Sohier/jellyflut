@@ -25,10 +25,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late SearchProvider searchProvider;
+  late Future<Category> categoryFuture;
 
   @override
   void initState() {
     searchProvider = SearchProvider();
+    categoryFuture = getCategory();
     super.initState();
   }
 
@@ -63,20 +65,25 @@ class _HomeState extends State<Home> {
           ]),
         ),
         SliverToBoxAdapter(child: Resume()),
-        FutureBuilder<Category>(
-          future: getCategory(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return buildCategory(snapshot.data!);
-            } else if (snapshot.hasError) {
-              return noConnectivity(SocketException(snapshot.error.toString()));
-            }
-            return SliverToBoxAdapter(
-              child: Center(child: CircularProgressIndicator()),
-            );
-          },
-        ),
+        categoryBuilder()
       ],
+    );
+  }
+
+  /// Prevent from re-query the API on resize
+  Widget categoryBuilder() {
+    return FutureBuilder<Category>(
+      future: categoryFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && !snapshot.hasError) {
+          return buildCategory(snapshot.data!);
+        } else if (snapshot.hasError) {
+          return noConnectivity(SocketException(snapshot.error.toString()));
+        }
+        return SliverToBoxAdapter(
+          child: Center(child: CircularProgressIndicator()),
+        );
+      },
     );
   }
 

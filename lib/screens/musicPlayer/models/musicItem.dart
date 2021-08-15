@@ -8,6 +8,7 @@ class MusicItem {
   MusicItem(
       {required this.id,
       required this.title,
+      required this.item,
       this.artist,
       this.album,
       this.url,
@@ -15,6 +16,7 @@ class MusicItem {
 
   int id;
   String title;
+  Item item;
   String? artist;
   String? album;
   String? url;
@@ -27,6 +29,7 @@ class MusicItem {
     return MusicItem(
         id: id,
         album: item.album,
+        item: item,
         artist: item.artists!.map((e) => e.name.trim()).join(', ').toString(),
         title: item.name,
         url: url,
@@ -38,6 +41,7 @@ class MusicItem {
   Map<String, dynamic> toMap() => {
         'Id': id,
         'Title': title,
+        'Item': item.toMap(),
         'Artist': artist,
         'Album': album,
         'Url': url,

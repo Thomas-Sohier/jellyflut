@@ -32,7 +32,26 @@ class CommonStreamVLCComputer {
 
     // create common stream controller
     final commonStream = CommonStream.parseVlcComputerController(
-        item: item, player: player, listener: () => {});
+        player: player, listener: () => {});
+
+    StreamModel().setCommonStream(commonStream);
+    return Future.value(player);
+  }
+
+  static Future<Player> setupDataFromUrl({required String url}) async {
+    final size = MediaQuery.of(navigatorKey.currentContext!).size;
+    final playerId = Random().nextInt(10000);
+    final player = Player(
+      id: playerId,
+      videoWidth: size.width.toInt(),
+      videoHeight: size.height.toInt(),
+    );
+    final media = Media.network(url);
+    player.open(media);
+
+    // create common stream controller
+    final commonStream = CommonStream.parseVlcComputerController(
+        player: player, listener: () => {});
 
     StreamModel().setCommonStream(commonStream);
     return Future.value(player);

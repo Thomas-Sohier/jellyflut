@@ -103,7 +103,7 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
                         padding: EdgeInsets.all(8),
                         child: Column(children: [
                           Row(children: [
-                            Critics(item, textColor: Colors.black),
+                            Critics(item: item),
                             Spacer(),
                             if (item.runTimeTicks != null)
                               Text(
