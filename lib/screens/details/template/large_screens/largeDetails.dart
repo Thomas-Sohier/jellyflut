@@ -2,13 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
-import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:palette_generator/palette_generator.dart';
 
@@ -51,34 +49,8 @@ class _LargeDetailsState extends State<LargeDetails> {
             SizedBox(
               height: 64,
             ),
-            Expanded(
-                flex: 4,
-                child: LeftDetails(
-                  item: widget.item,
-                  heroTag: widget.heroTag ?? '',
-                )),
-            Expanded(
-                flex: 6,
-                child: ClipRect(
-                    child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                        child: FutureBuilder<PaletteGenerator>(
-                            future: widget.paletteColorFuture,
-                            builder: (context, colorsSnapshot) {
-                              if (colorsSnapshot.hasData) {
-                                final finalDetailsThemeData =
-                                    Luminance.computeLuminance(
-                                        colorsSnapshot.data!.paletteColors);
-                                return Theme(
-                                    data: finalDetailsThemeData,
-                                    child: largeWidgetBuilder(
-                                        finalDetailsThemeData));
-                              }
-                              return Theme(
-                                  data: personnal_theme.Theme.defaultThemeData,
-                                  child: largeWidgetBuilder(
-                                      personnal_theme.Theme.defaultThemeData));
-                            }))))
+            leftDetailsPart(),
+            rightDetailsPart()
           ])),
         ]),
         DetailHeaderBar(
@@ -88,6 +60,39 @@ class _LargeDetailsState extends State<LargeDetails> {
         )
       ])
     ]);
+  }
+
+  Widget leftDetailsPart() {
+    return Expanded(
+        flex: 4,
+        child: LeftDetails(
+          item: widget.item,
+          heroTag: widget.heroTag ?? '',
+        ));
+  }
+
+  Widget rightDetailsPart() {
+    return Expanded(
+        flex: 6,
+        child: ClipRect(
+            child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+                child: FutureBuilder<PaletteGenerator>(
+                    future: widget.paletteColorFuture,
+                    builder: (context, colorsSnapshot) {
+                      if (colorsSnapshot.hasData) {
+                        final finalDetailsThemeData =
+                            Luminance.computeLuminance(
+                                colorsSnapshot.data!.paletteColors);
+                        return Theme(
+                            data: finalDetailsThemeData,
+                            child: largeWidgetBuilder(finalDetailsThemeData));
+                      }
+                      return Theme(
+                          data: personnal_theme.Theme.defaultThemeData,
+                          child: largeWidgetBuilder(
+                              personnal_theme.Theme.defaultThemeData));
+                    }))));
   }
 
   Widget largeWidgetBuilder(ThemeData themeData) {
@@ -107,16 +112,9 @@ class _LargeDetailsState extends State<LargeDetails> {
                       paletteColorsFuture: widget.paletteColorFuture,
                     );
                   }
-                  return SkeletonRightDetails();
+                  return Container();
                 }))
       ],
     );
-  }
-
-  Future<List<dynamic>> getItemDelayed() async {
-    final futures = <Future>[];
-    futures.add(getItem(widget.item.id));
-    futures.add(Future.delayed(Duration(milliseconds: 700)));
-    return await Future.wait(futures);
   }
 }

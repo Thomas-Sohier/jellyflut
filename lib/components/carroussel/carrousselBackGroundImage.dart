@@ -4,8 +4,27 @@ import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/carrousselModel.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
-class CarrousselBackGroundImage extends StatelessWidget {
+class CarrousselBackGroundImage extends StatefulWidget {
+  CarrousselBackGroundImage({Key? key}) : super(key: key);
+
+  @override
+  _CarrousselBackGroundImageState createState() =>
+      _CarrousselBackGroundImageState();
+}
+
+class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
+  late final Future<Item> itemFuture;
+  late final carrousselModel;
+
+  @override
+  void initState() {
+    carrousselModel = CarrousselModel();
+    itemFuture = getItem(carrousselModel.itemId!);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -32,13 +51,7 @@ class CarrousselBackGroundImage extends StatelessWidget {
               future: getItem(carrousselModel.itemId!),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return AsyncImage(
-                    snapshot.data!.id,
-                    snapshot.data!.imageTags!.primary!,
-                    snapshot.data!.imageBlurHashes!,
-                    tag: 'Primary',
-                    boxFit: BoxFit.fitHeight,
-                  );
+                  return responsiveBackgroundBuilder(snapshot.data!);
                 }
                 return Container();
               }),
@@ -47,5 +60,32 @@ class CarrousselBackGroundImage extends StatelessWidget {
         return Container();
       }
     });
+  }
+
+  Widget responsiveBackgroundBuilder(Item item) {
+    return OrientationLayoutBuilder(
+      portrait: (context) => portraitBackground(item),
+      landscape: (context) => largeBackground(item),
+    );
+  }
+
+  Widget portraitBackground(Item item) {
+    return AsyncImage(
+      item.id,
+      item.imageTags!.primary!,
+      item.imageBlurHashes!,
+      tag: 'Primary',
+      boxFit: BoxFit.fitHeight,
+    );
+  }
+
+  Widget largeBackground(Item item) {
+    return AsyncImage(
+      item.id,
+      item.imageTags!.primary!,
+      item.imageBlurHashes!,
+      tag: 'Backdrop',
+      boxFit: BoxFit.cover,
+    );
   }
 }

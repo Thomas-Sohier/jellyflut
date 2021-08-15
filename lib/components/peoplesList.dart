@@ -102,15 +102,14 @@ class _PeoplesListState extends State<PeoplesList> {
 
   Widget largeScreenTemplate(Item item, Person person, int index) {
     return Padding(
-        padding: EdgeInsets.only(right: 10),
-        child: InkWell(
-          onTap: () => onTap(item, person),
-          child: PeoplePoster(
-              person: person,
-              index: index,
-              bigPoster: true,
-              onPressed: () => onTap(item, person)),
-        ));
+      padding: EdgeInsets.only(right: 10),
+      child: PeoplePoster(
+          person: person,
+          index: index,
+          bigPoster: true,
+          clickable: true,
+          onPressed: () => onTap(item, person)),
+    );
   }
 
   void onTap(Item item, Person person) {

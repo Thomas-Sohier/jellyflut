@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 
@@ -27,19 +25,14 @@ class LeftDetails extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 64, 24, 12),
           child: Center(
-              child: Material(
-                  elevation: 16,
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  child: ItemPoster(
-                    item,
-                    heroTag: heroTag,
-                    widgetAspectRatio: item.getPrimaryAspectRatio(),
-                    tag: tag,
-                    clickable: false,
-                    showParent: false,
-                    showName: false,
-                  ))),
+              child: Poster(
+            item: item,
+            heroTag: heroTag,
+            tag: tag,
+            clickable: false,
+            showParent: false,
+            boxFit: BoxFit.cover,
+          )),
         ),
       ],
     );

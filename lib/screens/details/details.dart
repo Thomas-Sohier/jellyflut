@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
+import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/provider/listOfItems.dart';
-import 'package:jellyflut/screens/details/components/photoItem.dart';
 import 'package:jellyflut/screens/details/models/detailsInfos.dart';
 import 'package:jellyflut/screens/details/shared/palette.dart';
 import 'package:jellyflut/screens/details/template/small_screens/details.dart'
     as phone;
 import 'package:jellyflut/screens/details/template/large_screens/largeDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/tabletDetails.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../globals.dart';
+import 'components/photoItem.dart';
 
 class Details extends StatefulWidget {
   final Item item;
@@ -27,20 +28,10 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  late PageController pageController;
-  late MediaQueryData mediaQuery;
-  late String heroTag;
-  late Item item;
   late DetailsInfos futureDetailsInfos;
-
-  // Items for photos
-  late ListOfItems listOfItems;
 
   @override
   void initState() {
-    heroTag = widget.heroTag;
-    listOfItems = ListOfItems();
-    item = widget.item;
     futureDetailsInfos = getDetailsInfos();
     super.initState();
   }
@@ -56,9 +47,9 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
       child: Scaffold(
           extendBody: true,
           backgroundColor: Colors.transparent,
-          body: item.type != ItemType.PHOTO
+          body: widget.item.type != ItemType.PHOTO
               ? responsiveBuilder()
-              : PhotoItem(item: widget.item, heroTag: heroTag)),
+              : PhotoItem(item: widget.item, heroTag: widget.heroTag)),
     );
   }
 
@@ -69,19 +60,19 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
               paletteColorFuture: futureDetailsInfos.paletteColors,
-              heroTag: heroTag,
+              heroTag: widget.heroTag,
             ),
         tablet: (BuildContext context) => TabletDetails(
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
               paletteColorFuture: futureDetailsInfos.paletteColors,
-              heroTag: heroTag,
+              heroTag: widget.heroTag,
             ),
         desktop: (BuildContext context) => LargeDetails(
             item: widget.item,
             itemToLoad: futureDetailsInfos.item,
             paletteColorFuture: futureDetailsInfos.paletteColors,
-            heroTag: heroTag));
+            heroTag: widget.heroTag));
   }
 
   DetailsInfos getDetailsInfos() {

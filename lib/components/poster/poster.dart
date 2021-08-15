@@ -5,7 +5,7 @@ import 'package:jellyflut/screens/details/details.dart';
 
 import '../asyncImage.dart';
 
-class Poster extends StatelessWidget {
+class Poster extends StatefulWidget {
   final String tag;
   final BoxFit boxFit;
   final Item item;
@@ -22,20 +22,39 @@ class Poster extends StatelessWidget {
       required this.clickable,
       required this.boxFit,
       required this.item});
+  @override
+  _PosterState createState() => _PosterState();
+}
+
+class _PosterState extends State<Poster> {
+  late final FocusNode node;
+  late final double aspectRatio;
+  late final String itemId;
+
+  @override
+  void initState() {
+    node = FocusNode();
+    aspectRatio = widget.aspectRatio != null
+        ? widget.aspectRatio!
+        : widget.item.getPrimaryAspectRatio();
+    itemId = widget.showParent
+        ? widget.item.getParentId()
+        : widget.item.getIdBasedOnImage();
+    super.initState();
+  }
 
   void onTap() {
     Navigator.push(
       navigatorKey.currentContext!,
       MaterialPageRoute(
-          builder: (context) => Details(item: item, heroTag: heroTag)),
+          builder: (context) =>
+              Details(item: widget.item, heroTag: widget.heroTag)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final node = FocusNode();
-    ;
-    if (clickable) {
+    if (widget.clickable) {
       return OutlinedButton(
         onPressed: () => onTap(),
         autofocus: false,
@@ -57,16 +76,15 @@ class Poster extends StatelessWidget {
 
   Widget poster() {
     return Hero(
-      tag: heroTag,
+      tag: widget.heroTag,
       child: AspectRatio(
-          aspectRatio:
-              aspectRatio != null ? aspectRatio! : item.getPrimaryAspectRatio(),
+          aspectRatio: aspectRatio,
           child: AsyncImage(
-            showParent ? item.getParentId() : item.getIdBasedOnImage(),
-            item.imageTags?.primary ?? '',
-            item.imageBlurHashes!,
-            tag: tag,
-            boxFit: boxFit,
+            itemId,
+            widget.item.imageTags?.primary ?? '',
+            widget.item.imageBlurHashes!,
+            tag: widget.tag,
+            boxFit: widget.boxFit,
           )),
     );
   }

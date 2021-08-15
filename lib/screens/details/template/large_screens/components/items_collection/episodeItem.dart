@@ -55,48 +55,49 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget epsiodeItem() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 2),
-      child: SizedBox(
-          height: 120,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ItemPoster(
-                widget.item,
-                boxFit: BoxFit.cover,
-                widgetAspectRatio: 16 / 9,
-                clickable: false,
-                showLogo: false,
-                showParent: false,
-                showName: false,
-              ),
-              Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        title(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            children: [
-                              if (widget.item.hasRatings())
-                                Critics(
-                                  item: widget.item,
-                                  fontSize: 18,
-                                ),
-                              if (widget.item.getDuration() != 0) duration()
-                            ],
-                          ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: 120, maxHeight: 160),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 2),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ItemPoster(
+              widget.item,
+              boxFit: BoxFit.cover,
+              widgetAspectRatio: 16 / 9,
+              clickable: false,
+              showLogo: false,
+              showParent: false,
+              showName: false,
+            ),
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      title(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4, bottom: 4),
+                        child: Row(
+                          children: [
+                            if (widget.item.hasRatings())
+                              Critics(
+                                item: widget.item,
+                                fontSize: 18,
+                              ),
+                            if (widget.item.getDuration() != 0) duration()
+                          ],
                         ),
-                        if (widget.item.overview != null) overview()
-                      ],
-                    )),
-              )
-            ],
-          )),
+                      ),
+                      if (widget.item.overview != null) overview()
+                    ],
+                  )),
+            )
+          ],
+        ),
+      ),
     );
   }
 
