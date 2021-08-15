@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 
 class BackButton extends StatefulWidget {
   final bool shadow;
@@ -12,14 +13,11 @@ class BackButton extends StatefulWidget {
 
 class _BackButtonState extends State<BackButton> {
   late final FocusNode _node;
-  late final Color _focusColor;
   late final List<BoxShadow> shadows;
 
   @override
   void initState() {
-    _focusColor = Colors.transparent;
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
-    _node.addListener(_onFocusChange);
     shadows = widget.shadow
         ? [
             BoxShadow(
@@ -33,18 +31,6 @@ class _BackButtonState extends State<BackButton> {
     super.initState();
   }
 
-  void _onFocusChange() {
-    if (_node.hasFocus) {
-      setState(() {
-        _focusColor = Colors.white;
-      });
-    } else {
-      setState(() {
-        _focusColor = Colors.transparent;
-      });
-    }
-  }
-
   @override
   void dispose() {
     _node.dispose();
@@ -53,24 +39,18 @@ class _BackButtonState extends State<BackButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(boxShadow: shadows),
-      foregroundDecoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(width: 2, color: _focusColor)),
-      child: InkWell(
-        focusNode: _node,
-        onTap: () => Navigator.of(context).pop(),
-        radius: 60,
-        borderRadius: BorderRadius.all(Radius.circular(80)),
-        child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 28,
-            )),
-      ),
+    return OutlinedButtonSelector(
+      node: _node,
+      shape: CircleBorder(),
+      onPressed: () => Navigator.of(context).pop(),
+      child: Container(
+          decoration: BoxDecoration(boxShadow: shadows),
+          padding: const EdgeInsets.all(6),
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 28,
+          )),
     );
   }
 }

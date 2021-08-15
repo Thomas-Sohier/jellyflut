@@ -35,7 +35,7 @@ class _LikeButtonState extends State<LikeButton> {
   Widget build(BuildContext context) {
     return PaletteButton(
       'Like',
-      () => widget.item.isFavorite() ? unsetItemFav() : setItemFav(),
+      onPressed: () => widget.item.isFavorite() ? unsetItemFav() : setItemFav(),
       borderRadius: 4,
       minWidth: 40,
       maxWidth: 150,

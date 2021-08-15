@@ -5,7 +5,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:moor/moor.dart';
 import 'package:package_info/package_info.dart';
@@ -31,6 +31,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
         backgroundColor: Color(0xFF252525),
         appBar: AppBar(title: Text('Settings'), leading: bb.BackButton()),
@@ -49,9 +50,7 @@ class _SettingsState extends State<Settings> {
                       sections: [
                         SettingsSection(
                           title: 'Video Player',
-                          titleTextStyle: TextStyle(
-                              color: jellyLightBLue,
-                              fontWeight: FontWeight.bold),
+                          titleTextStyle: theme.textTheme.headline6,
                           tiles: [
                             SettingsTile(
                               title: 'Preferred player',
@@ -69,6 +68,7 @@ class _SettingsState extends State<Settings> {
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
                               enabled: false,
+                              trailing: Container(),
                               // onPressed: (BuildContext context) =>
                               //     selectVideoPlayer(),
                             ),
@@ -76,9 +76,7 @@ class _SettingsState extends State<Settings> {
                         ),
                         SettingsSection(
                           title: 'Audio player',
-                          titleTextStyle: TextStyle(
-                              color: jellyLightBLue,
-                              fontWeight: FontWeight.bold),
+                          titleTextStyle: theme.textTheme.headline6,
                           tiles: [
                             SettingsTile(
                               title: 'Transcode codec',
@@ -96,6 +94,7 @@ class _SettingsState extends State<Settings> {
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
                               enabled: false,
+                              trailing: Container(),
                               // onPressed: (BuildContext context) =>
                               //     selectVideoPlayer(),
                             ),
@@ -103,9 +102,7 @@ class _SettingsState extends State<Settings> {
                         ),
                         SettingsSection(
                           title: 'Infos',
-                          titleTextStyle: TextStyle(
-                              color: jellyLightBLue,
-                              fontWeight: FontWeight.bold),
+                          titleTextStyle: theme.textTheme.headline6,
                           tiles: [
                             SettingsTile(
                               title: 'Version',
@@ -113,6 +110,7 @@ class _SettingsState extends State<Settings> {
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
+                              trailing: Container(),
                             ),
                           ],
                         ),

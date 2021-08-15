@@ -22,7 +22,8 @@ class TrailerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaletteButton('Trailer', () => playTrailer(context),
+    return PaletteButton('Trailer',
+        onPressed: () => playTrailer(context),
         minWidth: 40,
         maxWidth: 150,
         borderRadius: 4,

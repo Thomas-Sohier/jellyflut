@@ -16,8 +16,8 @@ import '../../BackgroundImage.dart';
 
 class LargeDetails extends StatefulWidget {
   final Item item;
-  final Future<List<dynamic>> itemToLoad;
-  final Future<List<PaletteColor>> paletteColorFuture;
+  final Future<Item> itemToLoad;
+  final Future<PaletteGenerator> paletteColorFuture;
   final String? heroTag;
 
   LargeDetails(
@@ -62,13 +62,13 @@ class _LargeDetailsState extends State<LargeDetails> {
                 child: ClipRect(
                     child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                        child: FutureBuilder<List<PaletteColor>>(
+                        child: FutureBuilder<PaletteGenerator>(
                             future: widget.paletteColorFuture,
                             builder: (context, colorsSnapshot) {
                               if (colorsSnapshot.hasData) {
                                 final finalDetailsThemeData =
                                     Luminance.computeLuminance(
-                                        colorsSnapshot.data!);
+                                        colorsSnapshot.data!.paletteColors);
                                 return Theme(
                                     data: finalDetailsThemeData,
                                     child: largeWidgetBuilder(
@@ -98,11 +98,14 @@ class _LargeDetailsState extends State<LargeDetails> {
                 color: themeData.backgroundColor.withOpacity(0.4))),
         Padding(
             padding: const EdgeInsets.all(24),
-            child: FutureBuilder<List<dynamic>>(
+            child: FutureBuilder<Item>(
                 future: widget.itemToLoad,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return RightDetails(item: snapshot.data!.elementAt(0));
+                    return RightDetails(
+                      item: snapshot.data!,
+                      paletteColorsFuture: widget.paletteColorFuture,
+                    );
                   }
                   return SkeletonRightDetails();
                 }))

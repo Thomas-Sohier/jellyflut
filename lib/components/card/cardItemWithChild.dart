@@ -14,7 +14,7 @@ import 'package:shimmer/shimmer.dart';
 import '../critics.dart';
 
 class CardItemWithChild extends StatefulWidget {
-  final Future<List<dynamic>> itemsToLoad;
+  final Future<Item> itemsToLoad;
 
   CardItemWithChild({required this.itemsToLoad});
 
@@ -29,11 +29,11 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
         constraints: BoxConstraints(maxWidth: 600),
         child: Card(
             margin: EdgeInsets.zero,
-            child: FutureBuilder<List<dynamic>>(
+            child: FutureBuilder<Item>(
               future: widget.itemsToLoad,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return cardWithData(snapshot.data![0]);
+                  return cardWithData(snapshot.data!);
                 }
                 return skeletonCard();
               },

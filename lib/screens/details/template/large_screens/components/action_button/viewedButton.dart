@@ -35,7 +35,8 @@ class _ViewedButtonState extends State<ViewedButton> {
   Widget build(BuildContext context) {
     return PaletteButton(
       'Viewed',
-      () => widget.item.isPlayed() ? unsetItemViewed() : setItemViewed(),
+      onPressed: () =>
+          widget.item.isPlayed() ? unsetItemViewed() : setItemViewed(),
       borderRadius: 4,
       minWidth: 40,
       maxWidth: 150,

@@ -84,7 +84,7 @@ class _TabsItemsState extends State<TabsItems>
   Widget tabHeader(Item item, int index) {
     return PaletteButton(
       item.name,
-      () => tabController.animateTo(index),
+      onPressed: () => tabController.animateTo(index),
       borderRadius: 4,
       minWidth: 40,
       maxWidth: 150,

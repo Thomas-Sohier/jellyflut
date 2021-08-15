@@ -103,8 +103,19 @@ class Theme {
       appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,
           brightness: Brightness.dark,
-          foregroundColor: Colors.white.withAlpha(220)),
-      visualDensity: VisualDensity.comfortable,
+          foregroundColor: Colors.white.withAlpha(220),
+          titleTextStyle: TextStyle(
+              color: Colors.white.withAlpha(220),
+              fontFamily: 'Poppins',
+              fontSize: 26)),
+      dialogTheme: DialogTheme(
+          backgroundColor: Colors.grey.shade900,
+          titleTextStyle: TextStyle(
+              color: Colors.white.withAlpha(220),
+              fontFamily: 'Poppins',
+              fontSize: 24),
+          elevation: 4),
+      visualDensity: VisualDensity.standard,
       accentColor: Colors.white,
       cardTheme: CardTheme(color: Colors.white),
       backgroundColor: Colors.grey.shade900,
@@ -114,17 +125,17 @@ class Theme {
   static TextTheme getTextThemeWithColor(Color color) {
     return TextTheme(
         headline1: TextStyle(
-            color: color.withAlpha(250), fontFamily: 'Poppins', fontSize: 42),
+            color: color.withAlpha(250), fontFamily: 'Poppins', fontSize: 38),
         headline2: TextStyle(
-            color: color.withAlpha(240), fontFamily: 'Poppins', fontSize: 38),
+            color: color.withAlpha(240), fontFamily: 'Poppins', fontSize: 34),
         headline3: TextStyle(
-            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 34),
+            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 30),
         headline4: TextStyle(
-            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 30),
-        headline5: TextStyle(
-            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 28),
-        headline6: TextStyle(
             color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 26),
+        headline5: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 22),
+        headline6: TextStyle(
+            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 18),
         bodyText1: TextStyle(
             color: color.withAlpha(210),
             fontFamily: 'HindMadurai',

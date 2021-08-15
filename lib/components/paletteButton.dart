@@ -2,15 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/shared/colors.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class PaletteButton extends StatefulWidget {
   PaletteButton(
-    this.text,
-    this.onPressed, {
+    this.text, {
+    required this.onPressed,
+    this.futurePaletteColors,
     this.borderRadius = 80.0,
     this.minWidth = 88.0,
     this.maxWidth = 200.0,
@@ -25,6 +24,7 @@ class PaletteButton extends StatefulWidget {
   final double minWidth;
   final double maxWidth;
   final Icon? icon;
+  final Future<PaletteGenerator>? futurePaletteColors;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
@@ -32,7 +32,6 @@ class PaletteButton extends StatefulWidget {
 
 class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin {
-  late final Future<PaletteGenerator> paletteFuture;
   // variable for both button
   // size
   late double minWidth = 88.0;
@@ -51,11 +50,6 @@ class _PaletteButtonState extends State<PaletteButton>
   void initState() {
     minWidth = widget.minWidth;
     maxWidth = widget.maxWidth;
-    if (widget.item != null) {
-      paletteFuture = gePalette(getItemImageUrl(
-          widget.item!.correctImageId(), widget.item!.correctImageTags(),
-          imageBlurHashes: widget.item!.imageBlurHashes));
-    }
     _node = FocusNode();
     super.initState();
   }
@@ -77,14 +71,14 @@ class _PaletteButtonState extends State<PaletteButton>
                 textStyle: TextStyle(color: Colors.black))
             .copyWith(side: buttonBorderSide())
             .copyWith(elevation: buttonElevation()),
-        child: widget.item == null
+        child: widget.futurePaletteColors == null
             ? buttonDefault(borderRadius)
             : generatedPalette(borderRadius));
   }
 
   Widget generatedPalette(BorderRadius borderRadius) {
     return FutureBuilder<PaletteGenerator>(
-      future: paletteFuture,
+      future: widget.futurePaletteColors,
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {

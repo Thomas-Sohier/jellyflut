@@ -12,8 +12,8 @@ import 'package:palette_generator/palette_generator.dart';
 
 class Details extends StatefulWidget {
   final Item item;
-  final Future<List<dynamic>> itemToLoad;
-  final Future<List<PaletteColor>> paletteColorFuture;
+  final Future<Item> itemToLoad;
+  final Future<PaletteGenerator> paletteColorFuture;
   final String? heroTag;
 
   Details(
@@ -95,10 +95,8 @@ class _DetailsState extends State<Details> {
                       BoxConstraints(maxWidth: mediaQuery.size.width * 0.5),
                   child: PaletteButton(
                     'Play',
-                    () {
-                      widget.item.playItem();
-                    },
-                    item: widget.item,
+                    onPressed: () => widget.item.playItem(),
+                    futurePaletteColors: widget.paletteColorFuture,
                     icon: Icon(
                       Icons.play_circle_outline,
                       color: Colors.black87,

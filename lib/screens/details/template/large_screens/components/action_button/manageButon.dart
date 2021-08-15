@@ -11,7 +11,8 @@ class ManageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaletteButton('Manage', () => editInfos(context),
+    return PaletteButton('Manage',
+        onPressed: () => editInfos(context),
         minWidth: 40,
         maxWidth: 150,
         borderRadius: 4,
