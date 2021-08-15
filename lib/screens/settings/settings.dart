@@ -5,7 +5,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:moor/moor.dart';
 import 'package:package_info/package_info.dart';

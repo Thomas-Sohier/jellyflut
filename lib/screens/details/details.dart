@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/provider/listOfItems.dart';
 import 'package:jellyflut/screens/details/models/detailsInfos.dart';
 import 'package:jellyflut/screens/details/shared/palette.dart';
 import 'package:jellyflut/screens/details/template/small_screens/details.dart'
