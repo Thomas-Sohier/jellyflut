@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/streamingSoftware.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:moor/moor.dart';
@@ -32,7 +34,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-        backgroundColor: Color(0xFF252525),
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(title: Text('Settings'), leading: bb.BackButton()),
         body: FutureBuilder(
             future: settingsInfosFuture,
@@ -43,9 +45,9 @@ class _SettingsState extends State<Settings> {
                     constraints: BoxConstraints(maxWidth: 600),
                     child: SettingsList(
                       contentPadding: EdgeInsets.only(top: 20),
-                      backgroundColor: Color(0xFF252525),
-                      darkBackgroundColor: Color(0xFF252525),
-                      lightBackgroundColor: Color(0xFF252525),
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      darkBackgroundColor: Theme.of(context).primaryColorDark,
+                      lightBackgroundColor: Theme.of(context).primaryColorLight,
                       sections: [
                         SettingsSection(
                           title: 'Video Player',
@@ -111,6 +113,20 @@ class _SettingsState extends State<Settings> {
                                   TextStyle(color: Colors.white60),
                               trailing: Container(),
                             ),
+                          ],
+                        ),
+                        SettingsSection(
+                          title: 'Account',
+                          titleTextStyle: theme.textTheme.headline6,
+                          tiles: [
+                            SettingsTile(
+                                title: 'Deconnect',
+                                subtitle: userApp!.name,
+                                titleTextStyle: TextStyle(color: Colors.white),
+                                subtitleTextStyle:
+                                    TextStyle(color: Colors.white60),
+                                onPressed: (_) async => await logout(),
+                                trailing: UserIcon()),
                           ],
                         ),
                       ],

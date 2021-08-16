@@ -7,6 +7,7 @@ import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
 import 'package:jellyflut/screens/home/SearchButton.dart';
 import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/homeCategories.dart';
@@ -114,7 +115,7 @@ class _HomeState extends State<Home> {
         Spacer(),
         SearchButton(),
         SettingsButton(),
-        userIcon()
+        UserIcon()
       ],
     );
   }
@@ -137,19 +138,6 @@ class _HomeState extends State<Home> {
         )
       ]),
     ));
-  }
-
-  Widget userIcon() {
-    return Padding(
-        padding: const EdgeInsets.all(6),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(14)),
-          child: CachedNetworkImage(
-            imageUrl:
-                '${server.url}/Users/${userJellyfin!.id}/Images/Primary?quality=90',
-            width: 28,
-          ),
-        ));
   }
 
   Widget buildCategory(Category category) {
