@@ -40,27 +40,11 @@ class _GradienButtonState extends State<GradienButton> {
                 shape: StadiumBorder(),
                 padding: EdgeInsets.zero,
                 backgroundColor: Colors.transparent,
+                elevation: 0,
+                side: BorderSide.none,
                 textStyle: TextStyle(color: Colors.black))
-            .copyWith(side: MaterialStateProperty.resolveWith<BorderSide>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered) ||
-                states.contains(MaterialState.focused)) {
-              return BorderSide(
-                width: 2,
-                color: Colors.white,
-              );
-            }
-            return BorderSide(width: 0);
-          },
-        )).copyWith(elevation: MaterialStateProperty.resolveWith<double>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered) ||
-                states.contains(MaterialState.focused)) {
-              return 6;
-            }
-            return 0;
-          },
-        )),
+            .copyWith(side: buttonBorderSide())
+            .copyWith(elevation: butonElevation()),
         child: customPalette());
   }
 
@@ -96,6 +80,33 @@ class _GradienButtonState extends State<GradienButton> {
                     ),
                   )
               ])),
+    );
+  }
+
+  MaterialStateProperty<BorderSide> buttonBorderSide() {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Colors.white,
+          );
+        }
+        return BorderSide(width: 0, color: Colors.transparent);
+      },
+    );
+  }
+
+  MaterialStateProperty<double> butonElevation() {
+    return MaterialStateProperty.resolveWith<double>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return 6;
+        }
+        return 0;
+      },
     );
   }
 }

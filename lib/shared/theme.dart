@@ -93,12 +93,20 @@ class Theme {
       iconTheme: IconThemeData(color: Colors.black),
       accentIconTheme: IconThemeData(color: Colors.black),
       inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 1)),
-          filled: false,
-          hintStyle: TextStyle(color: Colors.black),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(50))),
+          disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(50))),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: jellyPurple, width: 2))),
+              borderSide: BorderSide(color: Colors.red, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(50))),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(50))),
+          filled: false,
+          hintStyle: TextStyle(color: Colors.black)),
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,

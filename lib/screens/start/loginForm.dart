@@ -59,7 +59,10 @@ class _LoginFormState extends State<LoginForm> {
                         alignment: Alignment.centerLeft,
                         child: TextButton(
                           onPressed: widget.onPressed,
-                          child: Icon(Icons.arrow_back_ios),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.black,
+                          ),
                         ))),
                 Positioned.fill(
                     child: Align(
@@ -75,20 +78,19 @@ class _LoginFormState extends State<LoginForm> {
           'username',
           controller: _usernameFilter,
           autofocus: false,
-          colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200]!,
           textInputAction: TextInputAction.next,
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: Icon(
+            Icons.person,
+            color: Theme.of(context).accentColor,
+          ),
         ),
         OutlineTextField(
           'password',
           controller: _passwordFilter,
           obscureText: true,
           autofocus: false,
-          colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200]!,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _loginPressed(),
           focusNode: passwordFocusNode,

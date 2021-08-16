@@ -39,8 +39,6 @@ class _ServerFormState extends State<ServerForm> {
           'server name',
           textInputAction: TextInputAction.next,
           autofocus: true,
-          colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200]!,
           onSubmitted: (_) => FocusScope.of(context).requestFocus(urlFocusNode),
           controller: _serverNameFilter,
         ),
@@ -50,13 +48,13 @@ class _ServerFormState extends State<ServerForm> {
           autofocus: false,
           textInputAction: TextInputAction.done,
           focusNode: urlFocusNode,
-          colorFocus: Theme.of(context).colorScheme.secondary,
-          colorUnfocus: Colors.grey[200]!,
           onSubmitted: (_) {
             FocusScope.of(context).nextFocus();
             addServer();
           },
-          prefixIcon: Icon(Icons.http),
+          prefixIcon: Icon(
+            Icons.http,
+          ),
         ),
         SizedBox(height: size.height * 0.03),
         GradienButton('Add server', addServer)
