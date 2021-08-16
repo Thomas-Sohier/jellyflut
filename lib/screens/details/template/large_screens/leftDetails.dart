@@ -31,7 +31,7 @@ class LeftDetails extends StatelessWidget {
             tag: tag,
             clickable: false,
             showParent: false,
-            boxFit: BoxFit.cover,
+            boxFit: BoxFit.contain,
           )),
         ),
       ],
