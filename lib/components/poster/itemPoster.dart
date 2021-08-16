@@ -5,6 +5,7 @@ import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
 import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
@@ -37,8 +38,8 @@ class ItemPoster extends StatefulWidget {
 class _ItemPosterState extends State<ItemPoster>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   // Dpad navigation
-  late FocusNode _node;
-  late String posterHeroTag;
+  late final FocusNode _node;
+  late final String posterHeroTag;
 
   @override
   bool get wantKeepAlive => true;
@@ -93,7 +94,12 @@ class _ItemPosterState extends State<ItemPoster>
                         Positioned(top: 8, right: 0, child: playedBanner()),
                     ],
                   )),
-                  if (widget.showLogo) logo(),
+                  if (widget.showLogo)
+                    IgnorePointer(
+                        child: Logo(
+                      item: widget.item,
+                      size: Size.infinite,
+                    )),
                   if (widget.item.hasProgress()) progress(),
                 ])),
           ],
@@ -108,23 +114,6 @@ class _ItemPosterState extends State<ItemPoster>
         child: Align(
             alignment: Alignment.bottomCenter,
             child: IgnorePointer(child: progressBar())));
-  }
-
-  Widget logo() {
-    return Positioned.fill(
-        child: Align(
-            alignment: Alignment.center,
-            child: IgnorePointer(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              child: AsyncImage(
-                widget.item.correctImageId(searchType: 'logo'),
-                widget.item.correctImageTags(searchType: 'logo') ?? '',
-                widget.item.imageBlurHashes!,
-                boxFit: BoxFit.contain,
-                tag: 'Logo',
-              ),
-            ))));
   }
 
   Widget name() {

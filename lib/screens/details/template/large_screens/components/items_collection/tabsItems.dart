@@ -49,13 +49,13 @@ class _TabsItemsState extends State<TabsItems>
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: TabBar(
-                isScrollable: true,
-                labelPadding: EdgeInsets.only(right: 20),
-                indicatorPadding: EdgeInsets.zero,
-                indicator: BoxDecoration(color: Colors.transparent),
-                tabs: getTabsHeader(items),
-                controller: tabController,
+              child: SizedBox(
+                height: 50,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: getTabsHeader(items),
+                ),
               ),
             ),
             SizedBox(
@@ -82,12 +82,17 @@ class _TabsItemsState extends State<TabsItems>
   }
 
   Widget tabHeader(Item item, int index) {
-    return PaletteButton(
-      item.name,
-      onPressed: () => tabController.animateTo(index),
-      borderRadius: 4,
-      minWidth: 40,
-      maxWidth: 150,
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: Flexible(
+        child: PaletteButton(
+          item.name,
+          onPressed: () => tabController.animateTo(index),
+          borderRadius: 4,
+          minWidth: 40,
+          maxWidth: 150,
+        ),
+      ),
     );
   }
 

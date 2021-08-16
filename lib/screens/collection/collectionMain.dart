@@ -20,12 +20,9 @@ class CollectionMain extends StatefulWidget {
 }
 
 class _CollectionMainState extends State<CollectionMain> {
-  var items = <Item>[];
-  var itemsToShow = <Item>[];
-
   // Provider
-  late ListOfItems listOfItems;
-  late CarrousselModel carrousselModel;
+  late final ListOfItems listOfItems;
+  late final CarrousselModel carrousselModel;
 
   @override
   void initState() {

@@ -16,6 +16,7 @@ import 'components/photoItem.dart';
 class Details extends StatefulWidget {
   final Item item;
   final String heroTag;
+
   const Details({required this.item, required this.heroTag});
 
   @override

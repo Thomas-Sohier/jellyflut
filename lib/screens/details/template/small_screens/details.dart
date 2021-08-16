@@ -16,7 +16,7 @@ class Details extends StatefulWidget {
   final Future<PaletteGenerator> paletteColorFuture;
   final String? heroTag;
 
-  Details(
+  const Details(
       {Key? key,
       required this.item,
       required this.itemToLoad,

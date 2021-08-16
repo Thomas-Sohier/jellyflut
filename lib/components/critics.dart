@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jellyflut/models/item.dart';
 
 class Critics extends StatelessWidget {
-  Critics({required this.item, this.fontSize = 16, this.iconSize = 20});
+  const Critics({required this.item, this.fontSize = 16, this.iconSize = 20});
 
   final Item item;
   final double fontSize;

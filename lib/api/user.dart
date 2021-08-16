@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io' as io;
 
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/globals.dart';
@@ -11,6 +12,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dio.dart';
+
+Category parseCategory(Map<String, dynamic> data) {
+  return Category.fromMap(data);
+}
+
+Item parseItem(Map<String, dynamic> data) {
+  return Item.fromMap(data);
+}
 
 Future<User> getUserById({required String userID}) async {
   var url = '${server.url}/Users/$userID';
@@ -58,17 +67,14 @@ Future<List<Item>> getLatestMedia({
 
   var url = '${server.url}/Users/${userJellyfin!.id}/Items/Latest';
 
-  Response response;
-  var items = <Item>[];
   try {
-    response = await dio.get(url, queryParameters: queryParams);
+    final response = await dio.get(url, queryParameters: queryParams);
     final List t = response.data;
-    items = t.map((item) => Item.fromMap(item)).toList();
+    return t.map((item) => Item.fromMap(item)).toList();
   } catch (e, stacktrace) {
     log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
-  return items;
 }
 
 Future<Category> getCategory({String? parentId, int limit = 10}) async {
@@ -79,8 +85,9 @@ Future<Category> getCategory({String? parentId, int limit = 10}) async {
   var url = '${server.url}/Users/${userJellyfin!.id}/Items';
 
   try {
-    var response = await dio.get(url, queryParameters: queryParams);
-    return Category.fromMap(response.data);
+    final response =
+        await dio.get<Map<String, dynamic>>(url, queryParameters: queryParams);
+    return foundation.compute(parseCategory, response.data!);
   } on DioError catch (dioError, _) {
     log(dioError.message);
     rethrow;

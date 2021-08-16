@@ -7,6 +7,7 @@ import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
+import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:palette_generator/palette_generator.dart';
 
@@ -112,7 +113,7 @@ class _LargeDetailsState extends State<LargeDetails> {
                       paletteColorsFuture: widget.paletteColorFuture,
                     );
                   }
-                  return Container();
+                  return SkeletonRightDetails();
                 }))
       ],
     );

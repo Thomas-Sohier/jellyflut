@@ -12,7 +12,8 @@ import 'package:uuid/uuid.dart';
 class EpisodeItem extends StatefulWidget {
   final bool clickable;
   final Item item;
-  EpisodeItem({Key? key, required this.item, this.clickable = true})
+
+  const EpisodeItem({Key? key, required this.item, this.clickable = true})
       : super(key: key);
 
   @override
