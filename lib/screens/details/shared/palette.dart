@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:blurhash_dart/blurhash_extensions.dart';
-import 'package:jellyflut/shared/colors.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Palette {
