@@ -117,7 +117,10 @@ class CommonStream {
         initListener: () => vlcPlayerController.addListener(listener),
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
-        dispose: () => vlcPlayerController.dispose(),
+        dispose: () {
+          vlcPlayerController.stop();
+          vlcPlayerController.dispose();
+        },
         controller: vlcPlayerController);
   }
 
@@ -189,7 +192,7 @@ class CommonStream {
         removeListener: (_) => commonStreamVLCComputer.removeListener(),
         dispose: () {
           player.stop();
-          Future.delayed(Duration(milliseconds: 200), player.dispose);
+          player.dispose();
         },
         controller: player);
   }

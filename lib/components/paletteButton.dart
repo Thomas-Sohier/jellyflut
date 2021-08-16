@@ -91,8 +91,8 @@ class _PaletteButtonState extends State<PaletteButton>
             key: ValueKey<int>(0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
-                  ColorUtil.lighten(paletteColor.withAlpha(150), 0.2),
-                  ColorUtil.darken(paletteColor.withAlpha(255), 0.2)
+                  ColorUtil.lighten(paletteColor, 0.2),
+                  ColorUtil.darken(paletteColor, 0.2)
                 ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                 borderRadius: borderRadius),
             child: Container(

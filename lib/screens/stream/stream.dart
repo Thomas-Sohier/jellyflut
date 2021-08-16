@@ -19,6 +19,7 @@ class _StreamState extends State<Stream> {
 
   @override
   void initState() {
+    super.initState();
     Wakelock.enable();
     streamModel = StreamModel();
     // Hide device overlays
@@ -26,8 +27,6 @@ class _StreamState extends State<Stream> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIOverlays([]);
-
-    super.initState();
   }
 
   @override

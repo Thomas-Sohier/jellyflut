@@ -84,14 +84,12 @@ class _TabsItemsState extends State<TabsItems>
   Widget tabHeader(Item item, int index) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
-      child: Flexible(
-        child: PaletteButton(
-          item.name,
-          onPressed: () => tabController.animateTo(index),
-          borderRadius: 4,
-          minWidth: 40,
-          maxWidth: 150,
-        ),
+      child: PaletteButton(
+        item.name,
+        onPressed: () => tabController.animateTo(index),
+        borderRadius: 4,
+        minWidth: 40,
+        maxWidth: 150,
       ),
     );
   }

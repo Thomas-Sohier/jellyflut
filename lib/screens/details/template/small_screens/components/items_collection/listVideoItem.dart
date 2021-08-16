@@ -24,8 +24,7 @@ class _ListVideoItemState extends State<ListVideoItem> {
   late final Future<Category> episodeFuture;
   @override
   void initState() {
-    episodeFuture =
-        getShowSeasonEpisode(widget.item.seriesId!, widget.item.seasonId!);
+    episodeFuture = getShowSeasonEpisode(widget.item.seriesId!, widget.item.id);
     super.initState();
   }
 
