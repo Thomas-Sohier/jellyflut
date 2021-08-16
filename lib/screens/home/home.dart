@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/provider/searchProvider.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';

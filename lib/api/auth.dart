@@ -11,7 +11,6 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/screens/start/loginForm.dart';
 import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,15 +19,13 @@ Future<AuthenticationResponse> login(String username, String password) async {
   final data = jsonEncode({'Username': username, 'Pw': password});
   final authEmby = await authHeader();
 
-  Response response;
-  AuthenticationResponse authenticationResponse;
   try {
-    response = await dio.post('${server.url}$login',
+    final response = await dio.post('${server.url}$login',
         data: data,
         // X-Emby-Authorization needs to be set manually here
         // I don't know why...
         options: Options(headers: {'X-Emby-Authorization': authEmby}));
-    authenticationResponse = AuthenticationResponse.fromMap(response.data);
+    return AuthenticationResponse.fromMap(response.data);
   } on DioError catch (dioError, stacktrace) {
     log(dioError.message, stackTrace: stacktrace, level: 5);
     rethrow;
@@ -36,7 +33,6 @@ Future<AuthenticationResponse> login(String username, String password) async {
     log(e.toString(), stackTrace: stacktrace, level: 5);
     rethrow;
   }
-  return authenticationResponse;
 }
 
 void create(String name, AuthenticationResponse authenticationResponse) async {

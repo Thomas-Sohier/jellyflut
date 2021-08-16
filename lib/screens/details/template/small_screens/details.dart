@@ -47,9 +47,12 @@ class _DetailsState extends State<Details> {
   Widget phoneTemplate() {
     final mediaQuery = MediaQuery.of(context);
     return Stack(alignment: Alignment.topCenter, children: [
-      BackgroundImage(
-        item: widget.item,
-        imageType: 'Primary',
+      Hero(
+        tag: widget.heroTag ?? '',
+        child: BackgroundImage(
+          item: widget.item,
+          imageType: 'Primary',
+        ),
       ),
       Stack(alignment: Alignment.topCenter, children: [
         Container(
@@ -61,7 +64,7 @@ class _DetailsState extends State<Details> {
               ),
               if (widget.item.hasLogo())
                 Logo(item: widget.item, size: mediaQuery.size),
-              if (!widget.item.hasLogo())
+              if (widget.item.hasLogo())
                 SizedBox(
                   height: 64,
                   width: double.infinity,

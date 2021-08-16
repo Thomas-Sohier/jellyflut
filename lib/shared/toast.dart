@@ -10,7 +10,7 @@ void showToast(String msg, FToast fToast, {Duration? duration}) {
   //fToast.removeCustomToast();
 
   // Toast widget
-  Widget toast = ClipRRect(
+  final toast = ClipRRect(
       borderRadius: borderRadius,
       child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),

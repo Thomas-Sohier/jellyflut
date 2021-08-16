@@ -149,9 +149,7 @@ class _HomeCategoriesState extends State<HomeCategories>
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
-        itemBuilder: (context, index) => ItemPoster(
-              items[index],
-            ));
+        itemBuilder: (context, index) => ItemPoster(items[index]));
   }
 
   dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, String? key) {

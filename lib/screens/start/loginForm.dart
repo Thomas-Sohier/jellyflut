@@ -3,7 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/authenticationResponse.dart';
 import 'package:jellyflut/shared/toast.dart';
 
@@ -27,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
+    fToast.init(context);
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
       create(username, response);
       return Navigator.pushReplacementNamed(context, '/home');
     }).catchError((onError) {
-      showToast(onError.toString(), fToast);
+      showToast(onError.toString(), fToast, duration: Duration(seconds: 6));
     });
   }
 

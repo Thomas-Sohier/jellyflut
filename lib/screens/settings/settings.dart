@@ -69,9 +69,10 @@ class _SettingsState extends State<Settings> {
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
                               enabled: false,
-                              trailing: Container(),
-                              // onPressed: (BuildContext context) =>
-                              //     selectVideoPlayer(),
+                              trailing: Container(
+                                height: 0,
+                                width: 0,
+                              ),
                             ),
                           ],
                         ),
@@ -95,7 +96,10 @@ class _SettingsState extends State<Settings> {
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
                               enabled: false,
-                              trailing: Container(),
+                              trailing: Container(
+                                height: 0,
+                                width: 0,
+                              ),
                               // onPressed: (BuildContext context) =>
                               //     selectVideoPlayer(),
                             ),
@@ -111,7 +115,10 @@ class _SettingsState extends State<Settings> {
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
                                   TextStyle(color: Colors.white60),
-                              trailing: Container(),
+                              trailing: Container(
+                                height: 0,
+                                width: 0,
+                              ),
                             ),
                           ],
                         ),

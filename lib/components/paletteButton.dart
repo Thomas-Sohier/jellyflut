@@ -82,18 +82,22 @@ class _PaletteButtonState extends State<PaletteButton>
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          var paletteColor =
+          final paletteColor =
               ColorUtil.changeColorSaturation(snapshot.data!, 0.5);
-          var foregroundColor = paletteColor.computeLuminance() > 0.5
+          final leftColor = ColorUtil.lighten(paletteColor, 0.2);
+          final rightColor = ColorUtil.darken(paletteColor, 0.2);
+          final colorInMiddle =
+              Color.lerp(leftColor, rightColor, 0.5) ?? paletteColor;
+          final foregroundColor = colorInMiddle.computeLuminance() > 0.45
               ? Colors.black
               : Colors.white;
           child = Ink(
             key: ValueKey<int>(0),
             decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  ColorUtil.lighten(paletteColor, 0.2),
-                  ColorUtil.darken(paletteColor, 0.2)
-                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                gradient: LinearGradient(
+                    colors: [leftColor, colorInMiddle, rightColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight),
                 borderRadius: borderRadius),
             child: Container(
                 constraints: BoxConstraints(
@@ -127,7 +131,7 @@ class _PaletteButtonState extends State<PaletteButton>
           child = buttonDefault(borderRadius);
         }
         return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 1500),
+            duration: const Duration(milliseconds: 300),
             transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(opacity: animation, child: child);
             },
