@@ -18,7 +18,7 @@ class ListMusicItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-        future: _getMusicCustom(itemId: item.id),
+        future: getItems(parentId: item.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return body(snapshot.data[1]);
@@ -265,11 +265,4 @@ Widget actionIcons(Item item, {fav = true, view = true}) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [if (fav) FavButton(item), if (view) ViewedButton(item)],
   );
-}
-
-Future _getMusicCustom({required String itemId}) async {
-  var futures = <Future>[];
-  futures.add(Future.delayed(Duration(milliseconds: 800)));
-  futures.add(getItems(parentId: itemId));
-  return Future.wait(futures);
 }

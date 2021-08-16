@@ -4,11 +4,11 @@ import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/models/itemType.dart';
 import 'package:jellyflut/screens/details/models/detailsInfos.dart';
-import 'package:jellyflut/screens/details/shared/palette.dart';
 import 'package:jellyflut/screens/details/template/small_screens/details.dart'
     as phone;
 import 'package:jellyflut/screens/details/template/large_screens/largeDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/tabletDetails.dart';
+import 'package:jellyflut/shared/blurhash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../globals.dart';
 import 'components/photoItem.dart';
@@ -26,7 +26,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> with TickerProviderStateMixin {
-  late DetailsInfos futureDetailsInfos;
+  late final DetailsInfos futureDetailsInfos;
 
   @override
   void initState() {
@@ -57,27 +57,28 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
         mobile: (BuildContext context) => phone.Details(
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
-              paletteColorFuture: futureDetailsInfos.paletteColors,
+              dominantColorFuture: futureDetailsInfos.dominantColor,
               heroTag: widget.heroTag,
             ),
         tablet: (BuildContext context) => TabletDetails(
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
-              paletteColorFuture: futureDetailsInfos.paletteColors,
+              dominantColorFuture: futureDetailsInfos.dominantColor,
               heroTag: widget.heroTag,
             ),
         desktop: (BuildContext context) => LargeDetails(
             item: widget.item,
             itemToLoad: futureDetailsInfos.item,
-            paletteColorFuture: futureDetailsInfos.paletteColors,
+            dominantColorFuture: futureDetailsInfos.dominantColor,
             heroTag: widget.heroTag));
   }
 
   DetailsInfos getDetailsInfos() {
     final futureItem = getItem(widget.item.id);
-    final futurePaletteColors = Palette.getPalette(widget.item, 'Primary');
+    final dominantColorFuture =
+        BlurHashUtil.getDominantColor(widget.item, 'Primary');
     final futureDetailsInfos =
-        DetailsInfos(item: futureItem, paletteColors: futurePaletteColors);
+        DetailsInfos(item: futureItem, dominantColor: dominantColorFuture);
     return futureDetailsInfos;
   }
 }

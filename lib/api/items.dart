@@ -96,7 +96,7 @@ Future<Item> getItem(String itemId,
     int limit = 300,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields = 'Chapters,People,Height,Width',
+    String fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
     String excludeLocationTypes = 'Virtual',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false}) async {

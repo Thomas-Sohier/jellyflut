@@ -8,19 +8,18 @@ import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
-import 'package:palette_generator/palette_generator.dart';
 
 class Details extends StatefulWidget {
   final Item item;
   final Future<Item> itemToLoad;
-  final Future<PaletteGenerator> paletteColorFuture;
+  final Future<Color> dominantColorFuture;
   final String? heroTag;
 
   const Details(
       {Key? key,
       required this.item,
       required this.itemToLoad,
-      required this.paletteColorFuture,
+      required this.dominantColorFuture,
       this.heroTag})
       : super(key: key);
 
@@ -96,7 +95,7 @@ class _DetailsState extends State<Details> {
                   child: PaletteButton(
                     'Play',
                     onPressed: () => widget.item.playItem(),
-                    futurePaletteColors: widget.paletteColorFuture,
+                    dominantColorFuture: widget.dominantColorFuture,
                     icon: Icon(
                       Icons.play_circle_outline,
                       color: Colors.black87,

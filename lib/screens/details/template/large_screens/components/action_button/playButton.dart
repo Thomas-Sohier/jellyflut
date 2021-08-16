@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class PlayButton extends StatelessWidget {
   final Item item;
-  final Future<PaletteGenerator> paletteColorFuture;
+  final Future<Color> dominantColorFuture;
 
   const PlayButton(
-      {Key? key, required this.item, required this.paletteColorFuture})
+      {Key? key, required this.item, required this.dominantColorFuture})
       : super(key: key);
 
   @override
@@ -21,7 +20,7 @@ class PlayButton extends StatelessWidget {
       minWidth: 40,
       maxWidth: 150,
       icon: Icon(Icons.play_arrow, color: Colors.black87),
-      futurePaletteColors: paletteColorFuture,
+      dominantColorFuture: dominantColorFuture,
     );
   }
 }

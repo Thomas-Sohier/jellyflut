@@ -21,10 +21,11 @@ class ListVideoItem extends StatefulWidget {
 }
 
 class _ListVideoItemState extends State<ListVideoItem> {
-  late final Future<dynamic> episodeDelayed = _getEpisodeCustom(
-      seriesId: widget.item.seriesId!, itemId: widget.item.id);
+  late final Future<Category> episodeFuture;
   @override
   void initState() {
+    episodeFuture =
+        getShowSeasonEpisode(widget.item.seriesId!, widget.item.seasonId!);
     super.initState();
   }
 
@@ -32,11 +33,11 @@ class _ListVideoItemState extends State<ListVideoItem> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: FutureBuilder<dynamic>(
-            future: episodeDelayed,
+        child: FutureBuilder<Category>(
+            future: episodeFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return body(snapshot.data[1]);
+                return body(snapshot.data!);
               }
               return placeholderBody();
             }));
@@ -221,13 +222,5 @@ class _ListVideoItemState extends State<ListVideoItem> {
           ViewedButton(item, padding: EdgeInsets.only(left: 8, right: 8))
       ],
     );
-  }
-
-  Future _getEpisodeCustom(
-      {required String seriesId, required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 800)));
-    futures.add(getShowSeasonEpisode(seriesId, itemId));
-    return Future.wait(futures);
   }
 }

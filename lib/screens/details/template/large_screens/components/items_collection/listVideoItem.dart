@@ -20,8 +20,7 @@ class _ListVideoItemState extends State<ListVideoItem> {
 
   @override
   void initState() {
-    episodeFuture = _getEpisodeCustom(
-        seriesId: widget.item.seriesId!, itemId: widget.item.id);
+    episodeFuture = getShowSeasonEpisode(widget.item.seriesId!, widget.item.id);
     super.initState();
   }
 
@@ -95,13 +94,5 @@ class _ListVideoItemState extends State<ListVideoItem> {
               width: double.infinity,
               color: Colors.white30,
             )));
-  }
-
-  Future _getEpisodeCustom(
-      {required String seriesId, required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 800)));
-    futures.add(getShowSeasonEpisode(seriesId, itemId));
-    return Future.wait(futures);
   }
 }

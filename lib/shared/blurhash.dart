@@ -1,6 +1,16 @@
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/imageBlurHashes.dart';
+import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/screens/details/shared/palette.dart';
 
 class BlurHashUtil {
+  static Future<Color> getDominantColor(Item item, String tag) async {
+    final hash = BlurHashUtil.fallBackBlurHash(item.imageBlurHashes, tag) ?? '';
+    return compute(Palette.generatePalettefromBlurhash, hash);
+  }
+
   static String? fallBackBlurHash(
       ImageBlurHashes? imageBlurHashes, String tag) {
     // TODO add enum

@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.73"
+  blurhash_dart:
+    dependency: "direct main"
+    description:
+      name: blurhash_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -357,7 +364,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_blurhash:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_blurhash
       url: "https://pub.dartlang.org"

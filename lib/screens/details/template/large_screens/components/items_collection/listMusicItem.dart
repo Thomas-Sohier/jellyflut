@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/models/category.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/musicItem.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -15,21 +16,21 @@ class ListMusicItem extends StatefulWidget {
 }
 
 class _ListMusicItemState extends State<ListMusicItem> {
-  late Future<dynamic> musicFuture;
+  late Future<Category> musicFuture;
 
   @override
   void initState() {
-    musicFuture = _getMusicCustom(itemId: widget.item.id);
+    musicFuture = getItems(parentId: widget.item.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<Category>(
         future: musicFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return musicItems(snapshot.data[1].items);
+            return musicItems(snapshot.data!.items);
           }
           return skeletonListItem();
         });
@@ -71,12 +72,5 @@ class _ListMusicItemState extends State<ListMusicItem> {
               width: double.infinity,
               color: Colors.white30,
             )));
-  }
-
-  Future _getMusicCustom({required String itemId}) async {
-    var futures = <Future>[];
-    futures.add(Future.delayed(Duration(milliseconds: 800)));
-    futures.add(getItems(parentId: itemId));
-    return Future.wait(futures);
   }
 }

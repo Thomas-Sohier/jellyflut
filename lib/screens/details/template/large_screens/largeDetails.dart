@@ -9,21 +9,20 @@ import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dar
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
-import 'package:palette_generator/palette_generator.dart';
 
 import '../../BackgroundImage.dart';
 
 class LargeDetails extends StatefulWidget {
   final Item item;
   final Future<Item> itemToLoad;
-  final Future<PaletteGenerator> paletteColorFuture;
+  final Future<Color> dominantColorFuture;
   final String? heroTag;
 
   LargeDetails(
       {Key? key,
       required this.item,
       required this.itemToLoad,
-      required this.paletteColorFuture,
+      required this.dominantColorFuture,
       this.heroTag})
       : super(key: key);
 
@@ -32,6 +31,11 @@ class LargeDetails extends StatefulWidget {
 }
 
 class _LargeDetailsState extends State<LargeDetails> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return largeScreenTemplate();
@@ -78,13 +82,13 @@ class _LargeDetailsState extends State<LargeDetails> {
         child: ClipRect(
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                child: FutureBuilder<PaletteGenerator>(
-                    future: widget.paletteColorFuture,
+                child: FutureBuilder<Color>(
+                    future: widget.dominantColorFuture,
                     builder: (context, colorsSnapshot) {
                       if (colorsSnapshot.hasData) {
                         final finalDetailsThemeData =
                             Luminance.computeLuminance(
-                                colorsSnapshot.data!.paletteColors);
+                                colorsSnapshot.data!.withOpacity(0.4));
                         return Theme(
                             data: finalDetailsThemeData,
                             child: largeWidgetBuilder(finalDetailsThemeData));
@@ -110,7 +114,7 @@ class _LargeDetailsState extends State<LargeDetails> {
                   if (snapshot.hasData) {
                     return RightDetails(
                       item: snapshot.data!,
-                      paletteColorsFuture: widget.paletteColorFuture,
+                      dominantColorFuture: widget.dominantColorFuture,
                     );
                   }
                   return SkeletonRightDetails();

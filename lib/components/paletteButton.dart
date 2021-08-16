@@ -3,13 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/item.dart';
-import 'package:palette_generator/palette_generator.dart';
+import 'package:jellyflut/shared/colors.dart';
 
 class PaletteButton extends StatefulWidget {
   PaletteButton(
     this.text, {
     required this.onPressed,
-    this.futurePaletteColors,
+    this.dominantColorFuture,
     this.borderRadius = 80.0,
     this.minWidth = 88.0,
     this.maxWidth = 200.0,
@@ -24,7 +24,7 @@ class PaletteButton extends StatefulWidget {
   final double minWidth;
   final double maxWidth;
   final Icon? icon;
-  final Future<PaletteGenerator>? futurePaletteColors;
+  final Future<Color>? dominantColorFuture;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
@@ -71,28 +71,29 @@ class _PaletteButtonState extends State<PaletteButton>
                 textStyle: TextStyle(color: Colors.black))
             .copyWith(side: buttonBorderSide())
             .copyWith(elevation: buttonElevation()),
-        child: widget.futurePaletteColors == null
+        child: widget.dominantColorFuture == null
             ? buttonDefault(borderRadius)
             : generatedPalette(borderRadius));
   }
 
   Widget generatedPalette(BorderRadius borderRadius) {
-    return FutureBuilder<PaletteGenerator>(
-      future: widget.futurePaletteColors,
+    return FutureBuilder<Color>(
+      future: widget.dominantColorFuture,
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          var paletteColor = snapshot.data!.paletteColors;
-          var foregroundColor = paletteColor[0].color.computeLuminance() > 0.5
+          var paletteColor =
+              ColorUtil.changeColorSaturation(snapshot.data!, 0.5);
+          var foregroundColor = paletteColor.computeLuminance() > 0.5
               ? Colors.black
               : Colors.white;
           child = Ink(
             key: ValueKey<int>(0),
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [paletteColor[0].color, paletteColor[1].color],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight),
+                gradient: LinearGradient(colors: [
+                  ColorUtil.lighten(paletteColor.withAlpha(150), 0.2),
+                  ColorUtil.darken(paletteColor.withAlpha(255), 0.2)
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                 borderRadius: borderRadius),
             child: Container(
                 constraints: BoxConstraints(

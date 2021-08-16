@@ -77,15 +77,13 @@ class _PosterState extends State<Poster> {
   Widget poster() {
     return Hero(
       tag: widget.heroTag,
-      child: AspectRatio(
-          aspectRatio: aspectRatio,
-          child: AsyncImage(
-            itemId,
-            widget.item.imageTags?.primary ?? '',
-            widget.item.imageBlurHashes!,
-            tag: widget.tag,
-            boxFit: widget.boxFit,
-          )),
+      child: AsyncImage(
+        itemId,
+        widget.item.imageTags?.primary ?? '',
+        widget.item.imageBlurHashes!,
+        tag: widget.tag,
+        boxFit: widget.boxFit,
+      ),
     );
   }
 

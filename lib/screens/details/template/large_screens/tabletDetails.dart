@@ -9,19 +9,18 @@ import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
-import 'package:palette_generator/palette_generator.dart';
 
 class TabletDetails extends StatefulWidget {
   final Item item;
   final Future<Item> itemToLoad;
-  final Future<PaletteGenerator> paletteColorFuture;
+  final Future<Color> dominantColorFuture;
   final String? heroTag;
 
   TabletDetails(
       {Key? key,
       required this.item,
       required this.itemToLoad,
-      required this.paletteColorFuture,
+      required this.dominantColorFuture,
       this.heroTag})
       : super(key: key);
 
@@ -30,6 +29,11 @@ class TabletDetails extends StatefulWidget {
 }
 
 class _TabletDetailsState extends State<TabletDetails> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return tabletScreenTemplate();
@@ -44,12 +48,12 @@ class _TabletDetailsState extends State<TabletDetails> {
       ClipRect(
           child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-        child: FutureBuilder<PaletteGenerator>(
-            future: widget.paletteColorFuture,
+        child: FutureBuilder<Color>(
+            future: widget.dominantColorFuture,
             builder: (context, colorsSnapshot) {
               if (colorsSnapshot.hasData) {
-                final finalDetailsThemeData = Luminance.computeLuminance(
-                    colorsSnapshot.data!.paletteColors);
+                final finalDetailsThemeData =
+                    Luminance.computeLuminance(colorsSnapshot.data!);
                 return Theme(
                     data: finalDetailsThemeData,
                     child: detailsBuilder(finalDetailsThemeData));
@@ -82,7 +86,7 @@ class _TabletDetailsState extends State<TabletDetails> {
                   if (snapshot.hasData) {
                     return RightDetails(
                         item: snapshot.data!,
-                        paletteColorsFuture: widget.paletteColorFuture);
+                        dominantColorFuture: widget.dominantColorFuture);
                   }
                   return SkeletonRightDetails();
                 }))

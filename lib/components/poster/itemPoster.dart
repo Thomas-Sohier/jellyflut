@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';

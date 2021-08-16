@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/item.dart';
 import 'package:jellyflut/provider/streamModel.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';

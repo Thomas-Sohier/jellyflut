@@ -14,15 +14,14 @@ import 'package:jellyflut/screens/details/template/large_screens/components/acti
 import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class RightDetails extends StatelessWidget {
   final Item item;
-  final Future<PaletteGenerator> paletteColorsFuture;
+  final Future<Color> dominantColorFuture;
   final DateFormat formatter = DateFormat('HH:mm');
 
   RightDetails(
-      {Key? key, required this.item, required this.paletteColorsFuture})
+      {Key? key, required this.item, required this.dominantColorFuture})
       : super(key: key);
 
   @override
@@ -141,7 +140,7 @@ class RightDetails extends StatelessWidget {
       runSpacing: 10,
       children: [
         if (item.isPlayable())
-          PlayButton(item: item, paletteColorFuture: paletteColorsFuture),
+          PlayButton(item: item, dominantColorFuture: dominantColorFuture),
         if (item.hasTrailer()) TrailerButton(item: item),
         if (item.canBeViewed()) ViewedButton(item: item),
         LikeButton(item: item),
