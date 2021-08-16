@@ -59,11 +59,7 @@ Future<Widget> _initVlcComputerPlayer(Item item) async {
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
-      Video(
-        playerId: player.id,
-        height: player.videoHeight.toDouble(),
-        width: player.videoWidth.toDouble(),
-      ),
+      Video(player: player),
       CommonControls(isComputer: true),
     ],
   );

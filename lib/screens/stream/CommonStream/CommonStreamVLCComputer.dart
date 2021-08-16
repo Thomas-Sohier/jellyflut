@@ -13,16 +13,11 @@ class CommonStreamVLCComputer {
   static List<Timer> timers = [];
 
   static Future<Player> setupData({required Item item}) async {
-    final size = MediaQuery.of(navigatorKey.currentContext!).size;
     final streamURL = await item.getItemURL(directPlay: true);
     final playerId = Random().nextInt(10000);
-    final player = Player(
-        id: playerId,
-        videoWidth: item.width ?? size.width.toInt(),
-        videoHeight: item.height ?? size.height.toInt(),
-        commandlineArguments: [
-          '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
-        ]);
+    final player = Player(id: playerId, commandlineArguments: [
+      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
+    ]);
     final media = Media.network(streamURL);
     player.open(media);
 
@@ -39,12 +34,9 @@ class CommonStreamVLCComputer {
   }
 
   static Future<Player> setupDataFromUrl({required String url}) async {
-    final size = MediaQuery.of(navigatorKey.currentContext!).size;
     final playerId = Random().nextInt(10000);
     final player = Player(
       id: playerId,
-      videoWidth: size.width.toInt(),
-      videoHeight: size.height.toInt(),
     );
     final media = Media.network(url);
     player.open(media);

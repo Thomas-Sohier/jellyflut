@@ -58,9 +58,7 @@ class TrailerButton extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         vlc.Video(
-          playerId: player.id,
-          height: player.videoHeight.toDouble(),
-          width: player.videoWidth.toDouble(),
+          player: player,
         ),
         CommonControls(isComputer: true),
       ],
