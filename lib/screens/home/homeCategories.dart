@@ -75,7 +75,7 @@ class _HomeCategoriesState extends State<HomeCategories>
               padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
               child: HomeCategoryTitle(widget.item, onTap: slideToPageDetail)),
           SizedBox(
-            height: height,
+            height: itemHeight,
             child: displayItems(items),
           )
         ]);
@@ -118,7 +118,7 @@ class _HomeCategoriesState extends State<HomeCategories>
                     children: [
                       Expanded(
                           child: SizedBox(
-                              height: height,
+                              height: itemHeight,
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: 3,

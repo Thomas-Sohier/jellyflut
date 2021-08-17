@@ -59,7 +59,7 @@ class _ResumeState extends State<Resume> {
           ),
         ),
         SizedBox(
-            height: 200,
+            height: itemHeight,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: items.length,

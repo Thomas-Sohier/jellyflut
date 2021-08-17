@@ -9,6 +9,8 @@ import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../globals.dart';
+
 class ListItems extends StatefulWidget {
   final double headerBarHeight;
   const ListItems({Key? key, this.headerBarHeight = 64}) : super(key: key);
@@ -55,7 +57,7 @@ class _ListItemsState extends State<ListItems> {
 
   Widget buildItemsGrid() {
     var size = MediaQuery.of(context).size;
-    var numberOfItemRow = (size.width / 150).round();
+    var numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
     // var spacing = numberOfItemRow
     return Consumer<ItemsProvider>(
         builder: (context, itemsProvider, child) => itemsProvider

@@ -12,6 +12,7 @@ import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP {
@@ -248,5 +249,24 @@ class CommonStreamBP {
     betterPlayerController.playNextVideo();
     await betterPlayerController.videoPlayerController!.play();
     await betterPlayerController.seekTo(Duration(microseconds: tick));
+  }
+
+  static BehaviorSubject<Duration> positionStream(
+      BetterPlayerController betterPlayerController) {
+    final streamController = BehaviorSubject<Duration>();
+    betterPlayerController.addEventsListener(
+        (BetterPlayerEvent betterPlayerEvent) => streamController
+            .add(betterPlayerController.videoPlayerController!.value.position));
+    return streamController;
+  }
+
+  static BehaviorSubject<Duration> durationStream(
+      BetterPlayerController betterPlayerController) {
+    final streamController = BehaviorSubject<Duration>();
+    betterPlayerController.addEventsListener(
+        (BetterPlayerEvent betterPlayerEvent) => streamController.add(
+            betterPlayerController.videoPlayerController!.value.duration ??
+                Duration(seconds: 0)));
+    return streamController;
   }
 }

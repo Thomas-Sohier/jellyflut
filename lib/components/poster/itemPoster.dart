@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
@@ -68,6 +69,7 @@ class _ItemPosterState extends State<ItemPoster>
   Widget body(BuildContext context) {
     return Column(children: [
       Expanded(
+        flex: 8,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +106,7 @@ class _ItemPosterState extends State<ItemPoster>
           ],
         ),
       ),
-      if (widget.showName) name()
+      if (widget.showName) Expanded(flex: 1, child: name())
     ]);
   }
 
@@ -120,25 +122,28 @@ class _ItemPosterState extends State<ItemPoster>
         padding: const EdgeInsets.only(top: 4),
         child: Column(
           children: [
-            Text(
-              widget.showParent ? widget.item.parentName() : widget.item.name,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
+            Flexible(
+              child: AutoSizeText(
+                  widget.showParent
+                      ? widget.item.parentName()
+                      : widget.item.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  minFontSize: 12,
+                  style: Theme.of(context).textTheme.bodyText1!),
             ),
             if (widget.item.isFolder != null &&
                 widget.item.parentIndexNumber != null)
-              Text(
-                'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 12),
+              Flexible(
+                child: AutoSizeText(
+                  'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  minFontSize: 12,
+                  style: Theme.of(context).textTheme.bodyText1!,
+                ),
               ),
           ],
         ));

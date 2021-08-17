@@ -7,6 +7,7 @@ import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLC {
   static Duration getBufferingDurationVLC(
@@ -122,5 +123,23 @@ class CommonStreamVLC {
   static void setAudioTrack(
       AudioTrack trackIndex, VlcPlayerController vlcPlayerController) {
     vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
+  }
+
+  static BehaviorSubject<Duration> positionStream(
+      VlcPlayerController vlcPlayerController) {
+    final streamController = BehaviorSubject<Duration>();
+    vlcPlayerController.addListener(() {
+      streamController.add(vlcPlayerController.value.position);
+    });
+    return streamController;
+  }
+
+  static BehaviorSubject<Duration> durationStream(
+      VlcPlayerController vlcPlayerController) {
+    final streamController = BehaviorSubject<Duration>();
+    vlcPlayerController.addListener(() {
+      streamController.add(vlcPlayerController.value.duration);
+    });
+    return streamController;
   }
 }

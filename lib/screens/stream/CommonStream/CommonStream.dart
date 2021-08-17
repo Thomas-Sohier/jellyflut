@@ -7,6 +7,7 @@ import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonStream {
   final Function _pause;
@@ -24,6 +25,8 @@ class CommonStream {
   final VoidCallback _disableSubtitles;
   final Function _getAudioTracks;
   final Function(AudioTrack) _setAudioTrack;
+  final BehaviorSubject<Duration> _positionStream;
+  final BehaviorSubject<Duration> _durationStream;
   final VoidCallback _initListener;
   final Function(VoidCallback) _addListener;
   final Function(VoidCallback) _removeListener;
@@ -46,6 +49,8 @@ class CommonStream {
       required disableSubtitles,
       required getAudioTracks,
       required setAudioTrack,
+      required positionStream,
+      required durationStream,
       required initListener,
       required addListener,
       required removeListener,
@@ -66,6 +71,8 @@ class CommonStream {
         _disableSubtitles = disableSubtitles,
         _getAudioTracks = getAudioTracks,
         _setAudioTrack = setAudioTrack,
+        _positionStream = positionStream,
+        _durationStream = durationStream,
         _initListener = initListener,
         _addListener = addListener,
         _removeListener = removeListener,
@@ -86,6 +93,8 @@ class CommonStream {
   void disableSubtitles() => _disableSubtitles();
   Future<List<AudioTrack>> getAudioTracks() => _getAudioTracks();
   void setAudioTrack(AudioTrack audioTrack) => _setAudioTrack(audioTrack);
+  BehaviorSubject<Duration> getPositionStream() => _positionStream;
+  BehaviorSubject<Duration> getDurationStream() => _durationStream;
   void initListener() => _initListener();
   void addListener(VoidCallback listener) => _addListener(listener);
   void removeListener(VoidCallback listener) => _removeListener(listener);
@@ -114,6 +123,8 @@ class CommonStream {
             CommonStreamVLC.getAudioTracks(vlcPlayerController),
         setAudioTrack: (audioTrack) =>
             CommonStreamVLC.setAudioTrack(audioTrack, vlcPlayerController),
+        positionStream: CommonStreamVLC.positionStream(vlcPlayerController),
+        durationStream: CommonStreamVLC.durationStream(vlcPlayerController),
         initListener: () => vlcPlayerController.addListener(listener),
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
@@ -151,6 +162,8 @@ class CommonStream {
             CommonStreamBP.getAudioTracks(betterPlayerController),
         setAudioTrack: (audioTrack) =>
             CommonStreamBP.setAudioTrack(audioTrack, betterPlayerController),
+        positionStream: CommonStreamBP.positionStream(betterPlayerController),
+        durationStream: CommonStreamBP.durationStream(betterPlayerController),
         initListener: () =>
             betterPlayerController.videoPlayerController!.addListener(listener),
         addListener: betterPlayerController.videoPlayerController!.addListener,
@@ -187,6 +200,8 @@ class CommonStream {
           return Future.value(audioTracks);
         },
         setAudioTrack: (_) => {},
+        positionStream: commonStreamVLCComputer.positionStream(player),
+        durationStream: commonStreamVLCComputer.durationStream(player),
         initListener: () => {},
         addListener: commonStreamVLCComputer.addListener,
         removeListener: (_) => commonStreamVLCComputer.removeListener(),

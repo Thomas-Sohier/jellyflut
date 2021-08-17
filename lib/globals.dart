@@ -14,6 +14,9 @@ AppRouter get customRouter => _customRouter;
 
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
+double get _itemHeightTemp =>
+    (MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.height / 3);
+double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
 jellyfin_user.User? userJellyfin;
 User? userApp;
 Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');

@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
-import 'package:jellyflut/screens/stream/components/videoPlayerprogressBar.dart';
+import 'package:jellyflut/screens/stream/components/videoPlayerProgressBar.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -63,16 +63,15 @@ class _CommonControlsState extends State<CommonControls> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
         value: streamingProvider,
-        child: GestureDetector(
-          onTap: () {
-            autoHideControl();
-          },
-          behavior: HitTestBehavior.translucent,
-          child: visibility(
-              child: Stack(
-            children: [blackGradient(), controls()],
-          )),
-        ));
+        child: MouseRegion(
+            onHover: (_) => autoHideControlHover(),
+            child: GestureDetector(
+                onTap: () => autoHideControl(),
+                behavior: HitTestBehavior.translucent,
+                child: visibility(
+                    child: Stack(
+                  children: [blackGradient(), controls()],
+                )))));
   }
 
   Widget visibility({required Widget child}) {
@@ -231,6 +230,18 @@ class _CommonControlsState extends State<CommonControls> {
     setState(() {
       _visible = !_visible;
     });
+    _timer = Timer(
+        Duration(seconds: 5),
+        () => setState(() {
+              _visible = false;
+            }));
+  }
+
+  Future<void> autoHideControlHover() async {
+    _timer.cancel();
+    if (_visible == false) {
+      setState(() => _visible = true);
+    }
     _timer = Timer(
         Duration(seconds: 5),
         () => setState(() {

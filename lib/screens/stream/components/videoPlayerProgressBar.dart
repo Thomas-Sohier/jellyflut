@@ -13,17 +13,10 @@ class VideoPlayerProgressBar extends StatefulWidget {
 class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
   late StreamingProvider streamingProvider;
   late VoidCallback listener;
-  Duration playbackTime = Duration(seconds: 0);
 
   @override
   void initState() {
     streamingProvider = StreamingProvider();
-    listener = (() {
-      setState(() {
-        playbackTime = streamingProvider.commonStream!.getCurrentPosition();
-      });
-    });
-    streamingProvider.commonStream!.addListener(listener);
     super.initState();
   }
 
@@ -35,19 +28,22 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    return ProgressBar(
-        progress: playbackTime,
-        buffered: streamingProvider.commonStream!.getBufferingDuration(),
-        total: streamingProvider.commonStream!.getDuration(),
-        progressBarColor: jellyLightPurple,
-        baseBarColor: Colors.white.withOpacity(0.24),
-        bufferedBarColor: Colors.white.withOpacity(0.24),
-        thumbColor: Colors.white,
-        timeLabelTextStyle: TextStyle(color: Colors.white),
-        barHeight: 3.0,
-        thumbRadius: 5.0,
-        onSeek: (duration) {
-          streamingProvider.commonStream!.seekTo(duration);
-        });
+    return StreamBuilder<Duration>(
+      stream: streamingProvider.commonStream!.getPositionStream(),
+      builder: (context, snapshot) => ProgressBar(
+          progress: snapshot.data!,
+          buffered: streamingProvider.commonStream!.getBufferingDuration(),
+          total: streamingProvider.commonStream!.getDuration(),
+          progressBarColor: jellyLightPurple,
+          baseBarColor: Colors.white.withOpacity(0.24),
+          bufferedBarColor: Colors.white.withOpacity(0.24),
+          thumbColor: Colors.white,
+          timeLabelTextStyle: TextStyle(color: Colors.white),
+          barHeight: 3.0,
+          thumbRadius: 5.0,
+          onSeek: (duration) {
+            streamingProvider.commonStream!.seekTo(duration);
+          }),
+    );
   }
 }

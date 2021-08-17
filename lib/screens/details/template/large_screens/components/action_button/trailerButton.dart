@@ -88,7 +88,7 @@ class TrailerButton extends StatelessWidget {
   Future<Uri> getYoutubeUrl(String videoId) async {
     var yt = YoutubeExplode();
     var manifest = await yt.videos.streamsClient.getManifest(videoId);
-    var streamInfo = manifest.muxed.withHighestBitrate();
+    var streamInfo = manifest.muxed.sortByBitrate().first;
     yt.close();
     return streamInfo.url;
   }

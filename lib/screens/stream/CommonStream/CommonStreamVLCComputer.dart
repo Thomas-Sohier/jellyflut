@@ -6,6 +6,7 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLCComputer {
   static List<Timer> timers = [];
@@ -67,5 +68,26 @@ class CommonStreamVLCComputer {
             positionTicks: player.position.position?.inMicroseconds ?? 0,
             volumeLevel: player.general.volume.round(),
             subtitlesIndex: 0));
+  }
+
+  BehaviorSubject<Duration> positionStream(Player player) {
+    final streamController = BehaviorSubject<Duration>();
+    player.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.position ?? Duration(seconds: 0)));
+    return streamController;
+  }
+
+  BehaviorSubject<Duration> durationStream(Player player) {
+    final streamController = BehaviorSubject<Duration>();
+    player.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.duration ?? Duration(seconds: 0)));
+    return streamController;
+  }
+
+  BehaviorSubject<bool> isPlaying(Player player) {
+    final streamController = BehaviorSubject<bool>();
+    player.playbackStream
+        .listen((PlaybackState event) => streamController.add(event.isPlaying));
+    return streamController;
   }
 }
