@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
-import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class TrailerButton extends StatefulWidget {

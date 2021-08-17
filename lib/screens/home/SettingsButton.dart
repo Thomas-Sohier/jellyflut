@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/settings/settings.dart';
 
 class SettingsButton extends StatefulWidget {
   @override

@@ -6,7 +6,6 @@ import 'package:jellyflut/models/jellyfin/imageTags.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class PeoplesList extends StatefulWidget {

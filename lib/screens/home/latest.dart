@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/stream/stream.dart';
 
 class Latest extends StatefulWidget {
   @override

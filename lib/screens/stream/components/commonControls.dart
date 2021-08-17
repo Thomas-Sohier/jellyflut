@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
 import 'package:jellyflut/screens/stream/components/videoPlayerprogressBar.dart';

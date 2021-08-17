@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class ItemDialogActions extends StatelessWidget {

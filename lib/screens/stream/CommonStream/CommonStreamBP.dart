@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
-import 'package:jellyflut/main.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/mediaStreamType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
@@ -15,8 +15,6 @@ import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP {
-  static get customRouter => null;
-
   static Duration getBufferingDurationBP(
       BetterPlayerController betterPlayerController) {
     try {

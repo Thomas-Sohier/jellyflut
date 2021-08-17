@@ -5,7 +5,6 @@ import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 

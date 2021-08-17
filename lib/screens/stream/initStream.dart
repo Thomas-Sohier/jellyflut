@@ -17,9 +17,6 @@ import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
-import 'package:jellyflut/screens/stream/stream.dart';
-
-import '../../main.dart';
 
 void automaticStreamingSoftwareChooser({required Item item}) async {
   var streamingSoftwareDB = await AppDatabase()

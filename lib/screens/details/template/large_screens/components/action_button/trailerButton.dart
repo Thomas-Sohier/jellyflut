@@ -12,7 +12,6 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
-import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // TODO rework with button to stream from url via stream class
