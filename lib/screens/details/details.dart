@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/screens/details/models/detailsInfos.dart';
+import 'package:jellyflut/models/details/detailsInfos.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/small_screens/details.dart'
     as phone;
 import 'package:jellyflut/screens/details/template/large_screens/largeDetails.dart';

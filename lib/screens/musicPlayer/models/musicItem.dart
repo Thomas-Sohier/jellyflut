@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 
 class MusicItem {
   MusicItem(

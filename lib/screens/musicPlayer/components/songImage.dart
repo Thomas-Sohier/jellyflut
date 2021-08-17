@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songSlider.dart';
 import 'package:octo_image/octo_image.dart';
 
@@ -23,14 +23,14 @@ class SongImage extends StatefulWidget {
 }
 
 class _SongImageState extends State<SongImage> {
-  late MusicPlayer musicPlayer;
+  late MusicProvider musicProvider;
   double posx = 100.0;
   double posy = 100.0;
 
   @override
   void initState() {
     super.initState();
-    musicPlayer = MusicPlayer();
+    musicProvider = MusicProvider();
   }
 
   @override
@@ -66,9 +66,10 @@ class _SongImageState extends State<SongImage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                musicPlayer.getCurrentMusic != null
+                musicProvider.getCurrentMusic != null
                     ? OctoImage(
-                        image: MemoryImage(musicPlayer.getCurrentMusic!.image!),
+                        image:
+                            MemoryImage(musicProvider.getCurrentMusic!.image!),
                         placeholderBuilder: (_) => placeholder(singleSize),
                         errorBuilder: (context, error, e) =>
                             placeholder(singleSize),
@@ -123,10 +124,10 @@ class _SongImageState extends State<SongImage> {
     final localOffset = box.globalToLocal(details.globalPosition);
     posx = localOffset.dx;
     var percentWidth = posx / widgetWidth!;
-    var duration = musicPlayer.getCommonPlayer!.getDuration() * percentWidth;
+    var duration = musicProvider.getCommonPlayer!.getDuration() * percentWidth;
     if (duration.inMilliseconds > 0 &&
-        duration < musicPlayer.getCommonPlayer!.getDuration()) {
-      musicPlayer.getCommonPlayer!.seekTo(duration);
+        duration < musicProvider.getCommonPlayer!.getDuration()) {
+      musicProvider.getCommonPlayer!.seekTo(duration);
     }
   }
 }

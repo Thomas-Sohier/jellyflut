@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/detailedItemPoster.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/carrousselModel.dart';
-import 'package:jellyflut/provider/listOfItems.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/items/carrousselProvider.dart';
+import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -22,21 +22,21 @@ class _ListItemsState extends State<ListItems> {
   late ScrollController _scrollController;
 
   // Carousel provider
-  late CarrousselModel carrousselModel;
+  late CarrousselProvider carrousselProvider;
 
   // Items
-  late ListOfItems listOfItems;
+  late ItemsProvider itemsProvider;
 
   @override
   void initState() {
     super.initState();
-    listOfItems = ListOfItems();
-    listOfItems.showMoreItem();
+    itemsProvider = ItemsProvider();
+    itemsProvider.showMoreItem();
     // set first image background
-    carrousselModel = CarrousselModel();
-    listOfItems
+    carrousselProvider = CarrousselProvider();
+    itemsProvider
         .getheaderItems()
-        .then((items) => carrousselModel.changeItem(items.first.id));
+        .then((items) => carrousselProvider.changeItem(items.first.id));
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
@@ -44,7 +44,7 @@ class _ListItemsState extends State<ListItems> {
   @override
   void dispose() {
     _scrollController.dispose();
-    listOfItems.reset();
+    itemsProvider.reset();
     super.dispose();
   }
 
@@ -57,8 +57,9 @@ class _ListItemsState extends State<ListItems> {
     var size = MediaQuery.of(context).size;
     var numberOfItemRow = (size.width / 150).round();
     // var spacing = numberOfItemRow
-    return Consumer<ListOfItems>(
-        builder: (context, listOfItems, child) => listOfItems.items.isNotEmpty
+    return Consumer<ItemsProvider>(
+        builder: (context, itemsProvider, child) => itemsProvider
+                .items.isNotEmpty
             ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
                 SliverToBoxAdapter(
                     child: SizedBox(
@@ -66,9 +67,9 @@ class _ListItemsState extends State<ListItems> {
                 )),
                 SliverToBoxAdapter(
                   child: Column(children: [
-                    if (listOfItems.getTypeOfItems() != null &&
-                        (listOfItems.getTypeOfItems()!.contains('movie') ||
-                            listOfItems.getTypeOfItems()!.contains('Book')))
+                    if (itemsProvider.getTypeOfItems() != null &&
+                        (itemsProvider.getTypeOfItems()!.contains('movie') ||
+                            itemsProvider.getTypeOfItems()!.contains('Book')))
                       head(context),
                     sortItems(),
                   ]),
@@ -78,16 +79,16 @@ class _ListItemsState extends State<ListItems> {
                   sliver: SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
-                              listOfItems.items.first.getPrimaryAspectRatio(),
+                              itemsProvider.items.first.getPrimaryAspectRatio(),
                           crossAxisCount: numberOfItemRow,
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5),
                       delegate: SliverChildBuilderDelegate(
                           (BuildContext c, int index) {
                         return ItemPoster(
-                          listOfItems.items[index],
+                          itemsProvider.items[index],
                         );
-                      }, childCount: listOfItems.items.length)),
+                      }, childCount: itemsProvider.items.length)),
                 )
               ])
             : ListItemsSkeleton());
@@ -105,7 +106,7 @@ class _ListItemsState extends State<ListItems> {
               Icons.date_range,
               color: Colors.white,
             ),
-            onPressed: () => ListOfItems().sortItemByDate(),
+            onPressed: () => ItemsProvider().sortItemByDate(),
           ),
           IconButton(
             icon: Icon(
@@ -113,7 +114,7 @@ class _ListItemsState extends State<ListItems> {
               color: Colors.white,
               size: 26,
             ),
-            onPressed: () => ListOfItems().sortItemByName(),
+            onPressed: () => ItemsProvider().sortItemByName(),
           ),
         ],
       ),
@@ -122,7 +123,7 @@ class _ListItemsState extends State<ListItems> {
 
   Widget head(BuildContext context) {
     return FutureBuilder<List<Item>>(
-        future: listOfItems.getheaderItems(),
+        future: itemsProvider.getheaderItems(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return carouselSlider(snapshot.data!);
@@ -140,7 +141,7 @@ class _ListItemsState extends State<ListItems> {
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,
             onPageChanged: (index, _) =>
-                carrousselModel.changeItem(items[index].id),
+                carrousselProvider.changeItem(items[index].id),
             height: 300),
         items: items.map((item) {
           var heroTag = item.id + Uuid().v4();
@@ -156,7 +157,7 @@ class _ListItemsState extends State<ListItems> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      listOfItems.showMoreItem();
+      itemsProvider.showMoreItem();
     }
   }
 }

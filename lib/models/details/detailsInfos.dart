@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 
 class DetailsInfos {
   final Future<Color> dominantColor;

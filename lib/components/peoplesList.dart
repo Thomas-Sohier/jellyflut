@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/peoplePoster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/imageTags.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/models/person.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/jellyfin/imageTags.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/person.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -113,10 +114,6 @@ class _PeoplesListState extends State<PeoplesList> {
   }
 
   void onTap(Item item, Person person) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                Details(item: item, heroTag: '${person.id}-person')));
+    customRouter.push(DetailsRoute(item: item, heroTag: '${person.id}-person'));
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:better_player/better_player.dart';
@@ -8,9 +9,10 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/streamingSoftware.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/enum/streamingSoftware.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamBP.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
@@ -29,7 +31,7 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
       'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
   final _tempItem = await item.getPlayableItemOrLastUnplayed();
   final _item = await getItem(_tempItem.id);
-  StreamModel().setItem(_item);
+  StreamingProvider().setItem(_item);
   switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
       _initVLCMediaPlayer(_item);
@@ -47,10 +49,7 @@ void _initVLCMediaPlayer(Item item) async {
   } else {
     playerWidget = await _initVlcPhonePlayer(item);
   }
-  await Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-          builder: (context) => Stream(player: playerWidget, item: item)));
+  await customRouter.push(StreamRoute(player: playerWidget, item: item));
 }
 
 Future<Widget> _initVlcComputerPlayer(Item item) async {
@@ -59,7 +58,10 @@ Future<Widget> _initVlcComputerPlayer(Item item) async {
   return Stack(
     alignment: Alignment.center,
     children: <Widget>[
-      Video(player: player),
+      Video(
+        player: player,
+        showControls: false,
+      ),
       CommonControls(isComputer: true),
     ],
   );
@@ -96,11 +98,8 @@ void _initExoPlayerMediaPlayer(Item item) async {
       controller: betterPlayerController);
 
   // Redirect to player page
-  await Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-          builder: (context) => Stream(
-                player: playerBP,
-                item: item,
-              )));
+  await customRouter.push(StreamRoute(
+    player: playerBP,
+    item: item,
+  ));
 }

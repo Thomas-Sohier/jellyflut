@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: annotate_overrides
-
 part of 'database.dart';
 
 // **************************************************************************

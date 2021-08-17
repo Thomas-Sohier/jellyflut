@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/paletteButton.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/tab.dart'
     as tab;
 

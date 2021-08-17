@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
 import 'package:jellyflut/screens/stream/components/videoPlayerprogressBar.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
@@ -27,7 +28,7 @@ class _CommonControlsState extends State<CommonControls> {
   late Timer _timer;
   late int subtitleSelectedIndex;
   late int audioSelectedIndex;
-  late StreamModel streamModel;
+  late StreamingProvider streamingProvider;
   late FToast fToast;
 
   final Shader linearGradient = LinearGradient(
@@ -38,12 +39,12 @@ class _CommonControlsState extends State<CommonControls> {
 
   @override
   void initState() {
-    streamModel = StreamModel();
-    streamModel.commonStream?.initListener();
+    streamingProvider = StreamingProvider();
+    streamingProvider.commonStream?.initListener();
     fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
-    subtitleSelectedIndex = streamModel.selectedSubtitleTrack?.index ?? 0;
-    audioSelectedIndex = streamModel.selectedAudioTrack?.index ?? 0;
+    fToast.init(context);
+    subtitleSelectedIndex = streamingProvider.selectedSubtitleTrack?.index ?? 0;
+    audioSelectedIndex = streamingProvider.selectedAudioTrack?.index ?? 0;
     _timer = Timer(
         Duration(seconds: 5),
         () => setState(() {
@@ -55,14 +56,14 @@ class _CommonControlsState extends State<CommonControls> {
   @override
   void dispose() {
     _timer.cancel();
-    streamModel.timer?.cancel();
+    streamingProvider.timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-        value: streamModel,
+        value: streamingProvider,
         child: GestureDetector(
           onTap: () {
             autoHideControl();
@@ -128,16 +129,16 @@ class _CommonControlsState extends State<CommonControls> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      streamModel.item!.name,
+                      streamingProvider.item!.name,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.white),
                     ),
-                    streamModel.item?.hasParent() != null
+                    streamingProvider.item?.hasParent() != null
                         ? Text(
-                            streamModel.item!.parentName(),
+                            streamingProvider.item!.parentName(),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -156,7 +157,7 @@ class _CommonControlsState extends State<CommonControls> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: streamModel.isDirectPlay!
+                      child: streamingProvider.isDirectPlay!
                           ? gradientMask(
                               child: Icon(Icons.play_for_work,
                                   color: Colors.white))
@@ -166,13 +167,13 @@ class _CommonControlsState extends State<CommonControls> {
                               color: Colors.white,
                             ))),
                   FutureBuilder<bool>(
-                      future: streamModel.commonStream!.hasPip(),
+                      future: streamingProvider.commonStream!.hasPip(),
                       builder: (context, snapshot) =>
                           snapshot.hasData && snapshot.data!
                               ? InkWell(
                                   onTap: () {
                                     try {
-                                      streamModel.commonStream?.pip();
+                                      streamingProvider.commonStream?.pip();
                                     } catch (message) {
                                       showToast(message.toString(), fToast);
                                     }
@@ -248,7 +249,7 @@ class _CommonControlsState extends State<CommonControls> {
                   width: 250,
                   constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
                   child: FutureBuilder<List<Subtitle>>(
-                      future: streamModel.commonStream!.getSubtitles(),
+                      future: streamingProvider.commonStream!.getSubtitles(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           final subtitles = snapshot.data!;
@@ -276,8 +277,7 @@ class _CommonControlsState extends State<CommonControls> {
         index < subtitles.length
             ? setSubtitle(subtitles[index])
             : disableSubtitles(subtitles[index]);
-        Navigator.pop(
-          context,
+        customRouter.pop(
           index < subtitles.length ? subtitles[index] : -1,
         );
       },
@@ -293,13 +293,13 @@ class _CommonControlsState extends State<CommonControls> {
 
   void disableSubtitles(Subtitle subtitle) {
     subtitleSelectedIndex = subtitle.index;
-    streamModel.commonStream!.disableSubtitles();
+    streamingProvider.commonStream!.disableSubtitles();
   }
 
   void setSubtitle(Subtitle subtitle) async {
     subtitleSelectedIndex = subtitle.index;
-    streamModel.setSubtitleStreamIndex(subtitle);
-    streamModel.commonStream!.setSubtitle(subtitle);
+    streamingProvider.setSubtitleStreamIndex(subtitle);
+    streamingProvider.commonStream!.setSubtitle(subtitle);
   }
 
   void changeAudio(BuildContext context) {
@@ -312,7 +312,7 @@ class _CommonControlsState extends State<CommonControls> {
                   width: 250,
                   constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
                   child: FutureBuilder<List<AudioTrack>>(
-                      future: streamModel.commonStream!.getAudioTracks(),
+                      future: streamingProvider.commonStream!.getAudioTracks(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           final audioTracks = snapshot.data!;
@@ -338,8 +338,7 @@ class _CommonControlsState extends State<CommonControls> {
         ),
         onTap: () {
           setAudioTrack(audioTracks[index]);
-          Navigator.pop(
-            context,
+          customRouter.pop(
             index < audioTracks.length ? audioTracks[index] : -1,
           );
         });
@@ -351,7 +350,7 @@ class _CommonControlsState extends State<CommonControls> {
 
   void setAudioTrack(AudioTrack audioTrack) async {
     audioSelectedIndex = audioTrack.index;
-    streamModel.setAudioStreamIndex(audioTrack);
-    streamModel.commonStream!.setAudioTrack(audioTrack);
+    streamingProvider.setAudioStreamIndex(audioTrack);
+    streamingProvider.commonStream!.setAudioTrack(audioTrack);
   }
 }

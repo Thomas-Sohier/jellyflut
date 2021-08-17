@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:dio/dio.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/user.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/user.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 

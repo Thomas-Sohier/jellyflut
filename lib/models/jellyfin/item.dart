@@ -17,19 +17,20 @@ import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart' as db;
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/TranscodeAudioCodec.dart';
-import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/models/mediaStreamType.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/enum/mediaStreamType.dart';
+
+import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
-import 'package:jellyflut/shared/enums.dart';
 import 'package:jellyflut/shared/shared.dart';
 
-import '../globals.dart';
 import 'albumArtists.dart';
 import 'artist.dart';
 import 'artistItems.dart';
@@ -180,7 +181,7 @@ class Item {
   ImageBlurHashes? imageBlurHashes;
   List<Chapter>? chapters;
   String? locationType;
-  Type? mediaType;
+  MediaStreamType? mediaType;
   List<dynamic>? lockedFields;
   bool? lockData;
   int? width;
@@ -310,7 +311,7 @@ class Item {
             : List<Chapter>.from(
                 json['Chapters'].map((x) => Chapter.fromMap(x))),
         locationType: json['LocationType'],
-        mediaType: typeValues.map[json['MediaType']],
+        mediaType: mediaStreamType.map[json['MediaType']],
         lockedFields: json['LockedFields'] == null
             ? null
             : List<dynamic>.from(json['LockedFields'].map((x) => x)),
@@ -405,7 +406,7 @@ class Item {
           ? List<dynamic>.from(chapters!.map((x) => x.toMap()))
           : null,
       'LocationType': locationType,
-      'MediaType': typeValues.reverse[mediaType],
+      'MediaType': itemTypeValues.reverse[mediaType],
       'LockedFields': lockedFields != null
           ? List<dynamic>.from(lockedFields!.map((x) => x))
           : null,
@@ -744,7 +745,7 @@ class Item {
   /// If Book open Epub reader
   /// If Video open video player
   void playItem() async {
-    var musicPlayer = MusicPlayer();
+    var musicProvider = MusicProvider();
     if (type == ItemType.EPISODE ||
         type == ItemType.SEASON ||
         type == ItemType.SERIES ||
@@ -761,8 +762,8 @@ class Item {
         commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
             assetsAudioPlayer: assetsAudioPlayer);
       }
-      musicPlayer.setCommonPlayer(commonPlayer);
-      await musicPlayer.getCommonPlayer!.playRemoteAudio(this);
+      musicProvider.setCommonPlayer(commonPlayer);
+      await musicProvider.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       var commonPlayer;
       if (Platform.isLinux || Platform.isWindows) {
@@ -773,11 +774,10 @@ class Item {
         commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
             assetsAudioPlayer: assetsAudioPlayer);
       }
-      musicPlayer.setCommonPlayer(commonPlayer);
-      await musicPlayer.playPlaylist(this);
+      musicProvider.setCommonPlayer(commonPlayer);
+      await musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
-      await Navigator.pushReplacement(navigatorKey.currentContext!,
-          MaterialPageRoute(builder: (context) => EpubReaderPage(item: this)));
+      await customRouter.replace(EpubReaderPageRoute(item: this));
     }
   }
 
@@ -834,7 +834,7 @@ class Item {
   }
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
-    var streamModel = StreamModel();
+    var streamingProvider = StreamingProvider();
     var data = await isCodecSupported();
     var backInfos = await playbackInfos(data, item.id,
         startTimeTick: item.userData!.playbackPositionTicks);
@@ -851,9 +851,10 @@ class Item {
             startTick: item.userData!.playbackPositionTicks);
 
     // Current item, playbackinfos, stream url and direct play bool
-    streamModel.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
-    streamModel.setPlaybackInfos(backInfos);
-    streamModel.setURL(finalUrl);
+    streamingProvider
+        .setIsDirectPlay(completeTranscodeUrl != null ? false : true);
+    streamingProvider.setPlaybackInfos(backInfos);
+    streamingProvider.setURL(finalUrl);
     return finalUrl;
   }
 

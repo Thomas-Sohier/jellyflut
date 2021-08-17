@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/components/paletteButton.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
@@ -43,17 +45,14 @@ class TrailerButton extends StatelessWidget {
       playerWidget = await _initVlcPhonePlayer(url.toString());
     }
 
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Stream(player: playerWidget, item: item)));
+    await customRouter.push(StreamRoute(player: playerWidget, item: item));
   }
 
   Future<Widget> _initVlcComputerPlayer(String url) async {
     final player = await CommonStreamVLCComputer.setupDataFromUrl(url: url);
-    final streamModel = StreamModel();
-    streamModel.setItem(item);
-    streamModel.setIsDirectPlay(true);
+    final streamingProvider = StreamingProvider();
+    streamingProvider.setItem(item);
+    streamingProvider.setIsDirectPlay(true);
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[

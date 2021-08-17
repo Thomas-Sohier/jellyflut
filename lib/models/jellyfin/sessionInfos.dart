@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/playState.dart';
+import 'package:jellyflut/models/jellyfin/playState.dart';
 
 import 'capabilities.dart';
 

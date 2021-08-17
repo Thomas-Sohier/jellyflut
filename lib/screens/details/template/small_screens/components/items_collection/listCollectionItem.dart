@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:uuid/uuid.dart';
 
 class ListCollectionItem extends StatelessWidget {

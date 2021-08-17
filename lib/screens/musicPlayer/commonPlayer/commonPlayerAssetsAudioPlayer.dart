@@ -2,30 +2,30 @@ import 'dart:async';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonPlayerAssetsAudioPlayer {
-  final MusicPlayer _musicPlayer = MusicPlayer();
+  final MusicProvider _musicProvider = MusicProvider();
 
   Future<void> playRemoteAudio(
       AssetsAudioPlayer assetsAudioPlayer, Item item) async {
-    final musicItemIndex = _musicPlayer.getPlayList().length + 1;
+    final musicItemIndex = _musicProvider.getPlayList().length + 1;
     final streamURL = await contructAudioURL(itemId: item.id);
     final musicItem =
         await MusicItem.parseFromItem(musicItemIndex, streamURL, item);
-    final insertedIndex = _musicPlayer.insertIntoPlaylist(musicItem);
+    final insertedIndex = _musicProvider.insertIntoPlaylist(musicItem);
     final playlist = Playlist(
         audios: _getPlaylistMusicItemAsMedia(), startIndex: insertedIndex);
     await assetsAudioPlayer
         .open(playlist, loopMode: LoopMode.single, showNotification: true)
-        .then((_) => _musicPlayer.setCurrentMusic(musicItem));
+        .then((_) => _musicProvider.setCurrentMusic(musicItem));
   }
 
   List<Audio> _getPlaylistMusicItemAsMedia() {
-    return _musicPlayer.getMusicItems
+    return _musicProvider.getMusicItems
         .map((MusicItem musicItem) => Audio.network(musicItem.url ?? ''))
         .toList();
   }

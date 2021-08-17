@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/imageBlurHashes.dart';
+import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 import 'package:octo_image/octo_image.dart';
 

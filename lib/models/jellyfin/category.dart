@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:jellyflut/models/item.dart';
+import 'item.dart';
 
 Category categoryFromMap(String str) => Category.fromMap(json.decode(str));
 

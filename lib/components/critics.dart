@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 
 class Critics extends StatelessWidget {
   const Critics({required this.item, this.fontSize = 16, this.iconSize = 20});

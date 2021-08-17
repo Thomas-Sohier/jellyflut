@@ -5,10 +5,10 @@ import 'package:jellyflut/components/expandedSection.dart';
 import 'package:jellyflut/components/infosButton.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/components/unorderedList.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
-import 'package:jellyflut/models/mediaStreamType.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/enum/mediaStreamType.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
@@ -31,13 +31,13 @@ class _CardInfosState extends State<CardInfos> {
   late Subtitle subValue;
   late List<DropdownMenuItem<AudioTrack>> audioTracks;
   late List<DropdownMenuItem<Subtitle>> subtitles;
-  late StreamModel streamModel;
+  late StreamingProvider streamingProvider;
 
   @override
   void initState() {
     super.initState();
     _infos = false;
-    streamModel = StreamModel();
+    streamingProvider = StreamingProvider();
     audioTracks = audioDropdownItems(widget.item);
     subtitles = subDropdownItems(widget.item);
   }
@@ -106,7 +106,7 @@ class _CardInfosState extends State<CardInfos> {
                     if (audioTrack != null) {
                       setState(() {
                         audioValue = audioTrack;
-                        streamModel.setAudioStreamIndex(audioTrack);
+                        streamingProvider.setAudioStreamIndex(audioTrack);
                       });
                     }
                   },
@@ -146,7 +146,7 @@ class _CardInfosState extends State<CardInfos> {
                       if (subtitle != null) {
                         setState(() {
                           subValue = subtitle;
-                          streamModel.setSubtitleStreamIndex(subtitle);
+                          streamingProvider.setSubtitleStreamIndex(subtitle);
                         });
                       }
                     },
@@ -316,7 +316,7 @@ class _CardInfosState extends State<CardInfos> {
         index: audioList.indexOf(defaultAudio),
         jellyfinSubtitleIndex: defaultAudio.index,
         name: defaultAudio.displayTitle ?? 'Unknow');
-    streamModel.setAudioStreamIndex(audioValue);
+    streamingProvider.setAudioStreamIndex(audioValue);
 
     // Find all audio to fill dropdown
     return audioList
@@ -348,7 +348,7 @@ class _CardInfosState extends State<CardInfos> {
           index: subList.indexOf(defaultSub),
           jellyfinSubtitleIndex: defaultSub.index,
           name: defaultSub.displayTitle ?? 'Unknow');
-      streamModel.setSubtitleStreamIndex(subValue);
+      streamingProvider.setSubtitleStreamIndex(subValue);
     }
 
     // Find all subtitles to fill dropdown

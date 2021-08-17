@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/itemDialogActions.dart';
 import 'package:jellyflut/screens/form/editItemInfos.dart';
 

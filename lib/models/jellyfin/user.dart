@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/policy.dart';
+import 'package:jellyflut/models/jellyfin/policy.dart';
 
 import 'configuration.dart';
 

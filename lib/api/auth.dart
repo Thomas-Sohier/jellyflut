@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/dio.dart';
 import 'package:jellyflut/api/interceptor.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/authenticationResponse.dart';
-import 'package:jellyflut/screens/start/parentStart.dart';
+import 'package:jellyflut/models/jellyfin/authenticationResponse.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<AuthenticationResponse> login(String username, String password) async {
@@ -94,7 +93,8 @@ Future<void> logout() async {
   userApp = null;
   apiKey = null;
   userJellyfin = null;
-  await sharedPreferences.clear().then((_) => Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(builder: (context) => ParentStart())));
+
+  await sharedPreferences.clear().then((_) =>
+      AutoRouter.of(customRouter.navigatorKey.currentContext!)
+          .replace(AuthParentRoute()));
 }

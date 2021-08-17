@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:jellyflut/models/device.dart';
+import 'package:jellyflut/models/jellyfin/device.dart';
+import 'package:jellyflut/models/jellyfin/deviceProfileParent.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/playbackInfos.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:jellyflut/models/deviceProfileParent.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/playbackInfos.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/shared/exoplayer.dart';
 
 import '../globals.dart';
@@ -20,7 +20,8 @@ Future<int> deleteActiveEncoding() async {
   var info = await DeviceInfo.getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['deviceId'] = info.id;
-  queryParam['PlaySessionId'] = StreamModel().playBackInfos!.playSessionId;
+  queryParam['PlaySessionId'] =
+      StreamingProvider().playBackInfos!.playSessionId;
 
   var url = '${server.url}/Videos/ActiveEncodings';
 
@@ -43,7 +44,7 @@ Future<String> createURL(Item item, PlayBackInfos playBackInfos,
     {int startTick = 0,
     int? audioStreamIndex,
     int? subtitleStreamIndex}) async {
-  var streamModel = StreamModel();
+  var streamModel = StreamingProvider();
   var info = await DeviceInfo.getCurrentDeviceInfo();
   var queryParam = <String, String>{};
   queryParam['StartTimeTicks'] = startTick.toString();
@@ -89,7 +90,7 @@ Future<String> isCodecSupported() async {
 
 Future<String> getNewAudioSource(int audioIndex,
     {Duration? playbackTick}) async {
-  var streamModel = StreamModel();
+  var streamModel = StreamingProvider();
   var item = streamModel.item;
   var backInfos = streamModel.playBackInfos;
   var startTick = playbackTick != null ? playbackTick.inMicroseconds * 10 : 0;
@@ -109,7 +110,7 @@ Future<String> getNewAudioSource(int audioIndex,
 
 Future<String> getNewSubtitleSource(int subtitleIndex,
     {Duration? playbackTick}) async {
-  var streamModel = StreamModel();
+  var streamModel = StreamingProvider();
   var item = streamModel.item;
   var backInfos = streamModel.playBackInfos;
   var startTick = playbackTick != null ? playbackTick.inMicroseconds * 10 : 0;

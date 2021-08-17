@@ -1,5 +1,5 @@
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/device.dart';
+import 'package:jellyflut/models/jellyfin/device.dart';
 
 Future<String> authHeader() async {
   // device infos

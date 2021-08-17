@@ -1,5 +1,5 @@
 import 'package:epub_view/epub_view.dart';
-import 'package:jellyflut/shared/enums.dart';
+import 'package:jellyflut/models/enum/personType.dart';
 
 import 'imageBlurHashes.dart';
 

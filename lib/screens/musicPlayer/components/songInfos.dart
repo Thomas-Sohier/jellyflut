@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/favButton.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ class SongInfos extends StatefulWidget {
 }
 
 class _SongInfosState extends State<SongInfos> {
-  late MusicPlayer musicPlayer;
+  late MusicProvider musicProvider;
 
   @override
   void initState() {
@@ -30,8 +32,8 @@ class _SongInfosState extends State<SongInfos> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicPlayer>(builder: (context, mp, child) {
-      musicPlayer = mp;
+    return Consumer<MusicProvider>(builder: (context, mp, child) {
+      musicProvider = mp;
       return infos();
     });
   }
@@ -45,27 +47,24 @@ class _SongInfosState extends State<SongInfos> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (musicPlayer.getCurrentMusic?.artist != null &&
-                musicPlayer.getCurrentMusic!.artist!.isNotEmpty)
+            if (musicProvider.getCurrentMusic?.artist != null &&
+                musicProvider.getCurrentMusic!.artist!.isNotEmpty)
               GestureDetector(
                 onTap: () async {
-                  if (musicPlayer.getCurrentMusic?.artist != null) {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Details(
-                                item: musicPlayer.getCurrentMusic!.item,
-                                heroTag: '')));
+                  if (musicProvider.getCurrentMusic?.artist != null) {
+                    await customRouter.push(DetailsRoute(
+                        item: musicProvider.getCurrentMusic!.item,
+                        heroTag: ''));
                   }
                 },
-                child: AutoSizeText(musicPlayer.getCurrentMusic!.artist!,
+                child: AutoSizeText(musicProvider.getCurrentMusic!.artist!,
                     style: TextStyle(fontSize: 20, color: widget.color),
                     maxLines: 1),
               ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: AutoSizeText(
-                musicPlayer.getCurrentMusic!.title,
+                musicProvider.getCurrentMusic!.title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 26,
@@ -77,12 +76,12 @@ class _SongInfosState extends State<SongInfos> {
           ],
         ),
         StreamBuilder<int?>(
-          stream: musicPlayer.playingIndex(),
+          stream: musicProvider.playingIndex(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return FittedBox(
                 child: FavButton(
-                  musicPlayer.getMusicItems.elementAt(snapshot.data!).item,
+                  musicProvider.getMusicItems.elementAt(snapshot.data!).item,
                   size: 36,
                   padding: EdgeInsets.all(10),
                 ),
@@ -103,7 +102,7 @@ class _SongInfosState extends State<SongInfos> {
         Row(
           children: [
             StreamBuilder<Duration?>(
-                stream: musicPlayer.getCommonPlayer!.getCurrentPosition(),
+                stream: musicProvider.getCommonPlayer!.getCurrentPosition(),
                 builder: (context, snapshot) => AutoSizeText(
                       snapshot.data != null
                           ? printDuration(snapshot.data!)
@@ -113,7 +112,7 @@ class _SongInfosState extends State<SongInfos> {
                     )),
             Spacer(),
             AutoSizeText(
-                printDuration(musicPlayer.getCommonPlayer!.getDuration()),
+                printDuration(musicProvider.getCommonPlayer!.getDuration()),
                 style: TextStyle(fontSize: 18, color: widget.color))
           ],
         )

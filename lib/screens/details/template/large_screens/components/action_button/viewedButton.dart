@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/paletteButton.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class ViewedButton extends StatefulWidget {

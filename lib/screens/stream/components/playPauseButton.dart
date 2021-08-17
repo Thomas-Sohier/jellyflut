@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 
 class PlayPauseButton extends StatefulWidget {
   PlayPauseButton({Key? key}) : super(key: key);
@@ -9,25 +9,25 @@ class PlayPauseButton extends StatefulWidget {
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> {
-  late StreamModel streamModel;
+  late StreamingProvider streamingProvider;
   late VoidCallback listener;
   bool isPlaying = true;
 
   @override
   void initState() {
-    streamModel = StreamModel();
+    streamingProvider = StreamingProvider();
     listener = (() {
       setState(() {
-        isPlaying = streamModel.commonStream!.isPlaying();
+        isPlaying = streamingProvider.commonStream!.isPlaying();
       });
     });
-    streamModel.commonStream!.addListener(listener);
+    streamingProvider.commonStream!.addListener(listener);
     super.initState();
   }
 
   @override
   void dispose() {
-    streamModel.commonStream!.removeListener(listener);
+    streamingProvider.commonStream!.removeListener(listener);
     super.dispose();
   }
 
@@ -36,8 +36,8 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
     return InkWell(
         onTap: () {
           isPlaying
-              ? streamModel.commonStream!.pause()
-              : streamModel.commonStream!.play();
+              ? streamingProvider.commonStream!.pause()
+              : streamingProvider.commonStream!.play();
         },
         borderRadius: BorderRadius.all(Radius.circular(50)),
         child: Padding(

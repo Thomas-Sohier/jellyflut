@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 
 class SettingsButton extends StatefulWidget {
@@ -46,11 +48,7 @@ class _SettingsButtonState extends State<SettingsButton> {
           border: Border.all(width: 2, color: _focusColor)),
       child: InkWell(
         focusNode: _node,
-        onTap: () => Navigator.push(
-            context,
-            SlideRightRoute(
-              page: Settings(),
-            )),
+        onTap: () => customRouter.push(SettingsRoute()),
         radius: 60,
         borderRadius: BorderRadius.all(Radius.circular(80)),
         child: Padding(

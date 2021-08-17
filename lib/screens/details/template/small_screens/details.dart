@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/card/cardItemWithChild.dart';
 import 'package:jellyflut/components/paletteButton.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';

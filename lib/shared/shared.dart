@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/auth.dart';
-import 'package:jellyflut/models/itemType.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

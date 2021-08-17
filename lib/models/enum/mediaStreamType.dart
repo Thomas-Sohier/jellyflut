@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/enumValues.dart';
+import 'enumValues.dart';
 
 ///Audio
 /// The audio.

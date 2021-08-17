@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 
-class ListOfItems extends ChangeNotifier {
+class ItemsProvider extends ChangeNotifier {
   List<Item> _items = <Item>[];
   final List<Item> _headerItems = <Item>[];
   String? _parentItemId;
@@ -21,13 +21,13 @@ class ListOfItems extends ChangeNotifier {
 
   List<Item> get items => _items;
   // Singleton
-  static final ListOfItems _listOfItems = ListOfItems._internal();
+  static final ItemsProvider _ItemsProvider = ItemsProvider._internal();
 
-  factory ListOfItems() {
-    return _listOfItems;
+  factory ItemsProvider() {
+    return _ItemsProvider;
   }
 
-  ListOfItems._internal();
+  ItemsProvider._internal();
 
   void addNewItems(List<Item> itemsToAdd) async {
     _items.addAll(itemsToAdd);

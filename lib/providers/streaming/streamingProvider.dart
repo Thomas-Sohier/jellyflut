@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/playbackInfos.dart';
+import 'package:flutter/widgets.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/playbackInfos.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
-class StreamModel extends ChangeNotifier {
+class StreamingProvider extends ChangeNotifier {
   Item? _item;
   PlayBackInfos? _playBackInfos;
   String? _url;
@@ -18,7 +18,8 @@ class StreamModel extends ChangeNotifier {
   Timer? _timer;
 
   // Singleton
-  static final StreamModel _streamProvider = StreamModel._internal();
+  static final StreamingProvider _streamProvider =
+      StreamingProvider._internal();
 
   Item? get item => _item;
   PlayBackInfos? get playBackInfos => _playBackInfos;
@@ -29,11 +30,11 @@ class StreamModel extends ChangeNotifier {
   Subtitle? get selectedSubtitleTrack => _selectedSubtitleTrack;
   Timer? get timer => _timer;
 
-  factory StreamModel() {
+  factory StreamingProvider() {
     return _streamProvider;
   }
 
-  StreamModel._internal();
+  StreamingProvider._internal();
 
   void setItem(Item item) {
     _item = item;

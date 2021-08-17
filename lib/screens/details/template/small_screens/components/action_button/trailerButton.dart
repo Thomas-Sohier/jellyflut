@@ -4,9 +4,11 @@ import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStreamVLCComputer.dart';
 import 'package:jellyflut/screens/stream/components/commonControls.dart';
@@ -43,7 +45,7 @@ class _TrailerButtonState extends State<TrailerButton> {
     _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     _node.addListener(_onFocusChange);
     fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
+    fToast.init(context);
     super.initState();
   }
 
@@ -100,16 +102,13 @@ class _TrailerButtonState extends State<TrailerButton> {
       playerWidget = await _initVlcPhonePlayer(url.toString());
     }
 
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                Stream(player: playerWidget, item: widget.item)));
+    await customRouter
+        .push(StreamRoute(player: playerWidget, item: widget.item));
   }
 
   Future<Widget> _initVlcComputerPlayer(String url) async {
     final player = await CommonStreamVLCComputer.setupDataFromUrl(url: url);
-    final streamModel = StreamModel();
+    final streamModel = StreamingProvider();
     streamModel.setItem(widget.item);
     streamModel.setIsDirectPlay(true);
     return Stack(

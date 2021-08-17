@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/show.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listCollectionItem.dart'
     as small;
 import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listMusicItem.dart'

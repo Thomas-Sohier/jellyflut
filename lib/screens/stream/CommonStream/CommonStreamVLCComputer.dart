@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 
 class CommonStreamVLCComputer {
@@ -21,13 +21,13 @@ class CommonStreamVLCComputer {
 
     // create timer to save progress
     final timer = _startProgressTimer(item, player);
-    StreamModel().setTimer(timer);
+    StreamingProvider().setTimer(timer);
 
     // create common stream controller
     final commonStream = CommonStream.parseVlcComputerController(
         player: player, listener: () => {});
 
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(player);
   }
 
@@ -43,7 +43,7 @@ class CommonStreamVLCComputer {
     final commonStream = CommonStream.parseVlcComputerController(
         player: player, listener: () => {});
 
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(player);
   }
 

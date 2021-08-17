@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/screens/start/loginForm.dart';
-import 'package:jellyflut/screens/start/serverForm.dart';
+import 'package:jellyflut/screens/auth/serverForm.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 
-class ParentStart extends StatefulWidget {
+import 'loginForm.dart';
+
+class AuthParent extends StatefulWidget {
+  final VoidCallback? onAuthenticated;
+
+  const AuthParent({Key? key, this.onAuthenticated}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return _ParentStartState();
+    return _AuthParentState();
   }
 }
 
-class _ParentStartState extends State<ParentStart> {
+class _AuthParentState extends State<AuthParent> {
   bool _first = true;
 
   void changeChildren() {

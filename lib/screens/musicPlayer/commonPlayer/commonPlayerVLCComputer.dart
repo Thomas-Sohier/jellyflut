@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonPlayerVLCComputer {
   static final List<Timer> _timers = [];
-  final MusicPlayer _musicPlayer = MusicPlayer();
+  final MusicProvider _musicProvider = MusicProvider();
 
   Stream<Duration?> getPosition(Player player) {
     final streamController = StreamController<Duration?>.broadcast();
@@ -20,21 +20,21 @@ class CommonPlayerVLCComputer {
   }
 
   Future<void> playRemoteAudio(Item item, Player player) async {
-    final musicItemIndex = _musicPlayer.getPlayList().length + 1;
+    final musicItemIndex = _musicProvider.getPlayList().length + 1;
     final streamURL = await contructAudioURL(itemId: item.id);
     final musicItem =
         await MusicItem.parseFromItem(musicItemIndex, streamURL, item);
-    final insertedIndex = _musicPlayer.insertIntoPlaylist(musicItem);
+    final insertedIndex = _musicProvider.insertIntoPlaylist(musicItem);
     final playlist = Playlist(
         medias: _getPlaylistMusicItemAsMedia(),
         playlistMode: PlaylistMode.single);
     player.open(playlist, autoStart: false);
     player.jump(insertedIndex);
-    _musicPlayer.setCurrentMusic(musicItem);
+    _musicProvider.setCurrentMusic(musicItem);
   }
 
   List<Media> _getPlaylistMusicItemAsMedia() {
-    return _musicPlayer.getMusicItems
+    return _musicProvider.getMusicItems
         .map((MusicItem musicItem) => Media.network(musicItem.url ?? ''))
         .toList();
   }

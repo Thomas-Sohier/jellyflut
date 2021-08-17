@@ -1,15 +1,19 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
-import 'package:jellyflut/models/authenticationResponse.dart';
+import 'package:jellyflut/models/jellyfin/authenticationResponse.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class LoginForm extends StatefulWidget {
-  LoginForm({required this.onPressed});
+  LoginForm({Key? key, required this.onPressed, this.onAuthenticated})
+      : super(key: key);
 
   final VoidCallback onPressed;
+  final VoidCallback? onAuthenticated;
 
   @override
   State<StatefulWidget> createState() {
@@ -37,7 +41,11 @@ class _LoginFormState extends State<LoginForm> {
     await login(username, password)
         .then((AuthenticationResponse response) async {
       create(username, response);
-      return Navigator.pushReplacementNamed(context, '/home');
+      if (widget.onAuthenticated != null) {
+        widget.onAuthenticated!();
+      } else {
+        await AutoRouter.of(context).replace(HomeRoute());
+      }
     }).catchError((onError) {
       showToast(onError.toString(), fToast, duration: Duration(seconds: 6));
     });

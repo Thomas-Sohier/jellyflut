@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/carrousselModel.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/items/carrousselProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -24,12 +26,12 @@ class _CarousselItemState extends State<CarousselItem> {
 
   @override
   void dispose() {
-    CarrousselModel().reset();
+    CarrousselProvider().reset();
     super.dispose();
   }
 
   void setFirstPoster() {
-    CarrousselModel().changeItem(widget.items[_index].id);
+    CarrousselProvider().changeItem(widget.items[_index].id);
   }
 
   @override
@@ -76,12 +78,8 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
     ),
     Expanded(
         child: GestureDetector(
-            onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Details(item: item, heroTag: heroTag)),
-                ),
+            onTap: () =>
+                customRouter.push(DetailsRoute(item: item, heroTag: heroTag)),
             child: Row(children: [
               Expanded(
                   flex: 2,

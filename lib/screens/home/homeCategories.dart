@@ -4,7 +4,8 @@ import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/components/slideRightRoute.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -46,13 +47,9 @@ class _HomeCategoriesState extends State<HomeCategories>
   bool get wantKeepAlive => true;
 
   void slideToPageDetail() {
-    Navigator.push(
-        context,
-        SlideRightRoute(
-          page: CollectionMain(
-            item: widget.item,
-          ),
-        ));
+    customRouter.push(CollectionMainRoute(
+      item: widget.item,
+    ));
   }
 
   Widget categoryBuilder() {

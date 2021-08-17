@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 
 class BackButton extends StatefulWidget {
@@ -42,7 +43,7 @@ class _BackButtonState extends State<BackButton> {
     return OutlinedButtonSelector(
       node: _node,
       shape: CircleBorder(),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => customRouter.pop(),
       child: Container(
           decoration: BoxDecoration(boxShadow: shadows),
           padding: const EdgeInsets.all(6),

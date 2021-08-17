@@ -3,13 +3,13 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/codecProfile.dart';
-import 'package:jellyflut/models/condition.dart';
-import 'package:jellyflut/models/deviceCodecs.dart';
-import 'package:jellyflut/models/deviceProfile.dart';
-import 'package:jellyflut/models/directPlayProfile.dart';
-import 'package:jellyflut/models/subtitleProfile.dart';
-import 'package:jellyflut/models/transcodingProfile.dart';
+import 'package:jellyflut/models/jellyfin/codecProfile.dart';
+import 'package:jellyflut/models/jellyfin/condition.dart';
+import 'package:jellyflut/models/jellyfin/deviceCodecs.dart';
+import 'package:jellyflut/models/jellyfin/deviceProfile.dart';
+import 'package:jellyflut/models/jellyfin/directPlayProfile.dart';
+import 'package:jellyflut/models/jellyfin/subtitleProfile.dart';
+import 'package:jellyflut/models/jellyfin/transcodingProfile.dart';
 
 import '../globals.dart';
 

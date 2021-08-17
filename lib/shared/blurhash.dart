@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/imageBlurHashes.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/shared/palette.dart';
 
 class BlurHashUtil {

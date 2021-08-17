@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/enumValues.dart';
+import 'enumValues.dart';
 
 ///
 /// Enum for item type
@@ -140,7 +140,7 @@ enum ItemType {
   YEAR,
 }
 
-final ItemTypeValues = EnumValues({
+final itemTypeValues = EnumValues({
   'Audio': ItemType.AUDIO,
   'AudioBook': ItemType.AUDIOBOOK,
   'BasePluginFolder': ItemType.BASEPLUGINFOLDER,

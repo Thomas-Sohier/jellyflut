@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
@@ -14,13 +15,16 @@ class SongControls extends StatefulWidget {
 }
 
 class _SongControlsState extends State<SongControls> {
-  late MusicPlayer musicPlayer;
-  List<BoxShadow> shadows = [
+  late final MusicProvider musicProvider;
+  late final FocusNode _node;
+  final List<BoxShadow> shadows = [
     BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)
   ];
 
   @override
   void initState() {
+    _node = FocusNode();
+    musicProvider = MusicProvider();
     super.initState();
   }
 
@@ -31,8 +35,7 @@ class _SongControlsState extends State<SongControls> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicPlayer>(builder: (context, mp, child) {
-      musicPlayer = mp;
+    return Consumer<MusicProvider>(builder: (context, mp, child) {
       return controls();
     });
   }
@@ -42,14 +45,16 @@ class _SongControlsState extends State<SongControls> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: widget.backgroundColor,
-                boxShadow: shadows,
-                shape: BoxShape.circle),
-            child: InkWell(
-              onTap: () => musicPlayer.previous(),
+        OutlinedButtonSelector(
+            onPressed: () => musicProvider.previous(),
+            node: _node,
+            shape: CircleBorder(),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: widget.backgroundColor,
+                  boxShadow: shadows,
+                  shape: BoxShape.circle),
               child: Icon(
                 Icons.skip_previous,
                 color: widget.color,
@@ -66,12 +71,13 @@ class _SongControlsState extends State<SongControls> {
                   boxShadow: shadows,
                   shape: BoxShape.circle),
               child: StreamBuilder<bool>(
-                stream: musicPlayer.getCommonPlayer!.isPlaying(),
-                builder: (context, snapshot) => InkWell(
-                    onTap: () => isPlaying(snapshot.data)
-                        ? musicPlayer.pause()
-                        : musicPlayer.play(),
-                    splashColor: Colors.green,
+                stream: musicProvider.getCommonPlayer!.isPlaying(),
+                builder: (context, snapshot) => OutlinedButtonSelector(
+                    onPressed: () => isPlaying(snapshot.data)
+                        ? musicProvider.pause()
+                        : musicProvider.play(),
+                    node: _node,
+                    shape: CircleBorder(),
                     child: Icon(
                       isPlaying(snapshot.data) ? Icons.pause : Icons.play_arrow,
                       color: widget.color,
@@ -79,21 +85,22 @@ class _SongControlsState extends State<SongControls> {
                     )),
               )),
         ),
-        Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: widget.backgroundColor,
-              boxShadow: shadows,
-              shape: BoxShape.circle),
-          child: InkWell(
-            onTap: () => musicPlayer.next(),
-            child: Icon(
-              Icons.skip_next,
-              color: widget.color,
-              size: 32,
-            ),
-          ),
-        ),
+        OutlinedButtonSelector(
+            onPressed: () => musicProvider.next(),
+            node: _node,
+            shape: CircleBorder(),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: widget.backgroundColor,
+                  boxShadow: shadows,
+                  shape: BoxShape.circle),
+              child: Icon(
+                Icons.skip_next,
+                color: widget.color,
+                size: 32,
+              ),
+            )),
       ],
     );
   }

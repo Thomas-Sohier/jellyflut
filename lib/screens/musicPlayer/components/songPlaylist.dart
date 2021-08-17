@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class SongPlaylist extends StatefulWidget {
 }
 
 class _SongPlaylistState extends State<SongPlaylist> {
-  late MusicPlayer musicPlayer;
+  late MusicProvider musicProvider;
 
   @override
   void initState() {
@@ -29,22 +29,22 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicPlayer>(builder: (context, mp, child) {
-      musicPlayer = mp;
+    return Consumer<MusicProvider>(builder: (context, mp, child) {
+      musicProvider = mp;
       return GlowingOverscrollIndicator(
           axisDirection: AxisDirection.down,
           color: widget.color,
           child: ChangeNotifierProvider.value(
-              value: musicPlayer,
+              value: musicProvider,
               child: ReorderableListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
-                itemCount: musicPlayer.getPlayList().length,
+                itemCount: musicProvider.getPlayList().length,
                 itemBuilder: (context, index) =>
-                    playlistListItem(index, musicPlayer.getPlayList()[index]),
+                    playlistListItem(index, musicProvider.getPlayList()[index]),
                 onReorder: (int oldIndex, int newIndex) =>
-                    musicPlayer.moveMusicItem(oldIndex, newIndex),
+                    musicProvider.moveMusicItem(oldIndex, newIndex),
               )));
     });
   }
@@ -53,7 +53,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
     return Dismissible(
       key: ValueKey(musicItem),
       onDismissed: (direction) {
-        musicPlayer.deleteFromPlaylist(index);
+        musicProvider.deleteFromPlaylist(index);
       },
       direction: DismissDirection.endToStart,
       background: Container(
@@ -86,7 +86,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
               thickness: 0.5,
             ),
           InkWell(
-              onTap: () => musicPlayer.playAtIndex(index),
+              onTap: () => musicProvider.playAtIndex(index),
               child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: playlistItem(index, musicItem)))

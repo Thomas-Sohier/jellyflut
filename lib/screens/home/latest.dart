@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/stream/stream.dart';
 
 class Latest extends StatefulWidget {
   @override
@@ -66,10 +68,7 @@ class _LatestState extends State<Latest> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('/watch', arguments: media);
-                    },
+                    onTap: () => media.playItem(),
                     child: AspectRatio(
                         aspectRatio: 16 / 9,
                         child: BlurHash(

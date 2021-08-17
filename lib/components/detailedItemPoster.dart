@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
@@ -39,12 +41,8 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
         ),
         Expanded(
             child: GestureDetector(
-                onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Details(
-                              item: widget.item, heroTag: widget.heroTag)),
-                    ),
+                onTap: () => customRouter.push(
+                    DetailsRoute(item: widget.item, heroTag: widget.heroTag)),
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,

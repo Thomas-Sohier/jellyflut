@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songImage.dart';
-import 'package:jellyflut/provider/musicPlayer.dart' as music_player_provider;
 import 'package:jellyflut/screens/musicPlayer/components/songInfos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -20,7 +20,7 @@ class MusicPlayer extends StatefulWidget {
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
-  late music_player_provider.MusicPlayer musicPlayer;
+  late MusicProvider musicProvider;
   late Color backgroundColor1;
   late Color backgroundColor2;
   late Color foregroundColor;
@@ -32,11 +32,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
     backgroundColor1 = jellyLightPurple;
     backgroundColor2 = jellyDarkPurple;
     foregroundColor = Colors.black;
-    musicPlayer = music_player_provider.MusicPlayer();
-    musicPlayer.getCommonPlayer!
+    musicProvider = MusicProvider();
+    musicProvider.getCommonPlayer!
         .listenPlayingindex()
         .listen((event) => setState(() {
-              musicPlayer.setPlayingIndex(event);
+              musicProvider.setPlayingIndex(event);
             }));
     // musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
     setAlbumPrimaryColor();
@@ -51,8 +51,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<music_player_provider.MusicPlayer>(
-        builder: (context, mp, child) {
+    return Consumer<MusicProvider>(builder: (context, mp, child) {
       return player();
     });
   }
@@ -66,7 +65,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
         extendBody: false,
         backgroundColor: Colors.grey.shade900,
         body: ChangeNotifierProvider.value(
-            value: musicPlayer,
+            value: musicProvider,
             child: ScreenTypeLayout.builder(
                 breakpoints: screenBreakpoints,
                 mobile: (BuildContext context) =>
@@ -167,7 +166,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   void setAlbumPrimaryColor() {
-    final image = musicPlayer.getCurrentMusic?.image;
+    final image = musicProvider.getCurrentMusic?.image;
     if (image != null) {
       PaletteGenerator.fromImageProvider(MemoryImage(image))
           .then((PaletteGenerator value) => setState(() => {

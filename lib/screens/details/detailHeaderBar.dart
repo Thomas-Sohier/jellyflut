@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/BackButton.dart' as back_button;
-import 'package:jellyflut/main.dart';
 
 class DetailHeaderBar extends StatelessWidget {
   final double height;
@@ -15,8 +14,7 @@ class DetailHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight =
-        MediaQuery.of(navigatorKey.currentContext!).padding.top;
+    var statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
       height: statusBarHeight + height,
       padding: EdgeInsets.only(left: 10, right: 10),

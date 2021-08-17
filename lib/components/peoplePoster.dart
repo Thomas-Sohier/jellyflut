@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/asyncImage.dart';
-import 'package:jellyflut/models/person.dart';
+import 'package:jellyflut/models/jellyfin/person.dart';
 
 class PeoplePoster extends StatefulWidget {
   final Person person;

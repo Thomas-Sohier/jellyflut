@@ -1,7 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerAssetsAudioPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayerVLCComputer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/api/items.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/itemType.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/toast.dart';
 
@@ -18,7 +20,7 @@ class ItemDialogActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fToast = FToast();
-    fToast.init(navigatorKey.currentState!.context);
+    fToast.init(context);
     var _fontSize = 18.0;
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -38,22 +40,16 @@ class ItemDialogActions extends StatelessWidget {
                 if (artist == null) {
                   showToast('Canno get artist', fToast);
                 } else {
-                  await Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              Details(item: artist, heroTag: '')));
+                  await customRouter
+                      .replace(DetailsRoute(item: artist, heroTag: ''));
                 }
               }, fontSize: _fontSize, icon: Icons.person_outline)
             : Container(),
         item.type == ItemType.AUDIO
             ? _dialogListField('See album', () async {
                 var album = await getAlbum(item);
-                await Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            Details(item: album, heroTag: '')));
+                await customRouter
+                    .replace(DetailsRoute(item: album, heroTag: ''));
               }, fontSize: _fontSize, icon: Icons.album_outlined)
             : Container(),
         _dialogListField(
@@ -62,7 +58,7 @@ class ItemDialogActions extends StatelessWidget {
                   if (value != null) {
                     deleteItem(item.id).then((int statusCode) {
                       if (statusCode == HttpStatus.noContent) {
-                        Navigator.pop(context);
+                        customRouter.pop();
                       } else {
                         AlertDialog(
                           content: Text('Error, cannot delete item...'),
@@ -82,7 +78,7 @@ class ItemDialogActions extends StatelessWidget {
   void _addItemToPlaylist(Item _item, BuildContext context) async {
     // musicPlayer.addPlaylist(
     //     item, musicPlayer.assetsAudioPlayer.playlist!.audios.length);
-    Navigator.pop(context);
+    await customRouter.pop();
     var fToast = FToast();
     fToast.init(context);
     showToast('${_item.name} added to playlist', fToast);
@@ -145,7 +141,7 @@ Future<bool?> deleteDialogItem(Item item, BuildContext context) async {
                     SimpleDialogOption(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
-                        Navigator.pop(context, false);
+                        customRouter.pop(false);
                       },
                       child: Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -157,7 +153,7 @@ Future<bool?> deleteDialogItem(Item item, BuildContext context) async {
                     SimpleDialogOption(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
-                        Navigator.pop(context, true);
+                        customRouter.pop(true);
                       },
                       child: Container(
                           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),

@@ -4,8 +4,8 @@
 
 import 'dart:convert';
 
-import 'package:jellyflut/models/sessionInfos.dart';
-import 'package:jellyflut/models/user.dart';
+import 'package:jellyflut/models/jellyfin/sessionInfos.dart';
+import 'package:jellyflut/models/jellyfin/user.dart';
 
 AuthenticationResponse authenticationResponseFromMap(String str) =>
     AuthenticationResponse.fromMap(json.decode(str));

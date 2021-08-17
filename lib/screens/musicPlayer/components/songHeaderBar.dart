@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/slideRightRoute.dart';
+import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
-import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -20,8 +19,7 @@ class SongHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight =
-        MediaQuery.of(navigatorKey.currentContext!).padding.top;
+    var statusBarHeight = MediaQuery.of(context).padding.top;
     return ScreenTypeLayout.builder(
         breakpoints: screenBreakpoints,
         mobile: (BuildContext context) =>
@@ -36,17 +34,7 @@ class SongHeaderBar extends StatelessWidget {
     return SizedBox(
       height: statusBarHeight + height,
       child: Row(
-        children: [
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            child: Icon(
-              Icons.arrow_back,
-              color: color,
-              size: 30,
-            ),
-          ),
-        ],
+        children: [bb.BackButton()],
       ),
     );
   }
@@ -58,27 +46,15 @@ class SongHeaderBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            child: Icon(
-              Icons.arrow_back,
-              color: color,
-              size: 30,
-            ),
-          ),
+          bb.BackButton(),
           Spacer(),
           InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  SlideRightRoute(
-                    page: PlaylistRoute(
-                        playlistTheme: playlistThemeData,
-                        body: SongPlaylist(
-                          backgroundColor: playlistThemeData.backgroundColor,
-                          color: Colors.white,
-                        )),
-                  )),
+              onTap: () => customRouter.push(PlaylistRoute(
+                  body: SongPlaylist(
+                    backgroundColor: playlistThemeData.backgroundColor,
+                    color: Colors.white,
+                  ),
+                  playlistTheme: playlistThemeData)),
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: Icon(
                 Icons.album,

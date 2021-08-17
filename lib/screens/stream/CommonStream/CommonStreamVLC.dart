@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
@@ -40,13 +40,13 @@ class CommonStreamVLC {
 
     // create timer to save progress
     final timer = _startProgressTimer(item, vlcPlayerController);
-    StreamModel().setTimer(timer);
+    StreamingProvider().setTimer(timer);
 
     // create common stream controller
     final commonStream = CommonStream.parseVLCController(
         vlcPlayerController: vlcPlayerController, listener: () => {});
 
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(vlcPlayerController);
   }
 
@@ -67,7 +67,7 @@ class CommonStreamVLC {
     final commonStream = CommonStream.parseVLCController(
         vlcPlayerController: vlcPlayerController, listener: () => {});
 
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(vlcPlayerController);
   }
 

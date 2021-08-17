@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
 
-class MusicPlayer extends ChangeNotifier {
+class MusicProvider extends ChangeNotifier {
   Item? _item;
   // ignore: prefer_final_fields
   List<MusicItem> _musicItems = [];
@@ -12,13 +12,13 @@ class MusicPlayer extends ChangeNotifier {
   CommonPlayer? _commonPlayer;
 
   // Singleton
-  static final MusicPlayer _musicPlayer = MusicPlayer._internal();
+  static final MusicProvider _MusicProvider = MusicProvider._internal();
 
-  factory MusicPlayer() {
-    return _musicPlayer;
+  factory MusicProvider() {
+    return _MusicProvider;
   }
 
-  MusicPlayer._internal();
+  MusicProvider._internal();
 
   CommonPlayer? get getCommonPlayer => _commonPlayer;
   List<MusicItem> get getMusicItems => _musicItems;

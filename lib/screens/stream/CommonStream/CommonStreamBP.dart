@@ -6,15 +6,17 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/mediaStreamType.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/enum/mediaStreamType.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP {
+  static get customRouter => null;
+
   static Duration getBufferingDurationBP(
       BetterPlayerController betterPlayerController) {
     try {
@@ -43,17 +45,17 @@ class CommonStreamBP {
             customConfiguration: _configuration()));
     _betterPlayerController.addEventsListener((event) {
       if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
-        Navigator.pop(navigatorKey.currentContext!);
+        customRouter.pop();
         // showToast(event.parameters.toString(), fToast,
         //     duration: Duration(seconds: 3));
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.initialized) {
         final timer = _startProgressTimer(item, _betterPlayerController);
-        StreamModel().setTimer(timer);
+        StreamingProvider().setTimer(timer);
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.finished) {
         deleteActiveEncoding();
-        StreamModel().timer?.cancel();
+        StreamingProvider().timer?.cancel();
       }
     });
     await _betterPlayerController.setupDataSource(dataSource);
@@ -62,7 +64,7 @@ class CommonStreamBP {
       betterPlayerController: _betterPlayerController,
       listener: () => {},
     );
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }
 
@@ -81,7 +83,7 @@ class CommonStreamBP {
       betterPlayerController: _betterPlayerController,
       listener: () => {},
     );
-    StreamModel().setCommonStream(commonStream);
+    StreamingProvider().setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }
 
@@ -217,7 +219,7 @@ class CommonStreamBP {
       BetterPlayerController betterPlayerController) async {
     // ignore: omit_local_variable_types
     final List<AudioTrack> parsedAudioTrack = [];
-    var audioTracks = StreamModel()
+    var audioTracks = StreamingProvider()
         .item!
         .mediaStreams!
         .where((element) => element.type == MediaStreamType.AUDIO)
@@ -237,7 +239,7 @@ class CommonStreamBP {
     final newUrl = await getNewAudioSource(audioTrack.jellyfinSubtitleIndex!,
         playbackTick:
             betterPlayerController.videoPlayerController!.value.position);
-    final streamModel = StreamModel();
+    final streamModel = StreamingProvider();
     var tick = betterPlayerController
         .videoPlayerController!.value.position.inMicroseconds;
     var dataSource = BetterPlayerDataSource.network(newUrl,

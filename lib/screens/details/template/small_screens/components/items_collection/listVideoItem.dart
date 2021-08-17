@@ -3,8 +3,9 @@ import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -130,11 +131,8 @@ class _ListVideoItemState extends State<ListVideoItem> {
           ),
         ),
       InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Details(item: item, heroTag: heroTag)),
-        ),
+        onTap: () =>
+            customRouter.push(DetailsRoute(item: item, heroTag: heroTag)),
         child: Hero(
           tag: item.id,
           child: Padding(

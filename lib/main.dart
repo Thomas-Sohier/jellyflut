@@ -1,9 +1,11 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/auth/authParent.dart';
 import 'package:jellyflut/screens/home/home.dart';
-import 'package:jellyflut/screens/start/parentStart.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
@@ -29,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     if (resp[0]) {
       return Future.value(Home());
     }
-    return Future.value(ParentStart());
+    return Future.value(AuthParent());
   }
 
   @override
@@ -49,14 +51,12 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 class Jellyflut extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-        value: MusicPlayer(),
+        value: MusicProvider(),
         child: Shortcuts(
             // needed for AndroidTV to be able to select
             shortcuts: <LogicalKeySet, Intent>{
@@ -80,19 +80,12 @@ class Jellyflut extends StatelessWidget {
                   const DirectionalFocusIntent(TraversalDirection.right,
                       ignoreTextFields: false),
             },
-            child: MaterialApp(
+            child: MaterialApp.router(
               title: 'JellyFlut',
-              navigatorKey: navigatorKey,
               theme: personnal_theme.Theme.defaultThemeData,
-              home: MyApp(),
-              routes: {
-                '/login': (context) => ParentStart(),
-                '/home': (context) => Home(),
-              },
-              onUnknownRoute: (RouteSettings settings) {
-                return MaterialPageRoute(
-                    builder: (BuildContext context) => Home());
-              },
+              routerDelegate:
+                  customRouter.delegate(initialRoutes: [HomeRoute()]),
+              routeInformationParser: customRouter.defaultRouteParser(),
             )));
   }
 }

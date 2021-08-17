@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:wakelock/wakelock.dart';
 
 class Stream extends StatefulWidget {
@@ -15,13 +15,13 @@ class Stream extends StatefulWidget {
 }
 
 class _StreamState extends State<Stream> {
-  late StreamModel streamModel;
+  late StreamingProvider streamingProvider;
 
   @override
   void initState() {
     super.initState();
     Wakelock.enable();
-    streamModel = StreamModel();
+    streamingProvider = StreamingProvider();
     // Hide device overlays
     // device orientation
     SystemChrome.setPreferredOrientations(
@@ -32,8 +32,8 @@ class _StreamState extends State<Stream> {
   @override
   void dispose() {
     Wakelock.disable();
-    streamModel.commonStream?.disposeStream();
-    streamModel.timer?.cancel();
+    streamingProvider.commonStream?.disposeStream();
+    streamingProvider.timer?.cancel();
     // Show device overlays
     // device orientation
     SystemChrome.setPreferredOrientations([

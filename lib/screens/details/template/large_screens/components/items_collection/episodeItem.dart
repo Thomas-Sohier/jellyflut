@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/details.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -40,11 +40,7 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   void _onTap(String heroTag) {
-    Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-          builder: (context) => Details(item: widget.item, heroTag: heroTag)),
-    );
+    customRouter.push(DetailsRoute(item: widget.item, heroTag: heroTag));
   }
 
   @override

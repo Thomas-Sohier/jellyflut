@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dart';

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/api/epub.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:moor/moor.dart';
 import 'dart:io' as io;
 

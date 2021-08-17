@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/models/item.dart';
 import 'package:blurhash_dart/blurhash_extensions.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class Palette {

@@ -1,4 +1,4 @@
-import 'package:jellyflut/shared/enums.dart';
+import 'package:jellyflut/models/jellyfin/requiredHttpHeaders.dart';
 
 import 'mediaStream.dart';
 

@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "22.0.0"
+    version: "23.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.2"
+    version: "2.0.0"
   analyzer_plugin:
     dependency: transitive
     description:
@@ -64,6 +64,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
+  auto_route:
+    dependency: transitive
+    description:
+      name: auto_route
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
+  auto_route_generator:
+    dependency: "direct dev"
+    description:
+      name: auto_route_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -432,14 +446,14 @@ packages:
       name: flutter_vlc_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "6.0.3"
   flutter_vlc_player_platform_interface:
     dependency: transitive
     description:
       name: flutter_vlc_player_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -472,7 +486,7 @@ packages:
       name: frontend_server_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   glob:
     dependency: transitive
     description:
@@ -731,7 +745,7 @@ packages:
       name: platform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.0.2"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -890,7 +904,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.5"
   source_span:
     dependency: transitive
     description:
@@ -1039,7 +1053,7 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.13"
+    version: "2.1.14"
   video_player_platform_interface:
     dependency: transitive
     description:

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:jellyflut/models/mediaStream.dart';
-import 'package:jellyflut/models/mediaStreamType.dart';
+import 'package:jellyflut/models/enum/mediaStreamType.dart';
+import 'package:jellyflut/models/jellyfin/mediaStream.dart';
 
 import 'mediaSource.dart';
 

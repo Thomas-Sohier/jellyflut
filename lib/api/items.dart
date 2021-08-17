@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/MediaPlayedInfos.dart';
-import 'package:jellyflut/models/category.dart';
-import 'package:jellyflut/models/device.dart';
-import 'package:jellyflut/models/imageBlurHashes.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/models/playbackInfos.dart';
-import 'package:jellyflut/provider/streamModel.dart';
+import 'package:jellyflut/models/jellyfin/MediaPlayedInfos.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+import 'package:jellyflut/models/jellyfin/device.dart';
+import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/playbackInfos.dart';
+import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:uuid/uuid.dart';
 import '../globals.dart';
 import 'dio.dart';
@@ -275,7 +275,7 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
     int? subtitleStreamIndex,
     int? audioStreamIndex,
     int? maxStreamingBitrate}) async {
-  final streamModel = StreamModel();
+  final streamingProvider = StreamingProvider();
   final queryParams = <String, dynamic>{};
   queryParams['UserId'] = userJellyfin!.id;
   queryParams['StartTimeTicks'] = startTimeTick;
@@ -285,15 +285,15 @@ Future<PlayBackInfos> playbackInfos(String json, String itemId,
   queryParams['MediaSourceId'] = itemId;
   if (subtitleStreamIndex != null) {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
-  } else if (streamModel.selectedSubtitleTrack != null) {
+  } else if (streamingProvider.selectedSubtitleTrack != null) {
     queryParams['SubtitleStreamIndex'] =
-        streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex;
+        streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex;
   }
   if (audioStreamIndex != null) {
     queryParams['AudioStreamIndex'] = audioStreamIndex;
-  } else if (streamModel.selectedAudioTrack != null) {
+  } else if (streamingProvider.selectedAudioTrack != null) {
     queryParams['AudioStreamIndex'] =
-        streamModel.selectedAudioTrack!.jellyfinSubtitleIndex;
+        streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
   }
 
   final url = '${server.url}/Items/$itemId/PlaybackInfo';

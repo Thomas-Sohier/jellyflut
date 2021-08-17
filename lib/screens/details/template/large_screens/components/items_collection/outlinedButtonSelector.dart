@@ -24,7 +24,9 @@ class OutlinedButtonSelector extends StatelessWidget {
         focusNode: node,
         onPressed: onPressed,
         style: TextButton.styleFrom(
-                shape: shape, backgroundColor: Colors.transparent)
+                padding: EdgeInsets.zero,
+                shape: shape,
+                backgroundColor: Colors.transparent)
             .copyWith(side: buttonBorderSide())
             // .copyWith(elevation: buttonElevation())
             .copyWith(backgroundColor: buttonColor()),

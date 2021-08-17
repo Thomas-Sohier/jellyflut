@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class PlaylistRoute extends StatelessWidget {
-  const PlaylistRoute(
-      {Key? key, required this.body, required this.playlistTheme})
+class Playlist extends StatelessWidget {
+  const Playlist({Key? key, required this.body, required this.playlistTheme})
       : super(key: key);
 
   final ThemeData playlistTheme;

@@ -1,7 +1,8 @@
 import 'dart:developer';
 
-import 'package:jellyflut/models/category.dart';
-import '../globals.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+
 import 'dio.dart';
 
 Future<Category> getShowSeasonEpisode(String parentId, String seasonId) async {

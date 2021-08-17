@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/provider/carrousselModel.dart';
-import 'package:jellyflut/provider/listOfItems.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/items/carrousselProvider.dart';
+import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
@@ -21,14 +21,14 @@ class CollectionMain extends StatefulWidget {
 
 class _CollectionMainState extends State<CollectionMain> {
   // Provider
-  late final ListOfItems listOfItems;
-  late final CarrousselModel carrousselModel;
+  late final ItemsProvider itemsProvider;
+  late final CarrousselProvider carrousselProvider;
 
   @override
   void initState() {
     super.initState();
-    listOfItems = ListOfItems();
-    carrousselModel = CarrousselModel();
+    itemsProvider = ItemsProvider();
+    carrousselProvider = CarrousselProvider();
   }
 
   @override
@@ -39,8 +39,8 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     var headerHeight = 64.toDouble();
-    listOfItems.setParentItem(widget.item.id);
-    listOfItems.setTypeOfItems([widget.item.getCollectionType()]);
+    itemsProvider.setParentItem(widget.item.id);
+    itemsProvider.setTypeOfItems([widget.item.getCollectionType()]);
 
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -49,9 +49,9 @@ class _CollectionMainState extends State<CollectionMain> {
           if (widget.item.collectionType == 'movies' ||
               widget.item.collectionType == 'books')
             ChangeNotifierProvider.value(
-                value: carrousselModel, child: CarrousselBackGroundImage()),
+                value: carrousselProvider, child: CarrousselBackGroundImage()),
           ChangeNotifierProvider.value(
-              value: listOfItems,
+              value: itemsProvider,
               child: ListItems(headerBarHeight: headerHeight)),
           DetailHeaderBar(
             color: Colors.white,

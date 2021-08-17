@@ -3,9 +3,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/provider/musicPlayer.dart';
-import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart'
-    as music_player_widget;
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -19,13 +20,13 @@ class MusicPlayerFAB extends StatefulWidget {
 }
 
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
-  late Duration musicDuration;
-  late MusicPlayer musicPlayer;
+  late final Duration musicDuration;
+  late final MusicProvider musicPlayer;
 
   @override
   void initState() {
     super.initState();
-    musicPlayer = MusicPlayer();
+    musicPlayer = MusicProvider();
     musicDuration =
         musicPlayer.getCommonPlayer?.getDuration() ?? Duration(seconds: 0);
     if (musicPlayer.getCommonPlayer != null) {
@@ -52,7 +53,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
         Positioned(
             bottom: 15,
             right: 15,
-            child: Consumer<MusicPlayer>(
+            child: Consumer<MusicProvider>(
                 builder: (context, musicPlayer, child) => isInit()
                     ? body(musicPlayer)
                     : Container(
@@ -63,7 +64,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
     );
   }
 
-  Widget body(MusicPlayer musicPlayer) {
+  Widget body(MusicProvider musicPlayer) {
     return Hero(
         tag: 'musicPlayerFAB',
         child: Material(
@@ -79,12 +80,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              music_player_widget.MusicPlayer(),
-                        )),
+                    onTap: () => customRouter.push(MusicPlayerRoute()),
                     child: Icon(
                       Icons.more_vert,
                       color: Colors.white,

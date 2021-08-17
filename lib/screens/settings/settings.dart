@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/TranscodeAudioCodec.dart';
-import 'package:jellyflut/models/streamingSoftware.dart';
+import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
+import 'package:jellyflut/models/enum/streamingSoftware.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/components/BackButton.dart' as bb;
@@ -179,8 +179,7 @@ class _SettingsState extends State<Settings> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(
-                      context,
+                    customRouter.pop(
                       index < StreamingSoftwareName.values.length
                           ? getEnumValue(StreamingSoftwareName.values
                               .elementAt(index)
@@ -230,8 +229,7 @@ class _SettingsState extends State<Settings> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
-                    Navigator.pop(
-                      context,
+                    customRouter.pop(
                       index < TranscodeAudioCodecName.values.length
                           ? getEnumValue(TranscodeAudioCodecName.values
                               .elementAt(index)

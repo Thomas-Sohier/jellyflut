@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/item.dart';
-import 'package:jellyflut/screens/details/details.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 
 import '../asyncImage.dart';
 
@@ -44,12 +44,7 @@ class _PosterState extends State<Poster> {
   }
 
   void onTap() {
-    Navigator.push(
-      navigatorKey.currentContext!,
-      MaterialPageRoute(
-          builder: (context) =>
-              Details(item: widget.item, heroTag: widget.heroTag)),
-    );
+    customRouter.push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
   }
 
   @override

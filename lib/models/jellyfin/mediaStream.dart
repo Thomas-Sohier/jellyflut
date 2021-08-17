@@ -1,6 +1,10 @@
 import 'package:epub_view/epub_view.dart';
-import 'package:jellyflut/models/mediaStreamType.dart';
-import 'package:jellyflut/shared/enums.dart';
+import 'package:jellyflut/models/enum/codec.dart';
+import 'package:jellyflut/models/enum/codecTimeBase.dart';
+import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/enum/language.dart';
+import 'package:jellyflut/models/enum/mediaStreamType.dart';
+import 'package:jellyflut/models/enum/timeBase.dart';
 
 class MediaStream {
   MediaStream({
@@ -151,7 +155,7 @@ class MediaStream {
         'AverageFrameRate': averageFrameRate,
         'RealFrameRate': realFrameRate,
         'Profile': profile,
-        'Type': typeValues.reverse[type],
+        'Type': itemTypeValues.reverse[type],
         'AspectRatio': aspectRatio,
         'Index': index,
         'IsExternal': isExternal,

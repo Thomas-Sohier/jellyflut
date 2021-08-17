@@ -3,7 +3,7 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
-import 'package:jellyflut/models/item.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:uuid/uuid.dart';
 
