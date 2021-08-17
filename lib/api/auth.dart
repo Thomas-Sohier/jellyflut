@@ -8,7 +8,6 @@ import 'package:jellyflut/api/interceptor.dart';
 import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/jellyfin/authenticationResponse.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
