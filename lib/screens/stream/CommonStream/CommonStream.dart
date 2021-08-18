@@ -27,6 +27,7 @@ class CommonStream {
   final Function(AudioTrack) _setAudioTrack;
   final BehaviorSubject<Duration> _positionStream;
   final BehaviorSubject<Duration> _durationStream;
+  final BehaviorSubject<bool> _isPlayingStream;
   final VoidCallback _initListener;
   final Function(VoidCallback) _addListener;
   final Function(VoidCallback) _removeListener;
@@ -51,6 +52,7 @@ class CommonStream {
       required setAudioTrack,
       required positionStream,
       required durationStream,
+      required isPlayingStream,
       required initListener,
       required addListener,
       required removeListener,
@@ -73,6 +75,7 @@ class CommonStream {
         _setAudioTrack = setAudioTrack,
         _positionStream = positionStream,
         _durationStream = durationStream,
+        _isPlayingStream = isPlayingStream,
         _initListener = initListener,
         _addListener = addListener,
         _removeListener = removeListener,
@@ -95,6 +98,7 @@ class CommonStream {
   void setAudioTrack(AudioTrack audioTrack) => _setAudioTrack(audioTrack);
   BehaviorSubject<Duration> getPositionStream() => _positionStream;
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
+  BehaviorSubject<bool> getPlayingStateStream() => _isPlayingStream;
   void initListener() => _initListener();
   void addListener(VoidCallback listener) => _addListener(listener);
   void removeListener(VoidCallback listener) => _removeListener(listener);
@@ -125,6 +129,8 @@ class CommonStream {
             CommonStreamVLC.setAudioTrack(audioTrack, vlcPlayerController),
         positionStream: CommonStreamVLC.positionStream(vlcPlayerController),
         durationStream: CommonStreamVLC.durationStream(vlcPlayerController),
+        isPlayingStream:
+            CommonStreamVLC.playingStateStream(vlcPlayerController),
         initListener: () => vlcPlayerController.addListener(listener),
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
@@ -164,6 +170,8 @@ class CommonStream {
             CommonStreamBP.setAudioTrack(audioTrack, betterPlayerController),
         positionStream: CommonStreamBP.positionStream(betterPlayerController),
         durationStream: CommonStreamBP.durationStream(betterPlayerController),
+        isPlayingStream:
+            CommonStreamBP.playingStateStream(betterPlayerController),
         initListener: () =>
             betterPlayerController.videoPlayerController!.addListener(listener),
         addListener: betterPlayerController.videoPlayerController!.addListener,
@@ -175,7 +183,7 @@ class CommonStream {
 
   static CommonStream parseVlcComputerController(
       {required Player player, VoidCallback? listener}) {
-    final commonStreamVLCComputer = CommonStreamVLCComputer();
+    final commonStreamVLCComputer = CommonStreamVLCComputer(player: player);
     return CommonStream._(
         pause: player.pause,
         play: player.play,
@@ -200,15 +208,13 @@ class CommonStream {
           return Future.value(audioTracks);
         },
         setAudioTrack: (_) => {},
-        positionStream: commonStreamVLCComputer.positionStream(player),
-        durationStream: commonStreamVLCComputer.durationStream(player),
+        positionStream: commonStreamVLCComputer.positionStream(),
+        durationStream: commonStreamVLCComputer.durationStream(),
+        isPlayingStream: commonStreamVLCComputer.playingStateStream(),
         initListener: () => {},
         addListener: commonStreamVLCComputer.addListener,
         removeListener: (_) => commonStreamVLCComputer.removeListener(),
-        dispose: () {
-          player.stop();
-          player.dispose();
-        },
+        dispose: () => commonStreamVLCComputer.stopPlayer(),
         controller: player);
   }
 }

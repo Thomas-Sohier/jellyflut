@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -15,12 +17,14 @@ class Stream extends StatefulWidget {
 }
 
 class _StreamState extends State<Stream> {
-  late StreamingProvider streamingProvider;
+  late final StreamingProvider streamingProvider;
 
   @override
   void initState() {
     super.initState();
-    Wakelock.enable();
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      Wakelock.enable();
+    }
     streamingProvider = StreamingProvider();
     // Hide device overlays
     // device orientation
@@ -31,7 +35,9 @@ class _StreamState extends State<Stream> {
 
   @override
   void dispose() {
-    Wakelock.disable();
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      Wakelock.disable();
+    }
     streamingProvider.commonStream?.disposeStream();
     streamingProvider.timer?.cancel();
     // Show device overlays
@@ -44,6 +50,25 @@ class _StreamState extends State<Stream> {
     ]);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      Wakelock.disable();
+    }
+    streamingProvider.commonStream?.disposeStream();
+    streamingProvider.timer?.cancel();
+    // Show device overlays
+    // device orientation
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    super.deactivate();
   }
 
   @override

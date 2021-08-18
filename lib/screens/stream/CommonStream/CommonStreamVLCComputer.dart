@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
@@ -10,26 +11,28 @@ import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLCComputer {
   static List<Timer> timers = [];
+  final Player player;
+
+  const CommonStreamVLCComputer({required this.player});
 
   static Future<Player> setupData({required Item item}) async {
     final streamURL = await item.getItemURL(directPlay: true);
-    final playerId = Random().nextInt(10000);
-    final player = Player(id: playerId, commandlineArguments: [
-      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}'
+    final _player = Player(id: videoPlayerId, commandlineArguments: [
+      '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
     ]);
     final media = Media.network(streamURL);
-    player.open(media);
+    _player.open(media);
 
     // create timer to save progress
-    final timer = _startProgressTimer(item, player);
+    final timer = _startProgressTimer(item, _player);
     StreamingProvider().setTimer(timer);
 
     // create common stream controller
     final commonStream = CommonStream.parseVlcComputerController(
-        player: player, listener: () => {});
+        player: _player, listener: () => {});
 
     StreamingProvider().setCommonStream(commonStream);
-    return Future.value(player);
+    return Future.value(_player);
   }
 
   static Future<Player> setupDataFromUrl({required String url}) async {
@@ -58,36 +61,41 @@ class CommonStreamVLCComputer {
     timers.forEach((t) => t.cancel());
   }
 
-  static Timer _startProgressTimer(Item item, Player player) {
+  static Timer _startProgressTimer(Item item, Player _player) {
     return Timer.periodic(
         Duration(seconds: 15),
         (Timer t) => StreamingService.streamingProgress(item,
-            canSeek: player.playback.isSeekable,
-            isMuted: player.general.volume > 0 ? true : false,
-            isPaused: !player.playback.isPlaying,
-            positionTicks: player.position.position?.inMicroseconds ?? 0,
-            volumeLevel: player.general.volume.round(),
+            canSeek: _player.playback.isSeekable,
+            isMuted: _player.general.volume > 0 ? true : false,
+            isPaused: !_player.playback.isPlaying,
+            positionTicks: _player.position.position?.inMicroseconds ?? 0,
+            volumeLevel: _player.general.volume.round(),
             subtitlesIndex: 0));
   }
 
-  BehaviorSubject<Duration> positionStream(Player player) {
+  BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
     player.positionStream.listen((PositionState positionState) =>
         streamController.add(positionState.position ?? Duration(seconds: 0)));
     return streamController;
   }
 
-  BehaviorSubject<Duration> durationStream(Player player) {
+  BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
     player.positionStream.listen((PositionState positionState) =>
         streamController.add(positionState.duration ?? Duration(seconds: 0)));
     return streamController;
   }
 
-  BehaviorSubject<bool> isPlaying(Player player) {
+  BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
     player.playbackStream
         .listen((PlaybackState event) => streamController.add(event.isPlaying));
     return streamController;
+  }
+
+  void stopPlayer() {
+    player.stop();
+    player.dispose();
   }
 }

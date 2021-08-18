@@ -8,6 +8,7 @@ import 'package:jellyflut/models/enum/mediaStreamType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/screens/stream/components/commonControls.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streamingService.dart';
@@ -93,7 +94,6 @@ class CommonStreamBP {
         aspectRatio: aspectRatio,
         fit: BoxFit.contain,
         autoPlay: true,
-        autoDispose: true,
         looping: false,
         fullScreenByDefault: false,
         deviceOrientationsOnFullScreen: [
@@ -144,10 +144,9 @@ class CommonStreamBP {
       enablePlayPause: true,
       enableSubtitles: true,
       enableQualities: false,
-      showControlsOnInitialize: true,
+      showControlsOnInitialize: false,
       playerTheme: BetterPlayerTheme.custom,
-      // customControlsBuilder: (controller) => CommonControls(),
-      customControlsBuilder: (controller) => Container(),
+      customControlsBuilder: (controller) => CommonControls(),
       controlBarHeight: 40,
     );
   }
@@ -263,10 +262,17 @@ class CommonStreamBP {
   static BehaviorSubject<Duration> durationStream(
       BetterPlayerController betterPlayerController) {
     final streamController = BehaviorSubject<Duration>();
-    betterPlayerController.addEventsListener(
-        (BetterPlayerEvent betterPlayerEvent) => streamController.add(
-            betterPlayerController.videoPlayerController!.value.duration ??
-                Duration(seconds: 0)));
+    betterPlayerController.addEventsListener((_) => streamController.add(
+        betterPlayerController.videoPlayerController!.value.duration ??
+            Duration(seconds: 0)));
+    return streamController;
+  }
+
+  static BehaviorSubject<bool> playingStateStream(
+      BetterPlayerController betterPlayerController) {
+    final streamController = BehaviorSubject<bool>();
+    betterPlayerController.addEventsListener((_) =>
+        streamController.add(betterPlayerController.isPlaying() ?? false));
     return streamController;
   }
 }

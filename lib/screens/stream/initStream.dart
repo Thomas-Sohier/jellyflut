@@ -29,24 +29,26 @@ void automaticStreamingSoftwareChooser({required Item item}) async {
   final _tempItem = await item.getPlayableItemOrLastUnplayed();
   final _item = await ItemService.getItem(_tempItem.id);
   StreamingProvider().setItem(_item);
+
+  // Depending the platform and soft => init video player
+  late Widget playerWidget;
   switch (streamingSoftware) {
     case StreamingSoftwareName.vlc:
-      _initVLCMediaPlayer(_item);
+      playerWidget = await _initVLCMediaPlayer(_item);
       break;
     case StreamingSoftwareName.exoplayer:
-      _initExoPlayerMediaPlayer(_item);
+      playerWidget = await _initExoPlayerMediaPlayer(_item);
       break;
   }
+  await customRouter.push(StreamRoute(player: playerWidget, item: _item));
 }
 
-void _initVLCMediaPlayer(Item item) async {
-  var playerWidget;
+Future<Widget> _initVLCMediaPlayer(Item item) async {
   if (Platform.isLinux || Platform.isWindows) {
-    playerWidget = await _initVlcComputerPlayer(item);
+    return await _initVlcComputerPlayer(item);
   } else {
-    playerWidget = await _initVlcPhonePlayer(item);
+    return await _initVlcPhonePlayer(item);
   }
-  await customRouter.push(StreamRoute(player: playerWidget, item: item));
 }
 
 Future<Widget> _initVlcComputerPlayer(Item item) async {
@@ -85,18 +87,12 @@ Future<Widget> _initVlcPhonePlayer(Item item) async {
   );
 }
 
-void _initExoPlayerMediaPlayer(Item item) async {
+Future<Widget> _initExoPlayerMediaPlayer(Item item) async {
   // Setup data with Better Player
   final betterPlayerController = await CommonStreamBP.setupData(item: item);
 
   // Init widget player to use in Stream widget
-  final playerBP = BetterPlayer(
+  return BetterPlayer(
       key: betterPlayerController.betterPlayerGlobalKey,
       controller: betterPlayerController);
-
-  // Redirect to player page
-  await customRouter.push(StreamRoute(
-    player: playerBP,
-    item: item,
-  ));
 }

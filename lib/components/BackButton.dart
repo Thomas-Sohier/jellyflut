@@ -5,8 +5,10 @@ import 'package:jellyflut/screens/details/template/large_screens/components/item
 
 class BackButton extends StatefulWidget {
   final bool shadow;
+  final VoidCallback? onPressedCallback;
 
-  const BackButton({Key? key, this.shadow = false}) : super(key: key);
+  const BackButton({Key? key, this.shadow = false, this.onPressedCallback})
+      : super(key: key);
 
   @override
   _BackButtonState createState() => _BackButtonState();
@@ -43,7 +45,7 @@ class _BackButtonState extends State<BackButton> {
     return OutlinedButtonSelector(
       node: _node,
       shape: CircleBorder(),
-      onPressed: () => customRouter.pop(),
+      onPressed: customRouter.pop,
       child: Container(
           decoration: BoxDecoration(boxShadow: shadows),
           padding: const EdgeInsets.all(6),

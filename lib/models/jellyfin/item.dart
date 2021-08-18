@@ -750,31 +750,33 @@ class Item {
         type == ItemType.SERIES ||
         type == ItemType.MOVIE ||
         type == ItemType.VIDEO) {
-      automaticStreamingSoftwareChooser(item: this);
+      return automaticStreamingSoftwareChooser(item: this);
     } else if (type == ItemType.AUDIO) {
       var commonPlayer;
       if (Platform.isLinux || Platform.isWindows) {
-        final player = vlc.Player(id: 123);
+        final player = vlc.Player(id: audioPlayerId);
         commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
       } else {
-        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
+        final assetsAudioPlayer =
+            AssetsAudioPlayer.withId(audioPlayerId.toString());
         commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
             assetsAudioPlayer: assetsAudioPlayer);
       }
       musicProvider.setCommonPlayer(commonPlayer);
-      await musicProvider.getCommonPlayer!.playRemoteAudio(this);
+      return await musicProvider.getCommonPlayer!.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       var commonPlayer;
       if (Platform.isLinux || Platform.isWindows) {
-        final player = vlc.Player(id: 123);
+        final player = vlc.Player(id: audioPlayerId);
         commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
       } else {
-        final assetsAudioPlayer = AssetsAudioPlayer.withId('123');
+        final assetsAudioPlayer =
+            AssetsAudioPlayer.withId(audioPlayerId.toString());
         commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
             assetsAudioPlayer: assetsAudioPlayer);
       }
       musicProvider.setCommonPlayer(commonPlayer);
-      await musicProvider.playPlaylist(this);
+      return await musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       await customRouter.replace(EpubReaderPageRoute(item: this));
     }

@@ -23,6 +23,10 @@ double get _itemHeightTemp =>
 
 double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
 
+// Used for some player to prevent from creating a new player
+int get audioPlayerId => 132;
+int get videoPlayerId => 213;
+
 late SharedPreferences _sharedPrefs;
 
 SharedPreferences get sharedPrefs => _sharedPrefs;

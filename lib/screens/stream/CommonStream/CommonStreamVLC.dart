@@ -24,6 +24,7 @@ class CommonStreamVLC {
   }
 
   static Future<VlcPlayerController> setupData({required Item item}) async {
+    final streamingProvider = StreamingProvider();
     final streamURL = await item.getItemURL(directPlay: true);
 
     // Create vlcPlayerController
@@ -41,13 +42,13 @@ class CommonStreamVLC {
 
     // create timer to save progress
     final timer = _startProgressTimer(item, vlcPlayerController);
-    StreamingProvider().setTimer(timer);
+    streamingProvider.setTimer(timer);
 
     // create common stream controller
     final commonStream = CommonStream.parseVLCController(
         vlcPlayerController: vlcPlayerController, listener: () => {});
 
-    StreamingProvider().setCommonStream(commonStream);
+    streamingProvider.setCommonStream(commonStream);
     return Future.value(vlcPlayerController);
   }
 
@@ -140,6 +141,14 @@ class CommonStreamVLC {
     vlcPlayerController.addListener(() {
       streamController.add(vlcPlayerController.value.duration);
     });
+    return streamController;
+  }
+
+  static BehaviorSubject<bool> playingStateStream(
+      VlcPlayerController vlcPlayerController) {
+    final streamController = BehaviorSubject<bool>();
+    vlcPlayerController.addListener(
+        () => streamController.add(vlcPlayerController.value.isPlaying));
     return streamController;
   }
 }

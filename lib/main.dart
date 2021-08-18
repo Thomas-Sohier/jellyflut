@@ -38,6 +38,27 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Jellyflut extends StatelessWidget {
+  final shortcuts = <LogicalKeySet, Intent>{
+    LogicalKeySet.fromSet(<LogicalKeyboardKey>{
+      LogicalKeyboardKey.select,
+      LogicalKeyboardKey.enter,
+      LogicalKeyboardKey.space,
+      LogicalKeyboardKey.mediaPlayPause,
+      LogicalKeyboardKey.mediaPlay,
+    }): const ActivateIntent(),
+    LogicalKeySet(LogicalKeyboardKey.arrowDown): const DirectionalFocusIntent(
+        TraversalDirection.down,
+        ignoreTextFields: false),
+    LogicalKeySet(LogicalKeyboardKey.arrowUp): const DirectionalFocusIntent(
+        TraversalDirection.up,
+        ignoreTextFields: false),
+    LogicalKeySet(LogicalKeyboardKey.arrowLeft): const DirectionalFocusIntent(
+        TraversalDirection.left,
+        ignoreTextFields: false),
+    LogicalKeySet(LogicalKeyboardKey.arrowRight): const DirectionalFocusIntent(
+        TraversalDirection.right,
+        ignoreTextFields: false),
+  };
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -45,27 +66,7 @@ class Jellyflut extends StatelessWidget {
         value: MusicProvider(),
         child: Shortcuts(
             // needed for AndroidTV to be able to select
-            shortcuts: <LogicalKeySet, Intent>{
-              LogicalKeySet.fromSet(<LogicalKeyboardKey>{
-                LogicalKeyboardKey.select,
-                LogicalKeyboardKey.enter,
-                LogicalKeyboardKey.space,
-                LogicalKeyboardKey.mediaPlayPause,
-                LogicalKeyboardKey.mediaPlay,
-              }): const ActivateIntent(),
-              LogicalKeySet(LogicalKeyboardKey.arrowDown):
-                  const DirectionalFocusIntent(TraversalDirection.down,
-                      ignoreTextFields: false),
-              LogicalKeySet(LogicalKeyboardKey.arrowUp):
-                  const DirectionalFocusIntent(TraversalDirection.up,
-                      ignoreTextFields: false),
-              LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                  const DirectionalFocusIntent(TraversalDirection.left,
-                      ignoreTextFields: false),
-              LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                  const DirectionalFocusIntent(TraversalDirection.right,
-                      ignoreTextFields: false),
-            },
+            shortcuts: shortcuts,
             child: MaterialApp.router(
               title: 'JellyFlut',
               theme: personnal_theme.Theme.defaultThemeData,
