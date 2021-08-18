@@ -18,7 +18,7 @@ AppRouter get customRouter => _customRouter;
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
 double get _itemHeightTemp =>
-    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.height) *
+    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
     35;
 
 double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
@@ -33,7 +33,7 @@ SharedPreferences get sharedPrefs => _sharedPrefs;
 
 Future setUpSharedPrefs() async {
   _sharedPrefs = await SharedPreferences.getInstance();
-  if (_sharedPrefs.getBool('isLoggedIn') ?? true) {
+  if (_sharedPrefs.getBool('isLoggedIn') ?? false) {
     await sharedPrefs.setBool('isLoggedIn', true);
   }
 }

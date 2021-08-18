@@ -34,7 +34,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Icon(
-          Icons.closed_caption,
+          Icons.audiotrack,
           color: Colors.white,
         ),
       ),

@@ -33,14 +33,14 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
       stream: streamingProvider.commonStream!.getPlayingStateStream(),
       builder: (context, isPlayingSnapshot) => OutlinedButtonSelector(
           node: _node,
-          onPressed: () => isPlayingSnapshot.data!
+          onPressed: () => isPlayingSnapshot.data ?? false
               ? streamingProvider.commonStream!.pause()
               : streamingProvider.commonStream!.play(),
           shape: CircleBorder(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(
-              isPlayingSnapshot.data! ? Icons.pause : Icons.play_arrow,
+              isPlayingSnapshot.data ?? false ? Icons.pause : Icons.play_arrow,
               color: Colors.white,
             ),
           )),

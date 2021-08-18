@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/components/BackButton.dart' as bb;
@@ -77,7 +78,10 @@ class _CommonControlsState extends State<CommonControls> {
     return ChangeNotifierProvider.value(
       value: streamingProvider,
       child: MouseRegion(
-          onHover: (_) => autoHideControlHover(),
+          onHover: (PointerHoverEvent event) =>
+              event.kind == PointerDeviceKind.mouse
+                  ? autoHideControlHover()
+                  : {},
           child: GestureDetector(
               onTap: () => autoHideControl(),
               behavior: HitTestBehavior.translucent,
@@ -136,7 +140,7 @@ class _CommonControlsState extends State<CommonControls> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 itemTitle(),
-                streamingProvider.item?.hasParent() != null
+                streamingProvider.item!.hasParent()
                     ? itemParentTitle()
                     : Container(),
               ],
@@ -164,6 +168,7 @@ class _CommonControlsState extends State<CommonControls> {
   }
 
   Widget itemTitle() {
+    if (streamingProvider.item == null) return SizedBox();
     return Text(
       streamingProvider.item!.name,
       textAlign: TextAlign.left,
@@ -173,6 +178,7 @@ class _CommonControlsState extends State<CommonControls> {
   }
 
   Widget itemParentTitle() {
+    if (streamingProvider.item == null) return SizedBox();
     return Text(
       streamingProvider.item!.parentName(),
       textAlign: TextAlign.left,

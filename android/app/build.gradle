@@ -39,6 +39,12 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion 29
 
+    packagingOptions {
+       // Fixes duplicate libraries build issue, 
+       // when your project uses more than one plugin that depend on C++ libs.
+        pickFirst 'lib/**/libc++_shared.so'
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -67,18 +73,13 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            // signingConfig signingConfigs.debug
             signingConfig signingConfigs.release
-
-            // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type.
             minifyEnabled false
-
-            // Enables resource shrinking, which is performed by the
-            // Android Gradle plugin.
             shrinkResources false
+            useProguard true
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
         }
     }
 }

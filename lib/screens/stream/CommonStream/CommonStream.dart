@@ -106,7 +106,7 @@ class CommonStream {
 
   static CommonStream parseVLCController(
       {required VlcPlayerController vlcPlayerController,
-      required VoidCallback listener}) {
+      VoidCallback? listener}) {
     return CommonStream._(
         pause: vlcPlayerController.pause,
         play: vlcPlayerController.play,
@@ -131,7 +131,8 @@ class CommonStream {
         durationStream: CommonStreamVLC.durationStream(vlcPlayerController),
         isPlayingStream:
             CommonStreamVLC.playingStateStream(vlcPlayerController),
-        initListener: () => vlcPlayerController.addListener(listener),
+        initListener: () =>
+            listener != null ? vlcPlayerController.addListener(listener) : {},
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
         dispose: () {
@@ -143,7 +144,7 @@ class CommonStream {
 
   static CommonStream parseBetterPlayerController(
       {required BetterPlayerController betterPlayerController,
-      required VoidCallback listener}) {
+      VoidCallback? listener}) {
     return CommonStream._(
         pause: betterPlayerController.pause,
         play: betterPlayerController.play,
@@ -172,8 +173,10 @@ class CommonStream {
         durationStream: CommonStreamBP.durationStream(betterPlayerController),
         isPlayingStream:
             CommonStreamBP.playingStateStream(betterPlayerController),
-        initListener: () =>
-            betterPlayerController.videoPlayerController!.addListener(listener),
+        initListener: () => listener != null
+            ? betterPlayerController.videoPlayerController!
+                .addListener(listener)
+            : {},
         addListener: betterPlayerController.videoPlayerController!.addListener,
         removeListener:
             betterPlayerController.videoPlayerController!.removeListener,

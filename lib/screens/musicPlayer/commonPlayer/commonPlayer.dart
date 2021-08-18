@@ -30,6 +30,7 @@ class CommonPlayer {
   final Function _removeFromPlaylist;
   final Stream<Duration?> _currentPosition;
   final BehaviorSubject<int?> _listenPlayingindex;
+  final BehaviorSubject<bool> _isInitStream;
   final Function(Item) _playRemoteAudio;
   final Function _isInit;
   final Function _dispose;
@@ -49,6 +50,7 @@ class CommonPlayer {
       required removeFromPlaylist,
       required currentPosition,
       required listenPlayingindex,
+      required isInitStream,
       required playRemoteAudio,
       required isInit,
       required dispose,
@@ -66,6 +68,7 @@ class CommonPlayer {
         _removeFromPlaylist = removeFromPlaylist,
         _currentPosition = currentPosition,
         _listenPlayingindex = listenPlayingindex,
+        _isInitStream = isInitStream,
         _playRemoteAudio = playRemoteAudio,
         _isInit = isInit,
         _dispose = dispose;
@@ -84,6 +87,7 @@ class CommonPlayer {
   void removeFromPlaylist(int index) => _removeFromPlaylist(index);
   Stream<Duration?> getCurrentPosition() => _currentPosition;
   BehaviorSubject<int?> listenPlayingindex() => _listenPlayingindex;
+  BehaviorSubject<bool> listenIsPlaying() => _isInitStream;
   Future<void> playRemoteAudio(Item item) => _playRemoteAudio(item);
   bool isInit() => _isInit();
   void disposeStream() => _dispose();
@@ -110,6 +114,8 @@ class CommonPlayer {
         currentPosition: assetsAudioPlayer.currentPosition.asBroadcastStream(),
         listenPlayingindex:
             commonPlayerAssetsAudioPlayer.listenPlayingIndex(assetsAudioPlayer),
+        isInitStream:
+            commonPlayerAssetsAudioPlayer.isPlaying(assetsAudioPlayer),
         playRemoteAudio: (Item item) => commonPlayerAssetsAudioPlayer
             .playRemoteAudio(assetsAudioPlayer, item),
         isInit: () => commonPlayerAssetsAudioPlayer.isInit(assetsAudioPlayer),
@@ -140,6 +146,7 @@ class CommonPlayer {
         playRemoteAudio: (Item item) =>
             commonPlayerVLCComputer.playRemoteAudio(item, player),
         isInit: () => true,
+        isInitStream: commonPlayerVLCComputer.isPlaying(player),
         dispose: () {
           player.stop();
           Future.delayed(Duration(milliseconds: 200), player.dispose);

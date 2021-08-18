@@ -15,7 +15,7 @@ dependencies:
   assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.9.0
   auto_size_text: ^3.0.0-nullsafety.0
-  better_player: ^0.0.72
+  better_player: ^0.0.73
   blurhash_dart: ^1.0.2
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
@@ -27,7 +27,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^0.22.0
-  flutter_vlc_player: ^6.0.2
+  flutter_vlc_player: ^6.0.3
   fluttertoast: ^8.0.8
   moor: ^4.4.1
   octo_image: ^1.0.0+1
@@ -53,18 +53,18 @@ dependencies:
   youtube_explode_dart: ^1.10.4
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   auto_route_generator: ^2.3.0
   build_runner: ^2.0.6
-  flutter_native_splash: ^1.2.1
-  intl: ^0.17.0
-  moor_generator: ^4.4.1
-  pedantic: ^1.11.1
   flutter_launcher_icons:
     git:
       url: git://github.com/SimonIT/flutter_launcher_icons.git
       ref: scaling
+  flutter_native_splash: ^1.2.1
+  flutter_test:
+    sdk: flutter
+  intl: ^0.17.0
+  moor_generator: ^4.4.1
+  pedantic: ^1.11.1
 
 dependency_overrides:
   args: ^2.1.1

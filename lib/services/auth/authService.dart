@@ -44,7 +44,7 @@ class AuthService {
     return false;
   }
 
-  static void create(
+  static Future<void> create(
       String name, AuthenticationResponse authenticationResponse) async {
     final db = AppDatabase().getDatabase;
     final serverCompanion =
@@ -61,7 +61,7 @@ class AuthService {
     final userId = await db.usersDao.createUser(userCompanion);
     await _saveToSharedPreferences(serverId, settingsId, userId,
         authenticationResponse.user.id, authenticationResponse.accessToken);
-    await _saveToGlobals();
+    return await _saveToGlobals();
   }
 
   static Future<void> _saveToSharedPreferences(int serverId, int settingId,

@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
 
     await AuthService.login(username, password)
         .then((AuthenticationResponse response) async {
-      AuthService.create(username, response);
+      await AuthService.create(username, response);
       if (widget.onAuthenticated != null) {
         widget.onAuthenticated!();
       } else {

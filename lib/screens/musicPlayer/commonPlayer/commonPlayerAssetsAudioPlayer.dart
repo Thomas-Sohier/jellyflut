@@ -38,6 +38,13 @@ class CommonPlayerAssetsAudioPlayer {
     return false;
   }
 
+  BehaviorSubject<bool> isInitStream(AssetsAudioPlayer assetsAudioPlayer) {
+    final streamController = BehaviorSubject<bool>();
+    assetsAudioPlayer.isPlaying
+        .listen((isPlaying) => streamController.add(isPlaying));
+    return streamController;
+  }
+
   BehaviorSubject<bool> isPlaying(AssetsAudioPlayer assetsAudioPlayer) {
     final streamController = BehaviorSubject<bool>();
     assetsAudioPlayer.isPlaying.listen((event) => streamController.add(event));

@@ -19,21 +19,21 @@ import 'router.gr.dart';
 // flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 @CustomAutoRouter(
-  durationInMilliseconds: 250,
+  // durationInMilliseconds: 250,
   routes: <AutoRoute>[
     AutoRoute(page: AuthParent),
     AutoRoute(page: Home, guards: [AuthGuard], initial: true),
-    CustomRoute(
-        page: Details,
-        transitionsBuilder: TransitionsBuilders.fadeIn,
-        guards: [AuthGuard]),
+    AutoRoute(page: Details, guards: [AuthGuard]),
     CustomRoute(
         page: Settings,
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     AutoRoute(page: MusicPlayer, guards: [AuthGuard]),
     AutoRoute(page: CollectionMain, guards: [AuthGuard]),
-    AutoRoute(page: Playlist, guards: [AuthGuard]),
+    CustomRoute(
+        page: Playlist,
+        transitionsBuilder: TransitionsBuilders.slideLeft,
+        guards: [AuthGuard]),
     AutoRoute(page: Stream, guards: [AuthGuard], maintainState: false),
     AutoRoute(page: EpubReaderPage, guards: [AuthGuard]),
   ],

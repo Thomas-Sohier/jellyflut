@@ -37,7 +37,6 @@ class AppRouter extends _i1.RootStackRouter {
           return _i4.AuthParent(
               key: args.key, onAuthenticated: args.onAuthenticated);
         },
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false),
     HomeRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -45,7 +44,6 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return _i5.Home();
         },
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false),
     DetailsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -54,7 +52,6 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<DetailsRouteArgs>();
           return _i6.Details(item: args.item, heroTag: args.heroTag);
         },
-        transitionsBuilder: _i1.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false),
     SettingsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -72,7 +69,6 @@ class AppRouter extends _i1.RootStackRouter {
               orElse: () => const MusicPlayerRouteArgs());
           return _i8.MusicPlayer(key: args.key);
         },
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false),
     CollectionMainRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -81,7 +77,6 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<CollectionMainRouteArgs>();
           return _i9.CollectionMain(item: args.item);
         },
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false),
     PlaylistRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -93,7 +88,7 @@ class AppRouter extends _i1.RootStackRouter {
               body: args.body,
               playlistTheme: args.playlistTheme);
         },
-        durationInMilliseconds: 250,
+        transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
         opaque: true,
         barrierDismissible: false),
     StreamRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -103,7 +98,6 @@ class AppRouter extends _i1.RootStackRouter {
           return _i11.Stream(player: args.player, item: args.item);
         },
         maintainState: false,
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false),
     EpubReaderPageRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -112,7 +106,6 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<EpubReaderPageRouteArgs>();
           return _i12.EpubReaderPage(key: args.key, item: args.item);
         },
-        durationInMilliseconds: 250,
         opaque: true,
         barrierDismissible: false)
   };

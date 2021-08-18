@@ -41,19 +41,17 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(data: cardThemeData, child: phoneTemplate());
+    return Theme(
+        data: cardThemeData,
+        child: widget.heroTag != null
+            ? Hero(tag: widget.heroTag!, child: phoneTemplate())
+            : phoneTemplate());
   }
 
   Widget phoneTemplate() {
     final mediaQuery = MediaQuery.of(context);
     return Stack(alignment: Alignment.topCenter, children: [
-      Hero(
-        tag: widget.heroTag ?? '',
-        child: BackgroundImage(
-          item: widget.item,
-          imageType: 'Primary',
-        ),
-      ),
+      BackgroundImage(item: widget.item, imageType: 'Primary'),
       Stack(alignment: Alignment.topCenter, children: [
         Container(
             alignment: Alignment.topCenter,
