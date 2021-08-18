@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class FavButton extends StatefulWidget {
@@ -97,7 +97,7 @@ class _FavButtonState extends State<FavButton> {
   }
 
   void setItemFav() {
-    favItem(widget.item.id).then((Map<String, dynamic> json) => {
+    ItemService.favItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
             widget.item.userData!.isFavorite = json['IsFavorite'];
           }),
@@ -106,7 +106,7 @@ class _FavButtonState extends State<FavButton> {
   }
 
   void unsetItemFav() {
-    unfavItem(widget.item.id).then((Map<String, dynamic> json) => {
+    ItemService.unfavItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
             widget.item.userData!.isFavorite = json['IsFavorite'];
           }),

@@ -55,7 +55,7 @@ class _EpisodeItemState extends State<EpisodeItem>
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: 120, maxHeight: 160),
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 2),
+        padding: const EdgeInsets.all(10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

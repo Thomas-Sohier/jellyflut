@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/paletteButton.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class ViewedButton extends StatefulWidget {
@@ -47,7 +47,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   }
 
   void setItemViewed() {
-    viewItem(widget.item.id).then((Map<String, dynamic> json) => {
+    ItemService.viewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
             widget.item.userData?.played = json['Played'];
           }),
@@ -56,7 +56,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   }
 
   void unsetItemViewed() {
-    unviewItem(widget.item.id).then((Map<String, dynamic> json) => {
+    ItemService.unviewItem(widget.item.id).then((Map<String, dynamic> json) => {
           setState(() {
             widget.item.userData?.played = json['Played'];
           }),

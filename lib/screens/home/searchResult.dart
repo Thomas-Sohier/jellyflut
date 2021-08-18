@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/search/searchProvider.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:provider/provider.dart';
 
 class SearchResult extends StatefulWidget {
@@ -185,24 +185,28 @@ class _SearchResultState extends State<SearchResult> {
 
   void searchItemsFuture(String value) {
     var results = <String, List<Item>>{};
-    searchItems(searchTerm: value, includeItemTypes: 'Movie').then((value) {
+    ItemService.searchItems(searchTerm: value, includeItemTypes: 'Movie')
+        .then((value) {
       results.putIfAbsent('Movie', () => value.items);
       searchProvider.addSearchResult(results);
     });
-    searchItems(searchTerm: value, includeItemTypes: 'Series').then((value) {
+    ItemService.searchItems(searchTerm: value, includeItemTypes: 'Series')
+        .then((value) {
       results.putIfAbsent('Series', () => value.items);
       searchProvider.addSearchResult(results);
     });
-    searchItems(searchTerm: value, includeItemTypes: 'Episode').then((value) {
+    ItemService.searchItems(searchTerm: value, includeItemTypes: 'Episode')
+        .then((value) {
       results.putIfAbsent('Episode', () => value.items);
       searchProvider.addSearchResult(results);
     });
-    searchItems(searchTerm: value, includeItemTypes: 'LiveTvProgram')
+    ItemService.searchItems(
+            searchTerm: value, includeItemTypes: 'LiveTvProgram')
         .then((value) {
       results.putIfAbsent('LiveTvProgram', () => value.items);
       searchProvider.addSearchResult(results);
     });
-    searchItems(
+    ItemService.searchItems(
             searchTerm: value,
             includeItemTypes: 'Movie,Episode',
             mediaTypes: 'Video')

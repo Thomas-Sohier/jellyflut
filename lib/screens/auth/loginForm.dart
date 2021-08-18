@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/components/gradientButton.dart';
 import 'package:jellyflut/components/outlineTextField.dart';
 import 'package:jellyflut/models/jellyfin/authenticationResponse.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/services/auth/authService.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class LoginForm extends StatefulWidget {
@@ -38,9 +38,9 @@ class _LoginFormState extends State<LoginForm> {
     var username = _usernameFilter.text;
     var password = _passwordFilter.text;
 
-    await login(username, password)
+    await AuthService.login(username, password)
         .then((AuthenticationResponse response) async {
-      create(username, response);
+      AuthService.create(username, response);
       if (widget.onAuthenticated != null) {
         widget.onAuthenticated!();
       } else {

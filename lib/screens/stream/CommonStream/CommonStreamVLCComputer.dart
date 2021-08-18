@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLCComputer {
@@ -61,7 +61,7 @@ class CommonStreamVLCComputer {
   static Timer _startProgressTimer(Item item, Player player) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => itemProgress(item,
+        (Timer t) => StreamingService.streamingProgress(item,
             canSeek: player.playback.isSeekable,
             isMuted: player.general.volume > 0 ? true : false,
             isPaused: !player.playback.isPlaying,

@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemImageService.dart';
 
 class MusicItem {
   MusicItem(
@@ -23,7 +23,7 @@ class MusicItem {
   Uint8List? image;
 
   static Future<MusicItem> parseFromItem(int id, String url, Item item) async {
-    final urlImage = getItemImageUrl(
+    final urlImage = ItemImageService.getItemImageUrl(
         item.correctImageId(), item.correctImageTags(),
         imageBlurHashes: item.imageBlurHashes);
     return MusicItem(

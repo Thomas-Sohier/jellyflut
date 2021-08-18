@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -19,7 +19,7 @@ class _ResumeState extends State<Resume> {
 
   @override
   void initState() {
-    categoryFuture = getResumeItems();
+    categoryFuture = ItemService.getResumeItems();
     super.initState();
   }
 

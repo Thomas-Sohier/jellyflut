@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/stream.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/mediaStreamType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -12,6 +10,7 @@ import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// CommonStream Better Player specific code
@@ -53,7 +52,7 @@ class CommonStreamBP {
         StreamingProvider().setTimer(timer);
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.finished) {
-        deleteActiveEncoding();
+        StreamingService.deleteActiveEncoding();
         StreamingProvider().timer?.cancel();
       }
     });
@@ -119,7 +118,7 @@ class CommonStreamBP {
       Item item, BetterPlayerController betterPlayerController) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => itemProgress(item,
+        (Timer t) => StreamingService.streamingProgress(item,
             canSeek: true,
             isMuted:
                 betterPlayerController.videoPlayerController!.value.volume > 0
@@ -167,7 +166,7 @@ class CommonStreamBP {
           urls: [
             sub.isRemote()
                 ? sub.deliveryUrl
-                : getSubtitleURL(item.id, 'vtt', sub.index)
+                : StreamingService.getSubtitleURL(item.id, 'vtt', sub.index)
           ],
           selectedByDefault: false,
           name: '${sub.language} - ${sub.title}');
@@ -235,7 +234,8 @@ class CommonStreamBP {
 
   static void setAudioTrack(AudioTrack audioTrack,
       BetterPlayerController betterPlayerController) async {
-    final newUrl = await getNewAudioSource(audioTrack.jellyfinSubtitleIndex!,
+    final newUrl = await StreamingService.getNewAudioSource(
+        audioTrack.jellyfinSubtitleIndex!,
         playbackTick:
             betterPlayerController.videoPlayerController!.value.position);
     final streamModel = StreamingProvider();

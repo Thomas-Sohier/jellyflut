@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listCollectionItem.dart'
@@ -15,6 +13,7 @@ import 'package:jellyflut/screens/details/template/large_screens/components/item
     as large;
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listVideoItem.dart'
     as large;
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -91,7 +90,7 @@ class _CollectionState extends State<Collection> {
     return Column(children: [
       small.ListCollectionItem(
         item: item,
-        future: getItems(
+        future: ItemService.getItems(
             includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
             sortBy: 'ProductionYear,Sortname',
             albumArtistIds: item.id,
@@ -109,7 +108,7 @@ class _CollectionState extends State<Collection> {
       small.ListCollectionItem(
         item: item,
         title: 'Movies',
-        future: getItems(
+        future: ItemService.getItems(
             includeItemTypes: getEnumValue(ItemType.MOVIE.toString()),
             sortBy: 'ProductionYear,Sortname',
             personIds: item.id,
@@ -122,7 +121,7 @@ class _CollectionState extends State<Collection> {
       small.ListCollectionItem(
         item: item,
         title: 'Series',
-        future: getItems(
+        future: ItemService.getItems(
             includeItemTypes: getEnumValue(ItemType.SERIES.toString()),
             sortBy: 'ProductionYear,Sortname',
             personIds: item.id,
@@ -136,9 +135,9 @@ class _CollectionState extends State<Collection> {
 Future collectionItems(Item item) {
   // If it's a series or a music album we get every item
   if (item.type == ItemType.MUSICALBUM || item.type == ItemType.SERIES) {
-    return getItems(
+    return ItemService.getItems(
         parentId: item.id, limit: 100, fields: 'ImageTags', filter: 'IsFolder');
   } else {
-    return getShowSeasonEpisode(item.seriesId!, item.id);
+    return ItemService.getEpsiode(item.seriesId!, item.id);
   }
 }

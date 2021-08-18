@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -21,7 +21,7 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
   @override
   void initState() {
     carrousselProvider = CarrousselProvider();
-    itemFuture = getItem(carrousselProvider.itemId!);
+    itemFuture = ItemService.getItem(carrousselProvider.itemId!);
     super.initState();
   }
 
@@ -48,7 +48,7 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
             ),
           ),
           child: FutureBuilder<Item>(
-              future: getItem(carrousselProvider.itemId!),
+              future: ItemService.getItem(carrousselProvider.itemId!),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return responsiveBackgroundBuilder(snapshot.data!);

@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/toast.dart';
 
 class ItemDialogActions extends StatelessWidget {
@@ -54,7 +54,7 @@ class ItemDialogActions extends StatelessWidget {
             'Delete',
             () => deleteDialogItem(item, context).then((value) {
                   if (value != null) {
-                    deleteItem(item.id).then((int statusCode) {
+                    ItemService.deleteItem(item.id).then((int statusCode) {
                       if (statusCode == HttpStatus.noContent) {
                         customRouter.pop();
                       } else {
@@ -175,10 +175,10 @@ Future<bool?> deleteDialogItem(Item item, BuildContext context) async {
 }
 
 Future<Item> getAlbum(Item item) async {
-  return await getItem(item.albumId!);
+  return await ItemService.getItem(item.albumId!);
 }
 
 Future<Item?> getArtist(Item item) async {
   var val = item.artistItems?.first.artistItems['Id'];
-  return await getItem(val);
+  return await ItemService.getItem(val);
 }

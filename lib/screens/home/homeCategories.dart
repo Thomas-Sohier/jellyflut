@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/homeCategoryTitle.dart';
+import 'package:jellyflut/services/user/userservice.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,7 +27,7 @@ class _HomeCategoriesState extends State<HomeCategories>
 
   @override
   void initState() {
-    itemsFuture = getLatestMedia(
+    itemsFuture = UserService.getLatestMedia(
         parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
     super.initState();
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/tabsItems.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -24,7 +24,7 @@ class _ListCollectionItemState extends State<ListCollectionItem> {
   void initState() {
     categoryFuture = widget.future != null
         ? widget.future!
-        : getItems(
+        : ItemService.getItems(
             parentId: widget.item.id,
             limit: 100,
             fields: 'ImageTags',

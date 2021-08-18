@@ -118,35 +118,31 @@ class _ItemPosterState extends State<ItemPoster>
   }
 
   Widget name() {
-    return Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Column(
-          children: [
-            Flexible(
-              child: AutoSizeText(
-                  widget.showParent
-                      ? widget.item.parentName()
-                      : widget.item.name,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  minFontSize: 12,
-                  style: Theme.of(context).textTheme.bodyText1!),
+    return Column(
+      children: [
+        Flexible(
+          child: AutoSizeText(
+              widget.showParent ? widget.item.parentName() : widget.item.name,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              minFontSize: 12,
+              style: Theme.of(context).textTheme.bodyText1!),
+        ),
+        if (widget.item.isFolder != null &&
+            widget.item.parentIndexNumber != null)
+          Flexible(
+            child: AutoSizeText(
+              'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              minFontSize: 12,
+              style: Theme.of(context).textTheme.bodyText1!,
             ),
-            if (widget.item.isFolder != null &&
-                widget.item.parentIndexNumber != null)
-              Flexible(
-                child: AutoSizeText(
-                  'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  minFontSize: 12,
-                  style: Theme.of(context).textTheme.bodyText1!,
-                ),
-              ),
-          ],
-        ));
+          ),
+      ],
+    );
   }
 
   Widget newBanner() {

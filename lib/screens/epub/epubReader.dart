@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/epub.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/file/fileService.dart';
+import 'package:jellyflut/services/item/ebookService.dart';
 import 'package:moor/moor.dart';
 import 'dart:io' as io;
 
@@ -46,14 +46,14 @@ class _EpubReaderPageState extends State<EpubReaderPage> {
   Future<String> getEbook(Item item) async {
     // Check if we have rights
     // If not we cancel
-    var hasStorage = await requestStorage();
+    var hasStorage = await FileService.requestStorage();
     if (!hasStorage) {
       throw ('Cannot access storage');
     }
 
     // Check if ebook is already present
-    if (await isEbookDownloaded(item)) {
-      return getStoragePathItem(item);
+    if (await EbookService.isEbookDownloaded(item)) {
+      return FileService.getStoragePathItem(item);
     }
 
     var queryParams = <String, dynamic>{};
@@ -61,8 +61,8 @@ class _EpubReaderPageState extends State<EpubReaderPage> {
 
     var url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
 
-    var dowloadPath = await getStoragePathItem(item);
-    await downloadFile(url, dowloadPath);
+    var dowloadPath = await FileService.getStoragePathItem(item);
+    await FileService.downloadFile(url, dowloadPath);
     return dowloadPath;
   }
 

@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/auth.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/shared/theme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-Future<bool> isLoggedIn() async {
-  var prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('isLoggedIn') ?? false;
-}
-
-Future<bool> isAuth() async {
-  var isLogged = await isLoggedIn();
-  if (isLogged) {
-    await saveToGlobals();
-    return true;
-  }
-  return false;
-}
 
 Widget gradientMask({required Widget child, double radius = 0.5}) {
   return ShaderMask(

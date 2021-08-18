@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/searchProvider.dart';
@@ -11,6 +10,7 @@ import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/homeCategories.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/searchResult.dart';
+import 'package:jellyflut/services/user/userservice.dart';
 import 'package:provider/provider.dart';
 
 import 'background.dart';
@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     searchProvider = SearchProvider();
-    categoryFuture = getCategory();
+    categoryFuture = UserService.getLibraryCategory();
     super.initState();
   }
 

@@ -13,9 +13,6 @@ import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
-import 'package:jellyflut/api/stream.dart';
-import 'package:jellyflut/api/user.dart';
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
@@ -29,6 +26,8 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/stream/initStream.dart';
+import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 import 'albumArtists.dart';
@@ -782,9 +781,9 @@ class Item {
   }
 
   Future<String> getItemURL({bool directPlay = false}) async {
-    await bitrateTest(size: 500000);
-    await bitrateTest(size: 1000000);
-    await bitrateTest(size: 3000000);
+    await StreamingService.bitrateTest(size: 500000);
+    await StreamingService.bitrateTest(size: 1000000);
+    await StreamingService.bitrateTest(size: 3000000);
     var item;
 
     if (type == ItemType.EPISODE ||
@@ -823,7 +822,7 @@ class Item {
   }
 
   Future<Item> getFirstUnplayedItem() async {
-    var category = await getItems(
+    var category = await ItemService.getItems(
         parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
     // remove all item without an index to avoid sort error
     category.items.removeWhere((element) => element.indexNumber == null);
@@ -835,8 +834,8 @@ class Item {
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
     var streamingProvider = StreamingProvider();
-    var data = await isCodecSupported();
-    var backInfos = await playbackInfos(data, item.id,
+    var data = await StreamingService.isCodecSupported();
+    var backInfos = await StreamingService.playbackInfos(data, item.id,
         startTimeTick: item.userData!.playbackPositionTicks);
     var completeTranscodeUrl;
     var finalUrl;
@@ -847,7 +846,7 @@ class Item {
           '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
     }
     finalUrl = completeTranscodeUrl ??
-        await createURL(item, backInfos,
+        await StreamingService.createURL(item, backInfos,
             startTick: item.userData!.playbackPositionTicks);
 
     // Current item, playbackinfos, stream url and direct play bool

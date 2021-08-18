@@ -54,6 +54,7 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<DetailsRouteArgs>();
           return _i6.Details(item: args.item, heroTag: args.heroTag);
         },
+        transitionsBuilder: _i1.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false),
     SettingsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -117,7 +118,7 @@ class AppRouter extends _i1.RootStackRouter {
 
   @override
   List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(AuthParentRoute.name, path: '/'),
+        _i1.RouteConfig(AuthParentRoute.name, path: '/auth-parent'),
         _i1.RouteConfig(HomeRoute.name, path: '/', guards: [authGuard]),
         _i1.RouteConfig(DetailsRoute.name,
             path: '/Details', guards: [authGuard]),
@@ -138,7 +139,7 @@ class AppRouter extends _i1.RootStackRouter {
 class AuthParentRoute extends _i1.PageRouteInfo<AuthParentRouteArgs> {
   AuthParentRoute({_i2.Key? key, void Function()? onAuthenticated})
       : super(name,
-            path: '/',
+            path: '/auth-parent',
             args: AuthParentRouteArgs(
                 key: key, onAuthenticated: onAuthenticated));
 

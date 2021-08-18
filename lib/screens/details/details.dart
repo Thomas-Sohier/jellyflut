@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/details/detailsInfos.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
@@ -8,6 +7,7 @@ import 'package:jellyflut/screens/details/template/small_screens/details.dart'
     as phone;
 import 'package:jellyflut/screens/details/template/large_screens/largeDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/tabletDetails.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../globals.dart';
@@ -74,7 +74,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   DetailsInfos getDetailsInfos() {
-    final futureItem = getItem(widget.item.id);
+    final futureItem = ItemService.getItem(widget.item.id);
     final dominantColorFuture =
         BlurHashUtil.getDominantColor(widget.item, 'Primary');
     final futureDetailsInfos =

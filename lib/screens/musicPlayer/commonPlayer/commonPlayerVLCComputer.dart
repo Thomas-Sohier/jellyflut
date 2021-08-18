@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonPlayerVLCComputer {
@@ -21,7 +21,7 @@ class CommonPlayerVLCComputer {
 
   Future<void> playRemoteAudio(Item item, Player player) async {
     final musicItemIndex = _musicProvider.getPlayList().length + 1;
-    final streamURL = await contructAudioURL(itemId: item.id);
+    final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
     final musicItem =
         await MusicItem.parseFromItem(musicItemIndex, streamURL, item);
     final insertedIndex = _musicProvider.insertIntoPlaylist(musicItem);

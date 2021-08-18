@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemImageService.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -36,7 +36,7 @@ class _PhotoItemState extends State<PhotoItem> {
     if (widget.items != null && widget.items!.isEmpty) {
       return PhotoView(
         heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag),
-        imageProvider: NetworkImage(getItemImageUrl(
+        imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
             widget.item.correctImageId(), widget.item.correctImageTags()!)),
       );
     }
@@ -51,7 +51,7 @@ class _PhotoItemState extends State<PhotoItem> {
       builder: (BuildContext context, int index) {
         var _item = items[index];
         return PhotoViewGalleryPageOptions(
-          imageProvider: NetworkImage(getItemImageUrl(
+          imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
               _item.correctImageId(), _item.correctImageTags()!)),
           initialScale: PhotoViewComputedScale.contained,
         );

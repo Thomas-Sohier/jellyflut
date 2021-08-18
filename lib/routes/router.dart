@@ -8,7 +8,7 @@ import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/services/auth/authService.dart';
 
 import 'router.gr.dart';
 
@@ -22,9 +22,12 @@ import 'router.gr.dart';
   transitionsBuilder: TransitionsBuilders.slideLeft,
   // durationInMilliseconds: 250,
   routes: <AutoRoute>[
-    AutoRoute(page: AuthParent, initial: true),
+    AutoRoute(page: AuthParent),
     AutoRoute(page: Home, guards: [AuthGuard], initial: true),
-    CustomRoute(page: Details, guards: [AuthGuard]),
+    CustomRoute(
+        page: Details,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
+        guards: [AuthGuard]),
     CustomRoute(
         page: Settings,
         transitionsBuilder: TransitionsBuilders.slideLeft,
@@ -41,7 +44,7 @@ class $AppRouter {}
 class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    if (!await isAuth()) {
+    if (!await AuthService.isAuth()) {
       await router.replaceAll([
         AuthParentRoute(onAuthenticated: () {
           router.removeLast();

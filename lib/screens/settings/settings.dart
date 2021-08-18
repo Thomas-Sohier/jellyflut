@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/auth.dart';
+import 'package:jellyflut/services/auth/authService.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
@@ -132,7 +132,8 @@ class _SettingsState extends State<Settings> {
                                 titleTextStyle: TextStyle(color: Colors.white),
                                 subtitleTextStyle:
                                     TextStyle(color: Colors.white60),
-                                onPressed: (_) async => await logout(),
+                                onPressed: (_) async =>
+                                    await AuthService.logout(),
                                 trailing: UserIcon()),
                           ],
                         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/episodeItem.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -20,7 +20,8 @@ class _ListVideoItemState extends State<ListVideoItem> {
 
   @override
   void initState() {
-    episodeFuture = getShowSeasonEpisode(widget.item.seriesId!, widget.item.id);
+    episodeFuture =
+        ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
     super.initState();
   }
 

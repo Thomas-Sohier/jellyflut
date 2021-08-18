@@ -4,16 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/auth/authParent.dart';
-import 'package:jellyflut/screens/home/home.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
-void main() {
+void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
+  await setUpSharedPrefs();
   runApp(Jellyflut());
 }
 
@@ -23,17 +21,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<Widget> initMain() async {
-    var futures = <Future>[];
-    futures.add(isAuth());
-    futures.add(Future.delayed(Duration(seconds: 2)));
-    var resp = await Future.wait(futures);
-    if (resp[0]) {
-      return Future.value(Home());
-    }
-    return Future.value(AuthParent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
@@ -42,7 +29,6 @@ class _MyAppState extends State<MyApp> {
       styleTextUnderTheLoader: TextStyle(fontSize: 16),
       useLoader: false,
       loadingTextPadding: EdgeInsets.all(2),
-      navigateAfterFuture: initMain(),
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Color(0xFF252525),
       photoSize: 80.0,

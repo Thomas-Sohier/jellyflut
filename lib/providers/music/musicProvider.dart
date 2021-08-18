@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/commonPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/models/musicItem.dart';
+import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
@@ -110,14 +111,15 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Future<void> playPlaylist(Item item) async {
-    await getItems(parentId: item.id).then((value) async {
+    await ItemService.getItems(parentId: item.id).then((value) async {
       final indexToReturn = _musicItems.length;
       final items =
           value.items.where((_item) => _item.isFolder == false).toList();
       //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
       for (var index = 0; index < items.length; index++) {
         final _item = items.elementAt(index);
-        final streamURL = await contructAudioURL(itemId: _item.id);
+        final streamURL =
+            await StreamingService.contructAudioURL(itemId: _item.id);
         final musicItem =
             await MusicItem.parseFromItem(index, streamURL, _item);
         insertIntoPlaylist(musicItem);

@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/CommonStream.dart';
 import 'package:jellyflut/screens/stream/model/audiotrack.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLC {
@@ -76,7 +76,7 @@ class CommonStreamVLC {
       Item item, VlcPlayerController vlcPlayerController) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => itemProgress(item,
+        (Timer t) => StreamingService.streamingProgress(item,
             canSeek: true,
             isMuted: vlcPlayerController.value.volume > 0 ? true : false,
             isPaused: !vlcPlayerController.value.isPlaying,

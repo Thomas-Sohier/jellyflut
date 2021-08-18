@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/show.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -24,7 +24,8 @@ class _ListVideoItemState extends State<ListVideoItem> {
   late final Future<Category> episodeFuture;
   @override
   void initState() {
-    episodeFuture = getShowSeasonEpisode(widget.item.seriesId!, widget.item.id);
+    episodeFuture =
+        ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
     super.initState();
   }
 

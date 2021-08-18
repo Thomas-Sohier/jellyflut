@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
+import 'package:jellyflut/services/item/itemImageService.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 import 'package:octo_image/octo_image.dart';
 
@@ -24,8 +24,8 @@ class AsyncImage extends StatelessWidget {
 
   Widget body() {
     var hash = BlurHashUtil.fallBackBlurHash(blurHash, tag);
-    var url =
-        getItemImageUrl(itemId, imageTag, type: tag, imageBlurHashes: blurHash);
+    var url = ItemImageService.getItemImageUrl(itemId, imageTag,
+        type: tag, imageBlurHashes: blurHash);
     return OctoImage(
       image: CachedNetworkImageProvider(url),
       placeholderBuilder: imagePlaceholder(hash),

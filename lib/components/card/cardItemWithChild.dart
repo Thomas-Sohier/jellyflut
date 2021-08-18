@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/components/card/cardInfos.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -8,6 +7,7 @@ import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/small_screens/components/action_button/trailerButton.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -214,7 +214,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
   Widget title(String title, Item item, {clickable = true}) {
     return InkWell(
         onTap: () async {
-          var parentItem = await getItem(item.getParentId());
+          var parentItem = await ItemService.getItem(item.getParentId());
           await customRouter
               .replace(DetailsRoute(item: parentItem, heroTag: ''));
         },

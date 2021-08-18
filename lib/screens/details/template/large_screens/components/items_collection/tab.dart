@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/episodeItem.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,7 +23,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    itemsFuture = getItems(parentId: widget.item.id);
+    itemsFuture = ItemService.getItems(parentId: widget.item.id);
     super.initState();
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/api/items.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/itemService.dart';
 
 class ItemsProvider extends ChangeNotifier {
   List<Item> _items = <Item>[];
@@ -63,7 +63,7 @@ class ItemsProvider extends ChangeNotifier {
     var filter = 'IsNotFolder,IsUnplayed';
     var fields =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview';
-    var category = await getItems(
+    var category = await ItemService.getItems(
         parentId: _parentItemId,
         limit: 5,
         fields: fields,
@@ -100,7 +100,7 @@ class ItemsProvider extends ChangeNotifier {
   void showMoreItem({String? filter}) {
     if (blockItemsLoading == false) {
       blockItemsLoading = true;
-      getItems(
+      ItemService.getItems(
               parentId: _parentItemId,
               sortBy: 'SortName',
               fields:
