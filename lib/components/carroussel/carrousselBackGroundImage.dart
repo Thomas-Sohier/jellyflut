@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
-import 'package:jellyflut/services/item/itemService.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
