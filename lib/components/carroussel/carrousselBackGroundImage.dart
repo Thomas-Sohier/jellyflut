@@ -15,13 +15,8 @@ class CarrousselBackGroundImage extends StatefulWidget {
 }
 
 class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
-  late final Future<Item> itemFuture;
-  late final carrousselProvider;
-
   @override
   void initState() {
-    carrousselProvider = CarrousselProvider();
-    itemFuture = ItemService.getItem(carrousselProvider.itemId!);
     super.initState();
   }
 
@@ -30,32 +25,24 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
     var size = MediaQuery.of(context).size;
     return Consumer<CarrousselProvider>(
         builder: (context, carrousselProvider, child) {
-      if (carrousselProvider.itemId != null) {
+      if (carrousselProvider.item != null) {
         return Container(
-          height: size.height,
-          width: size.width,
-          foregroundDecoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.black,
-                Colors.black54,
-                Colors.black54,
-                Colors.black
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0, 0.5, 0.5, 1],
+            height: size.height,
+            width: size.width,
+            foregroundDecoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black,
+                  Colors.black54,
+                  Colors.black54,
+                  Colors.black
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0, 0.5, 0.5, 1],
+              ),
             ),
-          ),
-          child: FutureBuilder<Item>(
-              future: ItemService.getItem(carrousselProvider.itemId!),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return responsiveBackgroundBuilder(snapshot.data!);
-                }
-                return Container();
-              }),
-        );
+            child: responsiveBackgroundBuilder(carrousselProvider.item!));
       } else {
         return Container();
       }
@@ -75,7 +62,7 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
       item.imageTags!.primary!,
       item.imageBlurHashes!,
       tag: 'Primary',
-      boxFit: BoxFit.fitHeight,
+      boxFit: BoxFit.cover,
     );
   }
 

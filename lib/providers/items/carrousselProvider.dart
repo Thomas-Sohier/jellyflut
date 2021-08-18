@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 
 class CarrousselProvider extends ChangeNotifier {
-  String? itemId;
+  Item? _item;
 
   // Singleton
   static final CarrousselProvider _CarrousselProvider =
@@ -13,12 +14,14 @@ class CarrousselProvider extends ChangeNotifier {
 
   CarrousselProvider._internal();
 
-  void changeItem(String _itemId) {
-    _CarrousselProvider.itemId = _itemId;
+  Item? get item => _item;
+
+  void changeItem(Item item) {
+    _CarrousselProvider._item = item;
     notifyListeners();
   }
 
   void reset() {
-    _CarrousselProvider.itemId = null;
+    _CarrousselProvider._item = null;
   }
 }

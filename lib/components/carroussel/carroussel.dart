@@ -30,7 +30,7 @@ class _CarousselItemState extends State<CarousselItem> {
   }
 
   void setFirstPoster() {
-    CarrousselProvider().changeItem(widget.items[_index].id);
+    CarrousselProvider().changeItem(widget.items[_index]);
   }
 
   @override

@@ -13,7 +13,7 @@ class Background extends StatelessWidget {
       height: double.maxFinite,
       width: double.maxFinite,
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Theme.of(context).backgroundColor,
       ),
       child: child,
     );

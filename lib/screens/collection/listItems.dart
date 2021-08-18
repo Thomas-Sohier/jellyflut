@@ -21,13 +21,13 @@ class ListItems extends StatefulWidget {
 
 class _ListItemsState extends State<ListItems> {
   // Scroll controller
-  late ScrollController _scrollController;
+  late final ScrollController _scrollController;
 
   // Carousel provider
-  late CarrousselProvider carrousselProvider;
+  late final CarrousselProvider carrousselProvider;
 
   // Items
-  late ItemsProvider itemsProvider;
+  late final ItemsProvider itemsProvider;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _ListItemsState extends State<ListItems> {
     carrousselProvider = CarrousselProvider();
     itemsProvider
         .getheaderItems()
-        .then((items) => carrousselProvider.changeItem(items.first.id));
+        .then((items) => carrousselProvider.changeItem(items.first));
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
@@ -143,7 +143,7 @@ class _ListItemsState extends State<ListItems> {
             enableInfiniteScroll: false,
             scrollDirection: Axis.horizontal,
             onPageChanged: (index, _) =>
-                carrousselProvider.changeItem(items[index].id),
+                carrousselProvider.changeItem(items[index]),
             height: 300),
         items: items.map((item) {
           var heroTag = item.id + Uuid().v4();
