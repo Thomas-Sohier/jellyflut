@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/components/BackButton.dart' as bb;
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/screens/stream/components/bottomRowPlayerControls.dart';
 import 'package:jellyflut/screens/stream/components/audioButtonSelector.dart';
 import 'package:jellyflut/screens/stream/components/pipButton.dart';
