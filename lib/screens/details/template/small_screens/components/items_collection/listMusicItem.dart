@@ -17,11 +17,11 @@ class ListMusicItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<Category>(
         future: ItemService.getItems(parentId: item.id),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return body(snapshot.data[1]);
+            return body(snapshot.data!);
           }
           return placeholderBody();
         });
