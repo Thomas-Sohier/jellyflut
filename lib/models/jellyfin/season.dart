@@ -1,10 +1,5 @@
-// To parse this JSON data, do
-//
-//     final season = seasonFromMap(jsonString);
-
 import 'dart:convert';
 
-import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/imageTag.dart';
 
 import 'externalUrl.dart';
