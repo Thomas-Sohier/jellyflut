@@ -27,33 +27,35 @@ class RightDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return ListView(children: [
-      if (item.hasLogo()) Logo(item: item, size: mediaQuery.size),
-      SizedBox(
-        height: 24,
-      ),
-      actions(),
-      SizedBox(
-        height: 24,
-      ),
-      title(context),
-      Row(
+    return ListView(
+        padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
         children: [
-          if (item.hasRatings())
-            Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12),
-              child: Critics(
-                item: item,
-              ),
-            ),
-          Spacer(),
-          infos(context),
-        ],
-      ),
-      overview(context),
-      if (item.hasPeople()) peoples(context),
-      Collection(item)
-    ]);
+          if (item.hasLogo()) Logo(item: item, size: mediaQuery.size),
+          SizedBox(
+            height: 24,
+          ),
+          actions(),
+          SizedBox(
+            height: 24,
+          ),
+          title(context),
+          Row(
+            children: [
+              if (item.hasRatings())
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  child: Critics(
+                    item: item,
+                  ),
+                ),
+              Spacer(),
+              infos(context),
+            ],
+          ),
+          overview(context),
+          if (item.hasPeople()) peoples(context),
+          Collection(item)
+        ]);
   }
 
   Widget peoples(BuildContext context) {

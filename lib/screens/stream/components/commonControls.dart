@@ -123,7 +123,13 @@ class _CommonControlsState extends State<CommonControls> {
 
   Widget controls() {
     return Column(
-      children: [topRow(), Spacer(), BottomRowPlayerControls()],
+      children: [
+        SizedBox(height: 12),
+        topRow(),
+        Spacer(),
+        BottomRowPlayerControls(),
+        SizedBox(height: 12)
+      ],
     );
   }
 
@@ -149,7 +155,7 @@ class _CommonControlsState extends State<CommonControls> {
           Spacer(),
           Padding(
               padding: const EdgeInsets.all(8.0),
-              child: streamingProvider.isDirectPlay!
+              child: streamingProvider.isDirectPlay ?? true
                   ? gradientMask(
                       child: Icon(Icons.play_for_work, color: Colors.white))
                   : gradientMask(

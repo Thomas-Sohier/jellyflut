@@ -82,18 +82,16 @@ class _TabletDetailsState extends State<TabletDetails> {
         Container(
             decoration: BoxDecoration(
                 color: themeData.backgroundColor.withOpacity(0.4))),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(24, 64, 24, 24),
-            child: FutureBuilder<Item>(
-                future: widget.itemToLoad,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return RightDetails(
-                        item: snapshot.data!,
-                        dominantColorFuture: widget.dominantColorFuture);
-                  }
-                  return SkeletonRightDetails();
-                }))
+        FutureBuilder<Item>(
+            future: widget.itemToLoad,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return RightDetails(
+                    item: snapshot.data!,
+                    dominantColorFuture: widget.dominantColorFuture);
+              }
+              return SkeletonRightDetails();
+            })
       ],
     );
   }

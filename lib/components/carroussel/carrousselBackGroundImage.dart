@@ -59,9 +59,12 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
   Widget portraitBackground(Item item) {
     return AsyncImage(
       item.id,
-      item.imageTags!
-          .firstWhere((element) => element.imageType == ImageType.PRIMARY)
-          .value,
+      item.imageTags != null
+          ? item.imageTags!
+              .firstWhere((element) => element.imageType == ImageType.PRIMARY,
+                  orElse: () => item.imageTags!.first)
+              .value
+          : null,
       item.imageBlurHashes!,
       tag: ImageType.PRIMARY,
       boxFit: BoxFit.cover,
@@ -71,9 +74,12 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
   Widget largeBackground(Item item) {
     return AsyncImage(
       item.id,
-      item.imageTags!
-          .firstWhere((element) => element.imageType == ImageType.BACKDROP)
-          .value,
+      item.imageTags != null
+          ? item.imageTags!
+              .firstWhere((element) => element.imageType == ImageType.BACKDROP,
+                  orElse: () => item.imageTags!.first)
+              .value
+          : null,
       item.imageBlurHashes!,
       tag: ImageType.BACKDROP,
       boxFit: BoxFit.cover,

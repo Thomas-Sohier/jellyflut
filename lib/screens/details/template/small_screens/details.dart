@@ -56,21 +56,19 @@ class _DetailsState extends State<Details> {
       Stack(alignment: Alignment.topCenter, children: [
         Container(
             alignment: Alignment.topCenter,
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: ListView(children: [
-              SizedBox(
-                height: 64,
-              ),
-              if (widget.item.hasLogo())
-                Logo(item: widget.item, size: mediaQuery.size),
-              if (widget.item.hasLogo())
-                SizedBox(
-                  height: 64,
-                  width: double.infinity,
-                ),
-              card(),
-              Collection(widget.item),
-            ])),
+            child: ListView(
+                padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
+                children: [
+                  if (widget.item.hasLogo())
+                    Logo(item: widget.item, size: mediaQuery.size),
+                  if (widget.item.hasLogo())
+                    SizedBox(
+                      height: 64,
+                      width: double.infinity,
+                    ),
+                  card(),
+                  Collection(widget.item),
+                ])),
         DetailHeaderBar(
           color: Colors.white,
           height: 64,

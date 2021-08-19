@@ -6,6 +6,8 @@ import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
 import 'package:jellyflut/screens/stream/components/videoPlayerProgressBar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import 'chapterButton.dart';
+
 class BottomRowPlayerControls extends StatelessWidget {
   const BottomRowPlayerControls({Key? key}) : super(key: key);
 
@@ -43,8 +45,12 @@ class BottomRowPlayerControls extends StatelessWidget {
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [BackwardButton(), PlayPauseButton(), ForwardButton()]),
-        SizedBox(height: 12)
+            children: [
+              BackwardButton(),
+              PlayPauseButton(),
+              ForwardButton(),
+              ChapterButton()
+            ]),
       ],
     );
   }

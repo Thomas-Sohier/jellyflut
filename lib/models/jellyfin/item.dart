@@ -30,6 +30,7 @@ import 'package:jellyflut/screens/stream/initStream.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'albumArtists.dart';
 import 'artist.dart';
@@ -763,7 +764,12 @@ class Item {
   image_type.ImageType correctImageType(
       {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
     // If of type logo we return only parent logo
-    if (imageTags != null && imageTags!.isNotEmpty) {}
+    if (imageTags != null && imageTags!.isNotEmpty) {
+      return imageTags!
+          .firstWhere((element) => element.imageType == searchType,
+              orElse: () => imageTags!.first)
+          .imageType;
+    }
     return searchType;
   }
 
@@ -778,7 +784,7 @@ class Item {
         type == ItemType.SERIES ||
         type == ItemType.MOVIE ||
         type == ItemType.VIDEO) {
-      return automaticStreamingSoftwareChooser(item: this);
+      return InitStreamingItemUtil.initFromItem(item: this);
     } else if (type == ItemType.AUDIO) {
       var commonPlayer;
       if (Platform.isLinux || Platform.isWindows) {
@@ -929,5 +935,16 @@ class Item {
 
   List<MediaStream> getMediaStreamFromType({required MediaStreamType type}) {
     return mediaStreams!.where((element) => element.type == type).toList();
+  }
+
+  Future<Uri> getYoutubeTrailerUrl() async {
+    final youtubeUrl = getTrailer();
+    final itemURi = Uri.parse(youtubeUrl);
+    final videoId = itemURi.queryParameters['v'];
+    final yt = YoutubeExplode();
+    final manifest = await yt.videos.streamsClient.getManifest(videoId);
+    final streamInfo = manifest.muxed.withHighestBitrate();
+    yt.close();
+    return streamInfo.url;
   }
 }
