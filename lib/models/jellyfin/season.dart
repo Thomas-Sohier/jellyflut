@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
+import 'package:jellyflut/models/enum/imageType.dart';
+import 'package:jellyflut/models/jellyfin/imageTag.dart';
+
 import 'externalUrl.dart';
 import 'genreItem.dart';
-import 'imageTags.dart';
 import 'person.dart';
 import 'providerIds.dart';
 import 'seasonBlurHash.dart';
@@ -108,7 +110,7 @@ class Season {
   List<String>? airDays;
   List<dynamic>? tags;
   double? primaryImageAspectRatio;
-  ImageTags? imageTags;
+  List<ImageTag>? imageTags;
   List<String>? backdropImageTags;
   List<dynamic>? screenshotImageTags;
   SeasonImageBlurHashes? imageBlurHashes;
@@ -162,7 +164,7 @@ class Season {
         airDays: List<String>.from(json['AirDays'].map((x) => x)),
         tags: List<dynamic>.from(json['Tags'].map((x) => x)),
         primaryImageAspectRatio: json['PrimaryImageAspectRatio'].toDouble(),
-        imageTags: ImageTags.fromMap(json['ImageTags']),
+        imageTags: List<ImageTag>.from(ImageTag.fromMap(json['ImageTags'])),
         backdropImageTags:
             List<String>.from(json['BackdropImageTags'].map((x) => x)),
         screenshotImageTags:
@@ -229,7 +231,7 @@ class Season {
             airDays != null ? List<dynamic>.from(airDays!.map((x) => x)) : null,
         'Tags': tags != null ? List<dynamic>.from(tags!.map((x) => x)) : null,
         'PrimaryImageAspectRatio': primaryImageAspectRatio,
-        'ImageTags': imageTags?.toMap(),
+        'ImageTags': imageTags,
         'BackdropImageTags': backdropImageTags != null
             ? List<dynamic>.from(backdropImageTags!.map((x) => x))
             : null,

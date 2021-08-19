@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
@@ -45,7 +46,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         tag: widget.heroTag ?? '',
         child: BackgroundImage(
           item: widget.item,
-          imageType: 'Backdrop',
+          imageType: ImageType.BACKDROP,
         ),
       ),
       ClipRect(

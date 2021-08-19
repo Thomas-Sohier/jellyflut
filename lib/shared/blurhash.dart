@@ -1,32 +1,32 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/shared/palette.dart';
 
 class BlurHashUtil {
-  static Future<Color> getDominantColor(Item item, String tag) async {
+  static Future<Color> getDominantColor(Item item, ImageType tag) async {
     final hash = BlurHashUtil.fallBackBlurHash(item.imageBlurHashes, tag) ?? '';
     return compute(Palette.generatePalettefromBlurhash, hash);
   }
 
   static String? fallBackBlurHash(
-      ImageBlurHashes? imageBlurHashes, String tag) {
-    // TODO add enum
+      ImageBlurHashes? imageBlurHashes, ImageType tag) {
     if (imageBlurHashes == null) {
       return null;
-    } else if (tag == 'Primary') {
+    } else if (tag == ImageType.PRIMARY) {
       return _fallBackBlurHashPrimary(imageBlurHashes);
-    } else if (tag == 'Logo') {
+    } else if (tag == ImageType.LOGO) {
       return _fallBackBlurHashLogo(imageBlurHashes);
-    } else if (tag == 'Backdrop') {
+    } else if (tag == ImageType.BACKDROP) {
       return imageBlurHashes.backdrop?.values.first;
-    } else if (tag == 'Thumb') {
+    } else if (tag == ImageType.THUMB) {
       return imageBlurHashes.thumb?.values.first;
-    } else if (tag == 'Art') {
+    } else if (tag == ImageType.ART) {
       return imageBlurHashes.art?.values.first;
-    } else if (tag == 'Banner') {
+    } else if (tag == ImageType.BANNER) {
       return imageBlurHashes.banner?.values.first;
     }
     return null;

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class Logo extends StatelessWidget {
@@ -17,11 +18,13 @@ class Logo extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: 400),
         height: 100,
         child: AsyncImage(
-          item.correctImageId(searchType: 'logo'),
-          item.correctImageTags(searchType: 'logo'),
+          item.correctImageId(searchType: ImageType.LOGO),
+          item.correctImageTags(searchType: ImageType.LOGO),
           item.imageBlurHashes!,
           boxFit: BoxFit.contain,
-          tag: 'Logo',
+          errorWidget: SizedBox(),
+          placeholder: SizedBox(),
+          tag: ImageType.LOGO,
         ));
   }
 }

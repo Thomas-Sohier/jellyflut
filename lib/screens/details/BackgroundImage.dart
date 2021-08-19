@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class BackgroundImage extends StatelessWidget {
   final Item item;
-  final String imageType;
+  final ImageType imageType;
 
   const BackgroundImage(
-      {Key? key, required this.item, this.imageType = 'Primary'})
+      {Key? key, required this.item, this.imageType = ImageType.PRIMARY})
       : super(key: key);
 
   @override
@@ -32,7 +33,7 @@ class BackgroundImage extends StatelessWidget {
             item.correctImageId(searchType: imageType),
             item.correctImageTags(searchType: imageType),
             item.imageBlurHashes,
-            tag: imageType,
+            tag: item.correctImageType(searchType: imageType),
             boxFit: BoxFit.cover,
           )),
     );

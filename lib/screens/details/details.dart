@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/details/detailsInfos.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/small_screens/details.dart'
@@ -76,7 +77,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   DetailsInfos getDetailsInfos() {
     final futureItem = ItemService.getItem(widget.item.id);
     final dominantColorFuture =
-        BlurHashUtil.getDominantColor(widget.item, 'Primary');
+        BlurHashUtil.getDominantColor(widget.item, ImageType.PRIMARY);
     final futureDetailsInfos =
         DetailsInfos(item: futureItem, dominantColor: dominantColorFuture);
     return futureDetailsInfos;

@@ -4,6 +4,7 @@ import 'package:jellyflut/components/banner/LeftBanner.dart';
 import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:uuid/uuid.dart';
@@ -17,7 +18,7 @@ class ItemPoster extends StatefulWidget {
       this.showParent = true,
       this.showLogo = false,
       this.clickable = true,
-      this.tag = 'Primary',
+      this.tag = ImageType.PRIMARY,
       this.boxFit = BoxFit.cover});
 
   final Item item;
@@ -28,7 +29,7 @@ class ItemPoster extends StatefulWidget {
   final bool showParent;
   final bool showLogo;
   final bool clickable;
-  final String tag;
+  final ImageType tag;
   final BoxFit boxFit;
 
   @override

@@ -22,7 +22,7 @@ class _StreamState extends State<Stream> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
       Wakelock.enable();
     }
     streamingProvider = StreamingProvider();
@@ -35,7 +35,7 @@ class _StreamState extends State<Stream> {
 
   @override
   void dispose() {
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
       Wakelock.disable();
     }
     streamingProvider.commonStream?.disposeStream();
@@ -54,7 +54,7 @@ class _StreamState extends State<Stream> {
 
   @override
   void deactivate() {
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
       Wakelock.disable();
     }
     streamingProvider.commonStream?.disposeStream();

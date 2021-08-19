@@ -17,6 +17,7 @@ import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
+import 'package:jellyflut/models/enum/imageType.dart' as image_type;
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/enum/mediaStreamType.dart';
 
@@ -36,8 +37,8 @@ import 'artistItems.dart';
 import 'chapter.dart';
 import 'externalUrl.dart';
 import 'genreItem.dart';
-import 'imageTags.dart';
 import 'imageBlurHashes.dart';
+import 'imageTag.dart';
 import 'mediaSource.dart';
 import 'mediaStream.dart';
 import 'person.dart';
@@ -172,7 +173,7 @@ class Item {
   double? primaryImageAspectRatio;
   List<MediaStream>? mediaStreams;
   String? videoType;
-  ImageTags? imageTags;
+  List<ImageTag>? imageTags;
   String? seriesPrimaryImageTag;
   String? seriesName;
   List<String>? backdropImageTags;
@@ -291,9 +292,7 @@ class Item {
             : List<MediaStream>.from(
                 json['MediaStreams'].map((x) => MediaStream.fromMap(x))),
         videoType: json['VideoType'],
-        imageTags: json['ImageTags'] == null
-            ? null
-            : ImageTags.fromMap(json['ImageTags']),
+        imageTags: List<ImageTag>.from(ImageTag.fromMap(json['ImageTags'])),
         seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
         seriesName: json['SeriesName'],
         backdropImageTags: json['BackdropImageTags'] == null
@@ -391,7 +390,7 @@ class Item {
           ? List<dynamic>.from(mediaStreams!.map((x) => x.toMap()))
           : null,
       'VideoType': videoType,
-      'ImageTags': imageTags?.toMap(),
+      'ImageTags': imageTags,
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
       'SeriesName': seriesName,
       'BackdropImageTags': backdropImageTags != null
@@ -615,7 +614,7 @@ class Item {
   /// Return parent id if there is no primary image set
   String getIdBasedOnImage() {
     if (type == ItemType.SEASON) {
-      if (imageTags!.primary != null) return id;
+      if (imageTags == null && imageTags!.isEmpty) return id;
       return seriesId!;
     }
     return id;
@@ -681,9 +680,10 @@ class Item {
   ///
   /// Return id as [String] if found
   /// Else return item's id as [String]
-  String correctImageId({String searchType = 'Primary'}) {
+  String correctImageId(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
     // If of type logo we return only parent logo
-    if (searchType.toLowerCase().trim() == 'logo') {
+    if (searchType == image_type.ImageType.LOGO) {
       switch (type) {
         case ItemType.SEASON:
         case ItemType.EPISODE:
@@ -693,8 +693,15 @@ class Item {
         default:
           return id;
       }
-    } else if (imageTags!.toMap().values.every((element) => element == null)) {
+    } else if (imageTags != null && imageTags!.isNotEmpty) {
       switch (type) {
+        case ItemType.EPISODE:
+          return imageTags != null && imageTags!.isNotEmpty
+              ? imageTags!
+                  .firstWhere((element) => element.imageType == searchType,
+                      orElse: () => ImageTag(imageType: searchType, value: id))
+                  .value
+              : id;
         case ItemType.SEASON:
           return seriesId ?? id;
         case ItemType.MUSICALBUM:
@@ -713,9 +720,10 @@ class Item {
   ///
   /// Return imageTag as [String] if found
   /// Else return [null]
-  String? correctImageTags({String searchType = 'Primary'}) {
+  String? correctImageTags(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
     // If of type logo we return only parent logo
-    if (searchType.toLowerCase().trim() == 'logo') {
+    if (searchType == image_type.ImageType.LOGO) {
       switch (type) {
         case ItemType.SEASON:
         case ItemType.EPISODE:
@@ -725,8 +733,15 @@ class Item {
         default:
           return null;
       }
-    } else if (imageTags!.toMap().values.every((element) => element == null)) {
+    } else if (imageTags != null && imageTags!.isNotEmpty) {
       switch (type) {
+        case ItemType.EPISODE:
+          return imageTags != null && imageTags!.isNotEmpty
+              ? imageTags!
+                  .firstWhere((element) => element.imageType == searchType,
+                      orElse: () => imageTags!.first)
+                  .value
+              : null;
         case ItemType.SEASON:
           return seriesPrimaryImageTag;
         case ItemType.MUSICALBUM:
@@ -737,6 +752,19 @@ class Item {
       }
     }
     return null;
+  }
+
+  /// Get correct image tags based on searchType
+  ///
+  /// Return [String]
+  ///
+  /// Return imageTag as [String] if found
+  /// Else return [null]
+  image_type.ImageType correctImageType(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
+    // If of type logo we return only parent logo
+    if (imageTags != null && imageTags!.isNotEmpty) {}
+    return searchType;
   }
 
   /// Play current item given context

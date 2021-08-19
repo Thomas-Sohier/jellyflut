@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 
 import '../asyncImage.dart';
 
 class Poster extends StatefulWidget {
-  final String tag;
+  final ImageType tag;
   final BoxFit boxFit;
   final Item item;
   final bool showParent;
@@ -74,7 +75,9 @@ class _PosterState extends State<Poster> {
       tag: widget.heroTag,
       child: AsyncImage(
         itemId,
-        widget.item.imageTags?.primary ?? '',
+        widget.item.imageTags!
+            .firstWhere((element) => element.imageType == ImageType.PRIMARY)
+            .value,
         widget.item.imageBlurHashes!,
         tag: widget.tag,
         boxFit: widget.boxFit,

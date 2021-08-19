@@ -36,9 +36,8 @@ class CommonStreamVLCComputer {
   }
 
   static Future<Player> setupDataFromUrl({required String url}) async {
-    final playerId = Random().nextInt(10000);
     final player = Player(
-      id: playerId,
+      id: videoPlayerId,
     );
     final media = Media.network(url);
     player.open(media);

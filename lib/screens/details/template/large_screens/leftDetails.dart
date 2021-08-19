@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/components/poster/poster.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/shared/blurhash.dart';
 
@@ -17,8 +18,9 @@ class LeftDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tag = 'Primary';
-    final hash = BlurHashUtil.fallBackBlurHash(item.imageBlurHashes, tag) ?? '';
+    final hash = BlurHashUtil.fallBackBlurHash(
+            item.imageBlurHashes, ImageType.PRIMARY) ??
+        '';
     return Stack(
       children: [
         BlurHash(hash: hash),
@@ -28,7 +30,7 @@ class LeftDetails extends StatelessWidget {
               child: Poster(
             item: item,
             heroTag: heroTag,
-            tag: tag,
+            tag: ImageType.PRIMARY,
             clickable: false,
             showParent: false,
             boxFit: BoxFit.contain,

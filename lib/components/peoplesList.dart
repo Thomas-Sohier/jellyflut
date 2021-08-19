@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/peoplePoster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
-import 'package:jellyflut/models/jellyfin/imageTags.dart';
+import 'package:jellyflut/models/jellyfin/imageTag.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -48,7 +49,11 @@ class _PeoplesListState extends State<PeoplesList> {
                 name: person.name,
                 id: person.id,
                 imageBlurHashes: person.imageBlurHashes,
-                imageTags: ImageTags(primary: person.primaryImageTag),
+                imageTags: List<ImageTag>.from([
+                  ImageTag(
+                      imageType: ImageType.PRIMARY,
+                      value: person.primaryImageTag ?? '')
+                ]),
                 type: ItemType.PERSON);
             return ScreenTypeLayout.builder(
                 breakpoints: screenBreakpoints,

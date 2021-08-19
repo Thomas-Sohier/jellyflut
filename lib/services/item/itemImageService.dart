@@ -1,64 +1,64 @@
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/imageBlurHashes.dart';
+import 'package:jellyflut/shared/shared.dart';
 
 class ItemImageService {
   static String getItemImageUrl(String itemId, String? imageTag,
       {ImageBlurHashes? imageBlurHashes,
       int maxHeight = 1920,
       int maxWidth = 1080,
-      String type = 'Primary',
+      ImageType type = ImageType.PRIMARY,
       int quality = 60}) {
-    var finalType = type;
+    var finalType = getEnumValue(type.toString());
     if (imageBlurHashes != null) {
-      finalType = _fallBackImg(imageBlurHashes, type);
+      finalType = getEnumValue(_fallBackImg(imageBlurHashes, type).toString());
     }
-    if (type == 'Logo') {
+    if (type == ImageType.LOGO) {
       return '${server.url}/Items/$itemId/Images/$finalType?quality=$quality&tag=$imageTag';
-    } else if (type == 'Backdrop') {
+    } else if (type == ImageType.BACKDROP) {
       return '${server.url}/Items/$itemId/Images/$finalType?maxWidth=800&tag=$imageTag&quality=$quality';
     } else {
       return '${server.url}/Items/$itemId/Images/$finalType?maxHeight=$maxHeight&maxWidth=$maxWidth&tag=$imageTag&quality=$quality';
     }
   }
 
-  static String _fallBackImg(ImageBlurHashes imageBlurHashes, String tag) {
-    var hash = 'hash';
-    if (tag == 'Primary') {
-      hash = _fallBackPrimary(imageBlurHashes);
-    } else if (tag == 'Backdrop') {
-      hash = _fallBackBackdrop(imageBlurHashes);
-    } else if (tag == 'Logo') {
-      hash = tag;
+  static ImageType _fallBackImg(
+      ImageBlurHashes imageBlurHashes, ImageType tag) {
+    if (tag == ImageType.PRIMARY) {
+      return _fallBackPrimary(imageBlurHashes);
+    } else if (tag == ImageType.BACKDROP) {
+      return _fallBackBackdrop(imageBlurHashes);
     }
-    return hash;
+    return tag;
   }
 
-  static String _fallBackPrimary(ImageBlurHashes imageBlurHashes) {
+  static ImageType _fallBackPrimary(ImageBlurHashes imageBlurHashes) {
     if (imageBlurHashes.primary != null) {
-      return 'Primary';
+      return ImageType.PRIMARY;
     } else if (imageBlurHashes.thumb != null) {
-      return 'Thumb';
+      return ImageType.THUMB;
     } else if (imageBlurHashes.backdrop != null) {
-      return 'Backdrop';
+      return ImageType.BACKDROP;
     } else if (imageBlurHashes.art != null) {
-      return 'Art';
+      return ImageType.ART;
     } else {
-      return 'Primary';
+      return ImageType.PRIMARY;
     }
   }
 
-  static String _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
+  static ImageType _fallBackBackdrop(ImageBlurHashes imageBlurHashes) {
     if (imageBlurHashes.backdrop != null)
       // ignore: curly_braces_in_flow_control_structures
-      return 'Backdrop';
+      return ImageType.BACKDROP;
     else if (imageBlurHashes.thumb != null) {
-      return 'Thumb';
+      return ImageType.THUMB;
     } else if (imageBlurHashes.art != null) {
-      return 'Art';
+      return ImageType.ART;
     } else if (imageBlurHashes.primary != null) {
-      return 'Primary';
+      return ImageType.PRIMARY;
     } else {
-      return 'Primary';
+      return ImageType.PRIMARY;
     }
   }
 }

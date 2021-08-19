@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/asyncImage.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
 import 'package:provider/provider.dart';
@@ -58,9 +59,11 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
   Widget portraitBackground(Item item) {
     return AsyncImage(
       item.id,
-      item.imageTags!.primary!,
+      item.imageTags!
+          .firstWhere((element) => element.imageType == ImageType.PRIMARY)
+          .value,
       item.imageBlurHashes!,
-      tag: 'Primary',
+      tag: ImageType.PRIMARY,
       boxFit: BoxFit.cover,
     );
   }
@@ -68,9 +71,11 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
   Widget largeBackground(Item item) {
     return AsyncImage(
       item.id,
-      item.imageTags!.primary!,
+      item.imageTags!
+          .firstWhere((element) => element.imageType == ImageType.BACKDROP)
+          .value,
       item.imageBlurHashes!,
-      tag: 'Backdrop',
+      tag: ImageType.BACKDROP,
       boxFit: BoxFit.cover,
     );
   }
