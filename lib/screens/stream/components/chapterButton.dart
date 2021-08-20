@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/chapter.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
@@ -19,7 +18,7 @@ class _ChapterButtonState extends State<ChapterButton> {
 
   @override
   void initState() {
-    _node = FocusNode();
+    _node = FocusNode(canRequestFocus: false, descendantsAreFocusable: false);
     streamingProvider = StreamingProvider();
     super.initState();
   }
@@ -28,60 +27,69 @@ class _ChapterButtonState extends State<ChapterButton> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
       node: _node,
-      onPressed: () => selectChapter(context),
+      onPressed: () => {},
       shape: CircleBorder(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
+      child: changeChapter(context),
+    );
+  }
+
+  Widget changeChapter(BuildContext context) {
+    return PopupMenuButton<Chapter>(
+        icon: Icon(
           Icons.list,
           color: Colors.white,
         ),
+        tooltip: 'Select a chapter',
+        onSelected: (Chapter value) => goToChapter(value),
+        itemBuilder: (context) =>
+            chapterList(streamingProvider.item?.chapters));
+  }
+
+  List<PopupMenuEntry<Chapter>> chapterList(List<Chapter>? chapters) {
+    final list = <PopupMenuEntry<Chapter>>[];
+    list.add(
+      PopupMenuItem(
+        child: Text('Select a chapter'),
+      ),
+    );
+    list.add(
+      PopupMenuDivider(
+        height: 10,
+      ),
+    );
+    if (chapters == null || chapters.isEmpty) {
+      list.add(PopupMenuItem(enabled: false, child: Text('No chapters')));
+      return list;
+    }
+    for (var index = 0; index < chapters.length; index++) {
+      final chapter = chapters[index];
+      list.add(chapterItem(chapter));
+    }
+    return list;
+  }
+
+  PopupMenuItem<Chapter> chapterItem(Chapter chapter) {
+    final chapterPosition =
+        Duration(microseconds: (chapter.startPositionTicks / 10).round());
+    return PopupMenuItem<Chapter>(
+      value: chapter,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            chapter.name,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          Text(printDuration(chapterPosition))
+        ],
       ),
     );
   }
 
-  void selectChapter(BuildContext context) {
-    final chapters = streamingProvider.item?.chapters ?? [];
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Select Chapter'),
-              content: Container(
-                  width: 250,
-                  constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-                  child: ListView.builder(
-                      itemCount: chapters.length,
-                      itemBuilder: (context, index) =>
-                          _chapterListItem(chapters.elementAt(index)))));
-        });
-  }
-
-  Widget _chapterListItem(Chapter chapter) {
+  void goToChapter(Chapter chapter) {
     final chapterPosition =
         Duration(microseconds: (chapter.startPositionTicks / 10).round());
-    return ListTile(
-        selected: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              chapter.name,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            Text(printDuration(chapterPosition),
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .color!
-                        .withAlpha(170)))
-          ],
-        ),
-        onTap: () {
-          streamingProvider.commonStream!.seekTo(chapterPosition);
-          customRouter.pop();
-        });
+    streamingProvider.commonStream!.seekTo(chapterPosition);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
@@ -20,7 +19,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   @override
   void initState() {
     super.initState();
-    _node = FocusNode();
+    _node = FocusNode(canRequestFocus: false, descendantsAreFocusable: false);
     streamingProvider = StreamingProvider();
     subtitleSelectedIndex = streamingProvider.selectedSubtitleTrack?.index ?? 0;
   }
@@ -28,69 +27,62 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
-      onPressed: () => changeSubtitle(context),
-      shape: CircleBorder(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.closed_caption,
-          color: Colors.white,
-        ),
-      ),
+        node: _node,
+        onPressed: () => {},
+        shape: CircleBorder(),
+        child: changeSubtitle(context));
+  }
+
+  Widget changeSubtitle(BuildContext context) {
+    return FutureBuilder<List<Subtitle>>(
+      future: streamingProvider.commonStream!.getSubtitles(),
+      builder: (context, snapshot) => PopupMenuButton<Subtitle>(
+          icon: Icon(
+            Icons.subtitles,
+            color: Colors.white,
+          ),
+          tooltip: 'Select a subtitle',
+          onSelected: (Subtitle subtitle) => setSubtitle(subtitle),
+          itemBuilder: (context) {
+            if (snapshot.hasData) {
+              return _audioTracksListTile(snapshot.data!);
+            }
+            return <PopupMenuEntry<Subtitle>>[];
+          }),
     );
   }
 
-  void changeSubtitle(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Select Subtitle'),
-              content: Container(
-                  width: 250,
-                  constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-                  child: FutureBuilder<List<Subtitle>>(
-                      future: streamingProvider.commonStream!.getSubtitles(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          final subtitles = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: subtitles.length + 1,
-                            itemBuilder: (context, index) {
-                              return _subtitleListTile(index, subtitles);
-                            },
-                          );
-                        }
-                        return Center(
-                          child: Text('No subtitles found'),
-                        );
-                      })));
-        });
-  }
-
-  Widget _subtitleListTile(int index, List<Subtitle> subtitles) {
-    return ListTile(
-      selected: isSelected(index, subtitles),
-      title: Text(
-        index < subtitles.length ? subtitles[index].name : 'Disable',
+  List<PopupMenuEntry<Subtitle>> _audioTracksListTile(
+      List<Subtitle> audioTracks) {
+    final list = <PopupMenuEntry<Subtitle>>[];
+    list.add(
+      PopupMenuItem(
+        child: Text('Select a subtitle'),
       ),
-      onTap: () {
-        index < subtitles.length
-            ? setSubtitle(subtitles[index])
-            : disableSubtitles(subtitles[index]);
-        customRouter.pop(
-          index < subtitles.length ? subtitles[index] : -1,
-        );
-      },
     );
-  }
-
-  bool isSelected(int index, List<Subtitle> subtitles) {
-    if (index < subtitles.length) {
-      return subtitleSelectedIndex == subtitles[index].index;
+    list.add(
+      PopupMenuDivider(
+        height: 10,
+      ),
+    );
+    if (audioTracks.isEmpty) {
+      list.add(PopupMenuItem(enabled: false, child: Text('No subtitles')));
+      return list;
     }
-    return subtitleSelectedIndex == index;
+    for (var index = 0; index < audioTracks.length; index++) {
+      list.add(
+        CheckedPopupMenuItem(
+          value: audioTracks[index],
+          checked: isSelected(audioTracks[index]),
+          child: Text(audioTracks[index].name),
+        ),
+      );
+    }
+    return list;
+  }
+
+  bool isSelected(Subtitle subtitle) {
+    return subtitleSelectedIndex == subtitle.index;
   }
 
   void disableSubtitles(Subtitle subtitle) {

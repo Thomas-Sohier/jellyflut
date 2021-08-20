@@ -20,7 +20,10 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   @override
   void initState() {
     super.initState();
-    _node = FocusNode();
+    _node = FocusNode(
+        canRequestFocus: false,
+        descendantsAreFocusable: false,
+        skipTraversal: true);
     streamingProvider = StreamingProvider();
     audioSelectedIndex = streamingProvider.selectedAudioTrack?.index ?? 0;
   }
@@ -28,59 +31,58 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
-      onPressed: () => changeAudio(context),
-      shape: CircleBorder(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.audiotrack,
-          color: Colors.white,
-        ),
-      ),
+        node: _node,
+        onPressed: () => {},
+        shape: CircleBorder(),
+        child: changeAudio(context));
+  }
+
+  Widget changeAudio(BuildContext context) {
+    return FutureBuilder<List<AudioTrack>>(
+      future: streamingProvider.commonStream!.getAudioTracks(),
+      builder: (context, snapshot) => PopupMenuButton<AudioTrack>(
+          icon: Icon(
+            Icons.audiotrack,
+            color: Colors.white,
+          ),
+          tooltip: 'Select audio source',
+          onSelected: (AudioTrack audio) => setAudioTrack(audio),
+          itemBuilder: (context) {
+            if (snapshot.hasData) {
+              return _audioTracksListTile(snapshot.data!);
+            }
+            return <PopupMenuEntry<AudioTrack>>[];
+          }),
     );
   }
 
-  void changeAudio(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Select audio source'),
-              content: Container(
-                  width: 250,
-                  constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
-                  child: FutureBuilder<List<AudioTrack>>(
-                      future: streamingProvider.commonStream!.getAudioTracks(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          final audioTracks = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: audioTracks.length,
-                            itemBuilder: (context, index) {
-                              return _audioTracksListTile(index, audioTracks);
-                            },
-                          );
-                        }
-                        return Center(
-                          child: Text('No audio tracks found'),
-                        );
-                      })));
-        });
-  }
-
-  Widget _audioTracksListTile(int index, List<AudioTrack> audioTracks) {
-    return ListTile(
-        selected: isAudioSelected(audioTracks[index]),
-        title: Text(
-          audioTracks[index].name,
+  List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(
+      List<AudioTrack> audioTracks) {
+    final list = <PopupMenuEntry<AudioTrack>>[];
+    list.add(
+      PopupMenuItem(
+        child: Text('Select audio source'),
+      ),
+    );
+    list.add(
+      PopupMenuDivider(
+        height: 10,
+      ),
+    );
+    if (audioTracks.isEmpty) {
+      list.add(PopupMenuItem(enabled: false, child: Text('No audio source')));
+      return list;
+    }
+    for (var index = 0; index < audioTracks.length; index++) {
+      list.add(
+        CheckedPopupMenuItem(
+          value: audioTracks[index],
+          checked: isAudioSelected(audioTracks[index]),
+          child: Text(audioTracks[index].name),
         ),
-        onTap: () {
-          setAudioTrack(audioTracks[index]);
-          customRouter.pop(
-            index < audioTracks.length ? audioTracks[index] : -1,
-          );
-        });
+      );
+    }
+    return list;
   }
 
   bool isAudioSelected(AudioTrack audioTrack) {
