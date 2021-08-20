@@ -29,8 +29,9 @@ class Poster extends StatefulWidget {
 
 class _PosterState extends State<Poster> {
   late final FocusNode node;
-  late double aspectRatio;
-  late String itemId;
+  late final double aspectRatio;
+  late final String itemId;
+  late final String? itemImageTag;
 
   @override
   void initState() {
@@ -40,7 +41,8 @@ class _PosterState extends State<Poster> {
         : widget.item.getPrimaryAspectRatio();
     itemId = widget.showParent
         ? widget.item.getParentId()
-        : widget.item.getIdBasedOnImage();
+        : widget.item.correctImageId();
+    itemImageTag = widget.item.correctImageTags();
     super.initState();
   }
 
@@ -50,12 +52,6 @@ class _PosterState extends State<Poster> {
 
   @override
   Widget build(BuildContext context) {
-    aspectRatio = widget.aspectRatio != null
-        ? widget.aspectRatio!
-        : widget.item.getPrimaryAspectRatio();
-    itemId = widget.showParent
-        ? widget.item.getParentId()
-        : widget.item.getIdBasedOnImage();
     if (widget.clickable) {
       return OutlinedButton(
         onPressed: () => onTap(),
@@ -81,9 +77,7 @@ class _PosterState extends State<Poster> {
       tag: widget.heroTag,
       child: AsyncImage(
         itemId,
-        widget.item.imageTags!
-            .firstWhere((element) => element.imageType == ImageType.PRIMARY)
-            .value,
+        itemImageTag,
         widget.item.imageBlurHashes!,
         tag: widget.tag,
         boxFit: widget.boxFit,

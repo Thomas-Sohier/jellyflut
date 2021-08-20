@@ -42,17 +42,19 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: cardThemeData,
-        child: widget.heroTag != null
-            ? Hero(tag: widget.heroTag!, child: phoneTemplate())
-            : phoneTemplate());
+    return Theme(data: cardThemeData, child: phoneTemplate());
   }
 
   Widget phoneTemplate() {
     final mediaQuery = MediaQuery.of(context);
     return Stack(alignment: Alignment.topCenter, children: [
-      BackgroundImage(item: widget.item, imageType: ImageType.PRIMARY),
+      widget.heroTag != null
+          ? Hero(
+              tag: widget.heroTag!,
+              child: BackgroundImage(
+                  item: widget.item, imageType: ImageType.PRIMARY),
+            )
+          : BackgroundImage(item: widget.item, imageType: ImageType.PRIMARY),
       Stack(alignment: Alignment.topCenter, children: [
         Container(
             alignment: Alignment.topCenter,
@@ -61,11 +63,10 @@ class _DetailsState extends State<Details> {
                 children: [
                   if (widget.item.hasLogo())
                     Logo(item: widget.item, size: mediaQuery.size),
-                  if (widget.item.hasLogo())
-                    SizedBox(
-                      height: 64,
-                      width: double.infinity,
-                    ),
+                  SizedBox(
+                    height: 64,
+                    width: double.infinity,
+                  ),
                   card(),
                   Collection(widget.item),
                 ])),

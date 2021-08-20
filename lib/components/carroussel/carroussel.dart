@@ -21,16 +21,23 @@ class CarousselItem extends StatefulWidget {
 }
 
 class _CarousselItemState extends State<CarousselItem> {
+  late final CarrousselProvider carrousselProvider;
   int _index = 0;
 
   @override
+  void initState() {
+    super.initState();
+    carrousselProvider = CarrousselProvider();
+  }
+
+  @override
   void dispose() {
-    CarrousselProvider().reset();
+    carrousselProvider.reset();
     super.dispose();
   }
 
   void setFirstPoster() {
-    CarrousselProvider().changeItem(widget.items[_index]);
+    carrousselProvider.changeItem(widget.items[_index]);
   }
 
   @override

@@ -616,7 +616,7 @@ class Item {
   String getIdBasedOnImage() {
     if (type == ItemType.SEASON) {
       if (imageTags == null && imageTags!.isEmpty) return id;
-      return seriesId!;
+      return seasonId ?? id;
     }
     return id;
   }
@@ -694,25 +694,18 @@ class Item {
         default:
           return id;
       }
-    } else if (imageTags != null && imageTags!.isNotEmpty) {
-      switch (type) {
-        case ItemType.EPISODE:
-          return imageTags != null && imageTags!.isNotEmpty
-              ? imageTags!
-                  .firstWhere((element) => element.imageType == searchType,
-                      orElse: () => ImageTag(imageType: searchType, value: id))
-                  .value
-              : id;
-        case ItemType.SEASON:
-          return seriesId ?? id;
-        case ItemType.MUSICALBUM:
-        case ItemType.AUDIO:
-          return albumId ?? id;
-        default:
-          return id;
-      }
     }
-    return id;
+    switch (type) {
+      case ItemType.EPISODE:
+        return id;
+      case ItemType.SEASON:
+        return seriesId ?? id;
+      case ItemType.MUSICALBUM:
+      case ItemType.AUDIO:
+        return albumId ?? id;
+      default:
+        return id;
+    }
   }
 
   /// Get correct image tags based on searchType
