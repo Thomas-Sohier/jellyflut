@@ -20,7 +20,7 @@ dependencies:
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
-  dart_vlc: ^0.1.4
+  dart_vlc: ^0.1.5
   device_info: ^2.0.2
   dio: ^4.0.0
   epub_view: ^2.2.0
