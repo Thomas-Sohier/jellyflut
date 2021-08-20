@@ -135,10 +135,7 @@ class CommonStream {
             listener != null ? vlcPlayerController.addListener(listener) : {},
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
-        dispose: () {
-          vlcPlayerController.stop();
-          vlcPlayerController.dispose();
-        },
+        dispose: () => CommonStreamVLC.stopPlayer(vlcPlayerController),
         controller: vlcPlayerController);
   }
 
@@ -180,7 +177,7 @@ class CommonStream {
         addListener: betterPlayerController.videoPlayerController!.addListener,
         removeListener:
             betterPlayerController.videoPlayerController!.removeListener,
-        dispose: () => betterPlayerController.dispose(),
+        dispose: () => CommonStreamBP.stopPlayer(betterPlayerController),
         controller: betterPlayerController);
   }
 

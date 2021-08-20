@@ -12,6 +12,7 @@ import 'package:jellyflut/screens/stream/components/subtitleButtonSelector.dart'
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CommonControls extends StatefulWidget {
   final bool isComputer;
@@ -24,9 +25,10 @@ class CommonControls extends StatefulWidget {
 
 class _CommonControlsState extends State<CommonControls> {
   late final StreamingProvider streamingProvider;
+  late final BehaviorSubject<bool> _visibleStreamController;
   late Timer _timer;
   late Future<bool> hasPip;
-  bool _visible = true;
+  bool _visible = false;
 
   // mask layer
   final Shader linearGradient = LinearGradient(
@@ -38,15 +40,15 @@ class _CommonControlsState extends State<CommonControls> {
   @override
   void initState() {
     super.initState();
+    _visibleStreamController = BehaviorSubject<bool>();
     streamingProvider = StreamingProvider();
     streamingProvider.commonStream?.initListener();
     hasPip = streamingProvider.commonStream!.hasPip();
     RawKeyboard.instance.addListener((value) => _onKey(value));
-    _timer = Timer(
-        Duration(seconds: 5),
-        () => setState(() {
-              _visible = false;
-            }));
+    _timer = Timer(Duration(seconds: 5), () {
+      _visible = false;
+      _visibleStreamController.add(false);
+    });
   }
 
   @override
@@ -61,13 +63,11 @@ class _CommonControlsState extends State<CommonControls> {
       autoHideControlHover();
       switch (e.logicalKey.debugName) {
         case 'Media Play Pause':
-          setState(() {
-            if (streamingProvider.commonStream!.isPlaying()) {
-              streamingProvider.commonStream!.pause();
-            } else {
-              streamingProvider.commonStream!.play();
-            }
-          });
+          if (streamingProvider.commonStream!.isPlaying()) {
+            streamingProvider.commonStream!.pause();
+          } else {
+            streamingProvider.commonStream!.play();
+          }
           break;
       }
     }
@@ -95,12 +95,16 @@ class _CommonControlsState extends State<CommonControls> {
   Widget visibility({required Widget child}) {
     return Material(
         color: Colors.transparent,
-        child: Visibility(
-            maintainSize: true,
-            maintainAnimation: true,
-            maintainState: true,
-            visible: _visible,
-            child: child));
+        child: StreamBuilder<bool>(
+          initialData: false,
+          stream: _visibleStreamController.stream,
+          builder: (context, snapshot) => Visibility(
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: snapshot.data ?? false,
+              child: child),
+        ));
   }
 
   Widget blackGradient() {
@@ -197,25 +201,23 @@ class _CommonControlsState extends State<CommonControls> {
 
   Future<void> autoHideControl() async {
     _timer.cancel();
-    setState(() {
-      _visible = !_visible;
+    _visible = !_visible;
+    _visibleStreamController.add(!_visible);
+    _timer = Timer(Duration(seconds: 5), () {
+      _visible = false;
+      _visibleStreamController.add(false);
     });
-    _timer = Timer(
-        Duration(seconds: 5),
-        () => setState(() {
-              _visible = false;
-            }));
   }
 
   Future<void> autoHideControlHover() async {
     _timer.cancel();
     if (_visible == false) {
-      setState(() => _visible = true);
+      _visible = true;
+      _visibleStreamController.add(true);
     }
-    _timer = Timer(
-        Duration(seconds: 5),
-        () => setState(() {
-              _visible = false;
-            }));
+    _timer = Timer(Duration(seconds: 5), () {
+      _visible = false;
+      _visibleStreamController.add(false);
+    });
   }
 }

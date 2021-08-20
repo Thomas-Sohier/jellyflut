@@ -32,6 +32,7 @@ class CommonStreamBP {
   }
 
   static Future<BetterPlayerController> setupData({required Item item}) async {
+    final streamingProvider = StreamingProvider();
     final streamURL = await item.getItemURL();
     final dataSource = BetterPlayerDataSource.network(streamURL,
         subtitles: _getSubtitlesBP(item));
@@ -45,16 +46,15 @@ class CommonStreamBP {
     _betterPlayerController.addEventsListener((event) {
       if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
         customRouter.pop();
-        // showToast(event.parameters.toString(), fToast,
-        //     duration: Duration(seconds: 3));
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.initialized) {
         final timer = _startProgressTimer(item, _betterPlayerController);
-        StreamingProvider().setTimer(timer);
+        streamingProvider.timer?.cancel();
+        streamingProvider.setTimer(timer);
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.finished) {
         StreamingService.deleteActiveEncoding();
-        StreamingProvider().timer?.cancel();
+        streamingProvider.timer?.cancel();
       }
     });
     await _betterPlayerController.setupDataSource(dataSource);
@@ -63,7 +63,7 @@ class CommonStreamBP {
       betterPlayerController: _betterPlayerController,
       listener: () => {},
     );
-    StreamingProvider().setCommonStream(commonStream);
+    streamingProvider.setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }
 
@@ -274,5 +274,10 @@ class CommonStreamBP {
     betterPlayerController.addEventsListener((_) =>
         streamController.add(betterPlayerController.isPlaying() ?? false));
     return streamController;
+  }
+
+  static void stopPlayer(BetterPlayerController betterPlayerController) {
+    betterPlayerController.pause();
+    betterPlayerController.dispose();
   }
 }

@@ -9,7 +9,8 @@ import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLCComputer {
-  static List<Timer> timers = [];
+  static final streamingProvider = StreamingProvider();
+  static final List<Timer> timers = [];
   final Player player;
 
   const CommonStreamVLCComputer({required this.player});
@@ -24,13 +25,14 @@ class CommonStreamVLCComputer {
 
     // create timer to save progress
     final timer = _startProgressTimer(item, _player);
-    StreamingProvider().setTimer(timer);
+    streamingProvider.timer?.cancel();
+    streamingProvider.setTimer(timer);
 
     // create common stream controller
     final commonStream = CommonStream.parseVlcComputerController(
         player: _player, listener: () => {});
 
-    StreamingProvider().setCommonStream(commonStream);
+    streamingProvider.setCommonStream(commonStream);
     return Future.value(_player);
   }
 

@@ -42,6 +42,7 @@ class CommonStreamVLC {
 
     // create timer to save progress
     final timer = _startProgressTimer(item, vlcPlayerController);
+    streamingProvider.timer?.cancel();
     streamingProvider.setTimer(timer);
 
     // create common stream controller
@@ -150,5 +151,10 @@ class CommonStreamVLC {
     vlcPlayerController.addListener(
         () => streamController.add(vlcPlayerController.value.isPlaying));
     return streamController;
+  }
+
+  static void stopPlayer(VlcPlayerController vlcPlayerController) {
+    vlcPlayerController.stop();
+    vlcPlayerController.dispose();
   }
 }
