@@ -767,7 +767,10 @@ class Item {
     if (imageTags != null && imageTags!.isNotEmpty) {
       return imageTags!
           .firstWhere((element) => element.imageType == searchType,
-              orElse: () => imageTags!.first)
+              orElse: () => imageTags!.firstWhere(
+                  (element) =>
+                      element.imageType == image_type.ImageType.PRIMARY,
+                  orElse: () => imageTags!.first))
           .imageType;
     }
     return searchType;
