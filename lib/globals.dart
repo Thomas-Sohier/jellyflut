@@ -2,6 +2,7 @@ library globals;
 
 import 'dart:math';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/deviceProfile.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
@@ -26,6 +27,12 @@ double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
 // Used for some player to prevent from creating a new player
 int get audioPlayerId => 132;
 int get videoPlayerId => 213;
+
+Future<bool> get isAndroidTv async {
+  final deviceInfo = DeviceInfoPlugin();
+  final androidInfo = await deviceInfo.androidInfo;
+  return androidInfo.systemFeatures.contains('android.software.leanback_only');
+}
 
 late SharedPreferences _sharedPrefs;
 

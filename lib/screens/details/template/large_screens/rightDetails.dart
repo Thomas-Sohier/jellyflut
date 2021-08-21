@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
@@ -138,7 +139,8 @@ class RightDetails extends StatelessWidget {
 
   Widget actions(BuildContext context) {
     final deviceType = getDeviceType(MediaQuery.of(context).size);
-
+    print(deviceType);
+    isAndroidTv;
     if (deviceType == DeviceScreenType.mobile) {
       return Column(
         children: [

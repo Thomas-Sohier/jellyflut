@@ -33,8 +33,7 @@ class _TabsItemsState extends State<TabsItems>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: widget.items.length * 150, child: tabs(widget.items));
+    return SizedBox(height: 1500, child: tabs(widget.items));
   }
 
   Widget tabs(List<Item> items) {

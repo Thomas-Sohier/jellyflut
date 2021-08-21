@@ -39,10 +39,14 @@ class _MyAppState extends State<MyApp> {
 
 class Jellyflut extends StatelessWidget {
   final shortcuts = <LogicalKeySet, Intent>{
+    LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
     LogicalKeySet.fromSet(<LogicalKeyboardKey>{
       LogicalKeyboardKey.select,
       LogicalKeyboardKey.enter,
       LogicalKeyboardKey.space,
+      LogicalKeyboardKey.gameButtonSelect,
+      LogicalKeyboardKey.gameButtonStart,
+      LogicalKeyboardKey.open,
       LogicalKeyboardKey.mediaPlayPause,
       LogicalKeyboardKey.mediaPlay,
     }): const ActivateIntent(),

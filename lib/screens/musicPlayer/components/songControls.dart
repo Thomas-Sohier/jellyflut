@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/screens/musicPlayer/components/nextButton.dart';
+import 'package:jellyflut/screens/musicPlayer/components/prevButton.dart';
 import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
@@ -45,22 +47,8 @@ class _SongControlsState extends State<SongControls> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OutlinedButtonSelector(
-            onPressed: () => musicProvider.previous(),
-            node: _node,
-            shape: CircleBorder(),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: widget.backgroundColor,
-                  boxShadow: shadows,
-                  shape: BoxShape.circle),
-              child: Icon(
-                Icons.skip_previous,
-                color: widget.color,
-                size: 32,
-              ),
-            )),
+        PrevButton(
+            color: widget.color, backgroundColor: widget.backgroundColor),
         Padding(
           padding: const EdgeInsets.only(left: 24, right: 24),
           child: Container(
@@ -85,22 +73,7 @@ class _SongControlsState extends State<SongControls> {
                     )),
               )),
         ),
-        OutlinedButtonSelector(
-            onPressed: () => musicProvider.next(),
-            node: _node,
-            shape: CircleBorder(),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: widget.backgroundColor,
-                  boxShadow: shadows,
-                  shape: BoxShape.circle),
-              child: Icon(
-                Icons.skip_next,
-                color: widget.color,
-                size: 32,
-              ),
-            )),
+        NextButton(color: widget.color, backgroundColor: widget.backgroundColor)
       ],
     );
   }
