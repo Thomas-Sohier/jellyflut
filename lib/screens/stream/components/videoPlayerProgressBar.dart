@@ -33,7 +33,8 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
       builder: (context, snapshot) => ProgressBar(
           progress: snapshot.data ?? Duration(seconds: 0),
           buffered: streamingProvider.commonStream!.getBufferingDuration(),
-          total: streamingProvider.commonStream!.getDuration(),
+          total: streamingProvider.commonStream!.getDuration() ??
+              Duration(seconds: 0),
           progressBarColor: jellyLightPurple,
           baseBarColor: Colors.white.withOpacity(0.24),
           bufferedBarColor: Colors.white.withOpacity(0.24),

@@ -33,44 +33,35 @@ class _TabsItemsState extends State<TabsItems>
 
   @override
   Widget build(BuildContext context) {
-    return tabs(widget.items);
+    return SizedBox(
+        height: widget.items.length * 150, child: tabs(widget.items));
   }
 
   Widget tabs(List<Item> items) {
-    final height = MediaQuery.of(context).size.height;
-    final tabHeight = height < 800 ? 800 : height;
-    return DefaultTabController(
-      length: items.length,
-      initialIndex: 0,
-      child: SizedBox(
-        height: tabHeight.toDouble(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: SizedBox(
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  children: getTabsHeader(items),
-                ),
-              ),
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+            height: 50,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: getTabsHeader(items),
             ),
-            SizedBox(
-              height: 24,
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                physics: NeverScrollableScrollPhysics(),
-                children: getTabsChilds(items),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        SizedBox(
+          height: 24,
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            physics: NeverScrollableScrollPhysics(),
+            children: getTabsChilds(items),
+          ),
+        ),
+      ],
     );
   }
 

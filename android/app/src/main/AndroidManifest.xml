@@ -1,17 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jellyflut">
+    <uses-feature android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen"
+        android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="30" />
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="jellyflut"
+        android:banner="@drawable/banner"
         android:icon="@mipmap/ic_launcher">
+
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -39,6 +50,7 @@
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

@@ -50,7 +50,7 @@ class _PaletteButtonState extends State<PaletteButton>
   void initState() {
     minWidth = widget.minWidth;
     maxWidth = widget.maxWidth;
-    _node = FocusNode();
+    _node = FocusNode(descendantsAreFocusable: false);
     super.initState();
   }
 

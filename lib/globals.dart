@@ -46,6 +46,6 @@ DeviceProfile? savedDeviceProfile;
 bool shimmerAnimation = false;
 
 final ScreenBreakpoints _screenBreakpoints =
-    ScreenBreakpoints(tablet: 600, desktop: 720, watch: 300);
+    ScreenBreakpoints(tablet: 400, desktop: 720, watch: 300);
 
 ScreenBreakpoints get screenBreakpoints => _screenBreakpoints;

@@ -142,7 +142,7 @@ class _CommonControlsState extends State<CommonControls> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (widget.isComputer) bb.BackButton(shadow: true),
+          bb.BackButton(shadow: true),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

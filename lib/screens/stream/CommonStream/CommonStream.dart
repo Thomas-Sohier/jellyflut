@@ -86,7 +86,7 @@ class CommonStream {
   bool isPlaying() => _isPlaying();
   void seekTo(Duration duration) => _seekTo(duration);
   Duration getBufferingDuration() => _bufferingDuration();
-  Duration getDuration() => _duration();
+  Duration? getDuration() => _duration();
   Duration getCurrentPosition() => _currentPosition();
   bool? isInit() => _isInit;
   Future<bool> hasPip() => _hasPip;
