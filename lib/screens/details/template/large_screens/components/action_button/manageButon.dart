@@ -6,15 +6,17 @@ import 'package:jellyflut/screens/form/editItemInfos.dart';
 
 class ManageButton extends StatelessWidget {
   final Item item;
+  final double maxWidth;
 
-  const ManageButton({Key? key, required this.item}) : super(key: key);
+  const ManageButton({Key? key, required this.item, this.maxWidth = 150})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PaletteButton('Manage',
         onPressed: () => editInfos(context),
         minWidth: 40,
-        maxWidth: 150,
+        maxWidth: maxWidth,
         borderRadius: 4,
         icon: Icon(Icons.settings, color: Colors.black87));
   }

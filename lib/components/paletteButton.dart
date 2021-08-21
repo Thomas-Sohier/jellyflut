@@ -34,10 +34,10 @@ class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin {
   // variable for both button
   // size
-  late double minWidth = 88.0;
-  late double minHeight = 36.0;
-  late double maxWidth = 200;
-  late double maxHeight = 50;
+  double minWidth = 88.0;
+  double minHeight = 36.0;
+  double maxWidth = 200;
+  double maxHeight = 50;
   // padding of icon if one
   final EdgeInsets padding = EdgeInsets.fromLTRB(5, 0, 5, 0);
 
@@ -48,14 +48,14 @@ class _PaletteButtonState extends State<PaletteButton>
 
   @override
   void initState() {
-    minWidth = widget.minWidth;
-    maxWidth = widget.maxWidth;
     _node = FocusNode(descendantsAreFocusable: false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    minWidth = widget.minWidth;
+    maxWidth = widget.maxWidth;
     super.build(context);
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
     return TextButton(
@@ -100,30 +100,31 @@ class _PaletteButtonState extends State<PaletteButton>
                     end: Alignment.bottomRight),
                 borderRadius: borderRadius),
             child: Container(
-                constraints: BoxConstraints(
-                    minWidth: minWidth,
-                    minHeight: minHeight,
-                    maxWidth: maxWidth,
-                    maxHeight: maxHeight),
-                alignment: Alignment.center,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.text,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: foregroundColor, fontSize: 18),
-                      ),
-                      if (widget.icon != null)
-                        Padding(
-                          padding: padding,
-                          child: Icon(
-                            widget.icon!.icon,
-                            color: foregroundColor,
-                          ),
-                        )
-                    ])),
+              constraints: BoxConstraints(
+                  minHeight: minHeight,
+                  minWidth: minWidth,
+                  maxWidth: maxWidth,
+                  maxHeight: maxHeight),
+              alignment: Alignment.center,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.text,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: foregroundColor, fontSize: 18),
+                    ),
+                    if (widget.icon != null)
+                      Padding(
+                        padding: padding,
+                        child: Icon(
+                          widget.icon!.icon,
+                          color: foregroundColor,
+                        ),
+                      )
+                  ]),
+            ),
           );
         } else if (snapshot.hasError) {
           return buttonDefault(borderRadius);
@@ -148,8 +149,8 @@ class _PaletteButtonState extends State<PaletteButton>
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
             constraints: BoxConstraints(
-                minWidth: minWidth,
                 minHeight: minHeight,
+                minWidth: minWidth,
                 maxWidth: maxWidth,
                 maxHeight: maxHeight),
             decoration: BoxDecoration(

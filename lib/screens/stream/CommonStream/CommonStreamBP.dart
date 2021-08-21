@@ -16,8 +16,12 @@ import 'package:rxdart/rxdart.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP {
-  static Duration getBufferingDurationBP(
-      BetterPlayerController betterPlayerController) {
+  static final streamingProvider = StreamingProvider();
+  final BetterPlayerController betterPlayerController;
+
+  const CommonStreamBP({required this.betterPlayerController});
+
+  Duration getBufferingDurationBP() {
     try {
       final duration = betterPlayerController
           .videoPlayerController?.value.buffered
@@ -174,8 +178,7 @@ class CommonStreamBP {
     return parsedSubtitlesBP;
   }
 
-  static Future<List<Subtitle>> getSubtitles(
-      BetterPlayerController betterPlayerController) async {
+  Future<List<Subtitle>> getSubtitles() async {
     // ignore: omit_local_variable_types
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = betterPlayerController.betterPlayerSubtitlesSourceList;
@@ -186,14 +189,15 @@ class CommonStreamBP {
     return parsedSubtitiles;
   }
 
-  static void setSubtitle(
-      Subtitle subtitle, BetterPlayerController betterPlayerController) {
+  void setSubtitle(
+    Subtitle subtitle,
+  ) {
     betterPlayerController.setupSubtitleSource(
         betterPlayerController.betterPlayerSubtitlesSourceList[subtitle.index]);
   }
 
 /*
-  static List<BetterPlayerSubtitlesSource> _getAudioTracksBP(Item item) {
+  List<BetterPlayerSubtitlesSource> _getAudioTracksBP(Item item) {
     final List<BetterPlayerSubtitlesSource> parsedSubtitlesBP = [];
     var audioTracks = item.mediaStreams!
         .where((element) => element.type == MediaStreamType.AUDIO)
@@ -212,8 +216,7 @@ class CommonStreamBP {
   }
   */
 
-  static Future<List<AudioTrack>> getAudioTracks(
-      BetterPlayerController betterPlayerController) async {
+  Future<List<AudioTrack>> getAudioTracks() async {
     // ignore: omit_local_variable_types
     final List<AudioTrack> parsedAudioTrack = [];
     var audioTracks = StreamingProvider()
@@ -231,8 +234,9 @@ class CommonStreamBP {
     return parsedAudioTrack;
   }
 
-  static void setAudioTrack(AudioTrack audioTrack,
-      BetterPlayerController betterPlayerController) async {
+  void setAudioTrack(
+    AudioTrack audioTrack,
+  ) async {
     final newUrl = await StreamingService.getNewAudioSource(
         audioTrack.jellyfinSubtitleIndex!,
         playbackTick:
@@ -250,8 +254,7 @@ class CommonStreamBP {
     await betterPlayerController.seekTo(Duration(microseconds: tick));
   }
 
-  static BehaviorSubject<Duration> positionStream(
-      BetterPlayerController betterPlayerController) {
+  BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
     betterPlayerController.addEventsListener(
         (BetterPlayerEvent betterPlayerEvent) => streamController
@@ -259,8 +262,7 @@ class CommonStreamBP {
     return streamController;
   }
 
-  static BehaviorSubject<Duration> durationStream(
-      BetterPlayerController betterPlayerController) {
+  BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
     betterPlayerController.addEventsListener((_) => streamController.add(
         betterPlayerController.videoPlayerController!.value.duration ??
@@ -268,15 +270,14 @@ class CommonStreamBP {
     return streamController;
   }
 
-  static BehaviorSubject<bool> playingStateStream(
-      BetterPlayerController betterPlayerController) {
+  BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
     betterPlayerController.addEventsListener((_) =>
         streamController.add(betterPlayerController.isPlaying() ?? false));
     return streamController;
   }
 
-  static void stopPlayer(BetterPlayerController betterPlayerController) {
+  void stopPlayer() {
     betterPlayerController.pause();
     betterPlayerController.dispose();
   }

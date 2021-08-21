@@ -4,8 +4,6 @@ import 'package:jellyflut/models/details/detailsInfos.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/small_screens/details.dart'
-    as phone;
 import 'package:jellyflut/screens/details/template/large_screens/largeDetails.dart';
 import 'package:jellyflut/screens/details/template/large_screens/tabletDetails.dart';
 import 'package:jellyflut/services/item/itemService.dart';
@@ -55,7 +53,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   Widget responsiveBuilder() {
     return ScreenTypeLayout.builder(
         breakpoints: screenBreakpoints,
-        mobile: (BuildContext context) => phone.Details(
+        mobile: (BuildContext context) => TabletDetails(
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
               dominantColorFuture: futureDetailsInfos.dominantColor,

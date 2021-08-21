@@ -13,8 +13,6 @@ import 'package:jellyflut/screens/home/searchResult.dart';
 import 'package:jellyflut/services/user/userservice.dart';
 import 'package:provider/provider.dart';
 
-import 'background.dart';
-
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +21,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late final focusNode;
   late SearchProvider searchProvider;
   late Future<Category> categoryFuture;
 
@@ -40,10 +39,8 @@ class _HomeState extends State<Home> {
         child: MusicPlayerFAB(
           child: Scaffold(
               extendBody: true,
-              backgroundColor: Colors.transparent,
-              body: Background(
-                  child: RefreshIndicator(
-                      onRefresh: () => _refreshItems(), child: sliverItems()))),
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: sliverItems()),
         ));
   }
 
@@ -144,9 +141,5 @@ class _HomeState extends State<Home> {
       var _item = category.items[index];
       return HomeCategories(_item);
     }, childCount: category.items.length));
-  }
-
-  Future<Null> _refreshItems() async {
-    setState(() {});
   }
 }

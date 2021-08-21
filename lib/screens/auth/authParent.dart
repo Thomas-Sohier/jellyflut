@@ -30,7 +30,6 @@ class _AuthParentState extends State<AuthParent> {
   Widget build(BuildContext context) {
     final paddingTop = MediaQuery.of(context).padding.top;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
           child: ListView(children: [

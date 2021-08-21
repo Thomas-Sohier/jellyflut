@@ -7,8 +7,10 @@ import 'package:jellyflut/shared/toast.dart';
 
 class LikeButton extends StatefulWidget {
   final Item item;
+  final double maxWidth;
 
-  const LikeButton({Key? key, required this.item}) : super(key: key);
+  const LikeButton({Key? key, required this.item, this.maxWidth = 150})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -38,7 +40,7 @@ class _LikeButtonState extends State<LikeButton> {
       onPressed: () => widget.item.isFavorite() ? unsetItemFav() : setItemFav(),
       borderRadius: 4,
       minWidth: 40,
-      maxWidth: 150,
+      maxWidth: widget.maxWidth,
       icon: widget.item.isFavorite()
           ? Icon(Icons.favorite, color: Colors.red.shade900)
           : Icon(Icons.favorite_border, color: Colors.black87),

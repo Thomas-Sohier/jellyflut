@@ -10,8 +10,12 @@ import 'package:jellyflut/services/streaming/streamingService.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonStreamVLC {
-  static Duration getBufferingDurationVLC(
-      VlcPlayerController vlcPlayerController) {
+  static final streamingProvider = StreamingProvider();
+  final VlcPlayerController vlcPlayerController;
+
+  const CommonStreamVLC({required this.vlcPlayerController});
+
+  Duration getBufferingDurationVLC() {
     final durationCurrentFile = vlcPlayerController.value.duration;
     final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds =
@@ -87,8 +91,7 @@ class CommonStreamVLC {
             subtitlesIndex: 0));
   }
 
-  static Future<List<Subtitle>> getSubtitles(
-      VlcPlayerController vlcPlayerController) async {
+  Future<List<Subtitle>> getSubtitles() async {
     // ignore: omit_local_variable_types
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = await vlcPlayerController.getSpuTracks();
@@ -102,13 +105,13 @@ class CommonStreamVLC {
     return parsedSubtitiles;
   }
 
-  static void setSubtitle(
-      Subtitle subtitle, VlcPlayerController vlcPlayerController) {
+  void setSubtitle(
+    Subtitle subtitle,
+  ) {
     vlcPlayerController.setSpuTrack(subtitle.jellyfinSubtitleIndex!);
   }
 
-  static Future<List<AudioTrack>> getAudioTracks(
-      VlcPlayerController vlcPlayerController) async {
+  Future<List<AudioTrack>> getAudioTracks() async {
     // ignore: omit_local_variable_types
     final List<AudioTrack> parsedAudioTracks = [];
     final audioTracks = await vlcPlayerController.getAudioTracks();
@@ -122,13 +125,13 @@ class CommonStreamVLC {
     return parsedAudioTracks;
   }
 
-  static void setAudioTrack(
-      AudioTrack trackIndex, VlcPlayerController vlcPlayerController) {
+  void setAudioTrack(
+    AudioTrack trackIndex,
+  ) {
     vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
   }
 
-  static BehaviorSubject<Duration> positionStream(
-      VlcPlayerController vlcPlayerController) {
+  BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
     vlcPlayerController.addListener(() {
       streamController.add(vlcPlayerController.value.position);
@@ -136,8 +139,7 @@ class CommonStreamVLC {
     return streamController;
   }
 
-  static BehaviorSubject<Duration> durationStream(
-      VlcPlayerController vlcPlayerController) {
+  BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
     vlcPlayerController.addListener(() {
       streamController.add(vlcPlayerController.value.duration);
@@ -145,15 +147,14 @@ class CommonStreamVLC {
     return streamController;
   }
 
-  static BehaviorSubject<bool> playingStateStream(
-      VlcPlayerController vlcPlayerController) {
+  BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
     vlcPlayerController.addListener(
         () => streamController.add(vlcPlayerController.value.isPlaying));
     return streamController;
   }
 
-  static void stopPlayer(VlcPlayerController vlcPlayerController) {
+  void stopPlayer() {
     vlcPlayerController.stop();
     vlcPlayerController.dispose();
   }

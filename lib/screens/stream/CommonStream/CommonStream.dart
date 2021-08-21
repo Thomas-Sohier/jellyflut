@@ -107,41 +107,41 @@ class CommonStream {
   static CommonStream parseVLCController(
       {required VlcPlayerController vlcPlayerController,
       VoidCallback? listener}) {
+    final commonStreamVLC =
+        CommonStreamVLC(vlcPlayerController: vlcPlayerController);
     return CommonStream._(
         pause: vlcPlayerController.pause,
         play: vlcPlayerController.play,
         isPlaying: () => vlcPlayerController.value.isPlaying,
         seekTo: vlcPlayerController.seekTo,
         duration: () => vlcPlayerController.value.duration,
-        bufferingDuration: () =>
-            CommonStreamVLC.getBufferingDurationVLC(vlcPlayerController),
+        bufferingDuration: commonStreamVLC.getBufferingDurationVLC,
         currentPosition: () => vlcPlayerController.value.position,
         isInit: vlcPlayerController.value.isInitialized,
         hasPip: Future.value(false),
         pip: () => throw ('Not supported on VLC player'),
-        getSubtitles: () => CommonStreamVLC.getSubtitles(vlcPlayerController),
-        setSubtitle: (subtitle) =>
-            CommonStreamVLC.setSubtitle(subtitle, vlcPlayerController),
+        getSubtitles: commonStreamVLC.getSubtitles,
+        setSubtitle: (subtitle) => commonStreamVLC.setSubtitle(subtitle),
         disableSubtitles: () => vlcPlayerController.setSpuTrack(-1),
-        getAudioTracks: () =>
-            CommonStreamVLC.getAudioTracks(vlcPlayerController),
+        getAudioTracks: commonStreamVLC.getAudioTracks,
         setAudioTrack: (audioTrack) =>
-            CommonStreamVLC.setAudioTrack(audioTrack, vlcPlayerController),
-        positionStream: CommonStreamVLC.positionStream(vlcPlayerController),
-        durationStream: CommonStreamVLC.durationStream(vlcPlayerController),
-        isPlayingStream:
-            CommonStreamVLC.playingStateStream(vlcPlayerController),
+            commonStreamVLC.setAudioTrack(audioTrack),
+        positionStream: commonStreamVLC.positionStream(),
+        durationStream: commonStreamVLC.durationStream(),
+        isPlayingStream: commonStreamVLC.playingStateStream(),
         initListener: () =>
             listener != null ? vlcPlayerController.addListener(listener) : {},
         addListener: vlcPlayerController.addListener,
         removeListener: vlcPlayerController.removeListener,
-        dispose: () => CommonStreamVLC.stopPlayer(vlcPlayerController),
+        dispose: commonStreamVLC.stopPlayer,
         controller: vlcPlayerController);
   }
 
   static CommonStream parseBetterPlayerController(
       {required BetterPlayerController betterPlayerController,
       VoidCallback? listener}) {
+    final commonStreamBP =
+        CommonStreamBP(betterPlayerController: betterPlayerController);
     return CommonStream._(
         pause: betterPlayerController.pause,
         play: betterPlayerController.play,
@@ -150,26 +150,20 @@ class CommonStream {
         seekTo: betterPlayerController.seekTo,
         duration: () =>
             betterPlayerController.videoPlayerController!.value.duration,
-        bufferingDuration: () =>
-            CommonStreamBP.getBufferingDurationBP(betterPlayerController),
+        bufferingDuration: commonStreamBP.getBufferingDurationBP,
         currentPosition: () =>
             betterPlayerController.videoPlayerController!.value.position,
         isInit: betterPlayerController.isVideoInitialized(),
         hasPip: betterPlayerController.isPictureInPictureSupported(),
-        pip: () => betterPlayerController.enablePictureInPicture(
-            betterPlayerController.betterPlayerGlobalKey!),
-        getSubtitles: () => CommonStreamBP.getSubtitles(betterPlayerController),
-        setSubtitle: (subtitle) =>
-            CommonStreamBP.setSubtitle(subtitle, betterPlayerController),
-        disableSubtitles: () => betterPlayerController.subtitlesLines.clear(),
-        getAudioTracks: () =>
-            CommonStreamBP.getAudioTracks(betterPlayerController),
-        setAudioTrack: (audioTrack) =>
-            CommonStreamBP.setAudioTrack(audioTrack, betterPlayerController),
-        positionStream: CommonStreamBP.positionStream(betterPlayerController),
-        durationStream: CommonStreamBP.durationStream(betterPlayerController),
-        isPlayingStream:
-            CommonStreamBP.playingStateStream(betterPlayerController),
+        pip: betterPlayerController.enablePictureInPicture,
+        getSubtitles: commonStreamBP.getSubtitles,
+        setSubtitle: (subtitle) => commonStreamBP.setSubtitle(subtitle),
+        disableSubtitles: betterPlayerController.subtitlesLines.clear,
+        getAudioTracks: commonStreamBP.getAudioTracks,
+        setAudioTrack: (audioTrack) => commonStreamBP.setAudioTrack(audioTrack),
+        positionStream: commonStreamBP.positionStream(),
+        durationStream: commonStreamBP.durationStream(),
+        isPlayingStream: commonStreamBP.playingStateStream(),
         initListener: () => listener != null
             ? betterPlayerController.videoPlayerController!
                 .addListener(listener)
@@ -177,7 +171,7 @@ class CommonStream {
         addListener: betterPlayerController.videoPlayerController!.addListener,
         removeListener:
             betterPlayerController.videoPlayerController!.removeListener,
-        dispose: () => CommonStreamBP.stopPlayer(betterPlayerController),
+        dispose: commonStreamBP.stopPlayer,
         controller: betterPlayerController);
   }
 
