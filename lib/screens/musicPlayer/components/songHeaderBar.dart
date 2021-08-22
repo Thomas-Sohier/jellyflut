@@ -4,8 +4,8 @@ import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'package:jellyflut/shared/theme.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 class SongHeaderBar extends StatelessWidget {
   final double height;
@@ -20,14 +20,10 @@ class SongHeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusBarHeight = MediaQuery.of(context).padding.top;
-    return ScreenTypeLayout.builder(
-        breakpoints: screenBreakpoints,
-        mobile: (BuildContext context) =>
-            phoneTemplate(statusBarHeight, context),
-        tablet: (BuildContext context) =>
-            largeScreenTemplate(statusBarHeight, context),
-        desktop: (BuildContext context) =>
-            largeScreenTemplate(height, context));
+    return ResponsiveBuilder.builder(
+        mobile: () => phoneTemplate(statusBarHeight, context),
+        tablet: () => largeScreenTemplate(statusBarHeight, context),
+        desktop: () => largeScreenTemplate(height, context));
   }
 
   Widget largeScreenTemplate(double statusBarHeight, BuildContext context) {

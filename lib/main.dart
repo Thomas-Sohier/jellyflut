@@ -12,6 +12,7 @@ void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   await setUpSharedPrefs();
+  await setUpAndroidTv();
   runApp(Jellyflut());
 }
 
@@ -74,6 +75,7 @@ class Jellyflut extends StatelessWidget {
             child: MaterialApp.router(
               title: 'JellyFlut',
               theme: personnal_theme.Theme.defaultThemeData,
+              debugShowCheckedModeBanner: false,
               routerDelegate:
                   customRouter.delegate(initialRoutes: [HomeRoute()]),
               routeInformationParser: customRouter.defaultRouteParser(),

@@ -59,26 +59,23 @@ class _ListItemsState extends State<ListItems> {
     var size = MediaQuery.of(context).size;
     var numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
     // var spacing = numberOfItemRow
-    return Consumer<ItemsProvider>(
-        builder: (context, itemsProvider, child) => itemsProvider
-                .items.isNotEmpty
-            ? CustomScrollView(controller: _scrollController, slivers: <Widget>[
-                SliverToBoxAdapter(
-                    child: SizedBox(
-                  height: widget.headerBarHeight,
-                )),
-                SliverToBoxAdapter(
-                  child: Column(children: [
-                    if (itemsProvider.getTypeOfItems() != null &&
-                        (itemsProvider.getTypeOfItems()!.contains('movie') ||
-                            itemsProvider.getTypeOfItems()!.contains('Book')))
-                      head(context),
-                    sortItems(),
-                  ]),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.all(8),
-                  sliver: SliverGrid(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 82, 8, 8),
+      child: Consumer<ItemsProvider>(
+          builder: (context, itemsProvider, child) => itemsProvider
+                  .items.isNotEmpty
+              ? CustomScrollView(controller: _scrollController, slivers: <
+                  Widget>[
+                  SliverToBoxAdapter(
+                    child: Column(children: [
+                      if (itemsProvider.getTypeOfItems() != null &&
+                          (itemsProvider.getTypeOfItems()!.contains('movie') ||
+                              itemsProvider.getTypeOfItems()!.contains('Book')))
+                        head(context),
+                      sortItems(),
+                    ]),
+                  ),
+                  SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio:
                               itemsProvider.items.first.getPrimaryAspectRatio(),
@@ -91,9 +88,9 @@ class _ListItemsState extends State<ListItems> {
                           itemsProvider.items[index],
                         );
                       }, childCount: itemsProvider.items.length)),
-                )
-              ])
-            : ListItemsSkeleton());
+                ])
+              : ListItemsSkeleton()),
+    );
   }
 
   Widget sortItems() {

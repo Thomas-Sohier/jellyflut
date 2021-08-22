@@ -1,5 +1,6 @@
 library globals;
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:device_info/device_info.dart';
@@ -8,7 +9,6 @@ import 'package:jellyflut/models/jellyfin/deviceProfile.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'database/database.dart';
@@ -28,12 +28,7 @@ double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
 int get audioPlayerId => 132;
 int get videoPlayerId => 213;
 
-Future<bool> get isAndroidTv async {
-  final deviceInfo = DeviceInfoPlugin();
-  final androidInfo = await deviceInfo.androidInfo;
-  return androidInfo.systemFeatures.contains('android.software.leanback_only');
-}
-
+// Init sharedPref to know if is already logged
 late SharedPreferences _sharedPrefs;
 
 SharedPreferences get sharedPrefs => _sharedPrefs;
@@ -45,14 +40,27 @@ Future setUpSharedPrefs() async {
   }
 }
 
+// Init android tv detection to know if platform is a TV
+
+late bool _isAndroidTv;
+
+bool get isAndroidTv => _isAndroidTv;
+
+Future setUpAndroidTv() async {
+  if (Platform.isAndroid) {
+    final deviceInfo = DeviceInfoPlugin();
+    final androidInfo = await deviceInfo.androidInfo;
+    _isAndroidTv =
+        androidInfo.systemFeatures.contains('android.software.leanback_only');
+  }
+  _isAndroidTv = false;
+}
+
+// Specific stuff
+
 jellyfin_user.User? userJellyfin;
 User? userApp;
 Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');
 String? apiKey;
 DeviceProfile? savedDeviceProfile;
 bool shimmerAnimation = false;
-
-final ScreenBreakpoints _screenBreakpoints =
-    ScreenBreakpoints(tablet: 400, desktop: 720, watch: 300);
-
-ScreenBreakpoints get screenBreakpoints => _screenBreakpoints;

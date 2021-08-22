@@ -44,6 +44,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
+                physics: ClampingScrollPhysics(),
                 itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: EpisodeItem(item: i.elementAt(index)),

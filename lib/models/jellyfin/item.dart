@@ -105,6 +105,7 @@ class Item {
     this.tags,
     this.primaryImageAspectRatio,
     this.mediaStreams,
+    this.recursiveItemCount,
     this.videoType,
     this.imageTags,
     this.seriesPrimaryImageTag,
@@ -173,6 +174,7 @@ class Item {
   List<dynamic>? tags;
   double? primaryImageAspectRatio;
   List<MediaStream>? mediaStreams;
+  int? recursiveItemCount;
   String? videoType;
   List<ImageTag>? imageTags;
   String? seriesPrimaryImageTag;
@@ -292,6 +294,7 @@ class Item {
             ? null
             : List<MediaStream>.from(
                 json['MediaStreams'].map((x) => MediaStream.fromMap(x))),
+        recursiveItemCount: json['RecursiveItemCount'],
         videoType: json['VideoType'],
         imageTags: List<ImageTag>.from(ImageTag.fromMap(json['ImageTags'])),
         seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
@@ -390,6 +393,7 @@ class Item {
       'MediaStreams': mediaStreams != null
           ? List<dynamic>.from(mediaStreams!.map((x) => x.toMap()))
           : null,
+      'RecursiveItemCount': recursiveItemCount,
       'VideoType': videoType,
       'ImageTags': imageTags,
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
@@ -597,7 +601,8 @@ class Item {
   ///
   /// Return [primaryImageAspectRatio] if defined
   /// Else return an aspect ratio based on type if not defined
-  double getPrimaryAspectRatio() {
+  double getPrimaryAspectRatio({bool showParent = false}) {
+    if (showParent) return aspectRatio(type: type);
     if (primaryImageAspectRatio != null) {
       if (primaryImageAspectRatio! > 0.0) {
         return primaryImageAspectRatio!;

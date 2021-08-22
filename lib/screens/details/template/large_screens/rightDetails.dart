@@ -5,7 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
+import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
@@ -30,9 +32,18 @@ class RightDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return ListView(
-        padding: const EdgeInsets.fromLTRB(24, 48, 24, 24),
+        padding: const EdgeInsets.fromLTRB(24, 86, 24, 24),
         children: [
-          if (item.hasLogo()) Logo(item: item, size: mediaQuery.size),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(flex: 4, child: poster()),
+              if (item.hasLogo())
+                Expanded(
+                    flex: 6, child: Logo(item: item, size: mediaQuery.size)),
+            ],
+          ),
           SizedBox(
             height: 24,
           ),
@@ -58,6 +69,26 @@ class RightDetails extends StatelessWidget {
           if (item.hasPeople()) peoples(context),
           Collection(item)
         ]);
+  }
+
+  Widget poster() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: itemHeight),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        child: AspectRatio(
+          aspectRatio: item.getPrimaryAspectRatio(showParent: true),
+          child: Poster(
+            item: item,
+            boxFit: BoxFit.cover,
+            clickable: false,
+            showParent: true,
+            tag: ImageType.PRIMARY,
+            heroTag: '',
+          ),
+        ),
+      ),
+    );
   }
 
   Widget peoples(BuildContext context) {

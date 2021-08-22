@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songControls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songHeaderBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songImage.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songInfos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/songPlaylist.dart';
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
@@ -66,14 +65,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
         backgroundColor: Colors.grey.shade900,
         body: ChangeNotifierProvider.value(
             value: musicProvider,
-            child: ScreenTypeLayout.builder(
-                breakpoints: screenBreakpoints,
-                mobile: (BuildContext context) =>
-                    phoneTemplate(height, statusBarHeight),
-                tablet: (BuildContext context) =>
-                    largeScreenTemplate(height, statusBarHeight),
-                desktop: (BuildContext context) =>
-                    largeScreenTemplate(height, statusBarHeight))));
+            child: ResponsiveBuilder.builder(
+                mobile: () => phoneTemplate(height, statusBarHeight),
+                tablet: () => largeScreenTemplate(height, statusBarHeight),
+                desktop: () => largeScreenTemplate(height, statusBarHeight))));
   }
 
   Widget largeScreenTemplate(double height, double statusBarHeight) {

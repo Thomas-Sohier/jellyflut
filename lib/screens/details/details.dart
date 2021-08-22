@@ -8,8 +8,7 @@ import 'package:jellyflut/screens/details/template/large_screens/largeDetails.da
 import 'package:jellyflut/screens/details/template/large_screens/tabletDetails.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/blurhash.dart';
-import 'package:responsive_builder/responsive_builder.dart';
-import '../../globals.dart';
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'components/photoItem.dart';
 
 class Details extends StatefulWidget {
@@ -51,20 +50,19 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   }
 
   Widget responsiveBuilder() {
-    return ScreenTypeLayout.builder(
-        breakpoints: screenBreakpoints,
-        mobile: (BuildContext context) => TabletDetails(
+    return ResponsiveBuilder.builder(
+        mobile: () => TabletDetails(
               item: widget.item,
               itemToLoad: futureDetailsInfos.item,
               dominantColorFuture: futureDetailsInfos.dominantColor,
               heroTag: widget.heroTag,
             ),
-        tablet: (BuildContext context) => LargeDetails(
+        tablet: () => LargeDetails(
             item: widget.item,
             itemToLoad: futureDetailsInfos.item,
             dominantColorFuture: futureDetailsInfos.dominantColor,
             heroTag: widget.heroTag),
-        desktop: (BuildContext context) => LargeDetails(
+        desktop: () => LargeDetails(
             item: widget.item,
             itemToLoad: futureDetailsInfos.item,
             dominantColorFuture: futureDetailsInfos.dominantColor,

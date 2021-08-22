@@ -56,12 +56,14 @@ class _MusicItemState extends State<MusicItem> {
           if (item.indexNumber != null) Text(item.indexNumber.toString()),
           Row(
             children: [
-              Text(item.name,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(fontSize: 18, fontWeight: FontWeight.bold))
+              Flexible(
+                child: Text(item.name,
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
+              )
             ],
           ),
           if (item.hasArtists())

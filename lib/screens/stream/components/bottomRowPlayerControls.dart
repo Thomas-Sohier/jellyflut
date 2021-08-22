@@ -1,11 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/stream/components/backwardButton.dart';
 import 'package:jellyflut/screens/stream/components/forwardButton.dart';
 import 'package:jellyflut/screens/stream/components/playPauseButton.dart';
 import 'package:jellyflut/screens/stream/components/videoPlayerProgressBar.dart';
-import 'package:responsive_builder/responsive_builder.dart';
-
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'chapterButton.dart';
 
 class BottomRowPlayerControls extends StatelessWidget {
@@ -13,11 +11,10 @@ class BottomRowPlayerControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenTypeLayout.builder(
-        breakpoints: screenBreakpoints,
-        mobile: (BuildContext context) => smallBottomRow(),
-        tablet: (BuildContext context) => largeBottomRow(),
-        desktop: (BuildContext context) => largeBottomRow());
+    return ResponsiveBuilder.builder(
+        mobile: () => smallBottomRow(),
+        tablet: () => largeBottomRow(),
+        desktop: () => largeBottomRow());
   }
 
   Widget smallBottomRow() {

@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listCollectionItem.dart'
-    as small;
-import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listMusicItem.dart'
-    as small;
-import 'package:jellyflut/screens/details/template/small_screens/components/items_collection/listVideoItem.dart'
-    as small;
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listCollectionItem.dart'
-    as large;
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listMusicItem.dart'
-    as large;
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listVideoItem.dart'
-    as large;
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listCollectionItem.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listMusicItem.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/listVideoItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:responsive_builder/responsive_builder.dart';
-
-import '../../../globals.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
@@ -39,44 +27,19 @@ class _CollectionState extends State<Collection> {
       padding: const EdgeInsets.only(top: 24),
       child: Align(
         alignment: Alignment.topCenter, //or choose another Alignment
-        child: responsiveBuilder(),
+        child: showCollection(),
       ),
     );
   }
 
-  Widget responsiveBuilder() {
-    return ScreenTypeLayout.builder(
-        breakpoints: screenBreakpoints,
-        mobile: (BuildContext context) => showPhoneCollection(),
-        tablet: (BuildContext context) => showLargeCollection(),
-        desktop: (BuildContext context) => showLargeCollection());
-  }
-
-  Widget showPhoneCollection() {
+  Widget showCollection() {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
-        return small.ListMusicItem(item: widget.item);
+        return ListMusicItem(item: widget.item);
       case ItemType.SEASON:
-        return small.ListVideoItem(item: widget.item);
+        return ListVideoItem(item: widget.item);
       case ItemType.SERIES:
-        return small.ListCollectionItem(item: widget.item);
-      case ItemType.MUSICARTIST:
-        return musicArtistItem(item: widget.item);
-      case ItemType.PERSON:
-        return personItem(item: widget.item);
-      default:
-        return Container();
-    }
-  }
-
-  Widget showLargeCollection() {
-    switch (widget.item.type) {
-      case ItemType.MUSICALBUM:
-        return large.ListMusicItem(item: widget.item);
-      case ItemType.SEASON:
-        return large.ListVideoItem(item: widget.item);
-      case ItemType.SERIES:
-        return large.ListCollectionItem(item: widget.item);
+        return ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
         return musicArtistItem(item: widget.item);
       case ItemType.PERSON:
@@ -88,7 +51,7 @@ class _CollectionState extends State<Collection> {
 
   Widget musicArtistItem({required Item item}) {
     return Column(children: [
-      small.ListCollectionItem(
+      ListCollectionItem(
         item: item,
         future: ItemService.getItems(
             includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
@@ -105,7 +68,7 @@ class _CollectionState extends State<Collection> {
       SizedBox(
         height: 24,
       ),
-      small.ListCollectionItem(
+      ListCollectionItem(
         item: item,
         title: 'Movies',
         future: ItemService.getItems(
@@ -118,7 +81,7 @@ class _CollectionState extends State<Collection> {
       SizedBox(
         height: 24,
       ),
-      small.ListCollectionItem(
+      ListCollectionItem(
         item: item,
         title: 'Series',
         future: ItemService.getItems(

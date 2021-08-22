@@ -16,6 +16,7 @@ class ItemPoster extends StatefulWidget {
       this.widgetAspectRatio,
       this.showName = true,
       this.showParent = true,
+      this.showOverlay = true,
       this.showLogo = false,
       this.clickable = true,
       this.tag = ImageType.PRIMARY,
@@ -27,6 +28,7 @@ class ItemPoster extends StatefulWidget {
   final Color textColor;
   final bool showName;
   final bool showParent;
+  final bool showOverlay;
   final bool showLogo;
   final bool clickable;
   final ImageType tag;
@@ -41,6 +43,7 @@ class _ItemPosterState extends State<ItemPoster>
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;
+  late final double aspectRatio;
 
   @override
   bool get wantKeepAlive => true;
@@ -49,6 +52,8 @@ class _ItemPosterState extends State<ItemPoster>
   void initState() {
     _node = FocusNode();
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
+    aspectRatio = widget.widgetAspectRatio ??
+        widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
     super.initState();
   }
 
@@ -61,10 +66,7 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return AspectRatio(
-        aspectRatio:
-            widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(),
-        child: body(context));
+    return AspectRatio(aspectRatio: aspectRatio, child: body(context));
   }
 
   Widget body(BuildContext context) {
@@ -76,33 +78,34 @@ class _ItemPosterState extends State<ItemPoster>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AspectRatio(
-                aspectRatio: widget.widgetAspectRatio ??
-                    widget.item.getPrimaryAspectRatio(),
+                aspectRatio: aspectRatio,
                 child: Stack(fit: StackFit.expand, children: [
                   Poster(
                       showParent: widget.showParent,
                       tag: widget.tag,
-                      aspectRatio: widget.widgetAspectRatio,
+                      aspectRatio: aspectRatio,
                       clickable: widget.clickable,
                       heroTag: posterHeroTag,
                       boxFit: widget.boxFit,
                       item: widget.item),
-                  IgnorePointer(
-                      child: Stack(
-                    children: [
-                      if (widget.item.isNew())
-                        Positioned(top: 8, left: 0, child: newBanner()),
-                      if (widget.item.isPlayed())
-                        Positioned(top: 8, right: 0, child: playedBanner()),
-                    ],
-                  )),
-                  if (widget.showLogo)
+                  if (widget.showOverlay)
+                    IgnorePointer(
+                        child: Stack(
+                      children: [
+                        if (widget.item.isNew())
+                          Positioned(top: 8, left: 0, child: newBanner()),
+                        if (widget.item.isPlayed())
+                          Positioned(top: 8, right: 0, child: playedBanner()),
+                      ],
+                    )),
+                  if (widget.showLogo && widget.showOverlay)
                     IgnorePointer(
                         child: Logo(
                       item: widget.item,
                       size: Size.infinite,
                     )),
-                  if (widget.item.hasProgress()) progress(),
+                  if (widget.item.hasProgress() && widget.showOverlay)
+                    progress(),
                 ])),
           ],
         ),

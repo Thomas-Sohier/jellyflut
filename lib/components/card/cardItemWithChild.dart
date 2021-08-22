@@ -6,7 +6,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/components/favButton.dart';
 import 'package:jellyflut/components/viewedButton.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/template/small_screens/components/action_button/trailerButton.dart';
+import 'package:jellyflut/screens/details/template/large_screens/components/action_button/trailerButton.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
@@ -233,7 +233,7 @@ class _CardItemWithChildState extends State<CardItemWithChild> {
 Widget actionIcons(Item item) {
   return Row(
     children: [
-      if (item.hasTrailer()) TrailerButton(item),
+      if (item.hasTrailer()) TrailerButton(item: item),
       FavButton(item),
       ViewedButton(item)
     ],

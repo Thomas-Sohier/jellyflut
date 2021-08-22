@@ -7,7 +7,7 @@ import 'package:jellyflut/models/jellyfin/imageTag.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 
 class PeoplesList extends StatefulWidget {
   final List<Person> persons;
@@ -55,14 +55,10 @@ class _PeoplesListState extends State<PeoplesList> {
                       value: person.primaryImageTag ?? '')
                 ]),
                 type: ItemType.PERSON);
-            return ScreenTypeLayout.builder(
-                breakpoints: screenBreakpoints,
-                mobile: (BuildContext context) =>
-                    phonePoster(item, person, index),
-                tablet: (BuildContext context) =>
-                    largeScreenTemplate(item, person, index),
-                desktop: (BuildContext context) =>
-                    largeScreenTemplate(item, person, index));
+            return ResponsiveBuilder.builder(
+                mobile: () => largeScreenTemplate(item, person, index),
+                tablet: () => largeScreenTemplate(item, person, index),
+                desktop: () => largeScreenTemplate(item, person, index));
           }),
     );
   }

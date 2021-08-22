@@ -40,6 +40,7 @@ class _ListMusicItemState extends State<ListMusicItem> {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: items.length,
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) => MusicItem(
             onPressed: () => items.elementAt(index).playItem(),

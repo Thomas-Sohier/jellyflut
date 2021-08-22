@@ -6,6 +6,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
@@ -59,16 +60,13 @@ class _EpisodeItemState extends State<EpisodeItem>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ItemPoster(
-              widget.item,
-              boxFit: BoxFit.cover,
-              widgetAspectRatio: 16 / 9,
-              clickable: false,
-              showLogo: false,
-              showParent: false,
-              showName: false,
+            ResponsiveBuilder.builder(
+              mobile: () => SizedBox(),
+              tablet: () => poster(),
+              desktop: () => poster(),
             ),
             Expanded(
+              flex: 7,
               child: Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Column(
@@ -98,23 +96,39 @@ class _EpisodeItemState extends State<EpisodeItem>
     );
   }
 
+  Widget poster() {
+    return ItemPoster(
+      widget.item,
+      boxFit: BoxFit.cover,
+      widgetAspectRatio: 16 / 9,
+      clickable: false,
+      showLogo: false,
+      showParent: false,
+      showName: false,
+    );
+  }
+
   Widget title() {
-    return Text('${widget.item.indexNumber} - ${widget.item.name}',
-        textAlign: TextAlign.left,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText1!
-            .copyWith(fontSize: 20, fontWeight: FontWeight.bold));
+    return Flexible(
+      child: Text('${widget.item.indexNumber} - ${widget.item.name}',
+          textAlign: TextAlign.left,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1!
+              .copyWith(fontSize: 20, fontWeight: FontWeight.bold)),
+    );
   }
 
   Widget duration() {
-    return Text(
-        printDuration(Duration(microseconds: widget.item.getDuration())),
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18));
+    return Flexible(
+        child: Text(
+            printDuration(Duration(microseconds: widget.item.getDuration())),
+            style:
+                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
   }
 
   Widget overview() {
-    return Expanded(
+    return Flexible(
       child: Text(widget.item.overview!,
           textAlign: TextAlign.justify,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)),
