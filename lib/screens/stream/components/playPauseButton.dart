@@ -23,7 +23,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
 
   @override
   void dispose() {
-    streamingProvider.commonStream!.removeListener(listener);
+    _node.dispose();
     super.dispose();
   }
 

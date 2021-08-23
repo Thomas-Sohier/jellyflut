@@ -24,6 +24,12 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
       node: _node,

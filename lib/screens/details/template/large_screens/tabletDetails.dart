@@ -45,12 +45,9 @@ class _TabletDetailsState extends State<TabletDetails> {
 
   Widget tabletScreenTemplate() {
     return Stack(alignment: Alignment.topCenter, children: [
-      Hero(
-        tag: widget.heroTag ?? '',
-        child: BackgroundImage(
-          item: widget.item,
-          imageType: ImageType.BACKDROP,
-        ),
+      BackgroundImage(
+        item: widget.item,
+        imageType: ImageType.BACKDROP,
       ),
       ClipRect(
           child: BackdropFilter(

@@ -134,7 +134,6 @@ class RightDetails extends StatelessWidget {
 
   Widget actions(BuildContext context) {
     final deviceType = getDeviceType(MediaQuery.of(context).size);
-    print(deviceType);
     isAndroidTv;
     if (deviceType == DeviceScreenType.mobile) {
       return Column(

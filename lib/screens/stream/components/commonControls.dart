@@ -26,6 +26,7 @@ class CommonControls extends StatefulWidget {
 class _CommonControlsState extends State<CommonControls> {
   late final StreamingProvider streamingProvider;
   late final BehaviorSubject<bool> _visibleStreamController;
+  late final Function(RawKeyEvent) listener;
   late Timer _timer;
   late Future<bool> hasPip;
   bool _visible = false;
@@ -44,17 +45,19 @@ class _CommonControlsState extends State<CommonControls> {
     streamingProvider = StreamingProvider();
     streamingProvider.commonStream?.initListener();
     hasPip = streamingProvider.commonStream!.hasPip();
-    RawKeyboard.instance.addListener((value) => _onKey(value));
+    listener = (value) => _onKey(value);
     _timer = Timer(Duration(seconds: 5), () {
       _visible = false;
       _visibleStreamController.add(false);
     });
+    RawKeyboard.instance.addListener(listener);
   }
 
   @override
   void dispose() {
     _timer.cancel();
     streamingProvider.timer?.cancel();
+    RawKeyboard.instance.removeListener(listener);
     super.dispose();
   }
 
@@ -143,17 +146,20 @@ class _CommonControlsState extends State<CommonControls> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           bb.BackButton(shadow: true),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                itemTitle(),
-                streamingProvider.item!.hasParent()
-                    ? itemParentTitle()
-                    : Container(),
-              ],
+          Flexible(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  itemTitle(),
+                  streamingProvider.item!.hasParent()
+                      ? itemParentTitle()
+                      : Container(),
+                ],
+              ),
             ),
           ),
           Spacer(),

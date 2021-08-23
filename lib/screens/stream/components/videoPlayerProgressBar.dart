@@ -12,7 +12,6 @@ class VideoPlayerProgressBar extends StatefulWidget {
 
 class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
   late StreamingProvider streamingProvider;
-  late VoidCallback listener;
 
   @override
   void initState() {
@@ -22,7 +21,6 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
 
   @override
   void dispose() {
-    streamingProvider.commonStream!.removeListener(listener);
     super.dispose();
   }
 

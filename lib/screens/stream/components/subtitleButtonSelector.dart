@@ -19,9 +19,18 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   @override
   void initState() {
     super.initState();
-    _node = FocusNode(canRequestFocus: false, descendantsAreFocusable: false);
+    _node = FocusNode(
+        canRequestFocus: false,
+        descendantsAreFocusable: false,
+        skipTraversal: true);
     streamingProvider = StreamingProvider();
     subtitleSelectedIndex = streamingProvider.selectedSubtitleTrack?.index ?? 0;
+  }
+
+  @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
   }
 
   @override
