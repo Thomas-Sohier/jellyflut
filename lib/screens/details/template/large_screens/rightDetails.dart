@@ -5,9 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
-import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
@@ -15,7 +13,6 @@ import 'package:jellyflut/screens/details/template/large_screens/components/acti
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/trailerButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/viewedButton.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
-import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -30,65 +27,32 @@ class RightDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    return ListView(
-        padding: const EdgeInsets.fromLTRB(24, 86, 24, 24),
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(flex: 4, child: poster()),
-              if (item.hasLogo())
-                Expanded(
-                    flex: 6, child: Logo(item: item, size: mediaQuery.size)),
-            ],
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          actions(context),
-          SizedBox(
-            height: 24,
-          ),
-          title(context),
-          Row(
-            children: [
-              if (item.hasRatings())
-                Padding(
-                  padding: const EdgeInsets.only(top: 12, bottom: 12),
-                  child: Critics(
-                    item: item,
-                  ),
-                ),
-              Spacer(),
-              infos(context),
-            ],
-          ),
-          overview(context),
-          if (item.hasPeople()) peoples(context),
-          Collection(item)
-        ]);
-  }
-
-  Widget poster() {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: itemHeight),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        child: AspectRatio(
-          aspectRatio: item.getPrimaryAspectRatio(showParent: true),
-          child: Poster(
-            item: item,
-            boxFit: BoxFit.cover,
-            clickable: false,
-            showParent: true,
-            tag: ImageType.PRIMARY,
-            heroTag: '',
-          ),
-        ),
+    return Column(children: [
+      SizedBox(
+        height: 24,
       ),
-    );
+      actions(context),
+      SizedBox(
+        height: 24,
+      ),
+      title(context),
+      Row(
+        children: [
+          if (item.hasRatings())
+            Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 12),
+              child: Critics(
+                item: item,
+              ),
+            ),
+          Spacer(),
+          infos(context),
+        ],
+      ),
+      overview(context),
+      if (item.hasPeople()) peoples(context),
+      Collection(item)
+    ]);
   }
 
   Widget peoples(BuildContext context) {

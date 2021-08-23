@@ -16,7 +16,6 @@ class DetailHeaderBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBarHeight = MediaQuery.of(context).padding.top;
     return Container(
-      height: statusBarHeight + height,
       padding: EdgeInsets.only(left: 10, right: 10),
       decoration: showDarkGradient
           ? BoxDecoration(
@@ -32,13 +31,24 @@ class DetailHeaderBar extends StatelessWidget {
               ),
             )
           : BoxDecoration(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          back_button.BackButton(
-            shadow: true,
-          )
+          SizedBox(
+            height: statusBarHeight,
+          ),
+          SizedBox(
+            height: height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                back_button.BackButton(
+                  shadow: true,
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

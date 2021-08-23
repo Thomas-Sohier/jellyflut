@@ -13,11 +13,9 @@ class Poster extends StatefulWidget {
   final bool showParent;
   final bool clickable;
   final String heroTag;
-  final double? aspectRatio;
 
   const Poster(
       {this.showParent = false,
-      this.aspectRatio,
       required this.tag,
       required this.heroTag,
       required this.clickable,
@@ -29,19 +27,12 @@ class Poster extends StatefulWidget {
 
 class _PosterState extends State<Poster> {
   late final FocusNode node;
-  late final double aspectRatio;
-  late final String itemId;
   late final String? itemImageTag;
 
   @override
   void initState() {
     node = FocusNode();
-    aspectRatio = widget.aspectRatio != null
-        ? widget.aspectRatio!
-        : widget.item.getPrimaryAspectRatio();
-    itemId = widget.showParent
-        ? widget.item.getParentId()
-        : widget.item.correctImageId();
+
     itemImageTag = widget.item.correctImageTags();
     super.initState();
   }
@@ -73,6 +64,9 @@ class _PosterState extends State<Poster> {
   }
 
   Widget poster() {
+    final itemId = widget.showParent
+        ? widget.item.getParentId()
+        : widget.item.correctImageId();
     return Hero(
       tag: widget.heroTag,
       child: AsyncImage(

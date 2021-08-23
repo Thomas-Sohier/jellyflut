@@ -4,7 +4,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 
 class ItemsProvider extends ChangeNotifier {
-  List<Item> _items = <Item>[];
+  final List<Item> _items = <Item>[];
   final List<Item> _headerItems = <Item>[];
   String? _parentItemId;
   List<String>? _typeOfItems;
@@ -79,7 +79,8 @@ class ItemsProvider extends ChangeNotifier {
       'sortByDateASC': _sortByDateASC,
       'sortByDateDSC': _sortByDateDSC
     });
-    _items = i['items'];
+    _items.clear();
+    _items.addAll(i['items']);
     _sortByDateASC = i['sortByDateASC'];
     _sortByDateDSC = i['sortByDateDSC'];
     notifyListeners();
@@ -91,7 +92,8 @@ class ItemsProvider extends ChangeNotifier {
       'sortByNameASC': _sortByNameASC,
       'sortByNameDSC': _sortByNameDSC
     });
-    _items = i['items'];
+    _items.clear();
+    _items.addAll(i['items']);
     _sortByNameASC = i['sortByNameASC'];
     _sortByNameDSC = i['sortByNameDSC'];
     notifyListeners();

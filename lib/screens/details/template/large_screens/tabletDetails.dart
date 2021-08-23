@@ -2,9 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/components/poster/poster.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
+import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
@@ -77,22 +80,59 @@ class _TabletDetailsState extends State<TabletDetails> {
   }
 
   Widget detailsBuilder(ThemeData themeData) {
+    final mediaQuery = MediaQuery.of(context);
     return Stack(
       children: [
         Container(
             decoration: BoxDecoration(
                 color: themeData.backgroundColor.withOpacity(0.4))),
-        FutureBuilder<Item>(
-            future: widget.itemToLoad,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return RightDetails(
-                    item: snapshot.data!,
-                    dominantColorFuture: widget.dominantColorFuture);
-              }
-              return SkeletonRightDetails();
-            })
+        ListView(
+          padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(flex: 4, child: poster()),
+                if (widget.item.hasLogo())
+                  Expanded(
+                      flex: 6,
+                      child: Logo(item: widget.item, size: mediaQuery.size)),
+              ],
+            ),
+            FutureBuilder<Item>(
+                future: widget.itemToLoad,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return RightDetails(
+                        item: snapshot.data!,
+                        dominantColorFuture: widget.dominantColorFuture);
+                  }
+                  return SkeletonRightDetails();
+                }),
+          ],
+        )
       ],
+    );
+  }
+
+  Widget poster() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: itemHeight),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        child: AspectRatio(
+          aspectRatio: widget.item.getPrimaryAspectRatio(showParent: true),
+          child: Poster(
+            item: widget.item,
+            boxFit: BoxFit.cover,
+            clickable: false,
+            showParent: true,
+            tag: ImageType.PRIMARY,
+            heroTag: widget.heroTag ?? '',
+          ),
+        ),
+      ),
     );
   }
 }

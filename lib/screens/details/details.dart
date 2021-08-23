@@ -57,7 +57,7 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
               dominantColorFuture: futureDetailsInfos.dominantColor,
               heroTag: widget.heroTag,
             ),
-        tablet: () => LargeDetails(
+        tablet: () => TabletDetails(
             item: widget.item,
             itemToLoad: futureDetailsInfos.item,
             dominantColorFuture: futureDetailsInfos.dominantColor,

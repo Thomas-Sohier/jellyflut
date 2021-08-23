@@ -4,7 +4,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class ResponsiveBuilder {
   static final ScreenBreakpoints _screenBreakpoints =
-      ScreenBreakpoints(tablet: 400, desktop: 720, watch: 300);
+      ScreenBreakpoints(tablet: 600, desktop: 720, watch: 300);
 
   static Widget builder(
       {required Widget Function() mobile,

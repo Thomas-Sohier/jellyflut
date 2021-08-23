@@ -52,8 +52,9 @@ Future setUpAndroidTv() async {
     final androidInfo = await deviceInfo.androidInfo;
     _isAndroidTv =
         androidInfo.systemFeatures.contains('android.software.leanback_only');
+  } else {
+    _isAndroidTv = false;
   }
-  _isAndroidTv = false;
 }
 
 // Specific stuff

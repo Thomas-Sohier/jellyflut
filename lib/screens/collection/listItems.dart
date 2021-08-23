@@ -20,13 +20,8 @@ class ListItems extends StatefulWidget {
 }
 
 class _ListItemsState extends State<ListItems> {
-  // Scroll controller
   late final ScrollController _scrollController;
-
-  // Carousel provider
   late final CarrousselProvider carrousselProvider;
-
-  // Items
   late final ItemsProvider itemsProvider;
 
   @override
