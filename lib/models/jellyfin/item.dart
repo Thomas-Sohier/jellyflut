@@ -17,6 +17,7 @@ import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
+import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/enum/imageType.dart' as image_type;
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/enum/mediaStreamType.dart';
@@ -128,7 +129,7 @@ class Item {
   int? indexNumber;
   int? parentIndexNumber;
   String? etag;
-  String? collectionType;
+  CollectionType? collectionType;
   DateTime? dateCreated;
   bool? canDelete;
   bool? canDownload;
@@ -198,7 +199,10 @@ class Item {
         indexNumber: json['IndexNumber'],
         parentIndexNumber: json['ParentIndexNumber'],
         etag: json['Etag'],
-        collectionType: json['CollectionType'],
+        collectionType: json['CollectionType'] != null
+            ? EnumFromString<CollectionType>(CollectionType.values)
+                .get(json['CollectionType'])
+            : null,
         dateCreated: json['DateCreated'] == null
             ? null
             : DateTime.parse(json['DateCreated']),
@@ -664,19 +668,33 @@ class Item {
   ///
   /// Return correct collection type based on item one
   /// If nothing found then return current one
-  String getCollectionType() {
-    if (collectionType == 'movies') {
-      return 'movie';
-    } else if (collectionType == 'tvshows') {
-      return 'Series';
-    } else if (collectionType == 'music') {
-      return 'MusicAlbum';
-    } else if (collectionType == 'books') {
-      return 'Book';
-    } else if (collectionType == 'homevideos') {
-      return 'Photo, Video';
+  List<ItemType> getCollectionType() {
+    if (collectionType == CollectionType.MOVIES) {
+      return [ItemType.MOVIE];
+    } else if (collectionType == CollectionType.TVSHOWS) {
+      return [ItemType.SERIES];
+    } else if (collectionType == CollectionType.MUSIC) {
+      return [ItemType.MUSICALBUM, ItemType.AUDIO];
+    } else if (collectionType == CollectionType.BOOKS) {
+      return [ItemType.BOOK];
+    } else if (collectionType == CollectionType.HOMEVIDEOS) {
+      return [ItemType.VIDEO];
+    } else if (collectionType == CollectionType.BOXSETS) {
+      return [ItemType.BOXSET];
+    } else if (collectionType == CollectionType.MIXED) {
+      return [
+        ItemType.FOLDER,
+        ItemType.AUDIO,
+        ItemType.VIDEO,
+        ItemType.BOOK,
+        ItemType.MUSICALBUM,
+        ItemType.SERIES,
+        ItemType.MOVIE
+      ];
+    } else if (collectionType == CollectionType.MUSICVIDEOS) {
+      return [ItemType.MUSICVIDEO];
     } else {
-      return collectionType!;
+      return [ItemType.FOLDER];
     }
   }
 

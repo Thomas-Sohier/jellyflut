@@ -2,10 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/detailedItemPoster.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
 import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
+import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,7 +16,10 @@ import '../../globals.dart';
 
 class ListItems extends StatefulWidget {
   final double headerBarHeight;
-  const ListItems({Key? key, this.headerBarHeight = 64}) : super(key: key);
+  final Item parentItem;
+  const ListItems(
+      {Key? key, this.headerBarHeight = 64, required this.parentItem})
+      : super(key: key);
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -22,26 +28,35 @@ class ListItems extends StatefulWidget {
 class _ListItemsState extends State<ListItems> {
   late final ScrollController _scrollController;
   late final CarrousselProvider carrousselProvider;
-  late final ItemsProvider itemsProvider;
+  late final Future<Category> categoryFuture;
+  late final bool canPop;
 
   @override
   void initState() {
     super.initState();
-    itemsProvider = ItemsProvider();
-    itemsProvider.showMoreItem();
     // set first image background
+    categoryFuture = ItemService.getItems(
+        parentId: widget.parentItem.id,
+        sortBy: 'SortName',
+        fields:
+            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
+        imageTypeLimit: 1,
+        startIndex: 0,
+        includeItemTypes: widget.parentItem
+            .getCollectionType()
+            .map((e) => getEnumValue(e.toString()))
+            .toList()
+            .join(','),
+        limit: 100);
+    canPop = customRouter.canPopSelfOrChildren;
     carrousselProvider = CarrousselProvider();
-    itemsProvider
-        .getheaderItems()
-        .then((items) => carrousselProvider.changeItem(items.first));
     _scrollController = ScrollController(initialScrollOffset: 5.0)
-      ..addListener(_scrollListener);
+      ..addListener(() {});
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    itemsProvider.reset();
     super.dispose();
   }
 
@@ -51,41 +66,58 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget buildItemsGrid() {
+    // var spacing = numberOfItemRow
+    final paddingTop = canPop ? 82.0 : 8.0;
+    return Padding(
+        padding: EdgeInsets.fromLTRB(8, paddingTop, 8, 8),
+        child: FutureBuilder<Category>(
+            future: categoryFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final items = snapshot.data!.items;
+                if (items.isNotEmpty) {
+                  return view(items);
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error,
+                          size: 24, color: Theme.of(context).primaryColor),
+                      Text(
+                        'No items found in collection',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return ListItemsSkeleton();
+            }));
+  }
+
+  Widget view(List<Item> items) {
     var size = MediaQuery.of(context).size;
     var numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
-    // var spacing = numberOfItemRow
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 82, 8, 8),
-      child: Consumer<ItemsProvider>(
-          builder: (context, itemsProvider, child) => itemsProvider
-                  .items.isNotEmpty
-              ? CustomScrollView(controller: _scrollController, slivers: <
-                  Widget>[
-                  SliverToBoxAdapter(
-                    child: Column(children: [
-                      if (itemsProvider.getTypeOfItems() != null &&
-                          (itemsProvider.getTypeOfItems()!.contains('movie') ||
-                              itemsProvider.getTypeOfItems()!.contains('Book')))
-                        head(context),
-                      sortItems(),
-                    ]),
-                  ),
-                  SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio:
-                              itemsProvider.items.first.getPrimaryAspectRatio(),
-                          crossAxisCount: numberOfItemRow,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5),
-                      delegate: SliverChildBuilderDelegate(
-                          (BuildContext c, int index) {
-                        return ItemPoster(
-                          itemsProvider.items[index],
-                        );
-                      }, childCount: itemsProvider.items.length)),
-                ])
-              : ListItemsSkeleton()),
-    );
+    return CustomScrollView(controller: _scrollController, slivers: <Widget>[
+      SliverToBoxAdapter(
+        child: Column(children: [
+          // if (widget.parentItem.isPlayable()) head(context),
+          sortItems(),
+        ]),
+      ),
+      SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: items.first.getPrimaryAspectRatio(),
+              crossAxisCount: numberOfItemRow,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5),
+          delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
+            return ItemPoster(
+              items[index],
+            );
+          }, childCount: items.length)),
+    ]);
   }
 
   Widget sortItems() {
@@ -115,17 +147,6 @@ class _ListItemsState extends State<ListItems> {
     );
   }
 
-  Widget head(BuildContext context) {
-    return FutureBuilder<List<Item>>(
-        future: itemsProvider.getheaderItems(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return carouselSlider(snapshot.data!);
-          }
-          return Container();
-        });
-  }
-
   Widget carouselSlider(List<Item> items) {
     return CarouselSlider(
         options: CarouselOptions(
@@ -147,11 +168,11 @@ class _ListItemsState extends State<ListItems> {
         }).toList());
   }
 
-  void _scrollListener() {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      itemsProvider.showMoreItem();
-    }
-  }
+  // void _scrollListener() {
+  //   if (_scrollController.offset >=
+  //           _scrollController.position.maxScrollExtent &&
+  //       !_scrollController.position.outOfRange) {
+  //     itemsProvider.showMoreItem();
+  //   }
+  // }
 }

@@ -7,16 +7,17 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import '../models/jellyfin/item.dart' as _i13;
+import '../models/jellyfin/item.dart' as _i14;
 import '../screens/auth/authParent.dart' as _i4;
-import '../screens/collection/collectionMain.dart' as _i9;
+import '../screens/collection/collectionMain.dart' as _i13;
 import '../screens/details/details.dart' as _i6;
-import '../screens/epub/epubReader.dart' as _i12;
-import '../screens/home/home.dart' as _i5;
+import '../screens/epub/epubReader.dart' as _i11;
+import '../screens/home/home.dart' as _i12;
+import '../screens/home/homeParent.dart' as _i5;
 import '../screens/musicPlayer/musicPlayer.dart' as _i8;
-import '../screens/musicPlayer/routes/playlist.dart' as _i10;
+import '../screens/musicPlayer/routes/playlist.dart' as _i9;
 import '../screens/settings/settings.dart' as _i7;
-import '../screens/stream/stream.dart' as _i11;
+import '../screens/stream/stream.dart' as _i10;
 import 'router.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -39,10 +40,10 @@ class AppRouter extends _i1.RootStackRouter {
         },
         opaque: true,
         barrierDismissible: false),
-    HomeRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+    HomeRouter.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i5.Home();
+          return _i5.HomeParent();
         },
         opaque: true,
         barrierDismissible: false),
@@ -71,19 +72,11 @@ class AppRouter extends _i1.RootStackRouter {
         },
         opaque: true,
         barrierDismissible: false),
-    CollectionMainRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<CollectionMainRouteArgs>();
-          return _i9.CollectionMain(item: args.item);
-        },
-        opaque: true,
-        barrierDismissible: false),
     PlaylistRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<PlaylistRouteArgs>();
-          return _i10.Playlist(
+          return _i9.Playlist(
               key: args.key,
               body: args.body,
               playlistTheme: args.playlistTheme);
@@ -95,7 +88,7 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<StreamRouteArgs>();
-          return _i11.Stream(player: args.player, item: args.item);
+          return _i10.Stream(player: args.player, item: args.item);
         },
         maintainState: false,
         opaque: true,
@@ -104,7 +97,22 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<EpubReaderPageRouteArgs>();
-          return _i12.EpubReaderPage(key: args.key, item: args.item);
+          return _i11.EpubReaderPage(key: args.key, item: args.item);
+        },
+        opaque: true,
+        barrierDismissible: false),
+    HomeRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i12.Home();
+        },
+        opaque: true,
+        barrierDismissible: false),
+    CollectionRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<CollectionRouteArgs>();
+          return _i13.CollectionMain(item: args.item);
         },
         opaque: true,
         barrierDismissible: false)
@@ -112,28 +120,35 @@ class AppRouter extends _i1.RootStackRouter {
 
   @override
   List<_i1.RouteConfig> get routes => [
-        _i1.RouteConfig(AuthParentRoute.name, path: '/auth-parent'),
-        _i1.RouteConfig(HomeRoute.name, path: '/', guards: [authGuard]),
-        _i1.RouteConfig(DetailsRoute.name,
-            path: '/Details', guards: [authGuard]),
+        _i1.RouteConfig('/#redirect',
+            path: '/', redirectTo: 'home', fullMatch: true),
+        _i1.RouteConfig(AuthParentRoute.name, path: 'authentication'),
+        _i1.RouteConfig(HomeRouter.name, path: 'home', guards: [
+          authGuard
+        ], children: [
+          _i1.RouteConfig(HomeRoute.name, path: ''),
+          _i1.RouteConfig(CollectionRoute.name,
+              path: 'collection-main', guards: [authGuard]),
+          _i1.RouteConfig('*#redirect',
+              path: '*', redirectTo: '', fullMatch: true)
+        ]),
+        _i1.RouteConfig(DetailsRoute.name, path: 'details'),
         _i1.RouteConfig(SettingsRoute.name,
-            path: '/Settings', guards: [authGuard]),
+            path: 'settings', guards: [authGuard]),
         _i1.RouteConfig(MusicPlayerRoute.name,
-            path: '/music-player', guards: [authGuard]),
-        _i1.RouteConfig(CollectionMainRoute.name,
-            path: '/collection-main', guards: [authGuard]),
+            path: 'music-player', guards: [authGuard]),
         _i1.RouteConfig(PlaylistRoute.name,
-            path: '/Playlist', guards: [authGuard]),
-        _i1.RouteConfig(StreamRoute.name, path: '/Stream', guards: [authGuard]),
+            path: 'playlist', guards: [authGuard]),
+        _i1.RouteConfig(StreamRoute.name, path: 'stream', guards: [authGuard]),
         _i1.RouteConfig(EpubReaderPageRoute.name,
-            path: '/epub-reader-page', guards: [authGuard])
+            path: 'epub', guards: [authGuard])
       ];
 }
 
 class AuthParentRoute extends _i1.PageRouteInfo<AuthParentRouteArgs> {
   AuthParentRoute({_i2.Key? key, void Function()? onAuthenticated})
       : super(name,
-            path: '/auth-parent',
+            path: 'authentication',
             args: AuthParentRouteArgs(
                 key: key, onAuthenticated: onAuthenticated));
 
@@ -148,16 +163,17 @@ class AuthParentRouteArgs {
   final void Function()? onAuthenticated;
 }
 
-class HomeRoute extends _i1.PageRouteInfo {
-  const HomeRoute() : super(name, path: '/');
+class HomeRouter extends _i1.PageRouteInfo {
+  const HomeRouter({List<_i1.PageRouteInfo>? children})
+      : super(name, path: 'home', initialChildren: children);
 
-  static const String name = 'HomeRoute';
+  static const String name = 'HomeRouter';
 }
 
 class DetailsRoute extends _i1.PageRouteInfo<DetailsRouteArgs> {
-  DetailsRoute({required _i13.Item item, required String heroTag})
+  DetailsRoute({required _i14.Item item, required String heroTag})
       : super(name,
-            path: '/Details',
+            path: 'details',
             args: DetailsRouteArgs(item: item, heroTag: heroTag));
 
   static const String name = 'DetailsRoute';
@@ -166,21 +182,20 @@ class DetailsRoute extends _i1.PageRouteInfo<DetailsRouteArgs> {
 class DetailsRouteArgs {
   const DetailsRouteArgs({required this.item, required this.heroTag});
 
-  final _i13.Item item;
+  final _i14.Item item;
 
   final String heroTag;
 }
 
 class SettingsRoute extends _i1.PageRouteInfo {
-  const SettingsRoute() : super(name, path: '/Settings');
+  const SettingsRoute() : super(name, path: 'settings');
 
   static const String name = 'SettingsRoute';
 }
 
 class MusicPlayerRoute extends _i1.PageRouteInfo<MusicPlayerRouteArgs> {
   MusicPlayerRoute({_i2.Key? key})
-      : super(name,
-            path: '/music-player', args: MusicPlayerRouteArgs(key: key));
+      : super(name, path: 'music-player', args: MusicPlayerRouteArgs(key: key));
 
   static const String name = 'MusicPlayerRoute';
 }
@@ -191,28 +206,13 @@ class MusicPlayerRouteArgs {
   final _i2.Key? key;
 }
 
-class CollectionMainRoute extends _i1.PageRouteInfo<CollectionMainRouteArgs> {
-  CollectionMainRoute({required _i13.Item item})
-      : super(name,
-            path: '/collection-main',
-            args: CollectionMainRouteArgs(item: item));
-
-  static const String name = 'CollectionMainRoute';
-}
-
-class CollectionMainRouteArgs {
-  const CollectionMainRouteArgs({required this.item});
-
-  final _i13.Item item;
-}
-
 class PlaylistRoute extends _i1.PageRouteInfo<PlaylistRouteArgs> {
   PlaylistRoute(
       {_i2.Key? key,
       required _i2.Widget body,
       required _i2.ThemeData playlistTheme})
       : super(name,
-            path: '/Playlist',
+            path: 'playlist',
             args: PlaylistRouteArgs(
                 key: key, body: body, playlistTheme: playlistTheme));
 
@@ -231,9 +231,9 @@ class PlaylistRouteArgs {
 }
 
 class StreamRoute extends _i1.PageRouteInfo<StreamRouteArgs> {
-  StreamRoute({required _i2.Widget player, required _i13.Item item})
+  StreamRoute({required _i2.Widget player, required _i14.Item item})
       : super(name,
-            path: '/Stream', args: StreamRouteArgs(player: player, item: item));
+            path: 'stream', args: StreamRouteArgs(player: player, item: item));
 
   static const String name = 'StreamRoute';
 }
@@ -243,14 +243,13 @@ class StreamRouteArgs {
 
   final _i2.Widget player;
 
-  final _i13.Item item;
+  final _i14.Item item;
 }
 
 class EpubReaderPageRoute extends _i1.PageRouteInfo<EpubReaderPageRouteArgs> {
-  EpubReaderPageRoute({_i2.Key? key, required _i13.Item item})
+  EpubReaderPageRoute({_i2.Key? key, required _i14.Item item})
       : super(name,
-            path: '/epub-reader-page',
-            args: EpubReaderPageRouteArgs(key: key, item: item));
+            path: 'epub', args: EpubReaderPageRouteArgs(key: key, item: item));
 
   static const String name = 'EpubReaderPageRoute';
 }
@@ -260,5 +259,25 @@ class EpubReaderPageRouteArgs {
 
   final _i2.Key? key;
 
-  final _i13.Item item;
+  final _i14.Item item;
+}
+
+class HomeRoute extends _i1.PageRouteInfo {
+  const HomeRoute() : super(name, path: '');
+
+  static const String name = 'HomeRoute';
+}
+
+class CollectionRoute extends _i1.PageRouteInfo<CollectionRouteArgs> {
+  CollectionRoute({required _i14.Item item})
+      : super(name,
+            path: 'collection-main', args: CollectionRouteArgs(item: item));
+
+  static const String name = 'CollectionRoute';
+}
+
+class CollectionRouteArgs {
+  const CollectionRouteArgs({required this.item});
+
+  final _i14.Item item;
 }

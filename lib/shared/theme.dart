@@ -91,6 +91,7 @@ class Theme {
       primarySwatch: jellyPurple,
       primaryIconTheme: IconThemeData(color: Colors.black),
       iconTheme: IconThemeData(color: Colors.black),
+      accentColor: jellyLightBLue,
       accentIconTheme: IconThemeData(color: Colors.black),
       inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
@@ -124,7 +125,6 @@ class Theme {
               fontSize: 24),
           elevation: 4),
       visualDensity: VisualDensity.standard,
-      accentColor: Colors.white,
       cardTheme: CardTheme(color: Colors.white),
       backgroundColor: Colors.grey.shade900,
       primaryTextTheme: getTextThemeWithColor(Colors.white),

@@ -4,6 +4,7 @@ import 'package:jellyflut/screens/collection/collectionMain.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
 import 'package:jellyflut/screens/home/home.dart';
+import 'package:jellyflut/screens/home/homeParent.dart';
 import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
@@ -21,21 +22,39 @@ import 'router.gr.dart';
 @CustomAutoRouter(
   // durationInMilliseconds: 250,
   routes: <AutoRoute>[
-    AutoRoute(page: AuthParent),
-    AutoRoute(page: Home, guards: [AuthGuard], initial: true),
-    AutoRoute(page: Details, guards: [AuthGuard]),
+    AutoRoute(page: AuthParent, path: 'authentication'),
+    AutoRoute(
+        page: HomeParent,
+        path: 'home',
+        name: 'HomeRouter',
+        guards: [AuthGuard],
+        initial: true,
+        children: [
+          AutoRoute(page: Home, name: 'HomeRoute', initial: true, path: ''),
+          AutoRoute(
+              page: CollectionMain,
+              name: 'CollectionRoute',
+              guards: [AuthGuard]),
+          RedirectRoute(path: '*', redirectTo: ''),
+        ]),
+    AutoRoute(page: Details, path: 'details'),
     CustomRoute(
         page: Settings,
+        path: 'settings',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(page: MusicPlayer, guards: [AuthGuard]),
-    AutoRoute(page: CollectionMain, guards: [AuthGuard]),
+    AutoRoute(page: MusicPlayer, path: 'music-player', guards: [AuthGuard]),
     CustomRoute(
         page: Playlist,
+        path: 'playlist',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(page: Stream, guards: [AuthGuard], maintainState: false),
-    AutoRoute(page: EpubReaderPage, guards: [AuthGuard]),
+    AutoRoute(
+        page: Stream,
+        path: 'stream',
+        guards: [AuthGuard],
+        maintainState: false),
+    AutoRoute(page: EpubReaderPage, path: 'epub', guards: [AuthGuard]),
   ],
 )
 class $AppRouter {}

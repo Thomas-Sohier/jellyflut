@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/searchProvider.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
@@ -22,6 +21,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late final focusNode;
+  late final PageController _pageController;
   late SearchProvider searchProvider;
   late Future<Category> categoryFuture;
 
@@ -29,41 +29,40 @@ class _HomeState extends State<Home> {
   void initState() {
     searchProvider = SearchProvider();
     categoryFuture = UserService.getLibraryCategory();
+    _pageController = PageController();
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SearchProvider>.value(
-        value: searchProvider,
-        child: MusicPlayerFAB(
-          child: Scaffold(
-              extendBody: true,
-              backgroundColor: Theme.of(context).backgroundColor,
-              body: sliverItems()),
-        ));
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
-  Widget sliverItems() {
-    var statusBarHeight = MediaQuery.of(context).padding.top;
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-        SliverToBoxAdapter(
-          child: Stack(children: [
-            SearchResult(),
-            Consumer<SearchProvider>(
-              builder: (context, value, child) {
-                return Visibility(
-                    visible: !SearchProvider().showResults, child: headerBar());
-              },
-            )
-          ]),
-        ),
-        SliverToBoxAdapter(child: Resume()),
-        categoryBuilder()
-      ],
-    );
+  @override
+  Widget build(BuildContext context) {
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    return ChangeNotifierProvider<SearchProvider>.value(
+        value: searchProvider,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+            SliverToBoxAdapter(
+              child: Stack(children: [
+                SearchResult(),
+                Consumer<SearchProvider>(
+                  builder: (context, value, child) {
+                    return Visibility(
+                        visible: !SearchProvider().showResults,
+                        child: headerBar());
+                  },
+                )
+              ]),
+            ),
+            SliverToBoxAdapter(child: Resume()),
+            categoryBuilder()
+          ],
+        ));
   }
 
   /// Prevent from re-query the API on resize

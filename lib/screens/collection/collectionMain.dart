@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
 import 'package:jellyflut/providers/items/itemsProvider.dart';
@@ -20,14 +22,11 @@ class CollectionMain extends StatefulWidget {
 }
 
 class _CollectionMainState extends State<CollectionMain> {
-  // Provider
-  late final ItemsProvider itemsProvider;
   late final CarrousselProvider carrousselProvider;
 
   @override
   void initState() {
     super.initState();
-    itemsProvider = ItemsProvider();
     carrousselProvider = CarrousselProvider();
   }
 
@@ -39,24 +38,22 @@ class _CollectionMainState extends State<CollectionMain> {
   @override
   Widget build(BuildContext context) {
     var headerHeight = 64.toDouble();
-    itemsProvider.setParentItem(widget.item.id);
-    itemsProvider.setTypeOfItems([widget.item.getCollectionType()]);
 
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Background(
             child: Stack(children: [
-          if (widget.item.collectionType == 'movies' ||
-              widget.item.collectionType == 'books')
+          if (widget.item.collectionType == CollectionType.MOVIES ||
+              widget.item.collectionType == CollectionType.BOOKS ||
+              widget.item.collectionType == CollectionType.TVSHOWS)
             ChangeNotifierProvider.value(
                 value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ChangeNotifierProvider.value(
-              value: itemsProvider,
-              child: ListItems(headerBarHeight: headerHeight)),
-          DetailHeaderBar(
-            color: Colors.white,
-            height: headerHeight,
-          ),
+          ListItems(headerBarHeight: headerHeight, parentItem: widget.item),
+          if (customRouter.canPopSelfOrChildren)
+            DetailHeaderBar(
+              color: Colors.white,
+              height: headerHeight,
+            ),
         ])));
   }
 }

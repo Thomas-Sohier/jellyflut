@@ -77,7 +77,7 @@ class Jellyflut extends StatelessWidget {
               theme: personnal_theme.Theme.defaultThemeData,
               debugShowCheckedModeBanner: false,
               routerDelegate:
-                  customRouter.delegate(initialRoutes: [HomeRoute()]),
+                  customRouter.delegate(initialRoutes: [HomeRouter()]),
               routeInformationParser: customRouter.defaultRouteParser(),
             )));
   }

@@ -14,14 +14,14 @@ module:
 dependencies:
   assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.9.0
-  auto_route: ^2.1.0
+  auto_route: ^2.3.0
   auto_size_text: ^3.0.0-nullsafety.0
   better_player: ^0.0.73
   blurhash_dart: ^1.0.2
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
-  dart_vlc: ^0.1.5
+  dart_vlc: ^0.1.7
   device_info: ^2.0.2
   dio: ^4.0.0
   epub_view: ^2.2.0
@@ -41,6 +41,7 @@ dependencies:
   provider: ^5.0.0
   responsive_builder: ^0.4.1
   rxdart: ^0.27.1
+  salomon_bottom_bar: ^3.1.0
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0
@@ -54,7 +55,7 @@ dependencies:
   youtube_explode_dart: ^1.10.4
 
 dev_dependencies:
-  auto_route_generator: ^2.1.0
+  auto_route_generator: ^2.3.0
   build_runner: ^2.0.6
   flutter_launcher_icons:
     git:
