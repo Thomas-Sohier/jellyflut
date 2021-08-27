@@ -4,7 +4,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
-import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/listItems.dart';
 import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';

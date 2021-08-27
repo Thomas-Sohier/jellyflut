@@ -19,23 +19,37 @@ class DrawerLargeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activeColor = Theme.of(context).accentColor;
+    final inactiveColor = Theme.of(context).primaryColor;
+    final isActive = tabsContext.tabsRouter.activeIndex == index;
     return InkWell(
         onTap: () => tabsContext.tabsRouter
           ..setActiveIndex(index)
           ..innerRouterOf<StackRouter>(HomeRouter.name)!.push(HomeRoute()),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 4, 10),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                color: Theme.of(context).primaryColor,
-                size: 28,
-              ),
-              SizedBox(width: 12),
-              Flexible(child: Text(name))
-            ],
-          ),
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              shape: BoxShape.rectangle),
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 10, 4, 10),
+              child: Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: isActive ? activeColor : inactiveColor,
+                    size: 28,
+                  ),
+                  SizedBox(width: 12),
+                  Flexible(
+                      child: Text(
+                    name,
+                    style: TextStyle(
+                        color: isActive ? activeColor : inactiveColor),
+                  ))
+                ],
+              )),
         ));
   }
 }

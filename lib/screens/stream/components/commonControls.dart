@@ -142,24 +142,21 @@ class _CommonControlsState extends State<CommonControls> {
 
   Widget topRow() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           bb.BackButton(shadow: true),
-          Flexible(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  itemTitle(),
-                  streamingProvider.item!.hasParent()
-                      ? itemParentTitle()
-                      : Container(),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                itemTitle(),
+                streamingProvider.item!.hasParent()
+                    ? itemParentTitle()
+                    : Container(),
+              ],
             ),
           ),
           Spacer(),

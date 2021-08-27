@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/bottomNavigationBar.dart' as bottom_bar;
-import 'package:jellyflut/models/enum/collectionType.dart';
+import 'package:jellyflut/components/musicPlayerFAB.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/home/components/desktop/drawer.dart';
 import 'package:jellyflut/services/user/userservice.dart';
 import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'package:jellyflut/screens/home/components/desktop/drawer.dart' as large;
@@ -29,28 +28,31 @@ class _HomeParentState extends State<HomeParent> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Category>(
-      future: categoryFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return responsiveBuilder(snapshot.data!.items);
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.error,
-                    size: 24, color: Theme.of(context).primaryColor),
-                Text(
-                  snapshot.error.toString(),
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ],
-            ),
-          );
-        }
-        return Container();
-      },
+    return MusicPlayerFAB(
+      positionBottom: 80,
+      child: FutureBuilder<Category>(
+        future: categoryFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return responsiveBuilder(snapshot.data!.items);
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error,
+                      size: 24, color: Theme.of(context).primaryColor),
+                  Text(
+                    snapshot.error.toString(),
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
@@ -63,7 +65,6 @@ class _HomeParentState extends State<HomeParent> {
 
   Widget tabsScaffoldMobile(List<Item> items) {
     return AutoTabsScaffold(
-        extendBody: true,
         routes: generateRouteFromItems(items),
         bottomNavigationBuilder: (context, tabsRouter) =>
             bottom_bar.BottomNavigationBar(

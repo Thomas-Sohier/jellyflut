@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/components/desktop/drawerLargeButton.dart';
+import 'package:jellyflut/shared/colors.dart';
 
 class Drawer extends StatefulWidget {
   final List<Item> items;
@@ -17,11 +18,15 @@ class Drawer extends StatefulWidget {
 class _DrawerState extends State<Drawer> {
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 200),
-      child: ListView(
-          children: createButtonRouteDesktop(widget.items, widget.tabsContext)),
-    );
+    return Material(
+        elevation: 6,
+        color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.02),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 200),
+          child: ListView(
+              children:
+                  createButtonRouteDesktop(widget.items, widget.tabsContext)),
+        ));
   }
 
   List<Widget> createButtonRouteDesktop(

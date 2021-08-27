@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawerTabletButton.dart';
+import 'package:jellyflut/shared/colors.dart';
 
 class Drawer extends StatefulWidget {
   final List<Item> items;
@@ -18,7 +19,7 @@ class _DrawerState extends State<Drawer> {
   Widget build(BuildContext context) {
     return Material(
       elevation: 4,
-      color: Theme.of(context).backgroundColor,
+      color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.02),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 80),
         child: Align(

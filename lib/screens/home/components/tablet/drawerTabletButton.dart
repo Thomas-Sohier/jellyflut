@@ -17,23 +17,32 @@ class DrawerTabletButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activeColor = Theme.of(context).accentColor;
+    final inactiveColor = Theme.of(context).primaryColor;
+    final isActive = tabsContext.tabsRouter.activeIndex == index;
     return InkWell(
-        onTap: () => tabsContext.tabsRouter
-          ..setActiveIndex(index)
-          ..innerRouterOf<StackRouter>(HomeRouter.name)!.push(HomeRoute()),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: Theme.of(context).primaryColor,
-                size: 28,
-              )
-            ],
-          ),
-        ));
+      onTap: () => tabsContext.tabsRouter
+        ..setActiveIndex(index)
+        ..innerRouterOf<StackRouter>(HomeRouter.name)!.push(HomeRoute()),
+      child: Container(
+          margin: const EdgeInsets.only(top: 5, bottom: 5),
+          decoration: BoxDecoration(
+              color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
+              shape: BoxShape.circle),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  color: isActive ? activeColor : inactiveColor,
+                  size: 28,
+                )
+              ],
+            ),
+          )),
+    );
   }
 }

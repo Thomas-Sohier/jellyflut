@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/collectionType.dart';
-import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -43,7 +42,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
     final navBarItems = <SalomonBottomBarItem>[];
     //initial route
     navBarItems.add(SalomonBottomBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.home_outlined),
         title: Text('Home'),
         selectedColor: Theme.of(context).accentColor,
         unselectedColor: Theme.of(context).primaryColor));
@@ -60,21 +59,21 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
   IconData getRightIconForType(CollectionType? collectionType) {
     switch (collectionType) {
       case CollectionType.BOOKS:
-        return Icons.book;
+        return Icons.book_outlined;
       case CollectionType.TVSHOWS:
-        return Icons.tv;
+        return Icons.tv_outlined;
       case CollectionType.BOXSETS:
-        return Icons.account_box;
+        return Icons.account_box_outlined;
       case CollectionType.MOVIES:
-        return Icons.movie;
+        return Icons.movie_outlined;
       case CollectionType.MUSIC:
-        return Icons.music_note;
+        return Icons.music_note_outlined;
       case CollectionType.HOMEVIDEOS:
-        return Icons.video_camera_back;
+        return Icons.video_camera_back_outlined;
       case CollectionType.MUSICVIDEOS:
-        return Icons.music_video;
+        return Icons.music_video_outlined;
       case CollectionType.MIXED:
-        return Icons.blender;
+        return Icons.blender_outlined;
       default:
         return Icons.tv;
     }

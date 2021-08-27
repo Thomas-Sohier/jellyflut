@@ -12,8 +12,17 @@ import 'package:provider/provider.dart';
 
 class MusicPlayerFAB extends StatefulWidget {
   final Widget child;
+  final double positionBottom;
+  final double positionLeft;
+  final double positionRight;
+  final double positionTop;
 
-  const MusicPlayerFAB({required this.child});
+  const MusicPlayerFAB(
+      {required this.child,
+      this.positionBottom = 15,
+      this.positionLeft = 0,
+      this.positionRight = 15,
+      this.positionTop = 0});
 
   @override
   State<StatefulWidget> createState() => _MusicPlayerFABState();
@@ -51,8 +60,8 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
       children: [
         widget.child,
         Positioned(
-            bottom: 15,
-            right: 15,
+            bottom: widget.positionBottom,
+            right: widget.positionRight,
             child: Consumer<MusicProvider>(
                 builder: (context, musicPlayer, child) => isInit()
                     ? body(musicPlayer)
