@@ -37,6 +37,11 @@ import 'router.gr.dart';
               guards: [AuthGuard]),
           RedirectRoute(path: '*', redirectTo: ''),
         ]),
+    CustomRoute(
+        page: CollectionMain,
+        name: 'CollectionMainRoute',
+        transitionsBuilder: TransitionsBuilders.slideLeft,
+        guards: [AuthGuard]),
     AutoRoute(page: Details, path: 'details'),
     CustomRoute(
         page: Settings,

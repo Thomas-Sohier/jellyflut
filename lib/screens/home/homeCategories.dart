@@ -45,7 +45,7 @@ class _HomeCategoriesState extends State<HomeCategories>
   bool get wantKeepAlive => true;
 
   void slideToPageDetail() {
-    customRouter.push(CollectionRoute(
+    customRouter.push(CollectionMainRoute(
       item: widget.item,
     ));
   }

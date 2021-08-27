@@ -69,7 +69,7 @@ class _HomeParentState extends State<HomeParent> {
         bottomNavigationBuilder: (context, tabsRouter) =>
             bottom_bar.BottomNavigationBar(
                 tabsRouter: tabsRouter, items: items),
-        backgroundColor: Colors.transparent);
+        backgroundColor: Theme.of(context).backgroundColor);
   }
 
   Widget tabsScaffoldTablet(List<Item> items) {
@@ -80,7 +80,7 @@ class _HomeParentState extends State<HomeParent> {
               Expanded(child: child)
             ]),
         routes: generateRouteFromItems(items),
-        backgroundColor: Colors.transparent);
+        backgroundColor: Theme.of(context).backgroundColor);
   }
 
   Widget tabsScaffoldDesktop(List<Item> items) {
@@ -91,7 +91,7 @@ class _HomeParentState extends State<HomeParent> {
               Expanded(child: child)
             ]),
         routes: generateRouteFromItems(items),
-        backgroundColor: Colors.transparent);
+        backgroundColor: Theme.of(context).backgroundColor);
   }
 
   List<PageRouteInfo<dynamic>> generateRouteFromItems(List<Item> items) {

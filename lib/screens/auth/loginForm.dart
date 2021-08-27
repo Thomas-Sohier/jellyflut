@@ -44,7 +44,7 @@ class _LoginFormState extends State<LoginForm> {
       if (widget.onAuthenticated != null) {
         widget.onAuthenticated!();
       } else {
-        await AutoRouter.of(context).replace(HomeRoute());
+        await AutoRouter.of(context).replace(HomeRouter());
       }
     }).catchError((onError) {
       showToast(onError.toString(), fToast, duration: Duration(seconds: 6));

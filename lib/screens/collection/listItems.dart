@@ -66,7 +66,8 @@ class _ListItemsState extends State<ListItems> {
 
   Widget buildItemsGrid() {
     // var spacing = numberOfItemRow
-    final paddingTop = canPop ? 82.0 : 8.0;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final paddingTop = canPop ? 82.0 : (8.0 + statusBarHeight);
     return Padding(
         padding: EdgeInsets.fromLTRB(8, paddingTop, 8, 8),
         child: FutureBuilder<Category>(

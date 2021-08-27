@@ -28,14 +28,36 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
             topRight: Radius.circular(5),
           ),
         ),
-        child: SafeArea(
-          child: SalomonBottomBar(
+        child: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+          final maxNbItems = (constraints.maxWidth / 60).round() - 1;
+          if (maxNbItems <= widget.items.length) {
+            return SizedBox(
+              height: 60,
+              child: SizedBox(
+                width: constraints.maxWidth,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: [
+                      Expanded(
+                        child: SalomonBottomBar(
+                            currentIndex: widget.tabsRouter.activeIndex,
+                            onTap: (index) => setState(() {
+                                  widget.tabsRouter.setActiveIndex(index);
+                                }),
+                            items: createButtonRoute(widget.items)),
+                      ),
+                    ]),
+              ),
+            );
+          }
+          return SalomonBottomBar(
               currentIndex: widget.tabsRouter.activeIndex,
               onTap: (index) => setState(() {
                     widget.tabsRouter.setActiveIndex(index);
                   }),
-              items: createButtonRoute(widget.items)),
-        ));
+              items: createButtonRoute(widget.items));
+        })));
   }
 
   List<SalomonBottomBarItem> createButtonRoute(List<Item> items) {

@@ -9,15 +9,15 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../models/jellyfin/item.dart' as _i14;
 import '../screens/auth/authParent.dart' as _i4;
-import '../screens/collection/collectionMain.dart' as _i13;
-import '../screens/details/details.dart' as _i6;
-import '../screens/epub/epubReader.dart' as _i11;
-import '../screens/home/home.dart' as _i12;
+import '../screens/collection/collectionMain.dart' as _i6;
+import '../screens/details/details.dart' as _i7;
+import '../screens/epub/epubReader.dart' as _i12;
+import '../screens/home/home.dart' as _i13;
 import '../screens/home/homeParent.dart' as _i5;
-import '../screens/musicPlayer/musicPlayer.dart' as _i8;
-import '../screens/musicPlayer/routes/playlist.dart' as _i9;
-import '../screens/settings/settings.dart' as _i7;
-import '../screens/stream/stream.dart' as _i10;
+import '../screens/musicPlayer/musicPlayer.dart' as _i9;
+import '../screens/musicPlayer/routes/playlist.dart' as _i10;
+import '../screens/settings/settings.dart' as _i8;
+import '../screens/stream/stream.dart' as _i11;
 import 'router.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -42,23 +42,34 @@ class AppRouter extends _i1.RootStackRouter {
         barrierDismissible: false),
     HomeRouter.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i5.HomeParent();
+        builder: (data) {
+          final args =
+              data.argsAs<HomeRouterArgs>(orElse: () => const HomeRouterArgs());
+          return _i5.HomeParent(key: args.key);
         },
+        opaque: true,
+        barrierDismissible: false),
+    CollectionMainRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<CollectionMainRouteArgs>();
+          return _i6.CollectionMain(item: args.item);
+        },
+        transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
         opaque: true,
         barrierDismissible: false),
     DetailsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<DetailsRouteArgs>();
-          return _i6.Details(item: args.item, heroTag: args.heroTag);
+          return _i7.Details(item: args.item, heroTag: args.heroTag);
         },
         opaque: true,
         barrierDismissible: false),
     SettingsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i7.Settings();
+          return _i8.Settings();
         },
         transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
         opaque: true,
@@ -68,7 +79,7 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (data) {
           final args = data.argsAs<MusicPlayerRouteArgs>(
               orElse: () => const MusicPlayerRouteArgs());
-          return _i8.MusicPlayer(key: args.key);
+          return _i9.MusicPlayer(key: args.key);
         },
         opaque: true,
         barrierDismissible: false),
@@ -76,7 +87,7 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<PlaylistRouteArgs>();
-          return _i9.Playlist(
+          return _i10.Playlist(
               key: args.key,
               body: args.body,
               playlistTheme: args.playlistTheme);
@@ -88,7 +99,7 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<StreamRouteArgs>();
-          return _i10.Stream(player: args.player, item: args.item);
+          return _i11.Stream(player: args.player, item: args.item);
         },
         maintainState: false,
         opaque: true,
@@ -97,14 +108,14 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<EpubReaderPageRouteArgs>();
-          return _i11.EpubReaderPage(key: args.key, item: args.item);
+          return _i12.EpubReaderPage(key: args.key, item: args.item);
         },
         opaque: true,
         barrierDismissible: false),
     HomeRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i12.Home();
+          return _i13.Home();
         },
         opaque: true,
         barrierDismissible: false),
@@ -112,7 +123,7 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<CollectionRouteArgs>();
-          return _i13.CollectionMain(item: args.item);
+          return _i6.CollectionMain(item: args.item);
         },
         opaque: true,
         barrierDismissible: false)
@@ -132,6 +143,8 @@ class AppRouter extends _i1.RootStackRouter {
           _i1.RouteConfig('*#redirect',
               path: '*', redirectTo: '', fullMatch: true)
         ]),
+        _i1.RouteConfig(CollectionMainRoute.name,
+            path: '/collection-main', guards: [authGuard]),
         _i1.RouteConfig(DetailsRoute.name, path: 'details'),
         _i1.RouteConfig(SettingsRoute.name,
             path: 'settings', guards: [authGuard]),
@@ -163,11 +176,35 @@ class AuthParentRouteArgs {
   final void Function()? onAuthenticated;
 }
 
-class HomeRouter extends _i1.PageRouteInfo {
-  const HomeRouter({List<_i1.PageRouteInfo>? children})
-      : super(name, path: 'home', initialChildren: children);
+class HomeRouter extends _i1.PageRouteInfo<HomeRouterArgs> {
+  HomeRouter({_i2.Key? key, List<_i1.PageRouteInfo>? children})
+      : super(name,
+            path: 'home',
+            args: HomeRouterArgs(key: key),
+            initialChildren: children);
 
   static const String name = 'HomeRouter';
+}
+
+class HomeRouterArgs {
+  const HomeRouterArgs({this.key});
+
+  final _i2.Key? key;
+}
+
+class CollectionMainRoute extends _i1.PageRouteInfo<CollectionMainRouteArgs> {
+  CollectionMainRoute({required _i14.Item item})
+      : super(name,
+            path: '/collection-main',
+            args: CollectionMainRouteArgs(item: item));
+
+  static const String name = 'CollectionMainRoute';
+}
+
+class CollectionMainRouteArgs {
+  const CollectionMainRouteArgs({required this.item});
+
+  final _i14.Item item;
 }
 
 class DetailsRoute extends _i1.PageRouteInfo<DetailsRouteArgs> {
