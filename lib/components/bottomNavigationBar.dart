@@ -39,14 +39,12 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     children: [
-                      Expanded(
-                        child: SalomonBottomBar(
-                            currentIndex: widget.tabsRouter.activeIndex,
-                            onTap: (index) => setState(() {
-                                  widget.tabsRouter.setActiveIndex(index);
-                                }),
-                            items: createButtonRoute(widget.items)),
-                      ),
+                      SalomonBottomBar(
+                          currentIndex: widget.tabsRouter.activeIndex,
+                          onTap: (index) => setState(() {
+                                widget.tabsRouter.setActiveIndex(index);
+                              }),
+                          items: createButtonRoute(widget.items)),
                     ]),
               ),
             );

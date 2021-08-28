@@ -39,19 +39,19 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final i = snapshot.data!.items;
-            return ListView.builder(
-                itemCount: i.length,
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                physics: ClampingScrollPhysics(),
-                itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: EpisodeItem(item: i.elementAt(index)),
-                    ));
+            return Column(children: buildListItems(i));
           }
           return skeletonListItem();
         });
+  }
+
+  List<Widget> buildListItems(List<Item> items) {
+    return items
+        .map((e) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: EpisodeItem(item: e),
+            ))
+        .toList();
   }
 
   Widget skeletonListItem() {

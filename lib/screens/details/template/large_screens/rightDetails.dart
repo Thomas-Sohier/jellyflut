@@ -12,7 +12,6 @@ import 'package:jellyflut/screens/details/template/large_screens/components/acti
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/playButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/trailerButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/viewedButton.dart';
-import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -31,7 +30,7 @@ class RightDetails extends StatelessWidget {
       SizedBox(
         height: 24,
       ),
-      actions(context),
+      Align(alignment: Alignment.centerLeft, child: actions(context)),
       SizedBox(
         height: 24,
       ),
@@ -51,7 +50,6 @@ class RightDetails extends StatelessWidget {
       ),
       overview(context),
       if (item.hasPeople()) peoples(context),
-      Collection(item)
     ]);
   }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/paletteButton.dart';
@@ -16,12 +18,15 @@ class TabsItems extends StatefulWidget {
 
 class _TabsItemsState extends State<TabsItems>
     with SingleTickerProviderStateMixin {
+  late final double tabHeight;
   late TabController tabController;
   AxisDirection direction = AxisDirection.left;
 
   @override
   void initState() {
     tabController = TabController(length: widget.items.length, vsync: this);
+    tabHeight =
+        widget.items.map((e) => e.recursiveItemCount!).reduce(max) * (150 + 10);
     super.initState();
   }
 
@@ -33,7 +38,7 @@ class _TabsItemsState extends State<TabsItems>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 1500, child: tabs(widget.items));
+    return tabs(widget.items);
   }
 
   Widget tabs(List<Item> items) {
@@ -53,7 +58,8 @@ class _TabsItemsState extends State<TabsItems>
         SizedBox(
           height: 24,
         ),
-        Expanded(
+        SizedBox(
+          height: tabHeight,
           child: TabBarView(
             controller: tabController,
             physics: NeverScrollableScrollPhysics(),

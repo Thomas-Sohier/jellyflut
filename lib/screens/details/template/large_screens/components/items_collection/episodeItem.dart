@@ -53,8 +53,8 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget epsiodeItem() {
-    return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: 120, maxHeight: 160),
+    return SizedBox(
+      height: 150,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(

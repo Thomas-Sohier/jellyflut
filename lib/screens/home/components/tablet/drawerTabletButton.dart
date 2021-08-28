@@ -23,7 +23,7 @@ class DrawerTabletButton extends StatelessWidget {
     return InkWell(
       onTap: () => tabsContext.tabsRouter
         ..setActiveIndex(index)
-        ..innerRouterOf<StackRouter>(HomeRouter.name)!.push(HomeRoute()),
+        ..innerRouterOf<StackRouter>(HomeRouter.name)?.push(HomeRoute()),
       child: Container(
           margin: const EdgeInsets.only(top: 5, bottom: 5),
           decoration: BoxDecoration(

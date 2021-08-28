@@ -27,7 +27,7 @@ class _ListCollectionItemState extends State<ListCollectionItem> {
         : ItemService.getItems(
             parentId: widget.item.id,
             limit: 100,
-            fields: 'ImageTags',
+            fields: 'ImageTags, RecursiveItemCount',
             filter: 'IsFolder');
     super.initState();
   }

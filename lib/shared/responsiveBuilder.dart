@@ -10,9 +10,10 @@ class ResponsiveBuilder {
       {required Widget Function() mobile,
       required Widget Function() tablet,
       required Widget Function() desktop,
+      Widget Function()? tv,
       ScreenBreakpoints? breakpoints}) {
     if (isAndroidTv) {
-      return desktop();
+      return tv == null ? desktop() : tv();
     }
     return ScreenTypeLayout.builder(
         breakpoints: breakpoints ?? _screenBreakpoints,

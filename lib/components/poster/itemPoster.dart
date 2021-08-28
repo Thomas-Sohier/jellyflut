@@ -73,40 +73,43 @@ class _ItemPosterState extends State<ItemPoster>
     return Column(children: [
       Expanded(
         flex: 8,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AspectRatio(
-                aspectRatio: aspectRatio,
-                child: Stack(fit: StackFit.expand, children: [
-                  Poster(
-                      showParent: widget.showParent,
-                      tag: widget.tag,
-                      clickable: widget.clickable,
-                      heroTag: posterHeroTag,
-                      boxFit: widget.boxFit,
-                      item: widget.item),
-                  if (widget.showOverlay)
-                    IgnorePointer(
-                        child: Stack(
-                      children: [
-                        if (widget.item.isNew())
-                          Positioned(top: 8, left: 0, child: newBanner()),
-                        if (widget.item.isPlayed())
-                          Positioned(top: 8, right: 0, child: playedBanner()),
-                      ],
-                    )),
-                  if (widget.showLogo && widget.showOverlay)
-                    IgnorePointer(
-                        child: Logo(
-                      item: widget.item,
-                      size: Size.infinite,
-                    )),
-                  if (widget.item.hasProgress() && widget.showOverlay)
-                    progress(),
-                ])),
-          ],
+        child: ClipRRect(
+          clipBehavior: Clip.antiAlias,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AspectRatio(
+                  aspectRatio: aspectRatio,
+                  child: Stack(children: [
+                    Poster(
+                        showParent: widget.showParent,
+                        tag: widget.tag,
+                        clickable: widget.clickable,
+                        heroTag: posterHeroTag,
+                        boxFit: widget.boxFit,
+                        item: widget.item),
+                    if (widget.showOverlay)
+                      IgnorePointer(
+                          child: Stack(
+                        children: [
+                          if (widget.item.isNew())
+                            Positioned(top: 8, left: 0, child: newBanner()),
+                          if (widget.item.isPlayed())
+                            Positioned(top: 8, right: 0, child: playedBanner()),
+                        ],
+                      )),
+                    if (widget.showLogo && widget.showOverlay)
+                      IgnorePointer(
+                          child: Logo(
+                        item: widget.item,
+                        size: Size.infinite,
+                      )),
+                    if (widget.item.hasProgress() && widget.showOverlay)
+                      progress(),
+                  ])),
+            ],
+          ),
         ),
       ),
       if (widget.showName) Expanded(flex: 1, child: name())

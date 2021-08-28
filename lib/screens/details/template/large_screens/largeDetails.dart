@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
@@ -109,20 +110,23 @@ class _LargeDetailsState extends State<LargeDetails> {
         Container(
             decoration: BoxDecoration(
                 color: themeData.backgroundColor.withOpacity(0.4))),
-        ListView(padding: const EdgeInsets.all(24), children: [
-          Logo(item: widget.item, size: mediaQuery.size),
-          FutureBuilder<Item>(
-              future: widget.itemToLoad,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return RightDetails(
-                    item: snapshot.data!,
-                    dominantColorFuture: widget.dominantColorFuture,
-                  );
-                }
-                return SkeletonRightDetails();
-              }),
-        ]),
+        FutureBuilder<Item>(
+            future: widget.itemToLoad,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView(
+                  padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+                  children: [
+                    Logo(item: widget.item, size: mediaQuery.size),
+                    RightDetails(
+                        item: snapshot.data!,
+                        dominantColorFuture: widget.dominantColorFuture),
+                    Collection(snapshot.data!)
+                  ],
+                );
+              }
+              return SkeletonRightDetails();
+            }),
       ],
     );
   }

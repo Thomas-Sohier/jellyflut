@@ -25,7 +25,7 @@ class DrawerLargeButton extends StatelessWidget {
     return InkWell(
         onTap: () => tabsContext.tabsRouter
           ..setActiveIndex(index)
-          ..innerRouterOf<StackRouter>(HomeRouter.name)!.push(HomeRoute()),
+          ..innerRouterOf<StackRouter>(HomeRouter.name)?.push(HomeRoute()),
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(

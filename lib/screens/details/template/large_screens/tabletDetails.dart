@@ -7,6 +7,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/BackgroundImage.dart';
+import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
@@ -83,32 +84,23 @@ class _TabletDetailsState extends State<TabletDetails> {
         Container(
             decoration: BoxDecoration(
                 color: themeData.backgroundColor.withOpacity(0.4))),
-        ListView(
-          padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(flex: 4, child: poster()),
-                if (widget.item.hasLogo())
-                  Expanded(
-                      flex: 6,
-                      child: Logo(item: widget.item, size: mediaQuery.size)),
-              ],
-            ),
-            FutureBuilder<Item>(
-                future: widget.itemToLoad,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return RightDetails(
+        FutureBuilder<Item>(
+            future: widget.itemToLoad,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView(
+                  padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+                  children: [
+                    Logo(item: widget.item, size: mediaQuery.size),
+                    RightDetails(
                         item: snapshot.data!,
-                        dominantColorFuture: widget.dominantColorFuture);
-                  }
-                  return SkeletonRightDetails();
-                }),
-          ],
-        )
+                        dominantColorFuture: widget.dominantColorFuture),
+                    Collection(snapshot.data!)
+                  ],
+                );
+              }
+              return SkeletonRightDetails();
+            }),
       ],
     );
   }

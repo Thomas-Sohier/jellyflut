@@ -21,6 +21,8 @@ double aspectRatio({ItemType? type}) {
     return 1 / 1;
   } else if (type == ItemType.PHOTO) {
     return 4 / 3;
+  } else if (type == ItemType.BOOK) {
+    return 2 / 3;
   }
   return 2 / 3;
 }
