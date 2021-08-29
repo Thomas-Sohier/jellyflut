@@ -1,9 +1,11 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/collection/collectionBloc.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -69,16 +71,22 @@ class Jellyflut extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
         value: MusicProvider(),
-        child: Shortcuts(
-            // needed for AndroidTV to be able to select
-            shortcuts: shortcuts,
-            child: MaterialApp.router(
-              title: 'JellyFlut',
-              theme: personnal_theme.Theme.defaultThemeData,
-              debugShowCheckedModeBanner: false,
-              routerDelegate:
-                  customRouter.delegate(initialRoutes: [HomeRouter()]),
-              routeInformationParser: customRouter.defaultRouteParser(),
-            )));
+        child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => CollectionBloc(),
+              ),
+            ],
+            child: Shortcuts(
+                // needed for AndroidTV to be able to select
+                shortcuts: shortcuts,
+                child: MaterialApp.router(
+                  title: 'JellyFlut',
+                  theme: personnal_theme.Theme.defaultThemeData,
+                  debugShowCheckedModeBanner: false,
+                  routerDelegate:
+                      customRouter.delegate(initialRoutes: [HomeRouter()]),
+                  routeInformationParser: customRouter.defaultRouteParser(),
+                ))));
   }
 }

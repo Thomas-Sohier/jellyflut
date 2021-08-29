@@ -1,12 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detailedItemPoster.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
 import 'package:jellyflut/providers/items/itemsProvider.dart';
-import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
+import 'package:jellyflut/screens/collection/collectionBloc.dart';
+import 'package:jellyflut/screens/collection/collectionEvent.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -27,36 +29,30 @@ class ListItems extends StatefulWidget {
 class _ListItemsState extends State<ListItems> {
   late final ScrollController _scrollController;
   late final CarrousselProvider carrousselProvider;
-  late final Future<Category> categoryFuture;
   late final bool canPop;
+  late final CollectionBloc collectionBloc;
 
   @override
   void initState() {
     super.initState();
-    // set first image background
-    categoryFuture = ItemService.getItems(
-        parentId: widget.parentItem.id,
-        sortBy: 'SortName',
-        fields:
-            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
-        imageTypeLimit: 1,
-        startIndex: 0,
-        includeItemTypes: widget.parentItem
-            .getCollectionType()
-            .map((e) => getEnumValue(e.toString()))
-            .toList()
-            .join(','),
-        limit: 100);
+    collectionBloc = CollectionBloc()..initialize(widget.parentItem);
     canPop = customRouter.canPopSelfOrChildren;
     carrousselProvider = CarrousselProvider();
     _scrollController = ScrollController(initialScrollOffset: 5.0)
-      ..addListener(() {});
+      ..addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.extentAfter < 500) {
+      collectionBloc
+          .add(CollectionEvent(items: [], status: CollectionStatus.LOAD_MORE));
+    }
   }
 
   @override
@@ -69,36 +65,12 @@ class _ListItemsState extends State<ListItems> {
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final paddingTop = canPop ? 82.0 : (8.0 + statusBarHeight);
     return Padding(
-        padding: EdgeInsets.fromLTRB(8, paddingTop, 8, 8),
-        child: FutureBuilder<Category>(
-            future: categoryFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final items = snapshot.data!.items;
-                if (items.isNotEmpty) {
-                  return view(items);
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.error,
-                          size: 24, color: Theme.of(context).primaryColor),
-                      Text(
-                        'No items found in collection',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return ListItemsSkeleton();
-            }));
+        padding: EdgeInsets.fromLTRB(8, paddingTop, 8, 8), child: view());
   }
 
-  Widget view(List<Item> items) {
-    var size = MediaQuery.of(context).size;
-    var numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
+  Widget view() {
+    final size = MediaQuery.of(context).size;
+    final numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
     return CustomScrollView(controller: _scrollController, slivers: <Widget>[
       SliverToBoxAdapter(
         child: Column(children: [
@@ -106,17 +78,21 @@ class _ListItemsState extends State<ListItems> {
           sortItems(),
         ]),
       ),
-      SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: items.first.getPrimaryAspectRatio(),
-              crossAxisCount: numberOfItemRow,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5),
-          delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
-            return ItemPoster(
-              items[index],
-            );
-          }, childCount: items.length)),
+      StreamBuilder<List<Item>>(
+        stream: collectionBloc.stream,
+        initialData: [],
+        builder: (context, snapshot) => SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 2 / 3,
+                crossAxisCount: numberOfItemRow,
+                mainAxisSpacing: 5,
+                crossAxisSpacing: 5),
+            delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
+              return ItemPoster(
+                snapshot.data!.elementAt(index),
+              );
+            }, childCount: snapshot.data!.length)),
+      ),
     ]);
   }
 
@@ -132,7 +108,9 @@ class _ListItemsState extends State<ListItems> {
               Icons.date_range,
               color: Colors.white,
             ),
-            onPressed: () => ItemsProvider().sortItemByDate(),
+            onPressed: () => collectionBloc.add(CollectionEvent(
+                items: collectionBloc.state.toList(),
+                status: CollectionStatus.SORT_DATE)),
           ),
           IconButton(
             icon: Icon(
@@ -140,7 +118,9 @@ class _ListItemsState extends State<ListItems> {
               color: Colors.white,
               size: 26,
             ),
-            onPressed: () => ItemsProvider().sortItemByName(),
+            onPressed: () => collectionBloc.add(CollectionEvent(
+                items: collectionBloc.state.toList(),
+                status: CollectionStatus.SORT_NAME)),
           ),
         ],
       ),
@@ -167,12 +147,4 @@ class _ListItemsState extends State<ListItems> {
           );
         }).toList());
   }
-
-  // void _scrollListener() {
-  //   if (_scrollController.offset >=
-  //           _scrollController.position.maxScrollExtent &&
-  //       !_scrollController.position.outOfRange) {
-  //     itemsProvider.showMoreItem();
-  //   }
-  // }
 }
