@@ -125,7 +125,7 @@ class _LargeDetailsState extends State<LargeDetails> {
         future: widget.itemToLoad,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            RightDetails(
+            return RightDetails(
                 item: snapshot.data!,
                 dominantColorFuture: widget.dominantColorFuture);
           }

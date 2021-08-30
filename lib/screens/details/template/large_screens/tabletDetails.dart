@@ -107,7 +107,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         future: widget.itemToLoad,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            RightDetails(
+            return RightDetails(
                 item: snapshot.data!,
                 dominantColorFuture: widget.dominantColorFuture);
           }
