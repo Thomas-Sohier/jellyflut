@@ -9,7 +9,7 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../models/jellyfin/item.dart' as _i14;
 import '../screens/auth/authParent.dart' as _i4;
-import '../screens/collection/collectionMain.dart' as _i6;
+import '../screens/collection/collectionParent.dart' as _i6;
 import '../screens/details/details.dart' as _i7;
 import '../screens/epub/epubReader.dart' as _i12;
 import '../screens/home/home.dart' as _i13;
@@ -49,11 +49,11 @@ class AppRouter extends _i1.RootStackRouter {
         },
         opaque: true,
         barrierDismissible: false),
-    CollectionMainRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+    CollectionParentRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (data) {
-          final args = data.argsAs<CollectionMainRouteArgs>();
-          return _i6.CollectionMain(item: args.item);
+          final args = data.argsAs<CollectionParentRouteArgs>();
+          return _i6.CollectionParent(item: args.item);
         },
         transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
         opaque: true,
@@ -123,7 +123,7 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<CollectionRouteArgs>();
-          return _i6.CollectionMain(item: args.item);
+          return _i6.CollectionParent(item: args.item);
         },
         opaque: true,
         barrierDismissible: false)
@@ -139,12 +139,12 @@ class AppRouter extends _i1.RootStackRouter {
         ], children: [
           _i1.RouteConfig(HomeRoute.name, path: ''),
           _i1.RouteConfig(CollectionRoute.name,
-              path: 'collection-main', guards: [authGuard]),
+              path: 'collection-parent', guards: [authGuard]),
           _i1.RouteConfig('*#redirect',
               path: '*', redirectTo: '', fullMatch: true)
         ]),
-        _i1.RouteConfig(CollectionMainRoute.name,
-            path: '/collection-main', guards: [authGuard]),
+        _i1.RouteConfig(CollectionParentRoute.name,
+            path: '/collection-parent', guards: [authGuard]),
         _i1.RouteConfig(DetailsRoute.name, path: 'details'),
         _i1.RouteConfig(SettingsRoute.name,
             path: 'settings', guards: [authGuard]),
@@ -192,17 +192,18 @@ class HomeRouterArgs {
   final _i2.Key? key;
 }
 
-class CollectionMainRoute extends _i1.PageRouteInfo<CollectionMainRouteArgs> {
-  CollectionMainRoute({required _i14.Item item})
+class CollectionParentRoute
+    extends _i1.PageRouteInfo<CollectionParentRouteArgs> {
+  CollectionParentRoute({required _i14.Item item})
       : super(name,
-            path: '/collection-main',
-            args: CollectionMainRouteArgs(item: item));
+            path: '/collection-parent',
+            args: CollectionParentRouteArgs(item: item));
 
-  static const String name = 'CollectionMainRoute';
+  static const String name = 'CollectionParentRoute';
 }
 
-class CollectionMainRouteArgs {
-  const CollectionMainRouteArgs({required this.item});
+class CollectionParentRouteArgs {
+  const CollectionParentRouteArgs({required this.item});
 
   final _i14.Item item;
 }
@@ -308,7 +309,7 @@ class HomeRoute extends _i1.PageRouteInfo {
 class CollectionRoute extends _i1.PageRouteInfo<CollectionRouteArgs> {
   CollectionRoute({required _i14.Item item})
       : super(name,
-            path: 'collection-main', args: CollectionRouteArgs(item: item));
+            path: 'collection-parent', args: CollectionRouteArgs(item: item));
 
   static const String name = 'CollectionRoute';
 }

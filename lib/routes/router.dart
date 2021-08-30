@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:jellyflut/screens/auth/authParent.dart';
-import 'package:jellyflut/screens/collection/collectionMain.dart';
+import 'package:jellyflut/screens/collection/collectionParent.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/epub/epubReader.dart';
 import 'package:jellyflut/screens/home/home.dart';
@@ -32,14 +32,14 @@ import 'router.gr.dart';
         children: [
           AutoRoute(page: Home, name: 'HomeRoute', initial: true, path: ''),
           AutoRoute(
-              page: CollectionMain,
+              page: CollectionParent,
               name: 'CollectionRoute',
               guards: [AuthGuard]),
           RedirectRoute(path: '*', redirectTo: ''),
         ]),
     CustomRoute(
-        page: CollectionMain,
-        name: 'CollectionMainRoute',
+        page: CollectionParent,
+        name: 'CollectionParentRoute',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     AutoRoute(page: Details, path: 'details'),

@@ -9,18 +9,18 @@ import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 
-class CollectionMain extends StatefulWidget {
+class CollectionParent extends StatefulWidget {
   final Item item;
 
-  const CollectionMain({required this.item});
+  const CollectionParent({required this.item});
 
   @override
   State<StatefulWidget> createState() {
-    return _CollectionMainState();
+    return _CollectionParentState();
   }
 }
 
-class _CollectionMainState extends State<CollectionMain> {
+class _CollectionParentState extends State<CollectionParent> {
   late final CarrousselProvider carrousselProvider;
 
   @override

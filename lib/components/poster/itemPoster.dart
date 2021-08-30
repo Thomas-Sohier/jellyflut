@@ -101,9 +101,12 @@ class _ItemPosterState extends State<ItemPoster>
                       )),
                     if (widget.showLogo && widget.showOverlay)
                       IgnorePointer(
-                          child: Logo(
-                        item: widget.item,
-                        size: Size.infinite,
+                          child: Align(
+                        alignment: Alignment.center,
+                        child: Logo(
+                          item: widget.item,
+                          size: Size.infinite,
+                        ),
                       )),
                     if (widget.item.hasProgress() && widget.showOverlay)
                       progress(),

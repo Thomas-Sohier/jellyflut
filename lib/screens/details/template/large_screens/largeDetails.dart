@@ -112,7 +112,8 @@ class _LargeDetailsState extends State<LargeDetails> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
               children: [
-                Logo(item: widget.item, size: mediaQuery.size),
+                if (widget.item.hasLogo())
+                  Logo(item: widget.item, size: mediaQuery.size),
                 asyncRightDetails()
               ],
             ))

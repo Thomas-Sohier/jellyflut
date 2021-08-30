@@ -41,6 +41,7 @@ class _ListItemsState extends State<ListItems> {
   @override
   void dispose() {
     _scrollController.dispose();
+    collectionBloc.close();
     super.dispose();
   }
 
@@ -60,12 +61,8 @@ class _ListItemsState extends State<ListItems> {
     // var spacing = numberOfItemRow
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final paddingTop = canPop ? 82.0 : (8.0 + statusBarHeight);
-    return Padding(
-        padding: EdgeInsets.fromLTRB(8, paddingTop, 8, 8), child: view());
-  }
-
-  Widget view() {
     return CustomScrollView(controller: _scrollController, slivers: <Widget>[
+      SliverToBoxAdapter(child: SizedBox(height: paddingTop)),
       // if (widget.parentItem.isPlayable())
       //   SliverToBoxAdapter(child: carouselSlider([])),
       SliverToBoxAdapter(

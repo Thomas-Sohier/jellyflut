@@ -20,31 +20,32 @@ class ListItemsSkeleton extends StatelessWidget {
     var numberOfItemInRow = (size.width / 150).round();
     var numberOfRow = (size.height / itemHeight).round() * 2;
 
-    return Padding(
-        padding: EdgeInsets.all(6),
-        child: Shimmer.fromColors(
-          enabled: shimmerAnimation,
-          baseColor: shimmerColor1,
-          highlightColor: shimmerColor2,
-          child: GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: numberOfItemInRow * numberOfRow,
-              padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: numberOfItemInRow,
-                  childAspectRatio: ratio,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 5),
-              itemBuilder: (context, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  child: Container(
-                    height: 20,
-                    color: Colors.white30,
-                  ),
-                );
-              }),
-        ));
+    return Shimmer.fromColors(
+      enabled: shimmerAnimation,
+      baseColor: shimmerColor1,
+      highlightColor: shimmerColor2,
+      child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: numberOfItemInRow * numberOfRow,
+          padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: numberOfItemInRow,
+              childAspectRatio: ratio,
+              mainAxisSpacing: 15,
+              crossAxisSpacing: 5),
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 4, right: 4),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: Container(
+                  height: 20,
+                  color: Colors.white30,
+                ),
+              ),
+            );
+          }),
+    );
   }
 }

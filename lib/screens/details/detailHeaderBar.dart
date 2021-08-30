@@ -14,43 +14,40 @@ class DetailHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight = MediaQuery.of(context).padding.top;
-    return Container(
-      padding: EdgeInsets.only(left: 10, right: 10),
-      decoration: showDarkGradient
-          ? BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black87,
-                  Colors.black45,
-                  Colors.transparent,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0, 0.8, 1],
-              ),
+    return Stack(children: [
+      IgnorePointer(child: gradientBackground()),
+      SizedBox(
+        height: height,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            back_button.BackButton(
+              shadow: true,
             )
-          : BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: statusBarHeight,
-          ),
-          SizedBox(
-            height: height,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                back_button.BackButton(
-                  shadow: true,
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
+    ]);
+  }
+
+  Widget gradientBackground() {
+    return Container(
+        height: height,
+        padding: EdgeInsets.only(left: 10, right: 10),
+        decoration: showDarkGradient
+            ? BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black54,
+                    Colors.black45,
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 0.6, 1],
+                ),
+              )
+            : BoxDecoration());
   }
 }
