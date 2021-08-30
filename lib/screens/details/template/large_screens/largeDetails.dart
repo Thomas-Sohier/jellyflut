@@ -109,25 +109,28 @@ class _LargeDetailsState extends State<LargeDetails> {
       children: [
         Container(
             decoration: BoxDecoration(
-                color: themeData.backgroundColor.withOpacity(0.4))),
-        FutureBuilder<Item>(
-            future: widget.itemToLoad,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
-                  children: [
-                    Logo(item: widget.item, size: mediaQuery.size),
-                    RightDetails(
-                        item: snapshot.data!,
-                        dominantColorFuture: widget.dominantColorFuture),
-                    Collection(snapshot.data!)
-                  ],
-                );
-              }
-              return SkeletonRightDetails();
-            }),
+                color: themeData.backgroundColor.withOpacity(0.4)),
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+              children: [
+                Logo(item: widget.item, size: mediaQuery.size),
+                asyncRightDetails()
+              ],
+            ))
       ],
     );
+  }
+
+  Widget asyncRightDetails() {
+    return FutureBuilder<Item>(
+        future: widget.itemToLoad,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            RightDetails(
+                item: snapshot.data!,
+                dominantColorFuture: widget.dominantColorFuture);
+          }
+          return SkeletonRightDetails();
+        });
   }
 }

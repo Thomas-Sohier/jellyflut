@@ -83,26 +83,37 @@ class _TabletDetailsState extends State<TabletDetails> {
       children: [
         Container(
             decoration: BoxDecoration(
-                color: themeData.backgroundColor.withOpacity(0.4))),
-        FutureBuilder<Item>(
-            future: widget.itemToLoad,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+                color: themeData.backgroundColor.withOpacity(0.4)),
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Logo(item: widget.item, size: mediaQuery.size),
-                    RightDetails(
-                        item: snapshot.data!,
-                        dominantColorFuture: widget.dominantColorFuture),
-                    Collection(snapshot.data!)
+                    poster(),
+                    if (widget.item.hasLogo())
+                      Logo(item: widget.item, size: mediaQuery.size),
                   ],
-                );
-              }
-              return SkeletonRightDetails();
-            }),
+                ),
+                asyncRightDetails()
+              ],
+            ))
       ],
     );
+  }
+
+  Widget asyncRightDetails() {
+    return FutureBuilder<Item>(
+        future: widget.itemToLoad,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            RightDetails(
+                item: snapshot.data!,
+                dominantColorFuture: widget.dominantColorFuture);
+          }
+          return SkeletonRightDetails();
+        });
   }
 
   Widget poster() {

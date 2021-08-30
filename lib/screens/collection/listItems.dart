@@ -9,6 +9,7 @@ import 'package:jellyflut/providers/items/carrousselProvider.dart';
 import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/collectionBloc.dart';
 import 'package:jellyflut/screens/collection/collectionEvent.dart';
+import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
@@ -69,31 +70,62 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget view() {
-    final size = MediaQuery.of(context).size;
-    final numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
     return CustomScrollView(controller: _scrollController, slivers: <Widget>[
+      // if (widget.parentItem.isPlayable())
+      //   SliverToBoxAdapter(child: carouselSlider([])),
       SliverToBoxAdapter(
         child: Column(children: [
-          // if (widget.parentItem.isPlayable()) head(context),
           sortItems(),
         ]),
       ),
       StreamBuilder<List<Item>>(
-        stream: collectionBloc.stream,
-        initialData: [],
-        builder: (context, snapshot) => SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 2 / 3,
-                crossAxisCount: numberOfItemRow,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5),
-            delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
-              return ItemPoster(
-                snapshot.data!.elementAt(index),
-              );
-            }, childCount: snapshot.data!.length)),
-      ),
+          stream: collectionBloc.stream,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return gridItems(snapshot.data!);
+              }
+              return emptyErrorStream();
+            } else if (snapshot.hasError) {
+              return SliverToBoxAdapter(child: Center(child: Text('Error')));
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return SliverToBoxAdapter(child: ListItemsSkeleton());
+            }
+            return SizedBox();
+          }),
     ]);
+  }
+
+  Widget gridItems(List<Item> items) {
+    final size = MediaQuery.of(context).size;
+    final numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
+    return SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: items.first.getPrimaryAspectRatio(),
+            crossAxisCount: numberOfItemRow,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5),
+        delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
+          return ItemPoster(
+            items.elementAt(index),
+          );
+        }, childCount: items.length));
+  }
+
+  Widget emptyErrorStream() {
+    return SliverFillRemaining(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+          Icon(
+            Icons.error_outline,
+            color: Theme.of(context).primaryColor,
+            size: 28,
+          ),
+          Text('Empty collection')
+        ]));
   }
 
   Widget sortItems() {

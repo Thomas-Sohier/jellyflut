@@ -64,4 +64,4 @@ User? userApp;
 Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');
 String? apiKey;
 DeviceProfile? savedDeviceProfile;
-bool shimmerAnimation = false;
+bool shimmerAnimation = true;

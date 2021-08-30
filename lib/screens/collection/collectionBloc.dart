@@ -101,7 +101,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
             .map((e) => getEnumValue(e.toString()))
             .toList()
             .join(','),
-        limit: 20);
+        limit: 100);
   }
 }
 

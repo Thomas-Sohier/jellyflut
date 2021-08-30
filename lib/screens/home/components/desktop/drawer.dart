@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/components/desktop/drawerLargeButton.dart';
+import 'package:jellyflut/screens/home/shared/iconNavigationMapper.dart';
 import 'package:jellyflut/shared/colors.dart';
 
 class Drawer extends StatefulWidget {
@@ -39,30 +40,7 @@ class _DrawerState extends State<Drawer> {
         tabsContext: tabsContext,
         index: items.indexOf(item) + 1,
         name: item.name,
-        icon: getRightIconForType(item.collectionType))));
+        icon: getRightIconForCollectionType(item.collectionType))));
     return navBarItems;
-  }
-
-  IconData getRightIconForType(CollectionType? collectionType) {
-    switch (collectionType) {
-      case CollectionType.BOOKS:
-        return Icons.book;
-      case CollectionType.TVSHOWS:
-        return Icons.tv;
-      case CollectionType.BOXSETS:
-        return Icons.account_box;
-      case CollectionType.MOVIES:
-        return Icons.movie;
-      case CollectionType.MUSIC:
-        return Icons.music_note;
-      case CollectionType.HOMEVIDEOS:
-        return Icons.video_camera_back;
-      case CollectionType.MUSICVIDEOS:
-        return Icons.music_video;
-      case CollectionType.MIXED:
-        return Icons.blender;
-      default:
-        return Icons.tv;
-    }
   }
 }

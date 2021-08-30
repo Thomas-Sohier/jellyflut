@@ -7,6 +7,7 @@ import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
 import 'package:jellyflut/screens/details/template/large_screens/components/action_button/playButton.dart';
@@ -50,6 +51,7 @@ class RightDetails extends StatelessWidget {
       ),
       overview(context),
       if (item.hasPeople()) peoples(context),
+      Collection(item)
     ]);
   }
 

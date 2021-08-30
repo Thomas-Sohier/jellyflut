@@ -187,9 +187,10 @@ class _ItemPosterState extends State<ItemPoster>
   MaterialStateProperty<double> buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.focused)) {
           return 2;
+        } else if (states.contains(MaterialState.hovered)) {
+          return 6;
         }
         return 0; // defer to the default
       },
