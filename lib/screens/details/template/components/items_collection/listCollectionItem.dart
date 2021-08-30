@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/tabsItems.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/tabsItems.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListCollectionItem extends StatefulWidget {
   final Item item;
-  final String? title;
   final Future<Category>? future;
 
-  const ListCollectionItem({required this.item, this.title, this.future});
+  const ListCollectionItem({required this.item, this.future});
 
   @override
   State<StatefulWidget> createState() => _ListCollectionItemState();
@@ -37,10 +36,18 @@ class _ListCollectionItemState extends State<ListCollectionItem> {
     return FutureBuilder<Category>(
         future: categoryFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.items.isNotEmpty) {
-            return TabsItems(items: snapshot.data!.items);
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData && snapshot.data!.items.isNotEmpty) {
+              return TabsItems(items: snapshot.data!.items);
+            }
+            return SizedBox();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return skeletonTab();
+          } else if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasError) {
+            Text('Error while loading ${widget.item.getCollectionType()}');
           }
-          return skeletonTab();
+          return SizedBox();
         });
   }
 

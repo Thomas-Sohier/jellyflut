@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/searchProvider.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
+import 'package:jellyflut/screens/details/template/components/userIcon.dart';
 import 'package:jellyflut/screens/home/SearchButton.dart';
 import 'package:jellyflut/screens/home/SettingsButton.dart';
 import 'package:jellyflut/screens/home/homeCategories.dart';

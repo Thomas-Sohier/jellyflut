@@ -10,8 +10,8 @@ import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
-import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
-import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
+import 'package:jellyflut/screens/details/template/rightDetails.dart';
+import 'package:jellyflut/screens/details/template/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 
 class TabletDetails extends StatefulWidget {

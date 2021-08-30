@@ -1,57 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/episodeItem.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/musicItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class Tab extends StatefulWidget {
+class ListMusicItem extends StatefulWidget {
   final Item item;
 
-  Tab({Key? key, required this.item}) : super(key: key);
+  const ListMusicItem({required this.item});
 
   @override
-  _TabState createState() => _TabState();
+  State<StatefulWidget> createState() => _ListMusicItemState();
 }
 
-class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
-  late Future<Category> itemsFuture;
-  @override
-  bool get wantKeepAlive => true;
+class _ListMusicItemState extends State<ListMusicItem> {
+  late Future<Category> musicFuture;
 
   @override
   void initState() {
-    itemsFuture = ItemService.getItems(parentId: widget.item.id);
+    musicFuture = ItemService.getItems(parentId: widget.item.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return constructSeasonView();
-  }
-
-  Widget constructSeasonView() {
     return FutureBuilder<Category>(
-        future: itemsFuture,
+        future: musicFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final i = snapshot.data!.items;
-            return Column(children: buildListItems(i));
+            return musicItems(snapshot.data!.items);
           }
           return skeletonListItem();
         });
   }
 
-  List<Widget> buildListItems(List<Item> items) {
-    return items
-        .map((e) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: EpisodeItem(item: e),
-            ))
-        .toList();
+  Widget musicItems(List<Item> items) {
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: items.length,
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) => MusicItem(
+            onPressed: () => items.elementAt(index).playItem(),
+            item: items.elementAt(index)));
   }
 
   Widget skeletonListItem() {
@@ -76,7 +69,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             child: Container(
-              height: 130,
+              height: 80,
               width: double.infinity,
               color: Colors.white30,
             )));

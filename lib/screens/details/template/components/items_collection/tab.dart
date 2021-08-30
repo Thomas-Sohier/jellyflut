@@ -1,72 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/episodeItem.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/episodeItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ListVideoItem extends StatefulWidget {
+class Tab extends StatefulWidget {
   final Item item;
 
-  const ListVideoItem({required this.item});
+  Tab({Key? key, required this.item}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ListVideoItemState();
+  _TabState createState() => _TabState();
 }
 
-class _ListVideoItemState extends State<ListVideoItem> {
-  late Future<dynamic> episodeFuture;
+class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
+  late Future<Category> itemsFuture;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    episodeFuture =
-        ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
+    itemsFuture = ItemService.getItems(parentId: widget.item.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-        future: episodeFuture,
+    super.build(context);
+    return constructSeasonView();
+  }
+
+  Widget constructSeasonView() {
+    return FutureBuilder<Category>(
+        future: itemsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Column(
-              children: [
-                title(),
-                body(snapshot.data[1]),
-              ],
-            );
+            final i = snapshot.data!.items;
+            return Column(children: buildListItems(i));
           }
           return skeletonListItem();
         });
   }
 
-  Widget title() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text('Epsiodes',
-            style: TextStyle(
-                fontSize: 26,
-                fontFamily: 'HindMadurai',
-                color: Colors.white.withAlpha(210))),
-      ),
-    );
-  }
-
-  Widget body(Category category) {
-    return ListView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.all(0),
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: category.items.length,
-      itemBuilder: (context, index) {
-        var item = category.items[index];
-        return EpisodeItem(item: item);
-      },
-    );
+  List<Widget> buildListItems(List<Item> items) {
+    return items
+        .map((e) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: EpisodeItem(item: e),
+            ))
+        .toList();
   }
 
   Widget skeletonListItem() {

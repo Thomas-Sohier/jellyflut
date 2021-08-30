@@ -5,7 +5,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
 import 'package:jellyflut/models/enum/streamingSoftware.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/userIcon.dart';
+import 'package:jellyflut/screens/details/template/components/userIcon.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/components/BackButton.dart' as bb;
 import 'package:moor/moor.dart';

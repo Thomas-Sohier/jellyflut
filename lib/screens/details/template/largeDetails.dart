@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/BackgroundImage.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detailHeaderBar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
-import 'package:jellyflut/screens/details/template/large_screens/leftDetails.dart';
-import 'package:jellyflut/screens/details/template/large_screens/rightDetails.dart';
-import 'package:jellyflut/screens/details/template/large_screens/skeletonRightDetails.dart';
+import 'package:jellyflut/screens/details/template/leftDetails.dart';
+import 'package:jellyflut/screens/details/template/rightDetails.dart';
+import 'package:jellyflut/screens/details/template/skeletonRightDetails.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
-
-import '../../BackgroundImage.dart';
 
 class LargeDetails extends StatefulWidget {
   final Item item;

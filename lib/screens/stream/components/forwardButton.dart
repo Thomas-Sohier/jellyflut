@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/outlinedButtonSelector.dart';
 
 class ForwardButton extends StatefulWidget {
   final Duration duration;

@@ -1,50 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/musicItem.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/episodeItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ListMusicItem extends StatefulWidget {
+class ListVideoItem extends StatefulWidget {
   final Item item;
 
-  const ListMusicItem({required this.item});
+  const ListVideoItem({required this.item});
 
   @override
-  State<StatefulWidget> createState() => _ListMusicItemState();
+  State<StatefulWidget> createState() => _ListVideoItemState();
 }
 
-class _ListMusicItemState extends State<ListMusicItem> {
-  late Future<Category> musicFuture;
+class _ListVideoItemState extends State<ListVideoItem> {
+  late Future<dynamic> episodeFuture;
 
   @override
   void initState() {
-    musicFuture = ItemService.getItems(parentId: widget.item.id);
+    episodeFuture =
+        ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Category>(
-        future: musicFuture,
+    return FutureBuilder<dynamic>(
+        future: episodeFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return musicItems(snapshot.data!.items);
+            return Column(
+              children: [
+                title(),
+                body(snapshot.data[1]),
+              ],
+            );
           }
           return skeletonListItem();
         });
   }
 
-  Widget musicItems(List<Item> items) {
+  Widget title() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text('Epsiodes',
+            style: TextStyle(
+                fontSize: 26,
+                fontFamily: 'HindMadurai',
+                color: Colors.white.withAlpha(210))),
+      ),
+    );
+  }
+
+  Widget body(Category category) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: items.length,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) => MusicItem(
-            onPressed: () => items.elementAt(index).playItem(),
-            item: items.elementAt(index)));
+      shrinkWrap: true,
+      padding: EdgeInsets.all(0),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: category.items.length,
+      itemBuilder: (context, index) {
+        var item = category.items[index];
+        return EpisodeItem(item: item);
+      },
+    );
   }
 
   Widget skeletonListItem() {
@@ -69,7 +91,7 @@ class _ListMusicItemState extends State<ListMusicItem> {
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             child: Container(
-              height: 80,
+              height: 130,
               width: double.infinity,
               color: Colors.white30,
             )));

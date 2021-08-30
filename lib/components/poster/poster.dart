@@ -110,7 +110,7 @@ class _PosterState extends State<Poster> {
     return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
         (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
-        return EdgeInsets.all(8);
+        return EdgeInsets.all(4);
       }
       return EdgeInsets.zero;
     });

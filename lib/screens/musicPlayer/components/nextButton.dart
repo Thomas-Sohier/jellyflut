@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/outlinedButtonSelector.dart';
 
 class PrevButton extends StatefulWidget {
   final Color color;

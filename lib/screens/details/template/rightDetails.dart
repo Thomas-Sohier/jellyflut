@@ -8,11 +8,11 @@ import 'package:jellyflut/components/peoplesList.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/action_button/likeButton.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/action_button/manageButon.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/action_button/playButton.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/action_button/trailerButton.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/action_button/viewedButton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/likeButton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/manageButon.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/playButton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/trailerButton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/viewedButton.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 

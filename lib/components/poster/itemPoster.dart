@@ -1,7 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/banner/LeftBanner.dart';
-import 'package:jellyflut/components/banner/RightBanner.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progressBar.dart';
 import 'package:jellyflut/models/enum/imageType.dart';
@@ -94,9 +92,9 @@ class _ItemPosterState extends State<ItemPoster>
                           child: Stack(
                         children: [
                           if (widget.item.isNew())
-                            Positioned(top: 8, left: 0, child: newBanner()),
+                            Positioned(top: 8, left: 8, child: newBanner()),
                           if (widget.item.isPlayed())
-                            Positioned(top: 8, right: 0, child: playedBanner()),
+                            Positioned(top: 8, right: 8, child: playedBanner()),
                         ],
                       )),
                     if (widget.showLogo && widget.showOverlay)
@@ -155,27 +153,37 @@ class _ItemPosterState extends State<ItemPoster>
   }
 
   Widget newBanner() {
-    return CustomPaint(
-        painter: LeftBanner(color: Colors.red[700]!),
-        child: Container(
-            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-            child: Text('NEW',
-                style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold))));
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          color: Colors.blue.shade700,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
+          ]),
+      child: Icon(
+        Icons.new_releases,
+        size: 20,
+        color: Colors.white,
+      ),
+    );
   }
 
   Widget playedBanner() {
-    return CustomPaint(
-        painter: RightBanner(color: Colors.green[700]!),
-        child: Container(
-            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-              size: 16,
-            )));
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          color: Colors.green.shade700,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
+          ]),
+      child: Icon(
+        Icons.check,
+        size: 20,
+        color: Colors.white,
+      ),
+    );
   }
 
   Widget progressBar() {

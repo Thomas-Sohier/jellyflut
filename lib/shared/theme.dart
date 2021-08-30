@@ -11,8 +11,8 @@ final MaterialColor jellyDarkBlue = MaterialColor(0xFF003C50, jellyDarkBlueMap);
 final MaterialColor jellyPurple = MaterialColor(0xFF825191, jellyPurpleMap);
 
 // Shimmering color
-final Color shimmerColor1 = Colors.grey[500]!;
-final Color shimmerColor2 = Colors.grey[200]!;
+final Color shimmerColor1 = Colors.grey.shade500.withAlpha(150);
+final Color shimmerColor2 = Colors.grey.shade200.withAlpha(150);
 
 // components colors
 final Color cardBackgroundColor = Colors.white;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/streaming/streamingProvider.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/outlinedButtonSelector.dart';
 
 class PlayPauseButton extends StatefulWidget {
   PlayPauseButton({Key? key}) : super(key: key);

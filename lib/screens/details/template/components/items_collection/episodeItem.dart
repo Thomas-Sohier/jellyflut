@@ -5,7 +5,7 @@ import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/template/large_screens/components/items_collection/outlinedButtonSelector.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/outlinedButtonSelector.dart';
 import 'package:jellyflut/shared/responsiveBuilder.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
