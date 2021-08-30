@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/enum/collectionType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawerTabletButton.dart';
 import 'package:jellyflut/screens/home/shared/iconNavigationMapper.dart';

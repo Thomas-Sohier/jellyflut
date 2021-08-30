@@ -1,17 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detailedItemPoster.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carrousselProvider.dart';
-import 'package:jellyflut/providers/items/itemsProvider.dart';
 import 'package:jellyflut/screens/collection/collectionBloc.dart';
 import 'package:jellyflut/screens/collection/collectionEvent.dart';
 import 'package:jellyflut/screens/collection/listItemsSkeleton.dart';
-import 'package:jellyflut/services/item/itemService.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../globals.dart';
