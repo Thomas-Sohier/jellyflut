@@ -92,7 +92,9 @@ class _TabletDetailsState extends State<TabletDetails> {
                   children: [
                     poster(),
                     if (widget.item.hasLogo())
-                      Logo(item: widget.item, size: mediaQuery.size),
+                      Flexible(
+                          child:
+                              Logo(item: widget.item, size: mediaQuery.size)),
                   ],
                 ),
                 asyncRightDetails()

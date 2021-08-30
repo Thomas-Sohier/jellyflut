@@ -20,7 +20,7 @@ BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
 double get _itemHeightTemp =>
     log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
-    40;
+    35;
 
 double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
 
