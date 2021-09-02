@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listPersonItem.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listCollectionItem.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listMusicItem.dart';
@@ -22,6 +24,19 @@ class Collection extends StatefulWidget {
 const double gapSize = 20;
 
 class _CollectionState extends State<Collection> {
+  late final Future<Category> msuicAlbumFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    msuicAlbumFuture = ItemService.getItems(
+        includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
+        sortBy: 'ProductionYear,Sortname',
+        albumArtistIds: widget.item.id,
+        fields:
+            'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,25 +57,11 @@ class _CollectionState extends State<Collection> {
       case ItemType.SERIES:
         return ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
-        return musicArtistItem(item: widget.item);
+        return ListItems(itemsFuture: msuicAlbumFuture);
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:
         return Container();
     }
-  }
-
-  Widget musicArtistItem({required Item item}) {
-    return Column(children: [
-      ListCollectionItem(
-        item: item,
-        future: ItemService.getItems(
-            includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
-            sortBy: 'ProductionYear,Sortname',
-            albumArtistIds: item.id,
-            fields:
-                'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo'),
-      )
-    ]);
   }
 }

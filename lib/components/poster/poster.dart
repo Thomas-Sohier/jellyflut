@@ -72,7 +72,7 @@ class _PosterState extends State<Poster> {
       child: AsyncImage(
         itemId,
         itemImageTag,
-        widget.item.imageBlurHashes!,
+        widget.item.imageBlurHashes,
         tag: widget.tag,
         boxFit: widget.boxFit,
       ),

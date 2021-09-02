@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/paletteButton.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart'
     as tab;
@@ -26,7 +27,7 @@ class _TabsItemsState extends State<TabsItems>
   void initState() {
     tabController = TabController(length: widget.items.length, vsync: this);
     tabHeight =
-        widget.items.map((e) => e.recursiveItemCount!).reduce(max) * (150 + 10);
+        widget.items.map((e) => e.recursiveItemCount!).reduce(max) * itemHeight;
     super.initState();
   }
 

@@ -53,45 +53,42 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget epsiodeItem() {
-    return SizedBox(
-      height: 150,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ResponsiveBuilder.builder(
-              mobile: () => SizedBox(),
-              tablet: () => poster(),
-              desktop: () => poster(),
-            ),
-            Expanded(
-              flex: 7,
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      title(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: Row(
-                          children: [
-                            if (widget.item.hasRatings())
-                              Critics(
-                                item: widget.item,
-                                fontSize: 18,
-                              ),
-                            if (widget.item.getDuration() != 0) duration()
-                          ],
-                        ),
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ResponsiveBuilder.builder(
+            mobile: () => SizedBox(),
+            tablet: () => poster(),
+            desktop: () => poster(),
+          ),
+          Expanded(
+            flex: 7,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    title(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, bottom: 4),
+                      child: Row(
+                        children: [
+                          if (widget.item.hasRatings())
+                            Critics(
+                              item: widget.item,
+                              fontSize: 18,
+                            ),
+                          if (widget.item.getDuration() != 0) duration()
+                        ],
                       ),
-                      if (widget.item.overview != null) overview()
-                    ],
-                  )),
-            )
-          ],
-        ),
+                    ),
+                    if (widget.item.overview != null) overview()
+                  ],
+                )),
+          )
+        ],
       ),
     );
   }
