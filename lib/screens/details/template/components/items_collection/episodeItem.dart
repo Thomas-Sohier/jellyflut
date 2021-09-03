@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/imageType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlinedButtonSelector.dart';
@@ -58,13 +60,16 @@ class _EpisodeItemState extends State<EpisodeItem>
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ResponsiveBuilder.builder(
-            mobile: () => SizedBox(),
-            tablet: () => poster(),
-            desktop: () => poster(),
+          Flexible(
+            flex: 4,
+            child: ResponsiveBuilder.builder(
+              mobile: () => SizedBox(),
+              tablet: () => poster(),
+              desktop: () => poster(),
+            ),
           ),
           Expanded(
-            flex: 7,
+            flex: 6,
             child: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Column(
@@ -94,15 +99,12 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget poster() {
-    return ItemPoster(
-      widget.item,
-      boxFit: BoxFit.cover,
-      widgetAspectRatio: 16 / 9,
-      clickable: false,
-      showLogo: false,
-      showParent: false,
-      showName: false,
-    );
+    return Poster(
+        tag: ImageType.PRIMARY,
+        heroTag: '',
+        clickable: false,
+        boxFit: BoxFit.cover,
+        item: widget.item);
   }
 
   Widget title() {

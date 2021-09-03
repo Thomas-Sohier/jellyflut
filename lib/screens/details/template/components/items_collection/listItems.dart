@@ -115,12 +115,15 @@ class _ListItemsState extends State<ListItems> {
     switch (item.type) {
       case ItemType.AUDIO:
       case ItemType.MUSICALBUM:
+        // Music items will fit automatically
         return MusicItem(onPressed: item.playItem, item: item);
       case ItemType.MOVIE:
       case ItemType.EPISODE:
-        return SizedBox(height: itemHeight, child: EpisodeItem(item: item));
+        // Episode items need height to avoir unbounded height
+        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
       default:
-        return SizedBox(height: itemHeight, child: EpisodeItem(item: item));
+        // Episode items need height to avoir unbounded height
+        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
     }
   }
 

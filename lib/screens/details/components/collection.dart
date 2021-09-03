@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/enum/listType.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
@@ -24,17 +25,32 @@ class Collection extends StatefulWidget {
 const double gapSize = 20;
 
 class _CollectionState extends State<Collection> {
-  late final Future<Category> msuicAlbumFuture;
+  late final Future<Category> musicAlbumFuture;
+  late final Future<Category> episodesFuture;
+  late final Future<Category> musicFuture;
 
   @override
   void initState() {
     super.initState();
-    msuicAlbumFuture = ItemService.getItems(
-        includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
-        sortBy: 'ProductionYear,Sortname',
-        albumArtistIds: widget.item.id,
-        fields:
-            'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo');
+    switch (widget.item.type) {
+      case ItemType.MUSICALBUM:
+        musicFuture = ItemService.getItems(parentId: widget.item.id);
+        break;
+      case ItemType.SEASON:
+        episodesFuture =
+            ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
+        break;
+      case ItemType.MUSICARTIST:
+        musicAlbumFuture = ItemService.getItems(
+            includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
+            sortBy: 'ProductionYear,Sortname',
+            albumArtistIds: widget.item.id,
+            fields:
+                'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo');
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -51,17 +67,25 @@ class _CollectionState extends State<Collection> {
   Widget showCollection() {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
-        return ListMusicItem(item: widget.item);
+        return ListItems(
+            itemsFuture: musicFuture, lisType: ListType.LIST, itemHeight: 100);
       case ItemType.SEASON:
-        return ListVideoItem(item: widget.item);
+        return ListItems(
+            itemsFuture: episodesFuture,
+            itemHeight: 150,
+            lisType: ListType.LIST,
+            physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
         return ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
-        return ListItems(itemsFuture: msuicAlbumFuture);
+        return ListItems(
+            itemsFuture: musicAlbumFuture,
+            lisType: ListType.POSTER,
+            physics: NeverScrollableScrollPhysics());
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:
-        return Container();
+        return SizedBox();
     }
   }
 }
