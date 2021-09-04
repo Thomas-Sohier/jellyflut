@@ -34,7 +34,10 @@ class _DrawerState extends State<Drawer> {
     final navBarItems = <Widget>[];
     //initial route
     navBarItems.add(DrawerLargeButton(
-        tabsContext: tabsContext, name: 'Home', index: 0, icon: Icons.home));
+        tabsContext: tabsContext,
+        name: 'Home',
+        index: 0,
+        icon: Icons.home_outlined));
     items.forEach((item) => navBarItems.add(DrawerLargeButton(
         tabsContext: tabsContext,
         index: items.indexOf(item) + 1,

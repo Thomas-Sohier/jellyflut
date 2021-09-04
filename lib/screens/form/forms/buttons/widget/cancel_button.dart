@@ -12,6 +12,6 @@ class CancelButton extends StatelessWidget {
             overlayColor: cancelButtonBackground(),
             backgroundColor: cancelButtonBackground(),
             foregroundColor: cancelButtonForeground()),
-        child: Text('Cancel'));
+        child: Text('Cancel', style: TextStyle(fontSize: 18)));
   }
 }
