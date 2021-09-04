@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
+import 'package:jellyflut/models/jellyfin/genreItem.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
@@ -20,7 +21,10 @@ class MovieForm extends StatelessWidget {
         'overview': FormControl<String>(value: item.overview),
         'premiere_date': FormControl<DateTime>(value: item.premiereDate),
         'date_added': FormControl<DateTime>(value: item.dateCreated),
-        'person': FormControl<List<Person>>(value: item.people)
+        'person': FormControl<List<Person>>(value: item.people),
+        'studios': FormControl<List<GenreItem>>(value: item.studios),
+        'tags': FormControl<List<dynamic>>(value: item.tags),
+        'genres': FormControl<List<GenreItem>>(value: item.genreItems)
       });
 
   @override
@@ -47,6 +51,12 @@ class MovieForm extends StatelessWidget {
               OverviewField(form: form),
               const SizedBox(height: 24.0),
               PersonField(form: form, item: item),
+              const SizedBox(height: 24.0),
+              StudiosField(form: form, item: item),
+              const SizedBox(height: 24.0),
+              GenresField(form: form, item: item),
+              const SizedBox(height: 24.0),
+              TagsField(form: form, item: item),
             ],
           ),
         );

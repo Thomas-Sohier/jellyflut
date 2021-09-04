@@ -6,15 +6,15 @@ import 'package:jellyflut/models/jellyfin/person.dart';
 class PeoplePoster extends StatefulWidget {
   final Person person;
   final int index;
-  final VoidCallback onPressed;
   final bool clickable;
   final bool bigPoster;
+  final VoidCallback? onPressed;
 
   PeoplePoster(
       {Key? key,
       required this.person,
       required this.index,
-      required this.onPressed,
+      this.onPressed,
       this.bigPoster = false,
       this.clickable = true})
       : super(key: key);
