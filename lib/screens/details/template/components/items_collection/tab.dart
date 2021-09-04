@@ -33,7 +33,6 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Flexible(
-        child: ListItems(itemsFuture: itemsFuture, lisType: ListType.LIST));
+    return ListItems(itemsFuture: itemsFuture, lisType: ListType.LIST);
   }
 }

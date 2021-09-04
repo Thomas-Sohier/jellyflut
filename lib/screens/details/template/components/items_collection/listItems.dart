@@ -120,10 +120,10 @@ class _ListItemsState extends State<ListItems> {
       case ItemType.MOVIE:
       case ItemType.EPISODE:
         // Episode items need height to avoir unbounded height
-        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
+        return SizedBox(height: 150, child: EpisodeItem(item: item));
       default:
         // Episode items need height to avoir unbounded height
-        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
+        return SizedBox(height: 150, child: EpisodeItem(item: item));
     }
   }
 

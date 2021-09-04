@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/poster/itemPoster.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/imageType.dart';

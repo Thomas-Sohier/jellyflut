@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/musicProvider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/collection/collectionBloc.dart';
+import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -35,7 +35,6 @@ class _MyAppState extends State<MyApp> {
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Color(0xFF252525),
       photoSize: 80.0,
-      loaderColor: personnal_theme.jellyPurple,
     );
   }
 }
@@ -74,7 +73,7 @@ class Jellyflut extends StatelessWidget {
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => CollectionBloc(),
+                create: (context) => FormBloc(),
               ),
             ],
             child: Shortcuts(

@@ -91,7 +91,7 @@ class Theme {
       primarySwatch: jellyPurple,
       primaryIconTheme: IconThemeData(color: Colors.black),
       iconTheme: IconThemeData(color: Colors.black),
-      accentColor: jellyLightBLue,
+      accentColor: jellyPurple,
       accentIconTheme: IconThemeData(color: Colors.black),
       inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
