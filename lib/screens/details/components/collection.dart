@@ -6,8 +6,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listPersonItem.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listCollectionItem.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listMusicItem.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listVideoItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
 

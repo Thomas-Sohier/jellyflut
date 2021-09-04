@@ -3,10 +3,7 @@ import 'package:jellyflut/models/enum/listType.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/musicItem.dart';
 import 'package:jellyflut/services/item/itemService.dart';
-import 'package:jellyflut/shared/theme.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ListMusicItem extends StatefulWidget {
   final Item item;

@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/itemType.dart';
 import 'package:jellyflut/models/enum/listType.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listCollectionItem.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
 import 'package:jellyflut/services/item/itemService.dart';
 import 'package:jellyflut/shared/shared.dart';
