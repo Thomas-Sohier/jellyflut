@@ -10,6 +10,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/authentication_response.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/services/user/user_service.dart';
+import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -56,8 +57,8 @@ class AuthService {
     final userCompanion = UsersCompanion.insert(
         name: name,
         apiKey: authenticationResponse.accessToken,
-        settingsId: settingsId,
-        serverId: serverId);
+        settingsId: Value(settingsId),
+        serverId: Value(serverId));
     final userId = await db.usersDao.createUser(userCompanion);
     await _saveToSharedPreferences(serverId, settingsId, userId,
         authenticationResponse.user.id, authenticationResponse.accessToken);

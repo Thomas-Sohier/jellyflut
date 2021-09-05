@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
+import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -15,7 +17,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpSharedPrefs();
   await setUpAndroidTv();
-  runApp(Jellyflut());
+  final auth = await AuthService.isAuth();
+  runApp(Jellyflut(authenticated: auth));
 }
 
 class MyApp extends StatefulWidget {
@@ -40,6 +43,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Jellyflut extends StatelessWidget {
+  final bool authenticated;
   final shortcuts = <LogicalKeySet, Intent>{
     LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
     LogicalKeySet.fromSet(<LogicalKeyboardKey>{
@@ -65,6 +69,8 @@ class Jellyflut extends StatelessWidget {
         TraversalDirection.right,
         ignoreTextFields: false),
   };
+
+  Jellyflut({Key? key, required this.authenticated}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -74,6 +80,10 @@ class Jellyflut extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) => FormBloc(),
+              ),
+              BlocProvider(
+                create: (_) => AuthBloc(authenticated: authenticated),
+                lazy: false,
               ),
             ],
             child: Shortcuts(

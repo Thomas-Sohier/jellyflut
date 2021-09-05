@@ -37,7 +37,9 @@ class _GradienButtonState extends State<GradienButton> {
     return TextButton(
         onPressed: widget.onPressed,
         style: TextButton.styleFrom(
-                shape: StadiumBorder(),
+                shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(widget.borderRadius))),
                 padding: EdgeInsets.zero,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -56,7 +58,7 @@ class _GradienButtonState extends State<GradienButton> {
             colors: [widget.color1, widget.color2],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
-        borderRadius: BorderRadius.all(Radius.circular(80.0)),
+        borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
       ),
       child: Container(
           height: 50,

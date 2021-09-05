@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
-import 'package:jellyflut/components/outline_text_field.dart';
 import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/auth/components/fields.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
 class ServerForm extends StatefulWidget {
-  ServerForm({required this.onPressed});
+  const ServerForm();
 
-  final VoidCallback onPressed;
   @override
   State<StatefulWidget> createState() {
     return _ServerFormState();
@@ -15,50 +17,68 @@ class ServerForm extends StatefulWidget {
 }
 
 class _ServerFormState extends State<ServerForm> {
-  final TextEditingController _serverNameFilter = TextEditingController();
-  final TextEditingController _urlFilter = TextEditingController();
-  final FocusNode urlFocusNode = FocusNode();
-
-  void addServer() {
-    server = Server(name: _serverNameFilter.text, url: _urlFilter.text, id: 0);
-    widget.onPressed();
-  }
+  FormGroup buildForm() => fb.group(<String, Object>{
+        'server_name': FormControl<String>(
+          value: BlocProvider.of<AuthBloc>(context).server?.name ?? '',
+          validators: [Validators.required],
+        ),
+        'server_url': FormControl<String>(
+          value: BlocProvider.of<AuthBloc>(context).server?.url ?? '',
+          validators: [Validators.required],
+        )
+      });
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Text(
-          'Server configuration',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: size.height * 0.01),
-        OutlineTextField(
-          'server name',
-          textInputAction: TextInputAction.next,
-          autofocus: true,
-          onSubmitted: (_) => FocusScope.of(context).requestFocus(urlFocusNode),
-          controller: _serverNameFilter,
-        ),
-        OutlineTextField(
-          'url',
-          controller: _urlFilter,
-          autofocus: false,
-          textInputAction: TextInputAction.done,
-          focusNode: urlFocusNode,
-          onSubmitted: (_) {
-            FocusScope.of(context).nextFocus();
-            addServer();
-          },
-          prefixIcon: Icon(
-            Icons.http,
-          ),
-        ),
-        SizedBox(height: size.height * 0.03),
-        GradienButton('Add server', addServer)
-      ],
-    );
+    return ReactiveFormBuilder(
+        form: buildForm,
+        builder: (context, form, child) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 24),
+              const Text(
+                'Server configuration',
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              ServerNameField(
+                  form: form, onSubmitted: () => form.focus('server_url')),
+              const SizedBox(height: 12),
+              ServerUrlField(form: form, onSubmitted: () => addServer(form)),
+              const SizedBox(height: 24),
+              GradienButton('Add server', () => addServer(form),
+                  borderRadius: 4),
+              const SizedBox(height: 24),
+            ],
+          );
+        });
+  }
+
+  void addServer(FormGroup form) {
+    if (form.valid) {
+      final server = Server(
+          name: form.value['server_name'].toString(),
+          url: form.value['server_url'].toString(),
+          id: 0);
+      BlocProvider.of<AuthBloc>(context).add(AuthServerAdded(server));
+    } else {
+      form.markAllAsTouched();
+      final regexp = RegExp(r'^[^_]+(?=_)');
+      final errors = <String>[];
+      form.errors.forEach((key, value) {
+        final fieldName =
+            key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
+        errors.add(fieldName + ' is required');
+      });
+      BlocProvider.of<AuthBloc>(context)
+          .add(AuthError('Form is not valid \n${errors.join(',\n')}'));
+    }
   }
 }
