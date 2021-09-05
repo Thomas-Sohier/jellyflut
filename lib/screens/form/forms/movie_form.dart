@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
-import 'package:jellyflut/models/jellyfin/genreItem.dart';
+import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';

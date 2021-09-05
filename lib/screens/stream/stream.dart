@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/providers/streaming/streamingProvider.dart';
+import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:wakelock/wakelock.dart';
 
 class Stream extends StatefulWidget {

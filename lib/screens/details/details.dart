@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/musicPlayerFAB.dart';
-import 'package:jellyflut/models/details/detailsInfos.dart';
-import 'package:jellyflut/models/enum/imageType.dart';
-import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/components/music_player_FAB.dart';
+import 'package:jellyflut/models/details/details_infos.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/largeDetails.dart';
-import 'package:jellyflut/screens/details/template/tabletDetails.dart';
-import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/screens/details/template/large_details.dart';
+import 'package:jellyflut/screens/details/template/tablet_details.dart';
+import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/blurhash.dart';
-import 'package:jellyflut/shared/responsiveBuilder.dart';
-import 'components/photoItem.dart';
+import 'package:jellyflut/shared/responsive_builder.dart';
+import 'components/photo_item.dart';
 
 class Details extends StatefulWidget {
   final Item item;

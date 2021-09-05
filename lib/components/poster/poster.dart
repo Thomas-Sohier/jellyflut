@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/imageType.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 
-import '../asyncImage.dart';
+import '../async_image.dart';
 
 class Poster extends StatefulWidget {
   final ImageType tag;

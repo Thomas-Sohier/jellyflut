@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/providers/music/musicProvider.dart';
+import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;

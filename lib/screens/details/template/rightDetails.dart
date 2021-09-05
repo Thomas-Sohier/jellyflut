@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/peoplesList.dart';
+import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/likeButton.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/manageButon.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/playButton.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/trailerButton.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/viewedButton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/like_button.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/manage_buton.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/play_button.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/trailer_button.dart';
+import 'package:jellyflut/screens/details/template/components/action_button/viewed_button.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -27,32 +27,36 @@ class RightDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      SizedBox(
-        height: 24,
-      ),
-      Align(alignment: Alignment.centerLeft, child: actions(context)),
-      SizedBox(
-        height: 24,
-      ),
-      title(context),
-      Row(
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (item.hasRatings())
-            Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12),
-              child: Critics(
-                item: item,
-              ),
-            ),
-          Spacer(),
-          infos(context),
-        ],
-      ),
-      overview(context),
-      if (item.hasPeople()) peoples(context),
-      Collection(item)
-    ]);
+          SizedBox(
+            height: 24,
+          ),
+          Align(alignment: Alignment.centerLeft, child: actions(context)),
+          SizedBox(
+            height: 24,
+          ),
+          title(context),
+          originalTitle(context),
+          Row(
+            children: [
+              if (item.hasRatings())
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 12),
+                  child: Critics(
+                    item: item,
+                  ),
+                ),
+              Spacer(),
+              infos(context),
+            ],
+          ),
+          overview(context),
+          if (item.hasPeople()) peoples(context),
+          Collection(item)
+        ]);
   }
 
   Widget peoples(BuildContext context) {
@@ -129,6 +133,17 @@ class RightDetails extends StatelessWidget {
           item.name,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.headline3,
+        ));
+  }
+
+  Widget originalTitle(BuildContext context) {
+    if (item.originalTitle == null) return SizedBox();
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          item.originalTitle!,
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.headline5,
         ));
   }
 

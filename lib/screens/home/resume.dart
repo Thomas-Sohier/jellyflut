@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 

@@ -6,7 +6,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
 
-import 'authHeader.dart';
+import 'auth_header.dart';
 
 BaseOptions options = BaseOptions(
     connectTimeout: 30000,

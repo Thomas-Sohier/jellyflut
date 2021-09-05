@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/poster/itemPoster.dart';
+import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/providers/items/carrousselProvider.dart';
+import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';

@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/jellyfin/deviceProfile.dart';
+import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/enum/listType.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
-import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/globals.dart' as globals;
 
 class Tab extends StatefulWidget {
@@ -33,6 +33,9 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListItems(itemsFuture: itemsFuture, lisType: ListType.LIST);
+    return ListItems(
+        itemsFuture: itemsFuture,
+        itemHeight: itemHeight,
+        lisType: ListType.LIST);
   }
 }

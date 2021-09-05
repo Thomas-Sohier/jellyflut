@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/peoplePoster.dart';
-import 'package:jellyflut/models/jellyfin/genreItem.dart';
+import 'package:jellyflut/components/people_poster.dart';
+import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/screens/form/forms/fields/theme/input_theme.dart';
-import 'package:jellyflut/shared/stringExtensions.dart';
+import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
 part 'widget/original_title_field.dart';
 part 'widget/title_field.dart';

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:jellyflut/models/jellyfin/imageTag.dart';
+import 'package:jellyflut/models/jellyfin/image_tag.dart';
 
-import 'externalUrl.dart';
-import 'genreItem.dart';
+import 'external_url.dart';
+import 'genre_item.dart';
 import 'person.dart';
-import 'providerIds.dart';
-import 'seasonBlurHash.dart';
-import 'userData.dart';
+import 'provider_ids.dart';
+import 'season_blur_bash.dart';
+import 'user_data.dart';
 
 Season seasonFromMap(String str) => Season.fromMap(json.decode(str));
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/services/auth/authService.dart';
+import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/TranscodeAudioCodec.dart';
-import 'package:jellyflut/models/enum/streamingSoftware.dart';
-import 'package:jellyflut/screens/details/template/components/userIcon.dart';
+import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
+import 'package:jellyflut/models/enum/streaming_software.dart';
+import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/components/BackButton.dart' as bb;
+import 'package:jellyflut/components/back_button.dart' as bb;
 import 'package:moor/moor.dart';
 import 'package:package_info/package_info.dart';
 import 'package:settings_ui/settings_ui.dart';

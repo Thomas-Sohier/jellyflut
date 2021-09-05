@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/enum/itemType.dart';
-import 'package:jellyflut/models/enum/listType.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listItems.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listPersonItem.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/listCollectionItem.dart';
-import 'package:jellyflut/services/item/itemService.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/list_collection_item.dart';
+import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class Collection extends StatefulWidget {

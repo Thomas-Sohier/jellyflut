@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/asyncImage.dart';
-import 'package:jellyflut/models/enum/imageType.dart';
+import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class Logo extends StatelessWidget {

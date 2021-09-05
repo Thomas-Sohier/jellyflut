@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/providers/search/searchProvider.dart';
-import 'package:jellyflut/screens/details/template/components/userIcon.dart';
-import 'package:jellyflut/screens/home/SearchButton.dart';
-import 'package:jellyflut/screens/home/SettingsButton.dart';
-import 'package:jellyflut/screens/home/homeCategories.dart';
+import 'package:jellyflut/providers/search/search_provider.dart';
+import 'package:jellyflut/screens/details/template/components/user_icon.dart';
+import 'package:jellyflut/screens/home/search_button.dart';
+import 'package:jellyflut/screens/home/settings_button.dart';
+import 'package:jellyflut/screens/home/home_categories.dart';
 import 'package:jellyflut/screens/home/resume.dart';
-import 'package:jellyflut/screens/home/searchResult.dart';
-import 'package:jellyflut/services/user/userservice.dart';
+import 'package:jellyflut/screens/home/search_result.dart';
+import 'package:jellyflut/services/user/user_service.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {

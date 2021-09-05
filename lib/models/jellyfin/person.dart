@@ -1,7 +1,7 @@
 import 'package:epub_view/epub_view.dart';
-import 'package:jellyflut/models/enum/personType.dart';
+import 'package:jellyflut/models/enum/person_type.dart';
 
-import 'imageBlurHashes.dart';
+import 'image_blur_hashes.dart';
 
 class Person {
   Person({

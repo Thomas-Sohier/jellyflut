@@ -8,13 +8,13 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import '../models/jellyfin/item.dart' as _i14;
-import '../screens/auth/authParent.dart' as _i4;
-import '../screens/collection/collectionParent.dart' as _i6;
+import '../screens/auth/auth_parent.dart' as _i4;
+import '../screens/collection/collection_parent.dart' as _i6;
 import '../screens/details/details.dart' as _i7;
-import '../screens/epub/epubReader.dart' as _i12;
+import '../screens/epub/epub_reader.dart' as _i12;
 import '../screens/home/home.dart' as _i13;
-import '../screens/home/homeParent.dart' as _i5;
-import '../screens/musicPlayer/musicPlayer.dart' as _i9;
+import '../screens/home/home_parent.dart' as _i5;
+import '../screens/musicPlayer/music_player.dart' as _i9;
 import '../screens/musicPlayer/routes/playlist.dart' as _i10;
 import '../screens/settings/settings.dart' as _i8;
 import '../screens/stream/stream.dart' as _i11;

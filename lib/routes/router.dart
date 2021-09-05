@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:jellyflut/screens/auth/authParent.dart';
-import 'package:jellyflut/screens/collection/collectionParent.dart';
+import 'package:jellyflut/screens/auth/auth_parent.dart';
+import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
-import 'package:jellyflut/screens/epub/epubReader.dart';
+import 'package:jellyflut/screens/epub/epub_reader.dart';
 import 'package:jellyflut/screens/home/home.dart';
-import 'package:jellyflut/screens/home/homeParent.dart';
-import 'package:jellyflut/screens/musicPlayer/musicPlayer.dart';
+import 'package:jellyflut/screens/home/home_parent.dart';
+import 'package:jellyflut/screens/musicPlayer/music_player.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/services/auth/authService.dart';
+import 'package:jellyflut/services/auth/auth_service.dart';
 
 import 'router.gr.dart';
 

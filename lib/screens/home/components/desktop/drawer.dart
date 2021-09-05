@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/home/components/desktop/drawerLargeButton.dart';
-import 'package:jellyflut/screens/home/shared/iconNavigationMapper.dart';
+import 'package:jellyflut/screens/home/components/desktop/drawer_large_button.dart';
+import 'package:jellyflut/screens/home/shared/icon_navigation_mapper.dart';
 import 'package:jellyflut/shared/colors.dart';
 
 class Drawer extends StatefulWidget {

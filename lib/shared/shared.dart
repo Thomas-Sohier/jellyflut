@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/enum/itemType.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/shared/theme.dart';
 
 Widget gradientMask({required Widget child, double radius = 0.5}) {
