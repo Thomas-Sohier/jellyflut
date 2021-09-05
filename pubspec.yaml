@@ -93,6 +93,10 @@ flutter:
       fonts:
         - asset: fonts/HindMadurai-Regular.ttf
           style: normal
+    - family: Quicksand
+      fonts:
+        - asset: fonts/Quicksand-Regular.ttf
+          style: normal
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

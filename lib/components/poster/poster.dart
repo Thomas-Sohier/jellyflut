@@ -12,7 +12,7 @@ class Poster extends StatefulWidget {
   final Item item;
   final bool showParent;
   final bool clickable;
-  final String heroTag;
+  final String? heroTag;
 
   const Poster(
       {this.showParent = false,
@@ -67,15 +67,24 @@ class _PosterState extends State<Poster> {
     final itemId = widget.showParent
         ? widget.item.getParentId()
         : widget.item.correctImageId();
-    return Hero(
-      tag: widget.heroTag,
-      child: AsyncImage(
-        itemId,
-        itemImageTag,
-        widget.item.imageBlurHashes,
-        tag: widget.tag,
-        boxFit: widget.boxFit,
-      ),
+    if (widget.heroTag != null) {
+      return Hero(
+        tag: widget.heroTag!,
+        child: AsyncImage(
+          itemId,
+          itemImageTag,
+          widget.item.imageBlurHashes,
+          tag: widget.tag,
+          boxFit: widget.boxFit,
+        ),
+      );
+    }
+    return AsyncImage(
+      itemId,
+      itemImageTag,
+      widget.item.imageBlurHashes,
+      tag: widget.tag,
+      boxFit: widget.boxFit,
     );
   }
 

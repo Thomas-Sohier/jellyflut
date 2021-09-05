@@ -17,6 +17,9 @@ class ServerForm extends StatefulWidget {
 }
 
 class _ServerFormState extends State<ServerForm> {
+  final urlPattern = RegExp(
+      r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)');
+
   FormGroup buildForm() => fb.group(<String, Object>{
         'server_name': FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.name ?? '',
@@ -24,7 +27,11 @@ class _ServerFormState extends State<ServerForm> {
         ),
         'server_url': FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.url ?? '',
-          validators: [Validators.required],
+          validators: [
+            Validators.required,
+            Validators.pattern(urlPattern,
+                validationMessage: 'Your url is not correct')
+          ],
         )
       });
 

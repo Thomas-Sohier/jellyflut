@@ -209,7 +209,7 @@ class CollectionParentRouteArgs {
 }
 
 class DetailsRoute extends _i1.PageRouteInfo<DetailsRouteArgs> {
-  DetailsRoute({required _i14.Item item, required String heroTag})
+  DetailsRoute({required _i14.Item item, required String? heroTag})
       : super(name,
             path: 'details',
             args: DetailsRouteArgs(item: item, heroTag: heroTag));
@@ -222,7 +222,7 @@ class DetailsRouteArgs {
 
   final _i14.Item item;
 
-  final String heroTag;
+  final String? heroTag;
 }
 
 class SettingsRoute extends _i1.PageRouteInfo {

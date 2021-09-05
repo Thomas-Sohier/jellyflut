@@ -73,7 +73,7 @@ class _LargeDetailsState extends State<LargeDetails> {
         flex: 4,
         child: LeftDetails(
           item: widget.item,
-          heroTag: widget.heroTag ?? '',
+          heroTag: widget.heroTag,
         ));
   }
 

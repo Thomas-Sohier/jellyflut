@@ -8,7 +8,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 class PhotoItem extends StatefulWidget {
   final Item item;
   final List<Item>? items;
-  final String heroTag;
+  final String? heroTag;
 
   PhotoItem({Key? key, required this.item, required this.heroTag, this.items})
       : super(key: key);
@@ -35,7 +35,9 @@ class _PhotoItemState extends State<PhotoItem> {
   Widget photoItem() {
     if (widget.items != null && widget.items!.isEmpty) {
       return PhotoView(
-        heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag),
+        heroAttributes: widget.heroTag != null
+            ? PhotoViewHeroAttributes(tag: widget.heroTag!)
+            : null,
         imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
             widget.item.correctImageId(), widget.item.correctImageTags()!)),
       );

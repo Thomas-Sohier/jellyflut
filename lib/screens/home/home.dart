@@ -103,7 +103,8 @@ class _HomeState extends State<Home> {
           tag: 'logo_text',
           child: Text(
             'Jellyfin',
-            style: TextStyle(fontSize: 22, color: Colors.white),
+            style: TextStyle(
+                fontSize: 22, color: Colors.white, fontFamily: 'Quicksand'),
           ),
         ),
         Spacer(),

@@ -12,6 +12,7 @@ class ServerUrlField extends StatelessWidget {
     return ReactiveTextField<String>(
         formControlName: 'server_url',
         onSubmitted: onSubmitted,
+        autofocus: true,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(

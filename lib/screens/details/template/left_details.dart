@@ -8,12 +8,12 @@ import 'package:jellyflut/shared/blurhash.dart';
 
 class LeftDetails extends StatelessWidget {
   final Item item;
-  final String heroTag;
+  final String? heroTag;
 
   const LeftDetails({
     Key? key,
     required this.item,
-    required this.heroTag,
+    this.heroTag,
   }) : super(key: key);
 
   @override
@@ -27,14 +27,15 @@ class LeftDetails extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 64, 24, 12),
           child: Center(
-              child: Poster(
-            item: item,
-            heroTag: heroTag,
-            tag: ImageType.PRIMARY,
-            clickable: false,
-            showParent: false,
-            boxFit: BoxFit.contain,
-          )),
+            child: Poster(
+              item: item,
+              heroTag: heroTag,
+              tag: ImageType.PRIMARY,
+              clickable: false,
+              showParent: false,
+              boxFit: BoxFit.contain,
+            ),
+          ),
         ),
       ],
     );

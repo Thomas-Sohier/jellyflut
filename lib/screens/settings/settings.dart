@@ -128,7 +128,7 @@ class _SettingsState extends State<Settings> {
                           tiles: [
                             SettingsTile(
                                 title: 'Deconnect',
-                                subtitle: userApp!.name,
+                                subtitle: userApp?.name ?? 'Unknow',
                                 titleTextStyle: TextStyle(color: Colors.white),
                                 subtitleTextStyle:
                                     TextStyle(color: Colors.white60),

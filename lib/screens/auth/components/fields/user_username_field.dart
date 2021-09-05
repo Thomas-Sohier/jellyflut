@@ -13,6 +13,7 @@ class UserUsernameField extends StatelessWidget {
     return ReactiveTextField<String>(
         formControlName: 'user_username',
         onSubmitted: onSubmitted,
+        autofocus: true,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(

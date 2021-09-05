@@ -13,7 +13,7 @@ import 'components/photo_item.dart';
 
 class Details extends StatefulWidget {
   final Item item;
-  final String heroTag;
+  final String? heroTag;
 
   const Details({required this.item, required this.heroTag});
 

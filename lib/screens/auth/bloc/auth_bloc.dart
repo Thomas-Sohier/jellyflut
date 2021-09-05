@@ -38,14 +38,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       server = event.server;
       yield AuthenticationServerAdded(server: event.server);
     } else if (event is AuthSuccessful) {
-      // AuthService.storeAccessToken(event.accessToken);
       yield AuthenticationSuccessful();
     } else if (event is BackToFirstForm) {
       yield AuthenticationFirstForm();
-    } else if (event is ResetStates) {
-      yield AuthenticationUnauthenticated();
-    } else if (event is LogOut) {
-      // AuthService.logOut();
+    } else if (event is ResetStates || event is LogOut) {
       yield AuthenticationUnauthenticated();
     } else if (event is AuthError) {
       errors.add(event.error);
@@ -56,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       globals.server = server!;
       final response = await AuthService.login(event.username, event.password);
-      await AuthService.create(event.username, response);
+      await AuthService.storeAccountData(event.username, response);
       yield AuthenticationSuccessful();
     } catch (e) {
       errors.add(e.toString());

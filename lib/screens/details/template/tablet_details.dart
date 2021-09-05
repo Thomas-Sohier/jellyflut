@@ -130,7 +130,7 @@ class _TabletDetailsState extends State<TabletDetails> {
             clickable: false,
             showParent: true,
             tag: ImageType.PRIMARY,
-            heroTag: widget.heroTag ?? '',
+            heroTag: widget.heroTag,
           ),
         ),
       ),

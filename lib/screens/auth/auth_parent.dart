@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/auth_bubble_indicator.dart';
@@ -59,7 +57,10 @@ class _AuthParentState extends State<AuthParent> {
                   tag: 'logo_text',
                   child: Text(
                     'Jellyfin',
-                    style: TextStyle(fontSize: 48, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 48,
+                        color: Colors.white,
+                        fontFamily: 'Quicksand'),
                   ),
                 ),
               ],

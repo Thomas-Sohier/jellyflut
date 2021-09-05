@@ -7,8 +7,8 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:uuid/uuid.dart';
 
 class EpisodeItem extends StatefulWidget {
@@ -54,19 +54,17 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget epsiodeItem() {
+    final deviceType = getDeviceType(MediaQuery.of(context).size);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Flexible(
-            flex: 4,
-            child: ResponsiveBuilder.builder(
-              mobile: () => SizedBox(),
-              tablet: () => poster(),
-              desktop: () => poster(),
+          if (deviceType != DeviceScreenType.mobile)
+            Flexible(
+              flex: 4,
+              child: poster(),
             ),
-          ),
           Expanded(
             flex: 6,
             child: Padding(
@@ -100,7 +98,7 @@ class _EpisodeItemState extends State<EpisodeItem>
   Widget poster() {
     return Poster(
         tag: ImageType.PRIMARY,
-        heroTag: '',
+        heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
         clickable: false,
         boxFit: BoxFit.cover,
         item: widget.item);
