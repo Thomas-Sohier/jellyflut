@@ -3,7 +3,7 @@ part of '../fields.dart';
 class TagsField extends StatelessWidget {
   final Item item;
   final FormGroup form;
-  final double ITEM_HEIGHT = 30;
+  final double ITEM_HEIGHT = 35;
 
   const TagsField({Key? key, required this.form, required this.item})
       : super(key: key);

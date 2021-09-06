@@ -77,9 +77,7 @@ class _PeoplesListState extends State<PeoplesList> {
                 Expanded(
                     flex: 5,
                     child: PeoplePoster(
-                        person: person,
-                        index: index,
-                        onPressed: () => onTap(item, person))),
+                        person: person, onPressed: () => onTap(item, person))),
                 Flexible(
                     fit: FlexFit.loose,
                     child: Text(
@@ -107,7 +105,6 @@ class _PeoplesListState extends State<PeoplesList> {
       padding: EdgeInsets.only(right: 10),
       child: PeoplePoster(
           person: person,
-          index: index,
           bigPoster: true,
           clickable: true,
           onPressed: () => onTap(item, person)),

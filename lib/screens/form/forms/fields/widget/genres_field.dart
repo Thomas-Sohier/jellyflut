@@ -23,6 +23,7 @@ class GenresField extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: item.genreItems?.length ?? 0,
+            physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
                 personItem(item.genreItems?.elementAt(index), index, context),
           ),

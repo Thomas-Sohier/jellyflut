@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/async_image.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
+import 'package:uuid/uuid.dart';
 
 class PeoplePoster extends StatefulWidget {
   final Person person;
-  final int index;
   final bool clickable;
   final bool bigPoster;
   final VoidCallback? onPressed;
@@ -13,7 +13,6 @@ class PeoplePoster extends StatefulWidget {
   PeoplePoster(
       {Key? key,
       required this.person,
-      required this.index,
       this.onPressed,
       this.bigPoster = false,
       this.clickable = true})
@@ -69,7 +68,7 @@ class _PeoplePosterState extends State<PeoplePoster>
 
   Widget poster() {
     return Hero(
-        tag: '${widget.person.id}-${widget.index}-person',
+        tag: '${widget.person.id}-${Uuid().v1()}-person',
         child: AspectRatio(
             aspectRatio: 2 / 3,
             child: AsyncImage(
@@ -90,7 +89,7 @@ class _PeoplePosterState extends State<PeoplePoster>
 
   Widget bigPoster() {
     return Hero(
-        tag: '${widget.person.id}-${widget.index}-person',
+        tag: '${widget.person.id}-${Uuid().v1()}-person',
         child: AspectRatio(
           aspectRatio: 2 / 3,
           child: ClipRRect(

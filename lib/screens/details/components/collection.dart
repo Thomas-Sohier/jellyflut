@@ -66,7 +66,10 @@ class _CollectionState extends State<Collection> {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
         return ListItems(
-            itemsFuture: musicFuture, lisType: ListType.LIST, itemHeight: 100);
+            itemsFuture: musicFuture,
+            lisType: ListType.LIST,
+            itemHeight: 100,
+            physics: NeverScrollableScrollPhysics());
       case ItemType.SEASON:
         return ListItems(
             itemsFuture: episodesFuture,
@@ -77,9 +80,7 @@ class _CollectionState extends State<Collection> {
         return ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
         return ListItems(
-            itemsFuture: musicAlbumFuture,
-            lisType: ListType.POSTER,
-            physics: NeverScrollableScrollPhysics());
+            itemsFuture: musicAlbumFuture, lisType: ListType.POSTER);
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:

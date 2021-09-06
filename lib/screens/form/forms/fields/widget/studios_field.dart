@@ -23,6 +23,7 @@ class StudiosField extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: item.studios?.length ?? 0,
+            physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
                 personItem(item.studios?.elementAt(index), index, context),
           ),
