@@ -20,8 +20,9 @@ class RatingDetailsWidget extends StatelessWidget {
         textAlign: TextAlign.justify,
         style: Theme.of(context)
             .textTheme
-            .subtitle1!
-            .copyWith(fontFamily: 'Quicksand'),
+            .bodyText1!
+            .copyWith(fontFamily: 'Quicksand')
+            .copyWith(fontSize: 16),
       ),
     );
   }

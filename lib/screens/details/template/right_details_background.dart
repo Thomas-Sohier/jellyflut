@@ -34,7 +34,7 @@ class RightDetailsBackground extends StatelessWidget {
       data: theme,
       child: Container(
         decoration:
-            BoxDecoration(color: theme.backgroundColor.withOpacity(0.4)),
+            BoxDecoration(color: theme.backgroundColor.withOpacity(0.45)),
         child: child,
       ),
     );

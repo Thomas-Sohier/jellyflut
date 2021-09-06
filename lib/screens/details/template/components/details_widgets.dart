@@ -4,7 +4,7 @@ import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
 import 'package:jellyflut/screens/details/template/components/details/item_duration.dart';
-import 'package:jellyflut/screens/details/template/components/details/provider_container.dart';
+import 'package:jellyflut/screens/details/template/components/details/provider_button.dart';
 
 part 'details/original_title.dart';
 part 'details/title.dart';

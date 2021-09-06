@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/shared/colors.dart';
 
-class ProviderContainer extends StatelessWidget {
+class ProviderButton extends StatelessWidget {
   final String value;
-  const ProviderContainer({Key? key, required this.value}) : super(key: key);
+  const ProviderButton({Key? key, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

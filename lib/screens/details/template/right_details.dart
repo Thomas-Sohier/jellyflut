@@ -33,7 +33,9 @@ class RightDetails extends StatelessWidget {
             SizedBox(width: 8),
             RatingDetailsWidget(rating: item.officialRating),
           ]),
-          OriginalTitleDetailsWidget(title: item.originalTitle),
+          if (item.originalTitle != null &&
+              item.originalTitle!.toLowerCase() != item.name.toLowerCase())
+            OriginalTitleDetailsWidget(title: item.originalTitle),
           Row(children: [
             if (item.hasRatings())
               Padding(
@@ -50,8 +52,9 @@ class RightDetails extends StatelessWidget {
           TaglineDetailsWidget(item: item),
           SizedBox(height: 12),
           OverviewDetailsWidget(overview: item.overview),
-          SizedBox(height: 12),
+          SizedBox(height: 24),
           ProvidersDetailsWidget(item: item),
+          SizedBox(height: 12),
           PeoplesDetailsWidget(item: item),
           Collection(item)
         ]);

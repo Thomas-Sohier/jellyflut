@@ -12,7 +12,7 @@ class ProvidersDetailsWidget extends StatelessWidget {
     }
     final widgets = <Widget>[];
     item.providerIds!.forEach((key, value) {
-      widgets.add(ProviderContainer(value: key));
+      widgets.add(ProviderButton(value: key));
     });
     return Wrap(spacing: 8, runSpacing: 10, children: widgets);
   }

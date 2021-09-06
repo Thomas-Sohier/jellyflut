@@ -8,10 +8,9 @@ class Luminance {
         : Colors.white70;
 
     return personnal_theme.Theme.defaultThemeData
+        .copyWith(backgroundColor: dominantColor)
         .copyWith(
-            backgroundColor: dominantColor,
-            textTheme: personnal_theme.Theme.defaultThemeData.textTheme
-                .apply(displayColor: fontColor, bodyColor: fontColor))
+            textTheme: personnal_theme.Theme.getTextThemeWithColor(fontColor))
         .copyWith(primaryColor: fontColor);
   }
 }
