@@ -14,6 +14,7 @@ class ServerNameField extends StatelessWidget {
         formControlName: 'server_name',
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.name,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
             labelText: 'Name',

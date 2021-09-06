@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/form/form.dart';
-import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
+part of '../action_button.dart';
 
 class ManageButton extends StatelessWidget {
   final Item item;

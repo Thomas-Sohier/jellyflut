@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/stream/init_stream.dart';
+part of '../action_button.dart';
 
 class TrailerButton extends StatelessWidget {
   final Item item;

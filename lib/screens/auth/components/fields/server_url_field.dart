@@ -14,6 +14,7 @@ class ServerUrlField extends StatelessWidget {
         onSubmitted: onSubmitted,
         autofocus: true,
         textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.url,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
             labelText: 'URL',

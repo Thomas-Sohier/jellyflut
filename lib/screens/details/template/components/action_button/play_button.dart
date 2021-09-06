@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+part of '../action_button.dart';
 
 class PlayButton extends StatelessWidget {
   final Item item;

@@ -9,7 +9,8 @@ import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detail_header_bar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
-import 'package:jellyflut/screens/details/template/rightDetails.dart';
+import 'package:jellyflut/screens/details/template/right_details.dart';
+import 'package:jellyflut/screens/details/template/right_details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 
@@ -80,42 +81,19 @@ class _LargeDetailsState extends State<LargeDetails> {
   Widget rightDetailsPart() {
     return Expanded(
         flex: 6,
-        child: ClipRect(
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                child: FutureBuilder<Color>(
-                    future: widget.dominantColorFuture,
-                    builder: (context, colorsSnapshot) {
-                      if (colorsSnapshot.hasData) {
-                        final finalDetailsThemeData =
-                            Luminance.computeLuminance(
-                                colorsSnapshot.data!.withOpacity(0.4));
-                        return Theme(
-                            data: finalDetailsThemeData,
-                            child: largeWidgetBuilder(finalDetailsThemeData));
-                      }
-                      return Theme(
-                          data: personnal_theme.Theme.defaultThemeData,
-                          child: largeWidgetBuilder(
-                              personnal_theme.Theme.defaultThemeData));
-                    }))));
+        child: RightDetailsBackground(
+            dominantColorFuture: widget.dominantColorFuture,
+            child: largeWidgetBuilder()));
   }
 
-  Widget largeWidgetBuilder(ThemeData themeData) {
+  Widget largeWidgetBuilder() {
     final mediaQuery = MediaQuery.of(context);
-    return Stack(
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
       children: [
-        Container(
-            decoration: BoxDecoration(
-                color: themeData.backgroundColor.withOpacity(0.4)),
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
-              children: [
-                if (widget.item.hasLogo())
-                  Logo(item: widget.item, size: mediaQuery.size),
-                asyncRightDetails()
-              ],
-            ))
+        if (widget.item.hasLogo())
+          Logo(item: widget.item, size: mediaQuery.size),
+        asyncRightDetails()
       ],
     );
   }

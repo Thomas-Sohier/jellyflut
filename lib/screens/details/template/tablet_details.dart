@@ -10,7 +10,8 @@ import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detail_header_bar.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
-import 'package:jellyflut/screens/details/template/rightDetails.dart';
+import 'package:jellyflut/screens/details/template/right_details.dart';
+import 'package:jellyflut/screens/details/template/right_details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 
@@ -49,25 +50,9 @@ class _TabletDetailsState extends State<TabletDetails> {
         item: widget.item,
         imageType: ImageType.BACKDROP,
       ),
-      ClipRect(
-          child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-        child: FutureBuilder<Color>(
-            future: widget.dominantColorFuture,
-            builder: (context, colorsSnapshot) {
-              if (colorsSnapshot.hasData) {
-                final finalDetailsThemeData =
-                    Luminance.computeLuminance(colorsSnapshot.data!);
-                return Theme(
-                    data: finalDetailsThemeData,
-                    child: detailsBuilder(finalDetailsThemeData));
-              }
-              return Theme(
-                  data: personnal_theme.Theme.defaultThemeData,
-                  child:
-                      detailsBuilder(personnal_theme.Theme.defaultThemeData));
-            }),
-      )),
+      RightDetailsBackground(
+          dominantColorFuture: widget.dominantColorFuture,
+          child: detailsBuilder()),
       DetailHeaderBar(
         color: Colors.white,
         showDarkGradient: false,
@@ -76,30 +61,21 @@ class _TabletDetailsState extends State<TabletDetails> {
     ]);
   }
 
-  Widget detailsBuilder(ThemeData themeData) {
+  Widget detailsBuilder() {
     final mediaQuery = MediaQuery.of(context);
-    return Stack(
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
       children: [
-        Container(
-            decoration: BoxDecoration(
-                color: themeData.backgroundColor.withOpacity(0.4)),
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    poster(),
-                    if (widget.item.hasLogo())
-                      Flexible(
-                          child:
-                              Logo(item: widget.item, size: mediaQuery.size)),
-                  ],
-                ),
-                asyncRightDetails()
-              ],
-            ))
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            poster(),
+            if (widget.item.hasLogo())
+              Flexible(child: Logo(item: widget.item, size: mediaQuery.size)),
+          ],
+        ),
+        asyncRightDetails()
       ],
     );
   }

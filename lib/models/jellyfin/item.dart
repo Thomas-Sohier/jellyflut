@@ -109,6 +109,7 @@ class Item {
     this.recursiveItemCount,
     this.videoType,
     this.imageTags,
+    this.officialRating,
     this.seriesPrimaryImageTag,
     this.seriesName,
     this.backdropImageTags,
@@ -144,14 +145,14 @@ class Item {
   String? path;
   bool? enableMediaSourceDisplay;
   String? overview;
-  List<dynamic>? taglines;
+  List<String>? taglines;
   List<String>? genres;
   double? communityRating;
   int? runTimeTicks;
   String? playAccess;
   int? productionYear;
   List<ExternalUrl>? remoteTrailers;
-  ProviderIds? providerIds;
+  Map<String, dynamic>? providerIds;
   bool? isHd;
   bool? isFolder;
   String? parentId;
@@ -178,6 +179,7 @@ class Item {
   int? recursiveItemCount;
   String? videoType;
   List<ImageTag>? imageTags;
+  String? officialRating;
   String? seriesPrimaryImageTag;
   String? seriesName;
   List<String>? backdropImageTags;
@@ -231,7 +233,7 @@ class Item {
         overview: json['Overview'],
         taglines: json['Taglines'] == null
             ? null
-            : List<dynamic>.from(json['Taglines'].map((x) => x)),
+            : List<String>.from(json['Taglines'].map((x) => x)),
         genres: json['Genres'] == null
             ? null
             : List<String>.from(json['Genres'].map((x) => x)),
@@ -245,9 +247,7 @@ class Item {
             ? null
             : List<ExternalUrl>.from(
                 json['RemoteTrailers'].map((x) => ExternalUrl.fromMap(x))),
-        providerIds: json['ProviderIds'] == null
-            ? null
-            : ProviderIds.fromMap(json['ProviderIds']),
+        providerIds: json['ProviderIds'],
         isHd: json['IsHD'] == null ? null : json['isHd'],
         isFolder: json['IsFolder'],
         parentId: json['ParentId'],
@@ -301,6 +301,7 @@ class Item {
         recursiveItemCount: json['RecursiveItemCount'],
         videoType: json['VideoType'],
         imageTags: List<ImageTag>.from(ImageTag.fromMap(json['ImageTags'])),
+        officialRating: json['OfficialRating'],
         seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
         seriesName: json['SeriesName'],
         backdropImageTags: json['BackdropImageTags'] == null
@@ -367,7 +368,7 @@ class Item {
       'RemoteTrailers': remoteTrailers != null
           ? List<dynamic>.from(remoteTrailers!.map((x) => x.toMap()))
           : null,
-      'ProviderIds': providerIds?.toMap(),
+      'ProviderIds': providerIds,
       'IsHD': isHd,
       'IsFolder': isFolder,
       'ParentId': parentId,
@@ -400,6 +401,7 @@ class Item {
       'RecursiveItemCount': recursiveItemCount,
       'VideoType': videoType,
       'ImageTags': imageTags,
+      'OfficialRating': officialRating,
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
       'SeriesName': seriesName,
       'BackdropImageTags': backdropImageTags != null

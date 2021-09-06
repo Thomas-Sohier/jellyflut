@@ -15,6 +15,7 @@ class UserPasswordField extends StatelessWidget {
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
+        keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
             labelText: 'Password',

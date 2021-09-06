@@ -14,6 +14,7 @@ class UserUsernameField extends StatelessWidget {
         formControlName: 'user_username',
         onSubmitted: onSubmitted,
         autofocus: true,
+        keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
