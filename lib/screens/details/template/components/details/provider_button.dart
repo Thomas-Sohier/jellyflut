@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/shared/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProviderButton extends StatelessWidget {
-  final String value;
-  const ProviderButton({Key? key, required this.value}) : super(key: key);
+  final String providerName;
+  final String providerUrl;
+
+  const ProviderButton(
+      {Key? key, required this.providerUrl, required this.providerName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => {},
+      onPressed: () => _launchURL(providerUrl),
       style: TextButton.styleFrom(
               padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
               alignment: Alignment.center,
@@ -21,11 +26,15 @@ class ProviderButton extends StatelessWidget {
           .copyWith(foregroundColor: buttonForeground(context))
           .copyWith(overlayColor: buttonBackground(context)),
       child: Text(
-        value,
+        providerName,
         style: TextStyle(fontFamily: 'Quicksand'),
       ),
     );
   }
+
+  void _launchURL(String _url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
 
   MaterialStateProperty<Color> buttonBackground(BuildContext context) {
     return MaterialStateProperty.resolveWith<Color>(
@@ -33,6 +42,8 @@ class ProviderButton extends StatelessWidget {
       if (states.contains(MaterialState.hovered) ||
           states.contains(MaterialState.focused)) {
         return Theme.of(context).primaryColor;
+      } else if (states.contains(MaterialState.pressed)) {
+        return Theme.of(context).primaryColor.withOpacity(0.1);
       }
       return Colors.transparent;
     });

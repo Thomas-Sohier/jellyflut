@@ -522,7 +522,7 @@ class Item {
   }
 
   String getTrailer() {
-    return remoteTrailers!.elementAt(0).url!;
+    return remoteTrailers!.elementAt(0).url;
   }
 
   bool canBeViewed() {

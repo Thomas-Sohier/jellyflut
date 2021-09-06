@@ -14,17 +14,24 @@ class DetailHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final paddingTop = MediaQuery.of(context).padding.top;
     return Stack(children: [
       IgnorePointer(child: gradientBackground()),
       SizedBox(
-        height: height,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        height: height + paddingTop,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            back_button.BackButton(
-              shadow: true,
-            )
+            SizedBox(height: paddingTop),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                back_button.BackButton(
+                  shadow: true,
+                )
+              ],
+            ),
           ],
         ),
       ),

@@ -27,6 +27,8 @@ class RightDetails extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: DetailsButtonRowBuilder(
                   item: item, dominantColorFuture: dominantColorFuture)),
+          SizedBox(height: 36),
+          TaglineDetailsWidget(item: item),
           SizedBox(height: 24),
           Row(children: [
             TitleDetailsWidget(title: item.name),
@@ -48,8 +50,6 @@ class RightDetails extends StatelessWidget {
             Spacer(),
             InfosDetailsWidget(item: item),
           ]),
-          SizedBox(height: 12),
-          TaglineDetailsWidget(item: item),
           SizedBox(height: 12),
           OverviewDetailsWidget(overview: item.overview),
           SizedBox(height: 24),

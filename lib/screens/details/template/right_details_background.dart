@@ -32,7 +32,8 @@ class RightDetailsBackground extends StatelessWidget {
   Widget background(ThemeData theme, BuildContext context) {
     return Theme(
       data: theme,
-      child: Container(
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500),
         decoration:
             BoxDecoration(color: theme.backgroundColor.withOpacity(0.45)),
         child: child,

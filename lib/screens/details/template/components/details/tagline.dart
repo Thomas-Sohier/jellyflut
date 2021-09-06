@@ -9,7 +9,7 @@ class TaglineDetailsWidget extends StatelessWidget {
     if (item.taglines == null || item.taglines!.isEmpty) return SizedBox();
     return Text(
       '“ ${item.taglines!.first} „',
-      textAlign: TextAlign.justify,
+      textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
           .headline4!
