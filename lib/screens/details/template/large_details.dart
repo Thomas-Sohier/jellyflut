@@ -7,12 +7,10 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/detail_header_bar.dart';
-import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
 import 'package:jellyflut/screens/details/template/right_details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
 
 class LargeDetails extends StatefulWidget {
   final Item item;
