@@ -24,7 +24,7 @@ import 'package:jellyflut/services/item/item_service.dart';
 //----------------//
 
 class InitStreamingItemUtil {
-  static void initFromItem({required Item item}) async {
+  static Future<Widget> initFromItem({required Item item}) async {
     final streamingSoftwareDB = await AppDatabase()
         .getDatabase
         .settingsDao
@@ -46,7 +46,8 @@ class InitStreamingItemUtil {
         playerWidget = await _initExoPlayerMediaPlayer(_item);
         break;
     }
-    await customRouter.push(StreamRoute(player: playerWidget, item: _item));
+    return playerWidget;
+    // await customRouter.push(StreamRoute(player: playerWidget, item: _item));
   }
 
   static Future<Widget> _initVLCMediaPlayer(Item item) async {
@@ -109,7 +110,7 @@ class InitStreamingItemUtil {
 //----------------//
 
 class InitStreamingUrlUtil {
-  static void initFromUrl(
+  static Future<Widget> initFromUrl(
       {required String url, required String streamName}) async {
     final streamingSoftwareDB = await AppDatabase()
         .getDatabase
@@ -131,7 +132,7 @@ class InitStreamingUrlUtil {
         playerWidget = await _initExoPlayerMediaPlayer(url);
         break;
     }
-    await customRouter.push(StreamRoute(player: playerWidget, item: _item));
+    return playerWidget;
   }
 
   static Future<Widget> _initVLCMediaPlayer(String url) async {

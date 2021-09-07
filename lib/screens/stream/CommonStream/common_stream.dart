@@ -208,7 +208,7 @@ class CommonStream {
         initListener: () => {},
         addListener: commonStreamVLCComputer.addListener,
         removeListener: (_) => commonStreamVLCComputer.removeListener(),
-        dispose: () => commonStreamVLCComputer.stopPlayer(),
+        dispose: commonStreamVLCComputer.stopPlayer,
         controller: player);
   }
 }

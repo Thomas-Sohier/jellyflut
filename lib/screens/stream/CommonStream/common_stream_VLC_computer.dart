@@ -29,8 +29,8 @@ class CommonStreamVLCComputer {
     streamingProvider.setTimer(timer);
 
     // create common stream controller
-    final commonStream = CommonStream.parseVlcComputerController(
-        player: _player, listener: () => {});
+    final commonStream =
+        CommonStream.parseVlcComputerController(player: _player);
 
     streamingProvider.setCommonStream(commonStream);
     return Future.value(_player);

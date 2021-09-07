@@ -98,10 +98,11 @@ class AppRouter extends _i1.RootStackRouter {
     StreamRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (data) {
-          final args = data.argsAs<StreamRouteArgs>();
-          return _i11.Stream(player: args.player, item: args.item);
+          final args = data.argsAs<StreamRouteArgs>(
+              orElse: () => const StreamRouteArgs());
+          return _i11.Stream(item: args.item, url: args.url);
         },
-        maintainState: false,
+        transitionsBuilder: _i1.TransitionsBuilders.zoomIn,
         opaque: true,
         barrierDismissible: false),
     EpubReaderPageRoute.name: (routeData) => _i1.CustomPage<dynamic>(
@@ -269,19 +270,19 @@ class PlaylistRouteArgs {
 }
 
 class StreamRoute extends _i1.PageRouteInfo<StreamRouteArgs> {
-  StreamRoute({required _i2.Widget player, required _i14.Item item})
+  StreamRoute({_i14.Item? item, String? url})
       : super(name,
-            path: 'stream', args: StreamRouteArgs(player: player, item: item));
+            path: 'stream', args: StreamRouteArgs(item: item, url: url));
 
   static const String name = 'StreamRoute';
 }
 
 class StreamRouteArgs {
-  const StreamRouteArgs({required this.player, required this.item});
+  const StreamRouteArgs({this.item, this.url});
 
-  final _i2.Widget player;
+  final _i14.Item? item;
 
-  final _i14.Item item;
+  final String? url;
 }
 
 class EpubReaderPageRoute extends _i1.PageRouteInfo<EpubReaderPageRouteArgs> {

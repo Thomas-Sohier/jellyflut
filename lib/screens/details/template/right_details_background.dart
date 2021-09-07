@@ -14,6 +14,7 @@ class RightDetailsBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRect(
+        clipBehavior: Clip.hardEdge,
         child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
             child: FutureBuilder<Color>(

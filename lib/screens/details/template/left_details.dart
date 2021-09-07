@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
@@ -24,6 +26,11 @@ class LeftDetails extends StatelessWidget {
     return Stack(
       children: [
         BlurHash(hash: hash),
+        ClipRect(
+            clipBehavior: Clip.hardEdge,
+            child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17),
+                child: Container(color: Colors.white.withOpacity(0.2)))),
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 64, 24, 12),
           child: Center(

@@ -21,6 +21,7 @@ import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/image_type.dart' as image_type;
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
+import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
 
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -151,7 +152,7 @@ class Item {
   int? runTimeTicks;
   String? playAccess;
   int? productionYear;
-  List<ExternalUrl>? remoteTrailers;
+  List<RemoteTrailer>? remoteTrailers;
   Map<String, dynamic>? providerIds;
   bool? isHd;
   bool? isFolder;
@@ -245,8 +246,8 @@ class Item {
         productionYear: json['ProductionYear'],
         remoteTrailers: json['RemoteTrailers'] == null
             ? null
-            : List<ExternalUrl>.from(
-                json['RemoteTrailers'].map((x) => ExternalUrl.fromMap(x))),
+            : List<RemoteTrailer>.from(
+                json['RemoteTrailers'].map((x) => RemoteTrailer.fromMap(x))),
         providerIds: json['ProviderIds'],
         isHd: json['IsHD'] == null ? null : json['isHd'],
         isFolder: json['IsFolder'],
@@ -805,7 +806,8 @@ class Item {
         type == ItemType.SERIES ||
         type == ItemType.MOVIE ||
         type == ItemType.VIDEO) {
-      return InitStreamingItemUtil.initFromItem(item: this);
+      // return InitStreamingItemUtil.initFromItem(item: this);
+      await customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
       var commonPlayer;
       if (Platform.isLinux || Platform.isWindows) {

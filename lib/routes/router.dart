@@ -54,11 +54,11 @@ import 'router.gr.dart';
         path: 'playlist',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(
+    CustomRoute(
         page: Stream,
         path: 'stream',
-        guards: [AuthGuard],
-        maintainState: false),
+        transitionsBuilder: TransitionsBuilders.zoomIn,
+        guards: [AuthGuard]),
     AutoRoute(page: EpubReaderPage, path: 'epub', guards: [AuthGuard]),
   ],
 )

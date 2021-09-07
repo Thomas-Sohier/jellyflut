@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/components/back_button.dart' as bb;
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/components/bottom_row_player_controls.dart';
-import 'package:jellyflut/screens/stream/components/audio_button_selector.dart';
-import 'package:jellyflut/screens/stream/components/pip_button.dart';
-import 'package:jellyflut/screens/stream/components/subtitle_button_selector.dart';
+import 'package:jellyflut/screens/stream/components/controls/bottom_row_player_controls.dart';
+import 'package:jellyflut/screens/stream/components/controls/audio_button_selector.dart';
+import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/subtitle_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +58,7 @@ class _CommonControlsState extends State<CommonControls> {
     _timer.cancel();
     streamingProvider.timer?.cancel();
     RawKeyboard.instance.removeListener(listener);
+    _visibleStreamController.close();
     super.dispose();
   }
 

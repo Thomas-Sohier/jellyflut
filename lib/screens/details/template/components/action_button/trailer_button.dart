@@ -19,7 +19,6 @@ class TrailerButton extends StatelessWidget {
 
   void playTrailer(BuildContext context) async {
     final url = await item.getYoutubeTrailerUrl();
-    InitStreamingUrlUtil.initFromUrl(
-        url: url.toString(), streamName: item.name);
+    await customRouter.push(StreamRoute(url: url.toString(), item: item));
   }
 }

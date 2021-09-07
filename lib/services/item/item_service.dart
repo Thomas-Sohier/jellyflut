@@ -58,7 +58,8 @@ class ItemService {
     try {
       final response = await dio.get<Map<String, dynamic>>(url,
           queryParameters: queryParams);
-      return foundation.compute(parseItem, response.data!);
+      return parseItem(response.data!);
+      // return foundation.compute(parseItem, response.data!);
     } catch (e, stacktrace) {
       log(e.toString(), stackTrace: stacktrace, level: 5);
       rethrow;
