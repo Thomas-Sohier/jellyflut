@@ -25,7 +25,7 @@ dependencies:
   dart_vlc: ^0.1.7
   device_info: ^2.0.2
   dio: ^4.0.0
-  epub_view: ^2.2.0
+  epubx: ^3.0.0-dev.3
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.0
@@ -44,7 +44,9 @@ dependencies:
   reactive_forms: ^10.6.0
   responsive_builder: ^0.4.1
   rxdart: ^0.27.1
+  equatable: ^2.0.3
   salomon_bottom_bar: ^3.1.0
+  simple_html_css: ^3.0.1
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.6
   shimmer: ^2.0.0

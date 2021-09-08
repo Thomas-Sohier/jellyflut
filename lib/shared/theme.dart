@@ -112,6 +112,7 @@ class Theme {
       appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,
           brightness: Brightness.dark,
+          actionsIconTheme: IconThemeData(color: Colors.white),
           foregroundColor: Colors.white.withAlpha(220),
           titleTextStyle: TextStyle(
               color: Colors.white.withAlpha(220),

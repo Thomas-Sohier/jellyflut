@@ -1,4 +1,4 @@
-import 'package:epub_view/epub_view.dart';
+import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/person_type.dart';
 
 import 'image_blur_hashes.dart';

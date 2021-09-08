@@ -1,12 +1,9 @@
 part of 'form_bloc.dart';
 
-class FormState extends Equatable {
+class FormState {
   final FormGroup form;
 
   const FormState({required this.form});
-
-  @override
-  List<Object> get props => [];
 }
 
 class FormMovieState extends FormState {
@@ -18,7 +15,4 @@ class FormMovieState extends FormState {
   FormMovieState copyWith({String? name}) {
     return FormMovieState(name: name ?? this.name, form: form);
   }
-
-  @override
-  List<Object> get props => [];
 }

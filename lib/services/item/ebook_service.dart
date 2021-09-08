@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
@@ -24,12 +25,19 @@ class EbookService {
     var url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
 
     var dowloadPath = await FileService.getStoragePathItem(item);
-    await FileService.downloadFile(url, dowloadPath);
+    await FileService.downloadFileAndSaveToPath(url, dowloadPath);
     return dowloadPath;
   }
 
   static Future<bool> isEbookDownloaded(Item item) async {
     var path = await FileService.getStoragePathItem(item);
     return File(path).exists();
+  }
+
+  static Future<List<int>?> downloadEpub(String itemId) async {
+    var queryParams = <String, dynamic>{};
+    queryParams['api_key'] = apiKey;
+    var url = '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+    return FileService.donwloadFile(url);
   }
 }

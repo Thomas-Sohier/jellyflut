@@ -25,8 +25,19 @@ class FileService {
     return true;
   }
 
-  static Future<Response<dynamic>> downloadFile(String url, String path) async {
+  static Future<Response<dynamic>> downloadFileAndSaveToPath(
+      String url, String? path) async {
     return Dio().download(url, path,
         options: Options(headers: {HttpHeaders.acceptEncodingHeader: '*'}));
+  }
+
+  static Future<List<int>?> donwloadFile(String url) async {
+    Response<List<int>> rs;
+    rs = await Dio().get<List<int>>(
+      url,
+      options: Options(
+          responseType: ResponseType.bytes), // set responseType to `bytes`
+    );
+    return rs.data;
   }
 }

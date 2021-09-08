@@ -10,7 +10,7 @@ import 'dart:io';
 // import 'package:fereader/fereader.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:epub_view/epub_view.dart';
+import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart' as db;

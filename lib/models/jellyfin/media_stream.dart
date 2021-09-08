@@ -1,4 +1,4 @@
-import 'package:epub_view/epub_view.dart';
+import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/codec.dart';
 import 'package:jellyflut/models/enum/codec_time_base.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
