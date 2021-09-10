@@ -17,7 +17,7 @@ class DrawerTabletButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = Theme.of(context).accentColor;
+    final activeColor = Theme.of(context).colorScheme.secondary;
     final inactiveColor = Theme.of(context).primaryColor;
     final isActive = tabsContext.tabsRouter.activeIndex == index;
     return InkWell(

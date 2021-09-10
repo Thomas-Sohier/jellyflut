@@ -38,7 +38,7 @@ class TagsField extends StatelessWidget {
     return Container(
         height: ITEM_HEIGHT,
         decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.all(Radius.circular(ITEM_HEIGHT))),
         child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 4, 8, 4),

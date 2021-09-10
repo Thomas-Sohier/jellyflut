@@ -101,6 +101,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
         controller: _controller,
       );
       bookBloc.add(BookLoaded(bookView: comicView));
+      _pageListener.add({0: archive.length});
     } catch (error) {
       log('Cannot open file, ${widget.item.name}',
           level: 3, error: 'Error cannot unzip cbz file');
@@ -109,6 +110,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
   }
 
   Future<Widget> constructEpubView(epubx.EpubBook book) async {
+    _pageListener.add({0: book.Content?.Html?.length ?? 0});
     return EpubView(
         controller: _controller,
         epubBook: book,

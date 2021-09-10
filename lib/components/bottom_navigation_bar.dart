@@ -64,13 +64,13 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
     navBarItems.add(SalomonBottomBarItem(
         icon: Icon(Icons.home_outlined),
         title: Text('Home'),
-        selectedColor: Theme.of(context).accentColor,
+        selectedColor: Theme.of(context).colorScheme.secondary,
         unselectedColor: Theme.of(context).primaryColor));
     items.forEach((item) {
       navBarItems.add(SalomonBottomBarItem(
           icon: Icon(getRightIconForType(item.collectionType)),
           title: Text(item.name),
-          selectedColor: Theme.of(context).accentColor,
+          selectedColor: Theme.of(context).colorScheme.secondary,
           unselectedColor: Theme.of(context).primaryColor));
     });
     return navBarItems;

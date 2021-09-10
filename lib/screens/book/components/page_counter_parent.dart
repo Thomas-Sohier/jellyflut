@@ -14,7 +14,6 @@ class PageCounterParent extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<Map<int, int>>(
       stream: streamPage,
-      initialData: {0: 0},
       builder: (context, snapshot) => PopupMenuButton(
           initialValue: snapshot.data?.values.first ?? 0,
           onSelected: (int pageSelected) => controller.animateToPage(
@@ -24,8 +23,8 @@ class PageCounterParent extends StatelessWidget {
           itemBuilder: (context) => _pagesListTile(
               snapshot.data?.keys.first ?? 0, snapshot.data?.values.first ?? 0),
           child: PageCounter(
-              currentPage: snapshot.data?.keys.first ?? 0,
-              nbPages: snapshot.data?.values.first ?? 0)),
+              currentPage: snapshot.data?.keys.first,
+              nbPages: snapshot.data?.values.first)),
     );
   }
 
