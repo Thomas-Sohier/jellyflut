@@ -9,9 +9,9 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../models/jellyfin/item.dart' as _i14;
 import '../screens/auth/auth_parent.dart' as _i4;
+import '../screens/book/book_reader.dart' as _i12;
 import '../screens/collection/collection_parent.dart' as _i6;
 import '../screens/details/details.dart' as _i7;
-import '../screens/epub/epub_reader.dart' as _i12;
 import '../screens/home/home.dart' as _i13;
 import '../screens/home/home_parent.dart' as _i5;
 import '../screens/musicPlayer/music_player.dart' as _i9;
@@ -105,11 +105,11 @@ class AppRouter extends _i1.RootStackRouter {
         transitionsBuilder: _i1.TransitionsBuilders.zoomIn,
         opaque: true,
         barrierDismissible: false),
-    EpubReaderPageRoute.name: (routeData) => _i1.CustomPage<dynamic>(
+    BookReaderPageRoute.name: (routeData) => _i1.CustomPage<dynamic>(
         routeData: routeData,
         builder: (data) {
-          final args = data.argsAs<EpubReaderPageRouteArgs>();
-          return _i12.EpubReaderPage(key: args.key, item: args.item);
+          final args = data.argsAs<BookReaderPageRouteArgs>();
+          return _i12.BookReaderPage(key: args.key, item: args.item);
         },
         opaque: true,
         barrierDismissible: false),
@@ -154,7 +154,7 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(PlaylistRoute.name,
             path: 'playlist', guards: [authGuard]),
         _i1.RouteConfig(StreamRoute.name, path: 'stream', guards: [authGuard]),
-        _i1.RouteConfig(EpubReaderPageRoute.name,
+        _i1.RouteConfig(BookReaderPageRoute.name,
             path: 'epub', guards: [authGuard])
       ];
 }
@@ -285,16 +285,16 @@ class StreamRouteArgs {
   final String? url;
 }
 
-class EpubReaderPageRoute extends _i1.PageRouteInfo<EpubReaderPageRouteArgs> {
-  EpubReaderPageRoute({_i2.Key? key, required _i14.Item item})
+class BookReaderPageRoute extends _i1.PageRouteInfo<BookReaderPageRouteArgs> {
+  BookReaderPageRoute({_i2.Key? key, required _i14.Item item})
       : super(name,
-            path: 'epub', args: EpubReaderPageRouteArgs(key: key, item: item));
+            path: 'epub', args: BookReaderPageRouteArgs(key: key, item: item));
 
-  static const String name = 'EpubReaderPageRoute';
+  static const String name = 'BookReaderPageRoute';
 }
 
-class EpubReaderPageRouteArgs {
-  const EpubReaderPageRouteArgs({this.key, required this.item});
+class BookReaderPageRouteArgs {
+  const BookReaderPageRouteArgs({this.key, required this.item});
 
   final _i2.Key? key;
 

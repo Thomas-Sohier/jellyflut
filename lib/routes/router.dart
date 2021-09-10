@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:jellyflut/screens/auth/auth_parent.dart';
 import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
-import 'package:jellyflut/screens/epub/epub_reader.dart';
+import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/home/home_parent.dart';
 import 'package:jellyflut/screens/musicPlayer/music_player.dart';
@@ -59,7 +59,7 @@ import 'router.gr.dart';
         path: 'stream',
         transitionsBuilder: TransitionsBuilders.zoomIn,
         guards: [AuthGuard]),
-    AutoRoute(page: EpubReaderPage, path: 'epub', guards: [AuthGuard]),
+    AutoRoute(page: BookReaderPage, path: 'epub', guards: [AuthGuard]),
   ],
 )
 class $AppRouter {}
