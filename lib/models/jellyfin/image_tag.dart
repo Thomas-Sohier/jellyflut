@@ -1,5 +1,5 @@
+import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:epub_view/epub_view.dart';
 
 class ImageTag {
   final ImageType imageType;

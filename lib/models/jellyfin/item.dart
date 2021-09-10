@@ -10,7 +10,7 @@ import 'dart:io';
 // import 'package:fereader/fereader.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:epub_view/epub_view.dart';
+import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart' as db;
@@ -26,7 +26,7 @@ import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/epub/epub_reader.dart';
+import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/musicPlayer/commonPlayer/common_player.dart';
 import 'package:jellyflut/screens/stream/init_stream.dart';
 import 'package:jellyflut/services/item/item_service.dart';
@@ -835,7 +835,7 @@ class Item {
       musicProvider.setCommonPlayer(commonPlayer);
       return await musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
-      await customRouter.replace(EpubReaderPageRoute(item: this));
+      await customRouter.push(BookReaderPageRoute(item: this));
     }
   }
 

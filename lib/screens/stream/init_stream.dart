@@ -12,7 +12,6 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/stream/components/common_controls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_BP.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';

@@ -1,0 +1,66 @@
+import 'dart:async';
+import 'dart:io' as io;
+import 'dart:typed_data';
+
+import 'package:archive/archive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/file/file_service.dart';
+import 'package:jellyflut/services/item/ebook_service.dart';
+
+class BookUtils {
+  static Future<Archive> unarchive(FutureOr<List<int>> bytes) async {
+    List<int> loadedBytes;
+    if (bytes is Future) {
+      loadedBytes = await bytes;
+    } else {
+      loadedBytes = bytes;
+    }
+    return await compute(parseComic, loadedBytes);
+  }
+
+  static Future<Uint8List> loadItemBook(Item item) async {
+    try {
+      final path = await _downloadEbookOnStorage(item);
+      return io.File(path).readAsBytes();
+    } catch (e) {
+      final response = await EbookService.downloadEpub(item.id);
+      if (response != null) {
+        return compute(parseEbook, response);
+      } else {
+        throw ('error, cannot download epub');
+      }
+    }
+  }
+
+  static Future<String> _downloadEbookOnStorage(Item item) async {
+    // Check if we have rights
+    // If we do not store epub
+    var hasStorage = await FileService.requestStorage();
+    if (!hasStorage) {
+      throw ('Cannot access storage');
+    }
+
+    // Check if ebook is already present
+    if (await EbookService.isEbookDownloaded(item)) {
+      return FileService.getStoragePathItem(item);
+    }
+
+    final queryParams = <String, dynamic>{};
+    queryParams['api_key'] = apiKey;
+    final url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
+    final dowloadPath = await FileService.getStoragePathItem(item);
+    await FileService.downloadFileAndSaveToPath(url, dowloadPath);
+    return dowloadPath;
+  }
+}
+
+Uint8List parseEbook(List<int> bytes) {
+  return Uint8List.fromList(bytes);
+}
+
+Archive parseComic(List<int> bytes) {
+  final zipDecoder = ZipDecoder();
+  return zipDecoder.decodeBytes(bytes, verify: true);
+}

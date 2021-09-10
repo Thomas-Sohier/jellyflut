@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/components/people_poster.dart';
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/screens/form/forms/fields/widget/person_item.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/screens/form/forms/fields/theme/input_theme.dart';

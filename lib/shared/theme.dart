@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // App main color
 final MaterialColor jellyLightPurple =
@@ -91,8 +92,21 @@ class Theme {
       primarySwatch: jellyPurple,
       primaryIconTheme: IconThemeData(color: Colors.black),
       iconTheme: IconThemeData(color: Colors.black),
-      accentColor: jellyPurple,
-      accentIconTheme: IconThemeData(color: Colors.black),
+      colorScheme: ColorScheme(
+        background: Colors.grey.shade900,
+        brightness: Brightness.dark,
+        onBackground: Colors.white.withAlpha(230),
+        error: Colors.red,
+        onError: Colors.grey.shade900,
+        primary: Colors.white,
+        primaryVariant: Colors.white.withAlpha(220),
+        onPrimary: Colors.grey.shade900,
+        secondary: jellyPurple,
+        onSecondary: Colors.white,
+        secondaryVariant: jellyDarkPurple,
+        surface: Colors.grey.shade700,
+        onSurface: Colors.white,
+      ),
       inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black, width: 1),
@@ -111,7 +125,8 @@ class Theme {
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           backgroundColor: Colors.grey.shade900,
-          brightness: Brightness.dark,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+          actionsIconTheme: IconThemeData(color: Colors.white),
           foregroundColor: Colors.white.withAlpha(220),
           titleTextStyle: TextStyle(
               color: Colors.white.withAlpha(220),

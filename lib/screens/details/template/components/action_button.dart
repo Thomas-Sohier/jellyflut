@@ -6,7 +6,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/form/form.dart';
 import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';
-import 'package:jellyflut/screens/stream/init_stream.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/toast.dart';
