@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,13 @@ import 'package:jellyflut/screens/book/components/page_counter.dart';
 
 class PageCounterParent extends StatelessWidget {
   final Stream<Map<int, int>> streamPage;
-  final CarouselController controller;
+  final PageController controller;
+  final bool clickable;
   const PageCounterParent(
-      {Key? key, required this.streamPage, required this.controller})
+      {Key? key,
+      required this.streamPage,
+      required this.controller,
+      this.clickable = true})
       : super(key: key);
 
   @override
@@ -15,11 +20,12 @@ class PageCounterParent extends StatelessWidget {
     return StreamBuilder<Map<int, int>>(
       stream: streamPage,
       builder: (context, snapshot) => PopupMenuButton(
+          enabled: clickable,
           initialValue: snapshot.data?.values.first ?? 0,
           onSelected: (int pageSelected) => controller.animateToPage(
               pageSelected,
               duration: Duration(milliseconds: 400),
-              curve: Curves.elasticIn),
+              curve: Curves.easeInOut),
           itemBuilder: (context) => _pagesListTile(
               snapshot.data?.keys.first ?? 0, snapshot.data?.values.first ?? 0),
           child: PageCounter(

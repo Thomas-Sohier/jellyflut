@@ -5,6 +5,7 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/book/components/loading_text.dart';
+import 'package:uuid/uuid.dart';
 
 class BookPlaceholder extends StatelessWidget {
   final Item item;
@@ -16,12 +17,18 @@ class BookPlaceholder extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Center(
+            child: SizedBox(
+          height: double.maxFinite,
+          child: AspectRatio(
+            aspectRatio: item.getPrimaryAspectRatio(),
             child: Poster(
                 tag: ImageType.PRIMARY,
-                heroTag: null,
+                heroTag: '${item.id}-${Uuid().v1()}',
                 clickable: false,
                 boxFit: BoxFit.contain,
-                item: item)),
+                item: item),
+          ),
+        )),
         Container(color: Colors.black38),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,

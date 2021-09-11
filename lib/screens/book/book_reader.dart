@@ -4,20 +4,19 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:epubx/epubx.dart' as epubx;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
-import 'package:jellyflut/screens/book/components/book_placeholder.dart';
+import 'package:jellyflut/screens/book/compact_book_view.dart';
 import 'package:jellyflut/screens/book/components/comic_view.dart';
 import 'package:jellyflut/screens/book/components/epub_view.dart';
-import 'package:jellyflut/screens/book/components/page_counter_parent.dart';
+import 'package:jellyflut/screens/book/large_book_view.dart';
 import 'package:jellyflut/screens/book/util/book_utils.dart';
+import 'package:jellyflut/shared/responsive_builder.dart';
 
 import 'package:rxdart/subjects.dart';
 
@@ -31,14 +30,16 @@ class BookReaderPage extends StatefulWidget {
 }
 
 class _BookReaderPageState extends State<BookReaderPage> {
-  late final CarouselController _controller;
+  late final PageController _controller;
   late final BehaviorSubject<Map<int, int>> _pageListener;
   late final BookBloc bookBloc;
+  late final Item item;
 
   @override
   void initState() {
-    _controller = CarouselController();
+    _controller = PageController();
     _pageListener = BehaviorSubject<Map<int, int>>();
+    item = widget.item;
     bookBloc = BookBloc();
     bookBloc.add(BookLoading());
     final book = BookUtils.loadItemBook(widget.item);
@@ -95,11 +96,10 @@ class _BookReaderPageState extends State<BookReaderPage> {
   void constructComicView(Archive archive) {
     try {
       final comicView = ComicView(
-        archive: archive,
-        listener: (currentPage, nbPage) =>
-            _pageListener.add({currentPage: nbPage}),
-        controller: _controller,
-      );
+          archive: archive,
+          listener: (currentPage, nbPage) =>
+              _pageListener.add({currentPage: nbPage}),
+          controller: _controller);
       bookBloc.add(BookLoaded(bookView: comicView));
       _pageListener.add({0: archive.length});
     } catch (error) {
@@ -120,27 +120,27 @@ class _BookReaderPageState extends State<BookReaderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text(widget.item.name,
-                style: Theme.of(context).textTheme.headline5),
-            actions: [
-              PageCounterParent(
-                  controller: _controller, streamPage: _pageListener)
-            ]),
-        extendBodyBehindAppBar: false,
-        extendBody: false,
-        body: BlocBuilder<BookBloc, BookState>(
-            bloc: bookBloc,
-            builder: (context, bookState) {
-              if (bookState is BookLoadingState) {
-                return BookPlaceholder(item: widget.item);
-              } else if (bookState is BookLoadedState) {
-                return bookState.bookView;
-              } else if (bookState is BookErrorState) {
-                return Center(child: Text(bookState.error));
-              }
-              return const SizedBox();
-            }));
+    return ResponsiveBuilder.builder(
+        mobile: () => CompactBookView(
+            item: item,
+            bookBloc: bookBloc,
+            pageController: _controller,
+            streamPosition: _pageListener,
+            listener: (currentPage, nbPage) =>
+                _pageListener.add({currentPage: nbPage})),
+        tablet: () => CompactBookView(
+            item: item,
+            bookBloc: bookBloc,
+            pageController: _controller,
+            streamPosition: _pageListener,
+            listener: (currentPage, nbPage) =>
+                _pageListener.add({currentPage: nbPage})),
+        desktop: () => LargeBookView(
+            item: item,
+            bookBloc: bookBloc,
+            pageController: _controller,
+            streamPosition: _pageListener,
+            listener: (currentPage, nbPage) =>
+                _pageListener.add({currentPage: nbPage})));
   }
 }

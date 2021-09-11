@@ -1,11 +1,11 @@
 import 'package:archive/archive.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/screens/book/components/page_comic.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class ComicView extends StatelessWidget {
-  final CarouselController controller;
+  final PageController controller;
   final Archive archive;
   final Function(int currentPage, int nbPage) listener;
   const ComicView(
@@ -19,26 +19,22 @@ class ComicView extends StatelessWidget {
   Widget build(BuildContext context) {
     final nbPages = archive.files.length;
 
-    return InteractiveViewer(
-        maxScale: 4,
-        minScale: 0.8,
-        child: Center(
-          child: CarouselSlider.builder(
-              itemCount: nbPages,
-              carouselController: controller,
-              options: CarouselOptions(
-                autoPlay: false,
-                height: double.maxFinite,
-                enableInfiniteScroll: false,
-                enlargeCenterPage: true,
-                onPageChanged: (int i, _) => listener(i, nbPages),
-                scrollDirection: Axis.horizontal,
-                viewportFraction: viewportFractionBasedOnScreen(context),
-              ),
-              itemBuilder: (context, int index, _) {
-                return PageComic(archive: archive.files.elementAt(index));
-              }),
-        ));
+    return PhotoViewGallery.builder(
+        itemCount: nbPages,
+        enableRotation: true,
+        gaplessPlayback: true,
+        scrollDirection: Axis.horizontal,
+        onPageChanged: (index) => listener(index, nbPages),
+        pageController: controller,
+        builder: (context, index) {
+          final content =
+              archive.files.elementAt(index).rawContent as InputStream;
+          return PhotoViewGalleryPageOptions(
+            imageProvider: MemoryImage(content.toUint8List()),
+            filterQuality: FilterQuality.high,
+            initialScale: PhotoViewComputedScale.contained,
+          );
+        });
   }
 
   double viewportFractionBasedOnScreen(BuildContext context) {

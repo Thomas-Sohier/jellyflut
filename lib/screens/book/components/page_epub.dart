@@ -16,7 +16,7 @@ class PageEpub extends StatelessWidget {
             .copyWith(color: Colors.grey.shade900));
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      decoration: BoxDecoration(color: Colors.amber.shade100),
+      decoration: BoxDecoration(color: Colors.white),
       child: SingleChildScrollView(
           child: Column(
         children: [
