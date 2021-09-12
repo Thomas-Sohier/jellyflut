@@ -14,7 +14,9 @@ class DetailHeaderBar extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final paddingTop = MediaQuery.of(context).padding.top;
+    final paddingTop = MediaQuery.of(context).padding.top == 0
+        ? 12.0
+        : MediaQuery.of(context).padding.top;
     return Stack(children: [
       IgnorePointer(child: gradientBackground()),
       SizedBox(

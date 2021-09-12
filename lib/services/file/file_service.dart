@@ -9,7 +9,7 @@ class FileService {
   static Future<String> getStoragePathItem(Item item) async {
     var storageDir = await getTemporaryDirectory();
     var storageDirPath = storageDir.path;
-    return '$storageDirPath/${item.name}.epub';
+    return '$storageDirPath/${item.name}.${item.getFileExtension()}';
   }
 
   static Future<bool> requestStorage() async {

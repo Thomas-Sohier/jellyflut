@@ -21,7 +21,7 @@ class ComicView extends StatelessWidget {
 
     return PhotoViewGallery.builder(
         itemCount: nbPages,
-        enableRotation: true,
+        enableRotation: false,
         gaplessPlayback: true,
         scrollDirection: Axis.horizontal,
         onPageChanged: (index) => listener(index, nbPages),

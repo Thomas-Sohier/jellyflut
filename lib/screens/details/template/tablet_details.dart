@@ -8,7 +8,7 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
-import 'package:jellyflut/screens/details/detail_header_bar.dart';
+import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
 import 'package:jellyflut/screens/details/template/right_details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';

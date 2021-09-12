@@ -16,6 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
+import 'package:jellyflut/models/enum/book_extensions.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/image_type.dart' as image_type;
@@ -663,6 +664,16 @@ class Item {
     if (seriesName != null && seriesName!.isNotEmpty) return seriesName!;
     if (album != null && album!.isNotEmpty) return album!;
     return name;
+  }
+
+  /// Return the item file's extension
+  /// Example : .cbz, .epub
+  /// Can return [null]
+  String? getFileExtension() {
+    final regexString = r'\.[0-9a-z]+$';
+    final regExp = RegExp(regexString);
+    final matches = regExp.allMatches(path ?? '');
+    return matches.elementAt(0).group(0) ?? '';
   }
 
   /// Get collection type such as requested by API

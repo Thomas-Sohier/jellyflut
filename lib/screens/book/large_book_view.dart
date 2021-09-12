@@ -43,6 +43,8 @@ class _LargeBookViewState extends State<LargeBookView> {
     pageController = widget.pageController;
     streamPosition = widget.streamPosition;
     scrollController = ScrollController();
+    streamPosition.first
+        .then((value) => pageController.jumpToPage(value.keys.first));
     super.initState();
   }
 

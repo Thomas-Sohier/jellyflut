@@ -7,7 +7,7 @@ import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/screens/collection/list_items.dart';
 import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
-import 'package:jellyflut/screens/details/detail_header_bar.dart';
+import 'package:jellyflut/components/detail_header_bar.dart';
 
 class CollectionParent extends StatefulWidget {
   final Item item;

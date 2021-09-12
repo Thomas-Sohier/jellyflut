@@ -32,6 +32,7 @@ dependencies:
   flutter_bloc: ^7.2.0
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.3
+  flutter_html: ^2.1.2
   fluttertoast: ^8.0.8
   moor: ^4.4.1
   octo_image: ^1.0.0+1
@@ -58,6 +59,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.0
   url_launcher: ^6.0.10
   uuid: ^3.0.4
+  xml: ^5.3.0
   wakelock: ^0.5.3+3
   youtube_explode_dart: ^1.10.4
 

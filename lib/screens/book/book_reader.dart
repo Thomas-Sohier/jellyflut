@@ -54,20 +54,21 @@ class _BookReaderPageState extends State<BookReaderPage> {
   }
 
   Future<void> constructView(Future<Uint8List> book) async {
-    final regexString = r'\.[0-9a-z]+$';
-    final regExp = RegExp(regexString);
-    final matches = regExp.allMatches(widget.item.path ?? '');
-    final match = matches.elementAt(0).group(0) ?? '';
+    final fileExtension = item.getFileExtension();
     final bookExtension =
         epubx.EnumFromString<BookExtensions>(BookExtensions.values)
-            .get(match.substring(1, match.length));
+            .get(fileExtension!.substring(1, fileExtension.length));
     switch (bookExtension) {
+      case BookExtensions.CBA:
       case BookExtensions.CBZ:
+      case BookExtensions.CBT:
       case BookExtensions.CBR:
+      case BookExtensions.CB7:
         final archive = await BookUtils.unarchive(book);
         constructComicView(archive);
         RawKeyboard.instance.addListener(_onKey);
         break;
+      case BookExtensions.EPUB:
       default:
         final epub = await epubx.EpubReader.readBook(book);
         final bookView = await constructEpubView(epub);

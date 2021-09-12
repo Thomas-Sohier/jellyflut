@@ -40,6 +40,8 @@ class _CompactBookViewState extends State<CompactBookView> {
     listener = widget.listener;
     pageController = widget.pageController;
     streamPosition = widget.streamPosition;
+    streamPosition.first
+        .then((value) => pageController.jumpToPage(value.keys.first));
     scrollController = ScrollController();
     super.initState();
   }

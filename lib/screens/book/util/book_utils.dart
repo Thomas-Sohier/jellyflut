@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
@@ -35,11 +36,13 @@ class BookUtils {
   }
 
   static Future<String> _downloadEbookOnStorage(Item item) async {
-    // Check if we have rights
-    // If we do not store epub
-    var hasStorage = await FileService.requestStorage();
-    if (!hasStorage) {
-      throw ('Cannot access storage');
+    if (Platform.isAndroid || Platform.isIOS) {
+      // Check if we have rights
+      // If we do not store epub
+      var hasStorage = await FileService.requestStorage();
+      if (!hasStorage) {
+        throw ('Cannot access storage');
+      }
     }
 
     // Check if ebook is already present
