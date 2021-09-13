@@ -1,3 +1,7 @@
+# globals
+unknown: Unknown
+disable: Disable
+
 # Category titles
 latest: Latest
 resume: Resume
@@ -5,6 +9,30 @@ resume: Resume
 # Search
 search_no_results: No results...
 search_field_hint: Research
+
+# Streaming controls
+select_audio_source: Select audio source
+no_audio_source: No audio source
+select_chapter: Select a chapter
+no_chapters: No chapters
+select_subtitle: Select a subtitle
+no_subtitles: No subtitles
+
+# Settings
+settings: Settings
+video_player: Video player
+preferred_player: Preferred player
+max_bitrate: Max bitrate
+audio_player: Audio player
+transcode_codec: Transcode codec
+infos: Infos
+version: Version
+account: Account
+deconnect: Deconnect
+select_preferred_video_player: Select preferred video player
+select_preferred_audio_player: Select preferred audio player
+interface: Interface
+language: Language
 
 msg: 'Hello {} in the {} world '
 msg_named: "{} are written in the {lang} language"

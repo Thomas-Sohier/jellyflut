@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -50,7 +51,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
             Icons.subtitles,
             color: Colors.white,
           ),
-          tooltip: 'Select a subtitle',
+          tooltip: 'select_subtitle'.tr(),
           onSelected: (Subtitle subtitle) => setSubtitle(subtitle),
           itemBuilder: (context) {
             if (snapshot.hasData) {
@@ -66,7 +67,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     final list = <PopupMenuEntry<Subtitle>>[];
     list.add(
       PopupMenuItem(
-        child: Text('Select a subtitle'),
+        child: Text('select_subtitle'.tr()),
       ),
     );
     list.add(
@@ -75,7 +76,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       ),
     );
     if (audioTracks.isEmpty) {
-      list.add(PopupMenuItem(enabled: false, child: Text('No subtitles')));
+      list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
       return list;
     }
     for (var index = 0; index < audioTracks.length; index++) {

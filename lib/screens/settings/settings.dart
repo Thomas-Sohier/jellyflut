@@ -1,5 +1,7 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/screens/settings/components/sections.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
@@ -35,7 +37,7 @@ class _SettingsState extends State<Settings> {
     final theme = Theme.of(context);
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(title: Text('Settings'), leading: bb.BackButton()),
+        appBar: AppBar(title: Text('settings'.tr()), leading: bb.BackButton()),
         body: FutureBuilder(
             future: settingsInfosFuture,
             builder: (context, snapshot) {
@@ -50,11 +52,11 @@ class _SettingsState extends State<Settings> {
                       lightBackgroundColor: Theme.of(context).primaryColorLight,
                       sections: [
                         SettingsSection(
-                          title: 'Video Player',
+                          title: 'video_player'.tr(),
                           titleTextStyle: theme.textTheme.headline6,
                           tiles: [
                             SettingsTile(
-                              title: 'Preferred player',
+                              title: 'preferred_player'.tr(),
                               subtitle: setting.preferredPlayer,
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
@@ -63,7 +65,7 @@ class _SettingsState extends State<Settings> {
                                   selectVideoPlayer(),
                             ),
                             SettingsTile(
-                              title: 'Max bitrate',
+                              title: 'max_bitrate'.tr(),
                               subtitle: setting.maxVideoBitrate.toString(),
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
@@ -77,11 +79,11 @@ class _SettingsState extends State<Settings> {
                           ],
                         ),
                         SettingsSection(
-                          title: 'Audio player',
+                          title: 'audio_player'.tr(),
                           titleTextStyle: theme.textTheme.headline6,
                           tiles: [
                             SettingsTile(
-                              title: 'Transcode codec',
+                              title: 'transcode_codec'.tr(),
                               subtitle: setting.preferredTranscodeAudioCodec,
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
@@ -90,7 +92,7 @@ class _SettingsState extends State<Settings> {
                                   selectTranscodeAudioCodec(),
                             ),
                             SettingsTile(
-                              title: 'Max bitrate',
+                              title: 'max_bitrate'.tr(),
                               subtitle: setting.maxAudioBitrate.toString(),
                               titleTextStyle: TextStyle(color: Colors.white),
                               subtitleTextStyle:
@@ -105,38 +107,10 @@ class _SettingsState extends State<Settings> {
                             ),
                           ],
                         ),
-                        SettingsSection(
-                          title: 'Infos',
-                          titleTextStyle: theme.textTheme.headline6,
-                          tiles: [
-                            SettingsTile(
-                              title: 'Version',
-                              subtitle: packageInfo?.version ?? 'Unknown',
-                              titleTextStyle: TextStyle(color: Colors.white),
-                              subtitleTextStyle:
-                                  TextStyle(color: Colors.white60),
-                              trailing: Container(
-                                height: 0,
-                                width: 0,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SettingsSection(
-                          title: 'Account',
-                          titleTextStyle: theme.textTheme.headline6,
-                          tiles: [
-                            SettingsTile(
-                                title: 'Deconnect',
-                                subtitle: userApp?.name ?? 'Unknow',
-                                titleTextStyle: TextStyle(color: Colors.white),
-                                subtitleTextStyle:
-                                    TextStyle(color: Colors.white60),
-                                onPressed: (_) async =>
-                                    await AuthService.logout(),
-                                trailing: UserIcon()),
-                          ],
-                        ),
+                        InfosSection(version: packageInfo?.version)
+                            .build(context),
+                        InterfaceSection().build(context),
+                        AccountSection().build(context)
                       ],
                     ),
                   ),
@@ -162,7 +136,7 @@ class _SettingsState extends State<Settings> {
         return AlertDialog(
           backgroundColor: Colors.grey[800],
           elevation: 2,
-          title: Text('Select preferred video player',
+          title: Text('select_preferred_video_player'.tr(),
               style: TextStyle(color: Colors.white)),
           content: Container(
             width: 250,
@@ -176,7 +150,7 @@ class _SettingsState extends State<Settings> {
                         ? getEnumValue(StreamingSoftwareName.values
                             .elementAt(index)
                             .toString())
-                        : 'Disable',
+                        : 'disable'.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
@@ -212,7 +186,7 @@ class _SettingsState extends State<Settings> {
         return AlertDialog(
           backgroundColor: Colors.grey[800],
           elevation: 2,
-          title: Text('Select preferred transcode audio codec',
+          title: Text('select_preferred_audio_player'.tr(),
               style: TextStyle(color: Colors.white)),
           content: Container(
             width: 250,
@@ -226,7 +200,7 @@ class _SettingsState extends State<Settings> {
                         ? getEnumValue(TranscodeAudioCodecName.values
                             .elementAt(index)
                             .toString())
-                        : 'Disable',
+                        : 'disable'.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {

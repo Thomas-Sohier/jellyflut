@@ -1,3 +1,7 @@
+# globals
+unknown: Unknown
+disable: Désactiver
+
 # Category titles
 latest: Derniers ajouts
 resume: Continuer
@@ -5,6 +9,30 @@ resume: Continuer
 # Search
 search_no_results: Aucun résultats...
 search_field_hint: Rechercher
+
+# Streaming controls
+select_audio_source: Sélctionner une source audio
+no_audio_source: Aucune source audio
+select_chapter: Sélectionner un chapitre
+no_chapters: Aucun chapitre
+select_subtitle: Sélectionner des sous-titres
+no_subtitles: Aucun sous-titres
+
+# Settings
+settings: Paramètres
+video_player: Lecteur vidéo
+preferred_player: Lecteur préféré
+max_bitrate: Bitrate maximum
+audio_player: Lecteur audio
+transcode_codec: Codec de transcodage
+infos: Informations
+version: Version
+account: Compte
+deconnect: Déconnexion
+select_preferred_video_player: Sélectionner le lecteur video préféré
+select_preferred_audio_player: Sélectionner le lecteur audio préféré
+interface: Interface
+language: Langage
 
 msg: 'Hallo {} in der {} welt '
 msg_named: "{} ist in {lang} geschrieben"
