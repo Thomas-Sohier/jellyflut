@@ -20,14 +20,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late final focusNode;
   late final PageController _pageController;
+  late final ScrollController _scrollController;
   late SearchProvider searchProvider;
   late Future<Category> categoryFuture;
 
   @override
   void initState() {
     searchProvider = SearchProvider();
+    _scrollController = ScrollController();
     categoryFuture = UserService.getLibraryCategory();
     _pageController = PageController();
     super.initState();
@@ -45,6 +46,8 @@ class _HomeState extends State<Home> {
     return ChangeNotifierProvider<SearchProvider>.value(
         value: searchProvider,
         child: CustomScrollView(
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
           slivers: [
             SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
             SliverToBoxAdapter(

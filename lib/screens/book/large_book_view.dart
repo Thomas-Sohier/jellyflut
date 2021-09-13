@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
+import 'package:jellyflut/screens/book/components/setting_buton.dart';
 import 'package:jellyflut/shared/colors.dart';
 
 import 'components/book_placeholder.dart';
@@ -49,11 +50,18 @@ class _LargeBookViewState extends State<LargeBookView> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title:
-                Text(item.name, style: Theme.of(context).textTheme.headline5)),
+          title: Text(item.name, style: Theme.of(context).textTheme.headline5),
+          actions: [SettingButton()],
+        ),
         extendBodyBehindAppBar: false,
         extendBody: false,
         backgroundColor: Colors.black,

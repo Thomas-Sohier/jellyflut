@@ -155,6 +155,7 @@ class CommonStreamVLC {
   }
 
   void stopPlayer() {
+    StreamingService.deleteActiveEncoding();
     vlcPlayerController.stop();
     vlcPlayerController.dispose();
   }

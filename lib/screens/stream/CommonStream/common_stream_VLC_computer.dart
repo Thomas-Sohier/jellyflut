@@ -7,6 +7,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:window_manager/window_manager.dart';
 
 class CommonStreamVLCComputer {
   static final streamingProvider = StreamingProvider();
@@ -73,6 +74,22 @@ class CommonStreamVLCComputer {
             subtitlesIndex: 0));
   }
 
+  void enterFullscreen() {
+    final windowInstance = WindowManager.instance;
+    windowInstance.setFullScreen(true);
+  }
+
+  void exitFullscreen() {
+    final windowInstance = WindowManager.instance;
+    windowInstance.setFullScreen(false);
+  }
+
+  void toggleFullscreen() async {
+    final windowInstance = WindowManager.instance;
+    await windowInstance.isFullScreen().then(
+        (bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
+  }
+
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
     player.positionStream.listen((PositionState positionState) =>
@@ -95,6 +112,7 @@ class CommonStreamVLCComputer {
   }
 
   void stopPlayer() {
+    StreamingService.deleteActiveEncoding();
     player.stop();
     player.dispose();
   }

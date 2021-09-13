@@ -24,6 +24,9 @@ class CommonStream {
   final Function(Subtitle) _setSubtitle;
   final VoidCallback _disableSubtitles;
   final Function _getAudioTracks;
+  final VoidCallback _enterFullscreen;
+  final VoidCallback _exitFullscreen;
+  final VoidCallback _toggleFullscreen;
   final Function(AudioTrack) _setAudioTrack;
   final BehaviorSubject<Duration> _positionStream;
   final BehaviorSubject<Duration> _durationStream;
@@ -46,6 +49,9 @@ class CommonStream {
       required pip,
       required hasPip,
       required getSubtitles,
+      required enterFullscreen,
+      required exitFullscreen,
+      required toggleFullscreen,
       required setSubtitle,
       required disableSubtitles,
       required getAudioTracks,
@@ -71,6 +77,9 @@ class CommonStream {
         _getSubtitles = getSubtitles,
         _setSubtitle = setSubtitle,
         _disableSubtitles = disableSubtitles,
+        _enterFullscreen = enterFullscreen,
+        _exitFullscreen = exitFullscreen,
+        _toggleFullscreen = toggleFullscreen,
         _getAudioTracks = getAudioTracks,
         _setAudioTrack = setAudioTrack,
         _positionStream = positionStream,
@@ -91,6 +100,9 @@ class CommonStream {
   bool? isInit() => _isInit;
   Future<bool> hasPip() => _hasPip;
   void pip() => _pip();
+  void enterFullscreen() => _enterFullscreen();
+  void exitFullscreen() => _exitFullscreen();
+  void toggleFullscreen() => _toggleFullscreen();
   Future<List<Subtitle>> getSubtitles() => _getSubtitles();
   void setSubtitle(Subtitle subtitle) => _setSubtitle(subtitle);
   void disableSubtitles() => _disableSubtitles();
@@ -129,6 +141,9 @@ class CommonStream {
         positionStream: commonStreamVLC.positionStream(),
         durationStream: commonStreamVLC.durationStream(),
         isPlayingStream: commonStreamVLC.playingStateStream(),
+        enterFullscreen: () => {},
+        exitFullscreen: () => {},
+        toggleFullscreen: () => {},
         initListener: () =>
             listener != null ? vlcPlayerController.addListener(listener) : {},
         addListener: vlcPlayerController.addListener,
@@ -164,6 +179,9 @@ class CommonStream {
         positionStream: commonStreamBP.positionStream(),
         durationStream: commonStreamBP.durationStream(),
         isPlayingStream: commonStreamBP.playingStateStream(),
+        enterFullscreen: () => {},
+        exitFullscreen: () => {},
+        toggleFullscreen: () => {},
         initListener: () => listener != null
             ? betterPlayerController.videoPlayerController!
                 .addListener(listener)
@@ -201,6 +219,9 @@ class CommonStream {
           final List<AudioTrack> audioTracks = [];
           return Future.value(audioTracks);
         },
+        enterFullscreen: commonStreamVLCComputer.enterFullscreen,
+        exitFullscreen: commonStreamVLCComputer.exitFullscreen,
+        toggleFullscreen: commonStreamVLCComputer.toggleFullscreen,
         setAudioTrack: (_) => {},
         positionStream: commonStreamVLCComputer.positionStream(),
         durationStream: commonStreamVLCComputer.durationStream(),

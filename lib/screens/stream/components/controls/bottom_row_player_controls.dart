@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/screens/stream/components/controls/backward_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/forward_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/play_pause_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/video_player_progress_bar.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
@@ -46,7 +47,8 @@ class BottomRowPlayerControls extends StatelessWidget {
               BackwardButton(),
               PlayPauseButton(),
               ForwardButton(),
-              ChapterButton()
+              ChapterButton(),
+              FullscreenButton()
             ]),
       ],
     );

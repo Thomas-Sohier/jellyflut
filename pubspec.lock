@@ -309,20 +309,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
-  device_info:
+  device_info_plus:
     dependency: "direct main"
     description:
-      name: device_info
+      name: device_info_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
-  device_info_platform_interface:
+    version: "2.1.0"
+  device_info_plus_linux:
     dependency: transitive
     description:
-      name: device_info_platform_interface
+      name: device_info_plus_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
+  device_info_plus_macos:
+    dependency: transitive
+    description:
+      name: device_info_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  device_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  device_info_plus_web:
+    dependency: transitive
+    description:
+      name: device_info_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  device_info_plus_windows:
+    dependency: transitive
+    description:
+      name: device_info_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   dio:
     dependency: "direct main"
     description:
@@ -398,6 +426,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.2"
+  flutter_colorpicker:
+    dependency: "direct main"
+    description:
+      name: flutter_colorpicker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   flutter_html:
     dependency: "direct main"
     description:
@@ -515,13 +550,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.0"
-  html_unescape:
-    dependency: transitive
-    description:
-      name: html_unescape
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   http:
     dependency: transitive
     description:
@@ -648,13 +676,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  package_info:
+  package_info_plus:
     dependency: "direct main"
     description:
-      name: package_info
+      name: package_info_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "1.0.6"
+  package_info_plus_linux:
+    dependency: transitive
+    description:
+      name: package_info_plus_linux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
+  package_info_plus_macos:
+    dependency: transitive
+    description:
+      name: package_info_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  package_info_plus_web:
+    dependency: transitive
+    description:
+      name: package_info_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+  package_info_plus_windows:
+    dependency: transitive
+    description:
+      name: package_info_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   palette_generator:
     dependency: "direct main"
     description:
@@ -914,13 +977,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
-  simple_html_css:
-    dependency: "direct main"
-    description:
-      name: simple_html_css
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1208,6 +1264,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.9"
+  window_manager:
+    dependency: "direct main"
+    description:
+      name: window_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   xdg_directories:
     dependency: transitive
     description:
@@ -1216,7 +1279,7 @@ packages:
     source: hosted
     version: "0.2.0"
   xml:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: xml
       url: "https://pub.dartlang.org"

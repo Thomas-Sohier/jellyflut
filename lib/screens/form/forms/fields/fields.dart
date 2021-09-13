@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/widget/person_item.dart';
@@ -18,3 +19,5 @@ part 'widget/person_field.dart';
 part 'widget/tags_field.dart';
 part 'widget/studios_field.dart';
 part 'widget/genres_field.dart';
+part 'widget/font_size_field.dart';
+part 'widget/color_picker_field.dart';

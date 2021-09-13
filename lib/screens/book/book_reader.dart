@@ -50,6 +50,8 @@ class _BookReaderPageState extends State<BookReaderPage> {
   @override
   void dispose() {
     bookBloc.close();
+    _controller.dispose();
+    _pageListener.close();
     super.dispose();
   }
 

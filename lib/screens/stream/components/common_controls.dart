@@ -88,6 +88,8 @@ class _CommonControlsState extends State<CommonControls> {
                   : {},
           child: GestureDetector(
               onTap: () => autoHideControl(),
+              onDoubleTap: () =>
+                  streamingProvider.commonStream!.toggleFullscreen(),
               behavior: HitTestBehavior.translucent,
               child: visibility(
                   child: Stack(

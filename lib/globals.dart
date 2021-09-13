@@ -3,7 +3,7 @@ library globals;
 import 'dart:io';
 import 'dart:math';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;

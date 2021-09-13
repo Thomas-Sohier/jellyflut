@@ -1,16 +1,18 @@
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<String> authHeader() async {
   // device infos
-  var device = await DeviceInfo.getCurrentDeviceInfo();
+  final device = await DeviceInfo.getCurrentDeviceInfo();
+  final packageInfos = await PackageInfo.fromPlatform();
 
   // data
-  var name = 'jellyflut';
-  var host = device.host;
-  var id = device.id;
-  var version = '0.0.1';
-  var token = apiKey;
+  final name = 'jellyflut';
+  final host = device.host;
+  final id = device.id;
+  final version = packageInfos.buildNumber;
+  final token = apiKey;
 
   var auth =
       'MediaBrowser Client=\"$name\", Device=\"$host\", DeviceId=\"$id\", Version=\"$version\"';

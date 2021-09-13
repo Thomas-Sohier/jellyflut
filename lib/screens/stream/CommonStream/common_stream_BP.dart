@@ -278,6 +278,7 @@ class CommonStreamBP {
   }
 
   void stopPlayer() {
+    StreamingService.deleteActiveEncoding();
     betterPlayerController.pause();
     betterPlayerController.dispose();
   }

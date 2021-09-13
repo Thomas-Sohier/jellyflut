@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
+import 'package:jellyflut/screens/book/components/setting_buton.dart';
 import 'components/book_placeholder.dart';
 import 'components/page_counter_parent.dart';
 
@@ -47,13 +48,20 @@ class _CompactBookViewState extends State<CompactBookView> {
   }
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(item.name, style: Theme.of(context).textTheme.headline5),
           actions: [
+            SettingButton(),
             PageCounterParent(
-                streamPage: streamPosition, controller: pageController)
+                streamPage: streamPosition, controller: pageController),
           ],
         ),
         backgroundColor: Colors.black,

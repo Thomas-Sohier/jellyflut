@@ -9,7 +9,7 @@ import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/components/back_button.dart' as bb;
 import 'package:moor/moor.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class Settings extends StatefulWidget {
