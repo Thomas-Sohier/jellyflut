@@ -3,7 +3,7 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/components/list_items.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_collection_item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
@@ -65,13 +65,13 @@ class _CollectionState extends State<Collection> {
   Widget showCollection() {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
-        return ListItems(
+        return ListItems.fromFuture(
             itemsFuture: musicFuture,
             lisType: ListType.LIST,
             itemHeight: 100,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SEASON:
-        return ListItems(
+        return ListItems.fromFuture(
             itemsFuture: episodesFuture,
             itemHeight: 150,
             lisType: ListType.LIST,
@@ -79,7 +79,7 @@ class _CollectionState extends State<Collection> {
       case ItemType.SERIES:
         return ListCollectionItem(item: widget.item);
       case ItemType.MUSICARTIST:
-        return ListItems(
+        return ListItems.fromFuture(
             itemsFuture: musicAlbumFuture, lisType: ListType.POSTER);
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);

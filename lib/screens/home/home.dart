@@ -8,7 +8,7 @@ import 'package:jellyflut/screens/home/search_button.dart';
 import 'package:jellyflut/screens/home/settings_button.dart';
 import 'package:jellyflut/screens/home/home_categories.dart';
 import 'package:jellyflut/screens/home/resume.dart';
-import 'package:jellyflut/screens/home/search_result.dart';
+import 'package:jellyflut/screens/home/components/search/search_result.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:provider/provider.dart';
 

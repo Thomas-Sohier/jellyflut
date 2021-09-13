@@ -14,20 +14,32 @@ import 'package:shimmer/shimmer.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
 class ListItems extends StatefulWidget {
-  final Future<Category> itemsFuture;
+  final Future<Category>? itemsFuture;
+  final Category? category;
   final ListType lisType;
   final bool showTitle;
   final ScrollPhysics physics;
   final double? itemHeight;
 
-  const ListItems(
+  const ListItems.fromFuture(
       {Key? key,
       required this.itemsFuture,
       this.showTitle = false,
       this.itemHeight,
       this.physics = const ClampingScrollPhysics(),
       this.lisType = ListType.POSTER})
-      : super(key: key);
+      : category = null,
+        super(key: key);
+
+  const ListItems.fromList(
+      {Key? key,
+      required this.category,
+      this.showTitle = false,
+      this.itemHeight,
+      this.physics = const ClampingScrollPhysics(),
+      this.lisType = ListType.POSTER})
+      : itemsFuture = null,
+        super(key: key);
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -44,6 +56,14 @@ class _ListItemsState extends State<ListItems> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.category != null) {
+      return dataBuilder(widget.category!.items);
+    } else {
+      return futureBuild();
+    }
+  }
+
+  Widget futureBuild() {
     return FutureBuilder<Category>(
         future: widget.itemsFuture,
         builder: (context, snapshot) {

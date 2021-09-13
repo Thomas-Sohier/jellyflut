@@ -3,19 +3,22 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 
-class SearchButton extends StatefulWidget {
+class ClearIcon extends StatefulWidget {
+  final TextEditingController searchController;
+  ClearIcon({Key? key, required this.searchController}) : super(key: key);
+
   @override
-  _SearchButtonState createState() => _SearchButtonState();
+  _ClearIconState createState() => _ClearIconState();
 }
 
-class _SearchButtonState extends State<SearchButton> {
-  late SearchProvider searchProvider;
-  late FocusNode _node;
+class _ClearIconState extends State<ClearIcon> {
+  late final FocusNode _node;
+  late final SearchProvider searchProvider;
 
   @override
   void initState() {
+    _node = FocusNode();
     searchProvider = SearchProvider();
-    _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     super.initState();
   }
 
@@ -29,10 +32,18 @@ class _SearchButtonState extends State<SearchButton> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         node: _node,
-        onPressed: searchProvider.showResult,
+        onPressed: () {
+          widget.searchController.clear();
+          searchProvider.clearSearchResult();
+          if (!_node.hasFocus) {
+            setState(() {
+              searchProvider.hideResult();
+            });
+          }
+        },
         shape: CircleBorder(),
         child: Icon(
-          Icons.search,
+          Icons.close_outlined,
           color: Colors.white,
           size: 28,
         ));

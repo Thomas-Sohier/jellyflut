@@ -3,19 +3,21 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 
-class SearchButton extends StatefulWidget {
+class SearchIcon extends StatefulWidget {
+  SearchIcon({Key? key}) : super(key: key);
+
   @override
-  _SearchButtonState createState() => _SearchButtonState();
+  _SearchIconState createState() => _SearchIconState();
 }
 
-class _SearchButtonState extends State<SearchButton> {
-  late SearchProvider searchProvider;
-  late FocusNode _node;
+class _SearchIconState extends State<SearchIcon> {
+  late final FocusNode _node;
+  late final SearchProvider searchProvider;
 
   @override
   void initState() {
+    _node = FocusNode();
     searchProvider = SearchProvider();
-    _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     super.initState();
   }
 
@@ -32,7 +34,7 @@ class _SearchButtonState extends State<SearchButton> {
         onPressed: searchProvider.showResult,
         shape: CircleBorder(),
         child: Icon(
-          Icons.search,
+          Icons.search_outlined,
           color: Colors.white,
           size: 28,
         ));
