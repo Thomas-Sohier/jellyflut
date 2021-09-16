@@ -31,7 +31,7 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   Widget build(BuildContext context) {
     return PaletteButton(
-      'Like',
+      'like'.tr(),
       onPressed: () => widget.item.isFavorite() ? unsetItemFav() : setItemFav(),
       borderRadius: 4,
       minWidth: 40,
@@ -47,7 +47,8 @@ class _LikeButtonState extends State<LikeButton> {
           setState(() {
             widget.item.userData!.isFavorite = json['IsFavorite'];
           }),
-          showToast('${widget.item.name} added to favorite', fToast)
+          showToast('add_item_favorite'.tr(args: [widget.item.name]), fToast,
+              duration: Duration(seconds: 3))
         });
   }
 
@@ -56,7 +57,8 @@ class _LikeButtonState extends State<LikeButton> {
           setState(() {
             widget.item.userData!.isFavorite = json['IsFavorite'];
           }),
-          showToast('${widget.item.name} removed from favorite', fToast)
+          showToast('remove_item_favorite'.tr(args: [widget.item.name]), fToast,
+              duration: Duration(seconds: 3))
         });
   }
 }

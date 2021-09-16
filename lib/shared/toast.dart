@@ -20,7 +20,10 @@ void showToast(String msg, FToast fToast, {Duration? duration}) {
                 color: Colors.grey.shade200.withOpacity(0.5)),
             padding:
                 const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-            child: Text(msg),
+            child: Text(
+              msg,
+              style: TextStyle(color: Colors.black),
+            ),
           )));
 
   fToast.showToast(

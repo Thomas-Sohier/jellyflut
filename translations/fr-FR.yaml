@@ -1,6 +1,14 @@
 # globals
 unknown: Unknown
 disable: Désactiver
+delete: Supprimer
+delete_item_question: 'Supprimer {} ?'
+action_cannot_reverse: Cette action ne peut être annulée
+no: Non
+yes: Oui
+like: Aimer
+add_item_favorite: '{} ajouté aux favoris'
+remove_item_favorite: '{} supprimé des favoris'
 
 # Category titles
 latest: Derniers ajouts
@@ -33,6 +41,9 @@ select_preferred_video_player: Sélectionner le lecteur video préféré
 select_preferred_audio_player: Sélectionner le lecteur audio préféré
 interface: Interface
 language: Langage
+
+# details
+add_to_playlist: Add to playlist
 
 msg: 'Hallo {} in der {} welt '
 msg_named: "{} ist in {lang} geschrieben"

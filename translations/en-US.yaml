@@ -1,6 +1,14 @@
 # globals
 unknown: Unknown
 disable: Disable
+delete: Delete
+delete_item_question: 'Delete {} ?'
+action_cannot_reverse: This action cannot be reversed
+no: No
+yes: Yes
+like: Like
+add_item_favorite: '{} added to favorite'
+remove_item_favorite: '{} removed from favorite'
 
 # Category titles
 latest: Latest
@@ -33,6 +41,15 @@ select_preferred_video_player: Select preferred video player
 select_preferred_audio_player: Select preferred audio player
 interface: Interface
 language: Language
+
+# details
+add_to_playlist: Add to playlist
+edit_infos: Edit Infos
+see_artist: See artist
+cannot_get_artist: Cannot get artist
+see_album: See album
+cannot_delete_item: Cannot delete item
+item_added_playlist: '{} added to playlist'
 
 msg: 'Hello {} in the {} world '
 msg_named: "{} are written in the {lang} language"
