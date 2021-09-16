@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/chapter.dart';
@@ -45,7 +46,7 @@ class _ChapterButtonState extends State<ChapterButton> {
           Icons.list,
           color: Colors.white,
         ),
-        tooltip: 'Select a chapter',
+        tooltip: 'select_chapter'.tr(),
         onSelected: (Chapter value) => goToChapter(value),
         itemBuilder: (context) =>
             chapterList(streamingProvider.item?.chapters));
@@ -55,7 +56,7 @@ class _ChapterButtonState extends State<ChapterButton> {
     final list = <PopupMenuEntry<Chapter>>[];
     list.add(
       PopupMenuItem(
-        child: Text('Select a chapter'),
+        child: Text('select_chapter'.tr()),
       ),
     );
     list.add(
@@ -64,7 +65,7 @@ class _ChapterButtonState extends State<ChapterButton> {
       ),
     );
     if (chapters == null || chapters.isEmpty) {
-      list.add(PopupMenuItem(enabled: false, child: Text('No chapters')));
+      list.add(PopupMenuItem(enabled: false, child: Text('no_chapters'.tr())));
       return list;
     }
     for (var index = 0; index < chapters.length; index++) {

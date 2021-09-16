@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/components/list_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/globals.dart' as globals;
 
@@ -33,7 +33,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListItems(
+    return ListItems.fromFuture(
         itemsFuture: itemsFuture,
         itemHeight: itemHeight,
         physics: NeverScrollableScrollPhysics(),

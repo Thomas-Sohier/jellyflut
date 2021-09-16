@@ -11,7 +11,8 @@ Future<String> authHeader() async {
   final name = 'jellyflut';
   final host = device.host;
   final id = device.id;
-  final version = packageInfos.buildNumber;
+  final version =
+      packageInfos.buildNumber.isEmpty ? 'Unknown' : packageInfos.buildNumber;
   final token = apiKey;
 
   var auth =

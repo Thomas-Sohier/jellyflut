@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -50,7 +51,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
             Icons.audiotrack,
             color: Colors.white,
           ),
-          tooltip: 'Select audio source',
+          tooltip: 'select_audio_source'.tr(),
           onSelected: (AudioTrack audio) => setAudioTrack(audio),
           itemBuilder: (context) {
             if (snapshot.hasData) {
@@ -66,7 +67,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     final list = <PopupMenuEntry<AudioTrack>>[];
     list.add(
       PopupMenuItem(
-        child: Text('Select audio source'),
+        child: Text('select_audio_source'.tr()),
       ),
     );
     list.add(
@@ -75,7 +76,8 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       ),
     );
     if (audioTracks.isEmpty) {
-      list.add(PopupMenuItem(enabled: false, child: Text('No audio source')));
+      list.add(
+          PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
       return list;
     }
     for (var index = 0; index < audioTracks.length; index++) {

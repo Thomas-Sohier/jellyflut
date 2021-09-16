@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/components/list_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/shared.dart';
 
@@ -49,15 +49,15 @@ class _ListPersonItemState extends State<ListPersonItem> {
       SizedBox(
         height: 24,
       ),
-      ListItems(itemsFuture: moviesFuture, lisType: ListType.POSTER),
+      ListItems.fromFuture(itemsFuture: moviesFuture, lisType: ListType.POSTER),
       SizedBox(
         height: 24,
       ),
-      ListItems(itemsFuture: seriesFuture, lisType: ListType.POSTER),
+      ListItems.fromFuture(itemsFuture: seriesFuture, lisType: ListType.POSTER),
       SizedBox(
         height: 24,
       ),
-      ListItems(itemsFuture: audiosFuture, lisType: ListType.POSTER)
+      ListItems.fromFuture(itemsFuture: audiosFuture, lisType: ListType.POSTER)
     ]);
   }
 }

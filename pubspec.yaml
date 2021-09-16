@@ -26,15 +26,19 @@ dependencies:
   dart_vlc: ^0.1.7
   device_info_plus: ^2.0.2
   dio: ^4.0.0
+  easy_localization: ^3.0.0
+  easy_localization_loader: ^1.0.0
   epubx: ^3.0.0-dev.3
+  equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.0
+  flutter_colorpicker: ^0.6.0
+  flutter_html: ^2.1.2
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.3
-  flutter_html: ^2.1.2
-  flutter_colorpicker: ^0.6.0
   fluttertoast: ^8.0.8
+  marquee: ^2.2.0
   moor: ^4.4.1
   octo_image: ^1.0.0+1
   package_info_plus: ^1.0.6
@@ -42,13 +46,11 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.2
   permission_handler: ^8.1.4+2
-  window_manager: ^0.0.3
   photo_view: ^0.12.0
   provider: ^6.0.0
   reactive_forms: ^10.6.0
   responsive_builder: ^0.4.1
   rxdart: ^0.27.1
-  equatable: ^2.0.3
   salomon_bottom_bar: ^3.1.0
   settings_ui: ^1.0.0
   shared_preferences: ^2.0.6
@@ -61,6 +63,7 @@ dependencies:
   url_launcher: ^6.0.10
   uuid: ^3.0.4
   wakelock: ^0.5.3+3
+  window_manager: ^0.0.3
   youtube_explode_dart: ^1.10.4
 
 dev_dependencies:
@@ -84,6 +87,7 @@ dependency_overrides:
 flutter:
   assets:
     - img/
+    - translations/
 
   fonts:
     - family: Poppins

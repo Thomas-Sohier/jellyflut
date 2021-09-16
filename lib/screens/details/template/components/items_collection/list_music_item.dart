@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_items.dart';
+import 'package:jellyflut/components/list_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 
 class ListMusicItem extends StatefulWidget {
@@ -25,7 +25,7 @@ class _ListMusicItemState extends State<ListMusicItem> {
 
   @override
   Widget build(BuildContext context) {
-    return ListItems(
+    return ListItems.fromFuture(
       itemsFuture: musicFuture,
       lisType: ListType.LIST,
     );

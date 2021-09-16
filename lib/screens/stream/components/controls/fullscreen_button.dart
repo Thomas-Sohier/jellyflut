@@ -40,7 +40,7 @@ class _FullscreenButtonState extends State<FullscreenButton> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Icon(
-          Icons.fullscreen,
+          isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
           color: Colors.white,
         ),
       ),
@@ -51,9 +51,11 @@ class _FullscreenButtonState extends State<FullscreenButton> {
     if (isFullscreen) {
       streamingProvider.commonStream!.exitFullscreen();
       isFullscreen = false;
+      setState(() {});
     } else {
       streamingProvider.commonStream!.enterFullscreen();
       isFullscreen = true;
+      setState(() {});
     }
   }
 }

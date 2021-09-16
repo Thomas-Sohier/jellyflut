@@ -1,0 +1,65 @@
+# globals
+unknown: Unknown
+disable: Disable
+
+# Category titles
+latest: Latest
+resume: Resume
+
+# Search
+search_no_results: No results...
+search_field_hint: Research
+
+# Streaming controls
+select_audio_source: Select audio source
+no_audio_source: No audio source
+select_chapter: Select a chapter
+no_chapters: No chapters
+select_subtitle: Select a subtitle
+no_subtitles: No subtitles
+
+# Settings
+settings: Settings
+video_player: Video player
+preferred_player: Preferred player
+max_bitrate: Max bitrate
+audio_player: Audio player
+transcode_codec: Transcode codec
+infos: Infos
+version: Version
+account: Account
+deconnect: Deconnect
+select_preferred_video_player: Select preferred video player
+select_preferred_audio_player: Select preferred audio player
+interface: Interface
+language: Language
+
+msg: 'Hello {} in the {} world '
+msg_named: "{} are written in the {lang} language"
+clickMe: Click me
+profile:
+  reset_password:
+    label: Reset Password
+    username: Username
+    password: password
+clicked:
+  zero: You clicked {} times!
+  one: You clicked {} time!
+  two: You clicked {} times!
+  few: You clicked {} times!
+  many: You clicked {} times!
+  other: You clicked {} times!
+amount:
+  zero: 'Your amount : {} '
+  one: 'Your amount : {} '
+  two: 'Your amount : {} '
+  few: 'Your amount : {} '
+  many: 'Your amount : {} '
+  other: 'Your amount : {} '
+gender:
+  male: 'Hi man ;) '
+  female: Hello girl :)
+  with_arg:
+    male: Hi man ;) {}
+    female: Hello girl :) {}
+reset_locale: Reset Language

@@ -1,4 +1,6 @@
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +17,16 @@ import 'package:splashscreen/splashscreen.dart';
 void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
   await setUpAndroidTv();
   final auth = await AuthService.isAuth();
-  runApp(Jellyflut(authenticated: auth));
+  runApp(EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
+      path: 'translations',
+      assetLoader: YamlAssetLoader(),
+      fallbackLocale: Locale('en', 'US'),
+      child: Jellyflut(authenticated: auth)));
 }
 
 class MyApp extends StatefulWidget {
@@ -91,6 +99,9 @@ class Jellyflut extends StatelessWidget {
                 shortcuts: shortcuts,
                 child: MaterialApp.router(
                   title: 'JellyFlut',
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
                   theme: personnal_theme.Theme.defaultThemeData,
                   debugShowCheckedModeBanner: false,
                   routerDelegate:

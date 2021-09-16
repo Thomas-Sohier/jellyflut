@@ -66,26 +66,6 @@ class _StreamState extends State<Stream> {
     super.dispose();
   }
 
-  // TODO remove this when dispose dart vlc will work correctly on all platform
-  // @override
-  // void deactivate() {
-  //   if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
-  //     Wakelock.disable();
-  //   }
-  //   streamingProvider.commonStream?.disposeStream();
-  //   streamingProvider.timer?.cancel();
-  //   // Show device overlays
-  //   // device orientation
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //     DeviceOrientation.landscapeLeft,
-  //     DeviceOrientation.landscapeRight
-  //   ]);
-  //   SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-  //   super.deactivate();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

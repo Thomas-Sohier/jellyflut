@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
@@ -54,9 +55,9 @@ class _ResumeState extends State<Resume> {
         Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
-            'Resume',
+            'resume',
             style: TextStyle(color: Colors.white, fontSize: 28),
-          ),
+          ).tr(),
         ),
         SizedBox(
             height: itemHeight,

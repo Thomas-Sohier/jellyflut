@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -19,9 +20,9 @@ class _LatestState extends State<Latest> {
       Container(
         padding: EdgeInsets.fromLTRB(12, 20, 12, 20),
         child: Text(
-          'Latest',
+          'latest',
           style: TextStyle(color: Colors.white, fontSize: 24),
-        ),
+        ).tr(),
       ),
       // SizedBox(
       //     height: 220.0,
