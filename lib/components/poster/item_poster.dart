@@ -5,7 +5,6 @@ import 'package:jellyflut/components/sliding_text.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
-import 'package:marquee/marquee.dart';
 import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
