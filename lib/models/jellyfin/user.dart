@@ -21,7 +21,7 @@ class User {
   String name;
   String serverId;
   String id;
-  String primaryImageTag;
+  String? primaryImageTag;
   bool hasPassword;
   bool hasConfiguredPassword;
   bool hasConfiguredEasyPassword;

@@ -46,7 +46,7 @@ class SessionInfo {
   bool supportsRemoteControl;
   bool hasCustomDeviceName;
   String serverId;
-  String userPrimaryImageTag;
+  String? userPrimaryImageTag;
   List<dynamic> supportedCommands;
 
   factory SessionInfo.fromMap(Map<String, dynamic> json) => SessionInfo(

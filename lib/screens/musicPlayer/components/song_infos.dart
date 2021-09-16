@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/fav_button.dart';
@@ -6,6 +5,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
@@ -56,20 +56,39 @@ class _SongInfosState extends State<SongInfos> {
                         heroTag: ''));
                   }
                 },
-                child: AutoSizeText(musicProvider.getCurrentMusic!.artist!,
-                    style: TextStyle(fontSize: 20, color: widget.color),
-                    maxLines: 1),
+                child: Marquee(
+                  text: musicProvider.getCurrentMusic!.artist!,
+                  style: TextStyle(fontSize: 20, color: widget.color),
+                  scrollAxis: Axis.horizontal,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  blankSpace: 20.0,
+                  velocity: 100.0,
+                  pauseAfterRound: Duration(seconds: 1),
+                  startPadding: 10.0,
+                  accelerationDuration: Duration(seconds: 1),
+                  accelerationCurve: Curves.linear,
+                  decelerationDuration: Duration(milliseconds: 500),
+                  decelerationCurve: Curves.easeOut,
+                ),
               ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: AutoSizeText(
-                musicProvider.getCurrentMusic!.title,
-                textAlign: TextAlign.center,
+              child: Marquee(
+                text: musicProvider.getCurrentMusic!.title,
+                scrollAxis: Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                blankSpace: 20.0,
+                velocity: 100.0,
+                pauseAfterRound: Duration(seconds: 1),
+                startPadding: 10.0,
+                accelerationDuration: Duration(seconds: 1),
+                accelerationCurve: Curves.linear,
+                decelerationDuration: Duration(milliseconds: 500),
+                decelerationCurve: Curves.easeOut,
                 style: TextStyle(
                     fontSize: 26,
                     color: widget.color,
                     fontWeight: FontWeight.bold),
-                maxLines: 2,
               ),
             ),
           ],
@@ -102,16 +121,16 @@ class _SongInfosState extends State<SongInfos> {
           children: [
             StreamBuilder<Duration?>(
                 stream: musicProvider.getCommonPlayer!.getCurrentPosition(),
-                builder: (context, snapshot) => AutoSizeText(
-                      snapshot.data != null
+                builder: (context, snapshot) => Marquee(
+                      text: snapshot.data != null
                           ? printDuration(snapshot.data!)
                           : '0.00',
                       style: TextStyle(fontSize: 18, color: widget.color),
-                      maxLines: 1,
                     )),
             Spacer(),
-            AutoSizeText(
-                printDuration(musicProvider.getCommonPlayer!.getDuration()),
+            Marquee(
+                text:
+                    printDuration(musicProvider.getCommonPlayer!.getDuration()),
                 style: TextStyle(fontSize: 18, color: widget.color))
           ],
         )

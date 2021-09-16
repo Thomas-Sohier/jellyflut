@@ -13,11 +13,17 @@ class UserIcon extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(6),
         child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(14)),
+          borderRadius: BorderRadius.all(Radius.circular(24)),
           child: CachedNetworkImage(
             imageUrl:
                 '${server.url}/Users/${userJellyfin!.id}/Images/Primary?quality=90',
             width: size,
+            errorWidget: (context, url, error) => Container(
+              padding: EdgeInsets.all(2),
+              decoration:
+                  BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+              child: Icon(Icons.person_off),
+            ),
           ),
         ));
   }

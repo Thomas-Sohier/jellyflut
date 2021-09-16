@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.3
   fluttertoast: ^8.0.8
+  marquee: ^2.2.0
   moor: ^4.4.1
   octo_image: ^1.0.0+1
   package_info_plus: ^1.0.6
