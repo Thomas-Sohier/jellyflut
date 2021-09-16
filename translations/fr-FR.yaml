@@ -2,13 +2,13 @@
 unknown: Unknown
 disable: Désactiver
 delete: Supprimer
-delete_item_question: 'Supprimer {} ?'
-action_cannot_reverse: Cette action ne peut être annulée
 no: Non
 yes: Oui
 like: Aimer
-add_item_favorite: '{} ajouté aux favoris'
-remove_item_favorite: '{} supprimé des favoris'
+manage: Gérer
+play: Lire
+trailer: Trailer
+viewed: Vu
 
 # Category titles
 latest: Derniers ajouts
@@ -43,7 +43,22 @@ interface: Interface
 language: Langage
 
 # details
-add_to_playlist: Add to playlist
+add_to_playlist: Ajouter à la playlist
+edit_infos: Éditer les informations
+see_artist: Voir l'artiste
+cannot_get_artist: Impossible de récupérer l'artiste
+see_album: Voir l'album
+cannot_delete_item: Impossible de supprimer l'album
+item_added_playlist: '{} ajouté à la playlist'
+
+
+# action button
+add_item_favorite: '{} ajouté aux favoris'
+remove_item_favorite: '{} supprimé des favoris'
+delete_item_question: 'Supprimer {} ?'
+action_cannot_reverse: Cette action ne peut être annulée
+mark_item_viewed: '{} marqué comme vu'
+mark_item_unviewed: '{} marqué comme non vu'
 
 msg: 'Hallo {} in der {} welt '
 msg_named: "{} ist in {lang} geschrieben"

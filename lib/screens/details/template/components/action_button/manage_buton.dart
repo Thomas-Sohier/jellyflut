@@ -9,7 +9,7 @@ class ManageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaletteButton('Manage',
+    return PaletteButton('manage'.tr(),
         onPressed: () => dialog(context),
         minWidth: 40,
         maxWidth: maxWidth,
@@ -29,7 +29,7 @@ class ManageButton extends StatelessWidget {
 
   Widget editInfos(BuildContext context) {
     return AlertDialog(
-        title: Text('Edit infos'),
+        title: Text('edit_infos'.tr()),
         actions: [
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -47,7 +47,7 @@ class ManageButton extends StatelessWidget {
 
   Widget editInfosFullscreen(BuildContext context) {
     return AlertDialog(
-        title: Text('Edit infos'),
+        title: Text('edit_infos'.tr()),
         insetPadding: EdgeInsets.zero,
         actions: [
           Padding(

@@ -2,13 +2,13 @@
 unknown: Unknown
 disable: Disable
 delete: Delete
-delete_item_question: 'Delete {} ?'
-action_cannot_reverse: This action cannot be reversed
 no: No
 yes: Yes
 like: Like
-add_item_favorite: '{} added to favorite'
-remove_item_favorite: '{} removed from favorite'
+manage: Manage
+play: Play
+trailer: Trailer
+viewed: Viewed
 
 # Category titles
 latest: Latest
@@ -50,6 +50,14 @@ cannot_get_artist: Cannot get artist
 see_album: See album
 cannot_delete_item: Cannot delete item
 item_added_playlist: '{} added to playlist'
+
+# action button
+delete_item_question: 'Delete {} ?'
+action_cannot_reverse: This action cannot be reversed
+add_item_favorite: '{} added to favorite'
+remove_item_favorite: '{} removed from favorite'
+mark_item_viewed: '{} marked as viewed'
+mark_item_unviewed: '{} marked as unviewed'
 
 msg: 'Hello {} in the {} world '
 msg_named: "{} are written in the {lang} language"

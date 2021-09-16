@@ -31,7 +31,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   @override
   Widget build(BuildContext context) {
     return PaletteButton(
-      'Viewed',
+      'viewed'.tr(),
       onPressed: () =>
           widget.item.isPlayed() ? unsetItemViewed() : setItemViewed(),
       borderRadius: 4,
@@ -48,7 +48,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData?.played = json['Played'];
           }),
-          showToast('${widget.item.name} marked as viewed', fToast)
+          showToast('mark_item_viewed'.tr(args: [widget.item.name]), fToast)
         });
   }
 
@@ -57,7 +57,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData?.played = json['Played'];
           }),
-          showToast('${widget.item.name} marked as unviewed', fToast)
+          showToast('mark_item_unviewed'.tr(args: [widget.item.name]), fToast)
         });
   }
 }
