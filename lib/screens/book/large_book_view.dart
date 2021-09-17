@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -137,7 +138,7 @@ class _LargeBookViewState extends State<LargeBookView> {
                   child: Icon(Icons.check, size: 24),
                 ),
               if (pageNumber != currentPage) SizedBox(width: 28),
-              Text('Page n°$pageNumber')
+              Text('page_number'.tr(args: [pageNumber.toString()]))
             ]));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/detailed_item_poster.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
@@ -80,7 +81,8 @@ class _ListItemsState extends State<ListItems> {
               }
               return emptyErrorStream();
             } else if (snapshot.hasError) {
-              return SliverToBoxAdapter(child: Center(child: Text('Error')));
+              return SliverToBoxAdapter(
+                  child: Center(child: Text('error'.tr())));
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return SliverToBoxAdapter(child: ListItemsSkeleton());
             }
@@ -116,7 +118,7 @@ class _ListItemsState extends State<ListItems> {
             color: Theme.of(context).primaryColor,
             size: 28,
           ),
-          Text('Empty collection')
+          Text('empty_collection'.tr())
         ]));
   }
 

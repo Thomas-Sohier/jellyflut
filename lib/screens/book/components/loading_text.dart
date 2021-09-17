@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 
 class LoadingText extends StatelessWidget {
@@ -26,7 +27,7 @@ class LoadingText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Loading...',
+    return Text('loading_dots'.tr(),
         textAlign: TextAlign.center,
         style:
             Theme.of(context).textTheme.headline1!.copyWith(shadows: shadows));

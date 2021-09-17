@@ -9,6 +9,17 @@ manage: Manage
 play: Play
 trailer: Trailer
 viewed: Viewed
+loading: Loading
+loading_dots: Loading...
+
+# error
+error: Error
+error_loading_item: 'Error while loading {}' 
+error_unzip_file: Error cannot unzip file
+cannot_open_file: 'Cannot open file {}'
+cannot_download_item: 'Cannot download {}'
+cannot_access_storage: Cannot access storage
+cannot_load_page: Cannot load page
 
 # Category titles
 latest: Latest
@@ -50,6 +61,9 @@ cannot_get_artist: Cannot get artist
 see_album: See album
 cannot_delete_item: Cannot delete item
 item_added_playlist: '{} added to playlist'
+item_ends: 'Ends at {}'
+item_cast: 'Cast of {}'
+
 
 # action button
 delete_item_question: 'Delete {} ?'
@@ -58,6 +72,15 @@ add_item_favorite: '{} added to favorite'
 remove_item_favorite: '{} removed from favorite'
 mark_item_viewed: '{} marked as viewed'
 mark_item_unviewed: '{} marked as unviewed'
+cannot_open: 'Could not open {}'
+
+# list items
+empty_collection: Empty collection
+
+# book reader
+no_pages: No pages
+select_page: Select a page
+page_number: 'Page n°{}'
 
 msg: 'Hello {} in the {} world '
 msg_named: "{} are written in the {lang} language"
