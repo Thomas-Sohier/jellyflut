@@ -5,8 +5,10 @@ import 'package:flutter/widgets.dart';
 class LocaleButtonSelector extends StatelessWidget {
   final Color foregroundColor;
   final bool showCurrentValue;
+  final GlobalKey<PopupMenuButtonState<Locale>>? localeKey;
   const LocaleButtonSelector(
       {Key? key,
+      this.localeKey,
       this.foregroundColor = Colors.white,
       this.showCurrentValue = false})
       : super(key: key);
@@ -14,6 +16,7 @@ class LocaleButtonSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Locale>(
+        key: localeKey,
         initialValue: context.locale,
         onSelected: (Locale? locale) {
           if (locale != null) context.setLocale(locale);

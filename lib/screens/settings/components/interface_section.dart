@@ -1,7 +1,8 @@
 part of 'sections.dart';
 
 class InterfaceSection extends StatelessWidget {
-  const InterfaceSection({Key? key}) : super(key: key);
+  final GlobalKey<PopupMenuButtonState<Locale>> _localeKey = GlobalKey();
+  InterfaceSection({Key? key}) : super(key: key);
 
   @override
   SettingsSection build(BuildContext context) {
@@ -11,10 +12,11 @@ class InterfaceSection extends StatelessWidget {
       tiles: [
         SettingsTile(
             title: 'language'.tr(),
+            onPressed: (context) => _localeKey.currentState?.showButtonMenu(),
             subtitle: context.locale.toLanguageTag(),
             titleTextStyle: TextStyle(color: Colors.white),
             subtitleTextStyle: TextStyle(color: Colors.white60),
-            trailing: LocaleButtonSelector()),
+            trailing: LocaleButtonSelector(localeKey: _localeKey)),
       ],
     );
   }

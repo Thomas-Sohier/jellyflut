@@ -35,7 +35,7 @@ class _StreamState extends State<Stream> {
           url: widget.url!, streamName: widget.item?.name ?? '');
     }
 
-    if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
+    if (!Platform.isLinux) {
       Wakelock.enable();
     }
     streamingProvider = StreamingProvider();
@@ -48,7 +48,7 @@ class _StreamState extends State<Stream> {
 
   @override
   void dispose() {
-    if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
+    if (!Platform.isLinux) {
       Wakelock.disable();
     }
     streamingProvider.commonStream?.disposeStream();
