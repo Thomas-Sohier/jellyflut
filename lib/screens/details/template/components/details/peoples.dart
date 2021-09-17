@@ -14,7 +14,7 @@ class PeoplesDetailsWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.centerLeft,
-          child: Text('Cast of ${item.name}',
+          child: Text('item_cast'.tr(args: [item.name]),
               style: Theme.of(context).textTheme.headline3),
         ),
         SizedBox(

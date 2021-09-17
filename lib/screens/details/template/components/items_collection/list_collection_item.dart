@@ -1,8 +1,10 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -45,7 +47,8 @@ class _ListCollectionItemState extends State<ListCollectionItem> {
             return skeletonTab();
           } else if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasError) {
-            Text('Error while loading ${widget.item.getCollectionType()}');
+            Text('error_loading_item'
+                .tr(args: [getEnumValue(widget.item.type.toString())]));
           }
           return SizedBox();
         });

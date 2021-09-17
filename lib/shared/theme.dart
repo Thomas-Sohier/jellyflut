@@ -91,7 +91,10 @@ class Theme {
       primaryColorBrightness: Brightness.dark,
       primarySwatch: jellyPurple,
       primaryIconTheme: IconThemeData(color: Colors.black),
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.white),
+      textSelectionTheme: TextSelectionThemeData(
+          cursorColor: jellyLightBLue,
+          selectionColor: jellyLightBLue.withAlpha(50)),
       colorScheme: ColorScheme(
         background: Colors.grey.shade900,
         brightness: Brightness.dark,

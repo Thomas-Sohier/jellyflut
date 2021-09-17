@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:epubx/epubx.dart' as epubx;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -106,8 +107,8 @@ class _BookReaderPageState extends State<BookReaderPage> {
       bookBloc.add(BookLoaded(bookView: comicView));
       _pageListener.add({0: archive.length});
     } catch (error) {
-      log('Cannot open file, ${widget.item.name}',
-          level: 3, error: 'Error cannot unzip cbz file');
+      log('cannot_open_file'.tr(args: [widget.item.name]),
+          level: 3, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
     }
   }

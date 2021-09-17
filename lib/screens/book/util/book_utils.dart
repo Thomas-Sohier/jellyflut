@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -30,7 +31,7 @@ class BookUtils {
       if (response != null) {
         return compute(parseEbook, response);
       } else {
-        throw ('error, cannot download epub');
+        throw ('cannot_download_item'.tr());
       }
     }
   }
@@ -41,7 +42,7 @@ class BookUtils {
       // If we do not store epub
       var hasStorage = await FileService.requestStorage();
       if (!hasStorage) {
-        throw ('Cannot access storage');
+        throw ('cannot_access_storage'.tr());
       }
     }
 

@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/book/components/page_counter.dart';
@@ -38,7 +39,7 @@ class PageCounterParent extends StatelessWidget {
     final list = <PopupMenuEntry<int>>[];
     list.add(
       PopupMenuItem(
-        child: Text('Select a page'),
+        child: Text('select_page'.tr()),
       ),
     );
     list.add(
@@ -47,7 +48,7 @@ class PageCounterParent extends StatelessWidget {
       ),
     );
     if (nbPages == 0) {
-      list.add(PopupMenuItem(enabled: false, child: Text('No pages')));
+      list.add(PopupMenuItem(enabled: false, child: Text('no_pages'.tr())));
       return list;
     }
     for (var page = 0; page < nbPages; page++) {
@@ -55,7 +56,7 @@ class PageCounterParent extends StatelessWidget {
         CheckedPopupMenuItem(
           value: page,
           checked: page == currentPage,
-          child: Text('Page n°$page'),
+          child: Text('page_number'.tr(args: [page.toString()])),
         ),
       );
     }

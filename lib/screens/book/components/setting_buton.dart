@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
@@ -32,7 +33,7 @@ class _SettingButtonState extends State<SettingButton> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-            title: Text('Edit infos'),
+            title: Text('edit_infos'.tr()),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),

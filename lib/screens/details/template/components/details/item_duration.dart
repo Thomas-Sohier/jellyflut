@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:easy_localization/src/public_ext.dart';
 
 class ItemDuration extends StatelessWidget {
   static final DateFormat formatter = DateFormat('HH:mm');
@@ -21,7 +22,8 @@ class ItemDuration extends StatelessWidget {
       children: [
         Text(duration, style: Theme.of(context).textTheme.bodyText2),
         const DetailsSeparator(),
-        Text('Ends $timeEnd', style: Theme.of(context).textTheme.bodyText2),
+        Text('item_ends'.tr(args: [timeEnd]),
+            style: Theme.of(context).textTheme.bodyText2),
       ],
     );
   }

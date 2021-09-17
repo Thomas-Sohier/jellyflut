@@ -1,12 +1,16 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
+import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
 import 'components/theme/input_theme.dart';
+import 'enum/fields_enum.dart';
 
 class LoginForm extends StatefulWidget {
   final VoidCallback? onAuthenticated;
@@ -19,11 +23,11 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   FormGroup buildForm() => fb.group(<String, Object>{
-        'user_username': FormControl<String>(
+        getEnumValue(FieldsType.USER_USERNAME.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).username ?? '',
           validators: [Validators.required],
         ),
-        'user_password': FormControl<String>(
+        getEnumValue(FieldsType.USER_PASSWORD.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).userPassword ?? '',
           validators: [Validators.required],
         )
@@ -40,14 +44,21 @@ class _LoginFormState extends State<LoginForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 38),
-              const Text('Connection',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
+              Row(children: [
+                Text('connection'.tr(),
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                Spacer(),
+                LocaleButtonSelector(
+                    foregroundColor: Colors.black, showCurrentValue: true)
+              ]),
               const SizedBox(height: 12),
               UserUsernameField(
-                  form: form, onSubmitted: () => form.focus('user_password')),
+                  form: form,
+                  onSubmitted: () =>
+                      form.focus(FieldsType.USER_PASSWORD.toString())),
               const SizedBox(height: 12),
               UserPasswordField(
                   form: form, onSubmitted: () => addUser(form, context)),
@@ -87,7 +98,7 @@ class _LoginFormState extends State<LoginForm> {
               color: Colors.black,
             ),
             Text(
-              'Back',
+              'previous'.tr(),
               style: TextStyle(color: Colors.black),
             ),
           ])),
@@ -95,8 +106,12 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void backToFirstForm(FormGroup form, BuildContext context) {
-    final username = form.value['user_username'].toString();
-    final password = form.value['user_password'].toString();
+    final username = form
+        .value[getEnumValue(FieldsType.USER_USERNAME.toString())]
+        .toString();
+    final password = form
+        .value[getEnumValue(FieldsType.USER_PASSWORD.toString())]
+        .toString();
     BlocProvider.of<AuthBloc>(context).userPassword = password;
     BlocProvider.of<AuthBloc>(context).username = username;
     BlocProvider.of<AuthBloc>(context).add(BackToFirstForm());
@@ -104,14 +119,18 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget loginButton(FormGroup form, BuildContext context) {
     return Expanded(
-        child: GradienButton('Login', () => addUser(form, context),
+        child: GradienButton('login'.tr(), () => addUser(form, context),
             borderRadius: 4));
   }
 
   void addUser(FormGroup form, BuildContext context) {
     if (form.valid) {
-      final username = form.value['user_username'].toString();
-      final password = form.value['user_password'].toString();
+      final username = form
+          .value[getEnumValue(FieldsType.USER_USERNAME.toString())]
+          .toString();
+      final password = form
+          .value[getEnumValue(FieldsType.USER_PASSWORD.toString())]
+          .toString();
       BlocProvider.of<AuthBloc>(context)
           .add(RequestAuth(username: username, password: password));
     } else {
@@ -121,10 +140,10 @@ class _LoginFormState extends State<LoginForm> {
       form.errors.forEach((key, value) {
         final fieldName =
             key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
-        errors.add(fieldName + ' is required');
+        errors.add('field_required'.tr(args: [fieldName]));
       });
       BlocProvider.of<AuthBloc>(context)
-          .add(AuthError('Form is not valid \n${errors.join(',\n')}'));
+          .add(AuthError('form_not_valid'.tr() + '\n${errors.join(',\n')}'));
     }
   }
 }

@@ -65,6 +65,12 @@ class AuthService {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('isLoggedIn') ?? false) {
       await _saveToGlobals();
+      try {
+        await _isAccountStillAuthorized();
+      } catch (e) {
+        await logout();
+        return false;
+      }
       return true;
     }
     return false;
@@ -114,21 +120,33 @@ class AuthService {
     return;
   }
 
-  /// Reset every fields
-  static Future<void> logout() async {
-    // get shared preferences instance
-    final sharedPreferences = await SharedPreferences.getInstance();
-
+  static Future<void> _removeGlobals() async {
     // delete globals variable
     server = Server(id: 0, url: 'http://localhost', name: 'localhost');
     userApp = null;
     apiKey = null;
     userJellyfin = null;
+    return;
+  }
 
+  static Future<void> _removeSharedPreferences() async {
+    // get shared preferences instance
+    final sharedPreferences = await SharedPreferences.getInstance();
     // delete shared preferences
     // reset state of authentication bloc
     // then redirect to login page
     await sharedPreferences.clear();
+  }
+
+  static Future<void> _isAccountStillAuthorized() async {
+    final authKeys = '/Auth/Keys';
+    await dio.get('${server.url}$authKeys');
+  }
+
+  /// Reset every fields
+  static Future<void> logout() async {
+    await _removeGlobals();
+    await _removeSharedPreferences();
     BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!)
         .add(ResetStates());
     await AutoRouter.of(customRouter.navigatorKey.currentContext!)

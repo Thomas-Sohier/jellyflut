@@ -11,14 +11,14 @@ class UserPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: 'user_password',
+        formControlName: getEnumValue(FieldsType.USER_PASSWORD.toString()),
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
-            labelText: 'Password',
+            labelText: 'user_password_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.password, color: Colors.black),
             border: DEFAULT_BORDER,

@@ -11,14 +11,14 @@ class UserUsernameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: 'user_username',
+        formControlName: getEnumValue(FieldsType.USER_USERNAME.toString()),
         onSubmitted: onSubmitted,
         autofocus: true,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
-            labelText: 'Username',
+            labelText: 'user_username_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.person_outline, color: Colors.black),
             border: DEFAULT_BORDER,

@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     searchProvider = SearchProvider();
-    _scrollController = ScrollController();
+    _scrollController = ScrollController(initialScrollOffset: 0);
     categoryFuture = UserService.getLibraryCategory();
     _pageController = PageController();
     super.initState();

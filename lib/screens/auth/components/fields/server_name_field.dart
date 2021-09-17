@@ -11,13 +11,14 @@ class ServerNameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: 'server_name',
+        formControlName: getEnumValue(FieldsType.SERVER_NAME.toString()),
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
+        autofocus: true,
         keyboardType: TextInputType.name,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
-            labelText: 'Name',
+            labelText: 'server_name_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.label_outline, color: Colors.black),
             border: DEFAULT_BORDER,

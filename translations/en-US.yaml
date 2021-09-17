@@ -1,6 +1,26 @@
 # globals
 unknown: Unknown
 disable: Disable
+delete: Delete
+previous: Previous
+no: No
+yes: Yes
+like: Like
+manage: Manage
+play: Play
+trailer: Trailer
+viewed: Viewed
+loading: Loading
+loading_dots: Loading...
+
+# error
+error: Error
+error_loading_item: 'Error while loading {}' 
+error_unzip_file: Error cannot unzip file
+cannot_open_file: 'Cannot open file {}'
+cannot_download_item: 'Cannot download {}'
+cannot_access_storage: Cannot access storage
+cannot_load_page: Cannot load page
 
 # Category titles
 latest: Latest
@@ -34,32 +54,43 @@ select_preferred_audio_player: Select preferred audio player
 interface: Interface
 language: Language
 
-msg: 'Hello {} in the {} world '
-msg_named: "{} are written in the {lang} language"
-clickMe: Click me
-profile:
-  reset_password:
-    label: Reset Password
-    username: Username
-    password: password
-clicked:
-  zero: You clicked {} times!
-  one: You clicked {} time!
-  two: You clicked {} times!
-  few: You clicked {} times!
-  many: You clicked {} times!
-  other: You clicked {} times!
-amount:
-  zero: 'Your amount : {} '
-  one: 'Your amount : {} '
-  two: 'Your amount : {} '
-  few: 'Your amount : {} '
-  many: 'Your amount : {} '
-  other: 'Your amount : {} '
-gender:
-  male: 'Hi man ;) '
-  female: Hello girl :)
-  with_arg:
-    male: Hi man ;) {}
-    female: Hello girl :) {}
-reset_locale: Reset Language
+# details
+add_to_playlist: Add to playlist
+edit_infos: Edit Infos
+see_artist: See artist
+cannot_get_artist: Cannot get artist
+see_album: See album
+cannot_delete_item: Cannot delete item
+item_added_playlist: '{} added to playlist'
+item_ends: 'Ends at {}'
+item_cast: 'Cast of {}'
+
+# auth
+connection: Connection
+login: Login
+url_not_correct: Your url is not correct
+field_required: '{} is required'
+form_not_valid: 'Form is not valid'
+server_configuration: Server configuration
+add_server: Add server
+user_username_field_label: Username
+user_password_field_label: Password
+server_name_field_label: Name
+server_url_field_label: URL
+
+# action button
+delete_item_question: 'Delete {} ?'
+action_cannot_reverse: This action cannot be reversed
+add_item_favorite: '{} added to favorite'
+remove_item_favorite: '{} removed from favorite'
+mark_item_viewed: '{} marked as viewed'
+mark_item_unviewed: '{} marked as unviewed'
+cannot_open: 'Could not open {}'
+
+# list items
+empty_collection: Empty collection
+
+# book reader
+no_pages: No pages
+select_page: Select a page
+page_number: 'Page n°{}'

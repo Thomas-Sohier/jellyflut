@@ -23,13 +23,21 @@ class _HomeCategoriesState extends State<HomeCategories>
     with AutomaticKeepAliveClientMixin {
   final double height = 220;
   final double gapSize = 20;
-  late Future<List<Item>> itemsFuture;
+  late final Future<List<Item>> itemsFuture;
+  late final ScrollController scrollController;
 
   @override
   void initState() {
+    super.initState();
+    scrollController = ScrollController(initialScrollOffset: 0);
     itemsFuture = UserService.getLatestMedia(
         parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -144,6 +152,7 @@ class _HomeCategoriesState extends State<HomeCategories>
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
+        controller: scrollController,
         itemBuilder: (context, index) => ItemPoster(items[index]));
   }
 
