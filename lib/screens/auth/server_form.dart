@@ -6,6 +6,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
 import 'package:jellyflut/screens/auth/enum/fields_enum.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
@@ -23,11 +24,11 @@ class _ServerFormState extends State<ServerForm> {
       r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)');
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsType.SERVER_NAME.toString(): FormControl<String>(
+        getEnumValue(FieldsType.SERVER_NAME.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.name ?? '',
           validators: [Validators.required],
         ),
-        FieldsType.SERVER_URL.toString(): FormControl<String>(
+        getEnumValue(FieldsType.SERVER_URL.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.url ?? '',
           validators: [
             Validators.required,
@@ -75,8 +76,10 @@ class _ServerFormState extends State<ServerForm> {
   void addServer(FormGroup form) {
     if (form.valid) {
       final server = Server(
-          name: form.value[FieldsType.SERVER_NAME.toString()].toString(),
-          url: form.value[FieldsType.SERVER_URL.toString()].toString(),
+          name: form.value[getEnumValue(FieldsType.SERVER_NAME.toString())]
+              .toString(),
+          url: form.value[getEnumValue(FieldsType.SERVER_URL.toString())]
+              .toString(),
           id: 0);
       BlocProvider.of<AuthBloc>(context).add(AuthServerAdded(server));
     } else {

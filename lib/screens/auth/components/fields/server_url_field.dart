@@ -10,7 +10,7 @@ class ServerUrlField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: 'server_url',
+        formControlName: getEnumValue(FieldsType.SERVER_URL.toString()),
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.url,

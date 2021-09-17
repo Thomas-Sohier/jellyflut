@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
@@ -21,11 +22,11 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsType.USER_USERNAME.toString(): FormControl<String>(
+        getEnumValue(FieldsType.USER_USERNAME.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).username ?? '',
           validators: [Validators.required],
         ),
-        FieldsType.USER_PASSWORD.toString(): FormControl<String>(
+        getEnumValue(FieldsType.USER_PASSWORD.toString()): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).userPassword ?? '',
           validators: [Validators.required],
         )
@@ -99,8 +100,12 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void backToFirstForm(FormGroup form, BuildContext context) {
-    final username = form.value[FieldsType.USER_USERNAME.toString()].toString();
-    final password = form.value[FieldsType.USER_PASSWORD.toString()].toString();
+    final username = form
+        .value[getEnumValue(FieldsType.USER_USERNAME.toString())]
+        .toString();
+    final password = form
+        .value[getEnumValue(FieldsType.USER_PASSWORD.toString())]
+        .toString();
     BlocProvider.of<AuthBloc>(context).userPassword = password;
     BlocProvider.of<AuthBloc>(context).username = username;
     BlocProvider.of<AuthBloc>(context).add(BackToFirstForm());
@@ -114,10 +119,12 @@ class _LoginFormState extends State<LoginForm> {
 
   void addUser(FormGroup form, BuildContext context) {
     if (form.valid) {
-      final username =
-          form.value[FieldsType.USER_USERNAME.toString()].toString();
-      final password =
-          form.value[FieldsType.USER_PASSWORD.toString()].toString();
+      final username = form
+          .value[getEnumValue(FieldsType.USER_USERNAME.toString())]
+          .toString();
+      final password = form
+          .value[getEnumValue(FieldsType.USER_PASSWORD.toString())]
+          .toString();
       BlocProvider.of<AuthBloc>(context)
           .add(RequestAuth(username: username, password: password));
     } else {
