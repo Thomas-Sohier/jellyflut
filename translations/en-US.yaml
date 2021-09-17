@@ -2,6 +2,7 @@
 unknown: Unknown
 disable: Disable
 delete: Delete
+previous: Previous
 no: No
 yes: Yes
 like: Like
@@ -64,6 +65,14 @@ item_added_playlist: '{} added to playlist'
 item_ends: 'Ends at {}'
 item_cast: 'Cast of {}'
 
+# auth
+connection: Connection
+login: Login
+url_not_correct: Your url is not correct
+field_required: '{} is required'
+form_not_valid: 'Form is not valid'
+server_configuration: Server configuration
+add_server: Add server
 
 # action button
 delete_item_question: 'Delete {} ?'

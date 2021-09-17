@@ -2,6 +2,7 @@
 unknown: Unknown
 disable: Désactiver
 delete: Supprimer
+back: Précédent
 no: Non
 yes: Oui
 like: Aimer
@@ -63,6 +64,15 @@ cannot_delete_item: Impossible de supprimer l'album
 item_added_playlist: '{} ajouté à la playlist'
 item_ends: 'Se termine à {}'
 item_cast: 'Casting de {}'
+
+# auth
+connection: Connexion
+login: Se connecter
+url_not_correct: "Votre URL n'est pas correcte"
+field_required: '{} est requis'
+form_not_valid: "Le formulaire n'est pas valide"
+server_configuration: Configuration du serveur
+add_server: Ajouter le serveur
 
 # action button
 add_item_favorite: '{} ajouté aux favoris'

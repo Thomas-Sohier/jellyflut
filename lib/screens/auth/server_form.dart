@@ -1,9 +1,11 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
+import 'package:jellyflut/screens/auth/enum/fields_enum.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 
@@ -21,16 +23,16 @@ class _ServerFormState extends State<ServerForm> {
       r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)');
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        'server_name': FormControl<String>(
+        FieldsType.SERVER_NAME.toString(): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.name ?? '',
           validators: [Validators.required],
         ),
-        'server_url': FormControl<String>(
+        FieldsType.SERVER_URL.toString(): FormControl<String>(
           value: BlocProvider.of<AuthBloc>(context).server?.url ?? '',
           validators: [
             Validators.required,
             Validators.pattern(urlPattern,
-                validationMessage: 'Your url is not correct')
+                validationMessage: 'url_not_correct'.tr())
           ],
         )
       });
@@ -46,8 +48,8 @@ class _ServerFormState extends State<ServerForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 24),
-              const Text(
-                'Server configuration',
+              Text(
+                'server_configuration'.tr(),
                 style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -56,11 +58,13 @@ class _ServerFormState extends State<ServerForm> {
               ),
               const SizedBox(height: 12),
               ServerNameField(
-                  form: form, onSubmitted: () => form.focus('server_url')),
+                  form: form,
+                  onSubmitted: () =>
+                      form.focus(FieldsType.SERVER_URL.toString())),
               const SizedBox(height: 12),
               ServerUrlField(form: form, onSubmitted: () => addServer(form)),
               const SizedBox(height: 24),
-              GradienButton('Add server', () => addServer(form),
+              GradienButton('add_server'.tr(), () => addServer(form),
                   borderRadius: 4),
               const SizedBox(height: 24),
             ],
@@ -71,8 +75,8 @@ class _ServerFormState extends State<ServerForm> {
   void addServer(FormGroup form) {
     if (form.valid) {
       final server = Server(
-          name: form.value['server_name'].toString(),
-          url: form.value['server_url'].toString(),
+          name: form.value[FieldsType.SERVER_NAME.toString()].toString(),
+          url: form.value[FieldsType.SERVER_URL.toString()].toString(),
           id: 0);
       BlocProvider.of<AuthBloc>(context).add(AuthServerAdded(server));
     } else {
@@ -82,10 +86,10 @@ class _ServerFormState extends State<ServerForm> {
       form.errors.forEach((key, value) {
         final fieldName =
             key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
-        errors.add(fieldName + ' is required');
+        errors.add('field_required'.tr(args: [fieldName]));
       });
       BlocProvider.of<AuthBloc>(context)
-          .add(AuthError('Form is not valid \n${errors.join(',\n')}'));
+          .add(AuthError('form_not_valid'.tr() + '\n${errors.join(',\n')}'));
     }
   }
 }
