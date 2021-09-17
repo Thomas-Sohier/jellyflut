@@ -73,6 +73,10 @@ field_required: '{} is required'
 form_not_valid: 'Form is not valid'
 server_configuration: Server configuration
 add_server: Add server
+user_username_field_label: Username
+user_password_field_label: Password
+server_name_field_label: Name
+server_url_field_label: URL
 
 # action button
 delete_item_question: 'Delete {} ?'
@@ -90,33 +94,3 @@ empty_collection: Empty collection
 no_pages: No pages
 select_page: Select a page
 page_number: 'Page n°{}'
-
-msg: 'Hello {} in the {} world '
-msg_named: "{} are written in the {lang} language"
-clickMe: Click me
-profile:
-  reset_password:
-    label: Reset Password
-    username: Username
-    password: password
-clicked:
-  zero: You clicked {} times!
-  one: You clicked {} time!
-  two: You clicked {} times!
-  few: You clicked {} times!
-  many: You clicked {} times!
-  other: You clicked {} times!
-amount:
-  zero: 'Your amount : {} '
-  one: 'Your amount : {} '
-  two: 'Your amount : {} '
-  few: 'Your amount : {} '
-  many: 'Your amount : {} '
-  other: 'Your amount : {} '
-gender:
-  male: 'Hi man ;) '
-  female: Hello girl :)
-  with_arg:
-    male: Hi man ;) {}
-    female: Hello girl :) {}
-reset_locale: Reset Language

@@ -16,7 +16,7 @@ class ServerUrlField extends StatelessWidget {
         keyboardType: TextInputType.url,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
-            labelText: 'URL',
+            labelText: 'server_url_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.http_outlined, color: Colors.black),
             border: DEFAULT_BORDER,

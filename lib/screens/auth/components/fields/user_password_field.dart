@@ -18,7 +18,7 @@ class UserPasswordField extends StatelessWidget {
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
-            labelText: 'Password',
+            labelText: 'user_password_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.password, color: Colors.black),
             border: DEFAULT_BORDER,

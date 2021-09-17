@@ -18,7 +18,7 @@ class UserUsernameField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
-            labelText: 'Username',
+            labelText: 'user_username_field_label'.tr(),
             labelStyle: INPUT_TEXT_STYLE,
             prefixIcon: Icon(Icons.person_outline, color: Colors.black),
             border: DEFAULT_BORDER,

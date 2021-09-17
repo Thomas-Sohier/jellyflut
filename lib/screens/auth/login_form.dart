@@ -2,6 +2,7 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
+import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -43,11 +44,16 @@ class _LoginFormState extends State<LoginForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 38),
-              Text('connection'.tr(),
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
+              Row(children: [
+                Text('connection'.tr(),
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                Spacer(),
+                LocaleButtonSelector(
+                    foregroundColor: Colors.black, showCurrentValue: true)
+              ]),
               const SizedBox(height: 12),
               UserUsernameField(
                   form: form,

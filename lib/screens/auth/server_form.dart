@@ -2,6 +2,7 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
+import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
@@ -49,14 +50,19 @@ class _ServerFormState extends State<ServerForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 24),
-              Text(
-                'server_configuration'.tr(),
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                textAlign: TextAlign.center,
-              ),
+              Row(children: [
+                Text(
+                  'server_configuration'.tr(),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  textAlign: TextAlign.center,
+                ),
+                Spacer(),
+                LocaleButtonSelector(
+                    foregroundColor: Colors.black, showCurrentValue: true)
+              ]),
               const SizedBox(height: 12),
               ServerNameField(
                   form: form,
