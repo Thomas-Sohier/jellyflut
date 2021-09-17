@@ -68,12 +68,12 @@ class _CollectionState extends State<Collection> {
         return ListItems.fromFuture(
             itemsFuture: musicFuture,
             lisType: ListType.LIST,
-            itemHeight: 100,
+            itemPosterHeight: 100,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SEASON:
         return ListItems.fromFuture(
             itemsFuture: episodesFuture,
-            itemHeight: 150,
+            itemPosterHeight: 150,
             lisType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:

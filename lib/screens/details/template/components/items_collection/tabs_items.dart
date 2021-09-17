@@ -97,7 +97,7 @@ class _TabsItemsState extends State<TabsItems>
       final item = items.elementAt(index);
       childs.add(tab.Tab(
         item: item,
-        itemHeight: ITEM_HEIGHT,
+        itemPosterHeight: ITEM_HEIGHT,
       ));
     }
     return childs;

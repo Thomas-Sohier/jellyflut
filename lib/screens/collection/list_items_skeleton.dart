@@ -16,9 +16,9 @@ class ListItemsSkeleton extends StatelessWidget {
   Widget buildSkeletonItemsGrid(BuildContext context) {
     var ratio = aspectRatio();
     var size = MediaQuery.of(context).size;
-    var itemHeight = 150 / ratio;
+    var itemPosterHeight = 150 / ratio;
     var numberOfItemInRow = (size.width / 150).round();
-    var numberOfRow = (size.height / itemHeight).round() * 2;
+    var numberOfRow = (size.height / itemPosterHeight).round() * 2;
 
     return Shimmer.fromColors(
       enabled: shimmerAnimation,

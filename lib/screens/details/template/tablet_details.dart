@@ -93,7 +93,7 @@ class _TabletDetailsState extends State<TabletDetails> {
 
   Widget poster() {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: itemHeight),
+      constraints: BoxConstraints(maxHeight: itemPosterHeight),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5)),
         child: AspectRatio(

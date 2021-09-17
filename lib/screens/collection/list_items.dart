@@ -8,6 +8,7 @@ import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/screens/collection/collection_bloc.dart';
 import 'package:jellyflut/screens/collection/collection_event.dart';
 import 'package:jellyflut/screens/collection/list_items_skeleton.dart';
+import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../globals.dart';
@@ -93,11 +94,14 @@ class _ListItemsState extends State<ListItems> {
 
   Widget gridItems(List<Item> items) {
     final size = MediaQuery.of(context).size;
-    final numberOfItemRow = (size.width / itemHeight * (4 / 3)).round();
+    final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
+    final numberOfItemRow =
+        (size.width / (itemPosterHeight * itemAspectRatio)).round();
     return SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: items.first.getPrimaryAspectRatio(),
             crossAxisCount: numberOfItemRow,
+            mainAxisExtent: itemPosterHeight + itemPosterLabelHeight,
             mainAxisSpacing: 5,
             crossAxisSpacing: 5),
         delegate: SliverChildBuilderDelegate((BuildContext c, int index) {

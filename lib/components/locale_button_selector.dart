@@ -16,18 +16,21 @@ class LocaleButtonSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Locale>(
-        key: localeKey,
-        initialValue: context.locale,
-        onSelected: (Locale? locale) {
-          if (locale != null) context.setLocale(locale);
-        },
-        itemBuilder: (BuildContext c) => _localeListTile(c),
-        child: Row(children: [
-          if (showCurrentValue)
-            Text(context.locale.toLanguageTag(),
+      key: localeKey,
+      initialValue: context.locale,
+      onSelected: (Locale? locale) {
+        if (locale != null) context.setLocale(locale);
+      },
+      itemBuilder: (BuildContext c) => _localeListTile(c),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        if (showCurrentValue)
+          Expanded(
+            child: Text(context.locale.toLanguageTag(),
                 style: TextStyle(color: foregroundColor)),
-          Icon(Icons.arrow_drop_down, color: foregroundColor),
-        ]));
+          ),
+        Icon(Icons.arrow_drop_down, color: foregroundColor),
+      ]),
+    );
   }
 
   List<PopupMenuEntry<Locale>> _localeListTile(BuildContext context) {

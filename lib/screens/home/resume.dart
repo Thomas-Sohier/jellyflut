@@ -60,9 +60,10 @@ class _ResumeState extends State<Resume> {
           ).tr(),
         ),
         SizedBox(
-            height: itemHeight,
+            height: itemPosterHeight + itemPosterLabelHeight,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(left: 8),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 var _item = items[index];
