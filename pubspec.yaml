@@ -16,9 +16,8 @@ dependencies:
   assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.9.0
   auto_route: ^2.3.2
-  auto_size_text: ^3.0.0-nullsafety.0
-  better_player: ^0.0.73
-  bloc: ^7.1.0
+  better_player: ^0.0.76
+  bloc: ^7.2.1
   blurhash_dart: ^1.0.2
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
@@ -32,35 +31,34 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.2.0
+  flutter_bloc: ^7.3.0
   flutter_colorpicker: ^0.6.0
   flutter_html: ^2.1.2
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.4
   fluttertoast: ^8.0.8
-  marquee: ^2.2.0
   moor: ^4.5.0
   octo_image: ^1.0.0+1
   package_info_plus: ^1.0.6
   palette_generator: ^0.3.1
   path: ^1.8.0
-  path_provider: ^2.0.4
+  path_provider: ^2.0.5
   permission_handler: ^8.1.6
   photo_view: ^0.12.0
-  provider: ^6.0.0
-  reactive_forms: ^10.6.0
+  provider: ^6.0.1
+  reactive_forms: ^10.6.2
   responsive_builder: ^0.4.1
   rxdart: ^0.27.2
   salomon_bottom_bar: ^3.1.0
   settings_ui: ^1.0.0
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.0.8
   shimmer: ^2.0.0
   splashscreen:
     git:
       url: https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git
       ref: master
   sqlite3_flutter_libs: ^0.5.0
-  url_launcher: ^6.0.10
+  url_launcher: ^6.0.12
   uuid: ^3.0.4
   wakelock: ^0.5.6
   window_manager: ^0.0.4
@@ -78,7 +76,6 @@ dev_dependencies:
   pedantic: ^1.11.1
 
 # dependency_overrides:
-
 # The following section is specific to Flutter.
 flutter:
   assets:

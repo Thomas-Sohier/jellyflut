@@ -30,104 +30,104 @@ class AppRouter extends _i1.RootStackRouter {
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    AuthParentRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<AuthParentRouteArgs>(
-              orElse: () => const AuthParentRouteArgs());
-          return _i4.AuthParent(
-              key: args.key, onAuthenticated: args.onAuthenticated);
-        },
-        opaque: true,
-        barrierDismissible: false),
-    HomeRouter.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args =
-              data.argsAs<HomeRouterArgs>(orElse: () => const HomeRouterArgs());
-          return _i5.HomeParent(key: args.key);
-        },
-        opaque: true,
-        barrierDismissible: false),
-    CollectionParentRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<CollectionParentRouteArgs>();
-          return _i6.CollectionParent(item: args.item);
-        },
-        transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
-        opaque: true,
-        barrierDismissible: false),
-    DetailsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<DetailsRouteArgs>();
-          return _i7.Details(item: args.item, heroTag: args.heroTag);
-        },
-        opaque: true,
-        barrierDismissible: false),
-    SettingsRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i8.Settings();
-        },
-        transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
-        opaque: true,
-        barrierDismissible: false),
-    MusicPlayerRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<MusicPlayerRouteArgs>(
-              orElse: () => const MusicPlayerRouteArgs());
-          return _i9.MusicPlayer(key: args.key);
-        },
-        opaque: true,
-        barrierDismissible: false),
-    PlaylistRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<PlaylistRouteArgs>();
-          return _i10.Playlist(
+    AuthParentRoute.name: (routeData) {
+      final args = routeData.argsAs<AuthParentRouteArgs>(
+          orElse: () => const AuthParentRouteArgs());
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i4.AuthParent(
+              key: args.key, onAuthenticated: args.onAuthenticated),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    HomeRouter.name: (routeData) {
+      final args = routeData.argsAs<HomeRouterArgs>(
+          orElse: () => const HomeRouterArgs());
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i5.HomeParent(key: args.key),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    CollectionParentRoute.name: (routeData) {
+      final args = routeData.argsAs<CollectionParentRouteArgs>();
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i6.CollectionParent(item: args.item),
+          transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    DetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsRouteArgs>();
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i7.Details(item: args.item, heroTag: args.heroTag),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    SettingsRoute.name: (routeData) {
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i8.Settings(),
+          transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    MusicPlayerRoute.name: (routeData) {
+      final args = routeData.argsAs<MusicPlayerRouteArgs>(
+          orElse: () => const MusicPlayerRouteArgs());
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i9.MusicPlayer(key: args.key),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    PlaylistRoute.name: (routeData) {
+      final args = routeData.argsAs<PlaylistRouteArgs>();
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i10.Playlist(
               key: args.key,
               body: args.body,
-              playlistTheme: args.playlistTheme);
-        },
-        transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
-        opaque: true,
-        barrierDismissible: false),
-    StreamRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<StreamRouteArgs>(
-              orElse: () => const StreamRouteArgs());
-          return _i11.Stream(item: args.item, url: args.url);
-        },
-        transitionsBuilder: _i1.TransitionsBuilders.zoomIn,
-        opaque: true,
-        barrierDismissible: false),
-    BookReaderPageRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<BookReaderPageRouteArgs>();
-          return _i12.BookReaderPage(key: args.key, item: args.item);
-        },
-        opaque: true,
-        barrierDismissible: false),
-    HomeRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (_) {
-          return _i13.Home();
-        },
-        opaque: true,
-        barrierDismissible: false),
-    CollectionRoute.name: (routeData) => _i1.CustomPage<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<CollectionRouteArgs>();
-          return _i6.CollectionParent(item: args.item);
-        },
-        opaque: true,
-        barrierDismissible: false)
+              playlistTheme: args.playlistTheme),
+          transitionsBuilder: _i1.TransitionsBuilders.slideLeft,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    StreamRoute.name: (routeData) {
+      final args = routeData.argsAs<StreamRouteArgs>(
+          orElse: () => const StreamRouteArgs());
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i11.Stream(item: args.item, url: args.url),
+          transitionsBuilder: _i1.TransitionsBuilders.zoomIn,
+          opaque: true,
+          barrierDismissible: false);
+    },
+    BookReaderPageRoute.name: (routeData) {
+      final args = routeData.argsAs<BookReaderPageRouteArgs>();
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i12.BookReaderPage(key: args.key, item: args.item),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    HomeRoute.name: (routeData) {
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i13.Home(),
+          opaque: true,
+          barrierDismissible: false);
+    },
+    CollectionRoute.name: (routeData) {
+      final args = routeData.argsAs<CollectionRouteArgs>();
+      return _i1.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i6.CollectionParent(item: args.item),
+          opaque: true,
+          barrierDismissible: false);
+    }
   };
 
   @override
@@ -226,7 +226,7 @@ class DetailsRouteArgs {
   final String? heroTag;
 }
 
-class SettingsRoute extends _i1.PageRouteInfo {
+class SettingsRoute extends _i1.PageRouteInfo<void> {
   const SettingsRoute() : super(name, path: 'settings');
 
   static const String name = 'SettingsRoute';
@@ -301,7 +301,7 @@ class BookReaderPageRouteArgs {
   final _i14.Item item;
 }
 
-class HomeRoute extends _i1.PageRouteInfo {
+class HomeRoute extends _i1.PageRouteInfo<void> {
   const HomeRoute() : super(name, path: '');
 
   static const String name = 'HomeRoute';

@@ -5,7 +5,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
@@ -56,35 +55,15 @@ class _SongInfosState extends State<SongInfos> {
                         heroTag: ''));
                   }
                 },
-                child: Marquee(
-                  text: musicProvider.getCurrentMusic!.artist!,
+                child: Text(
+                  musicProvider.getCurrentMusic!.artist!,
                   style: TextStyle(fontSize: 20, color: widget.color),
-                  scrollAxis: Axis.horizontal,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  blankSpace: 20.0,
-                  velocity: 100.0,
-                  pauseAfterRound: Duration(seconds: 1),
-                  startPadding: 10.0,
-                  accelerationDuration: Duration(seconds: 1),
-                  accelerationCurve: Curves.linear,
-                  decelerationDuration: Duration(milliseconds: 500),
-                  decelerationCurve: Curves.easeOut,
                 ),
               ),
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Marquee(
-                text: musicProvider.getCurrentMusic!.title,
-                scrollAxis: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                blankSpace: 20.0,
-                velocity: 100.0,
-                pauseAfterRound: Duration(seconds: 1),
-                startPadding: 10.0,
-                accelerationDuration: Duration(seconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: Duration(milliseconds: 500),
-                decelerationCurve: Curves.easeOut,
+              child: Text(
+                musicProvider.getCurrentMusic!.title,
                 style: TextStyle(
                     fontSize: 26,
                     color: widget.color,
@@ -121,16 +100,14 @@ class _SongInfosState extends State<SongInfos> {
           children: [
             StreamBuilder<Duration?>(
                 stream: musicProvider.getCommonPlayer!.getCurrentPosition(),
-                builder: (context, snapshot) => Marquee(
-                      text: snapshot.data != null
+                builder: (context, snapshot) => Text(
+                      snapshot.data != null
                           ? printDuration(snapshot.data!)
                           : '0.00',
                       style: TextStyle(fontSize: 18, color: widget.color),
                     )),
             Spacer(),
-            Marquee(
-                text:
-                    printDuration(musicProvider.getCommonPlayer!.getDuration()),
+            Text(printDuration(musicProvider.getCommonPlayer!.getDuration()),
                 style: TextStyle(fontSize: 18, color: widget.color))
           ],
         )

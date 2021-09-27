@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progress_bar.dart';
-import 'package:jellyflut/components/sliding_text.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
