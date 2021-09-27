@@ -18,12 +18,7 @@ AppRouter get customRouter => _customRouter;
 
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
-double get _itemPosterHeightTemp =>
-    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
-    20;
-
-double get itemPosterHeight =>
-    (_itemPosterHeightTemp <= 200 ? 200 : _itemPosterHeightTemp);
+double get itemPosterHeight => 250;
 double get itemPosterLabelHeight => 39;
 
 // Used for some player to prevent from creating a new player

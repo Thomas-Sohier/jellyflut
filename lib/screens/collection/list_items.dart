@@ -56,10 +56,12 @@ class _ListItemsState extends State<ListItems> {
 
   @override
   Widget build(BuildContext context) {
-    return buildItemsGrid();
+    return LayoutBuilder(builder: (context, constraints) {
+      return buildItemsGrid(constraints);
+    });
   }
 
-  Widget buildItemsGrid() {
+  Widget buildItemsGrid(BoxConstraints constraints) {
     // var spacing = numberOfItemRow
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final paddingTop = canPop ? 82.0 : (8.0 + statusBarHeight);
@@ -78,7 +80,7 @@ class _ListItemsState extends State<ListItems> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                return gridItems(snapshot.data!);
+                return gridItems(snapshot.data!, constraints);
               }
               return emptyErrorStream();
             } else if (snapshot.hasError) {
@@ -92,11 +94,10 @@ class _ListItemsState extends State<ListItems> {
     ]);
   }
 
-  Widget gridItems(List<Item> items) {
-    final size = MediaQuery.of(context).size;
+  Widget gridItems(List<Item> items, BoxConstraints constraints) {
     final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
     final numberOfItemRow =
-        (size.width / (itemPosterHeight * itemAspectRatio)).round();
+        (constraints.maxWidth / (itemPosterHeight * itemAspectRatio)).round();
     return SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: items.first.getPrimaryAspectRatio(),
