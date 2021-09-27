@@ -18,11 +18,8 @@ AppRouter get customRouter => _customRouter;
 
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
-double get _itemHeightTemp =>
-    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
-    35;
-
-double get itemHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
+double get itemPosterHeight => 250;
+double get itemPosterLabelHeight => 39;
 
 // Used for some player to prevent from creating a new player
 int get audioPlayerId => 132;

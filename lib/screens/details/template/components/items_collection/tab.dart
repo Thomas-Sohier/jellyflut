@@ -9,9 +9,9 @@ import 'package:jellyflut/globals.dart' as globals;
 
 class Tab extends StatefulWidget {
   final Item item;
-  final double? itemHeight;
+  final double? itemPosterHeight;
 
-  Tab({Key? key, required this.item, this.itemHeight}) : super(key: key);
+  Tab({Key? key, required this.item, this.itemPosterHeight}) : super(key: key);
 
   @override
   _TabState createState() => _TabState();
@@ -19,14 +19,14 @@ class Tab extends StatefulWidget {
 
 class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
   late Future<Category> itemsFuture;
-  late double itemHeight;
+  late double itemPosterHeight;
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     itemsFuture = ItemService.getItems(parentId: widget.item.id);
-    itemHeight = widget.itemHeight ?? globals.itemHeight;
+    itemPosterHeight = widget.itemPosterHeight ?? globals.itemPosterHeight;
     super.initState();
   }
 
@@ -35,7 +35,7 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return ListItems.fromFuture(
         itemsFuture: itemsFuture,
-        itemHeight: itemHeight,
+        itemPosterHeight: itemPosterHeight,
         physics: NeverScrollableScrollPhysics(),
         lisType: ListType.LIST);
   }

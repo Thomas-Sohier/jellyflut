@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progress_bar.dart';
 import 'package:jellyflut/components/sliding_text.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
@@ -69,50 +70,44 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget body(BuildContext context) {
     return Column(children: [
-      Expanded(
-          flex: 10,
-          child: ClipRRect(
-              clipBehavior: Clip.antiAlias,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AspectRatio(
-                        aspectRatio: aspectRatio,
-                        child: Stack(children: [
-                          Poster(
-                              showParent: widget.showParent,
-                              tag: widget.tag,
-                              clickable: widget.clickable,
-                              heroTag: posterHeroTag,
-                              boxFit: widget.boxFit,
-                              item: widget.item),
-                          if (widget.showOverlay)
-                            IgnorePointer(
-                                child: Stack(
-                              children: [
-                                if (widget.item.isNew())
-                                  Positioned(
-                                      top: 8, left: 8, child: newBanner()),
-                                if (widget.item.isPlayed())
-                                  Positioned(
-                                      top: 8, right: 8, child: playedBanner()),
-                              ],
-                            )),
-                          if (widget.showLogo && widget.showOverlay)
-                            IgnorePointer(
-                                child: Align(
-                              alignment: Alignment.center,
-                              child: Logo(
-                                item: widget.item,
-                                size: Size.infinite,
-                              ),
-                            )),
-                          if (widget.item.hasProgress() && widget.showOverlay)
-                            progress(),
-                        ])),
-                  ]))),
-      if (widget.showName) Flexible(flex: 2, child: name())
+      SizedBox(
+        height: itemPosterHeight,
+        child: ClipRRect(
+            clipBehavior: Clip.antiAlias,
+            child: AspectRatio(
+              aspectRatio: aspectRatio,
+              child: Stack(children: [
+                Poster(
+                    showParent: widget.showParent,
+                    tag: widget.tag,
+                    clickable: widget.clickable,
+                    heroTag: posterHeroTag,
+                    boxFit: widget.boxFit,
+                    item: widget.item),
+                if (widget.showOverlay)
+                  IgnorePointer(
+                      child: Stack(
+                    children: [
+                      if (widget.item.isNew())
+                        Positioned(top: 8, left: 8, child: newBanner()),
+                      if (widget.item.isPlayed())
+                        Positioned(top: 8, right: 8, child: playedBanner()),
+                    ],
+                  )),
+                if (widget.showLogo && widget.showOverlay)
+                  IgnorePointer(
+                      child: Align(
+                    alignment: Alignment.center,
+                    child: Logo(
+                      item: widget.item,
+                      size: Size.infinite,
+                    ),
+                  )),
+                if (widget.item.hasProgress() && widget.showOverlay) progress(),
+              ]),
+            )),
+      ),
+      if (widget.showName) name()
     ]);
   }
 
@@ -124,32 +119,38 @@ class _ItemPosterState extends State<ItemPoster>
   }
 
   Widget name() {
-    return Column(
-      children: [
-        Expanded(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SlidingText(
-              text: widget.showParent
-                  ? widget.item.parentName()
-                  : widget.item.name,
-              blankSpace: 300,
-              velocity: 80.0,
-              pauseAfterRound: Duration(seconds: 3),
-              fontSize: 18,
+    return SizedBox(
+        height: itemPosterLabelHeight,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                widget.showParent ? widget.item.parentName() : widget.item.name,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                softWrap: false,
+                maxLines: 1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 16, color: widget.textColor),
+              ),
             ),
-          ),
-        ),
-        if (widget.item.isFolder != null &&
-            widget.item.parentIndexNumber != null)
-          Text(
-            'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
-            style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-      ],
-    );
+            if (widget.item.isFolder != null &&
+                widget.item.parentIndexNumber != null)
+              Text(
+                'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1!
+                    .copyWith(fontSize: 12, color: widget.textColor),
+                textAlign: TextAlign.center,
+              ),
+          ],
+        ));
   }
 
   Widget newBanner() {

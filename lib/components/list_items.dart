@@ -19,13 +19,13 @@ class ListItems extends StatefulWidget {
   final ListType lisType;
   final bool showTitle;
   final ScrollPhysics physics;
-  final double? itemHeight;
+  final double? itemPosterHeight;
 
   const ListItems.fromFuture(
       {Key? key,
       required this.itemsFuture,
       this.showTitle = false,
-      this.itemHeight,
+      this.itemPosterHeight,
       this.physics = const ClampingScrollPhysics(),
       this.lisType = ListType.POSTER})
       : category = null,
@@ -35,7 +35,7 @@ class ListItems extends StatefulWidget {
       {Key? key,
       required this.category,
       this.showTitle = false,
-      this.itemHeight,
+      this.itemPosterHeight,
       this.physics = const ClampingScrollPhysics(),
       this.lisType = ListType.POSTER})
       : itemsFuture = null,
@@ -51,7 +51,7 @@ class _ListItemsState extends State<ListItems> {
   @override
   void initState() {
     super.initState();
-    LIST_HEIGHT = widget.itemHeight ?? itemHeight;
+    LIST_HEIGHT = widget.itemPosterHeight ?? itemPosterHeight;
   }
 
   @override

@@ -10,15 +10,18 @@ class ListItemsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildSkeletonItemsGrid(context);
+    return LayoutBuilder(
+        builder: (context, constraints) =>
+            buildSkeletonItemsGrid(context, constraints));
   }
 
-  Widget buildSkeletonItemsGrid(BuildContext context) {
-    var ratio = aspectRatio();
-    var size = MediaQuery.of(context).size;
-    var itemHeight = 150 / ratio;
-    var numberOfItemInRow = (size.width / 150).round();
-    var numberOfRow = (size.height / itemHeight).round() * 2;
+  Widget buildSkeletonItemsGrid(
+      BuildContext context, BoxConstraints constraints) {
+    final ratio = aspectRatio();
+    final size = MediaQuery.of(context).size;
+    final numberOfRow = (size.height / itemPosterHeight).round() * 2;
+    final numberOfItemInRow =
+        (constraints.maxWidth / (itemPosterHeight * ratio)).round();
 
     return Shimmer.fromColors(
       enabled: shimmerAnimation,

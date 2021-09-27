@@ -71,7 +71,7 @@ class _SearchResultState extends State<SearchResult> {
         ? rows.add(ListItems.fromList(
             category:
                 Category(items: value, startIndex: 0, totalRecordCount: 0),
-            itemHeight: itemHeight,
+            itemPosterHeight: itemPosterHeight,
             showTitle: true,
             lisType: ListType.POSTER))
         : Container());

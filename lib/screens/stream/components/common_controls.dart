@@ -4,11 +4,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/components/back_button.dart' as bb;
+import 'package:jellyflut/components/gradient_mask.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/controls/bottom_row_player_controls.dart';
 import 'package:jellyflut/screens/stream/components/controls/audio_button_selector.dart';
 import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/subtitle_button_selector.dart';
+import 'package:jellyflut/screens/stream/components/player_infos/player_infos.dart';
+import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/theme.dart';
 import 'package:provider/provider.dart';
@@ -30,13 +33,6 @@ class _CommonControlsState extends State<CommonControls> {
   late Timer _timer;
   late Future<bool> hasPip;
   bool _visible = false;
-
-  // mask layer
-  final Shader linearGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [jellyLightBLue, jellyLightPurple],
-  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   @override
   void initState() {
@@ -80,22 +76,35 @@ class _CommonControlsState extends State<CommonControls> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: streamingProvider,
-      child: MouseRegion(
-          onHover: (PointerHoverEvent event) =>
-              event.kind == PointerDeviceKind.mouse
-                  ? autoHideControlHover()
-                  : {},
-          child: GestureDetector(
-              onTap: () => autoHideControl(),
-              onDoubleTap: () =>
-                  streamingProvider.commonStream!.toggleFullscreen(),
-              behavior: HitTestBehavior.translucent,
-              child: visibility(
-                  child: Stack(
-                children: [blackGradient(), controls()],
-              )))),
-    );
+        value: streamingProvider, child: platformBuilder());
+  }
+
+  Widget platformBuilder() {
+    return ResponsiveBuilder.builder(
+        mobile: defaultControls,
+        tablet: defaultControls,
+        desktop: desktopControls);
+  }
+
+  Widget desktopControls() {
+    return MouseRegion(
+        opaque: false,
+        onHover: (PointerHoverEvent event) =>
+            event.kind == PointerDeviceKind.mouse ? autoHideControlHover() : {},
+        child: defaultControls());
+  }
+
+  Widget defaultControls() {
+    return GestureDetector(
+        onTap: autoHideControl,
+        // onDoubleTap: () => streamingProvider.commonStream!.toggleFullscreen(),
+        behavior: HitTestBehavior.translucent,
+        child: SizedBox.expand(
+          child: visibility(
+              child: Stack(
+            children: [blackGradient(), controls()],
+          )),
+        ));
   }
 
   Widget visibility({required Widget child}) {
@@ -105,9 +114,11 @@ class _CommonControlsState extends State<CommonControls> {
           initialData: false,
           stream: _visibleStreamController.stream,
           builder: (context, snapshot) => Visibility(
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
+              maintainSize: false,
+              maintainAnimation: false,
+              maintainState: false,
+              maintainInteractivity: false,
+              maintainSemantics: false,
               visible: snapshot.data ?? false,
               child: child),
         ));
@@ -154,21 +165,16 @@ class _CommonControlsState extends State<CommonControls> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                itemTitle(),
-                streamingProvider.item!.hasParent()
-                    ? itemParentTitle()
-                    : Container(),
-              ],
+              children: [ItemTitle(), ItemParentTitle()],
             ),
           ),
           Spacer(),
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: streamingProvider.isDirectPlay ?? true
-                  ? gradientMask(
+                  ? const GradientMask(
                       child: Icon(Icons.play_for_work, color: Colors.white))
-                  : gradientMask(
+                  : const GradientMask(
                       child: Icon(
                       Icons.cloud_outlined,
                       color: Colors.white,
@@ -181,28 +187,6 @@ class _CommonControlsState extends State<CommonControls> {
           SubtitleButtonSelector(),
           AudioButtonSelector()
         ]);
-  }
-
-  Widget itemTitle() {
-    if (streamingProvider.item == null) return SizedBox();
-    return Text(
-      streamingProvider.item!.name,
-      textAlign: TextAlign.left,
-      style: TextStyle(
-          fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
-    );
-  }
-
-  Widget itemParentTitle() {
-    if (streamingProvider.item == null) return SizedBox();
-    return Text(
-      streamingProvider.item!.parentName(),
-      textAlign: TextAlign.left,
-      style: TextStyle(
-          fontWeight: FontWeight.w600,
-          foreground: Paint()..shader = linearGradient,
-          fontSize: 14),
-    );
   }
 
   Future<void> autoHideControl() async {

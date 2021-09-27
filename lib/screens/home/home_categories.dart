@@ -78,14 +78,14 @@ class _HomeCategoriesState extends State<HomeCategories>
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
               padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
               child: HomeCategoryTitle(widget.item, onTap: slideToPageDetail)),
           SizedBox(
-            height: itemHeight,
-            child: displayItems(items),
-          )
+              height: itemPosterHeight + itemPosterLabelHeight,
+              child: displayItems(items)),
         ]);
   }
 
@@ -126,7 +126,7 @@ class _HomeCategoriesState extends State<HomeCategories>
                     children: [
                       Expanded(
                           child: SizedBox(
-                              height: itemHeight,
+                              height: itemPosterHeight,
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: 3,
@@ -149,9 +149,14 @@ class _HomeCategoriesState extends State<HomeCategories>
   }
 
   Widget displayItems(List<Item> items) {
+    final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
+    // Plus 10 to add some spacing between items
+    final itemWidth = (itemPosterHeight * itemAspectRatio) + 10;
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
+        itemExtent: itemWidth,
+        shrinkWrap: true,
         controller: scrollController,
         itemBuilder: (context, index) => ItemPoster(items[index]));
   }
