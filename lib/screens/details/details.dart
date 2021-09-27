@@ -7,8 +7,9 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
 import 'package:jellyflut/screens/details/template/tablet_details.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/blurhash.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
+import 'package:jellyflut/shared/utils/blurhash_util.dart';
+
 import 'components/photo_item.dart';
 
 class Details extends StatefulWidget {

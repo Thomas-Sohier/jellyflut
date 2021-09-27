@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListItemsSkeleton extends StatelessWidget {

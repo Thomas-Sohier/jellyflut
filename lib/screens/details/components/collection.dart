@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/list_items.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/components/list_items.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_collection_item.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
@@ -40,7 +40,7 @@ class _CollectionState extends State<Collection> {
         break;
       case ItemType.MUSICARTIST:
         musicAlbumFuture = ItemService.getItems(
-            includeItemTypes: getEnumValue(ItemType.MUSICALBUM.toString()),
+            includeItemTypes: ItemType.MUSICALBUM.getValue(),
             sortBy: 'ProductionYear,Sortname',
             albumArtistIds: widget.item.id,
             fields:

@@ -19,14 +19,7 @@ class PlaceholderScreen extends StatelessWidget {
   Widget itemPlacheholder() {
     final item = this.item!;
     return AsyncImage(
-      item.id,
-      item.imageTags != null
-          ? item.imageTags!
-              .firstWhere((element) => element.imageType == ImageType.PRIMARY,
-                  orElse: () => item.imageTags!.first)
-              .value
-          : null,
-      item.imageBlurHashes,
+      item: item,
       boxFit: BoxFit.cover,
       tag: ImageType.BACKDROP,
     );

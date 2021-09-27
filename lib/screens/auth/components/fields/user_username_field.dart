@@ -11,7 +11,7 @@ class UserUsernameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: getEnumValue(FieldsType.USER_USERNAME.toString()),
+        formControlName: FieldsType.USER_USERNAME.getValue(),
         onSubmitted: onSubmitted,
         autofocus: true,
         keyboardType: TextInputType.name,

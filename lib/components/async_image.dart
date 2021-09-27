@@ -1,25 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/image_blur_hashes.dart';
+import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:jellyflut/shared/blurhash.dart';
+import 'package:jellyflut/shared/utils/blurhash_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class AsyncImage extends StatelessWidget {
-  AsyncImage(this.itemId, this.imageTag, this.blurHash,
-      {this.tag = ImageType.PRIMARY,
-      this.boxFit = BoxFit.fitHeight,
-      this.placeholder,
-      this.errorWidget});
-
-  final String? imageTag;
-  final String itemId;
-  final ImageBlurHashes? blurHash;
+  final Item item;
   final ImageType tag;
   final BoxFit boxFit;
   final Widget? placeholder;
   final Widget? errorWidget;
+  final bool showParent;
+
+  const AsyncImage(
+      {required this.item,
+      Key? key,
+      this.tag = ImageType.PRIMARY,
+      this.boxFit = BoxFit.fitHeight,
+      this.placeholder,
+      this.errorWidget,
+      this.showParent = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +31,11 @@ class AsyncImage extends StatelessWidget {
   }
 
   Widget body() {
-    var hash = BlurHashUtil.fallBackBlurHash(blurHash, tag);
-    var url = ItemImageService.getItemImageUrl(itemId, imageTag,
-        type: tag, imageBlurHashes: blurHash);
+    final itemId = showParent ? item.getParentId() : item.correctImageId();
+    final hash = BlurHashUtil.fallBackBlurHash(item.imageBlurHashes, tag);
+    final url = ItemImageService.getItemImageUrl(
+        itemId, item.correctImageTags(),
+        type: tag, imageTags: item.imageTags);
     return OctoImage(
       image: CachedNetworkImageProvider(url),
       placeholderBuilder: imagePlaceholder(hash),
@@ -58,9 +63,7 @@ class AsyncImage extends StatelessWidget {
     if (hash != null) {
       // If we show a Logo we don't load blurhash as it's a bit ugly
       if (tag != ImageType.LOGO) {
-        return OctoPlaceholder.blurHash(
-          hash,
-        );
+        return OctoPlaceholder.blurHash(hash);
       }
       return (_) => Container();
     }
@@ -71,10 +74,7 @@ class AsyncImage extends StatelessWidget {
     return Container(
       color: Colors.grey[800],
       child: Center(
-        child: Icon(
-          Icons.no_photography,
-          color: Colors.white,
-        ),
+        child: Icon(Icons.no_photography, color: Colors.white),
       ),
     );
   }

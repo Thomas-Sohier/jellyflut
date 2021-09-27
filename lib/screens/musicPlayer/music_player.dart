@@ -7,7 +7,7 @@ import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 

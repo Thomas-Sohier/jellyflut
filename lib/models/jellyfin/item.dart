@@ -17,13 +17,12 @@ import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';
-import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/image_type.dart' as image_type;
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
+import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -758,6 +757,7 @@ class Item {
       switch (type) {
         case ItemType.SEASON:
         case ItemType.EPISODE:
+        case ItemType.SERIES:
           return seriesPrimaryImageTag;
         case ItemType.MUSICALBUM:
           return albumPrimaryImageTag;

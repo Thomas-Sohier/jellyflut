@@ -15,7 +15,7 @@ dependencies:
   archive: ^3.1.2
   assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.9.0
-  auto_route: ^2.3.2
+  auto_route: ^2.4.0
   better_player: ^0.0.76
   bloc: ^7.2.1
   blurhash_dart: ^1.0.2
@@ -65,7 +65,7 @@ dependencies:
   youtube_explode_dart: ^1.10.6
 
 dev_dependencies:
-  auto_route_generator: ^2.3.2
+  auto_route_generator: ^2.4.0
   build_runner: ^2.1.2
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^1.2.3

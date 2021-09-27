@@ -3,17 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 
-class PrevButton extends StatefulWidget {
+class NextButton extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  PrevButton({Key? key, required this.color, required this.backgroundColor})
+  NextButton({Key? key, required this.color, required this.backgroundColor})
       : super(key: key);
 
   @override
-  _PrevButtonState createState() => _PrevButtonState();
+  _NextButtonState createState() => _NextButtonState();
 }
 
-class _PrevButtonState extends State<PrevButton> {
+class _NextButtonState extends State<NextButton> {
   late final MusicProvider musicProvider;
   late final FocusNode _node;
   final List<BoxShadow> shadows = [

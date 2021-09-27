@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
+import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/screens/collection/list_items.dart';
-import 'package:jellyflut/shared/background.dart';
 import 'package:provider/provider.dart';
-import 'package:jellyflut/components/detail_header_bar.dart';
 
 class CollectionParent extends StatefulWidget {
   final Item item;
@@ -39,20 +38,18 @@ class _CollectionParentState extends State<CollectionParent> {
     var headerHeight = 64.toDouble();
 
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Background(
-            child: Stack(children: [
-          if (widget.item.collectionType == CollectionType.MOVIES ||
-              widget.item.collectionType == CollectionType.BOOKS ||
-              widget.item.collectionType == CollectionType.TVSHOWS)
-            ChangeNotifierProvider.value(
-                value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ListItems(headerBarHeight: headerHeight, parentItem: widget.item),
-          if (customRouter.canPopSelfOrChildren)
-            DetailHeaderBar(
-              color: Colors.white,
-              height: headerHeight,
-            ),
-        ])));
+        body: Stack(children: [
+      if (widget.item.collectionType == CollectionType.MOVIES ||
+          widget.item.collectionType == CollectionType.BOOKS ||
+          widget.item.collectionType == CollectionType.TVSHOWS)
+        ChangeNotifierProvider.value(
+            value: carrousselProvider, child: CarrousselBackGroundImage()),
+      ListItems(headerBarHeight: headerHeight, parentItem: widget.item),
+      if (customRouter.canPopSelfOrChildren)
+        DetailHeaderBar(
+          color: Colors.white,
+          height: headerHeight,
+        ),
+    ]));
   }
 }

@@ -54,18 +54,18 @@ class VideoPlayerSection extends StatelessWidget {
                 return ListTile(
                   title: Text(
                     index < StreamingSoftwareName.values.length
-                        ? getEnumValue(StreamingSoftwareName.values
+                        ? StreamingSoftwareName.values
                             .elementAt(index)
-                            .toString())
+                            .getValue()
                         : 'disable'.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
                     customRouter.pop(
                       index < StreamingSoftwareName.values.length
-                          ? getEnumValue(StreamingSoftwareName.values
+                          ? StreamingSoftwareName.values
                               .elementAt(index)
-                              .toString())
+                              .getValue()
                           : -1,
                     );
                   },

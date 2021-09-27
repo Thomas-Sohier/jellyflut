@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 
 MaterialStateProperty<Color> cancelButtonForeground() {
   return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {

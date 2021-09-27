@@ -1,7 +1,7 @@
 // mask layer
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/shims/dart_ui_real.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 
 final Shader linearGradient = LinearGradient(
   begin: Alignment.topLeft,

@@ -3,17 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 
-class NextButton extends StatefulWidget {
+class PrevButton extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  NextButton({Key? key, required this.color, required this.backgroundColor})
+  PrevButton({Key? key, required this.color, required this.backgroundColor})
       : super(key: key);
 
   @override
-  _NextButtonState createState() => _NextButtonState();
+  _PrevButtonState createState() => _PrevButtonState();
 }
 
-class _NextButtonState extends State<NextButton> {
+class _PrevButtonState extends State<PrevButton> {
   late final MusicProvider musicProvider;
   late final FocusNode _node;
   final List<BoxShadow> shadows = [
@@ -35,7 +35,7 @@ class _NextButtonState extends State<NextButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => musicProvider.next(),
+        onPressed: () => musicProvider.previous(),
         node: _node,
         shape: CircleBorder(),
         child: Container(
@@ -45,7 +45,7 @@ class _NextButtonState extends State<NextButton> {
               boxShadow: shadows,
               shape: BoxShape.circle),
           child: Icon(
-            Icons.skip_next,
+            Icons.skip_previous,
             color: widget.color,
             size: 32,
           ),

@@ -27,13 +27,10 @@ class Poster extends StatefulWidget {
 
 class _PosterState extends State<Poster> {
   late final FocusNode node;
-  late final String? itemImageTag;
 
   @override
   void initState() {
     node = FocusNode();
-
-    itemImageTag = widget.item.correctImageTags();
     super.initState();
   }
 
@@ -64,28 +61,21 @@ class _PosterState extends State<Poster> {
   }
 
   Widget poster() {
-    final itemId = widget.showParent
-        ? widget.item.getParentId()
-        : widget.item.correctImageId();
     if (widget.heroTag != null) {
       return Hero(
         tag: widget.heroTag!,
         child: AsyncImage(
-          itemId,
-          itemImageTag,
-          widget.item.imageBlurHashes,
-          tag: widget.tag,
-          boxFit: widget.boxFit,
-        ),
+            item: widget.item,
+            tag: widget.tag,
+            boxFit: widget.boxFit,
+            showParent: widget.showParent),
       );
     }
     return AsyncImage(
-      itemId,
-      itemImageTag,
-      widget.item.imageBlurHashes,
-      tag: widget.tag,
-      boxFit: widget.boxFit,
-    );
+        item: widget.item,
+        tag: widget.tag,
+        boxFit: widget.boxFit,
+        showParent: widget.showParent);
   }
 
   MaterialStateProperty<double> buttonElevation() {

@@ -8,10 +8,10 @@ import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/episode_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/music_item.dart';
-import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
-import 'package:shimmer/shimmer.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
+import 'package:shimmer/shimmer.dart';
 
 class ListItems extends StatefulWidget {
   final Future<Category>? itemsFuture;
@@ -112,7 +112,7 @@ class _ListItemsState extends State<ListItems> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              getEnumValue(item.type.toString()).toLowerCase().capitalize(),
+              item.type.getValue().toLowerCase().capitalize(),
               style: Theme.of(context).textTheme.headline2,
             ),
             SizedBox(height: 12),

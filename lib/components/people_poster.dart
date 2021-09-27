@@ -72,9 +72,7 @@ class _PeoplePosterState extends State<PeoplePoster>
         child: AspectRatio(
             aspectRatio: 2 / 3,
             child: AsyncImage(
-              widget.person.id,
-              widget.person.primaryImageTag,
-              widget.person.imageBlurHashes,
+              item: widget.person.asItem(),
               boxFit: BoxFit.contain,
               placeholder: Container(
                 decoration: BoxDecoration(
@@ -98,9 +96,7 @@ class _PeoplePosterState extends State<PeoplePoster>
                 alignment: Alignment.bottomCenter,
                 children: [
                   AsyncImage(
-                    widget.person.id,
-                    widget.person.primaryImageTag,
-                    widget.person.imageBlurHashes,
+                    item: widget.person.asItem(),
                     boxFit: BoxFit.contain,
                     placeholder: Container(
                       decoration: BoxDecoration(

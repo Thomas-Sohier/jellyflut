@@ -57,18 +57,18 @@ class AudioPlayerSection extends StatelessWidget {
                 return ListTile(
                   title: Text(
                     index < TranscodeAudioCodecName.values.length
-                        ? getEnumValue(TranscodeAudioCodecName.values
+                        ? TranscodeAudioCodecName.values
                             .elementAt(index)
-                            .toString())
+                            .getValue()
                         : 'disable'.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
                     customRouter.pop(
                       index < TranscodeAudioCodecName.values.length
-                          ? getEnumValue(TranscodeAudioCodecName.values
+                          ? TranscodeAudioCodecName.values
                               .elementAt(index)
-                              .toString())
+                              .getValue()
                           : -1,
                     );
                   },

@@ -64,6 +64,7 @@ class _SongInfosState extends State<SongInfos> {
               padding: const EdgeInsets.only(top: 12),
               child: Text(
                 musicProvider.getCurrentMusic!.title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 26,
                     color: widget.color,

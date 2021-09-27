@@ -30,9 +30,7 @@ class BackgroundImage extends StatelessWidget {
       child: Container(
           foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
           child: AsyncImage(
-            item.correctImageId(searchType: imageType),
-            item.correctImageTags(searchType: imageType),
-            item.imageBlurHashes,
+            item: item,
             tag: item.correctImageType(searchType: imageType),
             boxFit: BoxFit.cover,
           )),

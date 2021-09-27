@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
+import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class RightDetailsBackground extends StatelessWidget {
   final Future<Color> dominantColorFuture;

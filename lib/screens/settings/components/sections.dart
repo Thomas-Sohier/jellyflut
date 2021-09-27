@@ -8,12 +8,12 @@ import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:moor/moor.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 part 'account_section.dart';
-part 'interface_section.dart';
-part 'infos_section.dart';
 part 'audio_player_section.dart';
+part 'infos_section.dart';
+part 'interface_section.dart';
 part 'video_player_section.dart';

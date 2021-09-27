@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
-import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
 import 'package:jellyflut/screens/details/template/right_details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
@@ -60,7 +60,6 @@ class _TabletDetailsState extends State<TabletDetails> {
   }
 
   Widget detailsBuilder() {
-    final mediaQuery = MediaQuery.of(context);
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
       children: [
@@ -69,8 +68,7 @@ class _TabletDetailsState extends State<TabletDetails> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             poster(),
-            if (widget.item.hasLogo())
-              Flexible(child: Logo(item: widget.item, size: mediaQuery.size)),
+            if (widget.item.hasLogo()) Flexible(child: Logo(item: widget.item)),
           ],
         ),
         asyncRightDetails()

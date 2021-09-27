@@ -11,7 +11,7 @@ class ServerNameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: getEnumValue(FieldsType.SERVER_NAME.toString()),
+        formControlName: FieldsType.SERVER_NAME.getValue(),
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         autofocus: true,

@@ -11,7 +11,7 @@ class UserPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: getEnumValue(FieldsType.USER_PASSWORD.toString()),
+        formControlName: FieldsType.USER_PASSWORD.getValue(),
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,

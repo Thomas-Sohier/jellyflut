@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
+import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class Luminance {
   static ThemeData computeLuminance(Color dominantColor) {

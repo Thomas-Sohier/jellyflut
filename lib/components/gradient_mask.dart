@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 
 class GradientMask extends StatelessWidget {
   final double radius;

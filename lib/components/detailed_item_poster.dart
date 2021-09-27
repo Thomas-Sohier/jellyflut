@@ -4,7 +4,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/shared/theme.dart' as personnal_theme;
+import 'package:jellyflut/theme.dart' as personnal_theme;
 
 import 'critics.dart';
 

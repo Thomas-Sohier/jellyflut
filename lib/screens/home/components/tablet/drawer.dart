@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawer_tablet_button.dart';
 import 'package:jellyflut/screens/home/shared/icon_navigation_mapper.dart';
-import 'package:jellyflut/shared/colors.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Drawer extends StatefulWidget {
   final List<Item> items;

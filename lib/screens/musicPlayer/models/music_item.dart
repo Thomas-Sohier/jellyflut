@@ -24,8 +24,7 @@ class MusicItem {
 
   static Future<MusicItem> parseFromItem(int id, String url, Item item) async {
     final urlImage = ItemImageService.getItemImageUrl(
-        item.correctImageId(), item.correctImageTags(),
-        imageBlurHashes: item.imageBlurHashes);
+        item.correctImageId(), item.correctImageTags());
     return MusicItem(
         id: id,
         album: item.album,

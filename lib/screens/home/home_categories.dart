@@ -6,7 +6,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/home_category_title.dart';
 import 'package:jellyflut/services/user/user_service.dart';
-import 'package:jellyflut/shared/theme.dart';
+import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeCategories extends StatefulWidget {
