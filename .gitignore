@@ -17,6 +17,7 @@ lib/generated_plugin_registrant.dart
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
+**/android/.idea
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat
@@ -65,3 +66,5 @@ android/app/key.jks
 
 **/windows/ephemeral
 **/windows/ephemeral/**
+
+.idea
