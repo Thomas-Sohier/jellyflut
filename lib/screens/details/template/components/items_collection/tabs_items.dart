@@ -73,6 +73,10 @@ class _TabsItemsState extends State<TabsItems>
 
   List<Widget> getTabsHeader(List<Item> items) {
     final headers = <Widget>[];
+    final length = items.length;
+    items.sort((Item item1, Item item2) =>
+        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
+        length + 1);
     items.forEach(
         (Item item) => headers.add(tabHeader(item, items.indexOf(item))));
     return headers;

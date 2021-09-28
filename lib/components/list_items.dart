@@ -11,6 +11,7 @@ import 'package:jellyflut/screens/details/template/components/items_collection/m
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ListItems extends StatefulWidget {
@@ -83,6 +84,10 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget dataBuilder(List<Item> items) {
+    final length = items.length;
+    items.sort((Item item1, Item item2) =>
+        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
+        length + 1);
     switch (widget.lisType) {
       case ListType.LIST:
         return listTitle(child: showItemsAsList(items), item: items.first);
@@ -123,12 +128,30 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget showItemsAsList(List<Item> items) {
+    final deviceType = getDeviceType(MediaQuery.of(context).size);
     return ListView.builder(
         itemCount: items.length,
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         physics: widget.physics,
-        itemBuilder: (context, index) => itemSelector(items.elementAt(index)));
+        itemBuilder: (context, index) => Column(
+              children: [
+                itemSelector(items.elementAt(index)),
+
+                // If item is not last and screen is mobile then we show a
+                // divider for better readability
+                if (deviceType == DeviceScreenType.mobile &&
+                    index + 1 < items.length)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 4, bottom: 4),
+                    child: Divider(
+                        height: 2,
+                        thickness: 2,
+                        color: Theme.of(context).primaryColor.withOpacity(0.2)),
+                  )
+              ],
+            ));
   }
 
   Widget itemSelector(Item item) {
@@ -140,10 +163,14 @@ class _ListItemsState extends State<ListItems> {
       case ItemType.MOVIE:
       case ItemType.EPISODE:
         // Episode items need height to avoir unbounded height
-        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: LIST_HEIGHT, minHeight: 50),
+            child: EpisodeItem(item: item));
       default:
         // Episode items need height to avoir unbounded height
-        return SizedBox(height: LIST_HEIGHT, child: EpisodeItem(item: item));
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: LIST_HEIGHT, minHeight: 50),
+            child: EpisodeItem(item: item));
     }
   }
 

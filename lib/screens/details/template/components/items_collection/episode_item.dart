@@ -55,6 +55,9 @@ class _EpisodeItemState extends State<EpisodeItem>
 
   Widget epsiodeItem() {
     final deviceType = getDeviceType(MediaQuery.of(context).size);
+    final rightPartPadding = deviceType == DeviceScreenType.mobile
+        ? const EdgeInsets.only(left: 0)
+        : const EdgeInsets.only(left: 8);
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -68,8 +71,9 @@ class _EpisodeItemState extends State<EpisodeItem>
           Expanded(
             flex: 6,
             child: Padding(
-                padding: const EdgeInsets.only(left: 8),
+                padding: rightPartPadding,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title(),
@@ -105,8 +109,12 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget title() {
+    final title = widget.item.indexNumber != null
+        ? '${widget.item.indexNumber} - ${widget.item.name}'
+        : '${widget.item.name}';
+
     return Flexible(
-      child: Text('${widget.item.indexNumber} - ${widget.item.name}',
+      child: Text(title,
           textAlign: TextAlign.left,
           style: Theme.of(context)
               .textTheme
