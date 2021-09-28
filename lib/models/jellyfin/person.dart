@@ -42,7 +42,11 @@ class Person {
         'ImageBlurHashes': imageBlurHashes?.toMap(),
       };
 
-      Item asItem() {
-        return Item(id: id, name: name,  type: ItemType.PERSON, imageBlurHashes: imageBlurHashes);
-      }
+  Item asItem() {
+    return Item(
+        id: id,
+        name: name,
+        type: ItemType.PERSON,
+        imageBlurHashes: imageBlurHashes);
+  }
 }
