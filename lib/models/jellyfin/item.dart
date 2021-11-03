@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'dart:io';
 
 // import 'package:fereader/fereader.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +26,11 @@ import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
-import 'package:jellyflut/screens/musicPlayer/commonPlayer/common_player.dart';
 import 'package:jellyflut/screens/stream/init_stream.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'album_artists.dart';
@@ -707,7 +706,7 @@ class Item {
     } else if (collectionType == CollectionType.MUSICVIDEOS) {
       return [ItemType.MUSICVIDEO];
     } else {
-      return [ItemType.FOLDER];
+      return [];
     }
   }
 
@@ -820,30 +819,16 @@ class Item {
       // return InitStreamingItemUtil.initFromItem(item: this);
       await customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
-      var commonPlayer;
-      if (Platform.isLinux || Platform.isWindows) {
-        final player = vlc.Player(id: audioPlayerId);
-        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
-      } else {
-        final assetsAudioPlayer =
-            AssetsAudioPlayer.withId(audioPlayerId.toString());
-        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
-            assetsAudioPlayer: assetsAudioPlayer);
+      if (musicProvider.getAudioPlayer == null) {
+        final audioPlayer = AudioPlayer();
+        musicProvider.setAudioPlayer(audioPlayer);
       }
-      musicProvider.setCommonPlayer(commonPlayer);
-      return await musicProvider.getCommonPlayer!.playRemoteAudio(this);
+      return await musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      var commonPlayer;
-      if (Platform.isLinux || Platform.isWindows) {
-        final player = vlc.Player(id: audioPlayerId);
-        commonPlayer = CommonPlayer.parseVlcComputerController(player: player);
-      } else {
-        final assetsAudioPlayer =
-            AssetsAudioPlayer.withId(audioPlayerId.toString());
-        commonPlayer = CommonPlayer.parseAssetsAudioPlayer(
-            assetsAudioPlayer: assetsAudioPlayer);
+      if (musicProvider.getAudioPlayer == null) {
+        final audioPlayer = AudioPlayer();
+        musicProvider.setAudioPlayer(audioPlayer);
       }
-      musicProvider.setCommonPlayer(commonPlayer);
       return await musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       await customRouter.push(BookReaderPageRoute(item: this));

@@ -1,16 +1,21 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/musicPlayer/commonPlayer/common_player.dart';
-import 'package:jellyflut/screens/musicPlayer/models/music_item.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut/theme.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
   // ignore: prefer_final_fields
-  List<MusicItem> _musicItems = [];
-  MusicItem? _currentlyPlayedMusicItem;
-  CommonPlayer? _commonPlayer;
+  ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: []);
+  AudioPlayer? _audioPlayer;
+  final _colorController = BehaviorSubject<AudioColors>();
 
   // Singleton
   static final MusicProvider _MusicProvider = MusicProvider._internal();
@@ -21,98 +26,115 @@ class MusicProvider extends ChangeNotifier {
 
   MusicProvider._internal();
 
-  CommonPlayer? get getCommonPlayer => _commonPlayer;
-  List<MusicItem> get getMusicItems => _musicItems;
-  MusicItem? get getCurrentMusic => _currentlyPlayedMusicItem;
+  AudioPlayer? get getAudioPlayer => _audioPlayer;
+  ConcatenatingAudioSource get getPlaylist => _playlist;
   Item? get getItemPlayer => _item;
+  Stream<AudioColors> get getColorcontroller => _colorController;
 
-  Stream<int?> playingIndex() {
-    return _commonPlayer!.listenPlayingindex();
+  void setAudioPlayer(AudioPlayer audioPlayer) {
+    _audioPlayer = audioPlayer;
   }
 
-  // TODO rework when playlist will be reordable
+  void setNewColors(final AudioColors audioColors) {
+    final audiocolors = AudioColors(
+        backgroundColor1: audioColors.backgroundColor1,
+        backgroundColor2: audioColors.backgroundColor2,
+        foregroundColor: audioColors.foregroundColor);
+    _colorController.add(audiocolors);
+  }
+
+  Stream<int?> playingIndex() {
+    return _audioPlayer!.currentIndexStream;
+  }
+
+  IndexedAudioSource? getCurrentMusic() {
+    return _audioPlayer?.sequenceState?.currentSource;
+  }
+
+  Stream<SequenceState?> getCurrentMusicStream() {
+    return _audioPlayer!.sequenceStateStream;
+  }
+
   void moveMusicItem(int oldIndex, int newIndex) {
-    final index = newIndex - 1;
-    final musicItem = _musicItems.removeAt(oldIndex);
-    _commonPlayer!.removeFromPlaylist(oldIndex);
-    _musicItems.insert(index, musicItem);
-    _commonPlayer!.insertIntoPlaylist(index, musicItem);
+    _playlist.move(oldIndex, newIndex);
     notifyListeners();
   }
 
-  void setPlayingIndex(int? index) {
-    if (index == null) throw ('index null');
-    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
-  }
-
-  void setCommonPlayer(CommonPlayer cp) {
-    _commonPlayer = cp;
-  }
-
-  void setCurrentMusic(MusicItem musicItem) {
-    _currentlyPlayedMusicItem = musicItem;
-  }
-
   void play() {
-    _commonPlayer!.play();
+    _audioPlayer!.play();
     notifyListeners();
   }
 
   void pause() {
-    _commonPlayer!.pause();
+    _audioPlayer!.pause();
     notifyListeners();
   }
 
+  Duration getDuration() {
+    return _audioPlayer?.duration ?? Duration.zero;
+  }
+
+  Stream<Duration?> getPositionStream() {
+    return _audioPlayer!.positionStream;
+  }
+
+  Stream<bool> isPlaying() {
+    return _audioPlayer!.playingStream;
+  }
+
   void seekTo(Duration duration) {
-    _commonPlayer!.seekTo(duration);
+    _audioPlayer!.seek(duration);
     notifyListeners();
   }
 
   void playAtIndex(int index) {
-    _commonPlayer!.playAtIndex(index);
-    _currentlyPlayedMusicItem = _musicItems.elementAt(index);
+    _audioPlayer!.seek(Duration.zero, index: index);
     notifyListeners();
   }
 
-  List<MusicItem> getPlayList() {
-    return _musicItems;
+  List<IndexedAudioSource> getPlayList() {
+    return _playlist.sequence;
   }
 
-  MusicItem getItemFromPlaylist(int index) {
-    return _musicItems.elementAt(index);
+  IndexedAudioSource getItemFromPlaylist(int index) {
+    return _playlist.sequence.elementAt(index);
   }
 
   /// insert item at end of playlist
   /// return index as int
-  int insertIntoPlaylist(MusicItem musicItem) {
-    _musicItems.add(musicItem);
+  void insertIntoPlaylist(AudioSource audioSource) {
+    _playlist.add(audioSource);
     notifyListeners();
-    return _musicItems.indexOf(musicItem);
   }
 
   void deleteFromPlaylist(int index) {
-    _musicItems.removeAt(index);
+    _playlist.removeAt(index);
     notifyListeners();
   }
 
   void next() {
-    _commonPlayer!.next();
+    _audioPlayer!.seekToNext();
     notifyListeners();
   }
 
   void previous() {
-    _commonPlayer!.previous();
+    _audioPlayer!.seekToPrevious();
     notifyListeners();
   }
 
-  void playRemoteAudio(Item item) async {
-    await _commonPlayer!.playRemoteAudio(item);
+  Future<void> playRemoteAudio(Item item) async {
+    final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
+    final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
+    await _playlist.add(audioSource);
+    await _audioPlayer?.setAudioSource(_playlist);
+    await _audioPlayer?.play();
     notifyListeners();
+    return;
   }
 
   Future<void> playPlaylist(Item item) async {
     await ItemService.getItems(parentId: item.id).then((value) async {
-      final indexToReturn = _musicItems.length;
+      final indexToReturn = _playlist.length;
       final items =
           value.items.where((_item) => _item.isFolder == false).toList();
       //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
@@ -120,8 +142,7 @@ class MusicProvider extends ChangeNotifier {
         final _item = items.elementAt(index);
         final streamURL =
             await StreamingService.contructAudioURL(itemId: _item.id);
-        final musicItem =
-            await MusicItem.parseFromItem(index, streamURL, _item);
+        final musicItem = await AudioMetadata.parseFromItem(streamURL, _item);
         insertIntoPlaylist(musicItem);
       }
       return indexToReturn;

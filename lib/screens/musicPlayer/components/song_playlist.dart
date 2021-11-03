@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/music_item.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
@@ -49,7 +50,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
     });
   }
 
-  Widget playlistListItem(int index, MusicItem musicItem) {
+  Widget playlistListItem(int index, IndexedAudioSource musicItem) {
     return Dismissible(
       key: ValueKey(musicItem),
       onDismissed: (direction) {
@@ -95,7 +96,8 @@ class _SongPlaylistState extends State<SongPlaylist> {
     );
   }
 
-  Widget playlistItem(int index, MusicItem musicItem) {
+  Widget playlistItem(int index, IndexedAudioSource musicItem) {
+    final metadata = musicItem.tag as AudioMetadata;
     return Row(
       children: [
         Padding(
@@ -113,22 +115,21 @@ class _SongPlaylistState extends State<SongPlaylist> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text(musicItem.title,
+                child: Text(metadata.title,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: widget.color)),
               ),
-              if (musicItem.artist != null)
-                Text(musicItem.artist!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: widget.color)),
-              if (musicItem.album != null)
-                Text(musicItem.album!,
+              Text(metadata.artist,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: widget.color)),
+              if (metadata.album != null)
+                Text(metadata.album!,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 14,

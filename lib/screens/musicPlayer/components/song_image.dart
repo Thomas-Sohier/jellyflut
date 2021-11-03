@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_slider.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
@@ -51,7 +53,14 @@ class _SongImageState extends State<SongImage> {
           child: SizedBox(
               width: widget.singleSize,
               height: widget.singleSize,
-              child: albumImage(widget.singleSize)),
+              child: StreamBuilder<SequenceState?>(
+                  stream: musicProvider.getCurrentMusicStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return albumImage(widget.singleSize);
+                    }
+                    return placeholder(widget.singleSize);
+                  })),
         ),
       ],
     );
@@ -66,20 +75,8 @@ class _SongImageState extends State<SongImage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                musicProvider.getCurrentMusic != null
-                    ? OctoImage(
-                        image:
-                            MemoryImage(musicProvider.getCurrentMusic!.image!),
-                        placeholderBuilder: (_) => placeholder(singleSize),
-                        errorBuilder: (context, error, e) =>
-                            placeholder(singleSize),
-                        fadeInDuration: Duration(milliseconds: 300),
-                        fit: BoxFit.cover,
-                        gaplessPlayback: true,
-                        alignment: Alignment.center,
-                        width: singleSize,
-                        height: singleSize,
-                      )
+                musicProvider.getCurrentMusic() != null
+                    ? imageFromByte(singleSize)
                     : placeholder(singleSize),
                 Positioned.fill(
                     child: Align(
@@ -91,6 +88,22 @@ class _SongImageState extends State<SongImage> {
             )),
       )
     ]);
+  }
+
+  OctoImage imageFromByte(double singleSize) {
+    final currentMusic = musicProvider.getCurrentMusic();
+    final metadata = currentMusic!.tag as AudioMetadata;
+    return OctoImage(
+      image: MemoryImage(metadata.artworkByte),
+      placeholderBuilder: (_) => placeholder(singleSize),
+      errorBuilder: (context, error, e) => placeholder(singleSize),
+      fadeInDuration: Duration(milliseconds: 300),
+      fit: BoxFit.cover,
+      gaplessPlayback: true,
+      alignment: Alignment.center,
+      width: singleSize,
+      height: singleSize,
+    );
   }
 
   Widget placeholder(double size) {
@@ -124,10 +137,9 @@ class _SongImageState extends State<SongImage> {
     final localOffset = box.globalToLocal(details.globalPosition);
     posx = localOffset.dx;
     var percentWidth = posx / widgetWidth!;
-    var duration = musicProvider.getCommonPlayer!.getDuration() * percentWidth;
-    if (duration.inMilliseconds > 0 &&
-        duration < musicProvider.getCommonPlayer!.getDuration()) {
-      musicProvider.getCommonPlayer!.seekTo(duration);
+    var duration = musicProvider.getDuration() * percentWidth;
+    if (duration.inMilliseconds > 0 && duration < musicProvider.getDuration()) {
+      musicProvider.seekTo(duration);
     }
   }
 }

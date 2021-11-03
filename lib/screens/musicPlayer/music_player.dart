@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_headerBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:provider/provider.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
@@ -30,17 +34,13 @@ class _MusicPlayerState extends State<MusicPlayer> {
     super.initState();
     backgroundColor1 = jellyLightPurple;
     backgroundColor2 = jellyDarkPurple;
-    foregroundColor = Colors.black;
+    foregroundColor = Colors.white;
     musicProvider = MusicProvider();
-    musicProvider.getCommonPlayer!
-        .listenPlayingindex()
-        .listen((event) => setState(() {
-              musicProvider.setPlayingIndex(event);
-            }));
-    // musicPlayerIndex = musicPlayer.assetsAudioPlayer.current.value!.index;
-    setAlbumPrimaryColor();
-    setForegroundColorFromBackground();
-    // playerListener();
+    musicProvider
+        .getCurrentMusicStream()
+        .listen((SequenceState? sequenceState) {
+      setAlbumPrimaryColor();
+    });
   }
 
   @override
@@ -50,9 +50,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicProvider>(builder: (context, mp, child) {
-      return player();
-    });
+    return player();
   }
 
   Widget player() {
@@ -63,12 +61,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
     return Scaffold(
         extendBody: false,
         backgroundColor: Colors.grey.shade900,
-        body: ChangeNotifierProvider.value(
-            value: musicProvider,
-            child: ResponsiveBuilder.builder(
-                mobile: () => phoneTemplate(height, statusBarHeight),
-                tablet: () => largeScreenTemplate(height, statusBarHeight),
-                desktop: () => largeScreenTemplate(height, statusBarHeight))));
+        body: ResponsiveBuilder.builder(
+            mobile: () => phoneTemplate(height, statusBarHeight),
+            tablet: () => largeScreenTemplate(height, statusBarHeight),
+            desktop: () => largeScreenTemplate(height, statusBarHeight)));
   }
 
   Widget largeScreenTemplate(double height, double statusBarHeight) {
@@ -161,24 +157,24 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   void setAlbumPrimaryColor() {
-    final image = musicProvider.getCurrentMusic?.image;
-    if (image != null) {
-      PaletteGenerator.fromImageProvider(MemoryImage(image))
-          .then((PaletteGenerator value) => setState(() => {
-                setBackground(
-                    value.paletteColors[0].color, value.paletteColors[1].color),
-                setForegroundColorFromBackground()
-              }));
+    final currentMusic = musicProvider.getCurrentMusic();
+    if (currentMusic != null) {
+      final metadata = currentMusic.tag as AudioMetadata;
+      PaletteGenerator.fromImageProvider(MemoryImage(metadata.artworkByte))
+          .then((PaletteGenerator value) {
+        final backgroundColor1 = value.paletteColors[0].color;
+        final backgroundColor2 = value.paletteColors[1].color;
+        final foregroundColor = getForegroundColorFromColor(backgroundColor1);
+        final audioColors = AudioColors(
+            backgroundColor1: backgroundColor1,
+            backgroundColor2: backgroundColor2,
+            foregroundColor: foregroundColor);
+        musicProvider.setNewColors(audioColors);
+      });
     }
   }
 
-  void setBackground(Color color1, Color color2) {
-    backgroundColor1 = color1;
-    backgroundColor2 = color2;
-  }
-
-  void setForegroundColorFromBackground() {
-    foregroundColor =
-        backgroundColor1.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+  Color getForegroundColorFromColor(Color color) {
+    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 }

@@ -13,16 +13,15 @@ module:
 
 dependencies:
   archive: ^3.1.2
-  assets_audio_player: ^3.0.3+6
   audio_video_progress_bar: ^0.9.0
-  auto_route: ^2.4.2
-  better_player: ^0.0.76
+  auto_route: ^3.0.4
+  better_player: ^0.0.77
   bloc: ^7.2.1
   blurhash_dart: ^1.0.2
   cached_network_image: ^3.1.0
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.3
-  dart_vlc: ^0.1.7
+  dart_vlc: ^0.1.8
   device_info_plus: ^2.1.0
   dio: ^4.0.0
   easy_localization: ^3.0.0
@@ -37,6 +36,8 @@ dependencies:
   flutter_svg: ^0.22.0
   flutter_vlc_player: ^6.0.4
   fluttertoast: ^8.0.8
+  just_audio: ^0.9.15
+  just_audio_libwinmedia: ^0.0.4
   moor: ^4.5.0
   octo_image: ^1.0.0+1
   package_info_plus: ^1.0.6
@@ -65,7 +66,7 @@ dependencies:
   youtube_explode_dart: ^1.10.6
 
 dev_dependencies:
-  auto_route_generator: ^2.4.1
+  auto_route_generator: ^3.0.1
   build_runner: ^2.1.2
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^1.2.3

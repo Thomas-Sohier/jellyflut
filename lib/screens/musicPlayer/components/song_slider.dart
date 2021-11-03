@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 
 class SongSlider extends StatefulWidget {
   final List<Color> albumColors;
@@ -19,7 +20,6 @@ class _SongSliderState extends State<SongSlider> {
   void initState() {
     super.initState();
     musicProvider = MusicProvider();
-    // playerListener();
   }
 
   @override
@@ -29,22 +29,23 @@ class _SongSliderState extends State<SongSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Duration?>(
-      stream: musicProvider.getCommonPlayer!.getCurrentPosition(),
-      builder: (context, snapshot) => FractionallySizedBox(
-          widthFactor: getSliderSize(snapshot.data),
-          child: Container(
-            color: widget.albumColors.first.withAlpha(150),
-          )),
-    );
+    return StreamBuilder<AudioColors>(
+        stream: musicProvider.getColorcontroller,
+        initialData: AudioColors(),
+        builder: (context, snapshotColor) => StreamBuilder<Duration?>(
+              stream: musicProvider.getPositionStream(),
+              builder: (context, snapshotPosition) => FractionallySizedBox(
+                  widthFactor: getSliderSize(snapshotPosition.data),
+                  child: Container(
+                    color: snapshotColor.data!.backgroundColor1.withAlpha(150),
+                  )),
+            ));
   }
 
   double getSliderSize(Duration? currentPosition) {
-    if (currentPosition == null ||
-        musicProvider.getCommonPlayer?.getDuration() == null) {
-      return 0;
-    }
+    if (currentPosition == null) return 0;
+
     return currentPosition.inMilliseconds.toDouble() /
-        musicProvider.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
+        musicProvider.getDuration().inMilliseconds.toDouble();
   }
 }

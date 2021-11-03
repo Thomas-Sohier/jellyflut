@@ -16,18 +16,11 @@
     <uses-sdk
         android:minSdkVersion="21"
         android:targetSdkVersion="30" />
-    <!-- <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
-        </intent>
-    </queries> -->
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="jellyflut"
         android:banner="@drawable/banner"
         android:icon="@mipmap/ic_launcher">
-
 
         <activity
             android:name=".MainActivity"

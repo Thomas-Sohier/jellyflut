@@ -95,6 +95,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
         fields:
             'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
         imageTypeLimit: 1,
+        recursive: false,
         startIndex: startIndex,
         includeItemTypes: item
             .getCollectionType()

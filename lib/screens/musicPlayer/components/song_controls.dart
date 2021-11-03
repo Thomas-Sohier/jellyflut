@@ -4,6 +4,7 @@ import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:jellyflut/screens/musicPlayer/components/next_button.dart';
 import 'package:jellyflut/screens/musicPlayer/components/prev_button.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
@@ -37,29 +38,31 @@ class _SongControlsState extends State<SongControls> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicProvider>(builder: (context, mp, child) {
-      return controls();
-    });
+    return StreamBuilder<AudioColors>(
+        stream: musicProvider.getColorcontroller,
+        initialData: AudioColors(),
+        builder: (context, snapshotColor) => controls(snapshotColor.data!));
   }
 
-  Widget controls() {
+  Widget controls(final AudioColors audioColors) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         PrevButton(
-            color: widget.color, backgroundColor: widget.backgroundColor),
+            color: audioColors.foregroundColor,
+            backgroundColor: audioColors.backgroundColor2),
         Padding(
           padding: const EdgeInsets.only(left: 24, right: 24),
           child: Container(
               height: 72,
               width: 72,
               decoration: BoxDecoration(
-                  color: widget.backgroundColor,
+                  color: audioColors.backgroundColor2,
                   boxShadow: shadows,
                   shape: BoxShape.circle),
               child: StreamBuilder<bool>(
-                stream: musicProvider.getCommonPlayer!.isPlaying(),
+                stream: musicProvider.isPlaying(),
                 builder: (context, snapshot) => OutlinedButtonSelector(
                     onPressed: () => isPlaying(snapshot.data)
                         ? musicProvider.pause()
@@ -68,12 +71,14 @@ class _SongControlsState extends State<SongControls> {
                     shape: CircleBorder(),
                     child: Icon(
                       isPlaying(snapshot.data) ? Icons.pause : Icons.play_arrow,
-                      color: widget.color,
+                      color: audioColors.foregroundColor,
                       size: 42,
                     )),
               )),
         ),
-        NextButton(color: widget.color, backgroundColor: widget.backgroundColor)
+        NextButton(
+            color: audioColors.foregroundColor,
+            backgroundColor: audioColors.backgroundColor2)
       ],
     );
   }

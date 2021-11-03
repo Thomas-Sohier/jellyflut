@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/screens/musicPlayer/music_player.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:provider/provider.dart';
@@ -31,22 +32,13 @@ class MusicPlayerFAB extends StatefulWidget {
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   late final Duration musicDuration;
   late final MusicProvider musicPlayer;
+  AudioMetadata? audioMetadata;
 
   @override
   void initState() {
     super.initState();
     musicPlayer = MusicProvider();
-    musicDuration =
-        musicPlayer.getCommonPlayer?.getDuration() ?? Duration(seconds: 0);
-    if (musicPlayer.getCommonPlayer != null) {
-      musicPlayer.getCommonPlayer!
-          .listenPlayingindex()
-          .listen((event) => setState(() {
-                musicPlayer.setPlayingIndex(event);
-              }));
-    }
-    // musicPlayerIn
-    // playerListener();
+    musicDuration = musicPlayer.getDuration();
   }
 
   @override
@@ -74,6 +66,9 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   Widget body(MusicProvider musicPlayer) {
+    if (musicPlayer.getCurrentMusic() != null) {
+      audioMetadata = musicPlayer.getCurrentMusic()?.tag;
+    }
     return Hero(
         tag: 'musicPlayerFAB',
         child: Material(
@@ -104,15 +99,14 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                         children: [
                           Expanded(
                               child: Text(
-                            musicPlayer.getCurrentMusic?.title ?? '',
+                            audioMetadata?.title ?? '',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white),
                           )),
                           Expanded(
                               child: StreamBuilder<Duration?>(
-                                  stream: musicPlayer.getCommonPlayer!
-                                      .getCurrentPosition(),
+                                  stream: musicPlayer.getPositionStream(),
                                   builder: (context, snapshot) => Slider(
                                         activeColor: Colors.white,
                                         inactiveColor: Colors.white12,
@@ -130,7 +124,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                       flex: 1,
                       child: Center(
                           child: StreamBuilder<bool>(
-                        stream: musicPlayer.getCommonPlayer!.isPlaying(),
+                        stream: musicPlayer.isPlaying(),
                         builder: (context, snapshot) => InkWell(
                           onTap: () => isPlaying(snapshot.data)
                               ? musicPlayer.pause()
@@ -150,19 +144,13 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   double getSliderSize(Duration? currentPosition) {
-    if (currentPosition == null ||
-        musicPlayer.getCommonPlayer?.getDuration() == null) {
-      return 0;
-    }
+    if (currentPosition == null) return 0;
     return currentPosition.inMilliseconds.toDouble();
   }
 
   double getSliderMaxSize(Duration? duration) {
-    if (duration == null ||
-        musicPlayer.getCommonPlayer?.getDuration() == null) {
-      return 0;
-    }
-    return musicPlayer.getCommonPlayer!.getDuration().inMilliseconds.toDouble();
+    if (duration == null) return 0;
+    return musicPlayer.getDuration().inMilliseconds.toDouble();
   }
 
   bool isPlaying(bool? isplaying) {
@@ -171,9 +159,6 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   bool isInit() {
-    if (musicPlayer.getCommonPlayer != null) {
-      return musicPlayer.getCommonPlayer!.isInit();
-    }
-    return false;
+    return musicPlayer.getAudioPlayer != null;
   }
 }
