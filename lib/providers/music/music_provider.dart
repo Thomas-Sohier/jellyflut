@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
-import 'package:jellyflut/theme.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 

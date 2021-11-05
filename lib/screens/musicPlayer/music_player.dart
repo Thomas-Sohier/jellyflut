@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_headerBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
@@ -10,7 +9,6 @@ import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';

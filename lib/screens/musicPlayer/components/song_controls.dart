@@ -5,7 +5,6 @@ import 'package:jellyflut/screens/details/template/components/items_collection/o
 import 'package:jellyflut/screens/musicPlayer/components/next_button.dart';
 import 'package:jellyflut/screens/musicPlayer/components/prev_button.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
-import 'package:provider/provider.dart';
 
 class SongControls extends StatefulWidget {
   final Color color;
