@@ -150,10 +150,13 @@ class CommonStreamBP {
       enableQualities: false,
       showControlsOnInitialize: false,
       playerTheme: BetterPlayerTheme.custom,
-      customControlsBuilder: (controller) => CommonControls(),
+      customControlsBuilder: (controller, onPlayerVisibilityChanged) =>
+          CommonControls(),
       controlBarHeight: 40,
     );
   }
+
+  void onPlayerVisibilityChanged() {}
 
   static List<BetterPlayerSubtitlesSource> _getSubtitlesBP(Item item) {
     // ignore: omit_local_variable_types

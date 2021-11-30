@@ -1,5 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:logging/logging.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 class DeviceInfo {
@@ -10,6 +11,14 @@ class DeviceInfo {
   DeviceInfo({required this.host, required this.model, required this.id});
 
   static Future<DeviceInfo> getCurrentDeviceInfo() async {
+    return loadCurrentDeviceInfo().catchError((error, stacktrace) {
+      log('Cannot load device info', level: Level.WARNING.value, error: error);
+      return Future.value(
+          DeviceInfo(host: 'Unknown', id: 'Unknown', model: 'Unknown'));
+    });
+  }
+
+  static Future<DeviceInfo> loadCurrentDeviceInfo() async {
     var deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       final androidInfo = await deviceInfoPlugin.androidInfo;

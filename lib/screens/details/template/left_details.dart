@@ -29,8 +29,7 @@ class LeftDetails extends StatelessWidget {
         ClipRect(
             clipBehavior: Clip.hardEdge,
             child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17),
-                child: Container(color: Colors.white.withOpacity(0.2)))),
+                filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17))),
         Padding(
           padding: const EdgeInsets.fromLTRB(24, 64, 24, 12),
           child: Center(
