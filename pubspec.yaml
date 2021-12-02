@@ -48,7 +48,10 @@ dependencies:
   photo_view: ^0.13.0
   provider: ^6.0.1
   reactive_forms: ^10.6.5
-  responsive_builder: ^0.4.1
+  responsive_builder:
+      git:
+        url: git://github.com/georgeherby/responsive_builder.git
+        ref: master
   rxdart: ^0.27.3
   salomon_bottom_bar: ^3.1.0
   settings_ui: ^1.0.0

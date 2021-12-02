@@ -20,8 +20,9 @@ class PlaceholderScreen extends StatelessWidget {
     final item = this.item!;
     return AsyncImage(
       item: item,
-      boxFit: BoxFit.cover,
+      boxFit: BoxFit.fitHeight,
       tag: ImageType.BACKDROP,
+      showParent: true,
     );
   }
 }

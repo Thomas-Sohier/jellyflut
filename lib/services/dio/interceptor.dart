@@ -16,9 +16,8 @@ BaseOptions options = BaseOptions(
 Dio dio = Dio(options)
   ..interceptors.addAll(
     [
-      InterceptorsWrapper(onRequest: (RequestOptions requestOptions,
+      QueuedInterceptorsWrapper(onRequest: (RequestOptions requestOptions,
           RequestInterceptorHandler handler) async {
-        dio.interceptors.requestLock.lock();
         var token = apiKey;
         var authEmby = await authHeader();
         if (token != null) {
@@ -27,7 +26,6 @@ Dio dio = Dio(options)
         }
         requestOptions.headers['X-Emby-Authorization'] = authEmby;
         handler.next(requestOptions);
-        dio.interceptors.requestLock.unlock();
       })
     ],
   );

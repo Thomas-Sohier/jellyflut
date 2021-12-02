@@ -969,9 +969,11 @@ packages:
   responsive_builder:
     dependency: "direct main"
     description:
-      name: responsive_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "0475688bb26f6d1f5966be1b9a371f02a136da45"
+      url: "git://github.com/georgeherby/responsive_builder.git"
+    source: git
     version: "0.4.1"
   rxdart:
     dependency: "direct main"
