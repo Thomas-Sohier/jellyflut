@@ -76,8 +76,7 @@ class Server extends DataClass implements Insertable<Server> {
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(url.hashCode, name.hashCode)));
+  int get hashCode => Object.hash(id, url, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -323,14 +322,8 @@ class User extends DataClass implements Insertable<User> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          name.hashCode,
-          $mrjc(
-              password.hashCode,
-              $mrjc(apiKey.hashCode,
-                  $mrjc(settingsId.hashCode, serverId.hashCode))))));
+  int get hashCode =>
+      Object.hash(id, name, password, apiKey, settingsId, serverId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -635,12 +628,8 @@ class Setting extends DataClass implements Insertable<Setting> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          preferredPlayer.hashCode,
-          $mrjc(preferredTranscodeAudioCodec.hashCode,
-              $mrjc(maxVideoBitrate.hashCode, maxAudioBitrate.hashCode)))));
+  int get hashCode => Object.hash(id, preferredPlayer,
+      preferredTranscodeAudioCodec, maxVideoBitrate, maxAudioBitrate);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

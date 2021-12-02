@@ -1,3 +1,7 @@
+// **************************************************************************
+// AutoRouteGenerator
+// **************************************************************************
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -138,11 +142,16 @@ class AppRouter extends _i11.RootStackRouter {
         _i11.RouteConfig(HomeRouter.name, path: 'home', guards: [
           authGuard
         ], children: [
-          _i11.RouteConfig(HomeRoute.name, path: ''),
+          _i11.RouteConfig(HomeRoute.name, path: '', parent: HomeRouter.name),
           _i11.RouteConfig(CollectionRoute.name,
-              path: 'collection-parent', guards: [authGuard]),
+              path: 'collection-parent',
+              parent: HomeRouter.name,
+              guards: [authGuard]),
           _i11.RouteConfig('*#redirect',
-              path: '*', redirectTo: '', fullMatch: true)
+              path: '*',
+              parent: HomeRouter.name,
+              redirectTo: '',
+              fullMatch: true)
         ]),
         _i11.RouteConfig(CollectionParentRoute.name,
             path: '/collection-parent', guards: [authGuard]),
@@ -176,6 +185,11 @@ class AuthParentRouteArgs {
   final _i12.Key? key;
 
   final void Function()? onAuthenticated;
+
+  @override
+  String toString() {
+    return 'AuthParentRouteArgs{key: $key, onAuthenticated: $onAuthenticated}';
+  }
 }
 
 /// generated route for [_i2.HomeParent]
@@ -193,6 +207,11 @@ class HomeRouterArgs {
   const HomeRouterArgs({this.key});
 
   final _i12.Key? key;
+
+  @override
+  String toString() {
+    return 'HomeRouterArgs{key: $key}';
+  }
 }
 
 /// generated route for [_i3.CollectionParent]
@@ -210,6 +229,11 @@ class CollectionParentRouteArgs {
   const CollectionParentRouteArgs({required this.item});
 
   final _i14.Item item;
+
+  @override
+  String toString() {
+    return 'CollectionParentRouteArgs{item: $item}';
+  }
 }
 
 /// generated route for [_i4.Details]
@@ -228,6 +252,11 @@ class DetailsRouteArgs {
   final _i14.Item item;
 
   final String? heroTag;
+
+  @override
+  String toString() {
+    return 'DetailsRouteArgs{item: $item, heroTag: $heroTag}';
+  }
 }
 
 /// generated route for [_i5.Settings]
@@ -249,6 +278,11 @@ class MusicPlayerRouteArgs {
   const MusicPlayerRouteArgs({this.key});
 
   final _i12.Key? key;
+
+  @override
+  String toString() {
+    return 'MusicPlayerRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for [_i7.Playlist]
@@ -274,6 +308,11 @@ class PlaylistRouteArgs {
   final _i12.Widget body;
 
   final _i12.ThemeData playlistTheme;
+
+  @override
+  String toString() {
+    return 'PlaylistRouteArgs{key: $key, body: $body, playlistTheme: $playlistTheme}';
+  }
 }
 
 /// generated route for [_i8.Stream]
@@ -291,6 +330,11 @@ class StreamRouteArgs {
   final _i14.Item? item;
 
   final String? url;
+
+  @override
+  String toString() {
+    return 'StreamRouteArgs{item: $item, url: $url}';
+  }
 }
 
 /// generated route for [_i9.BookReaderPage]
@@ -308,6 +352,11 @@ class BookReaderPageRouteArgs {
   final _i12.Key? key;
 
   final _i14.Item item;
+
+  @override
+  String toString() {
+    return 'BookReaderPageRouteArgs{key: $key, item: $item}';
+  }
 }
 
 /// generated route for [_i10.Home]
@@ -330,4 +379,9 @@ class CollectionRouteArgs {
   const CollectionRouteArgs({required this.item});
 
   final _i14.Item item;
+
+  @override
+  String toString() {
+    return 'CollectionRouteArgs{item: $item}';
+  }
 }
