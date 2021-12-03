@@ -15,7 +15,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="${applicationName}"
-        android:label="jellyflut"
+        android:label="${applicationLabel}"
         android:banner="@drawable/banner"
         android:icon="@mipmap/ic_launcher">
 
