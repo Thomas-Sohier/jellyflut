@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/shared/json_serializer.dart';
 
 import 'parser.dart';
 
@@ -161,6 +163,32 @@ class ItemService {
           queryParameters: queryParams);
       if (response.data == null) throw ('Missing data');
       return foundation.compute(parseCategory, response.data!);
+    } catch (e, stacktrace) {
+      log(e.toString(), stackTrace: stacktrace, level: 5);
+      rethrow;
+    }
+  }
+
+  static Future<Category> updateItemFromObject({required Item item}) async {
+    final url = '${server.url}/Items/${item.id}';
+
+    try {
+      final response = await dio.post<Map<String, dynamic>>(url, data: item);
+      return foundation.compute(parseCategory, response.data!);
+    } catch (e, stacktrace) {
+      log(e.toString(), stackTrace: stacktrace, level: 5);
+      rethrow;
+    }
+  }
+
+  static Future<void> updateItemFromForm(
+      {required String id, required Map<String, Object?> form}) async {
+    final url = '${server.url}/Items/$id';
+
+    try {
+      final payload =
+          json.encode(form, toEncodable: JsonSerializer.jellyfinSerializer);
+      await dio.post(url, data: payload);
     } catch (e, stacktrace) {
       log(e.toString(), stackTrace: stacktrace, level: 5);
       rethrow;

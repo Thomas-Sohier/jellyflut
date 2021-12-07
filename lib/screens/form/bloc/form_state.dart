@@ -16,3 +16,11 @@ class FormMovieState extends FormState {
     return FormMovieState(name: name ?? this.name, form: form);
   }
 }
+
+/// Book loaded.
+class FormErrorState extends FormState {
+  final String error;
+
+  FormErrorState({required this.error, required FormGroup form})
+      : super(form: form);
+}

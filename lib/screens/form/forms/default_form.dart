@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class DefaultForm extends StatelessWidget {
@@ -9,14 +13,18 @@ class DefaultForm extends StatelessWidget {
   DefaultForm({required this.item});
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        'title': FormControl<String>(
+        FieldsEnum.NAME.getName(): FormControl<String>(
           value: item.name,
           validators: [Validators.required],
         ),
-        'original_title': FormControl<String>(value: item.originalTitle),
-        'year': FormControl<int>(value: item.productionYear),
-        'overview': FormControl<String>(value: item.overview),
-        'date_added': FormControl<DateTime>(value: item.dateCreated)
+        FieldsEnum.ORIGINALTITLE.getName():
+            FormControl<String>(value: item.originalTitle),
+        FieldsEnum.PRODUCTIONYEAR.getName():
+            FormControl<int>(value: item.productionYear),
+        FieldsEnum.OVERVIEW.getName():
+            FormControl<String>(value: item.overview),
+        FieldsEnum.DATECREATED.getName():
+            FormControl<DateTime>(value: item.dateCreated)
       });
 
   @override
@@ -24,6 +32,8 @@ class DefaultForm extends StatelessWidget {
     return ReactiveFormBuilder(
       form: buildForm,
       builder: (context, form, child) {
+        BlocProvider.of<FormBloc>(context)
+            .add(CurrentForm(formGroup: form, item: item));
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -32,11 +42,11 @@ class DefaultForm extends StatelessWidget {
               const SizedBox(height: 24.0),
               OriginalTitleField(form: form),
               const SizedBox(height: 24.0),
-              DateAddedField(form: form),
-              const SizedBox(height: 24.0),
-              YearField(form: form),
+              ProductionYearField(form: form),
               const SizedBox(height: 24.0),
               OverviewField(form: form),
+              const SizedBox(height: 24.0),
+              DateCreatedField(form: form),
             ],
           ),
         );

@@ -20,4 +20,11 @@ class PasswordChanged extends FormEvent {
 
 class PasswordUnfocused extends FormEvent {}
 
+class CurrentForm extends FormEvent {
+  const CurrentForm({required this.formGroup, required this.item});
+
+  final FormGroup formGroup;
+  final Item item;
+}
+
 class FormSubmitted extends FormEvent {}

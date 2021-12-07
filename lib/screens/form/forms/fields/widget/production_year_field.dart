@@ -1,15 +1,15 @@
 part of '../fields.dart';
 
-class YearField extends StatelessWidget {
+class ProductionYearField extends StatelessWidget {
   final FormGroup form;
-  const YearField({Key? key, required this.form}) : super(key: key);
+  const ProductionYearField({Key? key, required this.form}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<int>(
-        formControlName: 'year',
+        formControlName: FieldsEnum.PRODUCTIONYEAR.getName(),
         keyboardType: TextInputType.number,
-        onSubmitted: () => form.focus('overview'),
+        onSubmitted: () => form.focus(FieldsEnum.OVERVIEW.getName()),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: 'Year',

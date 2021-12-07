@@ -28,21 +28,28 @@ class ManageButton extends StatelessWidget {
   }
 
   Widget editInfos(BuildContext context) {
-    return AlertDialog(
-        title: Text('edit_infos'.tr()),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: CancelButton(onPressed: customRouter.pop),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: SubmitButton(onPressed: () => {}))
-        ],
-        content: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: 300, maxHeight: 700, minWidth: 350, maxWidth: 500),
-            child: FormBuilder(item: item)));
+    return BlocProvider.value(
+        value: BlocProvider.of<FormBloc>(context),
+        child: AlertDialog(
+            title: Text('edit_infos'.tr()),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: CancelButton(onPressed: customRouter.pop),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: SubmitButton(
+                      onPressed: () => BlocProvider.of<FormBloc>(context)
+                          .add(FormSubmitted())))
+            ],
+            content: ConstrainedBox(
+                constraints: BoxConstraints(
+                    minHeight: 300,
+                    maxHeight: 700,
+                    minWidth: 350,
+                    maxWidth: 500),
+                child: FormBuilder(item: item))));
   }
 
   Widget editInfosFullscreen(BuildContext context) {

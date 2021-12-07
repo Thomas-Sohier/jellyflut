@@ -1,14 +1,14 @@
 part of '../fields.dart';
 
-class DateAddedField extends StatelessWidget {
+class DateCreatedField extends StatelessWidget {
   final FormGroup form;
-  const DateAddedField({Key? key, required this.form}) : super(key: key);
+  const DateCreatedField({Key? key, required this.form}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<DateTime>(
-        formControlName: FieldsEnum.DATEADDED.getValue(),
-        onSubmitted: () => form.focus(FieldsEnum.PREMIEREDATE.getValue()),
+        formControlName: FieldsEnum.DATECREATED.getName(),
+        onSubmitted: () => form.focus(FieldsEnum.PREMIEREDATE.getName()),
         readOnly: true,
         decoration: InputDecoration(
           labelText: 'Date added',
@@ -19,7 +19,7 @@ class DateAddedField extends StatelessWidget {
           enabledBorder: ENABLED_BORDER,
           focusedBorder: FOCUSED_BORDER,
           suffixIcon: ReactiveDatePicker<DateTime>(
-            formControlName: FieldsEnum.DATEADDED.getValue(),
+            formControlName: FieldsEnum.DATECREATED.getName(),
             firstDate: DateTime(1900),
             lastDate: DateTime(2100),
             builder: (context, picker, child) {
