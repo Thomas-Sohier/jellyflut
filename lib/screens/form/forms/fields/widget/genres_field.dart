@@ -25,20 +25,20 @@ class GenresField extends StatelessWidget {
             itemCount: item.genreItems?.length ?? 0,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
-                personItem(item.genreItems?.elementAt(index), index, context),
+                genreItem(item.genreItems?.elementAt(index), index, context),
           ),
         ),
       ],
     );
   }
 
-  Widget personItem(GenreItem? genreItem, int index, BuildContext context) {
+  Widget genreItem(GenreItem? genreItem, int index, BuildContext context) {
     if (genreItem == null) return SizedBox();
     final headlineColor = Theme.of(context).textTheme.headline6!.color;
     return SizedBox(
       height: ITEM_HEIGHT,
       child: Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 8),
+        padding: const EdgeInsets.only(top: 4, bottom: 4),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -48,12 +48,12 @@ class GenresField extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
-                        .copyWith(color: headlineColor!.withAlpha(180))),
+                        .subtitle1!
+                        .copyWith(color: headlineColor!.withAlpha(210))),
               ),
               Spacer(),
               IconButton(
-                  onPressed: () => item.people?.removeAt(index),
+                  onPressed: () => item.genres?.removeAt(index),
                   hoverColor: Colors.red.withOpacity(0.1),
                   icon: Icon(Icons.delete_outline, color: Colors.red))
             ]),

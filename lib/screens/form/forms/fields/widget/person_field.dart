@@ -15,7 +15,7 @@ class PersonField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Persons', style: Theme.of(context).textTheme.headline6),
+        Text('Persons', style: Theme.of(context).textTheme.subtitle1),
         SizedBox(height: 24),
         SizedBox(
           height: (ITEM_HEIGHT * (item.people?.length ?? 0)).toDouble(),
@@ -27,7 +27,7 @@ class PersonField extends StatelessWidget {
             itemBuilder: (context, index) => PersonItem(
                 person: item.people?.elementAt(index),
                 height: ITEM_HEIGHT,
-                onPressed: () => {}),
+                onPressed: () => item.people!.removeAt(index)),
           ),
         ),
       ],

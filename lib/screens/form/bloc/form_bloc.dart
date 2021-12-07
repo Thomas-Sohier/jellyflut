@@ -26,11 +26,11 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     } else if (event is FormSubmitted) {
       formGroup.markAllAsTouched();
       if (formGroup.valid) {
+        // Add necesary data to the item to uodate it
         final form = Map<String, Object?>.from(formGroup.value);
         _defaultRequiredValue(form);
-        log('ok');
-        log(json.encode(form.toString(),
-            toEncodable: JsonSerializer.jellyfinSerializer));
+
+        // Update item
         await ItemService.updateItemFromForm(id: item.id, form: form)
             .then((value) => null)
             .catchError((error) {
@@ -38,18 +38,6 @@ class FormBloc extends Bloc<FormEvent, FormState> {
           // yield FormErrorState(form: formGroup, error: error.toString());
         });
       }
-      // final email = Email.dirty(state.email.value);
-      // final password = Password.dirty(state.password.value);
-      // yield state.copyWith(
-      //   email: email,
-      //   password: password,
-      //   status: Formz.validate([email, password]),
-      // );
-      // if (state.status.isValidated) {
-      //   yield state.copyWith(status: FormzStatus.submissionInProgress);
-      //   await Future<void>.delayed(const Duration(seconds: 1));
-      //   yield state.copyWith(status: FormzStatus.submissionSuccess);
-      // }
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart' as form;
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'forms/movie_form.dart';
@@ -37,7 +38,11 @@ class FormBuilderState extends State<FormBuilder> {
           default:
         }
       },
-      child: formSelector(widget.item),
+      child: Theme(
+          data: personnal_theme.Theme.defaultThemeData.copyWith(
+              textTheme:
+                  personnal_theme.Theme.getTextThemeWithColor(Colors.white)),
+          child: formSelector(widget.item)),
     );
   }
 

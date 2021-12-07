@@ -47,9 +47,14 @@ class TagsField extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Flexible(child: Text(tag.capitalize())),
+                Flexible(
+                    child: Text(
+                  tag.capitalize(),
+                  style: Theme.of(context).textTheme.subtitle1,
+                )),
                 IconButton(
-                    onPressed: () => {},
+                    onPressed: () =>
+                        item.tags!.removeAt(item.tags!.indexOf(tag)),
                     padding: EdgeInsets.zero,
                     icon: Icon(
                       Icons.remove_circle_outline,

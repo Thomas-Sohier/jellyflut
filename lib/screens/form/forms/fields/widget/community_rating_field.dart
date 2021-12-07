@@ -7,13 +7,13 @@ class CommunityRatingField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<double>(
-        formControlName: 'community_rating',
+        formControlName: FieldsEnum.COMMUNITYRATING.getName(),
         validationMessages: (control) => {
               ValidationMessage.required:
                   'The original title must not be empty',
             },
         keyboardType: TextInputType.number,
-        onSubmitted: () => form.focus('overview'),
+        onSubmitted: () => form.focus(FieldsEnum.OVERVIEW.getName()),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: 'Community rating',

@@ -7,8 +7,8 @@ class PremiereDateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<DateTime>(
-        formControlName: 'premiere_date',
-        onSubmitted: () => form.focus('year'),
+        formControlName: FieldsEnum.PREMIEREDATE.getName(),
+        onSubmitted: () => form.focus(FieldsEnum.PRODUCTIONYEAR.getName()),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Premiere date',
@@ -19,7 +19,7 @@ class PremiereDateField extends StatelessWidget {
           enabledBorder: ENABLED_BORDER,
           focusedBorder: FOCUSED_BORDER,
           suffixIcon: ReactiveDatePicker<DateTime>(
-            formControlName: 'date_added',
+            formControlName: FieldsEnum.DATEADDED.getName(),
             firstDate: DateTime(1900),
             lastDate: DateTime(2100),
             builder: (context, picker, child) {
