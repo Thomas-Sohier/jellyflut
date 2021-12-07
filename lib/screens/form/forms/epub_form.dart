@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class EpubForm extends StatelessWidget {
@@ -7,18 +9,19 @@ class EpubForm extends StatelessWidget {
   final Color fontColor;
   final Color backgroundColor;
 
-  EpubForm(
-      {required this.fontSize,
-      required this.fontColor,
-      required this.backgroundColor});
+  const EpubForm(
+      {this.fontSize = 18,
+      this.fontColor = const Color.fromARGB(255, 251, 240, 217),
+      this.backgroundColor = Colors.black});
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        'font_size': FormControl<double>(
+        FieldsEnum.FONTSIZE.getName(): FormControl<double>(
           value: fontSize,
           validators: [Validators.required],
         ),
-        'font_color': FormControl<Color>(value: fontColor),
-        'background_color': FormControl<Color>(value: backgroundColor),
+        FieldsEnum.FONTCOLOR.getName(): FormControl<Color>(value: fontColor),
+        FieldsEnum.BACKGROUNDCOLOR.getName():
+            FormControl<Color>(value: backgroundColor),
       });
 
   @override
@@ -30,18 +33,22 @@ class EpubForm extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 12.0),
-              FontSizeField(form: form),
+              FontSizeField(
+                form: form,
+                fieldName: 'Font size',
+                formKey: FieldsEnum.FONTSIZE.getName(),
+              ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Font color',
-                formKey: 'font_color',
+                formKey: FieldsEnum.FONTCOLOR.getName(),
               ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Background color',
-                formKey: 'background_color',
+                formKey: FieldsEnum.BACKGROUNDCOLOR.getName(),
               )
             ],
           ),

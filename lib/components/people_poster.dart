@@ -27,14 +27,12 @@ class _PeoplePosterState extends State<PeoplePoster>
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;
-  late Widget finalPoster;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    finalPoster = widget.bigPoster ? bigPoster() : poster();
     _node = FocusNode();
     super.initState();
   }
@@ -47,6 +45,8 @@ class _PeoplePosterState extends State<PeoplePoster>
 
   @override
   Widget build(BuildContext context) {
+    // TODO do something to handle image correctly when item removed from list
+    final finalPoster = widget.bigPoster ? bigPoster() : poster();
     super.build(context);
     if (widget.clickable) {
       return OutlinedButton(

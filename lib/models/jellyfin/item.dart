@@ -22,6 +22,7 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
+import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -167,7 +168,7 @@ class Item {
   String? albumArtist;
   List<AlbumArtists>? albumArtists;
   List<Person>? people;
-  List<GenreItem>? studios;
+  List<Studio>? studios;
   List<GenreItem>? genreItems;
   int? localTrailerCount;
   UserData? userData;
@@ -274,8 +275,7 @@ class Item {
             : List<Person>.from(json['People'].map((x) => Person.fromMap(x))),
         studios: json['Studios'] == null
             ? null
-            : List<GenreItem>.from(
-                json['Studios'].map((x) => GenreItem.fromMap(x))),
+            : List<Studio>.from(json['Studios'].map((x) => Studio.fromMap(x))),
         genreItems: json['GenreItems'] == null
             ? null
             : List<GenreItem>.from(

@@ -17,7 +17,13 @@ class FormMovieState extends FormState {
   }
 }
 
-/// Book loaded.
+class FormValidState extends FormState {
+  final String message;
+
+  FormValidState({required this.message, required FormGroup form})
+      : super(form: form);
+}
+
 class FormErrorState extends FormState {
   final String error;
 

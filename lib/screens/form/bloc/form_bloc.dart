@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/json_serializer.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
@@ -26,17 +23,17 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     } else if (event is FormSubmitted) {
       formGroup.markAllAsTouched();
       if (formGroup.valid) {
-        // Add necesary data to the item to uodate it
+        // Add necesary data to the item to update it
         final form = Map<String, Object?>.from(formGroup.value);
         _defaultRequiredValue(form);
 
         // Update item
-        await ItemService.updateItemFromForm(id: item.id, form: form)
-            .then((value) => null)
-            .catchError((error) {
-          log(error.toString());
-          // yield FormErrorState(form: formGroup, error: error.toString());
-        });
+        try {
+          await ItemService.updateItemFromForm(id: item.id, form: form);
+          yield FormValidState(message: 'Item updated', form: formGroup);
+        } catch (error) {
+          yield FormErrorState(form: formGroup, error: error.toString());
+        }
       }
     }
   }
@@ -46,6 +43,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
         FieldsEnum.ALBUMARTISTS.getName(), () => item.albumArtist ?? []);
     form.putIfAbsent(
         FieldsEnum.ARTISTITEMS.getName(), () => item.artistItems ?? []);
+    form.putIfAbsent(FieldsEnum.PEOPLE.getName(), () => item.people ?? []);
     form.putIfAbsent(FieldsEnum.AIRDAYS.getName(), () => []);
     form.putIfAbsent(FieldsEnum.GENRES.getName(), () => item.genres ?? []);
     form.putIfAbsent(FieldsEnum.TAGS.getName(), () => item.tags ?? []);

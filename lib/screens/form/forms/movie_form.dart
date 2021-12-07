@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
+import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
@@ -36,7 +37,7 @@ class MovieForm extends StatelessWidget {
         FieldsEnum.PEOPLE.getName():
             FormControl<List<Person>>(value: item.people),
         FieldsEnum.STUDIOS.getName():
-            FormControl<List<GenreItem>>(value: item.studios),
+            FormControl<List<Studio>>(value: item.studios),
         FieldsEnum.TAGS.getName(): FormControl<List<dynamic>>(value: item.tags),
         FieldsEnum.GENRES.getName():
             FormControl<List<GenreItem>>(value: item.genreItems)

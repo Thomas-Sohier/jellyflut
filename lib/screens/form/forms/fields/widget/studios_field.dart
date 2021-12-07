@@ -1,12 +1,29 @@
 part of '../fields.dart';
 
-class StudiosField extends StatelessWidget {
+class StudiosField extends StatefulWidget {
   final Item item;
   final FormGroup form;
   final double ITEM_HEIGHT = 50;
 
   const StudiosField({Key? key, required this.form, required this.item})
       : super(key: key);
+
+  @override
+  _StudiosFieldState createState() => _StudiosFieldState();
+}
+
+class _StudiosFieldState extends State<StudiosField> {
+  late final Item item;
+  late final FormGroup form;
+  late final double ITEM_HEIGHT;
+
+  @override
+  void initState() {
+    item = widget.item;
+    form = widget.form;
+    ITEM_HEIGHT = widget.ITEM_HEIGHT;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +42,15 @@ class StudiosField extends StatelessWidget {
             itemCount: item.studios?.length ?? 0,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
-                studioItem(item.studios?.elementAt(index), index, context),
+                studioItem(item.studios?.elementAt(index).name, index, context),
           ),
         ),
       ],
     );
   }
 
-  Widget studioItem(GenreItem? genreItem, int index, BuildContext context) {
-    if (genreItem == null) return SizedBox();
+  Widget studioItem(String? name, int index, BuildContext context) {
+    if (name == null) return SizedBox();
     final headlineColor = Theme.of(context).textTheme.headline6!.color;
     return SizedBox(
       height: ITEM_HEIGHT,
@@ -44,7 +61,7 @@ class StudiosField extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(genreItem.name!,
+                child: Text(name,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
@@ -53,7 +70,9 @@ class StudiosField extends StatelessWidget {
               ),
               Spacer(),
               IconButton(
-                  onPressed: () => item.studios?.removeAt(index),
+                  onPressed: () => setState(() {
+                        item.studios?.removeAt(index);
+                      }),
                   hoverColor: Colors.red.withOpacity(0.1),
                   icon: Icon(Icons.delete_outline, color: Colors.red))
             ]),

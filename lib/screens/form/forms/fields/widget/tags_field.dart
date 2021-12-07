@@ -1,12 +1,29 @@
 part of '../fields.dart';
 
-class TagsField extends StatelessWidget {
+class TagsField extends StatefulWidget {
   final Item item;
   final FormGroup form;
   final double ITEM_HEIGHT = 35;
 
   const TagsField({Key? key, required this.form, required this.item})
       : super(key: key);
+
+  @override
+  _TagsFieldState createState() => _TagsFieldState();
+}
+
+class _TagsFieldState extends State<TagsField> {
+  late final Item item;
+  late final FormGroup form;
+  late final double ITEM_HEIGHT;
+
+  @override
+  void initState() {
+    item = widget.item;
+    form = widget.form;
+    ITEM_HEIGHT = widget.ITEM_HEIGHT;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +70,9 @@ class TagsField extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle1,
                 )),
                 IconButton(
-                    onPressed: () =>
-                        item.tags!.removeAt(item.tags!.indexOf(tag)),
+                    onPressed: () => setState(() {
+                          item.tags!.removeAt(item.tags!.indexOf(tag));
+                        }),
                     padding: EdgeInsets.zero,
                     icon: Icon(
                       Icons.remove_circle_outline,

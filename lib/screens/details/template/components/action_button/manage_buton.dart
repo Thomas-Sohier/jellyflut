@@ -28,28 +28,26 @@ class ManageButton extends StatelessWidget {
   }
 
   Widget editInfos(BuildContext context) {
-    return BlocProvider.value(
-        value: BlocProvider.of<FormBloc>(context),
-        child: AlertDialog(
-            title: Text('edit_infos'.tr()),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: CancelButton(onPressed: customRouter.pop),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: SubmitButton(
-                      onPressed: () => BlocProvider.of<FormBloc>(context)
-                          .add(FormSubmitted())))
-            ],
-            content: ConstrainedBox(
-                constraints: BoxConstraints(
-                    minHeight: 300,
-                    maxHeight: 700,
-                    minWidth: 350,
-                    maxWidth: 500),
-                child: FormBuilder(item: item))));
+    return AlertDialog(
+        title: Text('edit_infos'.tr()),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: CancelButton(onPressed: customRouter.pop),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: SubmitButton(
+                  onPressed: () =>
+                      BlocProvider.of<FormBloc>(context).add(FormSubmitted())))
+        ],
+        content: ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: 300, maxHeight: 700, minWidth: 350, maxWidth: 500),
+            child: FormBuilder(
+              item: item,
+              onSuccess: () => customRouter.pop(),
+            )));
   }
 
   Widget editInfosFullscreen(BuildContext context) {
@@ -63,7 +61,9 @@ class ManageButton extends StatelessWidget {
           ),
           Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: SubmitButton(onPressed: () => {}))
+              child: SubmitButton(
+                  onPressed: () =>
+                      BlocProvider.of<FormBloc>(context).add(FormSubmitted())))
         ],
         content: ConstrainedBox(
             constraints: BoxConstraints(
@@ -71,6 +71,9 @@ class ManageButton extends StatelessWidget {
                 maxHeight: double.maxFinite,
                 minWidth: double.maxFinite,
                 maxWidth: double.maxFinite),
-            child: FormBuilder(item: item)));
+            child: FormBuilder(
+              item: item,
+              onSuccess: () => customRouter.pop(),
+            )));
   }
 }

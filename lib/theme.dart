@@ -92,6 +92,10 @@ class Theme {
       primarySwatch: jellyPurple,
       primaryIconTheme: IconThemeData(color: Colors.black),
       iconTheme: IconThemeData(color: Colors.white),
+      snackBarTheme: SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.grey.shade900,
+          contentTextStyle: TextStyle(fontSize: 18, color: Colors.white)),
       textSelectionTheme: TextSelectionThemeData(
           cursorColor: jellyLightBLue,
           selectionColor: jellyLightBLue.withAlpha(50)),

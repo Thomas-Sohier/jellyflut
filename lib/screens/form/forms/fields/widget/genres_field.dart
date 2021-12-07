@@ -1,12 +1,29 @@
 part of '../fields.dart';
 
-class GenresField extends StatelessWidget {
+class GenresField extends StatefulWidget {
   final Item item;
   final FormGroup form;
   final double ITEM_HEIGHT = 50;
 
   const GenresField({Key? key, required this.form, required this.item})
       : super(key: key);
+
+  @override
+  _GenresFieldState createState() => _GenresFieldState();
+}
+
+class _GenresFieldState extends State<GenresField> {
+  late final Item item;
+  late final FormGroup form;
+  late final double ITEM_HEIGHT;
+
+  @override
+  void initState() {
+    item = widget.item;
+    form = widget.form;
+    ITEM_HEIGHT = widget.ITEM_HEIGHT;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +70,9 @@ class GenresField extends StatelessWidget {
               ),
               Spacer(),
               IconButton(
-                  onPressed: () => item.genres?.removeAt(index),
+                  onPressed: () => setState(() {
+                        item.genreItems?.removeAt(index);
+                      }),
                   hoverColor: Colors.red.withOpacity(0.1),
                   icon: Icon(Icons.delete_outline, color: Colors.red))
             ]),
