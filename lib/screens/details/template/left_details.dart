@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/models/enum/image_type.dart';

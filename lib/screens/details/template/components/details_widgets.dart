@@ -1,6 +1,6 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/models/jellyfin/external_url.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';

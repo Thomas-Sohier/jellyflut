@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/components/people_poster.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 

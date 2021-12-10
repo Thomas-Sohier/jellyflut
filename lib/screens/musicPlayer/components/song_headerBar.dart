@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/components/back_button.dart' as bb;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';

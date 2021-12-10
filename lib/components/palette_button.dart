@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 

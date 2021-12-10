@@ -1,6 +1,6 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 void showToast(String msg, FToast fToast, {Duration? duration}) {

@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:blurhash_dart/blurhash_extensions.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/painting.dart';
+
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';

@@ -1,5 +1,6 @@
 import 'package:epubx/epubx.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/screens/book/components/page_epub.dart';
 
 class EpubView extends StatelessWidget {

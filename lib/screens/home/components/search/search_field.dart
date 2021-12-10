@@ -1,6 +1,6 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/screens/home/components/search/search_rest_call.dart';
 
 class SearchField extends StatelessWidget {

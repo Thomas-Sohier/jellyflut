@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/painting.dart';
 
 class ColorUtil {
   /// darken gibvn color
