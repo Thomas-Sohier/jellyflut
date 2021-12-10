@@ -6,6 +6,7 @@ import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/form.dart';
 import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';

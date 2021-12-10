@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
@@ -38,7 +40,14 @@ class _LargeDetailsState extends State<LargeDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return largeScreenTemplate();
+    return BlocConsumer<DetailsBloc, DetailsState>(
+        listener: (context, state) async {
+      if (state is DetailsLoadedState) {
+        setState(() {});
+      }
+    }, builder: (context, state) {
+      return largeScreenTemplate();
+    });
   }
 
   Widget largeScreenTemplate() {

@@ -18,7 +18,19 @@ class TrailerButton extends StatelessWidget {
   }
 
   void playTrailer(BuildContext context) async {
-    final url = await item.getYoutubeTrailerUrl();
-    await customRouter.push(StreamRoute(url: url.toString(), item: item));
+    try {
+      final url = await item.getYoutubeTrailerUrl();
+      await customRouter.push(StreamRoute(url: url.toString(), item: item));
+    } catch (exception) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+            content: Row(children: [
+              Text(exception.toString()),
+              Spacer(),
+              Icon(Icons.play_disabled, color: Colors.red)
+            ]),
+            width: 600));
+    }
   }
 }

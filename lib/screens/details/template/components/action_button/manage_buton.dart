@@ -19,15 +19,16 @@ class ManageButton extends StatelessWidget {
 
   void dialog(BuildContext context) {
     showDialog(
-      builder: (BuildContext context) => ResponsiveBuilder.builder(
-          mobile: () => editInfosFullscreen(context),
-          tablet: () => editInfos(context),
-          desktop: () => editInfos(context)),
+      builder: (_) => ResponsiveBuilder.builder(
+          mobile: () =>
+              editInfosFullscreen(context, () => onSuccessEvent(context)),
+          tablet: () => editInfos(context, () => onSuccessEvent(context)),
+          desktop: () => editInfos(context, () => onSuccessEvent(context))),
       context: context,
     );
   }
 
-  Widget editInfos(BuildContext context) {
+  Widget editInfos(BuildContext context, VoidCallback onSucess) {
     return AlertDialog(
         title: Text('edit_infos'.tr()),
         actions: [
@@ -44,13 +45,10 @@ class ManageButton extends StatelessWidget {
         content: ConstrainedBox(
             constraints: BoxConstraints(
                 minHeight: 300, maxHeight: 700, minWidth: 350, maxWidth: 500),
-            child: FormBuilder(
-              item: item,
-              onSuccess: () => customRouter.pop(),
-            )));
+            child: FormBuilder(item: item, onSuccess: onSucess)));
   }
 
-  Widget editInfosFullscreen(BuildContext context) {
+  Widget editInfosFullscreen(BuildContext context, VoidCallback onSuccess) {
     return AlertDialog(
         title: Text('edit_infos'.tr()),
         insetPadding: EdgeInsets.zero,
@@ -73,7 +71,12 @@ class ManageButton extends StatelessWidget {
                 maxWidth: double.maxFinite),
             child: FormBuilder(
               item: item,
-              onSuccess: () => customRouter.pop(),
+              onSuccess: onSuccess,
             )));
+  }
+
+  void onSuccessEvent(BuildContext context) {
+    customRouter.pop();
+    BlocProvider.of<DetailsBloc>(context).add(DetailsItemUpdated(item: item));
   }
 }
