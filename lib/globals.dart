@@ -1,6 +1,7 @@
 library globals;
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +19,12 @@ AppRouter get customRouter => _customRouter;
 
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
-double get itemPosterHeight => 200;
+double get _itemHeightTemp =>
+    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
+    35;
+
+double get itemPosterHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
+
 double get itemPosterLabelHeight => 39;
 
 // Used for some player to prevent from creating a new player

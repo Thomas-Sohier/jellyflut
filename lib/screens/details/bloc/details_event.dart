@@ -9,4 +9,10 @@ class DetailsItemUpdated extends DetailsEvent {
   DetailsItemUpdated({required this.item});
 }
 
+class DetailsItemInfos extends DetailsEvent {
+  final DetailsInfosFuture detailsInfos;
+
+  DetailsItemInfos({required this.detailsInfos});
+}
+
 class ResetStates extends DetailsEvent {}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detail_header_bar.dart';
+import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
@@ -13,38 +14,26 @@ import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class LargeDetails extends StatefulWidget {
   final Item item;
-  final Future<Item> itemToLoad;
-  final Future<Color> dominantColorFuture;
   final String? heroTag;
 
-  LargeDetails(
-      {Key? key,
-      required this.item,
-      required this.itemToLoad,
-      required this.dominantColorFuture,
-      this.heroTag})
-      : super(key: key);
+  LargeDetails({Key? key, required this.item, this.heroTag}) : super(key: key);
 
   @override
   _LargeDetailsState createState() => _LargeDetailsState();
 }
 
 class _LargeDetailsState extends State<LargeDetails> {
+  late final DetailsInfosFuture detailsInfos;
+
   @override
   void initState() {
+    detailsInfos = BlocProvider.of<DetailsBloc>(context).detailsInfos;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DetailsBloc, DetailsState>(
-        listener: (context, state) async {
-      if (state is DetailsLoadedState) {
-        setState(() {});
-      }
-    }, builder: (context, state) {
-      return largeScreenTemplate();
-    });
+    return largeScreenTemplate();
   }
 
   Widget largeScreenTemplate() {
@@ -86,7 +75,7 @@ class _LargeDetailsState extends State<LargeDetails> {
     return Expanded(
         flex: 6,
         child: RightDetailsBackground(
-            dominantColorFuture: widget.dominantColorFuture,
+            dominantColorFuture: detailsInfos.dominantColor,
             child: largeWidgetBuilder()));
   }
 
@@ -102,12 +91,12 @@ class _LargeDetailsState extends State<LargeDetails> {
 
   Widget asyncRightDetails() {
     return FutureBuilder<Item>(
-        future: widget.itemToLoad,
+        future: detailsInfos.item,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return RightDetails(
                 item: snapshot.data!,
-                dominantColorFuture: widget.dominantColorFuture);
+                dominantColorFuture: detailsInfos.dominantColor);
           }
           return SkeletonRightDetails();
         });

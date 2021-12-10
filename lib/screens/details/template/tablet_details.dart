@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
 import 'package:jellyflut/screens/details/template/right_details_background.dart';
@@ -13,25 +16,20 @@ import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class TabletDetails extends StatefulWidget {
   final Item item;
-  final Future<Item> itemToLoad;
-  final Future<Color> dominantColorFuture;
   final String? heroTag;
 
-  TabletDetails(
-      {Key? key,
-      required this.item,
-      required this.itemToLoad,
-      required this.dominantColorFuture,
-      this.heroTag})
-      : super(key: key);
+  TabletDetails({Key? key, required this.item, this.heroTag}) : super(key: key);
 
   @override
   _TabletDetailsState createState() => _TabletDetailsState();
 }
 
 class _TabletDetailsState extends State<TabletDetails> {
+  late final DetailsInfosFuture detailsInfos;
+
   @override
   void initState() {
+    detailsInfos = BlocProvider.of<DetailsBloc>(context).detailsInfos;
     super.initState();
   }
 
@@ -47,7 +45,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         imageType: ImageType.BACKDROP,
       ),
       RightDetailsBackground(
-          dominantColorFuture: widget.dominantColorFuture,
+          dominantColorFuture: detailsInfos.dominantColor,
           child: detailsBuilder()),
       DetailHeaderBar(
         color: Colors.white,
@@ -76,12 +74,12 @@ class _TabletDetailsState extends State<TabletDetails> {
 
   Widget asyncRightDetails() {
     return FutureBuilder<Item>(
-        future: widget.itemToLoad,
+        future: detailsInfos.item,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return RightDetails(
                 item: snapshot.data!,
-                dominantColorFuture: widget.dominantColorFuture);
+                dominantColorFuture: detailsInfos.dominantColor);
           }
           return SkeletonRightDetails();
         });
