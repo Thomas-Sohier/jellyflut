@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 

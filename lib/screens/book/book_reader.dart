@@ -7,7 +7,6 @@ import 'package:archive/archive.dart';
 import 'package:logging/logging.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:epubx/epubx.dart' as epubx;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';

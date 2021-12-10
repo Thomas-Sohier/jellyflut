@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/models/enum/collection_type.dart';
 
 IconData getRightIconForCollectionType(CollectionType? collectionType) {

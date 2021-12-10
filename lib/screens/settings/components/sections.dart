@@ -1,6 +1,7 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+
 import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
@@ -10,7 +11,6 @@ import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:moor/moor.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 part 'account_section.dart';
 part 'audio_player_section.dart';

@@ -1,6 +1,6 @@
 // mask layer
-import 'package:flutter/widgets.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
+
+import 'package:flutter/painting.dart';
 import 'package:jellyflut/theme.dart';
 
 final Shader linearGradient = LinearGradient(

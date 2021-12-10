@@ -1,6 +1,6 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/screens/auth/components/theme/input_theme.dart';
 import 'package:jellyflut/screens/auth/enum/fields_enum.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';

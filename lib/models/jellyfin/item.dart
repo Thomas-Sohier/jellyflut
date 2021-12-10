@@ -11,7 +11,7 @@ import 'dart:io';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/main.dart';

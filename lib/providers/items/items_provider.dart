@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:photo_view/photo_view.dart';

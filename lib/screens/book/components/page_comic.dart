@@ -1,6 +1,7 @@
 import 'package:archive/archive.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:octo_image/octo_image.dart';
 
 class PageComic extends StatelessWidget {

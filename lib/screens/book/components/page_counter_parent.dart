@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:easy_localization/src/public_ext.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/book/components/page_counter.dart';
 
