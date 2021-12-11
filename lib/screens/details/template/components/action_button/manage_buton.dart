@@ -18,9 +18,10 @@ class _ManageButtonState extends State<ManageButton> {
   @override
   void initState() {
     formBloc = FormBloc<Item>();
+    // ignore: unnecessary_this
     detailsBloc = BlocProvider.of<DetailsBloc>(this.context);
-    formBloc
-        .add(CurrentForm<Item>(formGroup: FormGroup({}), value: widget.item));
+    final i = widget.item.copyWithItem(item: widget.item);
+    formBloc.add(CurrentForm<Item>(formGroup: FormGroup({}), value: i));
     formBloc.stream.listen((state) {
       if (state is FormValidState) {
         closeDialogAndResetForm();
@@ -99,7 +100,9 @@ class _ManageButtonState extends State<ManageButton> {
 
   void submitFormAndUpdateView() {
     formBloc.add(FormSubmitted());
-    detailsBloc.add(DetailsUpdateItem(item: formBloc.value));
+
+    final item = formBloc.value.copyWithItem(item: formBloc.value);
+    detailsBloc.add(DetailsUpdateItem(item: item));
     formBloc.add(RefreshForm());
   }
 

@@ -11,7 +11,7 @@ import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 part 'form_event.dart';
 part 'form_state.dart';
 
-class FormBloc<T> extends Bloc<FormEvent<T>, FormState<T>> {
+class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
   FormBloc() : super(RefreshedState(form: FormGroup({})));
 
   late FormGroup formGroup;

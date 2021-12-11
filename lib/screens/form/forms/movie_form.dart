@@ -102,8 +102,9 @@ class _MovieFormState extends State<MovieForm> {
       form.value.forEach((key, value) {
         item[key] = value;
       });
+      final i = item.copyWithItem(item: item);
       BlocProvider.of<FormBloc<Item>>(context)
-          .add(CurrentForm<Item>(formGroup: form, value: item));
+          .add(CurrentForm<Item>(formGroup: form, value: i));
     });
   }
 }

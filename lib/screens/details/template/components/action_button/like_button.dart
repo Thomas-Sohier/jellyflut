@@ -19,6 +19,7 @@ class _LikeButtonState extends State<LikeButton> {
   @override
   void initState() {
     fToast = FToast();
+    // ignore: unnecessary_this
     fToast.init(this.context);
     super.initState();
   }

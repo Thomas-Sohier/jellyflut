@@ -10,13 +10,16 @@ abstract class FormState<T> extends Equatable {
   List<Object> get props => [form];
 }
 
-class FormValidState<T> extends FormState<T> {
+class FormValidState<T extends Object> extends FormState<T> {
   final String message;
   final T value;
 
   FormValidState(
       {required this.message, required this.value, required FormGroup form})
       : super(form: form);
+
+  @override
+  List<Object> get props => [message, value];
 }
 
 class FormErrorState<T> extends FormState<T> {

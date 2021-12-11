@@ -9,7 +9,7 @@ import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'forms/movie_form.dart';
 import 'forms/default_form.dart';
 
-class FormBuilder<T> extends StatefulWidget {
+class FormBuilder<T extends Object> extends StatefulWidget {
   final form.FormBloc<T> formBloc;
 
   FormBuilder({Key? key, required this.formBloc}) : super(key: key);
@@ -18,7 +18,7 @@ class FormBuilder<T> extends StatefulWidget {
   FormBuilderState<T> createState() => FormBuilderState<T>();
 }
 
-class FormBuilderState<T> extends State<FormBuilder> {
+class FormBuilderState<T extends Object> extends State<FormBuilder> {
   late final form.FormBloc<T> formBloc;
 
   @override
