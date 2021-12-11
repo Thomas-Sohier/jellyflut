@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class DetailsInfosFuture {
-  final Future<Color> dominantColor;
-  final Future<Item> item;
+  Future<Color> dominantColor;
+  Future<Item> item;
 
-  const DetailsInfosFuture({required this.dominantColor, required this.item});
+  DetailsInfosFuture({required this.dominantColor, required this.item});
 }
 
 class DetailsInfos {

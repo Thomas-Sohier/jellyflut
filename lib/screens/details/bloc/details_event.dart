@@ -3,16 +3,16 @@ part of 'details_bloc.dart';
 @immutable
 abstract class DetailsEvent {}
 
-class DetailsItemUpdated extends DetailsEvent {
+class DetailsUpdateItem extends DetailsEvent {
   final Item item;
 
-  DetailsItemUpdated({required this.item});
+  DetailsUpdateItem({required this.item});
 }
 
-class DetailsItemInfos extends DetailsEvent {
+class DetailsUpdateDetailsInfos extends DetailsEvent {
   final DetailsInfosFuture detailsInfos;
 
-  DetailsItemInfos({required this.detailsInfos});
+  DetailsUpdateDetailsInfos({required this.detailsInfos});
 }
 
 class ResetStates extends DetailsEvent {}

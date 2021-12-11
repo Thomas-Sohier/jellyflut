@@ -15,11 +15,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   DetailsBloc(this._d) : super(DetailsLoadedState(_d));
 
   @override
-  Stream<DetailsState> mapEventToState(
-    DetailsEvent event,
-  ) async* {
-    if (event is DetailsItemInfos) {
+  Stream<DetailsState> mapEventToState(DetailsEvent event) async* {
+    if (event is DetailsUpdateDetailsInfos) {
       _d = event.detailsInfos;
+      yield DetailsLoadedState(_d);
+    } else if (event is DetailsUpdateItem) {
+      _d.item = Future.value(event.item);
       yield DetailsLoadedState(_d);
     }
   }

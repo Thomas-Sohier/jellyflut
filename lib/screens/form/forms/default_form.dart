@@ -1,16 +1,38 @@
-import 'package:flutter/material.dart' hide ProgressIndicator;
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class DefaultForm extends StatelessWidget {
+import 'fields/fields.dart';
+import 'fields/fields_enum.dart';
+
+class DefaultForm extends StatefulWidget {
   final Item item;
 
-  DefaultForm({required this.item});
+  const DefaultForm({required this.item});
+
+  @override
+  _DefaultFormState createState() => _DefaultFormState();
+}
+
+class _DefaultFormState extends State<DefaultForm> {
+  late final FormGroup form;
+  late final Item item;
+
+  @override
+  void initState() {
+    super.initState();
+    item = widget.item;
+    form = buildForm();
+    listenFormChange();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   FormGroup buildForm() => fb.group(<String, Object>{
         FieldsEnum.NAME.getName(): FormControl<String>(
@@ -29,12 +51,9 @@ class DefaultForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveFormBuilder(
-      form: buildForm,
-      builder: (context, form, child) {
-        BlocProvider.of<FormBloc<Item>>(context)
-            .add(CurrentForm<Item>(formGroup: form, value: item));
-        return SingleChildScrollView(
+    return ReactiveForm(
+        formGroup: form,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 12.0),
@@ -49,8 +68,16 @@ class DefaultForm extends StatelessWidget {
               DateCreatedField(form: form),
             ],
           ),
-        );
-      },
-    );
+        ));
+  }
+
+  void listenFormChange() {
+    form.valueChanges.listen((f) {
+      form.value.forEach((key, value) {
+        item[key] = value;
+      });
+      BlocProvider.of<FormBloc<Item>>(context)
+          .add(CurrentForm<Item>(formGroup: form, value: item));
+    });
   }
 }

@@ -44,14 +44,22 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MusicPlayerFAB(
-        child: BlocProvider(
+        child: BlocProvider<DetailsBloc>(
             create: (context) => detailsBloc,
             child: Scaffold(
                 extendBody: true,
                 backgroundColor: Colors.transparent,
-                body: widget.item.type != ItemType.PHOTO
-                    ? responsiveBuilder()
-                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
+                body: BlocListener<DetailsBloc, DetailsState>(
+                    bloc: detailsBloc,
+                    listener: (context, state) {
+                      if (state is DetailsLoadedState) {
+                        setState(() {});
+                      }
+                    },
+                    child: widget.item.type != ItemType.PHOTO
+                        ? responsiveBuilder()
+                        : PhotoItem(
+                            item: widget.item, heroTag: widget.heroTag)))));
   }
 
   Widget responsiveBuilder() {

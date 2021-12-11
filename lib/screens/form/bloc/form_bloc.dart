@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
@@ -10,7 +12,7 @@ part 'form_event.dart';
 part 'form_state.dart';
 
 class FormBloc<T> extends Bloc<FormEvent<T>, FormState<T>> {
-  FormBloc() : super(FormState(form: FormGroup({})));
+  FormBloc() : super(RefreshedState(form: FormGroup({})));
 
   late FormGroup formGroup;
   late T value;

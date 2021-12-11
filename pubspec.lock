@@ -848,7 +848,7 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.4"
   path_provider_macos:
     dependency: transitive
     description:
@@ -1004,7 +1004,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.10"
+    version: "2.0.11"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -1116,7 +1116,7 @@ packages:
       name: sqflite_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.0.1+1"
   sqlite3:
     dependency: transitive
     description:
@@ -1440,5 +1440,5 @@ packages:
     source: hosted
     version: "1.10.8"
 sdks:
-  dart: ">=2.15.0 <3.0.0"
+  dart: ">=2.14.0 <3.0.0"
   flutter: ">=2.5.0"

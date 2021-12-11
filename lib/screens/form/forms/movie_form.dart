@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/models/jellyfin/studio.dart';
@@ -10,10 +9,31 @@ import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class MovieForm extends StatelessWidget {
+class MovieForm extends StatefulWidget {
   final Item item;
 
-  MovieForm({required this.item});
+  const MovieForm({required this.item});
+
+  @override
+  _MovieFormState createState() => _MovieFormState();
+}
+
+class _MovieFormState extends State<MovieForm> {
+  late final FormGroup form;
+  late final Item item;
+
+  @override
+  void initState() {
+    super.initState();
+    item = widget.item;
+    form = buildForm();
+    listenFormChange();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   FormGroup buildForm() => fb.group(<String, Object>{
         FieldsEnum.NAME.getName(): FormControl<String>(
@@ -40,17 +60,14 @@ class MovieForm extends StatelessWidget {
             FormControl<List<Studio>>(value: item.studios),
         FieldsEnum.TAGS.getName(): FormControl<List<dynamic>>(value: item.tags),
         FieldsEnum.GENRES.getName():
-            FormControl<List<GenreItem>>(value: item.genreItems)
+            FormControl<List<String?>>(value: item.genres)
       });
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveFormBuilder(
-      form: buildForm,
-      builder: (_, form, child) {
-        BlocProvider.of<FormBloc<Item>>(context)
-            .add(CurrentForm<Item>(formGroup: form, value: item));
-        return SingleChildScrollView(
+    return ReactiveForm(
+        formGroup: form,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 12.0),
@@ -77,8 +94,16 @@ class MovieForm extends StatelessWidget {
               TagsField(form: form, item: item),
             ],
           ),
-        );
-      },
-    );
+        ));
+  }
+
+  void listenFormChange() {
+    form.valueChanges.listen((f) {
+      form.value.forEach((key, value) {
+        item[key] = value;
+      });
+      BlocProvider.of<FormBloc<Item>>(context)
+          .add(CurrentForm<Item>(formGroup: form, value: item));
+    });
   }
 }

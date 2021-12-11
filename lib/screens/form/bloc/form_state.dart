@@ -1,9 +1,13 @@
 part of 'form_bloc.dart';
 
-class FormState<T> {
+@immutable
+abstract class FormState<T> extends Equatable {
   final FormGroup form;
 
   const FormState({required this.form});
+
+  @override
+  List<Object> get props => [form];
 }
 
 class FormValidState<T> extends FormState<T> {

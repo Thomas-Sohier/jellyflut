@@ -13,16 +13,18 @@ class ManageButton extends StatefulWidget {
 
 class _ManageButtonState extends State<ManageButton> {
   late final FormBloc<Item> formBloc;
+  late final DetailsBloc detailsBloc;
 
   @override
   void initState() {
     formBloc = FormBloc<Item>();
+    detailsBloc = BlocProvider.of<DetailsBloc>(this.context);
     formBloc
         .add(CurrentForm<Item>(formGroup: FormGroup({}), value: widget.item));
-    formBloc.stream.listen((event) {
-      if (event is FormValidState) {
+    formBloc.stream.listen((state) {
+      if (state is FormValidState) {
         closeDialogAndResetForm();
-      }
+      } else if (state is RefreshedState) {}
     });
     super.initState();
   }
@@ -63,8 +65,7 @@ class _ManageButtonState extends State<ManageButton> {
           ),
           Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child:
-                  SubmitButton(onPressed: () => formBloc.add(FormSubmitted())))
+              child: SubmitButton(onPressed: submitFormAndUpdateView))
         ],
         content: ConstrainedBox(
             constraints: BoxConstraints(
@@ -83,8 +84,7 @@ class _ManageButtonState extends State<ManageButton> {
           ),
           Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child:
-                  SubmitButton(onPressed: () => formBloc.add(FormSubmitted())))
+              child: SubmitButton(onPressed: submitFormAndUpdateView))
         ],
         content: ConstrainedBox(
             constraints: BoxConstraints(
@@ -95,6 +95,12 @@ class _ManageButtonState extends State<ManageButton> {
             child: form.FormBuilder<Item>(
               formBloc: formBloc,
             )));
+  }
+
+  void submitFormAndUpdateView() {
+    formBloc.add(FormSubmitted());
+    detailsBloc.add(DetailsUpdateItem(item: formBloc.value));
+    formBloc.add(RefreshForm());
   }
 
   void closeDialogAndResetForm() {

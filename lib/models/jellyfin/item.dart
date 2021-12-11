@@ -426,6 +426,78 @@ class Item {
     return map;
   }
 
+  void operator []=(String key, dynamic value) {
+    if (key == 'name') name = value;
+    if (key == 'originalTitle') originalTitle = value;
+    if (key == 'serverId') serverId = value;
+    if (key == 'id') id = value;
+    if (key == 'indexNumber') indexNumber = value;
+    if (key == 'parentIndexNumber') parentIndexNumber = value;
+    if (key == 'etag') etag = value;
+    if (key == 'collectionType') collectionType = value;
+    if (key == 'dateCreated') dateCreated = value;
+    if (key == 'canDelete') canDelete = value;
+    if (key == 'canDownload') canDownload = value;
+    if (key == 'hasSubtitles') hasSubtitles = value;
+    if (key == 'container') container = value;
+    if (key == 'sortName') sortName = value;
+    if (key == 'premiereDate') premiereDate = value;
+    if (key == 'externalUrls') externalUrls = value;
+    if (key == 'mediaSources') mediaSources = value;
+    if (key == 'criticRating') criticRating = value;
+    if (key == 'productionLocations') productionLocations = value;
+    if (key == 'path') path = value;
+    if (key == 'enableMediaSourceDisplay') enableMediaSourceDisplay = value;
+    if (key == 'overview') overview = value;
+    if (key == 'taglines') taglines = value;
+    if (key == 'genres') genres = value;
+    if (key == 'communityRating') communityRating = value;
+    if (key == 'runTimeTicks') runTimeTicks = value;
+    if (key == 'playAccess') playAccess = value;
+    if (key == 'productionYear') productionYear = value;
+    if (key == 'remoteTrailers') remoteTrailers = value;
+    if (key == 'providerIds') providerIds = value;
+    if (key == 'isHd') isHd = value;
+    if (key == 'isFolder') isFolder = value;
+    if (key == 'parentId') parentId = value;
+    if (key == 'seriesId') seriesId = value;
+    if (key == 'seasonId') seasonId = value;
+    if (key == 'type') type = value;
+    if (key == 'artists') artists = value;
+    if (key == 'artistItems') artistItems = value;
+    if (key == 'album') album = value;
+    if (key == 'albumId') albumId = value;
+    if (key == 'albumPrimaryImageTag') albumPrimaryImageTag = value;
+    if (key == 'albumArtist') albumArtist = value;
+    if (key == 'albumArtists') albumArtists = value;
+    if (key == 'people') people = value;
+    if (key == 'studios') studios = value;
+    if (key == 'genreItems') genreItems = value;
+    if (key == 'localTrailerCount') localTrailerCount = value;
+    if (key == 'userData') userData = value;
+    if (key == 'specialFeatureCount') specialFeatureCount = value;
+    if (key == 'displayPreferencesId') displayPreferencesId = value;
+    if (key == 'tags') tags = value;
+    if (key == 'primaryImageAspectRatio') primaryImageAspectRatio = value;
+    if (key == 'mediaStreams') mediaStreams = value;
+    if (key == 'recursiveItemCount') recursiveItemCount = value;
+    if (key == 'videoType') videoType = value;
+    if (key == 'imageTags') imageTags = value;
+    if (key == 'officialRating') officialRating = value;
+    if (key == 'seriesPrimaryImageTag') seriesPrimaryImageTag = value;
+    if (key == 'seriesName') seriesName = value;
+    if (key == 'backdropImageTags') backdropImageTags = value;
+    if (key == 'screenshotImageTags') screenshotImageTags = value;
+    if (key == 'imageBlurHashes') imageBlurHashes = value;
+    if (key == 'chapters') chapters = value;
+    if (key == 'locationType') locationType = value;
+    if (key == 'mediaType') mediaType = value;
+    if (key == 'lockedFields') lockedFields = value;
+    if (key == 'lockData') lockData = value;
+    if (key == 'width') width = value;
+    if (key == 'height') height = value;
+  }
+
   ///Check if item is new
   ///
   /// Return [true] if is less than 3 days old

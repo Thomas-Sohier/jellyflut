@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart' as form;
-import 'package:jellyflut/screens/form/form_controler.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 
 import 'forms/movie_form.dart';
