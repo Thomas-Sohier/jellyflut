@@ -9,36 +9,43 @@ import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 part 'form_event.dart';
 part 'form_state.dart';
 
-class FormBloc extends Bloc<FormEvent, FormState> {
+class FormBloc<T> extends Bloc<FormEvent<T>, FormState<T>> {
   FormBloc() : super(FormState(form: FormGroup({})));
 
   late FormGroup formGroup;
-  late Item item;
+  late T value;
 
   @override
-  Stream<FormState> mapEventToState(FormEvent event) async* {
-    if (event is CurrentForm) {
+  Stream<FormState<T>> mapEventToState(FormEvent<T> event) async* {
+    if (event is CurrentForm<T>) {
       formGroup = event.formGroup;
-      item = event.item;
-    } else if (event is FormSubmitted) {
-      formGroup.markAllAsTouched();
-      if (formGroup.valid) {
-        // Add necesary data to the item to update it
-        final form = Map<String, Object?>.from(formGroup.value);
-        _defaultRequiredValue(form);
+      value = event.value;
+    } else if (event is FormSubmitted && value is Item) {
+      yield* _updateItem(value);
+    } else if (event is RefreshForm) {
+      yield RefreshedState(form: FormGroup({}));
+    }
+  }
 
-        // Update item
-        try {
-          await ItemService.updateItemFromForm(id: item.id, form: form);
-          yield FormValidState(message: 'Item updated', form: formGroup);
-        } catch (error) {
-          yield FormErrorState(form: formGroup, error: error.toString());
-        }
+  Stream<FormState<T>> _updateItem(final T item) async* {
+    formGroup.markAllAsTouched();
+    if (formGroup.valid) {
+      // Add necesary data to the item to update it
+      final form = Map<String, Object?>.from(formGroup.value);
+      _defaultRequiredValue(form, item as Item);
+
+      // Update item
+      try {
+        await ItemService.updateItemFromForm(id: item.id, form: form);
+        yield FormValidState<T>(
+            message: 'Item updated', value: value, form: formGroup);
+      } catch (error) {
+        yield FormErrorState(form: formGroup, error: error.toString());
       }
     }
   }
 
-  void _defaultRequiredValue(Map<String, Object?> form) {
+  void _defaultRequiredValue(final Map<String, Object?> form, final Item item) {
     form.putIfAbsent(
         FieldsEnum.ALBUMARTISTS.getName(), () => item.albumArtist ?? []);
     form.putIfAbsent(

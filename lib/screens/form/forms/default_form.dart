@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
@@ -33,12 +32,8 @@ class DefaultForm extends StatelessWidget {
     return ReactiveFormBuilder(
       form: buildForm,
       builder: (context, form, child) {
-        form.valueChanges.listen((event) {
-          BlocProvider.of<DetailsBloc>(context)
-              .add(DetailsItemUpdated(item: item));
-        });
-        BlocProvider.of<FormBloc>(context)
-            .add(CurrentForm(formGroup: form, item: item));
+        BlocProvider.of<FormBloc<Item>>(context)
+            .add(CurrentForm<Item>(formGroup: form, value: item));
         return SingleChildScrollView(
           child: Column(
             children: [

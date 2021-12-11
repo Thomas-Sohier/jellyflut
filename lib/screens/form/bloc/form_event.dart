@@ -1,10 +1,10 @@
 part of 'form_bloc.dart';
 
-abstract class FormEvent {
+abstract class FormEvent<T> {
   const FormEvent();
 }
 
-class EmailChanged extends FormEvent {
+class EmailChanged<T> extends FormEvent<T> {
   const EmailChanged({required this.email});
 
   final String email;
@@ -18,13 +18,15 @@ class PasswordChanged extends FormEvent {
   final String password;
 }
 
-class PasswordUnfocused extends FormEvent {}
+class PasswordUnfocused<T> extends FormEvent<T> {}
 
-class CurrentForm extends FormEvent {
-  const CurrentForm({required this.formGroup, required this.item});
+class CurrentForm<T> extends FormEvent<T> {
+  const CurrentForm({required this.formGroup, required this.value});
 
   final FormGroup formGroup;
-  final Item item;
+  final T value;
 }
 
-class FormSubmitted extends FormEvent {}
+class FormSubmitted<T> extends FormEvent<T> {}
+
+class RefreshForm<T> extends FormEvent<T> {}

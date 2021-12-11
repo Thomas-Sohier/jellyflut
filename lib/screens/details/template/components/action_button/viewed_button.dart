@@ -19,7 +19,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   @override
   void initState() {
     fToast = FToast();
-    fToast.init(context);
+    fToast.init(this.context);
     super.initState();
   }
 

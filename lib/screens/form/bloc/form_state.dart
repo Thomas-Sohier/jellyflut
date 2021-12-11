@@ -1,32 +1,27 @@
 part of 'form_bloc.dart';
 
-class FormState {
+class FormState<T> {
   final FormGroup form;
 
   const FormState({required this.form});
 }
 
-class FormMovieState extends FormState {
-  final String name;
-
-  const FormMovieState({required this.name, required FormGroup form})
-      : super(form: form);
-
-  FormMovieState copyWith({String? name}) {
-    return FormMovieState(name: name ?? this.name, form: form);
-  }
-}
-
-class FormValidState extends FormState {
+class FormValidState<T> extends FormState<T> {
   final String message;
+  final T value;
 
-  FormValidState({required this.message, required FormGroup form})
+  FormValidState(
+      {required this.message, required this.value, required FormGroup form})
       : super(form: form);
 }
 
-class FormErrorState extends FormState {
+class FormErrorState<T> extends FormState<T> {
   final String error;
 
   FormErrorState({required this.error, required FormGroup form})
       : super(form: form);
+}
+
+class RefreshedState<T> extends FormState<T> {
+  RefreshedState({required FormGroup form}) : super(form: form);
 }

@@ -87,9 +87,6 @@ class Jellyflut extends StatelessWidget {
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => FormBloc(),
-              ),
-              BlocProvider(
                 create: (_) => AuthBloc(authenticated: authenticated),
                 lazy: false,
               ),
