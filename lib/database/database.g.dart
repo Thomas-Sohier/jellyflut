@@ -153,19 +153,22 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   final String? _alias;
   $ServersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _urlMeta = const VerificationMeta('url');
+  @override
   late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
       'url', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, name];
   @override
@@ -438,33 +441,39 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   final String? _alias;
   $UsersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
+  @override
   late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
       'password', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false);
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
+  @override
   late final GeneratedColumn<String?> apiKey = GeneratedColumn<String?>(
       'api_key', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
+  @override
   late final GeneratedColumn<int?> settingsId = GeneratedColumn<int?>(
       'settings_id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
+  @override
   late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>(
       'server_id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   @override
@@ -736,38 +745,43 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   final String? _alias;
   $SettingsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _preferredPlayerMeta =
       const VerificationMeta('preferredPlayer');
+  @override
   late final GeneratedColumn<String?> preferredPlayer =
       GeneratedColumn<String?>('preferred_player', aliasedName, false,
-          typeName: 'TEXT',
+          type: const StringType(),
           requiredDuringInsert: false,
           defaultValue: const Constant('exoplayer'));
   final VerificationMeta _preferredTranscodeAudioCodecMeta =
       const VerificationMeta('preferredTranscodeAudioCodec');
+  @override
   late final GeneratedColumn<String?> preferredTranscodeAudioCodec =
       GeneratedColumn<String?>(
           'preferred_transcode_audio_codec', aliasedName, false,
-          typeName: 'TEXT',
+          type: const StringType(),
           requiredDuringInsert: false,
           defaultValue: const Constant('auto'));
   final VerificationMeta _maxVideoBitrateMeta =
       const VerificationMeta('maxVideoBitrate');
+  @override
   late final GeneratedColumn<int?> maxVideoBitrate = GeneratedColumn<int?>(
       'max_video_bitrate', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(140000000));
   final VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
+  @override
   late final GeneratedColumn<int?> maxAudioBitrate = GeneratedColumn<int?>(
       'max_audio_bitrate', aliasedName, false,
-      typeName: 'INTEGER',
+      type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(320000));
   @override

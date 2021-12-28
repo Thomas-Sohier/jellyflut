@@ -24,7 +24,7 @@ dependencies:
   cached_network_image: ^3.2.0
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.4
-  dart_vlc: ^0.1.8
+  dart_vlc: ^0.1.7
   device_info_plus: ^3.1.1
   dio: ^4.0.4
   easy_localization: ^3.0.0
