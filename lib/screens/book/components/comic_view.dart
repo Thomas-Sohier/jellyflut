@@ -27,10 +27,12 @@ class ComicView extends StatelessWidget {
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             if (pointerSignal.scrollDelta.dy.isNegative) {
-              final s = (_photoViewController.scale ?? 1) + 0.1;
+              final s =
+                  defaultScaleValue((_photoViewController.scale ?? 1) + 0.1);
               _photoViewController.updateMultiple(scale: s);
             } else {
-              final s = (_photoViewController.scale ?? 1) - 0.1;
+              final s =
+                  defaultScaleValue((_photoViewController.scale ?? 1) - 0.1);
               _photoViewController.updateMultiple(scale: s);
             }
           }
@@ -52,6 +54,13 @@ class ComicView extends StatelessWidget {
                 initialScale: PhotoViewComputedScale.contained,
               );
             }));
+  }
+
+  double defaultScaleValue(final double value,
+      {final double minScaleValue = 0.05, final double maxScaleValue = 4}) {
+    if (value < minScaleValue) return minScaleValue;
+    if (value > maxScaleValue) return maxScaleValue;
+    return value;
   }
 
   double viewportFractionBasedOnScreen(BuildContext context) {
