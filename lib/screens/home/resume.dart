@@ -2,6 +2,7 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
@@ -70,7 +71,9 @@ class _ResumeState extends State<Resume> {
                 return ItemPoster(
                   _item,
                   showLogo: true,
-                  showParent: false,
+                  imagefilter: true,
+                  showParent: true,
+                  tag: ImageType.BACKDROP,
                   clickable: true,
                   widgetAspectRatio: 16 / 9,
                 );

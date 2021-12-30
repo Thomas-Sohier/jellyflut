@@ -19,7 +19,29 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
 
-  CollectionBloc() : super([]);
+  CollectionBloc() : super([]) {
+    on<CollectionEvent>(_onEvent);
+  }
+
+  void _onEvent(CollectionEvent event, Emitter<List<Item>> emit) async {
+    switch (event.status) {
+      case CollectionStatus.ADD:
+        state.addAll(event.items);
+        return emit(state.toList());
+      case CollectionStatus.LOAD_MORE:
+        return showMoreItem(emit);
+      case CollectionStatus.SORT_NAME:
+        final items = await _sortByName();
+        state.clear();
+        state.addAll(items);
+        return emit(state.toList());
+      case CollectionStatus.SORT_DATE:
+        final items = await _sortByDate();
+        state.clear();
+        state.addAll(items);
+        return emit(state.toList());
+    }
+  }
 
   void initialize(Item item) {
     parentItem = item;
@@ -27,32 +49,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
         CollectionEvent(items: category.items, status: CollectionStatus.ADD)));
   }
 
-  @override
-  Stream<List<Item>> mapEventToState(CollectionEvent event) async* {
-    switch (event.status) {
-      case CollectionStatus.ADD:
-        state.addAll(event.items);
-        yield state.toList();
-        break;
-      case CollectionStatus.LOAD_MORE:
-        yield* showMoreItem();
-        break;
-      case CollectionStatus.SORT_NAME:
-        final items = await _sortByName();
-        state.clear();
-        state.addAll(items);
-        yield state.toList();
-        break;
-      case CollectionStatus.SORT_DATE:
-        final items = await _sortByDate();
-        state.clear();
-        state.addAll(items);
-        yield state.toList();
-        break;
-    }
-  }
-
-  Stream<List<Item>> showMoreItem() async* {
+  void showMoreItem(Emitter<List<Item>> emit) async {
     if (!_blockItemsLoading && state.isNotEmpty) {
       _blockItemsLoading = true;
       final category =
@@ -60,7 +57,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
       if (category.items.isNotEmpty) {
         _blockItemsLoading = false;
         state.addAll(category.items);
-        yield state.toList();
+        emit(state.toList());
       }
     }
   }

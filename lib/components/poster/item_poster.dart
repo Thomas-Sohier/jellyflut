@@ -12,6 +12,7 @@ class ItemPoster extends StatefulWidget {
       {this.textColor = Colors.white,
       this.heroTag,
       this.widgetAspectRatio,
+      this.imagefilter = false,
       this.showName = true,
       this.showParent = true,
       this.showOverlay = true,
@@ -24,6 +25,7 @@ class ItemPoster extends StatefulWidget {
   final String? heroTag;
   final double? widgetAspectRatio;
   final Color textColor;
+  final bool imagefilter;
   final bool showName;
   final bool showParent;
   final bool showOverlay;
@@ -83,6 +85,11 @@ class _ItemPosterState extends State<ItemPoster>
                     heroTag: posterHeroTag,
                     boxFit: widget.boxFit,
                     item: widget.item),
+                if (widget.imagefilter)
+                  Container(
+                      constraints: BoxConstraints.expand(),
+                      decoration:
+                          BoxDecoration(color: Colors.black.withAlpha(100))),
                 if (widget.showOverlay)
                   IgnorePointer(
                       child: Stack(

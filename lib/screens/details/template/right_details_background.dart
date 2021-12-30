@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class RightDetailsBackground extends StatelessWidget {
@@ -31,12 +32,16 @@ class RightDetailsBackground extends StatelessWidget {
   }
 
   Widget background(ThemeData theme, BuildContext context) {
+    // useful to have the best contrast
+    final backgroundColor = theme.backgroundColor.computeLuminance() > 0.5
+        ? ColorUtil.lighten(theme.backgroundColor, 0.3)
+        : ColorUtil.darken(theme.backgroundColor, 0.3);
+
     return Theme(
       data: theme,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 500),
-        decoration:
-            BoxDecoration(color: theme.backgroundColor.withOpacity(0.45)),
+        decoration: BoxDecoration(color: backgroundColor.withOpacity(0.55)),
         child: child,
       ),
     );

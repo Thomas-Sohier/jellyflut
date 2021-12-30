@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
@@ -12,24 +11,25 @@ part 'form_event.dart';
 part 'form_state.dart';
 
 class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
-  FormBloc() : super(RefreshedState(form: FormGroup({})));
-
   late FormGroup formGroup;
   late T value;
 
-  @override
-  Stream<FormState<T>> mapEventToState(FormEvent<T> event) async* {
+  FormBloc() : super(RefreshedState(form: FormGroup({}))) {
+    on<FormEvent<T>>(_onEvent);
+  }
+
+  void _onEvent(FormEvent<T> event, Emitter<FormState<T>> emit) async {
     if (event is CurrentForm<T>) {
       formGroup = event.formGroup;
       value = event.value;
     } else if (event is FormSubmitted && value is Item) {
-      yield* _updateItem(value);
+      _updateItem(value, emit);
     } else if (event is RefreshForm) {
-      yield RefreshedState(form: FormGroup({}));
+      emit(RefreshedState(form: FormGroup({})));
     }
   }
 
-  Stream<FormState<T>> _updateItem(final T item) async* {
+  void _updateItem(final T item, Emitter<FormState<T>> emit) async {
     formGroup.markAllAsTouched();
     if (formGroup.valid) {
       // Add necesary data to the item to update it
@@ -39,10 +39,10 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
       // Update item
       try {
         await ItemService.updateItemFromForm(id: item.id, form: form);
-        yield FormValidState<T>(
-            message: 'Item updated', value: value, form: formGroup);
+        emit(FormValidState<T>(
+            message: 'Item updated', value: value, form: formGroup));
       } catch (error) {
-        yield FormErrorState(form: formGroup, error: error.toString());
+        emit(FormErrorState(form: formGroup, error: error.toString()));
       }
     }
   }

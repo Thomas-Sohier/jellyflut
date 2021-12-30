@@ -25,32 +25,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       this.server})
       : super(authenticated
             ? AuthenticationSuccessful()
-            : AuthenticationUnauthenticated());
-
-  @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
-    if (event is RequestAuth) {
-      username = event.username;
-      userPassword = event.password;
-      yield* _mapLoginToState(event);
-    } else if (event is AuthServerAdded) {
+            : AuthenticationUnauthenticated()) {
+    on<RequestAuth>((event, emit) => login(event));
+    on<AuthServerAdded>((event, emit) {
       server = event.server;
-      yield AuthenticationServerAdded(server: event.server);
-    } else if (event is AuthSuccessful) {
-      yield AuthenticationSuccessful();
-    } else if (event is BackToFirstForm) {
-      yield AuthenticationFirstForm();
-    } else if (event is ResetStates || event is LogOut) {
-      yield AuthenticationUnauthenticated();
-    } else if (event is AuthError) {
-      errors.add(event.error);
-    }
+      emit(AuthenticationServerAdded(server: event.server));
+    });
+    on<AuthSuccessful>((event, emit) => AuthenticationSuccessful);
+    on<BackToFirstForm>((event, emit) => AuthenticationFirstForm);
+    on<ResetStates>((event, emit) => AuthenticationUnauthenticated);
+    on<LogOut>((event, emit) => AuthenticationUnauthenticated);
+    on<AuthError>((event, emit) => errors.add(event.error));
   }
 
-  Stream<AuthState> _mapLoginToState(RequestAuth event) async* {
+  Stream<AuthState> login(RequestAuth event) async* {
     try {
+      username = event.username;
+      userPassword = event.password;
       globals.server = server!;
       final response = await AuthService.login(event.username, event.password);
       await AuthService.storeAccountData(event.username, response);
