@@ -86,10 +86,11 @@ class _ItemPosterState extends State<ItemPoster>
                     boxFit: widget.boxFit,
                     item: widget.item),
                 if (widget.imagefilter)
-                  Container(
-                      constraints: BoxConstraints.expand(),
-                      decoration:
-                          BoxDecoration(color: Colors.black.withAlpha(100))),
+                  IgnorePointer(
+                      child: Container(
+                          constraints: BoxConstraints.expand(),
+                          decoration: BoxDecoration(
+                              color: Colors.black.withAlpha(100)))),
                 if (widget.showOverlay)
                   IgnorePointer(
                       child: Stack(

@@ -72,9 +72,7 @@ class _ResumeState extends State<Resume> {
                   _item,
                   showLogo: true,
                   imagefilter: true,
-                  showParent: true,
                   tag: ImageType.BACKDROP,
-                  clickable: true,
                   widgetAspectRatio: 16 / 9,
                 );
               },
