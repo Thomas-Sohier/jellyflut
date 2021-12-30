@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:
-        channel: stable
+        channel: "master"
 
     - run: flutter pub get
     - run: flutter format --set-exit-if-changed .
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
-          channel: master
+          channel: "master"
 
     - run: echo $ANDROID_KEYS | base64 -d > android/app/key.jks
       env:
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
-          channel: stable
+          channel: "master"
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
 
@@ -86,7 +86,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
         with:
-          channel: master
+          channel: "master"
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev vlc libvlc-dev libwebkit2gtk-4.0-dev libmediainfo-dev dpkg-dev alien
       - run: flutter config --enable-linux-desktop
