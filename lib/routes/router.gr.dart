@@ -168,11 +168,10 @@ class AppRouter extends _i11.RootStackRouter {
       ];
 }
 
-/// generated route for
-/// [_i1.AuthParent]
+/// generated route for [_i1.AuthParent]
 class AuthParentRoute extends _i11.PageRouteInfo<AuthParentRouteArgs> {
   AuthParentRoute({_i12.Key? key, void Function()? onAuthenticated})
-      : super(AuthParentRoute.name,
+      : super(name,
             path: 'authentication',
             args: AuthParentRouteArgs(
                 key: key, onAuthenticated: onAuthenticated));
@@ -193,11 +192,10 @@ class AuthParentRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i2.HomeParent]
+/// generated route for [_i2.HomeParent]
 class HomeRouter extends _i11.PageRouteInfo<HomeRouterArgs> {
   HomeRouter({_i12.Key? key, List<_i11.PageRouteInfo>? children})
-      : super(HomeRouter.name,
+      : super(name,
             path: 'home',
             args: HomeRouterArgs(key: key),
             initialChildren: children);
@@ -216,12 +214,11 @@ class HomeRouterArgs {
   }
 }
 
-/// generated route for
-/// [_i3.CollectionParent]
+/// generated route for [_i3.CollectionParent]
 class CollectionParentRoute
     extends _i11.PageRouteInfo<CollectionParentRouteArgs> {
   CollectionParentRoute({required _i14.Item item})
-      : super(CollectionParentRoute.name,
+      : super(name,
             path: '/collection-parent',
             args: CollectionParentRouteArgs(item: item));
 
@@ -239,11 +236,10 @@ class CollectionParentRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i4.Details]
+/// generated route for [_i4.Details]
 class DetailsRoute extends _i11.PageRouteInfo<DetailsRouteArgs> {
   DetailsRoute({required _i14.Item item, required String? heroTag})
-      : super(DetailsRoute.name,
+      : super(name,
             path: 'details',
             args: DetailsRouteArgs(item: item, heroTag: heroTag));
 
@@ -263,20 +259,17 @@ class DetailsRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i5.Settings]
+/// generated route for [_i5.Settings]
 class SettingsRoute extends _i11.PageRouteInfo<void> {
-  const SettingsRoute() : super(SettingsRoute.name, path: 'settings');
+  const SettingsRoute() : super(name, path: 'settings');
 
   static const String name = 'SettingsRoute';
 }
 
-/// generated route for
-/// [_i6.MusicPlayer]
+/// generated route for [_i6.MusicPlayer]
 class MusicPlayerRoute extends _i11.PageRouteInfo<MusicPlayerRouteArgs> {
   MusicPlayerRoute({_i12.Key? key})
-      : super(MusicPlayerRoute.name,
-            path: 'music-player', args: MusicPlayerRouteArgs(key: key));
+      : super(name, path: 'music-player', args: MusicPlayerRouteArgs(key: key));
 
   static const String name = 'MusicPlayerRoute';
 }
@@ -292,14 +285,13 @@ class MusicPlayerRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i7.Playlist]
+/// generated route for [_i7.Playlist]
 class PlaylistRoute extends _i11.PageRouteInfo<PlaylistRouteArgs> {
   PlaylistRoute(
       {_i12.Key? key,
       required _i12.Widget body,
       required _i12.ThemeData playlistTheme})
-      : super(PlaylistRoute.name,
+      : super(name,
             path: 'playlist',
             args: PlaylistRouteArgs(
                 key: key, body: body, playlistTheme: playlistTheme));
@@ -323,11 +315,10 @@ class PlaylistRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i8.Stream]
+/// generated route for [_i8.Stream]
 class StreamRoute extends _i11.PageRouteInfo<StreamRouteArgs> {
   StreamRoute({_i14.Item? item, String? url})
-      : super(StreamRoute.name,
+      : super(name,
             path: 'stream', args: StreamRouteArgs(item: item, url: url));
 
   static const String name = 'StreamRoute';
@@ -346,11 +337,10 @@ class StreamRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i9.BookReaderPage]
+/// generated route for [_i9.BookReaderPage]
 class BookReaderPageRoute extends _i11.PageRouteInfo<BookReaderPageRouteArgs> {
   BookReaderPageRoute({_i12.Key? key, required _i14.Item item})
-      : super(BookReaderPageRoute.name,
+      : super(name,
             path: 'epub', args: BookReaderPageRouteArgs(key: key, item: item));
 
   static const String name = 'BookReaderPageRoute';
@@ -369,19 +359,17 @@ class BookReaderPageRouteArgs {
   }
 }
 
-/// generated route for
-/// [_i10.Home]
+/// generated route for [_i10.Home]
 class HomeRoute extends _i11.PageRouteInfo<void> {
-  const HomeRoute() : super(HomeRoute.name, path: '');
+  const HomeRoute() : super(name, path: '');
 
   static const String name = 'HomeRoute';
 }
 
-/// generated route for
-/// [_i3.CollectionParent]
+/// generated route for [_i3.CollectionParent]
 class CollectionRoute extends _i11.PageRouteInfo<CollectionRouteArgs> {
   CollectionRoute({required _i14.Item item})
-      : super(CollectionRoute.name,
+      : super(name,
             path: 'collection-parent', args: CollectionRouteArgs(item: item));
 
   static const String name = 'CollectionRoute';
