@@ -60,6 +60,9 @@ class InitStreamingItemUtil {
   static Future<Widget> _initVlcComputerPlayer(Item item) async {
     final player = await CommonStreamVLCComputer.setupData(item: item);
 
+    // If no error while init then play
+    player.play();
+
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[

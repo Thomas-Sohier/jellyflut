@@ -22,7 +22,7 @@ class CommonStreamVLCComputer {
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
     ]);
     final media = Media.network(streamURL);
-    _player.open(media);
+    _player.open(media, autoStart: false);
 
     // create timer to save progress
     final timer = _startProgressTimer(item, _player);
