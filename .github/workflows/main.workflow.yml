@@ -20,7 +20,7 @@ jobs:
     - run: flutter format --set-exit-if-changed .
     - run: flutter analyze .
 
-  build-android:
+  build_android:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
     
@@ -50,7 +50,7 @@ jobs:
           jellyflut.apk
         token: ${{ secrets.GITHUB_TOKEN }}
    
-  build-windows:
+  build_windows:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
     
@@ -77,7 +77,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
       
-  build-linux:
+  build_linux:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: test
     
