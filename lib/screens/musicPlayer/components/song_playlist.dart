@@ -6,10 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
-  final Color backgroundColor;
-  final Color color;
-  SongPlaylist({Key? key, required this.backgroundColor, required this.color})
-      : super(key: key);
+  SongPlaylist({Key? key}) : super(key: key);
 
   @override
   _SongPlaylistState createState() => _SongPlaylistState();
@@ -34,7 +31,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
       musicProvider = mp;
       return GlowingOverscrollIndicator(
           axisDirection: AxisDirection.down,
-          color: widget.color,
+          color: Theme.of(context).colorScheme.primary,
           child: ChangeNotifierProvider.value(
               value: musicProvider,
               child: ReorderableListView.builder(
@@ -82,7 +79,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
         children: [
           if (index > 0)
             Divider(
-              color: widget.color.withAlpha(100),
+              color: Theme.of(context).colorScheme.primary.withAlpha(100),
               height: 0.5,
               thickness: 0.5,
             ),
@@ -104,8 +101,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
           padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
           child: Text(
             index.toString(),
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: widget.color),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
@@ -117,24 +113,18 @@ class _SongPlaylistState extends State<SongPlaylist> {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(metadata.title,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: widget.color)),
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
               Text(metadata.artist,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: widget.color)),
+                  style:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
               if (metadata.album != null)
                 Text(metadata.album!,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: widget.color))
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal))
             ],
           ),
         )

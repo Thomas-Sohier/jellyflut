@@ -1,15 +1,19 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:jellyflut/globals.dart';
 
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_headerBar.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:just_audio/just_audio.dart';
 import 'package:palette_generator/palette_generator.dart';
 
@@ -26,12 +30,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late Color backgroundColor2;
   late Color foregroundColor;
   late int musicPlayerIndex;
+  final ThemeData playlistThemeData = ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: personnal_theme.jellyPurple,
+      backgroundColor: ColorUtil.darken(Colors.grey.shade900, 0.05));
 
   @override
   void initState() {
     super.initState();
-    backgroundColor1 = jellyLightPurple;
-    backgroundColor2 = jellyDarkPurple;
+    backgroundColor1 = personnal_theme.jellyLightPurple;
+    backgroundColor2 = personnal_theme.jellyDarkPurple;
     foregroundColor = Colors.white;
     musicProvider = MusicProvider();
     musicProvider
@@ -67,91 +75,79 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   Widget largeScreenTemplate(double height, double statusBarHeight) {
     var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SongHeaderBar(height: height * 0.05, color: Colors.white),
-      ),
+    return Row(children: [
       Expanded(
-        child: Row(children: [
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                      width: singleSize, child: SongInfos(color: Colors.white)),
-                  SizedBox(
-                    height: singleSize + 40,
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        SongImage(
-                            singleSize: singleSize,
-                            color: foregroundColor,
-                            albumColors: [backgroundColor1, backgroundColor2]),
-                        Positioned.fill(
-                            top: singleSize - 40,
-                            child: SongControls(
-                                color: foregroundColor,
-                                backgroundColor: backgroundColor2)),
-                      ],
-                    ),
-                  ),
-                ]),
-          )),
-          Expanded(
-            child: ClipRRect(
+          child: Column(children: [
+        AppBar(elevation: 0),
+        Padding(
+            padding: const EdgeInsets.all(16), child: songDetails(singleSize))
+      ])),
+      Expanded(
+        child: ClipRect(
+          child: Container(
+              color: ColorUtil.darken(Colors.grey.shade900, 0.02),
               child: Column(
                 children: [
-                  Expanded(
-                    child: SongPlaylist(
-                        backgroundColor: Colors.grey.shade900,
-                        color: Colors.white),
-                  )
+                  AppBar(
+                      leading: const SizedBox(),
+                      leadingWidth: 0,
+                      toolbarTextStyle: Theme.of(context).textTheme.headline2,
+                      title: Text('Playlist')),
+                  SongPlaylist(),
                 ],
-              ),
+              )),
+        ),
+      ),
+    ]);
+  }
+
+  Widget songDetails(final double singleSize) {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(width: singleSize, child: SongInfos(color: Colors.white)),
+          SizedBox(
+            height: singleSize + 40,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                SongImage(
+                    singleSize: singleSize,
+                    color: foregroundColor,
+                    albumColors: [backgroundColor1, backgroundColor2]),
+                Positioned.fill(
+                    top: singleSize - 40,
+                    child: SongControls(
+                        color: foregroundColor,
+                        backgroundColor: backgroundColor2)),
+              ],
             ),
           ),
-        ]),
-      )
-    ]);
+        ]);
   }
 
   Widget phoneTemplate(double height, double statusBarHeight) {
     var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: statusBarHeight,
-            ),
-            SongHeaderBar(height: height * 0.05, color: Colors.white),
-            SizedBox(width: singleSize, child: SongInfos(color: Colors.white)),
-            SizedBox(
-              height: singleSize + 40,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  SongImage(
-                      singleSize: singleSize,
-                      color: foregroundColor,
-                      albumColors: [backgroundColor1, backgroundColor2]),
-                  Positioned.fill(
-                      top: singleSize - 40,
-                      child: SongControls(
-                          color: foregroundColor,
-                          backgroundColor: backgroundColor2)),
-                ],
-              ),
-            ),
-          ],
-        ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        AppBar(
+          elevation: 0,
+          actions: [playlistButton()],
+        ),
+        Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8),
+            child: songDetails(singleSize))
+      ],
+    );
+  }
+
+  Widget playlistButton() {
+    return IconButton(
+        onPressed: () => customRouter.push(PlaylistRoute(body: SongPlaylist())),
+        icon: Icon(Icons.album, color: Theme.of(context).colorScheme.primary));
   }
 
   void setAlbumPrimaryColor() {
