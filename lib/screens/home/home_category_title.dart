@@ -29,34 +29,39 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle>
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: widget.onTap,
-      autofocus: false,
-      focusNode: _node,
-      style: OutlinedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-              backgroundColor: Colors.transparent)
-          .copyWith(side: buttonBorderSide())
-          .copyWith(padding: buttonPadding()),
-      child: title(),
-    );
+    return title();
+
+    // TODO see if make the title clickable is a good UX Idea
+    // return OutlinedButton(
+    //   onPressed: widget.onTap,
+    //   autofocus: false,
+    //   focusNode: _node,
+    //   style: OutlinedButton.styleFrom(
+    //           padding: EdgeInsets.zero,
+    //           shape: RoundedRectangleBorder(
+    //             borderRadius: BorderRadius.all(Radius.circular(4)),
+    //           ),
+    //           backgroundColor: Colors.transparent)
+    //       .copyWith(side: buttonBorderSide())
+    //       .copyWith(padding: buttonPadding()),
+    //   child: title(),
+    // );
   }
 
-  Widget title() {
+  Widget title({final bool clickable = false}) {
     return Row(children: [
       Text(
         widget.item.name,
         style: TextStyle(color: Colors.white, fontSize: 28),
       ),
       Spacer(),
-      InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-        onTap: widget.onTap,
-        child: Icon(Icons.chevron_right_rounded, color: Colors.white, size: 42),
-      ),
+      if (clickable)
+        InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          onTap: widget.onTap,
+          child:
+              Icon(Icons.chevron_right_rounded, color: Colors.white, size: 42),
+        ),
     ]);
   }
 
