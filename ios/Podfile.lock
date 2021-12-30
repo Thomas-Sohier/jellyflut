@@ -1,0 +1,181 @@
+PODS:
+  - audio_session (0.0.1):
+    - Flutter
+  - better_player (0.0.1):
+    - Cache (~> 6.0.0)
+    - Flutter
+    - HLSCachingReverseProxyServer
+  - Cache (6.0.0)
+  - dart_vlc (0.0.1):
+    - Flutter
+    - MobileVLCKit (~> 3.3.0)
+  - device_info_plus (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_vlc_player (3.0.2):
+    - Flutter
+    - MobileVLCKit (~> 3.3.17)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
+  - HLSCachingReverseProxyServer (0.1.0):
+    - GCDWebServer (~> 3.5)
+    - PINCache (>= 3.0.1-beta.3)
+  - just_audio (0.0.1):
+    - Flutter
+  - MobileVLCKit (3.3.17)
+  - package_info_plus (0.4.5):
+    - Flutter
+  - path_provider_ios (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
+    - PINCache/Core
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.1)
+  - shared_preferences_ios (0.0.1):
+    - Flutter
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - sqlite3 (3.37.0):
+    - sqlite3/common (= 3.37.0)
+  - sqlite3/common (3.37.0)
+  - sqlite3/fts5 (3.37.0):
+    - sqlite3/common
+  - sqlite3/json1 (3.37.0):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.37.0):
+    - sqlite3/common
+  - sqlite3/rtree (3.37.0):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - sqlite3 (~> 3.37.0)
+    - sqlite3/fts5
+    - sqlite3/json1
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+  - Toast (4.0.0)
+  - url_launcher_ios (0.0.1):
+    - Flutter
+  - video_player (0.0.1):
+    - Flutter
+  - wakelock (0.0.1):
+    - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - better_player (from `.symlinks/plugins/better_player/ios`)
+  - dart_vlc (from `.symlinks/plugins/dart_vlc/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_vlc_player (from `.symlinks/plugins/flutter_vlc_player/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - video_player (from `.symlinks/plugins/video_player/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Cache
+    - FMDB
+    - GCDWebServer
+    - HLSCachingReverseProxyServer
+    - MobileVLCKit
+    - PINCache
+    - PINOperation
+    - sqlite3
+    - Toast
+
+EXTERNAL SOURCES:
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
+  better_player:
+    :path: ".symlinks/plugins/better_player/ios"
+  dart_vlc:
+    :path: ".symlinks/plugins/dart_vlc/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
+  Flutter:
+    :path: Flutter
+  flutter_vlc_player:
+    :path: ".symlinks/plugins/flutter_vlc_player/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  sqlite3_flutter_libs:
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  video_player:
+    :path: ".symlinks/plugins/video_player/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
+
+SPEC CHECKSUMS:
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  better_player: 5f77b030c433bd39af0aaaffc184cf4267601a84
+  Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
+  dart_vlc: d7012fd0048c406c8942bc2e888b8edc88c0508b
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_vlc_player: 235ae431db52f5e02aa76d72f61806accb1841e3
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  MobileVLCKit: c5dd1b0ae933dc9c2348099840e753496dcdd908
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
+  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
+  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  sqlite3: b56b05777c433a55d852a3405c1903e2b57be2ce
+  sqlite3_flutter_libs: 83a1fbbabdcee09e4e34511bb246136a8a97c9d6
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
+  video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
+
+PODFILE CHECKSUM: 02736ce9499773fd5230809fe0ac3503a382c82d
+
+COCOAPODS: 1.11.2
