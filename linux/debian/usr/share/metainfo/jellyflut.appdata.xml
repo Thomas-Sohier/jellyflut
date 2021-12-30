@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>jellyflut</id>
+	<name>Jellyflut</name>
+	<summary>A Jellyfin client to stream video/music/book...</summary>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>MIT</project_license>
+	<recommends>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>touch</control>
+	</recommends>
+	<developer_name>Thomas SOHIER</developer_name>
+	<url type="homepage">https://github.com/Thomas-Sohier/jellyflut</url>
+	<description>
+		<p>A Jellyfin client to stream video/music/book...</p>
+		<p>Features:</p>
+		<ul>
+			<li>Stream your library</li>
+			<li>Video, photos, music, epub/comic reader/player</li>
+			<li>Ads free forever</li>
+			<li>Playlists</li>
+			<li>Freedom - Open source</li>
+		</ul>
+	</description>
+	<launchable type="desktop-id">harmonoid.desktop</launchable>
+	<releases>
+		<release version="1.1.60" date="2022-12-30"/>
+	</releases>
+	<content_rating type="oars-1.0" />
+	<update_contact>thomas.sohier44@gmail.com</update_contact>
+</component>

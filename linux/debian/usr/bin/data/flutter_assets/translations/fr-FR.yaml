@@ -1,0 +1,96 @@
+# globals
+unknown: Unknown
+disable: Désactiver
+delete: Supprimer
+back: Précédent
+no: Non
+yes: Oui
+like: Aimer
+manage: Gérer
+play: Lire
+trailer: Trailer
+viewed: Vu
+loading: Chargement
+loading_dots: Chargement...
+
+# Error
+error: Erreur
+error_loading_item: 'Erreur lors du chargement {}' 
+error_unzip_file: Erreur, impossible de décompresser le fichier
+cannot_open_file: "Impossible d'ouvrir le fichier {}"
+cannot_download_item: "Impossible de télécharger {}"
+cannot_access_storage: "Impossible d'accéder au stockage"
+cannot_load_page: "Impossible de charger la page"
+
+# Category titles
+latest: Derniers ajouts
+resume: Continuer
+
+# Search
+search_no_results: Aucun résultats...
+search_field_hint: Rechercher
+
+# Streaming controls
+select_audio_source: Sélctionner une source audio
+no_audio_source: Aucune source audio
+select_chapter: Sélectionner un chapitre
+no_chapters: Aucun chapitre
+select_subtitle: Sélectionner des sous-titres
+no_subtitles: Aucun sous-titres
+
+# Settings
+settings: Paramètres
+video_player: Lecteur vidéo
+preferred_player: Lecteur préféré
+max_bitrate: Bitrate maximum
+audio_player: Lecteur audio
+transcode_codec: Codec de transcodage
+infos: Informations
+version: Version
+account: Compte
+deconnect: Déconnexion
+select_preferred_video_player: Sélectionner le lecteur video préféré
+select_preferred_audio_player: Sélectionner le lecteur audio préféré
+interface: Interface
+language: Langage
+
+# details
+add_to_playlist: Ajouter à la playlist
+edit_infos: Éditer les informations
+see_artist: Voir l'artiste
+cannot_get_artist: Impossible de récupérer l'artiste
+see_album: Voir l'album
+cannot_delete_item: Impossible de supprimer l'album
+item_added_playlist: '{} ajouté à la playlist'
+item_ends: 'Se termine à {}'
+item_cast: 'Casting de {}'
+
+# auth
+connection: Connexion
+login: Se connecter
+url_not_correct: "Votre URL n'est pas correcte"
+field_required: '{} est requis'
+form_not_valid: "Le formulaire n'est pas valide"
+server_configuration: Configuration du serveur
+add_server: Ajouter le serveur
+user_username_field_label: Identifiant
+user_password_field_label: Mot de passe
+server_name_field_label: Nom
+server_url_field_label: URL
+
+# action button
+add_item_favorite: '{} ajouté aux favoris'
+remove_item_favorite: '{} supprimé des favoris'
+delete_item_question: 'Supprimer {} ?'
+action_cannot_reverse: Cette action ne peut être annulée
+mark_item_viewed: '{} marqué comme vu'
+mark_item_unviewed: '{} marqué comme non vu'
+cannot_open: "Impossible d'ouvrir {}"
+
+# list items
+empty_collection: Collection vide
+
+# book reader
+no_pages: Aucunes pages
+select_page: Sélectionner une page
+page_number: 'Page n°{}'

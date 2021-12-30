@@ -1,0 +1,10 @@
+Package: jellyflut
+Version: 1.1.60
+Section: base
+Priority: optional
+Homepage: https://github.com/Thomas-Sohier/jellyflut
+Architecture: amd64
+Depends: libwebkit2gtk-4.0-dev, vlc, libvlc-dev
+Maintainer: Thomas SOHIER <thomas.sohier44@gmail.com>
+Description: jellyflut
+ A Jellyfin client to stream video/music/book...
