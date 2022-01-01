@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progress_bar.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
@@ -40,6 +39,14 @@ class ItemPoster extends StatefulWidget {
 
 class _ItemPosterState extends State<ItemPoster>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  // bool properties to show hide title accordingly
+  bool hasTitle = true;
+  bool hasSubTitle = false;
+
+  // bool properties to grow/shrink title/poster size accordingly
+  int posterFlexSize = 9;
+  int posterNameFlexSize = 1;
+
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;
@@ -51,6 +58,8 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   void initState() {
     _node = FocusNode();
+    updatePosterProperties();
+    // hero tag setter
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
     aspectRatio = widget.widgetAspectRatio ??
         widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
@@ -66,13 +75,14 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    updatePosterProperties();
     return AspectRatio(aspectRatio: aspectRatio, child: body(context));
   }
 
   Widget body(BuildContext context) {
     return Column(children: [
-      SizedBox(
-        height: itemPosterHeight,
+      Expanded(
+        flex: 8,
         child: ClipRRect(
             clipBehavior: Clip.antiAlias,
             child: AspectRatio(
@@ -111,7 +121,7 @@ class _ItemPosterState extends State<ItemPoster>
               ]),
             )),
       ),
-      if (widget.showName) name()
+      if (hasTitle) name()
     ]);
   }
 
@@ -123,38 +133,35 @@ class _ItemPosterState extends State<ItemPoster>
   }
 
   Widget name() {
-    return SizedBox(
-        height: itemPosterLabelHeight,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                widget.showParent ? widget.item.parentName() : widget.item.name,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                softWrap: false,
-                maxLines: 1,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 16, color: widget.textColor),
-              ),
-            ),
-            if (widget.item.isFolder != null &&
-                widget.item.parentIndexNumber != null)
-              Text(
-                'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: 12, color: widget.textColor),
-                textAlign: TextAlign.center,
-              ),
-          ],
-        ));
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Text(
+            widget.showParent ? widget.item.parentName() : widget.item.name,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            softWrap: false,
+            maxLines: 1,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .copyWith(fontSize: 16, color: widget.textColor),
+          ),
+        ),
+        if (hasSubTitle)
+          Text(
+            'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .copyWith(fontSize: 12, color: widget.textColor),
+            textAlign: TextAlign.center,
+          ),
+      ],
+    );
   }
 
   Widget newBanner() {
@@ -198,6 +205,23 @@ class _ItemPosterState extends State<ItemPoster>
         child: Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: ProgressBar(item: widget.item)));
+  }
+
+  void updatePosterProperties() {
+    hasTitle = widget.showName;
+    hasSubTitle =
+        widget.item.isFolder != null && widget.item.parentIndexNumber != null;
+
+    if (hasTitle && hasSubTitle) {
+      posterFlexSize = 8;
+      posterNameFlexSize = 2;
+    } else if (hasTitle && !hasSubTitle) {
+      posterFlexSize = 9;
+      posterNameFlexSize = 1;
+    } else if (!hasTitle && !hasSubTitle) {
+      posterFlexSize = 10;
+      posterNameFlexSize = 0;
+    }
   }
 
   MaterialStateProperty<double> buttonElevation() {

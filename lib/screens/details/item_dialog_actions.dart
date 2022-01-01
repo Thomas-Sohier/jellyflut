@@ -30,7 +30,7 @@ class ItemDialogActions extends StatelessWidget {
             ? _dialogListField('add_to_playlist:'.tr(),
                 () => _addItemToPlaylist(item, context),
                 fontSize: _fontSize, icon: Icons.playlist_add)
-            : Container(),
+            : const SizedBox(),
         _dialogListField('edit_infos'.tr(), switchWidget,
             fontSize: _fontSize, icon: Icons.info_outline),
         item.type == ItemType.AUDIO
@@ -43,14 +43,14 @@ class ItemDialogActions extends StatelessWidget {
                       .replace(DetailsRoute(item: artist, heroTag: ''));
                 }
               }, fontSize: _fontSize, icon: Icons.person_outline)
-            : Container(),
+            : const SizedBox(),
         item.type == ItemType.AUDIO
             ? _dialogListField('see_album'.tr(), () async {
                 var album = await getAlbum(item);
                 await customRouter
                     .replace(DetailsRoute(item: album, heroTag: ''));
               }, fontSize: _fontSize, icon: Icons.album_outlined)
-            : Container(),
+            : const SizedBox(),
         _dialogListField(
             'delete'.tr(),
             () => deleteDialogItem(item, context).then((value) {

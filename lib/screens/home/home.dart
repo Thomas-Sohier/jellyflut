@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
+import 'package:jellyflut/screens/home/latest.dart';
 import 'package:jellyflut/screens/home/search_button.dart';
 import 'package:jellyflut/screens/home/settings_button.dart';
-import 'package:jellyflut/screens/home/home_categories.dart';
+import 'package:jellyflut/screens/home/home_category.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/components/search/search_result.dart';
 import 'package:jellyflut/services/user/user_service.dart';
@@ -63,12 +64,13 @@ class _HomeState extends State<Home> {
               ]),
             ),
             SliverToBoxAdapter(child: Resume()),
+            SliverToBoxAdapter(child: Latest()),
             categoryBuilder()
           ],
         ));
   }
 
-  /// Prevent from re-query the API on resize
+  /// Can show error if any
   Widget categoryBuilder() {
     return FutureBuilder<Category>(
       future: categoryFuture,
@@ -78,9 +80,7 @@ class _HomeState extends State<Home> {
         } else if (snapshot.hasError) {
           return noConnectivity(SocketException(snapshot.error.toString()));
         }
-        return SliverToBoxAdapter(
-          child: Center(child: CircularProgressIndicator()),
-        );
+        return SliverToBoxAdapter();
       },
     );
   }
@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
     return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
       var _item = category.items[index];
-      return HomeCategories(_item);
+      return HomeCategory(_item);
     }, childCount: category.items.length));
   }
 }

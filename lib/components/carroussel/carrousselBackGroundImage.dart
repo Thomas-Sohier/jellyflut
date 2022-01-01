@@ -44,7 +44,7 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
             ),
             child: responsiveBackgroundBuilder(carrousselProvider.item!));
       } else {
-        return Container();
+        return const SizedBox();
       }
     });
   }

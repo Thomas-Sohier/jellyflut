@@ -181,7 +181,7 @@ class _CommonControlsState extends State<CommonControls> {
               future: hasPip,
               builder: (context, snapshot) => snapshot.hasData && snapshot.data!
                   ? PipButton()
-                  : Container()),
+                  : const SizedBox()),
           SubtitleButtonSelector(),
           AudioButtonSelector()
         ]);

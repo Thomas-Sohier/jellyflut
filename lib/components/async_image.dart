@@ -53,7 +53,7 @@ class AsyncImage extends StatelessWidget {
       if (tag != ImageType.LOGO) {
         return OctoError.blurHash(hash, icon: Icons.warning_amber_rounded);
       }
-      return (_, o, e) => Container();
+      return (_, o, e) => const SizedBox();
     }
     return (_, o, e) => errorWidget != null ? errorWidget! : noPhotoActor();
   }
@@ -65,7 +65,7 @@ class AsyncImage extends StatelessWidget {
       if (tag != ImageType.LOGO) {
         return OctoPlaceholder.blurHash(hash);
       }
-      return (_) => Container();
+      return (_) => const SizedBox();
     }
     return (_) => placeholder != null ? placeholder! : noPhotoActor();
   }

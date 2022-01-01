@@ -74,7 +74,7 @@ class _SearchResultState extends State<SearchResult> {
             itemPosterHeight: itemPosterHeight,
             showTitle: true,
             lisType: ListType.POSTER))
-        : Container());
+        : const SizedBox());
     return rows;
   }
 }

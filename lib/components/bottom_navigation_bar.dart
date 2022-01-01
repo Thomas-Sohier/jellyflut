@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class BottomNavigationBar extends StatefulWidget {
-  final TabsRouter tabsRouter;
+  final BuildContext tabsContext;
   final List<Item> items;
 
-  BottomNavigationBar({Key? key, required this.tabsRouter, required this.items})
+  BottomNavigationBar(
+      {Key? key, required this.tabsContext, required this.items})
       : super(key: key);
 
   @override
@@ -40,9 +42,13 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
                     shrinkWrap: true,
                     children: [
                       SalomonBottomBar(
-                          currentIndex: widget.tabsRouter.activeIndex,
+                          currentIndex:
+                              widget.tabsContext.tabsRouter.activeIndex,
                           onTap: (index) => setState(() {
-                                widget.tabsRouter.setActiveIndex(index);
+                                widget.tabsContext.tabsRouter
+                                  ..setActiveIndex(index)
+                                  ..innerRouterOf<StackRouter>(HomeRouter.name)
+                                      ?.push(HomeRoute());
                               }),
                           items: createButtonRoute(widget.items)),
                     ]),
@@ -50,9 +56,12 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> {
             );
           }
           return SalomonBottomBar(
-              currentIndex: widget.tabsRouter.activeIndex,
+              currentIndex: widget.tabsContext.tabsRouter.activeIndex,
               onTap: (index) => setState(() {
-                    widget.tabsRouter.setActiveIndex(index);
+                    widget.tabsContext.tabsRouter
+                      ..setActiveIndex(index)
+                      ..innerRouterOf<StackRouter>(HomeRouter.name)
+                          ?.push(HomeRoute());
                   }),
               items: createButtonRoute(widget.items));
         })));

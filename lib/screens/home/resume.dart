@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -17,11 +19,16 @@ class Resume extends StatefulWidget {
 }
 
 class _ResumeState extends State<Resume> {
+  final String categoryTitle = 'resume';
+  final double scalePosterSizeValue = 0.8;
   late Future<Category> categoryFuture;
+  late final HomeCategoryProvider homeCategoryprovider;
 
   @override
   void initState() {
     categoryFuture = ItemService.getResumeItems();
+    homeCategoryprovider = HomeCategoryProvider();
+    checkIfCategoryInitialized();
     super.initState();
   }
 
@@ -32,23 +39,33 @@ class _ResumeState extends State<Resume> {
 
   /// Prevent from re-query the API on resize
   Widget categoryBuilder() {
-    return FutureBuilder<Category>(
-      future: categoryFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData && !snapshot.hasError) {
-          var _items = snapshot.data!.items;
-          if (_items.isNotEmpty) {
-            return body(_items);
-          } else {
-            return Container();
+    if (homeCategoryprovider.isCategoryPresent(categoryTitle)) {
+      final items = homeCategoryprovider.getCategoryItem(categoryTitle);
+      if (items.isNotEmpty) {
+        return body();
+      } else {
+        return const SizedBox();
+      }
+    } else {
+      return FutureBuilder<Category>(
+        future: categoryFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && !snapshot.hasError) {
+            var _items = snapshot.data!.items;
+            if (_items.isNotEmpty) {
+              return body();
+            } else {
+              return const SizedBox();
+            }
           }
-        }
-        return placeholder();
-      },
-    );
+          return placeholder();
+        },
+      );
+    }
   }
 
-  Widget body(List<Item> items) {
+  Widget body() {
+    final items = homeCategoryprovider.getCategoryItem(categoryTitle);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +78,8 @@ class _ResumeState extends State<Resume> {
           ).tr(),
         ),
         SizedBox(
-            height: itemPosterHeight + itemPosterLabelHeight,
+            height: (itemPosterHeight + itemPosterLabelHeight) *
+                scalePosterSizeValue,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: 8),
@@ -124,5 +142,22 @@ class _ResumeState extends State<Resume> {
                     ],
                   ))
             ]));
+  }
+
+  void checkIfCategoryInitialized() {
+    // If category is not present then we load datas from API endpoint
+    if (!homeCategoryprovider.isCategoryPresent(categoryTitle)) {
+      // get datas
+      categoryFuture = ItemService.getResumeItems();
+
+      // Add category to BLoC
+      categoryFuture.then((value) => homeCategoryprovider
+          .addCategory(MapEntry(categoryTitle, value.items)));
+    } else {
+      categoryFuture = Future.value(Category(
+          items: homeCategoryprovider.getCategoryItem(categoryTitle),
+          totalRecordCount: 0,
+          startIndex: 0));
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
@@ -81,8 +82,12 @@ class Jellyflut extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-        value: MusicProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
+          ChangeNotifierProvider<HomeCategoryProvider>(
+              create: (_) => HomeCategoryProvider()),
+        ],
         child: MultiBlocProvider(
             providers: [
               BlocProvider(

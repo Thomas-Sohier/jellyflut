@@ -5,8 +5,8 @@ import 'package:jellyflut/components/detailed_item_poster.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
-import 'package:jellyflut/screens/collection/collection_bloc.dart';
-import 'package:jellyflut/screens/collection/collection_event.dart';
+import 'package:jellyflut/screens/collection/bloc/collection_bloc.dart';
+import 'package:jellyflut/screens/collection/bloc/collection_event.dart';
 import 'package:jellyflut/screens/collection/list_items_skeleton.dart';
 import 'package:uuid/uuid.dart';
 

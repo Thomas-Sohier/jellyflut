@@ -49,23 +49,19 @@ class VideoPlayerSection extends StatelessWidget {
             width: 250,
             constraints: BoxConstraints(minHeight: 100, maxHeight: 300),
             child: ListView.builder(
-              itemCount: StreamingSoftwareName.values.length,
+              itemCount: getVideoPlayerOptions().length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(
-                    index < StreamingSoftwareName.values.length
-                        ? StreamingSoftwareName.values
-                            .elementAt(index)
-                            .getValue()
+                    index < getVideoPlayerOptions().length
+                        ? getVideoPlayerOptions().elementAt(index)
                         : 'disable'.tr(),
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () {
                     customRouter.pop(
-                      index < StreamingSoftwareName.values.length
-                          ? StreamingSoftwareName.values
-                              .elementAt(index)
-                              .getValue()
+                      index < getVideoPlayerOptions().length
+                          ? getVideoPlayerOptions().elementAt(index)
                           : -1,
                     );
                   },
@@ -83,5 +79,12 @@ class VideoPlayerSection extends StatelessWidget {
           .copyWith(preferredPlayer: Value(selectedValue));
       await database.settingsDao.updateSettings(newSetting);
     }
+  }
+
+  List<String> getVideoPlayerOptions() {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      return StreamingSoftwareComputerName.values.map((e) => e.name).toList();
+    }
+    return StreamingSoftwareName.values.map((e) => e.name).toList();
   }
 }

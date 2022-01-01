@@ -7,8 +7,8 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:jellyflut/screens/home/components/desktop/drawer.dart' as large;
 import 'package:jellyflut/screens/home/components/tablet/drawer.dart' as tablet;
+import 'package:jellyflut/screens/home/components/desktop/drawer.dart' as large;
 
 class HomeParent extends StatefulWidget {
   HomeParent({Key? key}) : super(key: key);
@@ -50,7 +50,7 @@ class _HomeParentState extends State<HomeParent> {
               ),
             );
           }
-          return Container();
+          return const SizedBox();
         },
       ),
     );
@@ -65,10 +65,14 @@ class _HomeParentState extends State<HomeParent> {
 
   Widget tabsScaffoldMobile(List<Item> items) {
     return AutoTabsScaffold(
-        routes: generateRouteFromItems(items),
-        bottomNavigationBuilder: (context, tabsRouter) =>
+        extendBody: true,
+        bottomNavigationBuilder: (tabsContext, _) =>
             bottom_bar.BottomNavigationBar(
-                tabsRouter: tabsRouter, items: items),
+                tabsContext: tabsContext, items: items),
+        builder: (tabsContext, child, animation) => Row(children: [
+              Expanded(child: child),
+            ]),
+        routes: generateRouteFromItems(items),
         backgroundColor: Theme.of(context).backgroundColor);
   }
 

@@ -32,20 +32,22 @@ jobs:
           channel: "master"
       - run: flutter config --enable-windows-desktop
       - run: flutter build windows
+      - run: cp windows/libs/sqlite3.dll build/windows/runner/Release/sqlite3.dll
 
       - name: Create a windows app-bundle
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           path: 'build/windows/runner/Release'
-          filename: 'release-windows.zip'
-      
-      - name: Create a Release Windows 
-        uses: ncipollo/release-action@v1
+          filename: ' jellyflut-windows.zip'
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          artifacts: "release-windows.zip"
+          draft: true
+          prerelease: false
+          files: jellyflut-windows.zip
           token: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
       
   build_linux:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -97,7 +99,5 @@ jobs:
         with:
           draft: true
           prerelease: false
-          body: ""
-          tag_name: "vnext"
           files: jellyflut-linux-*
           token: ${{ secrets.GITHUB_TOKEN }}

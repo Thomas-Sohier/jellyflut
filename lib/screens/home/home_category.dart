@@ -2,35 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/home_category_title.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeCategories extends StatefulWidget {
+class HomeCategory extends StatefulWidget {
   final Item item;
-  const HomeCategories(this.item);
+  const HomeCategory(this.item);
 
   @override
   State<StatefulWidget> createState() {
-    return _HomeCategoriesState();
+    return _HomeCategoryState();
   }
 }
 
-class _HomeCategoriesState extends State<HomeCategories>
+class _HomeCategoryState extends State<HomeCategory>
     with AutomaticKeepAliveClientMixin {
   final double height = 220;
   final double gapSize = 20;
+  late final String categoryTitle;
+  late final HomeCategoryProvider homeCategoryprovider;
   late final Future<List<Item>> itemsFuture;
   late final ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
+    categoryTitle = widget.item.name;
     scrollController = ScrollController(initialScrollOffset: 0);
-    itemsFuture = UserService.getLatestMedia(
-        parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
+    homeCategoryprovider = HomeCategoryProvider();
+    checkIfCategoryInitialized();
   }
 
   @override
@@ -63,9 +67,9 @@ class _HomeCategoriesState extends State<HomeCategories>
       builder: (context, snapshot) {
         if (snapshot.hasData && !snapshot.hasError) {
           if (snapshot.data!.isEmpty) {
-            return Container();
+            return const SizedBox();
           }
-          return buildCategory(snapshot.data!);
+          return buildCategory();
         } else {
           return placeholder();
         }
@@ -73,7 +77,7 @@ class _HomeCategoriesState extends State<HomeCategories>
     );
   }
 
-  Widget buildCategory(List<Item> items) {
+  Widget buildCategory() {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,11 +85,27 @@ class _HomeCategoriesState extends State<HomeCategories>
         children: [
           Padding(
               padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-              child: HomeCategoryTitle(widget.item, onTap: slideToPageDetail)),
+              child:
+                  HomeCategoryTitle(categoryTitle, onTap: slideToPageDetail)),
           SizedBox(
               height: itemPosterHeight + itemPosterLabelHeight,
-              child: displayItems(items)),
+              child: displayItems()),
         ]);
+  }
+
+  Widget displayItems() {
+    final items = homeCategoryprovider.getCategoryItem(categoryTitle);
+    final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
+
+    // Plus 10 to add some spacing between items
+    final itemWidth = (itemPosterHeight * itemAspectRatio) + 10;
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: items.length,
+        itemExtent: itemWidth,
+        shrinkWrap: true,
+        controller: scrollController,
+        itemBuilder: (context, index) => ItemPoster(items[index]));
   }
 
   Widget placeholder() {
@@ -147,17 +167,22 @@ class _HomeCategoriesState extends State<HomeCategories>
             ]));
   }
 
-  Widget displayItems(List<Item> items) {
-    final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
-    // Plus 10 to add some spacing between items
-    final itemWidth = (itemPosterHeight * itemAspectRatio) + 10;
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        itemExtent: itemWidth,
-        shrinkWrap: true,
-        controller: scrollController,
-        itemBuilder: (context, index) => ItemPoster(items[index]));
+  /// Check if items are already initn and if not then we do load datas from API
+  void checkIfCategoryInitialized() {
+    // If category is not present then we load datas from API endpoint
+    if (!homeCategoryprovider.isCategoryPresent(categoryTitle)) {
+      // get datas
+      itemsFuture = UserService.getLatestMedia(
+          parentId: widget.item.id,
+          fields: 'DateCreated, DateAdded, ImageTags');
+
+      // Add category to BLoC
+      itemsFuture.then((value) =>
+          homeCategoryprovider.addCategory(MapEntry(categoryTitle, value)));
+    } else {
+      itemsFuture =
+          Future.value(homeCategoryprovider.getCategoryItem(categoryTitle));
+    }
   }
 
   dynamic fallbackBlurHash(Map<String, dynamic> bhPrimary, String? key) {

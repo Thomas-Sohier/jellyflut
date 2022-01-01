@@ -2,9 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/jellyfin/category.dart' as model;
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/collection/collection_event.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
+import 'collection_event.dart';
 
 /// A `CollectionBloc` which manages an `List<Item>` as its state.
 class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
