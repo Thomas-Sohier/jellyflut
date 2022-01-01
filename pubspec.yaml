@@ -14,7 +14,7 @@ module:
 dependencies:
   archive: ^3.1.6
   audio_video_progress_bar: ^0.10.0
-  auto_route: ^3.2.0
+  auto_route: ^3.2.1
   better_player: ^0.0.81
   bloc: ^8.0.2
   blurhash_dart: ^1.1.0
@@ -22,7 +22,7 @@ dependencies:
   carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.4
   dart_vlc: ^0.1.8
-  device_info_plus: ^3.2.0
+  device_info_plus: ^3.2.1
   dio: ^4.0.4
   easy_localization: ^3.0.0
   easy_localization_loader: ^1.0.0
