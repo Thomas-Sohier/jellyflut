@@ -5,6 +5,7 @@ import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/home/home_parent.dart';
+import 'package:jellyflut/screens/iptv/iptv.dart';
 import 'package:jellyflut/screens/musicPlayer/music_player.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
@@ -35,6 +36,7 @@ import 'router.gr.dart';
               page: CollectionParent,
               name: 'CollectionRoute',
               guards: [AuthGuard]),
+          AutoRoute(page: Iptv, name: 'IptvRoute', guards: [AuthGuard]),
           RedirectRoute(path: '*', redirectTo: ''),
         ]),
     CustomRoute(
@@ -42,7 +44,7 @@ import 'router.gr.dart';
         name: 'CollectionParentRoute',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(page: Details, path: 'details'),
+    AutoRoute(page: Details, path: 'details', guards: [AuthGuard]),
     CustomRoute(
         page: Settings,
         path: 'settings',

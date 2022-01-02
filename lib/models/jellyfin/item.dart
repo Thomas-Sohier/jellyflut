@@ -79,6 +79,12 @@ class Item {
     this.overview,
     this.taglines,
     this.genres,
+    this.number,
+    this.channelNumber,
+    this.channelType,
+    this.currentProgram,
+    this.startDate,
+    this.endDate,
     this.communityRating,
     this.runTimeTicks,
     this.playAccess,
@@ -139,6 +145,12 @@ class Item {
   String? container;
   String? sortName;
   DateTime? premiereDate;
+  String? number;
+  String? channelNumber;
+  String? channelType;
+  Item? currentProgram;
+  DateTime? startDate;
+  DateTime? endDate;
   List<ExternalUrl>? externalUrls;
   List<MediaSource>? mediaSources;
   int? criticRating;
@@ -304,6 +316,17 @@ class Item {
         officialRating: json['OfficialRating'],
         seriesPrimaryImageTag: json['SeriesPrimaryImageTag'],
         seriesName: json['SeriesName'],
+        number: json['Number'],
+        channelNumber: json['ChannelNumber'],
+        channelType: json['ChannelType'],
+        startDate: json['StartDate'] == null
+            ? null
+            : DateTime.parse(json['StartDate']),
+        endDate:
+            json['EndDate'] == null ? null : DateTime.parse(json['EndDate']),
+        currentProgram: json['CurrentProgram'] == null
+            ? null
+            : Item.fromMap(json['CurrentProgram']),
         backdropImageTags: json['BackdropImageTags'] == null
             ? null
             : List<String>.from(json['BackdropImageTags'].map((x) => x)),
@@ -401,6 +424,12 @@ class Item {
       'RecursiveItemCount': recursiveItemCount,
       'VideoType': videoType,
       'ImageTags': imageTags,
+      'Number': number,
+      'channelNumber': channelNumber,
+      'channelType': channelType,
+      'CurrentProgram': currentProgram,
+      'StartDate': startDate,
+      'EndDate': endDate,
       'OfficialRating': officialRating,
       'SeriesPrimaryImageTag': seriesPrimaryImageTag,
       'SeriesName': seriesName,
@@ -1121,6 +1150,7 @@ class Item {
         type == ItemType.SEASON ||
         type == ItemType.SERIES ||
         type == ItemType.MOVIE ||
+        type == ItemType.TVCHANNEL ||
         type == ItemType.VIDEO) {
       // return InitStreamingItemUtil.initFromItem(item: this);
       await customRouter.push(StreamRoute(item: this));

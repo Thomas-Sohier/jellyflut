@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/bottom_navigation_bar.dart' as bottom_bar;
 import 'package:jellyflut/components/music_player_FAB.dart';
+import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/iptv/iptv.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawer.dart' as tablet;
@@ -98,12 +100,19 @@ class _HomeParentState extends State<HomeParent> {
         backgroundColor: Theme.of(context).backgroundColor);
   }
 
+  /// generate appropriate route for each button
   List<PageRouteInfo<dynamic>> generateRouteFromItems(List<Item> items) {
     final routes = <PageRouteInfo<dynamic>>[];
     //initial route
     routes.add(HomeRoute());
     items.forEach((item) {
-      routes.add(CollectionRoute(item: item));
+      switch (item.collectionType) {
+        case CollectionType.LIVETV:
+          routes.add(IptvRoute());
+          break;
+        default:
+          routes.add(CollectionRoute(item: item));
+      }
     });
     return routes;
   }

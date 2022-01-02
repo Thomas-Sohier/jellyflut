@@ -170,39 +170,43 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget carouselSlider() {
-    return Column(children: [
-      SizedBox(height: 24),
-      BlocBuilder<CollectionBloc, List<Item>>(
-          bloc: collectionBloc,
-          builder: (context, items) {
+    return BlocBuilder<CollectionBloc, List<Item>>(
+        bloc: collectionBloc,
+        builder: (context, items) {
+          if (items.isEmpty) {
+            return const SizedBox();
+          } else {
             final unplayedItems =
                 items.where((element) => !element.isPlayed()).toList();
             unplayedItems.shuffle();
-            return CarouselSlider(
-                options: CarouselOptions(
-                    aspectRatio: (16 / 9),
-                    viewportFraction: (16 / 9) / 2,
-                    enlargeCenterPage: true,
-                    pageSnapping: true,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 10),
-                    enableInfiniteScroll: false,
-                    scrollDirection: Axis.horizontal,
-                    initialPage: carrousselProvider.item != null
-                        ? unplayedItems.indexOf(carrousselProvider.item!)
-                        : 0,
-                    // onPageChanged: (index, _) =>
-                    //     carrousselProvider.changeItem(items[index]),
-                    height: 300),
-                items: unplayedItems.map((item) {
-                  var heroTag = item.id + Uuid().v4();
-                  return DetailedItemPoster(
-                    item: item,
-                    textColor: Colors.white,
-                    heroTag: heroTag,
-                  );
-                }).toList());
-          })
-    ]);
+            return Column(children: [
+              SizedBox(height: 24),
+              CarouselSlider(
+                  options: CarouselOptions(
+                      aspectRatio: (16 / 9),
+                      viewportFraction: (16 / 9) / 2,
+                      enlargeCenterPage: true,
+                      pageSnapping: true,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 10),
+                      enableInfiniteScroll: false,
+                      scrollDirection: Axis.horizontal,
+                      initialPage: carrousselProvider.item != null
+                          ? unplayedItems.indexOf(carrousselProvider.item!)
+                          : 0,
+                      // onPageChanged: (index, _) =>
+                      //     carrousselProvider.changeItem(items[index]),
+                      height: 300),
+                  items: unplayedItems.map((item) {
+                    var heroTag = item.id + Uuid().v4();
+                    return DetailedItemPoster(
+                      item: item,
+                      textColor: Colors.white,
+                      heroTag: heroTag,
+                    );
+                  }).toList())
+            ]);
+          }
+        });
   }
 }

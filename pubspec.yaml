@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^1.0.0
   flutter_vlc_player: ^6.0.5
   fluttertoast: ^8.0.8
+  intl: ^0.17.0
   just_audio: ^0.9.18
   just_audio_libwinmedia: ^0.0.4
   moor: ^4.6.1+1
