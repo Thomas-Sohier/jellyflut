@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/screens/collection/list_items.dart';
-import 'package:provider/provider.dart';
 
 class CollectionParent extends StatefulWidget {
   final Item item;

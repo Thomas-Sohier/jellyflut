@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/media_played_infos.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';
@@ -115,11 +117,11 @@ class StreamingService {
     return uri.toString();
   }
 
-  static Future<PlayBackInfos> playbackInfos(String json, String itemId,
+  static Future<PlayBackInfos> playbackInfos(String? json, String itemId,
       {startTimeTick = 0,
       int? subtitleStreamIndex,
       int? audioStreamIndex,
-      int? maxStreamingBitrate}) async {
+      int? maxStreamingBitrate = 140000}) async {
     final streamingProvider = StreamingProvider();
     final queryParams = <String, dynamic>{};
     queryParams['UserId'] = userJellyfin!.id;
@@ -127,7 +129,6 @@ class StreamingService {
     queryParams['IsPlayback'] = true;
     queryParams['AutoOpenLiveStream'] = true;
     queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
-    queryParams['MediaSourceId'] = itemId;
     if (subtitleStreamIndex != null) {
       queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     } else if (streamingProvider.selectedSubtitleTrack != null) {
@@ -160,14 +161,17 @@ class StreamingService {
       {int startTick = 0,
       int? audioStreamIndex,
       int? subtitleStreamIndex}) async {
-    var streamModel = StreamingProvider();
-    var info = await DeviceInfo.getCurrentDeviceInfo();
-    var queryParam = <String, String>{};
+    final streamModel = StreamingProvider();
+    final info = await DeviceInfo.getCurrentDeviceInfo();
+    final queryParam = <String, String>{};
     queryParam['StartTimeTicks'] = startTick.toString();
     queryParam['Static'] = true.toString();
     queryParam['MediaSourceId'] = item.id;
     queryParam['DeviceId'] = info.id;
-    queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
+    if (playBackInfos.mediaSources.isNotEmpty &&
+        playBackInfos.mediaSources.first.eTag != null) {
+      queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
+    }
     if (subtitleStreamIndex != null) {
       queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
     } else if (streamModel.selectedSubtitleTrack != null) {
@@ -182,26 +186,30 @@ class StreamingService {
     }
     queryParam['api_key'] = apiKey!;
 
-    var extension = p.extension(playBackInfos.mediaSources.first.path!);
+    // TODO rework that shit to be more readable and clear
+    late final url;
+    switch (item.type) {
+      case ItemType.TVCHANNEL:
+        url = 'videos/${item.id}/master.m3u8';
+        break;
+      default:
+        final ext = p.extension(playBackInfos.mediaSources.first.path!);
+        url = 'Videos/${item.id}/stream$ext';
+    }
 
-    var url = 'Videos/${item.id}/stream$extension';
-
-    var uri = Uri.https(
+    final uri = Uri.https(
         server.url.replaceAll(RegExp('https?://'), ''), url, queryParam);
     return uri.toString();
   }
 
-  static Future<String> isCodecSupported() async {
-    var result;
+  static Future<String?> isCodecSupported() async {
+    // TODO make IOS/Linux/Windows/Macos....
     if (Platform.isAndroid) {
-      var deviceProfile = await getExoplayerProfile();
-      result = DeviceProfileParent(deviceProfile: deviceProfile).toMap();
-    } else if (Platform.isIOS) {
-      // TODO make IOS
-      result = '';
+      final deviceProfile = await getExoplayerProfile();
+      return json
+          .encode(DeviceProfileParent(deviceProfile: deviceProfile).toMap());
     }
-    // log(result.toString());;
-    return json.encode(result);
+    return null;
   }
 
   static Future<String> getNewAudioSource(int audioIndex,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jellyflut/components/async_image.dart';
-import 'package:jellyflut/components/poster/progress_bar.dart';
+import 'package:jellyflut/components/progress_bar_minimalist.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
@@ -16,8 +16,8 @@ class IptvChannel extends StatelessWidget {
       children: [
         logo(),
         ConstrainedBox(
-          constraints:
-              BoxConstraints(maxHeight: 150, minHeight: 150, maxWidth: 400),
+          constraints: BoxConstraints(
+              maxHeight: 150, minHeight: 150, minWidth: 150, maxWidth: 400),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -39,24 +39,23 @@ class IptvChannel extends StatelessWidget {
 
   Widget logo() {
     return OutlinedButton(
-      onPressed: () => item.playItem(),
-      style: OutlinedButton.styleFrom()
-          .copyWith(side: buttonBorderSide())
-          .copyWith(backgroundColor: buttonBackgroundColor()),
-      child: Container(
-          height: 150,
-          width: 150,
-          padding: EdgeInsets.all(4),
-          child: AspectRatio(
-            aspectRatio: item.primaryImageAspectRatio ?? 1,
-            child: AsyncImage(
-                item: item,
-                boxFit: BoxFit.contain,
-                tag: ImageType.PRIMARY,
-                placeholder: const SizedBox(),
-                errorWidget: noLogo()),
-          )),
-    );
+        onPressed: () => item.playItem(),
+        style: OutlinedButton.styleFrom()
+            .copyWith(side: buttonBorderSide())
+            .copyWith(backgroundColor: buttonBackgroundColor()),
+        child: Container(
+            constraints: BoxConstraints(
+                minHeight: 150, maxHeight: 150, minWidth: 50, maxWidth: 150),
+            padding: EdgeInsets.all(4),
+            child: AspectRatio(
+              aspectRatio: item.primaryImageAspectRatio ?? 1,
+              child: AsyncImage(
+                  item: item,
+                  boxFit: BoxFit.contain,
+                  tag: ImageType.PRIMARY,
+                  placeholder: const SizedBox(),
+                  errorWidget: noLogo()),
+            )));
   }
 
   Widget noLogo() {
@@ -70,14 +69,20 @@ class IptvChannel extends StatelessWidget {
     if (item.currentProgram != null &&
         item.currentProgram!.startDate != null &&
         item.currentProgram!.endDate != null) {
-      final dateTimeFormatter = DateFormat('HH-mm');
+      final dateTimeFormatter = DateFormat('HH:mm');
       return Row(
         children: [
           Text(dateTimeFormatter.format(item.currentProgram!.startDate!),
               style: Theme.of(context).textTheme.overline,
               maxLines: 1,
               overflow: TextOverflow.clip),
-          ProgressBar(item: item),
+          Container(
+            width: 80,
+            padding: EdgeInsets.only(left: 4, right: 4),
+            child: ProgressBarMinimalist(
+                startDate: item.currentProgram!.startDate!,
+                endDate: item.currentProgram!.endDate!),
+          ),
           Text(dateTimeFormatter.format(item.currentProgram!.endDate!),
               style: Theme.of(context).textTheme.overline,
               maxLines: 1,

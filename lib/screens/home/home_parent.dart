@@ -6,7 +6,6 @@ import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/iptv/iptv.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawer.dart' as tablet;

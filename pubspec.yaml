@@ -76,7 +76,6 @@ dev_dependencies:
   flutter_native_splash: ^1.3.2
   flutter_test:
     sdk: flutter
-  intl: ^0.17.0
   moor_generator: ^4.6.0+1
   pedantic: ^1.11.1
 

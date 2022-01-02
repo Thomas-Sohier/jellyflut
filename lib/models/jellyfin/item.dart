@@ -21,6 +21,7 @@ import 'package:jellyflut/models/enum/image_type.dart' as image_type;
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
+import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
 import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
@@ -1144,6 +1145,7 @@ class Item {
   ///
   /// If Book open Epub reader
   /// If Video open video player
+  /// If music play it and show music button
   void playItem() async {
     var musicProvider = MusicProvider();
     if (type == ItemType.EPISODE ||
@@ -1179,6 +1181,7 @@ class Item {
 
     if (type == ItemType.EPISODE ||
         type == ItemType.MOVIE ||
+        type == ItemType.TVCHANNEL ||
         type == ItemType.VIDEO ||
         type == ItemType.MUSICVIDEO ||
         type == ItemType.AUDIO) {
@@ -1200,6 +1203,7 @@ class Item {
 
     if (type == ItemType.EPISODE ||
         type == ItemType.MOVIE ||
+        type == ItemType.TVCHANNEL ||
         type == ItemType.VIDEO ||
         type == ItemType.MUSICVIDEO ||
         type == ItemType.AUDIO) {
@@ -1224,19 +1228,18 @@ class Item {
   }
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
-    var streamingProvider = StreamingProvider();
-    var data = await StreamingService.isCodecSupported();
-    var backInfos = await StreamingService.playbackInfos(data, item.id,
+    final streamingProvider = StreamingProvider();
+    final data = await StreamingService.isCodecSupported();
+    final backInfos = await StreamingService.playbackInfos(data, item.id,
         startTimeTick: item.userData!.playbackPositionTicks);
     var completeTranscodeUrl;
-    var finalUrl;
 
     // Check if we have a transcide url or we create it
     if (backInfos.isTranscoding() && !directPlay) {
       completeTranscodeUrl =
           '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
     }
-    finalUrl = completeTranscodeUrl ??
+    final finalUrl = completeTranscodeUrl ??
         await StreamingService.createURL(item, backInfos,
             startTick: item.userData!.playbackPositionTicks);
 
