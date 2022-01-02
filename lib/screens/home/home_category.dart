@@ -97,15 +97,18 @@ class _HomeCategoryState extends State<HomeCategory>
     final items = homeCategoryprovider.getCategoryItem(categoryTitle);
     final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
 
-    // Plus 10 to add some spacing between items
-    final itemWidth = (itemPosterHeight * itemAspectRatio) + 10;
+    // Plus 10 to add some spacing between items, plus add performance
+    final itemWidth = (itemPosterHeight * itemAspectRatio) + 20;
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
         itemExtent: itemWidth,
         shrinkWrap: true,
         controller: scrollController,
-        itemBuilder: (context, index) => ItemPoster(items[index]));
+        itemBuilder: (context, index) => ItemPoster(
+              items[index],
+              boxFit: BoxFit.cover,
+            ));
   }
 
   Widget placeholder() {

@@ -22,7 +22,7 @@ class _HomeParentState extends State<HomeParent> {
 
   @override
   void initState() {
-    categoryFuture = UserService.getLibraryCategory();
+    categoryFuture = UserService.getLibraryViews();
     super.initState();
   }
 

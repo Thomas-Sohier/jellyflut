@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detailed_item_poster.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -32,9 +35,9 @@ class _ListItemsState extends State<ListItems> {
   @override
   void initState() {
     super.initState();
+    carrousselProvider = CarrousselProvider();
     collectionBloc = CollectionBloc()..initialize(widget.parentItem);
     canPop = customRouter.canPopSelfOrChildren;
-    carrousselProvider = CarrousselProvider();
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
@@ -56,7 +59,16 @@ class _ListItemsState extends State<ListItems> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return buildItemsGrid(constraints);
+      return ClipRect(
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor.withAlpha(170)),
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+                  child: Container(
+                      decoration:
+                          BoxDecoration(color: Colors.white.withOpacity(0.0)),
+                      child: buildItemsGrid(constraints)))));
     });
   }
 
@@ -66,8 +78,8 @@ class _ListItemsState extends State<ListItems> {
     final paddingTop = canPop ? 82.0 : (8.0 + statusBarHeight);
     return CustomScrollView(controller: _scrollController, slivers: <Widget>[
       SliverToBoxAdapter(child: SizedBox(height: paddingTop)),
-      // if (widget.parentItem.isPlayable())
-      //   SliverToBoxAdapter(child: carouselSlider([])),
+      if (widget.parentItem.isCollectionPlayable())
+        SliverToBoxAdapter(child: carouselSlider()),
       SliverToBoxAdapter(
         child: Column(children: [
           sortItems(),
@@ -157,24 +169,40 @@ class _ListItemsState extends State<ListItems> {
     );
   }
 
-  Widget carouselSlider(List<Item> items) {
-    return CarouselSlider(
-        options: CarouselOptions(
-            aspectRatio: (16 / 9),
-            viewportFraction: (16 / 9) / 2,
-            enlargeCenterPage: true,
-            enableInfiniteScroll: false,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, _) =>
-                carrousselProvider.changeItem(items[index]),
-            height: 300),
-        items: items.map((item) {
-          var heroTag = item.id + Uuid().v4();
-          return DetailedItemPoster(
-            item: item,
-            textColor: Colors.white,
-            heroTag: heroTag,
-          );
-        }).toList());
+  Widget carouselSlider() {
+    return Column(children: [
+      SizedBox(height: 24),
+      BlocBuilder<CollectionBloc, List<Item>>(
+          bloc: collectionBloc,
+          builder: (context, items) {
+            final unplayedItems =
+                items.where((element) => !element.isPlayed()).toList();
+            unplayedItems.shuffle();
+            return CarouselSlider(
+                options: CarouselOptions(
+                    aspectRatio: (16 / 9),
+                    viewportFraction: (16 / 9) / 2,
+                    enlargeCenterPage: true,
+                    pageSnapping: true,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 10),
+                    enableInfiniteScroll: false,
+                    scrollDirection: Axis.horizontal,
+                    initialPage: carrousselProvider.item != null
+                        ? unplayedItems.indexOf(carrousselProvider.item!)
+                        : 0,
+                    // onPageChanged: (index, _) =>
+                    //     carrousselProvider.changeItem(items[index]),
+                    height: 300),
+                items: unplayedItems.map((item) {
+                  var heroTag = item.id + Uuid().v4();
+                  return DetailedItemPoster(
+                    item: item,
+                    textColor: Colors.white,
+                    heroTag: heroTag,
+                  );
+                }).toList());
+          })
+    ]);
   }
 }

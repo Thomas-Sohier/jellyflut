@@ -91,7 +91,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
         parentId: item.id,
         sortBy: 'SortName',
         fields:
-            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated, DateAdded',
+            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview',
         imageTypeLimit: 1,
         recursive: false,
         startIndex: startIndex,

@@ -8,7 +8,8 @@ enum CollectionType {
   MOVIES,
   MUSIC,
   MUSICVIDEOS,
-  TVSHOWS
+  TVSHOWS,
+  LIVETV,
 }
 
 final collectionType = EnumValues({
@@ -20,4 +21,5 @@ final collectionType = EnumValues({
   'Music': CollectionType.MUSIC,
   'MusicVideos': CollectionType.MUSICVIDEOS,
   'TvShows': CollectionType.TVSHOWS,
+  'LiveTv': CollectionType.LIVETV,
 });

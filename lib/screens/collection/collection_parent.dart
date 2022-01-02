@@ -40,11 +40,11 @@ class _CollectionParentState extends State<CollectionParent> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(children: [
-          if (widget.item.collectionType == CollectionType.MOVIES ||
-              widget.item.collectionType == CollectionType.BOOKS ||
-              widget.item.collectionType == CollectionType.TVSHOWS)
-            ChangeNotifierProvider.value(
-                value: carrousselProvider, child: CarrousselBackGroundImage()),
+          // if (widget.item.collectionType == CollectionType.MOVIES ||
+          //     widget.item.collectionType == CollectionType.BOOKS ||
+          //     widget.item.collectionType == CollectionType.TVSHOWS)
+          // ChangeNotifierProvider.value(
+          //     value: carrousselProvider, child: CarrousselBackGroundImage()),
           ListItems(headerBarHeight: headerHeight, parentItem: widget.item),
           if (customRouter.canPopSelfOrChildren)
             DetailHeaderBar(

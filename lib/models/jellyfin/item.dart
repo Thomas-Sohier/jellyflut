@@ -805,6 +805,19 @@ class Item {
     return playableItems.contains(type);
   }
 
+  bool isCollectionPlayable() {
+    final playableItems = [
+      CollectionType.BOOKS,
+      CollectionType.HOMEVIDEOS,
+      CollectionType.LIVETV,
+      CollectionType.MOVIES,
+      CollectionType.TVSHOWS,
+      CollectionType.MUSICVIDEOS,
+      CollectionType.MUSIC,
+    ];
+    return playableItems.contains(collectionType);
+  }
+
   bool hasTrailer() {
     if (remoteTrailers != null || localTrailerCount != null) {
       return remoteTrailers != null

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 
 // App main color
 final MaterialColor jellyLightPurple =
@@ -148,7 +149,9 @@ class Theme {
               fontSize: 24),
           elevation: 4),
       visualDensity: VisualDensity.standard,
-      cardTheme: CardTheme(color: Colors.white),
+      cardTheme: CardTheme(
+          color: Colors.grey.shade900,
+          shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)),
       useMaterial3: true,
       primaryTextTheme: getTextThemeWithColor(Colors.white),
       textTheme: getTextThemeWithColor(Colors.white));

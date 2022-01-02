@@ -81,7 +81,7 @@ class _ItemPosterState extends State<ItemPoster>
 
   Widget body(BuildContext context) {
     return Column(children: [
-      Expanded(
+      Flexible(
         flex: 8,
         child: ClipRRect(
             clipBehavior: Clip.antiAlias,

@@ -89,4 +89,19 @@ class UserService {
       rethrow;
     }
   }
+
+  static Future<Category> getLibraryViews() async {
+    final url = '${server.url}/Users/${userJellyfin!.id}/Views';
+
+    try {
+      final response = await dio.get<Map<String, dynamic>>(url);
+      return foundation.compute(parseCategory, response.data!);
+    } on DioError catch (dioError, _) {
+      log(dioError.message);
+      rethrow;
+    } catch (e, stacktrace) {
+      log(e.toString(), stackTrace: stacktrace, level: 5);
+      rethrow;
+    }
+  }
 }

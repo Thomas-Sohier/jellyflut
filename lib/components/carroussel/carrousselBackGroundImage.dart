@@ -22,53 +22,17 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Consumer<CarrousselProvider>(
         builder: (context, carrousselProvider, child) {
       if (carrousselProvider.item != null) {
-        return Container(
-            height: size.height,
-            width: size.width,
-            foregroundDecoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black,
-                  Colors.black54,
-                  Colors.black54,
-                  Colors.black
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0, 0.5, 0.5, 1],
-              ),
-            ),
-            child: responsiveBackgroundBuilder(carrousselProvider.item!));
+        return AsyncImage(
+          item: carrousselProvider.item!,
+          tag: ImageType.PRIMARY,
+          boxFit: BoxFit.cover,
+        );
       } else {
         return const SizedBox();
       }
     });
-  }
-
-  Widget responsiveBackgroundBuilder(Item item) {
-    return OrientationLayoutBuilder(
-      portrait: (context) => portraitBackground(item),
-      landscape: (context) => largeBackground(item),
-    );
-  }
-
-  Widget portraitBackground(Item item) {
-    return AsyncImage(
-      item: item,
-      tag: ImageType.PRIMARY,
-      boxFit: BoxFit.cover,
-    );
-  }
-
-  Widget largeBackground(Item item) {
-    return AsyncImage(
-      item: item,
-      tag: ImageType.BACKDROP,
-      boxFit: BoxFit.cover,
-    );
   }
 }

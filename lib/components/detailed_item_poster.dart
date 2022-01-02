@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/async_image.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 
 import 'critics.dart';
 
@@ -23,91 +24,83 @@ class DetailedItemPoster extends StatefulWidget {
 class _DetailedItemPosterState extends State<DetailedItemPoster> {
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: personnal_theme.Theme.defaultThemeData.copyWith(
-          textTheme: personnal_theme.Theme.getTextThemeWithColor(Colors.black)),
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-          child: Text(widget.item.name,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: widget.textColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 28)),
-        ),
-        Expanded(
-            child: GestureDetector(
-                onTap: () => customRouter.push(
-                    DetailsRoute(item: widget.item, heroTag: widget.heroTag)),
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                          flex: 3,
-                          child: ItemPoster(widget.item, showName: false)),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      Flexible(
-                        flex: 5,
-                        child: ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minWidth: 100, maxWidth: 600),
-                          child: Card(
-                              elevation: 6,
-                              child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(children: [
-                                    Row(children: [
-                                      Expanded(
-                                        child: Text(
-                                          widget.item.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline3!
-                                              .copyWith(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                      )
-                                    ]),
-                                    Row(children: [
-                                      Critics(
-                                        item: widget.item,
-                                        fontSize: 18,
-                                      ),
-                                      Spacer(),
-                                      if (widget.item.runTimeTicks != null)
-                                        Text(
-                                          printDuration(Duration(
-                                              microseconds:
-                                                  widget.item.getDuration())),
-                                          style: TextStyle(color: Colors.black),
-                                        )
-                                    ]),
-                                    if (widget.item.overview != null) Divider(),
-                                    if (widget.item.overview != null)
-                                      Expanded(
-                                          flex: 1,
-                                          child: SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Text(
-                                                removeAllHtmlTags(
-                                                    widget.item.overview!),
-                                                overflow: TextOverflow.clip,
-                                                style: TextStyle(fontSize: 18),
-                                              )))
-                                  ]))),
-                        ),
-                      ),
-                    ])))
-      ]),
+    return LayoutBuilder(
+        builder: (context, constraints) => Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ItemPoster(widget.item, showOverlay: false, showName: false),
+                  MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                          onTap: () => customRouter.push(DetailsRoute(
+                              item: widget.item, heroTag: widget.heroTag)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(4),
+                                bottomRight: Radius.circular(4)),
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    minWidth: 100,
+                                    maxWidth: 600,
+                                    maxHeight: constraints.maxHeight * 0.9),
+                                child: Stack(children: [
+                                  AsyncImage(
+                                      item: widget.item,
+                                      boxFit: BoxFit.cover,
+                                      errorWidget: const SizedBox(),
+                                      tag: ImageType.BACKDROP),
+                                  Container(color: Colors.black87),
+                                  Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            title(),
+                                            Row(children: [
+                                              Critics(
+                                                  item: widget.item,
+                                                  fontSize: 18),
+                                              Spacer(),
+                                              if (widget.item.runTimeTicks !=
+                                                  null)
+                                                duration()
+                                            ]),
+                                            if (widget.item.overview != null)
+                                              Divider(),
+                                            if (widget.item.overview != null)
+                                              overview()
+                                          ]))
+                                ])),
+                          )))
+                ]));
+  }
+
+  Widget title() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: Text(widget.item.name,
+          textAlign: TextAlign.left,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.headline3),
     );
+  }
+
+  Widget overview() {
+    return Expanded(
+        flex: 1,
+        child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Text(removeAllHtmlTags(widget.item.overview!),
+                overflow: TextOverflow.clip, style: TextStyle(fontSize: 18))));
+  }
+
+  Widget duration() {
+    return Text(
+        printDuration(Duration(microseconds: widget.item.getDuration())));
   }
 }
