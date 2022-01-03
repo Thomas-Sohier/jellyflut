@@ -36,7 +36,7 @@ class InitStreamingItemUtil {
     StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player
-    late Widget playerWidget;
+    late final Widget playerWidget;
     switch (streamingSoftware) {
       case StreamingSoftwareName.vlc:
         playerWidget = await _initVLCMediaPlayer(_item);

@@ -825,6 +825,7 @@ class Item {
       ItemType.AUDIO,
       ItemType.MUSICALBUM,
       ItemType.MUSICVIDEO,
+      ItemType.TVCHANNEL,
       ItemType.MOVIE,
       ItemType.SERIES,
       ItemType.SEASON,

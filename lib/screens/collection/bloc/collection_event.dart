@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/jellyfin/item.dart';
+part of 'collection_bloc.dart';
 
 /// Events triggered from view
 enum CollectionStatus { SORT_DATE, SORT_NAME, ADD, LOAD_MORE }

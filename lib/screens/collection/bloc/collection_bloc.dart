@@ -5,42 +5,56 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
-import 'collection_event.dart';
+part 'collection_event.dart';
+part 'collection_state.dart';
 
 /// A `CollectionBloc` which manages an `List<Item>` as its state.
-class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
+class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   late Item parentItem;
+  final List<Item> carouselSliderItems = <Item>[];
+  final List<Item> items = <Item>[];
+
   // Sorting by name
   bool _sortByNameASC = false;
   bool _sortByNameDSC = true;
+
   // Sorting by date
   bool _sortByDateASC = false;
   bool _sortByDateDSC = true;
+
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
 
-  CollectionBloc() : super([]) {
+  CollectionBloc() : super(CollectionLoadingState()) {
     on<CollectionEvent>(_onEvent);
   }
 
-  void _onEvent(CollectionEvent event, Emitter<List<Item>> emit) async {
+  void _onEvent(CollectionEvent event, Emitter<CollectionState> emit) async {
     switch (event.status) {
       case CollectionStatus.ADD:
-        state.addAll(event.items);
-        return emit(state.toList());
+        emit(CollectionLoadingState());
+        items.addAll(event.items);
+        // Filter only unplayed items
+        final unplayedItems =
+            items.where((element) => !element.isPlayed()).toList();
+        unplayedItems.shuffle();
+        carouselSliderItems.addAll(event.items);
+        return emit(CollectionLoadedState());
       case CollectionStatus.LOAD_MORE:
         return showMoreItem(emit);
       case CollectionStatus.SORT_NAME:
-        final items = await _sortByName();
-        state.clear();
-        state.addAll(items);
-        return emit(state.toList());
+        emit(CollectionLoadingState());
+        final _items = await _sortByName();
+        items.clear();
+        items.addAll(_items);
+        return emit(CollectionLoadedState());
       case CollectionStatus.SORT_DATE:
-        final items = await _sortByDate();
-        state.clear();
-        state.addAll(items);
-        return emit(state.toList());
+        emit(CollectionLoadingState());
+        final _items = await _sortByDate();
+        items.clear();
+        items.addAll(_items);
+        return emit(CollectionLoadedState());
     }
   }
 
@@ -50,22 +64,22 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
         CollectionEvent(items: category.items, status: CollectionStatus.ADD)));
   }
 
-  void showMoreItem(Emitter<List<Item>> emit) async {
-    if (!_blockItemsLoading && state.isNotEmpty) {
+  void showMoreItem(Emitter<CollectionState> emit) async {
+    if (!_blockItemsLoading && items.isNotEmpty) {
       _blockItemsLoading = true;
       final category =
-          await getItems(item: parentItem, startIndex: state.length);
+          await getItems(item: parentItem, startIndex: items.length);
       if (category.items.isNotEmpty) {
         _blockItemsLoading = false;
-        state.addAll(category.items);
-        emit(state.toList());
+        items.addAll(category.items);
+        emit(CollectionLoadedState());
       }
     }
   }
 
   Future<List<Item>> _sortByName() async {
     final i = await compute(_sortItemByName, {
-      'items': state,
+      'items': items,
       'sortByNameASC': _sortByNameASC,
       'sortByNameDSC': _sortByNameDSC
     });
@@ -76,7 +90,7 @@ class CollectionBloc extends Bloc<CollectionEvent, List<Item>> {
 
   Future<List<Item>> _sortByDate() async {
     var i = await compute(_sortItemByDate, {
-      'items': state,
+      'items': items,
       'sortByDateASC': _sortByDateASC,
       'sortByDateDSC': _sortByDateDSC
     });

@@ -29,10 +29,10 @@ void searchItemsFuture(String searchTerm) {
   });
   ItemService.searchItems(
           searchTerm: searchTerm,
-          includeItemTypes: 'Movie,Episode',
+          excludeItemTypes: 'Movie,Episode',
           mediaTypes: 'Video')
       .then((value) {
-    results.putIfAbsent('Movie,Episode', () => value.items);
+    results.putIfAbsent('Video', () => value.items);
     searchProvider.addSearchResult(results);
   });
 }

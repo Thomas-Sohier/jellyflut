@@ -202,7 +202,8 @@ class ItemService {
       bool includeGenres = false,
       bool includeStudios = false,
       bool includeArtists = false,
-      String includeItemTypes = 'Movie',
+      String includeItemTypes = '',
+      String excludeItemTypes = '',
       int limit = 24,
       String fields =
           'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
@@ -218,6 +219,7 @@ class ItemService {
     queryParams['IncludeStudios'] = includeStudios;
     queryParams['IncludeArtists'] = includeArtists;
     queryParams['IncludeItemTypes'] = includeItemTypes;
+    queryParams['ExcludeItemTypes'] = excludeItemTypes;
     queryParams['MediaTypes'] = mediaTypes;
     queryParams['Limit'] = limit;
     queryParams['Fields'] = fields;
