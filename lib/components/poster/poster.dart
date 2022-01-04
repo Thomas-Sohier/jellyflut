@@ -1,3 +1,4 @@
+import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
@@ -11,11 +12,13 @@ class Poster extends StatefulWidget {
   final BoxFit boxFit;
   final Item item;
   final bool showParent;
+  final bool dropShadow;
   final bool clickable;
   final String? heroTag;
 
   const Poster(
       {this.showParent = false,
+      this.dropShadow = false,
       required this.tag,
       required this.heroTag,
       required this.clickable,
@@ -63,19 +66,27 @@ class _PosterState extends State<Poster> {
   Widget poster() {
     if (widget.heroTag != null) {
       return Hero(
-        tag: widget.heroTag!,
-        child: AsyncImage(
+        tag: '${widget.heroTag!}-${widget.item.name}-poster',
+        child: dropShadowBuilder(AsyncImage(
             item: widget.item,
             tag: widget.tag,
             boxFit: widget.boxFit,
-            showParent: widget.showParent),
+            showParent: widget.showParent)),
       );
     }
-    return AsyncImage(
+    return dropShadowBuilder(AsyncImage(
         item: widget.item,
         tag: widget.tag,
         boxFit: widget.boxFit,
-        showParent: widget.showParent);
+        showParent: widget.showParent));
+  }
+
+  Widget dropShadowBuilder(Widget child) {
+    if (widget.dropShadow) {
+      return DropShadow(
+          blurRadius: 8, offset: const Offset(0, 0), child: child);
+    }
+    return child;
   }
 
   MaterialStateProperty<double> buttonElevation() {

@@ -21,17 +21,14 @@ class LeftDetails extends StatelessWidget {
       builder: (c, constraint) => ConstrainedBox(
         constraints: BoxConstraints(maxHeight: constraint.maxHeight * 0.9),
         child: Center(
-          child: DropShadow(
-            blurRadius: 8,
-            offset: const Offset(0, 0),
-            child: Poster(
-              item: item,
-              heroTag: heroTag,
-              tag: ImageType.PRIMARY,
-              clickable: false,
-              showParent: false,
-              boxFit: BoxFit.contain,
-            ),
+          child: Poster(
+            item: item,
+            heroTag: heroTag,
+            tag: ImageType.PRIMARY,
+            clickable: false,
+            dropShadow: true,
+            showParent: false,
+            boxFit: BoxFit.contain,
           ),
         ),
       ),
