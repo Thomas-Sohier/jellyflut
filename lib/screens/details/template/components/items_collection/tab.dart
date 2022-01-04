@@ -35,9 +35,9 @@ class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return ListItems.fromFuture(
         itemsFuture: itemsFuture,
-        itemPosterHeight: itemPosterHeight,
+        verticalListPosterHeight: itemPosterHeight,
         showSorting: false,
         physics: NeverScrollableScrollPhysics(),
-        lisType: ListType.LIST);
+        listType: ListType.LIST);
   }
 }

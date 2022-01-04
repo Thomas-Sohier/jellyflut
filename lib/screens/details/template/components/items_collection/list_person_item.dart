@@ -48,19 +48,19 @@ class _ListPersonItemState extends State<ListPersonItem> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       ListItems.fromFuture(
           itemsFuture: moviesFuture,
-          lisType: ListType.POSTER,
+          listType: ListType.POSTER,
           showTitle: true,
           showIfEmpty: false,
           showSorting: false),
       ListItems.fromFuture(
           itemsFuture: seriesFuture,
-          lisType: ListType.POSTER,
+          listType: ListType.POSTER,
           showTitle: true,
           showIfEmpty: false,
           showSorting: false),
       ListItems.fromFuture(
           itemsFuture: audiosFuture,
-          lisType: ListType.POSTER,
+          listType: ListType.POSTER,
           showTitle: true,
           showIfEmpty: false,
           showSorting: false)

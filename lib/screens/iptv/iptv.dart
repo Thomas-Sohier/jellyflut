@@ -26,7 +26,8 @@ class _IptvState extends State<Iptv> {
       padding: const EdgeInsets.all(4.0),
       child: ListItems.fromFuture(
         itemsFuture: programs,
-        lisType: ListType.GRID,
+        verticalListPosterHeight: 250,
+        listType: ListType.GRID,
       ),
     );
   }

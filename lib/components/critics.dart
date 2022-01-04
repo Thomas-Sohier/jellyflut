@@ -11,7 +11,7 @@ class Critics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
+    return Row(mainAxisSize: MainAxisSize.min, children: [
       if (item.communityRating != null)
         Padding(
           padding: const EdgeInsets.only(right: 10),

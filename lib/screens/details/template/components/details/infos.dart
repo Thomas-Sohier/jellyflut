@@ -10,6 +10,7 @@ class InfosDetailsWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (item.productionYear != null)
             Text(

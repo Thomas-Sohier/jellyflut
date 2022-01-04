@@ -7,8 +7,8 @@ import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 part 'list_items_grid_skeleton.dart';
-part 'list_items_grid_vertical_list.dart';
-part 'list_items_grid_horizontal_list.dart';
+part 'list_items_vertical_list.dart';
+part 'list_items_horizontal_list.dart';
 part 'skeleton_poster_item.dart';
 
 class ListItemsSkeleton extends StatelessWidget {

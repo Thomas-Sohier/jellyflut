@@ -15,8 +15,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   late Item parentItem;
   final List<Item> carouselSliderItems = <Item>[];
   final List<Item> items = <Item>[];
-  final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>()
-    ..add(ListType.GRID);
+  final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
 
   // Sorting by name
   bool _sortByNameASC = false;
@@ -30,7 +29,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
 
-  CollectionBloc() : super(CollectionLoadingState()) {
+  CollectionBloc({final ListType listType = ListType.GRID})
+      : super(CollectionLoadingState()) {
+    this.listType.add(listType);
     on<AddItem>(addItems);
     on<LoadMoreItems>(showMoreItem);
     on<SortByName>(sortByName);

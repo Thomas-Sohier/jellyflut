@@ -27,7 +27,7 @@ class _ListMusicItemState extends State<ListMusicItem> {
   Widget build(BuildContext context) {
     return ListItems.fromFuture(
       itemsFuture: musicFuture,
-      lisType: ListType.LIST,
+      listType: ListType.LIST,
     );
   }
 }

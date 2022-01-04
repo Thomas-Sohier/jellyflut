@@ -68,15 +68,15 @@ class _CollectionState extends State<Collection> {
         return ListItems.fromFuture(
             itemsFuture: musicFuture,
             showSorting: false,
-            lisType: ListType.LIST,
-            itemPosterHeight: 100,
+            listType: ListType.LIST,
+            verticalListPosterHeight: 150,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SEASON:
         return ListItems.fromFuture(
             itemsFuture: episodesFuture,
             showSorting: false,
-            itemPosterHeight: 150,
-            lisType: ListType.LIST,
+            verticalListPosterHeight: 150,
+            listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
         return ListCollectionItem(item: widget.item);
@@ -84,7 +84,7 @@ class _CollectionState extends State<Collection> {
         return ListItems.fromFuture(
             itemsFuture: musicAlbumFuture,
             showSorting: false,
-            lisType: ListType.POSTER);
+            listType: ListType.POSTER);
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:

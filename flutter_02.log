@@ -1,0 +1,118 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d aefcfe88 --dart-define=flutter.inspector.structuredErrors=true --web-allow-expose-url --devtools-server-address http://127.0.0.1:9100/ --target lib\main.dart
+
+## exception
+
+FileSystemException: FileSystemException: Cannot open file, path = 'C:\Users\icecu\AppData\Local\Temp\flutter_tools.cdaea4fe\flutter_tool.305044b0\app.dill.incremental.dill' (OS Error: Le chemin d’accès spécifié est introuvable.
+, errno = 3)
+
+```
+#0      _File.throwIfError (dart:io/file_impl.dart:635:7)
+#1      _File.openSync (dart:io/file_impl.dart:479:5)
+#2      _File.readAsBytesSync (dart:io/file_impl.dart:539:18)
+#3      ForwardingFile.readAsBytesSync (package:file/src/forwarding/forwarding_file.dart:88:43)
+#4      ForwardingFile.readAsBytesSync (package:file/src/forwarding/forwarding_file.dart:88:43)
+#5      StdoutHandler.handler (package:flutter_tools/src/compile.dart:121:53)
+#6      _rootRunUnary (dart:async/zone.dart:1434:47)
+#7      _CustomZone.runUnary (dart:async/zone.dart:1335:19)
+#8      _CustomZone.runUnaryGuarded (dart:async/zone.dart:1244:7)
+#9      _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:341:11)
+#10     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:271:7)
+#11     _SinkTransformerStreamSubscription._add (dart:async/stream_transformers.dart:63:11)
+#12     _EventSinkWrapper.add (dart:async/stream_transformers.dart:13:11)
+#13     _StringAdapterSink.add (dart:convert/string_conversion.dart:238:11)
+#14     _LineSplitterSink._addLines (dart:convert/line_splitter.dart:170:13)
+#15     _LineSplitterSink.addSlice (dart:convert/line_splitter.dart:145:5)
+#16     StringConversionSinkMixin.add (dart:convert/string_conversion.dart:163:5)
+#17     _SinkTransformerStreamSubscription._handleData (dart:async/stream_transformers.dart:111:24)
+#18     _rootRunUnary (dart:async/zone.dart:1434:47)
+#19     _CustomZone.runUnary (dart:async/zone.dart:1335:19)
+#20     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1244:7)
+#21     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:341:11)
+#22     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:271:7)
+#23     _SinkTransformerStreamSubscription._add (dart:async/stream_transformers.dart:63:11)
+#24     _EventSinkWrapper.add (dart:async/stream_transformers.dart:13:11)
+#25     _StringAdapterSink.add (dart:convert/string_conversion.dart:238:11)
+#26     _StringAdapterSink.addSlice (dart:convert/string_conversion.dart:243:7)
+#27     _Utf8ConversionSink.addSlice (dart:convert/string_conversion.dart:317:20)
+#28     _Utf8ConversionSink.add (dart:convert/string_conversion.dart:310:5)
+#29     _ConverterStreamEventSink.add (dart:convert/chunked_conversion.dart:72:18)
+#30     _SinkTransformerStreamSubscription._handleData (dart:async/stream_transformers.dart:111:24)
+#31     _rootRunUnary (dart:async/zone.dart:1434:47)
+#32     _CustomZone.runUnary (dart:async/zone.dart:1335:19)
+#33     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1244:7)
+#34     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:341:11)
+#35     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:271:7)
+#36     _SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:774:19)
+#37     _StreamController._add (dart:async/stream_controller.dart:648:7)
+#38     _StreamController.add (dart:async/stream_controller.dart:596:5)
+#39     _Socket._onData (dart:io-patch/socket_patch.dart:2314:41)
+#40     _rootRunUnary (dart:async/zone.dart:1442:13)
+#41     _CustomZone.runUnary (dart:async/zone.dart:1335:19)
+#42     _CustomZone.runUnaryGuarded (dart:async/zone.dart:1244:7)
+#43     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:341:11)
+#44     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:271:7)
+#45     _SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:774:19)
+#46     _StreamController._add (dart:async/stream_controller.dart:648:7)
+#47     _StreamController.add (dart:async/stream_controller.dart:596:5)
+#48     new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:1839:33)
+#49     _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:1322:14)
+#50     _microtaskLoop (dart:async/schedule_microtask.dart:40:21)
+#51     _startMicrotaskLoop (dart:async/schedule_microtask.dart:49:5)
+#52     _runPendingImmediateCallback (dart:isolate-patch/isolate_patch.dart:122:13)
+#53     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:193:5)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel master, 2.9.0-1.0.pre.223, on Microsoft Windows [version 10.0.19043.1415], locale fr-FR)
+    • Flutter version 2.9.0-1.0.pre.223 at C:\tools\flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision 70ae2663fa (2 days ago), 2022-01-02 15:09:08 -0500
+    • Engine revision bf05c852bf
+    • Dart version 2.16.0 (build 2.16.0-134.0.dev)
+    • DevTools version 2.9.2
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 31.0.0)
+    • Android SDK at C:\Users\icecu\AppData\Local\Android\sdk
+    • Platform android-31, build-tools 31.0.0
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files\Google\Chrome\Application\chrome.exe
+
+[✓] Visual Studio - develop for Windows (Visual Studio Community 2019 16.11.3)
+    • Visual Studio at C:\Program Files (x86)\Microsoft Visual Studio\2019\Community
+    • Visual Studio Community 2019 version 16.11.31702.278
+    • Windows 10 SDK version 10.0.19041.0
+
+[✓] Android Studio (version 2020.3)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 11.0.10+0-b96-7249189)
+
+[✓] VS Code (version 1.63.2)
+    • VS Code at C:\Users\icecu\AppData\Local\Programs\Microsoft VS Code
+    • Flutter extension version 3.32.0
+
+[✓] Connected device (4 available)
+    • ONEPLUS A6013 (mobile) • aefcfe88 • android-arm64  • Android 11 (API 30)
+    • Windows (desktop)      • windows  • windows-x64    • Microsoft Windows [version 10.0.19043.1415]
+    • Chrome (web)           • chrome   • web-javascript • Google Chrome 96.0.4664.110
+    • Edge (web)             • edge     • web-javascript • Microsoft Edge 96.0.1054.62
+
+[✓] HTTP Host Availability
+    • All required HTTP hosts are available
+
+• No issues found!
+```

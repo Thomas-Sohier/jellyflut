@@ -3,6 +3,7 @@ import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
@@ -45,7 +46,10 @@ class _CollectionParentState extends State<CollectionParent> {
               widget.item.collectionType == CollectionType.TVSHOWS)
             ChangeNotifierProvider.value(
                 value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ListItems.fromFuture(itemsFuture: getItems(item: widget.item)),
+          ListItems.fromFuture(
+              itemsFuture: getItems(item: widget.item),
+              verticalListPosterHeight: 250,
+              listType: ListType.GRID),
         ]));
   }
 

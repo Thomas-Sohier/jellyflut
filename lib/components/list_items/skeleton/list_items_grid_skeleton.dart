@@ -27,15 +27,14 @@ class ListItemsGridSkeleton extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: numberOfItemInRow * numberOfRow,
-          padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+          padding: EdgeInsets.only(left: 4, right: 4),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: numberOfItemInRow,
               childAspectRatio: ratio,
-              mainAxisSpacing: 15,
+              mainAxisSpacing: 10,
               crossAxisSpacing: 5),
-          itemBuilder: (context, index) {
-            return SkeletonItemPoster();
-          }),
+          itemBuilder: (context, index) =>
+              SkeletonItemPoster(height: gridPosterHeight)),
     );
   }
 }

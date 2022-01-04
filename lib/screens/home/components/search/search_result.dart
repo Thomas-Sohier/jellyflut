@@ -72,10 +72,10 @@ class _SearchResultState extends State<SearchResult> {
         ? rows.add(ListItems.fromList(
             category:
                 Category(items: value, startIndex: 0, totalRecordCount: 0),
-            itemPosterHeight: itemPosterHeight,
+            horizontalListPosterHeight: itemPosterHeight,
             showTitle: true,
             showSorting: false,
-            lisType: ListType.POSTER))
+            listType: ListType.POSTER))
         : const SizedBox());
     return rows;
   }

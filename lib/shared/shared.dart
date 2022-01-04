@@ -5,6 +5,19 @@ double aspectRatio({ItemType? type}) {
     return 1 / 1;
   } else if (type == ItemType.PHOTO) {
     return 4 / 3;
+  } else if (type == ItemType.EPISODE) {
+    return 16 / 9;
+  }
+  return 2 / 3;
+}
+
+double parentAspectRatio({ItemType? type}) {
+  if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
+    return 1 / 1;
+  } else if (type == ItemType.PHOTO) {
+    return 4 / 3;
+  } else if (type == ItemType.EPISODE) {
+    return 2 / 3;
   }
   return 2 / 3;
 }

@@ -29,12 +29,14 @@ part 'list_types/list_items_vertical_list.dart';
 class ListItems extends StatefulWidget {
   final Future<Category>? itemsFuture;
   final Category? category;
-  final ListType lisType;
+  final ListType listType;
   final bool showTitle;
   final bool showIfEmpty;
   final bool showSorting;
+  final double horizontalListPosterHeight;
+  final double verticalListPosterHeight;
+  final double gridPosterHeight;
   final ScrollPhysics physics;
-  final double? itemPosterHeight;
 
   const ListItems.fromFuture(
       {Key? key,
@@ -42,9 +44,11 @@ class ListItems extends StatefulWidget {
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
-      this.itemPosterHeight,
+      this.horizontalListPosterHeight = double.infinity,
+      this.verticalListPosterHeight = double.infinity,
+      this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
-      this.lisType = ListType.POSTER})
+      this.listType = ListType.POSTER})
       : category = null,
         super(key: key);
 
@@ -54,9 +58,11 @@ class ListItems extends StatefulWidget {
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
-      this.itemPosterHeight,
+      this.horizontalListPosterHeight = double.infinity,
+      this.verticalListPosterHeight = double.infinity,
+      this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
-      this.lisType = ListType.POSTER})
+      this.listType = ListType.POSTER})
       : itemsFuture = null,
         super(key: key);
 
@@ -64,7 +70,9 @@ class ListItems extends StatefulWidget {
   _ListItemsState createState() => _ListItemsState();
 }
 
-late double listHeight;
+late double horizontalListPosterHeight;
+late double verticalListPosterHeight;
+late double gridPosterHeight;
 
 class _ListItemsState extends State<ListItems> {
   late final ScrollController scrollController;
@@ -83,10 +91,12 @@ class _ListItemsState extends State<ListItems> {
   void initState() {
     super.initState();
     // carrousselProvider = CarrousselProvider();
-    listHeight = widget.itemPosterHeight ?? itemPosterHeight;
-    collectionBloc = CollectionBloc();
+    horizontalListPosterHeight = widget.horizontalListPosterHeight;
+    verticalListPosterHeight = widget.verticalListPosterHeight;
+    gridPosterHeight = widget.gridPosterHeight;
+    collectionBloc = CollectionBloc(listType: widget.listType);
     listTypes = ListType.values;
-    collectionBloc.listType.add(widget.lisType);
+    collectionBloc.listType.add(widget.listType);
     scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
 
@@ -154,19 +164,23 @@ class _ListItemsState extends State<ListItems> {
   Widget dataBuilder(List<Item> items) {
     return StreamBuilder<ListType>(
         stream: collectionBloc.listType.stream,
+        initialData:
+            collectionBloc.listType.stream.valueOrNull ?? widget.listType,
         builder:
             (BuildContext context, AsyncSnapshot<ListType> snapshotListType) {
           switch (snapshotListType.data) {
             case ListType.LIST:
-              return ListTitle(
-                item: items.first,
-                showTitle: widget.showTitle,
-                child: ListItemsVerticalList(
-                  items: items,
-                  scrollPhysics: widget.physics,
-                  scrollController: scrollController,
-                ),
-              );
+              return ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 600),
+                  child: ListTitle(
+                    item: items.first,
+                    showTitle: widget.showTitle,
+                    child: ListItemsVerticalList(
+                      items: items,
+                      scrollPhysics: widget.physics,
+                      scrollController: scrollController,
+                    ),
+                  ));
             case ListType.POSTER:
               return ListTitle(
                 item: items.first,

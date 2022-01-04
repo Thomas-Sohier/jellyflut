@@ -36,18 +36,29 @@ class RightDetails extends StatelessWidget {
           if (item.originalTitle != null &&
               item.originalTitle!.toLowerCase() != item.name.toLowerCase())
             OriginalTitleDetailsWidget(title: item.originalTitle),
-          Row(children: [
-            if (item.hasRatings())
-              Padding(
-                  padding: const EdgeInsets.only(top: 12, bottom: 12),
-                  child: Critics(
-                      item: item,
-                      fontSize:
-                          Theme.of(context).textTheme.bodyText2?.fontSize ??
-                              16)),
-            Spacer(),
-            InfosDetailsWidget(item: item),
-          ]),
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Wrap(
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      if (item.hasRatings())
+                        Critics(
+                            item: item,
+                            fontSize: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    ?.fontSize ??
+                                16),
+                      // Spacer(),
+                      InfosDetailsWidget(item: item),
+                    ]),
+              ),
+            ],
+          ),
           SizedBox(height: 12),
           OverviewDetailsWidget(overview: item.overview),
           SizedBox(height: 24),

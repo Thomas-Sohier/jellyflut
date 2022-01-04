@@ -61,19 +61,20 @@ class _EpisodeItemState extends State<EpisodeItem>
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             if (constraints.maxWidth > 350)
-              Flexible(
-                flex: 3,
-                child: poster(),
-              ),
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
+                  child: poster()),
             Expanded(
-              flex: 6,
               child: Padding(
                   padding: rightPartPadding,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       title(),
@@ -101,12 +102,15 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget poster() {
-    return Poster(
-        tag: ImageType.PRIMARY,
-        heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
-        clickable: false,
-        boxFit: BoxFit.cover,
-        item: widget.item);
+    return AspectRatio(
+      aspectRatio: widget.item.getPrimaryAspectRatio(),
+      child: Poster(
+          tag: ImageType.PRIMARY,
+          heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
+          clickable: false,
+          boxFit: BoxFit.cover,
+          item: widget.item),
+    );
   }
 
   Widget title() {
@@ -136,9 +140,12 @@ class _EpisodeItemState extends State<EpisodeItem>
 
   Widget overview() {
     return Flexible(
-      child: Text(widget.item.overview!,
-          textAlign: TextAlign.justify,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)),
+      child: Text(
+        widget.item.overview!,
+        textAlign: TextAlign.justify,
+        maxLines: 4,
+        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+      ),
     );
   }
 }

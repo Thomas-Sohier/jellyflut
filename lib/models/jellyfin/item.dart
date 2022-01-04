@@ -949,7 +949,7 @@ class Item {
   /// Return [primaryImageAspectRatio] if defined
   /// Else return an aspect ratio based on type if not defined
   double getPrimaryAspectRatio({bool showParent = false}) {
-    if (showParent) return aspectRatio(type: type);
+    if (showParent) return parentAspectRatio(type: type);
     if (primaryImageAspectRatio != null) {
       if (primaryImageAspectRatio! > 0.0) {
         return primaryImageAspectRatio!;
@@ -1106,20 +1106,18 @@ class Item {
       }
     } else if (imageTags != null && imageTags!.isNotEmpty) {
       switch (type) {
-        case ItemType.EPISODE:
-          return imageTags != null && imageTags!.isNotEmpty
-              ? imageTags!
-                  .firstWhere((element) => element.imageType == searchType,
-                      orElse: () => imageTags!.first)
-                  .value
-              : null;
         case ItemType.SEASON:
           return seriesPrimaryImageTag;
         case ItemType.MUSICALBUM:
         case ItemType.AUDIO:
           return albumPrimaryImageTag;
         default:
-          return null;
+          return imageTags != null && imageTags!.isNotEmpty
+              ? imageTags!
+                  .firstWhere((element) => element.imageType == searchType,
+                      orElse: () => imageTags!.first)
+                  .value
+              : null;
       }
     }
     return null;
@@ -1133,14 +1131,23 @@ class Item {
   /// Else return [null]
   image_type.ImageType correctImageType(
       {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
+    // If we search correct image type for a logo that do not exist we still
+    //return a logo tag and not a primary one as backup (or it will be ugly)
+    late final defaultSearchType;
+    if (searchType == image_type.ImageType.LOGO) {
+      defaultSearchType = image_type.ImageType.LOGO;
+    } else {
+      defaultSearchType = image_type.ImageType.PRIMARY;
+    }
+
     // If of type logo we return only parent logo
     if (imageTags != null && imageTags!.isNotEmpty) {
       return imageTags!
           .firstWhere((element) => element.imageType == searchType,
               orElse: () => imageTags!.firstWhere(
-                  (element) =>
-                      element.imageType == image_type.ImageType.PRIMARY,
-                  orElse: () => imageTags!.first))
+                  (element) => element.imageType == searchType,
+                  orElse: () =>
+                      ImageTag(imageType: defaultSearchType, value: '')))
           .imageType;
     }
     return searchType;

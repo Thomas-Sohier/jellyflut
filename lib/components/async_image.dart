@@ -35,7 +35,8 @@ class AsyncImage extends StatelessWidget {
     final hash = BlurHashUtil.fallBackBlurHash(item.imageBlurHashes, tag);
     final url = ItemImageService.getItemImageUrl(
         itemId, item.correctImageTags(searchType: tag),
-        type: tag, imageTags: item.imageTags);
+        type: item.correctImageType(searchType: tag),
+        imageTags: item.imageTags);
     return OctoImage(
       image: CachedNetworkImageProvider(url),
       placeholderBuilder: imagePlaceholder(hash),
