@@ -21,12 +21,21 @@ class AuthParent extends StatefulWidget {
 
 class _AuthParentState extends State<AuthParent> {
   final FToast fToast = FToast();
+  late final AuthBloc authBloc;
 
   @override
   void initState() {
     fToast.init(context);
-    BlocProvider.of<AuthBloc>(context).errors.listen((String error) =>
-        showToast(error, fToast, duration: Duration(seconds: 6)));
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    authBloc.errors.listen((String error) => ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+          content: Row(children: [
+            Text(error),
+            Spacer(),
+            Icon(Icons.error, color: Colors.red)
+          ]),
+          width: 600)));
     super.initState();
   }
 
@@ -116,8 +125,7 @@ class _AuthParentState extends State<AuthParent> {
         top: 0,
         child: Align(
             alignment: Alignment.topCenter,
-            child: AuthBubbleIndicator(
-                value: BlocProvider.of<AuthBloc>(context).server?.name ?? '')),
+            child: AuthBubbleIndicator(value: authBloc.server?.name ?? '')),
       ),
     ]);
   }

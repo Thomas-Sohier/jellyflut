@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(authenticated
             ? AuthenticationSuccessful()
             : AuthenticationUnauthenticated()) {
-    on<RequestAuth>((event, emit) => login(event));
+    on<RequestAuth>(login);
     on<AuthServerAdded>((event, emit) {
       server = event.server;
       emit(AuthenticationServerAdded(server: event.server));
@@ -38,14 +38,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthError>((event, emit) => errors.add(event.error));
   }
 
-  Stream<AuthState> login(RequestAuth event) async* {
+  void login(RequestAuth event, Emitter<AuthState> emit) async {
     try {
       username = event.username;
       userPassword = event.password;
       globals.server = server!;
       final response = await AuthService.login(event.username, event.password);
       await AuthService.storeAccountData(event.username, response);
-      yield AuthenticationSuccessful();
+      emit(AuthenticationSuccessful());
     } catch (e) {
       errors.add(e.toString());
     }

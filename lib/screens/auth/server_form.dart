@@ -21,16 +21,17 @@ class ServerForm extends StatefulWidget {
 }
 
 class _ServerFormState extends State<ServerForm> {
+  late final AuthBloc authBloc;
   final urlPattern = RegExp(
       r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)');
 
   FormGroup buildForm() => fb.group(<String, Object>{
         FieldsType.SERVER_NAME.getValue(): FormControl<String>(
-          value: BlocProvider.of<AuthBloc>(context).server?.name ?? '',
+          value: authBloc.server?.name ?? '',
           validators: [Validators.required],
         ),
         FieldsType.SERVER_URL.getValue(): FormControl<String>(
-          value: BlocProvider.of<AuthBloc>(context).server?.url ?? '',
+          value: authBloc.server?.url ?? '',
           validators: [
             Validators.required,
             Validators.pattern(urlPattern,
@@ -38,6 +39,12 @@ class _ServerFormState extends State<ServerForm> {
           ],
         )
       });
+
+  @override
+  void initState() {
+    super.initState();
+    authBloc = BlocProvider.of<AuthBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +92,7 @@ class _ServerFormState extends State<ServerForm> {
           name: form.value[FieldsType.SERVER_NAME.getValue()].toString(),
           url: form.value[FieldsType.SERVER_URL.getValue()].toString(),
           id: 0);
-      BlocProvider.of<AuthBloc>(context).add(AuthServerAdded(server));
+      authBloc.add(AuthServerAdded(server));
     } else {
       form.markAllAsTouched();
       final regexp = RegExp(r'^[^_]+(?=_)');
@@ -95,7 +102,7 @@ class _ServerFormState extends State<ServerForm> {
             key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
         errors.add('field_required'.tr(args: [fieldName]));
       });
-      BlocProvider.of<AuthBloc>(context)
+      authBloc
           .add(AuthError('form_not_valid'.tr() + '\n${errors.join(',\n')}'));
     }
   }

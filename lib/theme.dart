@@ -150,7 +150,7 @@ class Theme {
           elevation: 4),
       visualDensity: VisualDensity.standard,
       cardTheme: CardTheme(
-          color: Colors.grey.shade900,
+          color: Colors.white,
           shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)),
       useMaterial3: true,
       primaryTextTheme: getTextThemeWithColor(Colors.white),

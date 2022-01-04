@@ -22,16 +22,23 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  late final AuthBloc authBloc;
   FormGroup buildForm() => fb.group(<String, Object>{
         FieldsType.USER_USERNAME.getValue(): FormControl<String>(
-          value: BlocProvider.of<AuthBloc>(context).username ?? '',
+          value: authBloc.username ?? '',
           validators: [Validators.required],
         ),
         FieldsType.USER_PASSWORD.getValue(): FormControl<String>(
-          value: BlocProvider.of<AuthBloc>(context).userPassword ?? '',
+          value: authBloc.userPassword ?? '',
           validators: [Validators.required],
         )
       });
+
+  @override
+  void initState() {
+    super.initState();
+    authBloc = BlocProvider.of<AuthBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +115,9 @@ class _LoginFormState extends State<LoginForm> {
   void backToFirstForm(FormGroup form, BuildContext context) {
     final username = form.value[FieldsType.USER_USERNAME.getValue()].toString();
     final password = form.value[FieldsType.USER_PASSWORD.getValue()].toString();
-    BlocProvider.of<AuthBloc>(context).userPassword = password;
-    BlocProvider.of<AuthBloc>(context).username = username;
-    BlocProvider.of<AuthBloc>(context).add(BackToFirstForm());
+    authBloc.userPassword = password;
+    authBloc.username = username;
+    authBloc.add(BackToFirstForm());
   }
 
   Widget loginButton(FormGroup form, BuildContext context) {
@@ -125,8 +132,7 @@ class _LoginFormState extends State<LoginForm> {
           form.value[FieldsType.USER_USERNAME.getValue()].toString();
       final password =
           form.value[FieldsType.USER_PASSWORD.getValue()].toString();
-      BlocProvider.of<AuthBloc>(context)
-          .add(RequestAuth(username: username, password: password));
+      authBloc.add(RequestAuth(username: username, password: password));
     } else {
       form.markAllAsTouched();
       final regexp = RegExp(r'^[^_]+(?=_)');
@@ -136,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
             key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
         errors.add('field_required'.tr(args: [fieldName]));
       });
-      BlocProvider.of<AuthBloc>(context)
+      authBloc
           .add(AuthError('form_not_valid'.tr() + '\n${errors.join(',\n')}'));
     }
   }
