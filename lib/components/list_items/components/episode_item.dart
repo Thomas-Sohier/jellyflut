@@ -8,7 +8,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:uuid/uuid.dart';
 
 class EpisodeItem extends StatefulWidget {
@@ -54,49 +53,51 @@ class _EpisodeItemState extends State<EpisodeItem>
   }
 
   Widget epsiodeItem() {
-    final deviceType = getDeviceType(MediaQuery.of(context).size);
-    final rightPartPadding = deviceType == DeviceScreenType.mobile
-        ? const EdgeInsets.only(left: 0)
-        : const EdgeInsets.only(left: 8);
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (deviceType != DeviceScreenType.mobile)
-            Flexible(
-              flex: 4,
-              child: poster(),
-            ),
-          Expanded(
-            flex: 6,
-            child: Padding(
-                padding: rightPartPadding,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    title(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4, bottom: 4),
-                      child: Row(
-                        children: [
-                          if (widget.item.hasRatings())
-                            Critics(
-                              item: widget.item,
-                              fontSize: 18,
-                            ),
-                          if (widget.item.getDuration() != 0) duration()
-                        ],
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      final rightPartPadding = constraints.maxWidth < 350
+          ? const EdgeInsets.only(left: 0)
+          : const EdgeInsets.only(left: 8);
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (constraints.maxWidth > 350)
+              Flexible(
+                flex: 3,
+                child: poster(),
+              ),
+            Expanded(
+              flex: 6,
+              child: Padding(
+                  padding: rightPartPadding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      title(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4, bottom: 4),
+                        child: Row(
+                          children: [
+                            if (widget.item.hasRatings())
+                              Critics(
+                                item: widget.item,
+                                fontSize: 18,
+                              ),
+                            if (widget.item.getDuration() != 0) duration()
+                          ],
+                        ),
                       ),
-                    ),
-                    if (widget.item.overview != null) overview()
-                  ],
-                )),
-          )
-        ],
-      ),
-    );
+                      if (widget.item.overview != null) overview()
+                    ],
+                  )),
+            )
+          ],
+        ),
+      );
+    });
   }
 
   Widget poster() {
@@ -116,6 +117,7 @@ class _EpisodeItemState extends State<EpisodeItem>
     return Flexible(
       child: Text(title,
           textAlign: TextAlign.left,
+          maxLines: 2,
           style: Theme.of(context)
               .textTheme
               .bodyText1!
@@ -127,6 +129,7 @@ class _EpisodeItemState extends State<EpisodeItem>
     return Flexible(
         child: Text(
             printDuration(Duration(microseconds: widget.item.getDuration())),
+            maxLines: 1,
             style:
                 Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
   }

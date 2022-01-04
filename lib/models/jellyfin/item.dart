@@ -90,6 +90,7 @@ class Item {
     this.runTimeTicks,
     this.playAccess,
     this.productionYear,
+    this.childCount,
     this.remoteTrailers,
     this.providerIds,
     this.isHd,
@@ -165,6 +166,7 @@ class Item {
   int? runTimeTicks;
   String? playAccess;
   int? productionYear;
+  int? childCount;
   List<RemoteTrailer>? remoteTrailers;
   Map<String, dynamic>? providerIds;
   bool? isHd;
@@ -257,6 +259,7 @@ class Item {
         runTimeTicks: json['RunTimeTicks'],
         playAccess: json['PlayAccess'],
         productionYear: json['ProductionYear'],
+        childCount: json['ChildCount'],
         remoteTrailers: json['RemoteTrailers'] == null
             ? null
             : List<RemoteTrailer>.from(
@@ -389,6 +392,7 @@ class Item {
       'RunTimeTicks': runTimeTicks,
       'PlayAccess': playAccess,
       'ProductionYear': productionYear,
+      'ChildCount': childCount,
       'RemoteTrailers': remoteTrailers != null
           ? List<dynamic>.from(remoteTrailers!.map((x) => x.toMap()))
           : null,

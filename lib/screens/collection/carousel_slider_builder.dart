@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/detailed_item_poster.dart';
+import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
-import 'package:jellyflut/screens/collection/bloc/collection_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 class CarouselSliderBuilder extends StatefulWidget {

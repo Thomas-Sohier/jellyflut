@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/detail_header_bar.dart';
-import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart';
+import 'package:jellyflut/models/enum/collection_type.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
-import 'package:jellyflut/screens/collection/list_items.dart';
+import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+import 'package:provider/provider.dart';
 
 class CollectionParent extends StatefulWidget {
   final Item item;
@@ -32,22 +37,32 @@ class _CollectionParentState extends State<CollectionParent> {
 
   @override
   Widget build(BuildContext context) {
-    var headerHeight = 64.toDouble();
-
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(children: [
-          // if (widget.item.collectionType == CollectionType.MOVIES ||
-          //     widget.item.collectionType == CollectionType.BOOKS ||
-          //     widget.item.collectionType == CollectionType.TVSHOWS)
-          // ChangeNotifierProvider.value(
-          //     value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ListItems(headerBarHeight: headerHeight, parentItem: widget.item),
-          if (customRouter.canPopSelfOrChildren)
-            DetailHeaderBar(
-              color: Colors.white,
-              height: headerHeight,
-            ),
+          if (widget.item.collectionType == CollectionType.MOVIES ||
+              widget.item.collectionType == CollectionType.BOOKS ||
+              widget.item.collectionType == CollectionType.TVSHOWS)
+            ChangeNotifierProvider.value(
+                value: carrousselProvider, child: CarrousselBackGroundImage()),
+          ListItems.fromFuture(itemsFuture: getItems(item: widget.item)),
         ]));
+  }
+
+  Future<Category> getItems({required Item item, int startIndex = 0}) async {
+    return ItemService.getItems(
+        parentId: item.id,
+        sortBy: 'SortName',
+        fields:
+            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview,ChildCount',
+        imageTypeLimit: 1,
+        recursive: false,
+        startIndex: startIndex,
+        includeItemTypes: item
+            .getCollectionType()
+            .map((ItemType e) => e.getValue())
+            .toList()
+            .join(','),
+        limit: 100);
   }
 }

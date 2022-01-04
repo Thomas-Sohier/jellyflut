@@ -75,7 +75,7 @@ class _FavButtonState extends State<FavButton> {
           focusColor: widget.backgroundFocusColor,
           hoverColor: widget.backgroundFocusColor,
           borderRadius: BorderRadius.all(Radius.circular(30)),
-          onTap: () => unsetItemFav(),
+          onTap: unsetItemFav,
           child: Padding(
             padding: widget.padding,
             child: Icon(Icons.favorite, color: widget.color, size: widget.size),
@@ -86,7 +86,7 @@ class _FavButtonState extends State<FavButton> {
         focusColor: widget.backgroundFocusColor,
         hoverColor: widget.backgroundFocusColor,
         borderRadius: BorderRadius.all(Radius.circular(30)),
-        onTap: () => setItemFav(),
+        onTap: setItemFav,
         child: Padding(
           padding: widget.padding,
           child: Icon(Icons.favorite_border,

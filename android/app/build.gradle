@@ -37,7 +37,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     packagingOptions {
        // Fixes duplicate libraries build issue, 
@@ -59,7 +59,7 @@ android {
         applicationId "com.example.jellyflut"
         multiDexEnabled true
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

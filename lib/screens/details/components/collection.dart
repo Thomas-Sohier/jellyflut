@@ -88,7 +88,7 @@ class _CollectionState extends State<Collection> {
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:
-        return SizedBox();
+        return const SizedBox();
     }
   }
 }

@@ -46,18 +46,24 @@ class _ListPersonItemState extends State<ListPersonItem> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-        height: 24,
-      ),
-      ListItems.fromFuture(itemsFuture: moviesFuture, lisType: ListType.POSTER),
-      SizedBox(
-        height: 24,
-      ),
-      ListItems.fromFuture(itemsFuture: seriesFuture, lisType: ListType.POSTER),
-      SizedBox(
-        height: 24,
-      ),
-      ListItems.fromFuture(itemsFuture: audiosFuture, lisType: ListType.POSTER)
+      ListItems.fromFuture(
+          itemsFuture: moviesFuture,
+          lisType: ListType.POSTER,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false),
+      ListItems.fromFuture(
+          itemsFuture: seriesFuture,
+          lisType: ListType.POSTER,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false),
+      ListItems.fromFuture(
+          itemsFuture: audiosFuture,
+          lisType: ListType.POSTER,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false)
     ]);
   }
 }

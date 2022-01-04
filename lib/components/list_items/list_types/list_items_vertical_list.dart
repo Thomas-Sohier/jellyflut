@@ -40,4 +40,26 @@ class ListItemsVerticalList extends StatelessWidget {
               ],
             ));
   }
+
+  Widget itemSelector(final Item item) {
+    switch (item.type) {
+      case ItemType.AUDIO:
+      case ItemType.MUSICALBUM:
+        // Music items will fit automatically
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: listHeight, minHeight: 50),
+            child: MusicItem(item: item));
+      case ItemType.MOVIE:
+      case ItemType.EPISODE:
+        // Episode items need height to avoid unbounded height
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: listHeight, minHeight: 50),
+            child: EpisodeItem(item: item));
+      default:
+        // Episode items need height to avoid unbounded height
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: listHeight, minHeight: 50),
+            child: EpisodeItem(item: item));
+    }
+  }
 }

@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart' as model;
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'collection_event.dart';
 part 'collection_state.dart';
@@ -13,6 +15,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   late Item parentItem;
   final List<Item> carouselSliderItems = <Item>[];
   final List<Item> items = <Item>[];
+  final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>()
+    ..add(ListType.GRID);
 
   // Sorting by name
   bool _sortByNameASC = false;
@@ -27,44 +31,30 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   bool _blockItemsLoading = false;
 
   CollectionBloc() : super(CollectionLoadingState()) {
-    on<CollectionEvent>(_onEvent);
-  }
-
-  void _onEvent(CollectionEvent event, Emitter<CollectionState> emit) async {
-    switch (event.status) {
-      case CollectionStatus.ADD:
-        emit(CollectionLoadingState());
-        items.addAll(event.items);
-        // Filter only unplayed items
-        final unplayedItems =
-            items.where((element) => !element.isPlayed()).toList();
-        unplayedItems.shuffle();
-        carouselSliderItems.addAll(event.items);
-        return emit(CollectionLoadedState());
-      case CollectionStatus.LOAD_MORE:
-        return showMoreItem(emit);
-      case CollectionStatus.SORT_NAME:
-        emit(CollectionLoadingState());
-        final _items = await _sortByName();
-        items.clear();
-        items.addAll(_items);
-        return emit(CollectionLoadedState());
-      case CollectionStatus.SORT_DATE:
-        emit(CollectionLoadingState());
-        final _items = await _sortByDate();
-        items.clear();
-        items.addAll(_items);
-        return emit(CollectionLoadedState());
-    }
+    on<AddItem>(addItems);
+    on<LoadMoreItems>(showMoreItem);
+    on<SortByName>(sortByName);
+    on<SortByDate>(sortByDate);
   }
 
   void initialize(Item item) {
     parentItem = item;
-    getItems(item: item).then((model.Category category) => add(
-        CollectionEvent(items: category.items, status: CollectionStatus.ADD)));
+    getItems(item: item)
+        .then((model.Category category) => add(AddItem(items: category.items)));
   }
 
-  void showMoreItem(Emitter<CollectionState> emit) async {
+  void addItems(AddItem event, Emitter<CollectionState> emit) {
+    emit(CollectionLoadingState());
+    items.addAll(event.items);
+    // Filter only unplayed items
+    final unplayedItems =
+        items.where((element) => !element.isPlayed()).toList();
+    unplayedItems.shuffle();
+    carouselSliderItems.addAll(event.items);
+    emit(CollectionLoadedState());
+  }
+
+  void showMoreItem(LoadMoreItems event, Emitter<CollectionState> emit) async {
     if (!_blockItemsLoading && items.isNotEmpty) {
       _blockItemsLoading = true;
       final category =
@@ -75,6 +65,22 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         emit(CollectionLoadedState());
       }
     }
+  }
+
+  void sortByName(SortByName event, Emitter<CollectionState> emit) async {
+    emit(CollectionLoadingState());
+    final _items = await _sortByName();
+    items.clear();
+    items.addAll(_items);
+    emit(CollectionLoadedState());
+  }
+
+  void sortByDate(SortByDate event, Emitter<CollectionState> emit) async {
+    emit(CollectionLoadingState());
+    final _items = await _sortByDate();
+    items.clear();
+    items.addAll(_items);
+    emit(CollectionLoadedState());
   }
 
   Future<List<Item>> _sortByName() async {
@@ -123,23 +129,11 @@ Map<String, dynamic> _sortItemByName(Map<String, dynamic> arg) {
   bool sortByNameASC = arg['sortByNameASC'];
   bool sortByNameDSC = arg['sortByNameDSC'];
   if (!sortByNameASC || (!sortByNameASC && !sortByNameDSC)) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return a.name.compareTo(b.name);
-      } else {
-        return -1;
-      }
-    });
+    items.sort((a, b) => a.name.compareTo(b.name));
     sortByNameASC = true;
     sortByNameDSC = false;
   } else if (sortByNameASC) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return b.name.compareTo(a.name);
-      } else {
-        return -1;
-      }
-    });
+    items.sort((a, b) => b.name.compareTo(a.name));
     sortByNameASC = false;
     sortByNameDSC = true;
   }
