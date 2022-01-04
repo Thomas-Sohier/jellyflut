@@ -9,7 +9,7 @@ import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
-import 'package:jellyflut/screens/details/template/right_details_background.dart';
+import 'package:jellyflut/screens/details/template/details_background.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class LargeDetails extends StatefulWidget {
@@ -43,16 +43,18 @@ class _LargeDetailsState extends State<LargeDetails> {
         imageType: ImageType.BACKDROP,
       ),
       Stack(alignment: Alignment.topCenter, children: [
-        Column(children: [
-          Expanded(
-              child: Row(children: [
-            SizedBox(
-              height: 64,
-            ),
-            leftDetailsPart(),
-            rightDetailsPart()
-          ])),
-        ]),
+        DetailsBackground(
+            dominantColorFuture: detailsInfos.dominantColor,
+            child: Column(children: [
+              Expanded(
+                  child: Row(children: [
+                SizedBox(
+                  height: 64,
+                ),
+                leftDetailsPart(),
+                rightDetailsPart()
+              ])),
+            ])),
         DetailHeaderBar(
           color: Colors.white,
           showDarkGradient: false,
@@ -72,11 +74,7 @@ class _LargeDetailsState extends State<LargeDetails> {
   }
 
   Widget rightDetailsPart() {
-    return Expanded(
-        flex: 6,
-        child: RightDetailsBackground(
-            dominantColorFuture: detailsInfos.dominantColor,
-            child: largeWidgetBuilder()));
+    return Expanded(flex: 6, child: largeWidgetBuilder());
   }
 
   Widget largeWidgetBuilder() {

@@ -66,7 +66,7 @@ class _HomeParentState extends State<HomeParent> {
 
   Widget tabsScaffoldMobile(List<Item> items) {
     return AutoTabsScaffold(
-        extendBody: true,
+        extendBody: false,
         bottomNavigationBuilder: (tabsContext, _) =>
             bottom_bar.BottomNavigationBar(
                 tabsContext: tabsContext, items: items),

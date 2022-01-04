@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/components/list_items.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';

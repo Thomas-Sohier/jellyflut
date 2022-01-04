@@ -24,6 +24,7 @@ dependencies:
   dart_vlc: ^0.1.8
   device_info_plus: ^3.2.1
   dio: ^4.0.4
+  drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.0
   easy_localization_loader: ^1.0.0
   epubx: ^3.0.0

@@ -23,13 +23,13 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
       formGroup = event.formGroup;
       value = event.value;
     } else if (event is FormSubmitted && value is Item) {
-      _updateItem(value, emit);
+      await _updateItem(value, emit);
     } else if (event is RefreshForm) {
       emit(RefreshedState(form: FormGroup({})));
     }
   }
 
-  void _updateItem(final T item, Emitter<FormState<T>> emit) async {
+  Future<void> _updateItem(final T item, Emitter<FormState<T>> emit) async {
     formGroup.markAllAsTouched();
     if (formGroup.valid) {
       // Add necesary data to the item to update it
@@ -37,13 +37,11 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
       _defaultRequiredValue(form, item as Item);
 
       // Update item
-      try {
-        await ItemService.updateItemFromForm(id: item.id, form: form);
-        emit(FormValidState<T>(
-            message: 'Item updated', value: value, form: formGroup));
-      } catch (error) {
-        emit(FormErrorState(form: formGroup, error: error.toString()));
-      }
+      await ItemService.updateItemFromForm(id: item.id, form: form)
+          .then((_) => emit(FormValidState<T>(
+              message: 'Item updated', value: value, form: formGroup)))
+          .onError((e, s) =>
+              emit(FormErrorState(form: formGroup, error: e.toString())));
     }
   }
 

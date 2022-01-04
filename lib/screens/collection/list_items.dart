@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart' as l;
 import 'package:jellyflut/components/poster/item_poster.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/screens/collection/bloc/collection_bloc.dart';
@@ -67,9 +70,34 @@ class _ListItemsState extends State<ListItems> {
                     child: Container(
                         decoration:
                             BoxDecoration(color: Colors.white.withOpacity(0.0)),
-                        child: buildItemsGrid(constraints)))));
+                        child: buildList()))));
       }),
     );
+  }
+
+  Widget buildList() {
+    return BlocBuilder<CollectionBloc, CollectionState>(
+        bloc: collectionBloc,
+        builder: (context, collectionState) {
+          if (collectionState is CollectionLoadedState) {
+            if (collectionBloc.items.isNotEmpty) {
+              final c = Category(
+                  items: collectionBloc.items,
+                  startIndex: 0,
+                  totalRecordCount: collectionBloc.items.length);
+              return l.ListItems.fromList(
+                category: c,
+                lisType: ListType.GRID,
+              );
+            }
+            return Center(child: emptyErrorStream());
+          } else if (collectionState is CollectionErrorState) {
+            return Center(child: Text('error'.tr()));
+          } else if (collectionState is CollectionLoadingState) {
+            return ListItemsSkeleton();
+          }
+          return const SizedBox();
+        });
   }
 
   Widget buildItemsGrid(BoxConstraints constraints) {
@@ -123,18 +151,17 @@ class _ListItemsState extends State<ListItems> {
   }
 
   Widget emptyErrorStream() {
-    return SliverFillRemaining(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Icon(
             Icons.error_outline,
             color: Theme.of(context).primaryColor,
             size: 28,
           ),
           Text('empty_collection'.tr())
-        ]));
+        ]);
   }
 
   Widget sortItems() {

@@ -1,1 +1,1 @@
-enum ListType { POSTER, LIST }
+enum ListType { POSTER, LIST, GRID }

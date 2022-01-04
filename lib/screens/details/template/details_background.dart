@@ -5,10 +5,10 @@ import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 
-class RightDetailsBackground extends StatelessWidget {
+class DetailsBackground extends StatelessWidget {
   final Future<Color> dominantColorFuture;
   final Widget child;
-  const RightDetailsBackground(
+  const DetailsBackground(
       {Key? key, required this.dominantColorFuture, required this.child})
       : super(key: key);
 

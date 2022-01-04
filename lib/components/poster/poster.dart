@@ -93,7 +93,8 @@ class _PosterState extends State<Poster> {
   MaterialStateProperty<BorderSide> buttonBorderSide() {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
             color: Colors.white,

@@ -1,12 +1,12 @@
 import 'dart:ui';
 
+import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/shared/utils/blurhash_util.dart';
 
 class LeftDetails extends StatelessWidget {
   final Item item;
@@ -20,19 +20,13 @@ class LeftDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hash = BlurHashUtil.fallBackBlurHash(
-            item.imageBlurHashes, ImageType.PRIMARY) ??
-        '';
-    return Stack(
-      children: [
-        BlurHash(hash: hash),
-        ClipRect(
-            clipBehavior: Clip.hardEdge,
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 17, sigmaY: 17))),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 64, 24, 12),
-          child: Center(
+    return LayoutBuilder(
+      builder: (c, constraint) => ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: constraint.maxHeight * 0.9),
+        child: Center(
+          child: DropShadow(
+            blurRadius: 8,
+            offset: const Offset(0, 0),
             child: Poster(
               item: item,
               heroTag: heroTag,
@@ -43,7 +37,7 @@ class LeftDetails extends StatelessWidget {
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

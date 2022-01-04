@@ -1,5 +1,8 @@
-import 'package:flutter/widgets.dart';
-import 'package:jellyflut/screens/iptv/iptv_programs.dart';
+import 'package:flutter/material.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart';
+import 'package:jellyflut/models/enum/list_type.dart';
+import 'package:jellyflut/models/jellyfin/category.dart';
+import 'package:jellyflut/services/livetv/livetv_service.dart';
 
 class Iptv extends StatefulWidget {
   Iptv({Key? key}) : super(key: key);
@@ -9,12 +12,22 @@ class Iptv extends StatefulWidget {
 }
 
 class _IptvState extends State<Iptv> {
+  late final Future<Category> programs;
+
+  @override
+  void initState() {
+    super.initState();
+    programs = IptvService.getPrograms();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: Center(child: IptvPrograms())),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ListItems.fromFuture(
+        itemsFuture: programs,
+        lisType: ListType.GRID,
+      ),
     );
   }
 }
