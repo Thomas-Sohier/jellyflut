@@ -8,7 +8,6 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/auth_bubble_indicator.dart';
 import 'package:jellyflut/screens/auth/login_form.dart';
 import 'package:jellyflut/screens/auth/server_form.dart';
-import 'package:jellyflut/shared/toast.dart';
 
 class AuthParent extends StatefulWidget {
   final VoidCallback? onAuthenticated;
