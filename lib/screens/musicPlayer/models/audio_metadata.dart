@@ -29,8 +29,8 @@ class AudioMetadata {
             item: item,
             album: item.album,
             title: item.name,
-            artist: item.artists != null && item.artists!.isNotEmpty
-                ? item.artists!.map((e) => e.name.trim()).join(', ').toString()
+            artist: item.artists.isNotEmpty
+                ? item.artists.map((e) => e.name.trim()).join(', ').toString()
                 : '',
             artworkUrl: null,
             artworkByte:

@@ -35,14 +35,14 @@ class _StudiosFieldState extends State<StudiosField> {
         Text('Studios', style: Theme.of(context).textTheme.headline6),
         SizedBox(height: 24),
         SizedBox(
-          height: (ITEM_HEIGHT * (item.studios?.length ?? 0)).toDouble(),
+          height: (ITEM_HEIGHT * (item.studios.length)).toDouble(),
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: item.studios?.length ?? 0,
+            itemCount: item.studios.length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
-                studioItem(item.studios?.elementAt(index).name, index, context),
+                studioItem(item.studios.elementAt(index).name, index, context),
           ),
         ),
       ],
@@ -71,7 +71,7 @@ class _StudiosFieldState extends State<StudiosField> {
               Spacer(),
               IconButton(
                   onPressed: () => setState(() {
-                        item.studios?.removeAt(index);
+                        item.studios.removeAt(index);
                       }),
                   hoverColor: Colors.red.withOpacity(0.1),
                   icon: Icon(Icons.delete_outline, color: Colors.red))

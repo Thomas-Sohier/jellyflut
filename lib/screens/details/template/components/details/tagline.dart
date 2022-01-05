@@ -6,9 +6,9 @@ class TaglineDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.taglines == null || item.taglines!.isEmpty) return SizedBox();
+    if (item.taglines.isEmpty) return SizedBox();
     return Text(
-      '“ ${item.taglines!.first} „',
+      '“ ${item.taglines.first} „',
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme

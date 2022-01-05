@@ -20,7 +20,7 @@ class PeoplesDetailsWidget extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        SizedBox(height: 230, child: PeoplesList(item.people!)),
+        SizedBox(height: 230, child: PeoplesList(item.people)),
       ],
     );
   }

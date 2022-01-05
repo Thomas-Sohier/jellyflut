@@ -35,17 +35,19 @@ class _PersonFieldState extends State<PersonField> {
         Text('Persons', style: Theme.of(context).textTheme.subtitle1),
         SizedBox(height: 24),
         SizedBox(
-          height: (ITEM_HEIGHT * (item.people?.length ?? 0)).toDouble(),
+          height:
+              (ITEM_HEIGHT * (item.people.isNotEmpty ? item.people.length : 0))
+                  .toDouble(),
           width: double.maxFinite,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: item.people?.length ?? 0,
+              itemCount: item.people.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) => PersonItem(
-                  person: item.people?.elementAt(index),
+                  person: item.people.elementAt(index),
                   height: ITEM_HEIGHT,
                   onPressed: () => setState(() {
-                        item.people!.removeAt(index);
+                        item.people.removeAt(index);
                       }))),
         ),
       ],

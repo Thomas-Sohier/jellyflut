@@ -46,17 +46,14 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
   }
 
   void _defaultRequiredValue(final Map<String, Object?> form, final Item item) {
-    form.putIfAbsent(
-        FieldsEnum.ALBUMARTISTS.getName(), () => item.albumArtist ?? []);
-    form.putIfAbsent(
-        FieldsEnum.ARTISTITEMS.getName(), () => item.artistItems ?? []);
-    form.putIfAbsent(FieldsEnum.PEOPLE.getName(), () => item.people ?? []);
+    form.putIfAbsent(FieldsEnum.ALBUMARTISTS.getName(), () => item.albumArtist);
+    form.putIfAbsent(FieldsEnum.ARTISTITEMS.getName(), () => item.artistItems);
+    form.putIfAbsent(FieldsEnum.PEOPLE.getName(), () => item.people);
     form.putIfAbsent(FieldsEnum.AIRDAYS.getName(), () => []);
-    form.putIfAbsent(FieldsEnum.GENRES.getName(), () => item.genres ?? []);
-    form.putIfAbsent(FieldsEnum.TAGS.getName(), () => item.tags ?? []);
+    form.putIfAbsent(FieldsEnum.GENRES.getName(), () => item.genres);
+    form.putIfAbsent(FieldsEnum.TAGS.getName(), () => item.tags);
     form.putIfAbsent(
-        FieldsEnum.LOCKEDFIELDS.getName(), () => item.lockedFields ?? []);
-    form.putIfAbsent(
-        FieldsEnum.PROVIDERIDS.getName(), () => item.providerIds ?? []);
+        FieldsEnum.LOCKEDFIELDS.getName(), () => item.lockedFields);
+    form.putIfAbsent(FieldsEnum.PROVIDERIDS.getName(), () => item.providerIds);
   }
 }

@@ -180,6 +180,8 @@ Future<Item> getAlbum(Item item) async {
 }
 
 Future<Item?> getArtist(Item item) async {
-  var val = item.artistItems?.first.artistItems['Id'];
+  var val = item.artistItems.isNotEmpty
+      ? item.artistItems.first.artistItems['Id']
+      : null;
   return await ItemService.getItem(val);
 }

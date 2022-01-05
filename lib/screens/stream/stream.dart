@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -43,6 +44,8 @@ class _StreamState extends State<Stream> {
     videoFuture.catchError((error, stackTrace) {
       customRouter.pop();
       var msg = error.toString();
+      log(error.toString());
+      log(stackTrace.toString());
       if (error is DioError) msg = error.message;
 
       ScaffoldMessenger.of(context)

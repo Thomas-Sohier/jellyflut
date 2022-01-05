@@ -7,11 +7,11 @@ class ProvidersDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (item.externalUrls == null || item.externalUrls!.isEmpty) {
-      return SizedBox();
+    if (item.externalUrls.isEmpty) {
+      return const SizedBox();
     }
     final widgets = <Widget>[];
-    item.externalUrls!.forEach((ExternalUrl externalUrl) {
+    item.externalUrls.forEach((ExternalUrl externalUrl) {
       widgets.add(ProviderButton(
           providerName: externalUrl.name, providerUrl: externalUrl.url));
     });

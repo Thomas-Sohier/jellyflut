@@ -162,7 +162,7 @@ class CommonStreamBP {
   static List<BetterPlayerSubtitlesSource> _getSubtitlesBP(Item item) {
     // ignore: omit_local_variable_types
     final List<BetterPlayerSubtitlesSource> parsedSubtitlesBP = [];
-    var subtitles = item.mediaStreams!
+    var subtitles = item.mediaStreams
         .where((element) => element.type == MediaStreamType.SUBTITLE)
         .toList();
 
@@ -225,7 +225,7 @@ class CommonStreamBP {
     final List<AudioTrack> parsedAudioTrack = [];
     var audioTracks = StreamingProvider()
         .item!
-        .mediaStreams!
+        .mediaStreams
         .where((element) => element.type == MediaStreamType.AUDIO)
         .toList();
     ;

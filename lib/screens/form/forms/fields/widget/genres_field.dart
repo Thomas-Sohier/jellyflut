@@ -35,14 +35,14 @@ class _GenresFieldState extends State<GenresField> {
         Text('Genres', style: Theme.of(context).textTheme.headline6),
         SizedBox(height: 24),
         SizedBox(
-          height: (ITEM_HEIGHT * (item.genreItems?.length ?? 0)).toDouble(),
+          height: (ITEM_HEIGHT * (item.genreItems.length)).toDouble(),
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
-            itemCount: item.genreItems?.length ?? 0,
+            itemCount: item.genreItems.length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) =>
-                genreItem(item.genreItems?.elementAt(index), index, context),
+                genreItem(item.genreItems.elementAt(index), index, context),
           ),
         ),
       ],
@@ -71,7 +71,7 @@ class _GenresFieldState extends State<GenresField> {
               Spacer(),
               IconButton(
                   onPressed: () => setState(() {
-                        item.genreItems?.removeAt(index);
+                        item.genreItems.removeAt(index);
                       }),
                   hoverColor: Colors.red.withOpacity(0.1),
                   icon: Icon(Icons.delete_outline, color: Colors.red))

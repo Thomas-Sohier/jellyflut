@@ -46,8 +46,8 @@ class _TagsFieldState extends State<TagsField> {
   }
 
   List<Widget> generateAllTags(BuildContext context) {
-    if (item.tags == null) return [];
-    return item.tags!.map((dynamic tag) => tagItem(tag, context)).toList();
+    if (item.tags.isEmpty) return [];
+    return item.tags.map((dynamic tag) => tagItem(tag, context)).toList();
   }
 
   Widget tagItem(String? tag, BuildContext context) {
@@ -71,7 +71,7 @@ class _TagsFieldState extends State<TagsField> {
                 )),
                 IconButton(
                     onPressed: () => setState(() {
-                          item.tags!.removeAt(item.tags!.indexOf(tag));
+                          item.tags.removeAt(item.tags.indexOf(tag));
                         }),
                     padding: EdgeInsets.zero,
                     icon: Icon(
