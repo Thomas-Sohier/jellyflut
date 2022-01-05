@@ -16,6 +16,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final List<Item> carouselSliderItems = <Item>[];
   final List<Item> items = <Item>[];
   final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
+  late final Future<model.Category> Function(
+      int startIndex, int numberOfItemsToLoad) loadMoreFunction;
 
   // Sorting by name
   bool _sortByNameASC = false;
@@ -29,9 +31,14 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
 
-  CollectionBloc({final ListType listType = ListType.GRID})
+  CollectionBloc(
+      {final ListType listType = ListType.GRID,
+      required final Future<model.Category> Function(
+              int startIndex, int numberOfItemsToLoad)
+          loadMoreFunction})
       : super(CollectionLoadingState()) {
     this.listType.add(listType);
+    this.loadMoreFunction = loadMoreFunction;
     on<AddItem>(addItems);
     on<LoadMoreItems>(showMoreItem);
     on<SortByName>(sortByName);
@@ -58,8 +65,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   void showMoreItem(LoadMoreItems event, Emitter<CollectionState> emit) async {
     if (!_blockItemsLoading && items.isNotEmpty) {
       _blockItemsLoading = true;
-      final category =
-          await getItems(item: parentItem, startIndex: items.length);
+      final category = await loadMoreFunction(items.length, 100);
       if (category.items.isNotEmpty) {
         _blockItemsLoading = false;
         items.addAll(category.items);

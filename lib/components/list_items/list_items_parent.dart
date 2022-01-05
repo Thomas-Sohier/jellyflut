@@ -28,6 +28,8 @@ part 'list_types/list_items_vertical_list.dart';
 
 class ListItems extends StatefulWidget {
   final Future<Category>? itemsFuture;
+  final Future<Category> Function(int startIndex, int numberOfItemsToLoad)
+      loadMoreFunction;
   final Category? category;
   final ListType listType;
   final bool showTitle;
@@ -41,6 +43,7 @@ class ListItems extends StatefulWidget {
   const ListItems.fromFuture(
       {Key? key,
       required this.itemsFuture,
+      this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
@@ -55,6 +58,7 @@ class ListItems extends StatefulWidget {
   const ListItems.fromList(
       {Key? key,
       required this.category,
+      this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
@@ -65,6 +69,11 @@ class ListItems extends StatefulWidget {
       this.listType = ListType.POSTER})
       : itemsFuture = null,
         super(key: key);
+
+  static Future<Category> _defaultLoadMore(int i, int l) {
+    return Future.value(
+        Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
+  }
 
   @override
   _ListItemsState createState() => _ListItemsState();
@@ -94,8 +103,12 @@ class _ListItemsState extends State<ListItems> {
     horizontalListPosterHeight = widget.horizontalListPosterHeight;
     verticalListPosterHeight = widget.verticalListPosterHeight;
     gridPosterHeight = widget.gridPosterHeight;
-    collectionBloc = CollectionBloc(listType: widget.listType);
     listTypes = ListType.values;
+
+    // BLoC init part
+    collectionBloc = CollectionBloc(
+        listType: widget.listType, loadMoreFunction: widget.loadMoreFunction);
+    collectionBloc.listType.add(widget.listType);
     collectionBloc.listType.add(widget.listType);
     scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);

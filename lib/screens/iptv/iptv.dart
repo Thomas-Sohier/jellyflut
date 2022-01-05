@@ -28,6 +28,10 @@ class _IptvState extends State<Iptv> {
         itemsFuture: programs,
         verticalListPosterHeight: 250,
         listType: ListType.GRID,
+        loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
+          return IptvService.getPrograms(
+              startIndex: startIndex, limit: numberOfItemsToLoad);
+        },
       ),
     );
   }

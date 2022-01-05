@@ -49,11 +49,17 @@ class _CollectionParentState extends State<CollectionParent> {
           ListItems.fromFuture(
               itemsFuture: getItems(item: widget.item),
               verticalListPosterHeight: 250,
+              loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
+                  getItems(
+                      item: widget.item,
+                      startIndex: startIndex,
+                      limit: numberOfItemsToLoad),
               listType: ListType.GRID),
         ]));
   }
 
-  Future<Category> getItems({required Item item, int startIndex = 0}) async {
+  Future<Category> getItems(
+      {required Item item, int startIndex = 0, int limit = 100}) async {
     return ItemService.getItems(
         parentId: item.id,
         sortBy: 'SortName',
@@ -67,6 +73,6 @@ class _CollectionParentState extends State<CollectionParent> {
             .map((ItemType e) => e.getValue())
             .toList()
             .join(','),
-        limit: 100);
+        limit: limit);
   }
 }
