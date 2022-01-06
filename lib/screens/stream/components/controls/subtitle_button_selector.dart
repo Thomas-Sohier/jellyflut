@@ -15,6 +15,7 @@ class SubtitleButtonSelector extends StatefulWidget {
 class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
+  late final GlobalKey<PopupMenuButtonState<Subtitle>> _popupMenuButtonKey;
   late int subtitleSelectedIndex;
 
   @override
@@ -26,6 +27,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         skipTraversal: true);
     streamingProvider = StreamingProvider();
     subtitleSelectedIndex = streamingProvider.selectedSubtitleTrack?.index ?? 0;
+    _popupMenuButtonKey = GlobalKey();
   }
 
   @override
@@ -38,15 +40,17 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         node: _node,
-        onPressed: () => {},
+        onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
         shape: CircleBorder(),
         child: changeSubtitle(context));
   }
 
   Widget changeSubtitle(BuildContext context) {
-    return FutureBuilder<List<Subtitle>>(
+    return IgnorePointer(
+        child: FutureBuilder<List<Subtitle>>(
       future: streamingProvider.commonStream!.getSubtitles(),
       builder: (context, snapshot) => PopupMenuButton<Subtitle>(
+          key: _popupMenuButtonKey,
           icon: Icon(
             Icons.subtitles,
             color: Colors.white,
@@ -59,7 +63,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
             }
             return <PopupMenuEntry<Subtitle>>[];
           }),
-    );
+    ));
   }
 
   List<PopupMenuEntry<Subtitle>> _audioTracksListTile(

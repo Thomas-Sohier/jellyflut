@@ -15,6 +15,7 @@ class AudioButtonSelector extends StatefulWidget {
 class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
+  late final GlobalKey<PopupMenuButtonState<AudioTrack>> _popupMenuButtonKey;
   late int audioSelectedIndex;
 
   @override
@@ -26,6 +27,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
         skipTraversal: true);
     streamingProvider = StreamingProvider();
     audioSelectedIndex = streamingProvider.selectedAudioTrack?.index ?? 0;
+    _popupMenuButtonKey = GlobalKey();
   }
 
   @override
@@ -38,27 +40,30 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         node: _node,
-        onPressed: () => {},
+        onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
         shape: CircleBorder(),
         child: changeAudio(context));
   }
 
   Widget changeAudio(BuildContext context) {
-    return FutureBuilder<List<AudioTrack>>(
-      future: streamingProvider.commonStream!.getAudioTracks(),
-      builder: (context, snapshot) => PopupMenuButton<AudioTrack>(
-          icon: Icon(
-            Icons.audiotrack,
-            color: Colors.white,
-          ),
-          tooltip: 'select_audio_source'.tr(),
-          onSelected: (AudioTrack audio) => setAudioTrack(audio),
-          itemBuilder: (context) {
-            if (snapshot.hasData) {
-              return _audioTracksListTile(snapshot.data!);
-            }
-            return <PopupMenuEntry<AudioTrack>>[];
-          }),
+    return IgnorePointer(
+      child: FutureBuilder<List<AudioTrack>>(
+        future: streamingProvider.commonStream!.getAudioTracks(),
+        builder: (context, snapshot) => PopupMenuButton<AudioTrack>(
+            key: _popupMenuButtonKey,
+            icon: Icon(
+              Icons.audiotrack,
+              color: Colors.white,
+            ),
+            tooltip: 'select_audio_source'.tr(),
+            onSelected: (AudioTrack audio) => setAudioTrack(audio),
+            itemBuilder: (context) {
+              if (snapshot.hasData) {
+                return _audioTracksListTile(snapshot.data!);
+              }
+              return <PopupMenuEntry<AudioTrack>>[];
+            }),
+      ),
     );
   }
 

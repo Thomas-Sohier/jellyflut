@@ -33,6 +33,7 @@ class _FullscreenButtonState extends State<FullscreenButton> {
 
   @override
   Widget build(BuildContext context) {
+    isFullscreen = false;
     return OutlinedButtonSelector(
       node: _node,
       onPressed: toggleFullscreen,

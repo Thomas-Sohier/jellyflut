@@ -16,11 +16,13 @@ class ChapterButton extends StatefulWidget {
 class _ChapterButtonState extends State<ChapterButton> {
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
+  late final GlobalKey<PopupMenuButtonState<Chapter>> _popupMenuButtonKey;
 
   @override
   void initState() {
     _node = FocusNode(canRequestFocus: false, descendantsAreFocusable: false);
     streamingProvider = StreamingProvider();
+    _popupMenuButtonKey = GlobalKey();
     super.initState();
   }
 
@@ -34,22 +36,25 @@ class _ChapterButtonState extends State<ChapterButton> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
       node: _node,
-      onPressed: () => {},
+      onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
       shape: CircleBorder(),
       child: changeChapter(context),
     );
   }
 
   Widget changeChapter(BuildContext context) {
-    return PopupMenuButton<Chapter>(
-        icon: Icon(
-          Icons.list,
-          color: Colors.white,
-        ),
-        tooltip: 'select_chapter'.tr(),
-        onSelected: (Chapter value) => goToChapter(value),
-        itemBuilder: (context) =>
-            chapterList(streamingProvider.item?.chapters));
+    return IgnorePointer(
+      child: PopupMenuButton<Chapter>(
+          key: _popupMenuButtonKey,
+          icon: Icon(
+            Icons.list,
+            color: Colors.white,
+          ),
+          tooltip: 'select_chapter'.tr(),
+          onSelected: (Chapter value) => goToChapter(value),
+          itemBuilder: (context) =>
+              chapterList(streamingProvider.item?.chapters)),
+    );
   }
 
   List<PopupMenuEntry<Chapter>> chapterList(List<Chapter>? chapters) {
