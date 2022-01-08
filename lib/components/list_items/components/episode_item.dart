@@ -61,7 +61,7 @@ class _EpisodeItemState extends State<EpisodeItem>
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             if (constraints.maxWidth > 350)
@@ -108,6 +108,8 @@ class _EpisodeItemState extends State<EpisodeItem>
           tag: ImageType.PRIMARY,
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
+          width: double.infinity,
+          height: double.infinity,
           boxFit: BoxFit.cover,
           item: widget.item),
     );

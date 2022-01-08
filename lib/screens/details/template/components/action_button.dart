@@ -19,4 +19,5 @@ part 'action_button/like_button.dart';
 part 'action_button/manage_buton.dart';
 part 'action_button/play_button.dart';
 part 'action_button/trailer_button.dart';
+part 'action_button/download_button.dart';
 part 'action_button/viewed_button.dart';

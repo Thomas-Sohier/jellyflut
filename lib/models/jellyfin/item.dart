@@ -841,6 +841,21 @@ class Item {
     return playableItems.contains(type);
   }
 
+  bool isDownload() {
+    final playableItems = [
+      ItemType.AUDIO,
+      ItemType.MUSICALBUM,
+      ItemType.MUSICVIDEO,
+      ItemType.MOVIE,
+      ItemType.SERIES,
+      ItemType.SEASON,
+      ItemType.EPISODE,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
   bool isCollectionPlayable() {
     final playableItems = [
       CollectionType.BOOKS,

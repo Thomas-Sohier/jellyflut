@@ -27,6 +27,8 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
           item: carrousselProvider.item!,
           tag: ImageType.PRIMARY,
           boxFit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         );
       } else {
         return const SizedBox();

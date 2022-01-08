@@ -107,6 +107,8 @@ class _HomeCategoryState extends State<HomeCategory>
         controller: scrollController,
         itemBuilder: (context, index) => ItemPoster(
               items[index],
+              width: double.infinity,
+              height: double.infinity,
               boxFit: BoxFit.cover,
             ));
   }

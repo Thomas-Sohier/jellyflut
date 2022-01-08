@@ -11,6 +11,8 @@ class ItemPoster extends StatefulWidget {
       {this.textColor = Colors.white,
       this.heroTag,
       this.widgetAspectRatio,
+      this.height,
+      this.width,
       this.imagefilter = false,
       this.showName = true,
       this.showParent = true,
@@ -25,6 +27,8 @@ class ItemPoster extends StatefulWidget {
   final double? widgetAspectRatio;
   final Color textColor;
   final bool imagefilter;
+  final double? height;
+  final double? width;
   final bool showName;
   final bool showParent;
   final bool showOverlay;
@@ -94,6 +98,8 @@ class _ItemPosterState extends State<ItemPoster>
                     clickable: widget.clickable,
                     heroTag: posterHeroTag,
                     boxFit: widget.boxFit,
+                    width: widget.width,
+                    height: widget.height,
                     item: widget.item),
                 if (widget.imagefilter)
                   IgnorePointer(
@@ -222,33 +228,5 @@ class _ItemPosterState extends State<ItemPoster>
       posterFlexSize = 10;
       posterNameFlexSize = 0;
     }
-  }
-
-  MaterialStateProperty<double> buttonElevation() {
-    return MaterialStateProperty.resolveWith<double>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
-          return 2;
-        } else if (states.contains(MaterialState.hovered)) {
-          return 6;
-        }
-        return 0; // defer to the default
-      },
-    );
-  }
-
-  MaterialStateProperty<BorderSide> buttonBorderSide() {
-    return MaterialStateProperty.resolveWith<BorderSide>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
-          return BorderSide(
-            width: 2,
-            color: Colors.white,
-          );
-        }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
-      },
-    );
   }
 }

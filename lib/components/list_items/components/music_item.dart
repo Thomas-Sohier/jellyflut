@@ -94,6 +94,8 @@ class _MusicItemState extends State<MusicItem> {
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
           dropShadow: false,
+          width: double.infinity,
+          height: double.infinity,
           boxFit: BoxFit.cover,
           item: widget.item),
     );

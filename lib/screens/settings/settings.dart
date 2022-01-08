@@ -39,7 +39,7 @@ class _SettingsState extends State<Settings> {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 600),
                     child: SettingsList(
-                      contentPadding: EdgeInsets.only(top: 20),
+                      contentPadding: EdgeInsets.only(top: 20, bottom: 30),
                       backgroundColor: Theme.of(context).backgroundColor,
                       darkBackgroundColor: Theme.of(context).primaryColorDark,
                       lightBackgroundColor: Theme.of(context).primaryColorLight,

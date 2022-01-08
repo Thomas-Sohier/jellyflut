@@ -21,18 +21,11 @@ class LocaleButtonSelector extends StatelessWidget {
         if (locale != null) context.setLocale(locale);
       },
       itemBuilder: (BuildContext c) => _localeListTile(c),
-      child: SizedBox(
-        height: 50,
-        width: 50,
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          if (showCurrentValue)
-            Expanded(
-              child: Text(context.locale.toLanguageTag(),
-                  style: TextStyle(color: foregroundColor)),
-            ),
-          Icon(Icons.arrow_drop_down, color: foregroundColor),
-        ]),
-      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Text(context.locale.toLanguageTag(),
+            style: TextStyle(color: foregroundColor)),
+        Icon(Icons.arrow_drop_down, color: foregroundColor),
+      ]),
     );
   }
 

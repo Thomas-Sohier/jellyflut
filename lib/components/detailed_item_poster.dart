@@ -49,6 +49,8 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                       item: widget.item,
                                       boxFit: BoxFit.cover,
                                       errorWidget: const SizedBox(),
+                                      width: double.infinity,
+                                      height: double.infinity,
                                       tag: ImageType.BACKDROP),
                                   Container(color: Colors.black87),
                                   Padding(

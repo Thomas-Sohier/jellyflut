@@ -11,14 +11,19 @@ class ListItemsHorizontalSkeleton extends StatelessWidget {
         highlightColor: shimmerColor2,
         child: Align(
           alignment: Alignment.centerLeft,
-          child: ListView.builder(
-              padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: 6,
-              itemBuilder: (context, index) =>
-                  SkeletonItemPoster(height: horizontalListPosterHeight)),
+          child: SizedBox(
+            height: horizontalListPosterHeight,
+            child: ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: 6,
+                itemBuilder: (context, index) => SkeletonItemPoster(
+                      height: horizontalListPosterHeight,
+                      padding: EdgeInsets.only(right: 8),
+                    )),
+          ),
         ));
   }
 }

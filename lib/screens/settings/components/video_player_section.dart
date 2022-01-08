@@ -3,9 +3,9 @@ part of 'sections.dart';
 class VideoPlayerSection extends StatelessWidget {
   final Setting setting;
   final Database database;
+  final GlobalKey<PopupMenuButtonState<String>> _playerButton = GlobalKey();
 
-  const VideoPlayerSection(
-      {Key? key, required this.setting, required this.database})
+  VideoPlayerSection({Key? key, required this.setting, required this.database})
       : super(key: key);
 
   @override
@@ -15,17 +15,17 @@ class VideoPlayerSection extends StatelessWidget {
       titleTextStyle: Theme.of(context).textTheme.headline6,
       tiles: [
         SettingsTile(
-          title: 'preferred_player'.tr(),
-          subtitle: setting.preferredPlayer,
-          titleTextStyle: TextStyle(color: Colors.white),
-          subtitleTextStyle: TextStyle(color: Colors.white60),
-          onPressed: (BuildContext context) => selectVideoPlayer(context),
-        ),
+            title: 'preferred_player'.tr(),
+            onPressed: (context) =>
+                _playerButton.currentState?.showButtonMenu(),
+            trailing: VideoPlayerPopupButton(
+              popupButtonKey: _playerButton,
+              database: database,
+              setting: setting,
+            )),
         SettingsTile(
           title: 'max_bitrate'.tr(),
           subtitle: setting.maxVideoBitrate.toString(),
-          titleTextStyle: TextStyle(color: Colors.white),
-          subtitleTextStyle: TextStyle(color: Colors.white60),
           enabled: false,
           trailing: Container(
             height: 0,

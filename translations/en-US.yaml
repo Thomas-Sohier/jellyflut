@@ -9,7 +9,7 @@ like: Like
 manage: Manage
 play: Play
 trailer: Trailer
-previous: Previous
+download: Download
 viewed: Viewed
 loading: Loading
 loading_dots: Loading...
@@ -22,6 +22,7 @@ cannot_open_file: 'Cannot open file {}'
 cannot_download_item: 'Cannot download {}'
 cannot_access_storage: Cannot access storage
 cannot_load_page: Cannot load page
+functionnality_not_implemented: 'Functionnality not implemented'
 
 # Category titles
 latest: Latest

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
+import 'package:jellyflut/screens/home/header_bar.dart';
 import 'package:jellyflut/screens/home/latest.dart';
-import 'package:jellyflut/screens/home/search_button.dart';
-import 'package:jellyflut/screens/home/settings_button.dart';
+import 'package:jellyflut/screens/home/components/search_button.dart';
+import 'package:jellyflut/screens/home/components/settings_button.dart';
 import 'package:jellyflut/screens/home/home_category.dart';
 import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/screens/home/components/search/search_result.dart';
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
                   builder: (context, value, child) {
                     return Visibility(
                         visible: !SearchProvider().showResults,
-                        child: headerBar());
+                        child: HeaderBar());
                   },
                 )
               ]),
@@ -82,39 +83,6 @@ class _HomeState extends State<Home> {
         }
         return SliverToBoxAdapter();
       },
-    );
-  }
-
-  Widget headerBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 8,
-        ),
-        Hero(
-            tag: 'logo',
-            child: Image(
-              image: AssetImage('img/jellyfin_logo.png'),
-              width: 40.0,
-            )),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-        ),
-        Hero(
-          tag: 'logo_text',
-          child: Text(
-            'Jellyfin',
-            style: TextStyle(
-                fontSize: 22, color: Colors.white, fontFamily: 'Quicksand'),
-          ),
-        ),
-        Spacer(),
-        SearchButton(),
-        SettingsButton(),
-        UserIcon()
-      ],
     );
   }
 

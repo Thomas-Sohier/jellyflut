@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
@@ -22,7 +23,8 @@ class CollectionParent extends StatefulWidget {
   }
 }
 
-class _CollectionParentState extends State<CollectionParent> {
+class _CollectionParentState extends State<CollectionParent>
+    with AutoRouteAware {
   late final CarrousselProvider carrousselProvider;
 
   @override

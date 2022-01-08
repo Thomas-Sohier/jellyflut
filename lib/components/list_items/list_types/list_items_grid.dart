@@ -32,7 +32,11 @@ class ListItemsGrid extends StatelessWidget {
                     crossAxisSpacing: 5),
                 delegate:
                     SliverChildBuilderDelegate((BuildContext c, int index) {
-                  return ItemPoster(items.elementAt(index));
+                  return ItemPoster(
+                    items.elementAt(index),
+                    width: double.infinity,
+                    height: double.infinity,
+                  );
                 }, childCount: items.length))
           ]);
     });

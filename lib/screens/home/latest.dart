@@ -79,6 +79,8 @@ class _LatestState extends State<Latest> {
                 var _item = items[index];
                 return ItemPoster(
                   _item,
+                  width: double.infinity,
+                  height: double.infinity,
                   showLogo: true,
                   imagefilter: true,
                   tag: ImageType.BACKDROP,

@@ -31,6 +31,8 @@ class BackgroundImage extends StatelessWidget {
           foregroundDecoration: BoxDecoration(color: Color(0x59000000)),
           child: AsyncImage(
             item: item,
+            width: double.infinity,
+            height: double.infinity,
             tag: imageType,
             boxFit: BoxFit.cover,
           )),

@@ -21,7 +21,11 @@ class ListItemsHorizontalList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           controller: scrollController,
           physics: scrollPhysics,
-          itemBuilder: (context, index) => ItemPoster(items.elementAt(index))),
+          itemBuilder: (context, index) => ItemPoster(
+                items.elementAt(index),
+                width: double.infinity,
+                height: double.infinity,
+              )),
     );
   }
 }

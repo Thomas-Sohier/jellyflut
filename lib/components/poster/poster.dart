@@ -11,6 +11,8 @@ class Poster extends StatefulWidget {
   final ImageType tag;
   final BoxFit boxFit;
   final Item item;
+  final double? height;
+  final double? width;
   final bool showParent;
   final bool dropShadow;
   final bool clickable;
@@ -19,6 +21,8 @@ class Poster extends StatefulWidget {
   const Poster(
       {this.showParent = false,
       this.dropShadow = false,
+      this.height,
+      this.width,
       required this.tag,
       required this.heroTag,
       required this.clickable,
@@ -71,6 +75,8 @@ class _PosterState extends State<Poster> {
             item: widget.item,
             tag: widget.tag,
             boxFit: widget.boxFit,
+            width: widget.width,
+            height: widget.height,
             showParent: widget.showParent)),
       );
     }

@@ -13,61 +13,43 @@ class DetailsButtonRowBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceType = getDeviceType(MediaQuery.of(context).size);
-    if (deviceType == DeviceScreenType.mobile) {
-      return mobileButtonsLayout();
-    }
-    return desktopButtonsLayout();
+    return buttonsLayout();
   }
 
-  Widget desktopButtonsLayout() {
-    return Wrap(
-      direction: Axis.horizontal,
-      spacing: 10,
-      runSpacing: 10,
-      children: [
-        if (item.isPlayable())
-          PlayButton(item: item, dominantColorFuture: dominantColorFuture),
-        if (item.hasTrailer()) TrailerButton(item: item),
-        if (item.canBeViewed()) ViewedButton(item: item),
-        LikeButton(item: item),
-        ManageButton(item: item)
-      ],
-    );
-  }
+  Widget buttonsLayout() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final buttonExpanded = constraints.maxWidth < 600;
+        late final maxWidth;
+        if (buttonExpanded) {
+          maxWidth = (constraints.maxWidth - 10) / 2;
+        } else {
+          maxWidth = 150.0;
+        }
 
-  Widget mobileButtonsLayout() {
-    return Column(
-      children: [
-        if (item.isPlayable())
-          PlayButton(
-            item: item,
-            dominantColorFuture: dominantColorFuture,
-            maxWidth: double.maxFinite,
-          ),
-        SizedBox(height: 10),
-        LayoutBuilder(builder: (context, constraints) {
-          final nbItemsPossible = (constraints.maxWidth / 150).round() > 4
-              ? 4
-              : (constraints.maxWidth / 150).round();
-          final nbOfspacing = nbItemsPossible - 1;
-          final maxWidthChild =
-              (constraints.maxWidth - nbOfspacing * 10) / nbItemsPossible;
-          return Wrap(
-            direction: Axis.horizontal,
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              if (item.hasTrailer())
-                TrailerButton(item: item, maxWidth: maxWidthChild),
-              if (item.canBeViewed())
-                ViewedButton(item: item, maxWidth: maxWidthChild),
-              LikeButton(item: item, maxWidth: maxWidthChild),
-              ManageButton(item: item, maxWidth: maxWidthChild)
-            ],
-          );
-        })
-      ],
+        return Wrap(
+          direction: Axis.horizontal,
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            if (item.isPlayable() && buttonExpanded)
+              PlayButton(
+                  item: item,
+                  dominantColorFuture: dominantColorFuture,
+                  maxWidth: double.infinity),
+            if (item.isPlayable() && !buttonExpanded)
+              PlayButton(item: item, dominantColorFuture: dominantColorFuture),
+            if (item.hasTrailer())
+              TrailerButton(item: item, maxWidth: maxWidth),
+            if (item.canBeViewed())
+              ViewedButton(item: item, maxWidth: maxWidth),
+            if (item.isDownload())
+              DownloadButton(item: item, maxWidth: maxWidth),
+            LikeButton(item: item, maxWidth: maxWidth),
+            ManageButton(item: item, maxWidth: maxWidth)
+          ],
+        );
+      },
     );
   }
 }

@@ -59,12 +59,15 @@ class _TabletDetailsState extends State<TabletDetails> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          alignment: WrapAlignment.spaceEvenly,
+          direction: Axis.horizontal,
+          verticalDirection: VerticalDirection.up,
+          runSpacing: 20,
           children: [
             poster(),
-            if (widget.item.hasLogo()) Flexible(child: Logo(item: widget.item)),
+            if (widget.item.hasLogo()) Logo(item: widget.item),
           ],
         ),
         asyncRightDetails()

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -105,8 +106,10 @@ class Jellyflut extends StatelessWidget {
                   locale: context.locale,
                   theme: personnal_theme.Theme.defaultThemeData,
                   debugShowCheckedModeBanner: false,
-                  routerDelegate:
-                      customRouter.delegate(initialRoutes: [HomeRouter()]),
+                  routerDelegate: customRouter.delegate(
+                      initialRoutes: [HomeRouter()],
+                      navigatorObservers: () =>
+                          <NavigatorObserver>[AutoRouteObserver()]),
                   routeInformationParser: customRouter.defaultRouteParser(),
                 ))));
   }
