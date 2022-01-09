@@ -3,6 +3,7 @@ import 'package:jellyflut/screens/auth/auth_parent.dart';
 import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
+import 'package:jellyflut/screens/downloads/downloads_parent.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/home/home_parent.dart';
 import 'package:jellyflut/screens/iptv/iptv.dart';
@@ -45,6 +46,7 @@ import 'router.gr.dart';
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     AutoRoute(page: Details, path: 'details', guards: [AuthGuard]),
+    AutoRoute(page: DownloadsParent, path: 'downloads', guards: [AuthGuard]),
     CustomRoute(
         page: Settings,
         path: 'settings',

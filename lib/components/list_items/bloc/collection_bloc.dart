@@ -40,6 +40,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     this.listType.add(listType);
     this.loadMoreFunction = loadMoreFunction;
     on<AddItem>(addItems);
+    on<ClearItem>(removeItems);
     on<LoadMoreItems>(showMoreItem);
     on<SortByName>(sortByName);
     on<SortByDate>(sortByDate);
@@ -49,6 +50,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     parentItem = item;
     getItems(item: item)
         .then((model.Category category) => add(AddItem(items: category.items)));
+  }
+
+  void removeItems(ClearItem event, Emitter<CollectionState> emit) {
+    items.clear();
+    emit(CollectionLoadedState());
   }
 
   void addItems(AddItem event, Emitter<CollectionState> emit) {

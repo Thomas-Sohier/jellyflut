@@ -31,6 +31,7 @@ class ListItems extends StatefulWidget {
   final Future<Category> Function(int startIndex, int numberOfItemsToLoad)
       loadMoreFunction;
   final Category? category;
+  final CollectionBloc? collectionBloc;
   final ListType listType;
   final bool showTitle;
   final bool showIfEmpty;
@@ -44,6 +45,7 @@ class ListItems extends StatefulWidget {
       {Key? key,
       required this.itemsFuture,
       this.loadMoreFunction = _defaultLoadMore,
+      this.collectionBloc,
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
@@ -58,6 +60,7 @@ class ListItems extends StatefulWidget {
   const ListItems.fromList(
       {Key? key,
       required this.category,
+      this.collectionBloc,
       this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
       this.showIfEmpty = true,
@@ -106,10 +109,14 @@ class _ListItemsState extends State<ListItems> {
     listTypes = ListType.values;
 
     // BLoC init part
-    collectionBloc = CollectionBloc(
-        listType: widget.listType, loadMoreFunction: widget.loadMoreFunction);
+    collectionBloc = widget.collectionBloc ??
+        CollectionBloc(
+            listType: widget.listType,
+            loadMoreFunction: widget.loadMoreFunction);
     collectionBloc.listType.add(widget.listType);
     collectionBloc.listType.add(widget.listType);
+
+    // scroll listener to add items on scroll only if loadmore function as been defined
     scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
 

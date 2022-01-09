@@ -10,6 +10,10 @@ class AddItem extends CollectionEvent {
   const AddItem({required this.items});
 }
 
+class ClearItem extends CollectionEvent {
+  const ClearItem();
+}
+
 class SortByDate extends CollectionEvent {
   const SortByDate();
 }

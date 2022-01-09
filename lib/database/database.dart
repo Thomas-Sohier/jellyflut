@@ -119,7 +119,7 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
 @UseDao(tables: [Downloads])
 class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
   DownloadsDao(Database db) : super(db);
-  Future<List<Download>> get allWatchingServers => select(downloads).get();
+  Future<List<Download>> get allWatchingDownloads => select(downloads).get();
   Stream<List<Download>> get watchAllDownloads => select(downloads).watch();
   Future<Download> getDownloadById(String downloadId) =>
       (select(downloads)..where((tbl) => tbl.id.equals(downloadId)))
