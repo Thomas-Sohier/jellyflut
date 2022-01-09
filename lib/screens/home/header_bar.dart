@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 
 import '../details/template/components/user_icon.dart';
 import 'components/download_button.dart';
@@ -17,12 +18,7 @@ class HeaderBar extends StatelessWidget {
         SizedBox(
           width: 8,
         ),
-        Hero(
-            tag: 'logo',
-            child: Image(
-              image: AssetImage('img/jellyfin_logo.png'),
-              width: 40.0,
-            )),
+        Hero(tag: 'logo', child: const JellyfinLogo()),
         Padding(
           padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
         ),

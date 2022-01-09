@@ -12,6 +12,8 @@ class PaletteButton extends StatefulWidget {
     this.dominantColorFuture,
     this.enabled = true,
     this.borderRadius = 80.0,
+    this.minHeight = 40.0,
+    this.maxHeight = double.infinity,
     this.minWidth = 88.0,
     this.maxWidth = 200.0,
     this.item,
@@ -24,6 +26,8 @@ class PaletteButton extends StatefulWidget {
   final String text;
   final bool enabled;
   final double borderRadius;
+  final double minHeight;
+  final double maxHeight;
   final double minWidth;
   final double maxWidth;
   final Icon? icon;
@@ -38,10 +42,10 @@ class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin {
   // variable for both button
   // size
-  double minWidth = 88.0;
-  double minHeight = 36.0;
-  double maxWidth = 200;
-  double maxHeight = 50;
+  late double minWidth;
+  late double minHeight;
+  late double maxWidth;
+  late double maxHeight;
   // padding of icon if one
   final EdgeInsets padding = EdgeInsets.fromLTRB(5, 0, 5, 0);
 
@@ -58,9 +62,12 @@ class _PaletteButtonState extends State<PaletteButton>
 
   @override
   Widget build(BuildContext context) {
-    minWidth = widget.minWidth;
-    maxWidth = widget.maxWidth;
     super.build(context);
+    minWidth = widget.minWidth;
+    minHeight = widget.minHeight;
+    maxWidth = widget.maxWidth;
+    maxHeight = widget.maxHeight;
+
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
     return IgnorePointer(
       ignoring: !widget.enabled,

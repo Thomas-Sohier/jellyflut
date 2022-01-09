@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';
@@ -74,13 +76,21 @@ class AuthService {
 
       // If account still authorized (API do not respond 401) then we continue
       // else we return false
-      try {
-        await _isAccountStillAuthorized();
-      } catch (e) {
-        await logout();
-        return false;
-      }
-      return true;
+      return await _isAccountStillAuthorized().then<bool>((value) async {
+        // If error 401 then we can contact server and we don't have access to API
+        // else we define status as offline mode
+        if (value.statusCode == HttpStatus.unauthorized) {
+          await logout();
+          return false;
+        }
+        offlineMode = true;
+        return true;
+      }).catchError((onError) {
+        // If we catch an error (host lookup or anything else) we still continue
+        // to respond as if user is authenticated to go in offline mode
+        offlineMode = true;
+        return true;
+      });
     }
     return false;
   }
@@ -100,32 +110,35 @@ class AuthService {
         settingsId: Value(settingsId),
         serverId: Value(serverId));
     final userId = await db.usersDao.createUser(userCompanion);
-    await _saveToSharedPreferences(serverId, settingsId, userId,
-        authenticationResponse.user.id, authenticationResponse.accessToken);
+    await _saveToSharedPreferences(
+        serverId, settingsId, userId, authenticationResponse);
     return await _saveToGlobals();
   }
 
   static Future<void> _saveToSharedPreferences(int serverId, int settingId,
-      int userAppId, String userJellyfinId, String apiKey) async {
+      int userAppId, AuthenticationResponse authenticationResponse) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('apiKey', apiKey);
+    await sharedPreferences.setString(
+        'apiKey', authenticationResponse.accessToken);
     await sharedPreferences.setBool('isLoggedIn', true);
     await sharedPreferences.setInt('serverId', serverId);
     await sharedPreferences.setInt('settingId', settingId);
-    await sharedPreferences.setString('userJellyfinId', userJellyfinId);
+    await sharedPreferences.setString(
+        'user', json.encode(authenticationResponse.user.toMap()));
     await sharedPreferences.setInt('userAppId', userAppId);
   }
 
   static Future<void> _saveToGlobals() async {
     final db = AppDatabase().getDatabase;
     final sharedPreferences = await SharedPreferences.getInstance();
-    final serverID = sharedPreferences.getInt('serverId');
-    server = await db.serversDao.getServerById(serverID!);
+    final serverId = sharedPreferences.getInt('serverId');
+    server = await db.serversDao.getServerById(serverId!);
     final userAppId = sharedPreferences.getInt('userAppId');
     userApp = await db.usersDao.getUserById(userAppId!);
     apiKey = sharedPreferences.getString('apiKey');
-    final userJellyfinId = sharedPreferences.getString('userJellyfinId');
-    userJellyfin = await UserService.getUserById(userID: userJellyfinId!);
+    final user = jellyfin_user.User.fromMap(
+        json.decode(sharedPreferences.getString('user')!));
+    userJellyfin = user;
     return;
   }
 
@@ -147,9 +160,9 @@ class AuthService {
     await sharedPreferences.clear();
   }
 
-  static Future<void> _isAccountStillAuthorized() async {
+  static Future<Response> _isAccountStillAuthorized() async {
     final authKeys = '/Auth/Keys';
-    await dio.get('${server.url}$authKeys');
+    return dio.get('${server.url}$authKeys');
   }
 
   /// Reset every fields
