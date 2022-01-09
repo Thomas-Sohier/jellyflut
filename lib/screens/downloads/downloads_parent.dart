@@ -35,30 +35,26 @@ class _DownloadsParentState extends State<DownloadsParent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        AppBar(backgroundColor: Colors.transparent, elevation: 0),
-        StreamBuilder<List<Download>>(
-            stream: downloads,
-            builder: (c, snapshot) {
-              final items = snapshot.data != null
-                  ? snapshot.data!
-                      .map((element) => Item.fromMap(element.item!))
-                      .toList()
-                  : <Item>[];
-              collectionBloc.add(ClearItem());
-              collectionBloc.add(AddItem(items: items));
-              final category = Category(
-                  items: items, totalRecordCount: items.length, startIndex: 0);
-              return Padding(
-                padding: const EdgeInsets.only(top: 18),
-                child: ListItems.fromList(
-                    collectionBloc: collectionBloc,
-                    category: category,
-                    listType: ListType.GRID),
-              );
-            }),
-      ],
-    ));
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+      body: StreamBuilder<List<Download>>(
+          stream: downloads,
+          builder: (c, snapshot) {
+            final items = snapshot.data != null
+                ? snapshot.data!
+                    .map((element) => Item.fromMap(element.item!))
+                    .toList()
+                : <Item>[];
+            collectionBloc.add(ClearItem());
+            collectionBloc.add(AddItem(items: items));
+            final category = Category(
+                items: items, totalRecordCount: items.length, startIndex: 0);
+            return ListItems.fromList(
+                collectionBloc: collectionBloc,
+                category: category,
+                verticalListPosterHeight: 250,
+                listType: ListType.GRID);
+          }),
+    );
   }
 }
