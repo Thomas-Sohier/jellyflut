@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
 import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
@@ -18,6 +19,7 @@ import 'package:jellyflut/main.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/image_type.dart' as image_type;
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
@@ -1129,15 +1131,27 @@ class Item {
         case ItemType.AUDIO:
           return albumPrimaryImageTag;
         default:
-          return imageTags.isNotEmpty
-              ? imageTags
-                  .firstWhere((element) => element.imageType == searchType,
-                      orElse: () => imageTags.first)
-                  .value
-              : null;
+          return getImageTagBySearchTypeOrFirstOne(searchType: searchType)
+              ?.value;
       }
     }
     return null;
+  }
+
+  ImageTag? getImageTagBySearchTypeOrFirstOne(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
+    return imageTags.isNotEmpty
+        ? imageTags.firstWhere((element) => element.imageType == searchType,
+            orElse: () => imageTags.first)
+        : null;
+  }
+
+  ImageTag? getImageTagBySearchTypeOrNull(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
+    return imageTags.isNotEmpty
+        ? imageTags
+            .firstWhereOrNull((element) => element.imageType == searchType)
+        : null;
   }
 
   /// Get correct image tags based on searchType
@@ -1150,11 +1164,11 @@ class Item {
       {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
     // If we search correct image type for a logo that do not exist we still
     //return a logo tag and not a primary one as backup (or it will be ugly)
-    late final defaultSearchType;
+    late final backupSearchType;
     if (searchType == image_type.ImageType.LOGO) {
-      defaultSearchType = image_type.ImageType.LOGO;
+      backupSearchType = image_type.ImageType.LOGO;
     } else {
-      defaultSearchType = image_type.ImageType.PRIMARY;
+      backupSearchType = image_type.ImageType.PRIMARY;
     }
 
     // If of type logo we return only parent logo
@@ -1162,15 +1176,26 @@ class Item {
         backdropImageTags.isNotEmpty) {
       return searchType;
     } else if (imageTags.isNotEmpty) {
-      return imageTags
-          .firstWhere((element) => element.imageType == searchType,
-              orElse: () => imageTags.firstWhere(
-                  (element) => element.imageType == searchType,
-                  orElse: () =>
-                      ImageTag(imageType: defaultSearchType, value: '')))
-          .imageType;
+      return getImageTypeBySearchTypeOrBackup(
+          searchType: searchType, backupSearchType: backupSearchType);
     }
     return searchType;
+  }
+
+  ImageType getImageTypeBySearchTypeOrBackup(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY,
+      required image_type.ImageType backupSearchType}) {
+    return imageTags
+        .firstWhere((element) => element.imageType == searchType,
+            orElse: () => ImageTag(imageType: backupSearchType, value: ''))
+        .imageType;
+  }
+
+  ImageType? getImageTypeBySearchTypeOrNull(
+      {image_type.ImageType searchType = image_type.ImageType.PRIMARY}) {
+    return imageTags
+        .firstWhereOrNull((element) => element.imageType == searchType)
+        ?.imageType;
   }
 
   /// Play current item given context

@@ -1,12 +1,10 @@
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/image_tag.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 class ItemImageService {
   static String getItemImageUrl(String itemId, String? imageTag,
-      {List<ImageTag>? imageTags,
-      int maxHeight = 1920,
+      {int maxHeight = 1920,
       int maxWidth = 1080,
       ImageType type = ImageType.PRIMARY,
       int quality = 60}) {

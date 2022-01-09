@@ -83,6 +83,7 @@ class _LatestState extends State<Latest> {
                   height: double.infinity,
                   showLogo: true,
                   imagefilter: true,
+                  backup: false,
                   tag: ImageType.BACKDROP,
                   widgetAspectRatio: 16 / 9,
                 );

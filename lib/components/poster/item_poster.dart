@@ -14,6 +14,7 @@ class ItemPoster extends StatefulWidget {
       this.height,
       this.width,
       this.imagefilter = false,
+      this.backup = false,
       this.showName = true,
       this.showParent = true,
       this.showOverlay = true,
@@ -27,6 +28,7 @@ class ItemPoster extends StatefulWidget {
   final double? widgetAspectRatio;
   final Color textColor;
   final bool imagefilter;
+  final bool backup;
   final double? height;
   final double? width;
   final bool showName;
@@ -99,6 +101,7 @@ class _ItemPosterState extends State<ItemPoster>
                     heroTag: posterHeroTag,
                     boxFit: widget.boxFit,
                     width: widget.width,
+                    backup: widget.backup,
                     height: widget.height,
                     item: widget.item),
                 if (widget.imagefilter)

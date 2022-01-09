@@ -1,9 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/services/item/item_image_service.dart';
+import 'package:jellyflut/shared/utils/image_util.dart';
+import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,6 +17,37 @@ import 'package:rxdart/rxdart.dart';
 class FileService {
   static String getDownloadFileUrl(final String itemId) {
     return '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+  }
+
+  /// Return the rowId of the download inserted
+  static Future<int> saveDownloadToDatabase(
+      final String path, final Item item) async {
+    final i = item;
+
+    final primaryUrl = ItemImageService.getItemImageUrl(
+        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
+        type: item.correctImageType(searchType: ImageType.PRIMARY));
+
+    final backdropUrl = ItemImageService.getItemImageUrl(
+        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
+        type: item.correctImageType(searchType: ImageType.PRIMARY));
+
+    final primaryImage = await Dio().get<String>(primaryUrl);
+    final primaryImageByte =
+        Uint8List.fromList(utf8.encode(primaryImage.data!));
+    final backdropImage = await Dio().get<String>(backdropUrl);
+    final backdropImageByte =
+        Uint8List.fromList(utf8.encode(backdropImage.data!));
+
+    final db = AppDatabase().getDatabase;
+    final dc = DownloadsCompanion(
+        id: Value(i.id),
+        primary: Value(primaryImageByte),
+        backdrop: Value(backdropImageByte),
+        name: Value.ofNullable(i.name),
+        item: Value.ofNullable(i.toMap()),
+        path: Value.ofNullable(path));
+    return db.downloadsDao.createDownload(dc);
   }
 
   static Future<String> getUserStoragePath() async {

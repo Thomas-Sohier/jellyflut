@@ -93,11 +93,18 @@ class _DownloadButtonState extends State<DownloadButton> {
         // When complete show make the button selectable again
         await FileService.downloadFileAndSaveToPath(downloadUrl, downloadPath,
                 stateOfDownload: percentDownload)
-            .then((_) => message('File saved at $downloadPath',
-                Icons.file_download_done, Colors.green))
-            .catchError((error, stackTrace) =>
-                message(error.toString(), Icons.file_download_off, Colors.red))
-            .then((_) => saveDownloadToDatabase(downloadPath))
+            .then((_) => message(
+                  'File saved at $downloadPath',
+                  Icons.file_download_done,
+                  Colors.green,
+                ))
+            .catchError((error, stackTrace) => message(
+                  error.toString(),
+                  Icons.file_download_off,
+                  Colors.red,
+                ))
+            .then((_) =>
+                FileService.saveDownloadToDatabase(downloadPath, widget.item))
             .whenComplete(() => setState(() => buttonEnabled = true));
       } else {
         message('Do not have enough permission to download file',
@@ -148,23 +155,12 @@ class _DownloadButtonState extends State<DownloadButton> {
         });
   }
 
-  void saveDownloadToDatabase(String path) {
-    final i = widget.item;
-    final db = AppDatabase().getDatabase;
-    final dc = DownloadsCompanion(
-        id: Value(i.id),
-        name: Value.ofNullable(i.name),
-        item: Value.ofNullable(i.toMap()),
-        path: Value.ofNullable(path));
-    db.downloadsDao.createDownload(dc);
-  }
-
   void message(String message, IconData icon, Color color) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
           content: Row(children: [
-            Flexible(child: Text(message)),
+            Flexible(child: Text(message, maxLines: 3)),
             Icon(icon, color: color)
           ]),
           width: 600));

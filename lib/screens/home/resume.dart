@@ -92,6 +92,7 @@ class _ResumeState extends State<Resume> {
                   height: double.infinity,
                   showLogo: true,
                   imagefilter: true,
+                  backup: false,
                   tag: ImageType.BACKDROP,
                   widgetAspectRatio: 16 / 9,
                 );
