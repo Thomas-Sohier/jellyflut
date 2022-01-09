@@ -79,10 +79,24 @@ class _DownloadButtonState extends State<DownloadButton> {
       final downloadPath = await FileService.getStoragePathItem(widget.item);
 
       if (canDownload) {
+        final fileExist = await FileService.isItemDownloaded(widget.item.id);
+
+        // If file seems to already exist we show a dialog to warn user about possible overwriting of current file
+        if (fileExist) {
+          final shouldOverwrite = await dialogRedownload();
+          if (shouldOverwrite == false) {
+            return setState(() => buttonEnabled = true);
+          }
+        }
+
+        // Download the file and store it to the given path
+        // When complete show make the button selectable again
         await FileService.downloadFileAndSaveToPath(downloadUrl, downloadPath,
                 stateOfDownload: percentDownload)
             .then((_) => message('File saved at $downloadPath',
                 Icons.file_download_done, Colors.green))
+            .catchError((error, stackTrace) =>
+                message(error.toString(), Icons.file_download_off, Colors.red))
             .then((_) => saveDownloadToDatabase(downloadPath))
             .whenComplete(() => setState(() => buttonEnabled = true));
       } else {
@@ -94,6 +108,44 @@ class _DownloadButtonState extends State<DownloadButton> {
       message(e.toString(), Icons.file_download_off, Colors.red);
     }
     setState(() => buttonEnabled = true);
+  }
+
+  Future<bool?> dialogRedownload() async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        useSafeArea: true,
+        builder: (c) {
+          return AlertDialog(
+            title: Text('Overwrite file ?'),
+            actionsAlignment: MainAxisAlignment.end,
+            content: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 600),
+                child: RichText(
+                    textAlign: TextAlign.left,
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                          text: widget.item.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              ?.copyWith(fontStyle: FontStyle.italic)),
+                      TextSpan(
+                          text:
+                              ' seems to be already downloaded would you like to downlodad it again ?',
+                          style: Theme.of(context).textTheme.bodyText1),
+                      TextSpan(text: '\n\n'),
+                      TextSpan(
+                          text:
+                              ' It will overwrite any files with the name ${FileService.getItemStorageName(widget.item)}',
+                          style: Theme.of(context).textTheme.bodyText1),
+                    ]))),
+            actions: [
+              CancelButton(onPressed: () => customRouter.pop<bool>(false)),
+              SubmitButton(onPressed: () => customRouter.pop<bool>(true))
+            ],
+          );
+        });
   }
 
   void saveDownloadToDatabase(String path) {

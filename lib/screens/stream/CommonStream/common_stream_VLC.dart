@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -31,18 +32,33 @@ class CommonStreamVLC {
     final streamingProvider = StreamingProvider();
     final streamURL = await item.getItemURL(directPlay: true);
 
-    // Create vlcPlayerController
-    final vlcPlayerController = VlcPlayerController.network(
-      streamURL,
-      autoPlay: true,
-      options: VlcPlayerOptions(
-          advanced: VlcAdvancedOptions([
-            VlcAdvancedOptions.networkCaching(2000),
-          ]),
-          extras: [
-            '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
-          ]),
-    );
+    // Detect if media is available locdally or only remotely
+    late final vlcPlayerController;
+    if (streamURL.startsWith(RegExp('^(http|https)://'))) {
+      vlcPlayerController = VlcPlayerController.network(
+        streamURL,
+        autoPlay: true,
+        options: VlcPlayerOptions(
+            advanced: VlcAdvancedOptions([
+              VlcAdvancedOptions.networkCaching(2000),
+            ]),
+            extras: [
+              '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
+            ]),
+      );
+    } else {
+      vlcPlayerController = VlcPlayerController.file(
+        File(streamURL),
+        autoPlay: true,
+        options: VlcPlayerOptions(
+            advanced: VlcAdvancedOptions([
+              VlcAdvancedOptions.networkCaching(2000),
+            ]),
+            extras: [
+              '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}' // Start at x seconds
+            ]),
+      );
+    }
 
     // create timer to save progress
     final timer = _startProgressTimer(item, vlcPlayerController);

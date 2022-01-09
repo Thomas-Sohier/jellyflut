@@ -39,7 +39,11 @@ class FileService {
 
   static Future<String> getStoragePathItem(Item item) async {
     var storageDirPath = await getUserStoragePath();
-    return '$storageDirPath/${item.id}${item.getFileExtension()}';
+    return '$storageDirPath/${getItemStorageName(item)}';
+  }
+
+  static String getItemStorageName(Item item) {
+    return '${item.id}${item.getFileExtension()}';
   }
 
   static Future<bool> requestStorage() async {

@@ -22,7 +22,8 @@ class CommonStreamVLCComputer {
     final _player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
     ]);
-    // final media = Media.network(streamURL);
+
+    // Detect if media is available locdally or only remotely
     late final media;
     if (streamURL.startsWith(RegExp('^(http|https)://'))) {
       media = Media.network(streamURL);
@@ -82,14 +83,14 @@ class CommonStreamVLCComputer {
             subtitlesIndex: 0));
   }
 
-  void enterFullscreen() {
+  void enterFullscreen() async {
     final windowInstance = WindowManager.instance;
-    windowInstance.setFullScreen(true);
+    await windowInstance.setFullScreen(true);
   }
 
-  void exitFullscreen() {
+  void exitFullscreen() async {
     final windowInstance = WindowManager.instance;
-    windowInstance.setFullScreen(false);
+    await windowInstance.setFullScreen(false);
   }
 
   void toggleFullscreen() async {

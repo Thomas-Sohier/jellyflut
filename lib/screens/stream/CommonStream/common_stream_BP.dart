@@ -39,8 +39,17 @@ class CommonStreamBP {
   static Future<BetterPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
     final streamURL = await item.getItemURL();
-    final dataSource = BetterPlayerDataSource.network(streamURL,
-        subtitles: _getSubtitlesBP(item));
+
+    // Detect if media is available locdally or only remotely
+    late final dataSource;
+    if (streamURL.startsWith(RegExp('^(http|https)://'))) {
+      dataSource = BetterPlayerDataSource.network(streamURL,
+          subtitles: _getSubtitlesBP(item));
+    } else {
+      dataSource = BetterPlayerDataSource.file(streamURL,
+          subtitles: _getSubtitlesBP(item));
+    }
+
     final aspectRatio = item.getAspectRatio();
     final _betterPlayerKey = GlobalKey();
     final _betterPlayerController = BetterPlayerController(
