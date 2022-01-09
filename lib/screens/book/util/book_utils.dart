@@ -10,7 +10,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/ebook_service.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 
 class BookUtils {
   static Future<Archive> unarchive(FutureOr<List<int>> bytes) async {

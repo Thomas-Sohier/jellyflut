@@ -1,7 +1,6 @@
 import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/codec.dart';
 import 'package:jellyflut/models/enum/codec_time_base.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/language.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/enum/time_base.dart';

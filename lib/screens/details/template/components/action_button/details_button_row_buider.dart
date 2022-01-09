@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 import '../action_button.dart';
 
