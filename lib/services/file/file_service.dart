@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
@@ -8,7 +7,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:jellyflut/shared/utils/image_util.dart';
 import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';

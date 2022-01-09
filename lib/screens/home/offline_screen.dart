@@ -5,7 +5,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/header_bar.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class OffLineScreen extends StatelessWidget {
   final Object? error;

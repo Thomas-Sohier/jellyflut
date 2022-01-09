@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -18,7 +17,6 @@ import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/toast.dart';
-import 'package:moor/moor.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rxdart/rxdart.dart';
 

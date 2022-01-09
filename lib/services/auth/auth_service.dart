@@ -13,7 +13,6 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/authentication_response.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/services/user/user_service.dart';
 import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

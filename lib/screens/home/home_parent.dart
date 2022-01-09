@@ -1,24 +1,16 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/bottom_navigation_bar.dart' as bottom_bar;
 import 'package:jellyflut/components/music_player_FAB.dart';
-import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/template/components/user_icon.dart';
-import 'package:jellyflut/screens/home/components/download_button.dart';
-import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
-import 'package:jellyflut/screens/home/header_bar.dart';
 import 'package:jellyflut/screens/home/offline_screen.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/screens/home/components/tablet/drawer.dart' as tablet;
 import 'package:jellyflut/screens/home/components/desktop/drawer.dart' as large;
-import 'package:jellyflut/shared/utils/color_util.dart';
 
 class HomeParent extends StatefulWidget {
   HomeParent({Key? key}) : super(key: key);
