@@ -155,7 +155,7 @@ class MediaStream {
         'AverageFrameRate': averageFrameRate,
         'RealFrameRate': realFrameRate,
         'Profile': profile,
-        'Type': itemTypeValues.reverse[type],
+        'Type': mediaStreamType.reverse[type],
         'AspectRatio': aspectRatio,
         'Index': index,
         'IsExternal': isExternal,

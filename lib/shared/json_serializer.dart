@@ -1,4 +1,5 @@
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
+import 'package:jellyflut/models/jellyfin/image_tag.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
@@ -15,6 +16,8 @@ class JsonSerializer {
       return object.toMap();
     } else if (object is GenreItem) {
       return object.name;
+    } else if (object is ImageTag) {
+      return object.toMap();
     } else if (object is Studio) {
       return object.toMap();
     }

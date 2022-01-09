@@ -12,7 +12,7 @@ module:
   androidX: true
 
 dependencies:
-  archive: ^3.1.6
+  archive: ^3.1.8
   audio_video_progress_bar: ^0.10.0
   auto_route: ^3.2.1
   better_player: ^0.0.81
@@ -29,6 +29,7 @@ dependencies:
   easy_localization_loader: ^1.0.0
   epubx: ^3.0.0
   equatable: ^2.0.3
+  file_picker: ^4.3.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -67,7 +68,7 @@ dependencies:
   url_launcher: ^6.0.17
   uuid: ^3.0.5
   wakelock: ^0.5.6
-  window_manager: ^0.1.1
+  window_manager: ^0.1.2
   youtube_explode_dart: ^1.10.8
 
 dev_dependencies:

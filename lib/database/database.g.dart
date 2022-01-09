@@ -540,12 +540,14 @@ class Setting extends DataClass implements Insertable<Setting> {
   final String preferredTranscodeAudioCodec;
   final int maxVideoBitrate;
   final int maxAudioBitrate;
+  final String? downloadPath;
   Setting(
       {required this.id,
       required this.preferredPlayer,
       required this.preferredTranscodeAudioCodec,
       required this.maxVideoBitrate,
-      required this.maxAudioBitrate});
+      required this.maxAudioBitrate,
+      this.downloadPath});
   factory Setting.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -560,6 +562,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           data['${effectivePrefix}max_video_bitrate'])!,
       maxAudioBitrate: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}max_audio_bitrate'])!,
+      downloadPath: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}download_path']),
     );
   }
   @override
@@ -571,6 +575,9 @@ class Setting extends DataClass implements Insertable<Setting> {
         Variable<String>(preferredTranscodeAudioCodec);
     map['max_video_bitrate'] = Variable<int>(maxVideoBitrate);
     map['max_audio_bitrate'] = Variable<int>(maxAudioBitrate);
+    if (!nullToAbsent || downloadPath != null) {
+      map['download_path'] = Variable<String?>(downloadPath);
+    }
     return map;
   }
 
@@ -581,6 +588,9 @@ class Setting extends DataClass implements Insertable<Setting> {
       preferredTranscodeAudioCodec: Value(preferredTranscodeAudioCodec),
       maxVideoBitrate: Value(maxVideoBitrate),
       maxAudioBitrate: Value(maxAudioBitrate),
+      downloadPath: downloadPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(downloadPath),
     );
   }
 
@@ -594,6 +604,7 @@ class Setting extends DataClass implements Insertable<Setting> {
           serializer.fromJson<String>(json['preferredTranscodeAudioCodec']),
       maxVideoBitrate: serializer.fromJson<int>(json['maxVideoBitrate']),
       maxAudioBitrate: serializer.fromJson<int>(json['maxAudioBitrate']),
+      downloadPath: serializer.fromJson<String?>(json['downloadPath']),
     );
   }
   @override
@@ -606,6 +617,7 @@ class Setting extends DataClass implements Insertable<Setting> {
           serializer.toJson<String>(preferredTranscodeAudioCodec),
       'maxVideoBitrate': serializer.toJson<int>(maxVideoBitrate),
       'maxAudioBitrate': serializer.toJson<int>(maxAudioBitrate),
+      'downloadPath': serializer.toJson<String?>(downloadPath),
     };
   }
 
@@ -614,7 +626,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           String? preferredPlayer,
           String? preferredTranscodeAudioCodec,
           int? maxVideoBitrate,
-          int? maxAudioBitrate}) =>
+          int? maxAudioBitrate,
+          String? downloadPath}) =>
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -622,6 +635,7 @@ class Setting extends DataClass implements Insertable<Setting> {
             preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
         maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
         maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
+        downloadPath: downloadPath ?? this.downloadPath,
       );
   @override
   String toString() {
@@ -631,14 +645,20 @@ class Setting extends DataClass implements Insertable<Setting> {
           ..write(
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
-          ..write('maxAudioBitrate: $maxAudioBitrate')
+          ..write('maxAudioBitrate: $maxAudioBitrate, ')
+          ..write('downloadPath: $downloadPath')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, preferredPlayer,
-      preferredTranscodeAudioCodec, maxVideoBitrate, maxAudioBitrate);
+  int get hashCode => Object.hash(
+      id,
+      preferredPlayer,
+      preferredTranscodeAudioCodec,
+      maxVideoBitrate,
+      maxAudioBitrate,
+      downloadPath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -648,7 +668,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           other.preferredTranscodeAudioCodec ==
               this.preferredTranscodeAudioCodec &&
           other.maxVideoBitrate == this.maxVideoBitrate &&
-          other.maxAudioBitrate == this.maxAudioBitrate);
+          other.maxAudioBitrate == this.maxAudioBitrate &&
+          other.downloadPath == this.downloadPath);
 }
 
 class SettingsCompanion extends UpdateCompanion<Setting> {
@@ -657,12 +678,14 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   final Value<String> preferredTranscodeAudioCodec;
   final Value<int> maxVideoBitrate;
   final Value<int> maxAudioBitrate;
+  final Value<String?> downloadPath;
   const SettingsCompanion({
     this.id = const Value.absent(),
     this.preferredPlayer = const Value.absent(),
     this.preferredTranscodeAudioCodec = const Value.absent(),
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
+    this.downloadPath = const Value.absent(),
   });
   SettingsCompanion.insert({
     this.id = const Value.absent(),
@@ -670,6 +693,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.preferredTranscodeAudioCodec = const Value.absent(),
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
+    this.downloadPath = const Value.absent(),
   });
   static Insertable<Setting> custom({
     Expression<int>? id,
@@ -677,6 +701,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     Expression<String>? preferredTranscodeAudioCodec,
     Expression<int>? maxVideoBitrate,
     Expression<int>? maxAudioBitrate,
+    Expression<String?>? downloadPath,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -685,6 +710,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
         'preferred_transcode_audio_codec': preferredTranscodeAudioCodec,
       if (maxVideoBitrate != null) 'max_video_bitrate': maxVideoBitrate,
       if (maxAudioBitrate != null) 'max_audio_bitrate': maxAudioBitrate,
+      if (downloadPath != null) 'download_path': downloadPath,
     });
   }
 
@@ -693,7 +719,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       Value<String>? preferredPlayer,
       Value<String>? preferredTranscodeAudioCodec,
       Value<int>? maxVideoBitrate,
-      Value<int>? maxAudioBitrate}) {
+      Value<int>? maxAudioBitrate,
+      Value<String?>? downloadPath}) {
     return SettingsCompanion(
       id: id ?? this.id,
       preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -701,6 +728,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
           preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
       maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
       maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
+      downloadPath: downloadPath ?? this.downloadPath,
     );
   }
 
@@ -723,6 +751,9 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     if (maxAudioBitrate.present) {
       map['max_audio_bitrate'] = Variable<int>(maxAudioBitrate.value);
     }
+    if (downloadPath.present) {
+      map['download_path'] = Variable<String?>(downloadPath.value);
+    }
     return map;
   }
 
@@ -734,7 +765,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
           ..write(
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
-          ..write('maxAudioBitrate: $maxAudioBitrate')
+          ..write('maxAudioBitrate: $maxAudioBitrate, ')
+          ..write('downloadPath: $downloadPath')
           ..write(')'))
         .toString();
   }
@@ -784,13 +816,20 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(320000));
+  final VerificationMeta _downloadPathMeta =
+      const VerificationMeta('downloadPath');
+  @override
+  late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>(
+      'download_path', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
         preferredPlayer,
         preferredTranscodeAudioCodec,
         maxVideoBitrate,
-        maxAudioBitrate
+        maxAudioBitrate,
+        downloadPath
       ];
   @override
   String get aliasedName => _alias ?? 'settings';
@@ -829,6 +868,12 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
           maxAudioBitrate.isAcceptableOrUnknown(
               data['max_audio_bitrate']!, _maxAudioBitrateMeta));
     }
+    if (data.containsKey('download_path')) {
+      context.handle(
+          _downloadPathMeta,
+          downloadPath.isAcceptableOrUnknown(
+              data['download_path']!, _downloadPathMeta));
+    }
     return context;
   }
 
@@ -846,19 +891,345 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   }
 }
 
+class Download extends DataClass implements Insertable<Download> {
+  final String id;
+  final String? name;
+  final String? path;
+  final Uint8List? primary;
+  final Uint8List? backdrop;
+  final Map<String, dynamic>? item;
+  Download(
+      {required this.id,
+      this.name,
+      this.path,
+      this.primary,
+      this.backdrop,
+      this.item});
+  factory Download.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return Download(
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      path: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}path']),
+      primary: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}primary']),
+      backdrop: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}backdrop']),
+      item: $DownloadsTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item'])),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String?>(name);
+    }
+    if (!nullToAbsent || path != null) {
+      map['path'] = Variable<String?>(path);
+    }
+    if (!nullToAbsent || primary != null) {
+      map['primary'] = Variable<Uint8List?>(primary);
+    }
+    if (!nullToAbsent || backdrop != null) {
+      map['backdrop'] = Variable<Uint8List?>(backdrop);
+    }
+    if (!nullToAbsent || item != null) {
+      final converter = $DownloadsTable.$converter0;
+      map['item'] = Variable<String?>(converter.mapToSql(item));
+    }
+    return map;
+  }
+
+  DownloadsCompanion toCompanion(bool nullToAbsent) {
+    return DownloadsCompanion(
+      id: Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      path: path == null && nullToAbsent ? const Value.absent() : Value(path),
+      primary: primary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primary),
+      backdrop: backdrop == null && nullToAbsent
+          ? const Value.absent()
+          : Value(backdrop),
+      item: item == null && nullToAbsent ? const Value.absent() : Value(item),
+    );
+  }
+
+  factory Download.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Download(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String?>(json['name']),
+      path: serializer.fromJson<String?>(json['path']),
+      primary: serializer.fromJson<Uint8List?>(json['primary']),
+      backdrop: serializer.fromJson<Uint8List?>(json['backdrop']),
+      item: serializer.fromJson<Map<String, dynamic>?>(json['item']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String?>(name),
+      'path': serializer.toJson<String?>(path),
+      'primary': serializer.toJson<Uint8List?>(primary),
+      'backdrop': serializer.toJson<Uint8List?>(backdrop),
+      'item': serializer.toJson<Map<String, dynamic>?>(item),
+    };
+  }
+
+  Download copyWith(
+          {String? id,
+          String? name,
+          String? path,
+          Uint8List? primary,
+          Uint8List? backdrop,
+          Map<String, dynamic>? item}) =>
+      Download(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        path: path ?? this.path,
+        primary: primary ?? this.primary,
+        backdrop: backdrop ?? this.backdrop,
+        item: item ?? this.item,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Download(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('path: $path, ')
+          ..write('primary: $primary, ')
+          ..write('backdrop: $backdrop, ')
+          ..write('item: $item')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, path, primary, backdrop, item);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Download &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.path == this.path &&
+          other.primary == this.primary &&
+          other.backdrop == this.backdrop &&
+          other.item == this.item);
+}
+
+class DownloadsCompanion extends UpdateCompanion<Download> {
+  final Value<String> id;
+  final Value<String?> name;
+  final Value<String?> path;
+  final Value<Uint8List?> primary;
+  final Value<Uint8List?> backdrop;
+  final Value<Map<String, dynamic>?> item;
+  const DownloadsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.path = const Value.absent(),
+    this.primary = const Value.absent(),
+    this.backdrop = const Value.absent(),
+    this.item = const Value.absent(),
+  });
+  DownloadsCompanion.insert({
+    required String id,
+    this.name = const Value.absent(),
+    this.path = const Value.absent(),
+    this.primary = const Value.absent(),
+    this.backdrop = const Value.absent(),
+    this.item = const Value.absent(),
+  }) : id = Value(id);
+  static Insertable<Download> custom({
+    Expression<String>? id,
+    Expression<String?>? name,
+    Expression<String?>? path,
+    Expression<Uint8List?>? primary,
+    Expression<Uint8List?>? backdrop,
+    Expression<Map<String, dynamic>?>? item,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (path != null) 'path': path,
+      if (primary != null) 'primary': primary,
+      if (backdrop != null) 'backdrop': backdrop,
+      if (item != null) 'item': item,
+    });
+  }
+
+  DownloadsCompanion copyWith(
+      {Value<String>? id,
+      Value<String?>? name,
+      Value<String?>? path,
+      Value<Uint8List?>? primary,
+      Value<Uint8List?>? backdrop,
+      Value<Map<String, dynamic>?>? item}) {
+    return DownloadsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      path: path ?? this.path,
+      primary: primary ?? this.primary,
+      backdrop: backdrop ?? this.backdrop,
+      item: item ?? this.item,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String?>(name.value);
+    }
+    if (path.present) {
+      map['path'] = Variable<String?>(path.value);
+    }
+    if (primary.present) {
+      map['primary'] = Variable<Uint8List?>(primary.value);
+    }
+    if (backdrop.present) {
+      map['backdrop'] = Variable<Uint8List?>(backdrop.value);
+    }
+    if (item.present) {
+      final converter = $DownloadsTable.$converter0;
+      map['item'] = Variable<String?>(converter.mapToSql(item.value));
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DownloadsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('path: $path, ')
+          ..write('primary: $primary, ')
+          ..write('backdrop: $backdrop, ')
+          ..write('item: $item')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DownloadsTable extends Downloads
+    with TableInfo<$DownloadsTable, Download> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $DownloadsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _pathMeta = const VerificationMeta('path');
+  @override
+  late final GeneratedColumn<String?> path = GeneratedColumn<String?>(
+      'path', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _primaryMeta = const VerificationMeta('primary');
+  @override
+  late final GeneratedColumn<Uint8List?> primary = GeneratedColumn<Uint8List?>(
+      'primary', aliasedName, true,
+      type: const BlobType(), requiredDuringInsert: false);
+  final VerificationMeta _backdropMeta = const VerificationMeta('backdrop');
+  @override
+  late final GeneratedColumn<Uint8List?> backdrop = GeneratedColumn<Uint8List?>(
+      'backdrop', aliasedName, true,
+      type: const BlobType(), requiredDuringInsert: false);
+  final VerificationMeta _itemMeta = const VerificationMeta('item');
+  @override
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>, String?>
+      item = GeneratedColumn<String?>('item', aliasedName, true,
+              type: const StringType(), requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>>($DownloadsTable.$converter0);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, path, primary, backdrop, item];
+  @override
+  String get aliasedName => _alias ?? 'downloads';
+  @override
+  String get actualTableName => 'downloads';
+  @override
+  VerificationContext validateIntegrity(Insertable<Download> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    if (data.containsKey('path')) {
+      context.handle(
+          _pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
+    }
+    if (data.containsKey('primary')) {
+      context.handle(_primaryMeta,
+          primary.isAcceptableOrUnknown(data['primary']!, _primaryMeta));
+    }
+    if (data.containsKey('backdrop')) {
+      context.handle(_backdropMeta,
+          backdrop.isAcceptableOrUnknown(data['backdrop']!, _backdropMeta));
+    }
+    context.handle(_itemMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Download map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Download.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $DownloadsTable createAlias(String alias) {
+    return $DownloadsTable(_db, alias);
+  }
+
+  static TypeConverter<Map<String, dynamic>, String> $converter0 =
+      const JsonConverter();
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ServersTable servers = $ServersTable(this);
   late final $UsersTable users = $UsersTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
+  late final $DownloadsTable downloads = $DownloadsTable(this);
   late final ServersDao serversDao = ServersDao(this as Database);
   late final UsersDao usersDao = UsersDao(this as Database);
   late final SettingsDao settingsDao = SettingsDao(this as Database);
+  late final DownloadsDao downloadsDao = DownloadsDao(this as Database);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [servers, users, settings];
+      [servers, users, settings, downloads];
 }
 
 // **************************************************************************
@@ -873,4 +1244,7 @@ mixin _$SettingsDaoMixin on DatabaseAccessor<Database> {
 }
 mixin _$ServersDaoMixin on DatabaseAccessor<Database> {
   $ServersTable get servers => attachedDatabase.servers;
+}
+mixin _$DownloadsDaoMixin on DatabaseAccessor<Database> {
+  $DownloadsTable get downloads => attachedDatabase.downloads;
 }

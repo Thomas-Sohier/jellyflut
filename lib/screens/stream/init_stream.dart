@@ -24,15 +24,22 @@ import 'package:jellyflut/services/item/item_service.dart';
 
 class InitStreamingItemUtil {
   static Future<Widget> initFromItem({required Item item}) async {
-    final streamingSoftwareDB = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
+    final db = AppDatabase().getDatabase;
+    final streamingSoftwareDB =
+        await db.settingsDao.getSettingsById(userApp!.settingsId);
     final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
         e.toString() ==
         'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
-    final _tempItem = await item.getPlayableItemOrLastUnplayed();
-    final _item = await ItemService.getItem(_tempItem.id);
+    late final Item _item;
+    final itemExist = await db.downloadsDao.doesExist(item.id);
+
+    if (itemExist) {
+      final download = await db.downloadsDao.getDownloadById(item.id);
+      _item = Item.fromMap(download.item!);
+    } else {
+      final _tempItem = await item.getPlayableItemOrLastUnplayed();
+      _item = await ItemService.getItem(_tempItem.id);
+    }
     StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player

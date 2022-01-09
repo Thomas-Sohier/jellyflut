@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/src/public_ext.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 
@@ -18,5 +19,6 @@ part 'audio_player_section.dart';
 part 'infos_section.dart';
 part 'interface_section.dart';
 part 'video_player_section.dart';
+part 'download_path_section.dart';
 part 'video_player_popup_button.dart';
 part 'transcode_codec_popup_button.dart';

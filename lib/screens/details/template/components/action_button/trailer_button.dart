@@ -26,8 +26,7 @@ class TrailerButton extends StatelessWidget {
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
             content: Row(children: [
-              Text(exception.toString()),
-              Spacer(),
+              Flexible(child: Text(exception.toString())),
               Icon(Icons.play_disabled, color: Colors.red)
             ]),
             width: 600));

@@ -39,8 +39,7 @@ class FormBuilderState<T extends Object> extends State<FormBuilder> {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(
                     content: Row(children: [
-                      Text(state.message),
-                      Spacer(),
+                      Flexible(child: Text(state.message)),
                       Icon(Icons.check, color: Colors.green)
                     ]),
                     width: 600));
@@ -49,8 +48,7 @@ class FormBuilderState<T extends Object> extends State<FormBuilder> {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(
                     content: Row(children: [
-                      Text(state.error),
-                      Spacer(),
+                      Flexible(child: Text(state.error)),
                       Icon(Icons.error, color: Colors.red)
                     ]),
                     width: 600));

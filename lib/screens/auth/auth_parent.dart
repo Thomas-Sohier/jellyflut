@@ -30,8 +30,7 @@ class _AuthParentState extends State<AuthParent> {
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
           content: Row(children: [
-            Text(error),
-            Spacer(),
+            Flexible(child: Text(error)),
             Icon(Icons.error, color: Colors.red)
           ]),
           width: 600)));

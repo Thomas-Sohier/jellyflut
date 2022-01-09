@@ -5,6 +5,7 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
@@ -18,10 +19,10 @@ import 'package:splashscreen/splashscreen.dart';
 void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
+  final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
   await setUpAndroidTv();
-  final auth = await AuthService.isAuth();
   runApp(EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
       path: 'translations',
@@ -85,6 +86,10 @@ class Jellyflut extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          Provider<Database>(
+            create: (context) => Database(),
+            dispose: (context, db) => db.close(),
+          ),
           ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(
               create: (_) => HomeCategoryProvider()),

@@ -10,6 +10,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/ebook_service.dart';
+import 'package:jellyflut/services/item/item_service.dart';
 
 class BookUtils {
   static Future<Archive> unarchive(FutureOr<List<int>> bytes) async {
@@ -24,10 +25,10 @@ class BookUtils {
 
   static Future<Uint8List> loadItemBook(Item item) async {
     try {
-      final path = await _downloadEbookOnStorage(item);
+      final path = await _downloadItemOnStorage(item);
       return io.File(path).readAsBytes();
     } catch (e) {
-      final response = await EbookService.downloadEpub(item.id);
+      final response = await FileService.donwloadFile(item.id);
       if (response != null) {
         return compute(parseEbook, response);
       } else {
@@ -36,7 +37,7 @@ class BookUtils {
     }
   }
 
-  static Future<String> _downloadEbookOnStorage(Item item) async {
+  static Future<String> _downloadItemOnStorage(Item item) async {
     if (Platform.isAndroid || Platform.isIOS) {
       // Check if we have rights
       // If we do not store epub

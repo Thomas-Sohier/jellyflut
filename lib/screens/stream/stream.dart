@@ -52,8 +52,7 @@ class _StreamState extends State<Stream> {
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
             content: Row(children: [
-              Text(msg),
-              Spacer(),
+              Flexible(child: Text(msg)),
               Icon(Icons.play_disabled, color: Colors.red)
             ]),
             width: 600));

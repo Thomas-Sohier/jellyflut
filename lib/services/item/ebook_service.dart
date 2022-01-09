@@ -33,7 +33,7 @@ class EbookService {
     return File(path).exists();
   }
 
-  static Future<List<int>?> downloadEpub(String itemId) async {
+  static Future<List<int>?> downloadItem(String itemId) async {
     var queryParams = <String, dynamic>{};
     queryParams['api_key'] = apiKey;
     var url = '${server.url}/Items/$itemId/Download?api_key=$apiKey';

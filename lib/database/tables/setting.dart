@@ -19,4 +19,5 @@ class Settings extends Table {
       integer().withDefault(const Constant(140000000))();
   IntColumn get maxAudioBitrate =>
       integer().withDefault(const Constant(320000))();
+  TextColumn get downloadPath => text().nullable()();
 }

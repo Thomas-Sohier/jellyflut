@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:jellyflut/database/tables/download.dart';
 import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
 import 'package:jellyflut/database/tables/user.dart';
@@ -11,6 +12,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
+
+// Generate files
+// flutter packages pub run build_runner watch
+
+// Delete conflicts
+// flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 class AppDatabase {
   final Database _database = Database();
@@ -38,16 +45,26 @@ LazyDatabase _openConnection() {
 }
 
 @UseMoor(
-    tables: [Servers, Users, Settings],
-    daos: [ServersDao, UsersDao, SettingsDao])
+    tables: [Servers, Users, Settings, Downloads],
+    daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao])
 class Database extends _$Database {
   // we tell the database where to store the data with this constructor
   Database() : super(_openConnection());
 
-  // you should bump this number whenever you change or add a table definition. Migrations
-  // are covered later in this readme.
+  // you should bump this number whenever you change or add a table definition
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
+        return m.createAll();
+      }, onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1 && to == 2) {
+          // we added the dueDate property in the change from version 1
+          await m.createTable(downloads);
+          await m.addColumn(settings, settings.downloadPath);
+        }
+      });
 }
 
 @UseDao(tables: [Users])
@@ -97,4 +114,30 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
       update(servers).replace(server);
   Future<int> deleteServer(ServersCompanion server) =>
       delete(servers).delete(server);
+}
+
+@UseDao(tables: [Downloads])
+class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
+  DownloadsDao(Database db) : super(db);
+  Future<List<Download>> get allWatchingServers => select(downloads).get();
+  Stream<List<Download>> get watchAllDownloads => select(downloads).watch();
+  Future<Download> getDownloadById(String downloadId) =>
+      (select(downloads)..where((tbl) => tbl.id.equals(downloadId)))
+          .getSingle();
+  Stream<Download> watchDownloadById(String downloadId) =>
+      (select(downloads)..where((tbl) => tbl.id.equals(downloadId)))
+          .watchSingle();
+  Future<int> createDownload(DownloadsCompanion download) =>
+      into(downloads).insert(download, mode: InsertMode.insertOrReplace);
+  Future<bool> updateDownload(DownloadsCompanion download) =>
+      update(downloads).replace(download);
+  Future<bool> doesExist(String downloadId) async {
+    final x = await (select(downloads)
+          ..where((tbl) => tbl.id.equals(downloadId)))
+        .getSingleOrNull();
+    return x != null;
+  }
+
+  Future<int> deleteDownload(DownloadsCompanion download) =>
+      delete(downloads).delete(download);
 }

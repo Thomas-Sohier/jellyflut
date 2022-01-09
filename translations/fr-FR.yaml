@@ -56,6 +56,7 @@ select_preferred_video_player: Sélectionner le lecteur video préféré
 select_preferred_audio_player: Sélectionner le lecteur audio préféré
 interface: Interface
 language: Langage
+download_path: 'Dossier de téléchargement'
 
 # details
 add_to_playlist: Ajouter à la playlist

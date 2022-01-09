@@ -6,6 +6,7 @@ import 'package:jellyflut/screens/settings/components/sections.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/components/back_button.dart' as bb;
+import 'package:jellyflut/services/file/file_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class Settings extends StatefulWidget {
@@ -14,9 +15,10 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  PackageInfo? packageInfo;
+  String? downloadPath;
   late Setting setting;
   late Database db;
-  PackageInfo? packageInfo;
   late Future<dynamic> settingsInfosFuture;
 
   @override
@@ -50,6 +52,11 @@ class _SettingsState extends State<Settings> {
                             .build(context),
                         InfosSection(version: packageInfo?.version)
                             .build(context),
+                        DownloadPathSection(
+                                setting: setting,
+                                database: db,
+                                downloadPath: downloadPath)
+                            .build(context),
                         InterfaceSection().build(context),
                         AccountSection().build(context)
                       ],
@@ -68,5 +75,6 @@ class _SettingsState extends State<Settings> {
   Future<void> getSettingsInfos() async {
     setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
     packageInfo = await PackageInfo.fromPlatform();
+    downloadPath = await FileService.getUserStoragePath();
   }
 }

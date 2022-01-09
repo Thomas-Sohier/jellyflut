@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/globals.dart';
@@ -21,7 +22,14 @@ class CommonStreamVLCComputer {
     final _player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
     ]);
-    final media = Media.network(streamURL);
+    // final media = Media.network(streamURL);
+    late final media;
+    if (streamURL.startsWith(RegExp('^(http|https)://'))) {
+      media = Media.network(streamURL);
+    } else {
+      media = Media.file(File(streamURL));
+    }
+
     _player.open(media, autoStart: false);
 
     // create timer to save progress

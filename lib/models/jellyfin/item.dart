@@ -29,6 +29,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/stream/init_stream.dart';
+import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -1208,7 +1209,8 @@ class Item {
     await StreamingService.bitrateTest(size: 500000);
     await StreamingService.bitrateTest(size: 1000000);
     await StreamingService.bitrateTest(size: 3000000);
-    var item;
+
+    late final Item item;
 
     if (type == ItemType.EPISODE ||
         type == ItemType.MOVIE ||
@@ -1259,6 +1261,12 @@ class Item {
   }
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
+    // First we try to fetch item locally to play it
+    final database = db.AppDatabase().getDatabase;
+    final itemExist = await database.downloadsDao.doesExist(item.id);
+    if (itemExist) return await FileService.getStoragePathItem(item);
+
+    // If item do not exist locally the we fetch it from remote server
     final streamingProvider = StreamingProvider();
     final data = await StreamingService.isCodecSupported();
     final backInfos = await StreamingService.playbackInfos(data, item.id,

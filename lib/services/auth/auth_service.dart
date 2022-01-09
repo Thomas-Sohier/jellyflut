@@ -64,7 +64,16 @@ class AuthService {
   static Future<bool> isAuth() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('isLoggedIn') ?? false) {
-      await _saveToGlobals();
+      // If error then we clear prefs
+      try {
+        await _saveToGlobals();
+      } catch (e) {
+        await prefs.clear();
+        return false;
+      }
+
+      // If account still authorized (API do not respond 401) then we continue
+      // else we return false
       try {
         await _isAccountStillAuthorized();
       } catch (e) {

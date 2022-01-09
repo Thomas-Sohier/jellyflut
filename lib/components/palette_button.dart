@@ -10,20 +10,24 @@ class PaletteButton extends StatefulWidget {
     this.text, {
     required this.onPressed,
     this.dominantColorFuture,
+    this.enabled = true,
     this.borderRadius = 80.0,
     this.minWidth = 88.0,
     this.maxWidth = 200.0,
     this.item,
+    this.trailing,
     this.icon,
   });
 
   final Item? item;
   final VoidCallback onPressed;
   final String text;
+  final bool enabled;
   final double borderRadius;
   final double minWidth;
   final double maxWidth;
   final Icon? icon;
+  final Widget? trailing;
   final Future<Color>? dominantColorFuture;
 
   @override
@@ -58,22 +62,25 @@ class _PaletteButtonState extends State<PaletteButton>
     maxWidth = widget.maxWidth;
     super.build(context);
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
-    return TextButton(
-        autofocus: false,
-        focusNode: _node,
-        onPressed: widget.onPressed,
-        style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: borderRadius, // <-- Radius
-                ),
-                backgroundColor: Colors.transparent,
-                textStyle: TextStyle(color: Colors.black))
-            .copyWith(side: buttonBorderSide())
-            .copyWith(elevation: buttonElevation()),
-        child: widget.dominantColorFuture == null
-            ? buttonDefault(borderRadius)
-            : generatedPalette(borderRadius));
+    return IgnorePointer(
+      ignoring: !widget.enabled,
+      child: TextButton(
+          autofocus: false,
+          focusNode: _node,
+          onPressed: widget.onPressed,
+          style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius, // <-- Radius
+                  ),
+                  backgroundColor: Colors.transparent,
+                  textStyle: TextStyle(color: Colors.black))
+              .copyWith(side: buttonBorderSide())
+              .copyWith(elevation: buttonElevation()),
+          child: widget.dominantColorFuture == null
+              ? buttonDefault(borderRadius)
+              : generatedPalette(borderRadius)),
+    );
   }
 
   Widget generatedPalette(BorderRadius borderRadius) {
@@ -122,7 +129,8 @@ class _PaletteButtonState extends State<PaletteButton>
                           widget.icon!.icon,
                           color: foregroundColor,
                         ),
-                      )
+                      ),
+                    if (widget.trailing != null) widget.trailing!
                   ]),
             ),
           );
@@ -143,6 +151,9 @@ class _PaletteButtonState extends State<PaletteButton>
   }
 
   Widget buttonDefault(BorderRadius borderRadius) {
+    final color = widget.enabled
+        ? Colors.grey.shade200.withOpacity(0.5)
+        : Colors.grey.shade400.withOpacity(0.5);
     return ClipRRect(
       borderRadius: borderRadius,
       child: BackdropFilter(
@@ -154,7 +165,7 @@ class _PaletteButtonState extends State<PaletteButton>
                 maxWidth: maxWidth,
                 maxHeight: maxHeight),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200.withOpacity(0.5),
+              color: color,
               borderRadius: borderRadius,
             ),
             alignment: Alignment.center,
@@ -171,7 +182,8 @@ class _PaletteButtonState extends State<PaletteButton>
                     Padding(
                       padding: padding,
                       child: widget.icon,
-                    )
+                    ),
+                  if (widget.trailing != null) widget.trailing!
                 ])),
       ),
     );
