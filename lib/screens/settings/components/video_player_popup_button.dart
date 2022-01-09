@@ -57,7 +57,7 @@ class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
       final selectedValue = value.toLowerCase();
       final newSetting = widget.setting
           .toCompanion(true)
-          .copyWith(preferredTranscodeAudioCodec: Value(selectedValue));
+          .copyWith(preferredPlayer: Value(selectedValue));
       await widget.database.settingsDao.updateSettings(newSetting);
       setState(() {
         currentValue = value;

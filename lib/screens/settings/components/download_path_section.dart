@@ -20,13 +20,19 @@ class DownloadPathSection extends StatelessWidget {
         SettingsTile(
           title: 'download_path'.tr(),
           onPressed: (_) => selectFolder(),
-          trailing: Row(
-            children: [
-              Text(downloadPath ?? 'No path set'),
-              const SizedBox(width: 8),
-              Icon(Icons.folder_outlined)
-            ],
-          ),
+          trailing: LayoutBuilder(builder: ((context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: constraints.maxWidth * 0.6),
+              child: Row(
+                children: [
+                  Flexible(
+                      child: Text(downloadPath ?? 'No path set', maxLines: 2)),
+                  const SizedBox(width: 8),
+                  Icon(Icons.folder_outlined)
+                ],
+              ),
+            );
+          })),
         ),
       ],
     );

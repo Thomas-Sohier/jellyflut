@@ -82,9 +82,13 @@ class AuthService {
         if (value.statusCode == HttpStatus.unauthorized) {
           await logout();
           return false;
+        } else if (value.statusCode == HttpStatus.ok) {
+          offlineMode = false;
+          return true;
+        } else {
+          offlineMode = true;
+          return true;
         }
-        offlineMode = true;
-        return true;
       }).catchError((onError) {
         // If we catch an error (host lookup or anything else) we still continue
         // to respond as if user is authenticated to go in offline mode
