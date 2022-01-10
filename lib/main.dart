@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -91,6 +92,8 @@ class Jellyflut extends StatelessWidget {
             dispose: (context, db) => db.close(),
           ),
           ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
+          ChangeNotifierProvider<DownloadProvider>(
+              create: (_) => DownloadProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(
               create: (_) => HomeCategoryProvider()),
         ],

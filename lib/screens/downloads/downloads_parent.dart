@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/database/database.dart';
+import 'package:jellyflut/models/downloads/item_download.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/downloads/download_provider.dart';
+import 'package:jellyflut/screens/downloads/current_downloads_list.dart';
+import 'package:jellyflut/screens/downloads/downloaded_items.dart';
 
 class DownloadsParent extends StatefulWidget {
   DownloadsParent({Key? key}) : super(key: key);
@@ -14,7 +18,8 @@ class DownloadsParent extends StatefulWidget {
 }
 
 class _DownloadsParentState extends State<DownloadsParent> {
-  late final Stream<List<Download>> downloads;
+  late final Stream<List<Download>> downloadedItems;
+  late final List<ItemDownload> currentdownloads;
   late final Database db;
   late final CollectionBloc collectionBloc;
 
@@ -22,7 +27,7 @@ class _DownloadsParentState extends State<DownloadsParent> {
   void initState() {
     super.initState();
     db = AppDatabase().getDatabase;
-    downloads = db.downloadsDao.watchAllDownloads;
+    downloadedItems = db.downloadsDao.watchAllDownloads;
     collectionBloc = CollectionBloc(
         listType: ListType.GRID, loadMoreFunction: _defaultLoadMore);
   }
@@ -34,27 +39,25 @@ class _DownloadsParentState extends State<DownloadsParent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-      body: StreamBuilder<List<Download>>(
-          stream: downloads,
-          builder: (c, snapshot) {
-            final items = snapshot.data != null
-                ? snapshot.data!
-                    .map((element) => Item.fromMap(element.item!))
-                    .toList()
-                : <Item>[];
-            collectionBloc.add(ClearItem());
-            collectionBloc.add(AddItem(items: items));
-            final category = Category(
-                items: items, totalRecordCount: items.length, startIndex: 0);
-            return ListItems.fromList(
-                collectionBloc: collectionBloc,
-                category: category,
-                verticalListPosterHeight: 250,
-                listType: ListType.GRID);
-          }),
-    );
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(text: 'Saved items'),
+                    Tab(text: 'Active downloads')
+                  ],
+                )),
+            body: TabBarView(
+              children: [
+                DownloadedItems(
+                    collectionBloc: collectionBloc, downloads: downloadedItems),
+                CurrentDownloadList()
+              ],
+            )));
   }
 }

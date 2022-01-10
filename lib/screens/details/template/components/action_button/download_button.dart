@@ -17,14 +17,21 @@ class _DownloadButtonState extends State<DownloadButton> {
   late var fToast;
   late final BehaviorSubject<int> percentDownload;
   late final Future<bool> isDownloaded;
+  late final DownloadProvider downloadProvider;
   bool buttonEnabled = true;
 
   @override
   void initState() {
-    fToast = FToast();
-    // ignore: unnecessary_this
-    fToast.init(this.context);
-    percentDownload = BehaviorSubject<int>();
+    downloadProvider = DownloadProvider();
+    final isItemDownload =
+        downloadProvider.isItemDownloadPresent(widget.item.id);
+    if (isItemDownload) {
+      percentDownload =
+          downloadProvider.getItemDownloadProgress(widget.item.id);
+      buttonEnabled = false;
+    } else {
+      percentDownload = BehaviorSubject<int>();
+    }
     isDownloaded = FileService.isItemDownloaded(widget.item.id);
     super.initState();
   }
@@ -89,30 +96,31 @@ class _DownloadButtonState extends State<DownloadButton> {
           }
         }
 
-        // Download the file and store it to the given path
-        // When complete show make the button selectable again
-        await FileService.downloadFileAndSaveToPath(downloadUrl, downloadPath,
-                stateOfDownload: percentDownload)
-            .then((_) => message(
-                  'File saved at $downloadPath',
-                  Icons.file_download_done,
-                  Colors.green,
-                ))
-            .catchError((error, stackTrace) => message(
-                  error.toString(),
-                  Icons.file_download_off,
-                  Colors.red,
-                ))
-            .then((_) =>
-                FileService.saveDownloadToDatabase(downloadPath, widget.item))
-            .whenComplete(() => setState(() => buttonEnabled = true));
+        // Add download to provider to keep track of it
+        final cancelToken = CancelToken();
+        final itemDownload = ItemDownload(
+            item: widget.item,
+            downloadValueWatcher: percentDownload,
+            cancelToken: cancelToken);
+
+        await DownloadProvider().addDownload(
+            context: customRouter.navigatorKey.currentContext,
+            download: itemDownload,
+            downloadPath: downloadPath,
+            downloadUrl: downloadUrl,
+            callback: () => setState(() => buttonEnabled = true),
+            percentDownload: percentDownload);
       } else {
-        message('Do not have enough permission to download file',
-            Icons.file_download_off, Colors.red);
+        SnackbarUtil.message(
+            context,
+            'Do not have enough permission to download file',
+            Icons.file_download_off,
+            Colors.red);
       }
     } catch (e) {
       log(e.toString());
-      message(e.toString(), Icons.file_download_off, Colors.red);
+      SnackbarUtil.message(
+          context, e.toString(), Icons.file_download_off, Colors.red);
     }
     setState(() => buttonEnabled = true);
   }
@@ -153,16 +161,5 @@ class _DownloadButtonState extends State<DownloadButton> {
             ],
           );
         });
-  }
-
-  void message(String message, IconData icon, Color color) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-          content: Row(children: [
-            Flexible(child: Text(message, maxLines: 3)),
-            Icon(icon, color: color)
-          ]),
-          width: 600));
   }
 }

@@ -100,11 +100,12 @@ class FileService {
   /// Download a file and save it to filesystem
   static Future<Response<dynamic>> downloadFileAndSaveToPath(
       String url, String? path,
-      {BehaviorSubject<int>? stateOfDownload}) async {
+      {BehaviorSubject<int>? stateOfDownload, CancelToken? cancelToken}) async {
     if (stateOfDownload != null) {
       return Dio().download(
         url,
         path,
+        cancelToken: cancelToken,
         onReceiveProgress: (received, total) {
           final percentage = ((received / total) * 100).floor();
           stateOfDownload.add(percentage);
@@ -115,6 +116,7 @@ class FileService {
     return Dio().download(
       url,
       path,
+      cancelToken: cancelToken,
       options: Options(headers: {HttpHeaders.acceptEncodingHeader: '*'}),
     );
   }
