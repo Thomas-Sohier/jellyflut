@@ -120,14 +120,20 @@ class StreamingService {
       {startTimeTick = 0,
       int? subtitleStreamIndex,
       int? audioStreamIndex,
-      int? maxStreamingBitrate = 140000}) async {
+      int? maxStreamingBitrate}) async {
+    final settings = await AppDatabase()
+        .getDatabase
+        .settingsDao
+        .getSettingsById(userApp!.settingsId);
     final streamingProvider = StreamingProvider();
     final queryParams = <String, dynamic>{};
     queryParams['UserId'] = userJellyfin!.id;
     queryParams['StartTimeTicks'] = startTimeTick;
     queryParams['IsPlayback'] = true;
     queryParams['AutoOpenLiveStream'] = true;
-    queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
+    // queryParams['MaxStreamingBitrate'] = maxStreamingBitrate ?? settings.maxVideoBitrate;
+    queryParams['VideoBitrate'] = settings.maxVideoBitrate.toString();
+    queryParams['AudioBitrate'] = settings.maxAudioBitrate.toString();
     if (subtitleStreamIndex != null) {
       queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     } else if (streamingProvider.selectedSubtitleTrack != null) {
@@ -161,12 +167,18 @@ class StreamingService {
       int? audioStreamIndex,
       int? subtitleStreamIndex}) async {
     final streamModel = StreamingProvider();
+    final settings = await AppDatabase()
+        .getDatabase
+        .settingsDao
+        .getSettingsById(userApp!.settingsId);
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParam = <String, String>{};
     queryParam['StartTimeTicks'] = startTick.toString();
     queryParam['Static'] = true.toString();
     queryParam['MediaSourceId'] = item.id;
     queryParam['DeviceId'] = info.id;
+    queryParam['VideoBitrate'] = settings.maxVideoBitrate.toString();
+    queryParam['AudioBitrate'] = settings.maxAudioBitrate.toString();
     if (playBackInfos.mediaSources.isNotEmpty &&
         playBackInfos.mediaSources.first.eTag != null) {
       queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;

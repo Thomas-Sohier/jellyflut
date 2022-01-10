@@ -4,6 +4,8 @@ class AudioPlayerSection extends StatelessWidget {
   final Setting setting;
   final Database database;
   final GlobalKey<PopupMenuButtonState<String>> _audioButton = GlobalKey();
+  final GlobalKey<_AudioBitrateValueEditorState> _bitrateEditorButton =
+      GlobalKey();
 
   AudioPlayerSection({Key? key, required this.setting, required this.database})
       : super(key: key);
@@ -24,14 +26,11 @@ class AudioPlayerSection extends StatelessWidget {
             )),
         SettingsTile(
           title: 'max_bitrate'.tr(),
-          subtitle: setting.maxAudioBitrate.toString(),
-          titleTextStyle: TextStyle(color: Colors.white),
-          subtitleTextStyle: TextStyle(color: Colors.white60),
-          enabled: false,
-          trailing: Container(
-            height: 0,
-            width: 0,
-          ),
+          subtitle: 'Edit max audio bitrate value',
+          onPressed: (c) =>
+              _bitrateEditorButton.currentState?.editBitrateValue(c),
+          trailing: AudioBitrateValueEditor(
+              key: _bitrateEditorButton, database: database),
         ),
       ],
     );
