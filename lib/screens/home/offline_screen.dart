@@ -4,9 +4,7 @@ import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/components/error/error_user_actions.dart';
-import 'package:jellyflut/screens/home/components/error/stacktrace_container.dart';
 import 'package:jellyflut/screens/home/header_bar.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 
 class OffLineScreen extends StatelessWidget {
   final Object? error;

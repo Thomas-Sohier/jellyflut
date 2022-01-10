@@ -9,7 +9,6 @@ import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
-import 'package:jellyflut/screens/stream/components/common_controls.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
