@@ -108,9 +108,16 @@ class InitStreamingItemUtil {
     final betterPlayerController = await CommonStreamBP.setupData(item: item);
 
     // Init widget player to use in Stream widget
-    return BetterPlayer(
-        key: betterPlayerController.betterPlayerGlobalKey,
-        controller: betterPlayerController);
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        BetterPlayer(
+            key: betterPlayerController.betterPlayerGlobalKey,
+            controller: betterPlayerController),
+        CommonControls(),
+      ],
+    );
   }
 }
 
@@ -195,8 +202,15 @@ class InitStreamingUrlUtil {
         await CommonStreamBP.setupDataFromURl(url: url);
 
     // Init widget player to use in Stream widget
-    return BetterPlayer(
-        key: betterPlayerController.betterPlayerGlobalKey,
-        controller: betterPlayerController);
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: <Widget>[
+        BetterPlayer(
+            key: betterPlayerController.betterPlayerGlobalKey,
+            controller: betterPlayerController),
+        CommonControls(),
+      ],
+    );
   }
 }

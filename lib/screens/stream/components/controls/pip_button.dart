@@ -40,7 +40,15 @@ class _PipButtonState extends State<PipButton> {
         try {
           streamingProvider.commonStream?.pip();
         } catch (message) {
-          showToast(message.toString(), fToast);
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                content: Row(children: [
+                  Flexible(child: Text(message.toString(), maxLines: 3)),
+                  Icon(Icons.picture_in_picture, color: Colors.red)
+                ]),
+                duration: Duration(seconds: 10),
+                width: 600));
         }
       },
       shape: CircleBorder(),

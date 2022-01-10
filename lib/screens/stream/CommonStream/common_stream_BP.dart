@@ -160,8 +160,8 @@ class CommonStreamBP {
       enableQualities: false,
       showControlsOnInitialize: false,
       playerTheme: BetterPlayerTheme.custom,
-      customControlsBuilder: (controller, onPlayerVisibilityChanged) =>
-          CommonControls(),
+      // customControlsBuilder: (controller, onPlayerVisibilityChanged) =>
+      //     CommonControls(),
       controlBarHeight: 40,
     );
   }

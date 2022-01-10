@@ -170,7 +170,8 @@ class CommonStream {
             betterPlayerController.videoPlayerController!.value.position,
         isInit: betterPlayerController.isVideoInitialized(),
         hasPip: betterPlayerController.isPictureInPictureSupported(),
-        pip: betterPlayerController.enablePictureInPicture,
+        pip: () => betterPlayerController.enablePictureInPicture(
+            betterPlayerController.betterPlayerGlobalKey!),
         getSubtitles: commonStreamBP.getSubtitles,
         setSubtitle: (subtitle) => commonStreamBP.setSubtitle(subtitle),
         disableSubtitles: betterPlayerController.subtitlesLines.clear,
