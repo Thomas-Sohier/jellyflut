@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/home/components/error/error_user_actions.dart';
+import 'package:jellyflut/screens/home/components/error/stacktrace_container.dart';
 import 'package:jellyflut/screens/home/header_bar.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class OffLineScreen extends StatelessWidget {
   final Object? error;
-  const OffLineScreen({Key? key, required this.error}) : super(key: key);
+  final void Function() reloadFunction;
+  const OffLineScreen(
+      {Key? key, required this.error, required this.reloadFunction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,44 +55,14 @@ class OffLineScreen extends StatelessWidget {
                         onPressed: () =>
                             customRouter.push(DownloadsParentRoute())),
                     Divider(height: 32),
-                    actionsButtons(),
-                    const SizedBox(height: 12),
-                    stacktraceContainer(context, error)
+                    ErrorUserActions(
+                        reloadFunction: reloadFunction,
+                        errorMessage: error.toString())
                   ],
                 ),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget actionsButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        OutlinedButton(onPressed: () => {}, child: Icon(Icons.replay_outlined)),
-        const SizedBox(width: 12),
-        OutlinedButton(onPressed: () => {}, child: Text('Show error message')),
-      ],
-    );
-  }
-
-  Widget stacktraceContainer(BuildContext context, Object? errorObject) {
-    return Container(
-      decoration: BoxDecoration(
-          color: ColorUtil.darken(Theme.of(context).backgroundColor, 0.05),
-          borderRadius: BorderRadius.all(Radius.circular(4))),
-      constraints: BoxConstraints(maxHeight: 400),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(18, 8, 18, 8),
-          child: Text(
-            errorObject.toString(),
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
         ),
       ),
     );

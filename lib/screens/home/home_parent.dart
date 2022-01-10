@@ -38,7 +38,13 @@ class _HomeParentState extends State<HomeParent> {
           if (snapshot.hasData) {
             return responsiveBuilder(snapshot.data!.items);
           } else if (snapshot.hasError) {
-            return OffLineScreen(error: snapshot.error);
+            return OffLineScreen(
+                error: snapshot.error,
+                reloadFunction: () {
+                  setState(() {
+                    categoryFuture = UserService.getLibraryViews();
+                  });
+                });
           }
           return const SizedBox();
         },

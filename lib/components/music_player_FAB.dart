@@ -111,7 +111,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                                         activeColor: Colors.white,
                                         inactiveColor: Colors.white12,
                                         value: getSliderSize(snapshot.data),
-                                        min: 0,
+                                        min: 0.0,
                                         max: getSliderMaxSize(snapshot.data),
                                         onChanged: (value) {
                                           musicPlayer.seekTo(Duration(

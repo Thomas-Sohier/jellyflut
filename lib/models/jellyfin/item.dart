@@ -1248,13 +1248,12 @@ class Item {
       item = this;
     } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
       item = await getFirstUnplayedItem();
+    } else if (type == ItemType.AUDIO) {
+      return createMusicURL();
     } else {
       throw ('Cannot find the type of file');
     }
 
-    if (type == ItemType.AUDIO) {
-      return createMusicURL();
-    }
     return getStreamURL(item, directPlay);
   }
 
@@ -1354,6 +1353,12 @@ class Item {
         e.toString() ==
         'TranscodeAudioCodecName.' +
             streamingSoftwareDB.preferredTranscodeAudioCodec);
+
+    // First we try to fetch item locally to play it
+    final database = db.AppDatabase().getDatabase;
+    final itemExist = await database.downloadsDao.doesExist(id);
+    if (itemExist) return await FileService.getStoragePathItem(this);
+
     return '${server.url}/Audio/$id/stream.$streamingSoftware';
   }
 

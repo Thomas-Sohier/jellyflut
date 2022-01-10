@@ -120,7 +120,8 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Future<void> playRemoteAudio(Item item) async {
-    final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
+    // final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
+    final streamURL = await item.getItemURL();
     final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
     await _playlist.add(audioSource);
     await _audioPlayer?.setAudioSource(_playlist);
