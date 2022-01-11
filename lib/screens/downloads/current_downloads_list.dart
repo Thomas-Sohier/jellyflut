@@ -64,7 +64,8 @@ class _CurrentDownloadListState extends State<CurrentDownloadList> {
           key: _key,
           shrinkWrap: true,
           controller: scrollController,
-          initialItemCount: _listLength - 1,
+          initialItemCount:
+              _listLength > 0 ? _listLength - 1 : 0, // why ? i don't know
           scrollDirection: Axis.vertical,
           itemBuilder: (c, i, a) {
             final download = _downloadProvider.getDownloads.elementAt(i);

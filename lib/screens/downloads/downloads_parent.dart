@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
-import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/downloads/item_download.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/screens/downloads/current_downloads_list.dart';
 import 'package:jellyflut/screens/downloads/downloaded_items.dart';
 

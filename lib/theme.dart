@@ -96,6 +96,12 @@ class Theme {
       scaffoldBackgroundColor: Colors.grey.shade900,
       bottomAppBarColor: Colors.grey.shade900,
       dialogBackgroundColor: Colors.grey.shade900,
+      tabBarTheme: TabBarTheme(
+          indicator: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: jellyPurple),
+        ),
+      )),
       snackBarTheme: SnackBarThemeData(
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.grey.shade900,

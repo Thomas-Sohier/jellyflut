@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/downloads/item_download.dart';
-import 'package:jellyflut/models/enum/codec_time_base.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
