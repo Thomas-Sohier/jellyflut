@@ -20,7 +20,8 @@ class Poster extends StatefulWidget {
   final String? heroTag;
 
   const Poster(
-      {this.showParent = false,
+      {Key? key,
+      this.showParent = false,
       this.dropShadow = false,
       this.backup = true,
       this.height,
@@ -29,7 +30,8 @@ class Poster extends StatefulWidget {
       required this.heroTag,
       required this.clickable,
       required this.boxFit,
-      required this.item});
+      required this.item})
+      : super(key: key);
   @override
   _PosterState createState() => _PosterState();
 }

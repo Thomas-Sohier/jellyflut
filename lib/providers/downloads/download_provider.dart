@@ -1,14 +1,17 @@
-import 'dart:collection';
+import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/downloads/item_download.dart';
+import 'package:jellyflut/models/enum/enum_values.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DownloadProvider extends ChangeNotifier {
   final Set<ItemDownload> _downloads = <ItemDownload>{};
+  final BehaviorSubject<DownloadEvent> addedDownloadsStream =
+      BehaviorSubject<DownloadEvent>();
 
   Set<ItemDownload> get getDownloads => _downloads;
 
@@ -30,6 +33,7 @@ class DownloadProvider extends ChangeNotifier {
       required BehaviorSubject<int>? percentDownload,
       void Function()? callback}) {
     _downloads.add(download);
+    addedDownloadsStream.add(DownloadEvent(DownloadEventType.ADDED, download));
     // Download the file and store it to the given path
     // When complete show make the button selectable again
     final cancelToken = CancelToken();
@@ -59,6 +63,8 @@ class DownloadProvider extends ChangeNotifier {
   void removeDownload(final ItemDownload download) {
     download.cancelToken.cancel();
     _downloads.remove(download);
+    addedDownloadsStream
+        .add(DownloadEvent(DownloadEventType.DELETED, download));
     notifyListeners();
   }
 
@@ -72,3 +78,15 @@ class DownloadProvider extends ChangeNotifier {
 
   DownloadProvider._internal();
 }
+
+class DownloadEvent {
+  final DownloadEventType eventType;
+  final ItemDownload download;
+
+  DownloadEvent(this.eventType, this.download);
+}
+
+enum DownloadEventType { ADDED, DELETED }
+
+final bookExtensionsValues = EnumValues(
+    {'added': DownloadEventType.ADDED, 'deleted': DownloadEventType.DELETED});

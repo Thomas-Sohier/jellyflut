@@ -113,6 +113,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
                                   )),
                             ),
                           ]))),
+              const SizedBox(width: 12),
               Center(child: downloadProgress())
             ],
           ));
@@ -149,6 +150,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
     return AspectRatio(
       aspectRatio: widget.itemDownload.item.getPrimaryAspectRatio(),
       child: Poster(
+          key: ValueKey(widget.itemDownload),
           tag: ImageType.PRIMARY,
           heroTag:
               '${widget.itemDownload.item.id}-${Uuid().v1()}-${widget.itemDownload.item.name}',

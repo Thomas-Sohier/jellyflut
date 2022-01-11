@@ -47,8 +47,8 @@ class _AsyncImageState extends State<AsyncImage> {
   late final String? imageTag;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     itemId = widget.showParent
         ? widget.item.getParentId()
         : widget.item.correctImageId();

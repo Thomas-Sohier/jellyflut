@@ -108,7 +108,9 @@ class _DownloadButtonState extends State<DownloadButton> {
             download: itemDownload,
             downloadPath: downloadPath,
             downloadUrl: downloadUrl,
-            callback: () => setState(() => buttonEnabled = true),
+            callback: () {
+              if (mounted) setState(() => buttonEnabled = true);
+            },
             percentDownload: percentDownload);
       } else {
         SnackbarUtil.message(
@@ -118,11 +120,15 @@ class _DownloadButtonState extends State<DownloadButton> {
             Colors.red);
       }
     } catch (e) {
-      log(e.toString());
-      SnackbarUtil.message(
-          context, e.toString(), Icons.file_download_off, Colors.red);
+      if (mounted) {
+        log(e.toString());
+        SnackbarUtil.message(customRouter.navigatorKey.currentContext,
+            e.toString(), Icons.file_download_off, Colors.red);
+      }
     }
-    setState(() => buttonEnabled = true);
+    if (mounted) {
+      setState(() => buttonEnabled = true);
+    }
   }
 
   Future<bool?> dialogRedownload() async {
