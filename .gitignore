@@ -68,3 +68,4 @@ android/app/key.jks
 **/windows/ephemeral/**
 
 .idea
+.vscode
