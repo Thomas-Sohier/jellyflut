@@ -8,11 +8,8 @@ import 'package:jellyflut/screens/details/template/components/details_widgets.da
 
 class RightDetails extends StatelessWidget {
   final Item item;
-  final Future<Color> dominantColorFuture;
 
-  RightDetails(
-      {Key? key, required this.item, required this.dominantColorFuture})
-      : super(key: key);
+  RightDetails({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +20,7 @@ class RightDetails extends StatelessWidget {
           SizedBox(height: 24),
           Align(
               alignment: Alignment.centerLeft,
-              child: DetailsButtonRowBuilder(
-                  item: item, dominantColorFuture: dominantColorFuture)),
+              child: DetailsButtonRowBuilder(item: item)),
           SizedBox(height: 36),
           TaglineDetailsWidget(item: item),
           SizedBox(height: 24),

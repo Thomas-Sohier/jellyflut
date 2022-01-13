@@ -44,9 +44,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         item: widget.item,
         imageType: ImageType.BACKDROP,
       ),
-      DetailsBackground(
-          dominantColorFuture: detailsInfos.dominantColor,
-          child: detailsBuilder()),
+      DetailsBackground(child: detailsBuilder()),
       DetailHeaderBar(
         color: Colors.white,
         showDarkGradient: false,
@@ -80,9 +78,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         future: detailsInfos.item,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return RightDetails(
-                item: snapshot.data!,
-                dominantColorFuture: detailsInfos.dominantColor);
+            return RightDetails(item: snapshot.data!);
           }
           return SkeletonRightDetails();
         });

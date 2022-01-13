@@ -17,6 +17,12 @@ class DetailsUpdateItem extends DetailsEvent {
   List<Object> get props => [item];
 }
 
+class DetailsUpdateColor extends DetailsEvent {
+  final Future<List<Color>> colors;
+
+  DetailsUpdateColor({required this.colors});
+}
+
 class DetailsUpdateDetailsInfos extends DetailsEvent {
   final DetailsInfosFuture detailsInfos;
 

@@ -32,7 +32,7 @@ class PaletteButton extends StatefulWidget {
   final double maxWidth;
   final Icon? icon;
   final Widget? trailing;
-  final Future<Color>? dominantColorFuture;
+  final Future<List<Color>>? dominantColorFuture;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
@@ -91,18 +91,22 @@ class _PaletteButtonState extends State<PaletteButton>
   }
 
   Widget generatedPalette(BorderRadius borderRadius) {
-    return FutureBuilder<Color>(
+    return FutureBuilder<List<Color>>(
       future: widget.dominantColorFuture,
       builder: (context, snapshot) {
         Widget child;
-        if (snapshot.hasData) {
-          final paletteColor =
-              ColorUtil.changeColorSaturation(snapshot.data!, 0.5);
-          final leftColor = ColorUtil.lighten(paletteColor, 0.2);
-          final rightColor = ColorUtil.darken(paletteColor, 0.2);
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final paletteColor1 =
+              ColorUtil.changeColorSaturation(snapshot.data![1], 0.5);
+          final paletteColor2 =
+              ColorUtil.changeColorSaturation(snapshot.data![2], 0.5);
+          final leftColor = ColorUtil.lighten(paletteColor1, 0.1);
+          final rightColor = ColorUtil.darken(paletteColor2, 0.1);
+
           final colorInMiddle =
-              Color.lerp(leftColor, rightColor, 0.5) ?? paletteColor;
-          final foregroundColor = colorInMiddle.computeLuminance() > 0.45
+              Color.lerp(leftColor, rightColor, 0.5) ?? paletteColor1;
+
+          final foregroundColor = colorInMiddle.computeLuminance() > 0.5
               ? Colors.black
               : Colors.white;
           child = Ink(

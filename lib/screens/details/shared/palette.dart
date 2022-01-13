@@ -1,35 +1,9 @@
-import 'dart:developer';
-
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:blurhash_dart/blurhash_extensions.dart';
 import 'package:flutter/painting.dart';
-
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:palette_generator/palette_generator.dart';
+// import 'package:palette_generator/palette_generator.dart';
 
 class Palette {
-  static Future<PaletteGenerator> getPaletteFromNetworkImage(
-      Item item, ImageType searchType) async {
-    final url = ItemImageService.getItemImageUrl(
-        item.correctImageId(searchType: searchType),
-        item.correctImageTags(searchType: searchType),
-        type: searchType);
-    return _generatePalettefromNetworkImage(url);
-  }
-
-  static Future<PaletteGenerator> _generatePalettefromNetworkImage(
-      String url) async {
-    return PaletteGenerator.fromImageProvider(
-      NetworkImage(url),
-      maximumColorCount: 20,
-    ).onError((error, stackTrace) {
-      log(error.toString(), stackTrace: stackTrace);
-      throw (error.toString());
-    });
-  }
-
   static Color generatePalettefromBlurhash(String hash) {
     final blurHash = BlurHash.decode(hash);
     final rgb = blurHash.averageLinearRgb.toRgb();

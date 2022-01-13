@@ -5,9 +5,7 @@ import '../action_button.dart';
 
 class DetailsButtonRowBuilder extends StatelessWidget {
   final Item item;
-  final Future<Color> dominantColorFuture;
-  const DetailsButtonRowBuilder(
-      {Key? key, required this.item, required this.dominantColorFuture})
+  const DetailsButtonRowBuilder({Key? key, required this.item})
       : super(key: key);
 
   @override
@@ -32,12 +30,8 @@ class DetailsButtonRowBuilder extends StatelessWidget {
           runSpacing: 10,
           children: [
             if (item.isPlayable() && buttonExpanded)
-              PlayButton(
-                  item: item,
-                  dominantColorFuture: dominantColorFuture,
-                  maxWidth: double.infinity),
-            if (item.isPlayable() && !buttonExpanded)
-              PlayButton(item: item, dominantColorFuture: dominantColorFuture),
+              PlayButton(item: item, maxWidth: double.infinity),
+            if (item.isPlayable() && !buttonExpanded) PlayButton(item: item),
             if (item.hasTrailer())
               TrailerButton(item: item, maxWidth: maxWidth),
             if (item.canBeViewed())

@@ -23,6 +23,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     } else if (event is DetailsUpdateItem) {
       _d.item = Future.value(event.item);
       emit(DetailsLoadedState(_d));
+    } else if (event is DetailsUpdateColor) {
+      _d.dominantColor.add(event.colors);
     }
   }
 }

@@ -44,17 +44,16 @@ class _LargeDetailsState extends State<LargeDetails> {
       ),
       Stack(alignment: Alignment.topCenter, children: [
         DetailsBackground(
-            dominantColorFuture: detailsInfos.dominantColor,
             child: Column(children: [
-              Expanded(
-                  child: Row(children: [
-                SizedBox(
-                  height: 64,
-                ),
-                leftDetailsPart(),
-                rightDetailsPart()
-              ])),
-            ])),
+          Expanded(
+              child: Row(children: [
+            SizedBox(
+              height: 64,
+            ),
+            leftDetailsPart(),
+            rightDetailsPart()
+          ])),
+        ])),
         DetailHeaderBar(
           color: Colors.white,
           showDarkGradient: false,
@@ -92,9 +91,7 @@ class _LargeDetailsState extends State<LargeDetails> {
         future: detailsInfos.item,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return RightDetails(
-                item: snapshot.data!,
-                dominantColorFuture: detailsInfos.dominantColor);
+            return RightDetails(item: snapshot.data!);
           }
           return SkeletonRightDetails();
         });

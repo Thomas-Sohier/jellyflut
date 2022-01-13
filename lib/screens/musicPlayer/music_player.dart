@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 
@@ -13,7 +14,6 @@ import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:just_audio/just_audio.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
@@ -152,10 +152,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
     final currentMusic = musicProvider.getCurrentMusic();
     if (currentMusic != null) {
       final metadata = currentMusic.tag as AudioMetadata;
-      PaletteGenerator.fromImageProvider(MemoryImage(metadata.artworkByte))
-          .then((PaletteGenerator value) {
-        final backgroundColor1 = value.paletteColors[0].color;
-        final backgroundColor2 = value.paletteColors[1].color;
+      compute(ColorUtil.extractPixelsColors, metadata.artworkByte)
+          .then((List<Color> colors) {
+        final backgroundColor1 = colors[0];
+        final backgroundColor2 = colors[1];
         final foregroundColor = getForegroundColorFromColor(backgroundColor1);
         final audioColors = AudioColors(
             backgroundColor1: backgroundColor1,
