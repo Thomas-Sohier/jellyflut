@@ -807,7 +807,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       'max_video_bitrate', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultValue: const Constant(140000000));
+      defaultValue: const Constant(50000000));
   final VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
   @override
@@ -815,7 +815,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       'max_audio_bitrate', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: false,
-      defaultValue: const Constant(320000));
+      defaultValue: const Constant(8000000));
   final VerificationMeta _downloadPathMeta =
       const VerificationMeta('downloadPath');
   @override

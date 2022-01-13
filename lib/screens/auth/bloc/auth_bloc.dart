@@ -30,15 +30,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       server = event.server;
       emit(AuthenticationServerAdded(server: event.server));
     });
-    on<AuthSuccessful>((event, emit) => AuthenticationSuccessful);
-    on<BackToFirstForm>((event, emit) => AuthenticationFirstForm);
-    on<ResetStates>((event, emit) => AuthenticationUnauthenticated);
-    on<LogOut>((event, emit) => AuthenticationUnauthenticated);
+    on<AuthSuccessful>((event, emit) => emit(AuthenticationSuccessful()));
+    on<BackToFirstForm>((event, emit) => emit(AuthenticationFirstForm()));
+    on<ResetStates>((event, emit) => emit(AuthenticationUnauthenticated()));
+    on<LogOut>((event, emit) => emit(AuthenticationUnauthenticated()));
     on<AuthError>((event, emit) => errors.add(event.error));
   }
 
   void login(RequestAuth event, Emitter<AuthState> emit) async {
     try {
+      emit(AuthenticationInProgress());
       username = event.username;
       userPassword = event.password;
       globals.server = server!;
@@ -47,6 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthenticationSuccessful());
     } catch (e) {
       errors.add(e.toString());
+      emit(AuthenticationError(e.toString()));
     }
   }
 }

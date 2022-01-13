@@ -25,8 +25,7 @@ class DownloadPathSection extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: constraints.maxWidth * 0.6),
               child: Row(
                 children: [
-                  Flexible(
-                      child: Text(downloadPath ?? 'No path set', maxLines: 2)),
+                  Text(downloadPath ?? 'No path set', maxLines: 2),
                   const SizedBox(width: 8),
                   Icon(Icons.folder_outlined)
                 ],

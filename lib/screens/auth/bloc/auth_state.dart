@@ -36,6 +36,9 @@ class AuthenticationSuccessful extends AuthState {
   bool get authenticated => true;
 }
 
+/// Authenticated.
+class AuthenticationInProgress extends AuthState {}
+
 class AuthenticationFirstForm extends AuthState {}
 
 /// Error.

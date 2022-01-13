@@ -16,8 +16,8 @@ class Settings extends Table {
   TextColumn get preferredTranscodeAudioCodec =>
       text().withDefault(const Constant('auto'))();
   IntColumn get maxVideoBitrate =>
-      integer().withDefault(const Constant(140000000))();
+      integer().withDefault(const Constant(50000000))();
   IntColumn get maxAudioBitrate =>
-      integer().withDefault(const Constant(320000))();
+      integer().withDefault(const Constant(8000000))();
   TextColumn get downloadPath => text().nullable()();
 }

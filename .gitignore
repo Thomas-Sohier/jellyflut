@@ -69,3 +69,6 @@ android/app/key.jks
 
 .idea
 .vscode
+AppDir/**
+linux/debian/usr/**
+**.AppImage

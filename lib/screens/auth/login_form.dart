@@ -122,8 +122,26 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget loginButton(FormGroup form, BuildContext context) {
     return Expanded(
-        child: GradienButton('login'.tr(), () => addUser(form, context),
-            borderRadius: 4));
+      child: BlocConsumer<AuthBloc, AuthState>(
+        bloc: authBloc,
+        listener: (c, a) => {},
+        builder: (context, state) {
+          if (state is AuthenticationInProgress) {
+            return GradienButton('', () => {},
+                borderRadius: 4,
+                enabled: false,
+                color1: Colors.grey.shade400.withAlpha(220),
+                color2: Colors.grey.shade500.withAlpha(230),
+                child: CircularProgressIndicator(
+                    backgroundColor: Colors.grey,
+                    color: Theme.of(context).colorScheme.secondary));
+          } else {
+            return GradienButton('login'.tr(), () => addUser(form, context),
+                borderRadius: 4);
+          }
+        },
+      ),
+    );
   }
 
   void addUser(FormGroup form, BuildContext context) {

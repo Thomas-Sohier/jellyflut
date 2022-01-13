@@ -30,7 +30,7 @@ class _AuthParentState extends State<AuthParent> {
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
           content: Row(children: [
-            Flexible(child: Text(error)),
+            Expanded(child: Text(error, maxLines: 3)),
             Icon(Icons.error, color: Colors.red)
           ]),
           width: 600)));
@@ -91,7 +91,9 @@ class _AuthParentState extends State<AuthParent> {
                     return firstForm(context);
                   } else if (state is AuthenticationServerAdded) {
                     return secondForm(context);
-                  } else if (state is AuthenticationUserAdded) {
+                  } else if (state is AuthenticationUserAdded ||
+                      state is AuthenticationInProgress ||
+                      state is AuthenticationError) {
                     return secondForm(context);
                   }
                   return SizedBox();

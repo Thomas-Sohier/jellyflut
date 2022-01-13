@@ -6,6 +6,7 @@ class GradienButton extends StatefulWidget {
   GradienButton(this.text, this.onPressed,
       {this.borderRadius = 25.0,
       this.child,
+      this.enabled = true,
       this.item,
       this.icon,
       this.color1 = const Color(0xFFa95dc3),
@@ -13,6 +14,7 @@ class GradienButton extends StatefulWidget {
 
   final Widget? child;
   final Item? item;
+  final bool enabled;
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
@@ -33,7 +35,7 @@ class _GradienButtonState extends State<GradienButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: widget.onPressed,
+        onPressed: widget.enabled ? widget.onPressed : null,
         style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius:
@@ -71,6 +73,7 @@ class _GradienButtonState extends State<GradienButton> {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
+                if (widget.child != null) widget.child!,
                 if (widget.icon != null)
                   Padding(
                     padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -88,6 +91,10 @@ class _GradienButtonState extends State<GradienButton> {
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.hovered) ||
             states.contains(MaterialState.focused)) {
+          if (!widget.enabled) {
+            return BorderSide(width: 0, color: Colors.transparent);
+          }
+
           return BorderSide(
             width: 2,
             color: Colors.white,
@@ -101,6 +108,7 @@ class _GradienButtonState extends State<GradienButton> {
   MaterialStateProperty<double> butonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
+        if (!widget.enabled) return 0;
         if (states.contains(MaterialState.hovered) ||
             states.contains(MaterialState.focused)) {
           return 6;

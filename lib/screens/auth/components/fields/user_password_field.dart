@@ -13,7 +13,6 @@ class UserPasswordField extends StatelessWidget {
     return ReactiveTextField<String>(
         formControlName: FieldsType.USER_PASSWORD.getValue(),
         onSubmitted: onSubmitted,
-        textInputAction: TextInputAction.next,
         style: INPUT_TEXT_STYLE,
         keyboardType: TextInputType.text,
         obscureText: true,
