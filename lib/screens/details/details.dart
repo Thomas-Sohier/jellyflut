@@ -14,7 +14,6 @@ import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:window_manager/window_manager.dart';
 
 import 'components/photo_item.dart';
 
