@@ -17,7 +17,6 @@ class ListItemsHorizontalSkeleton extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
                 itemCount: 6,
                 itemBuilder: (context, index) => SkeletonItemPoster(
                       height: horizontalListPosterHeight,

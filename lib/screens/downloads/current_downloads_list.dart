@@ -62,7 +62,6 @@ class _CurrentDownloadListState extends State<CurrentDownloadList> {
     if (_downloadsList.isNotEmpty) {
       return AnimatedList(
           key: _key,
-          shrinkWrap: true,
           controller: scrollController,
           initialItemCount:
               _listLength > 0 ? _listLength - 1 : 0, // why ? i don't know

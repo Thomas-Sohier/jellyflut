@@ -1,75 +1,73 @@
-import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 
-class DetailsBackground extends StatelessWidget {
-  final Widget child;
-  const DetailsBackground({Key? key, required this.child}) : super(key: key);
+class DetailsBackground extends StatefulWidget {
+  final List<Color>? colors;
+  DetailsBackground({Key? key, this.colors}) : super(key: key);
+
+  @override
+  _DetailsBackgroundState createState() => _DetailsBackgroundState();
+}
+
+class _DetailsBackgroundState extends State<DetailsBackground> {
+  final List<Color> gradient = [];
+  late final DetailsBloc bloc;
+  late final StreamSubscription<List<Color>> sub;
+  late Color paletteColor1;
+  late Color paletteColor2;
+  late Color leftColor;
+  late Color rightColor;
+  late ThemeData theme;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    theme = Theme.of(context);
+
+    // listening to stream and then update colors is way more performant than
+    //doing this in the build method as before
+    bloc = BlocProvider.of<DetailsBloc>(context);
+    sub = bloc.gradientStream.stream.listen((event) {});
+    sub.onData(updateColor);
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    super.dispose();
+  }
+
+  void updateColor(List<Color> colors) {
+    if (colors.isNotEmpty) {
+      setState(() {
+        paletteColor1 =
+            ColorUtil.changeColorSaturation(colors[1], 0.5).withOpacity(0.55);
+        paletteColor2 =
+            ColorUtil.changeColorSaturation(colors[2], 0.5).withOpacity(0.55);
+        gradient.clear();
+        gradient.addAll([paletteColor1, paletteColor2]);
+        final middleColor =
+            Color.lerp(paletteColor1, paletteColor2, 0.5) ?? rightColor;
+        theme = Luminance.computeLuminance(middleColor);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-        clipBehavior: Clip.hardEdge,
-        child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-            child: StreamBuilder<Future<List<Color>>>(
-                stream: BlocProvider.of<DetailsBloc>(context)
-                    .detailsInfos
-                    .dominantColor,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return FutureBuilder<List<Color>>(
-                        future: snapshot.data,
-                        builder: (context, colorsSnapshot) {
-                          if (colorsSnapshot.hasData &&
-                              colorsSnapshot.data!.isNotEmpty) {
-                            final paletteColor1 =
-                                ColorUtil.changeColorSaturation(
-                                        colorsSnapshot.data![1], 0.5)
-                                    .withOpacity(0.55);
-                            final paletteColor2 =
-                                ColorUtil.changeColorSaturation(
-                                        colorsSnapshot.data![2], 0.5)
-                                    .withOpacity(0.55);
-                            final leftColor =
-                                ColorUtil.lighten(paletteColor1, 0.1);
-                            final rightColor =
-                                ColorUtil.darken(paletteColor2, 0.1);
-                            return background(
-                                personnal_theme.Theme.defaultThemeData,
-                                context,
-                                [leftColor, rightColor]);
-                          }
-                          return background(
-                              personnal_theme.Theme.defaultThemeData,
-                              context, []);
-                        });
-                  }
-                  return background(
-                      personnal_theme.Theme.defaultThemeData, context, []);
-                })));
-  }
-
-  Widget background(ThemeData theme, BuildContext context, List<Color> colors) {
-    // useful to have the best contrast
-    final backgroundColor = theme.backgroundColor.computeLuminance() > 0.5
-        ? ColorUtil.lighten(theme.backgroundColor, 0.3)
-        : ColorUtil.darken(theme.backgroundColor, 0.3);
-
     return Theme(
       data: theme,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 500),
         decoration: BoxDecoration(
-            // color: backgroundColor.withOpacity(0.55),
+            color: theme.backgroundColor.withOpacity(0.55),
             gradient:
-                colors.isNotEmpty ? LinearGradient(colors: colors) : null),
-        child: child,
+                gradient.isNotEmpty ? LinearGradient(colors: gradient) : null),
       ),
     );
   }

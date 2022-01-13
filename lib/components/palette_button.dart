@@ -97,23 +97,22 @@ class _PaletteButtonState extends State<PaletteButton>
         Widget child;
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           final paletteColor1 =
-              ColorUtil.changeColorSaturation(snapshot.data![1], 0.5);
+              ColorUtil.changeColorSaturation(snapshot.data![1], 0.5)
+                  .withOpacity(0.55);
           final paletteColor2 =
-              ColorUtil.changeColorSaturation(snapshot.data![2], 0.5);
-          final leftColor = ColorUtil.lighten(paletteColor1, 0.1);
-          final rightColor = ColorUtil.darken(paletteColor2, 0.1);
+              ColorUtil.changeColorSaturation(snapshot.data![2], 0.5)
+                  .withOpacity(0.55);
+          final middleColor =
+              Color.lerp(paletteColor1, paletteColor2, 0.5) ?? paletteColor2;
 
-          final colorInMiddle =
-              Color.lerp(leftColor, rightColor, 0.5) ?? paletteColor1;
-
-          final foregroundColor = colorInMiddle.computeLuminance() > 0.5
+          final foregroundColor = middleColor.computeLuminance() > 0.5
               ? Colors.black
               : Colors.white;
           child = Ink(
             key: ValueKey<int>(0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [leftColor, colorInMiddle, rightColor],
+                    colors: [paletteColor1, paletteColor2],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight),
                 borderRadius: borderRadius),

@@ -50,7 +50,6 @@ class SkeletonRightDetails extends StatelessWidget {
     return SizedBox(
         height: 40,
         child: ListView.builder(
-            shrinkWrap: true,
             itemCount: 4,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -104,7 +103,6 @@ class SkeletonRightDetails extends StatelessWidget {
     return SizedBox(
         height: (40 + 10) * 6,
         child: ListView.builder(
-            shrinkWrap: true,
             itemCount: 6,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
@@ -124,7 +122,6 @@ class SkeletonRightDetails extends StatelessWidget {
         height: 160,
         child: ListView.builder(
             physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
             itemCount: 15,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Padding(

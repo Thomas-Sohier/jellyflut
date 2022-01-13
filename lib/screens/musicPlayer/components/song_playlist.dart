@@ -35,7 +35,6 @@ class _SongPlaylistState extends State<SongPlaylist> {
           child: ChangeNotifierProvider.value(
               value: musicProvider,
               child: ReorderableListView.builder(
-                shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
                 itemCount: musicProvider.getPlayList().length,

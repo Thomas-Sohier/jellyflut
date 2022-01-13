@@ -4,12 +4,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   late DetailsInfosFuture _d;
+  final BehaviorSubject<List<Color>> gradientStream = BehaviorSubject();
+
   DetailsInfosFuture get detailsInfos => _d;
 
   DetailsBloc(this._d) : super(DetailsLoadedState(_d)) {
@@ -25,6 +28,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateColor) {
       _d.dominantColor.add(event.colors);
+      await event.colors.then((value) => gradientStream.add(value));
     }
   }
 }

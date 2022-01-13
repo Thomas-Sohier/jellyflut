@@ -127,7 +127,6 @@ class _ResumeState extends State<Resume> {
                           child: SizedBox(
                               height: 200,
                               child: ListView.builder(
-                                  shrinkWrap: true,
                                   itemCount: 3,
                                   physics: NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.horizontal,

@@ -4,15 +4,18 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/list_collection_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
+  final List<Item> seasons;
+  final TabController? tabController;
 
-  const Collection(this.item);
+  const Collection(this.item,
+      {this.tabController, this.seasons = const <Item>[]});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,10 +58,7 @@ class _CollectionState extends State<Collection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 24),
-      child: Align(
-        alignment: Alignment.topCenter, //or choose another Alignment
-        child: showCollection(),
-      ),
+      child: showCollection(),
     );
   }
 
@@ -68,8 +68,8 @@ class _CollectionState extends State<Collection> {
         return ListItems.fromFuture(
             itemsFuture: musicFuture,
             showSorting: false,
-            listType: ListType.LIST,
             verticalListPosterHeight: 150,
+            listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SEASON:
         return ListItems.fromFuture(
@@ -79,7 +79,8 @@ class _CollectionState extends State<Collection> {
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
-        return ListCollectionItem(item: widget.item);
+        return TabsItems(
+            items: widget.seasons, tabController: widget.tabController);
       case ItemType.MUSICARTIST:
         return ListItems.fromFuture(
             itemsFuture: musicAlbumFuture,

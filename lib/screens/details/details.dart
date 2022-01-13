@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,13 +10,11 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
-import 'package:jellyflut/screens/details/template/tablet_details.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:jellyflut/shared/utils/blurhash_util.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'components/photo_item.dart';
 
@@ -67,17 +61,10 @@ class _DetailsState extends State<Details> with TickerProviderStateMixin {
                       }
                     },
                     child: widget.item.type != ItemType.PHOTO
-                        ? responsiveBuilder()
+                        ? LargeDetails(
+                            item: widget.item, heroTag: widget.heroTag)
                         : PhotoItem(
                             item: widget.item, heroTag: widget.heroTag)))));
-  }
-
-  Widget responsiveBuilder() {
-    return ResponsiveBuilder.builder(
-        mobile: () => TabletDetails(item: widget.item, heroTag: widget.heroTag),
-        tablet: () => TabletDetails(item: widget.item, heroTag: widget.heroTag),
-        desktop: () =>
-            LargeDetails(item: widget.item, heroTag: widget.heroTag));
   }
 
   DetailsInfosFuture getDetailsInfos() {

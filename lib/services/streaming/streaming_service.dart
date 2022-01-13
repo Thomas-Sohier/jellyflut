@@ -21,8 +21,12 @@ class StreamingService {
   final platform = MethodChannel('com.example.jellyflut/videoPlayer');
 
   static Future<int> deleteActiveEncoding() async {
-    var info = await DeviceInfo.getCurrentDeviceInfo();
-    var queryParam = <String, String>{};
+    final info = await DeviceInfo.getCurrentDeviceInfo();
+    final queryParam = <String, String>{};
+    final streamingProvider = StreamingProvider();
+
+    if (streamingProvider.playBackInfos == null) return 200;
+
     queryParam['deviceId'] = info.id;
     queryParam['PlaySessionId'] =
         StreamingProvider().playBackInfos!.playSessionId;

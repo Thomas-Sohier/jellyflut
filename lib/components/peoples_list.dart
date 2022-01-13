@@ -42,7 +42,6 @@ class _PeoplesListState extends State<PeoplesList> {
       child: ListView.builder(
           itemCount: peoples.length,
           scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
           padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
             var person = peoples[index];

@@ -24,7 +24,6 @@ class ListItemsGridSkeleton extends StatelessWidget {
       baseColor: shimmerColor1,
       highlightColor: shimmerColor2,
       child: GridView.builder(
-          shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: numberOfItemInRow * numberOfRow,
           padding: EdgeInsets.only(left: 4, right: 4),

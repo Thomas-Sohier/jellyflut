@@ -11,7 +11,7 @@ import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
-import 'package:jellyflut/screens/details/template/details_background.dart';
+import 'package:jellyflut/screens/details/template/details_background_builder.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class TabletDetails extends StatefulWidget {
@@ -44,7 +44,8 @@ class _TabletDetailsState extends State<TabletDetails> {
         item: widget.item,
         imageType: ImageType.BACKDROP,
       ),
-      DetailsBackground(child: detailsBuilder()),
+      DetailsBackgroundBuilder(),
+      detailsBuilder(),
       DetailHeaderBar(
         color: Colors.white,
         showDarkGradient: false,

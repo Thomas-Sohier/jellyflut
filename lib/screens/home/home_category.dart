@@ -103,7 +103,6 @@ class _HomeCategoryState extends State<HomeCategory>
         scrollDirection: Axis.horizontal,
         itemCount: items.length,
         itemExtent: itemWidth,
-        shrinkWrap: true,
         controller: scrollController,
         itemBuilder: (context, index) => ItemPoster(
               items[index],
@@ -152,7 +151,6 @@ class _HomeCategoryState extends State<HomeCategory>
                           child: SizedBox(
                               height: itemPosterHeight,
                               child: ListView.builder(
-                                  shrinkWrap: true,
                                   itemCount: 3,
                                   physics: NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.horizontal,

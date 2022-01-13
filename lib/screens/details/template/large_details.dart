@@ -9,7 +9,7 @@ import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
-import 'package:jellyflut/screens/details/template/details_background.dart';
+import 'package:jellyflut/screens/details/template/details_background_builder.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class LargeDetails extends StatefulWidget {
@@ -42,24 +42,26 @@ class _LargeDetailsState extends State<LargeDetails> {
         item: widget.item,
         imageType: ImageType.BACKDROP,
       ),
+      DetailsBackgroundBuilder(),
       Stack(alignment: Alignment.topCenter, children: [
-        DetailsBackground(
-            child: Column(children: [
-          Expanded(
-              child: Row(children: [
-            SizedBox(
-              height: 64,
-            ),
-            leftDetailsPart(),
-            rightDetailsPart()
-          ])),
-        ])),
-        DetailHeaderBar(
-          color: Colors.white,
-          showDarkGradient: false,
-          height: 64,
-        )
-      ])
+        LayoutBuilder(builder: ((_, constraints) {
+          return Column(children: [
+            Expanded(
+                child: Row(children: [
+              SizedBox(
+                height: 64,
+              ),
+              if (constraints.maxWidth > 960) leftDetailsPart(),
+              rightDetailsPart()
+            ]))
+          ]);
+        }))
+      ]),
+      DetailHeaderBar(
+        color: Colors.white,
+        showDarkGradient: false,
+        height: 64,
+      )
     ]);
   }
 
@@ -73,17 +75,7 @@ class _LargeDetailsState extends State<LargeDetails> {
   }
 
   Widget rightDetailsPart() {
-    return Expanded(flex: 6, child: largeWidgetBuilder());
-  }
-
-  Widget largeWidgetBuilder() {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(24, 82, 24, 24),
-      children: [
-        if (widget.item.hasLogo()) Logo(item: widget.item),
-        asyncRightDetails()
-      ],
-    );
+    return Expanded(flex: 6, child: asyncRightDetails());
   }
 
   Widget asyncRightDetails() {

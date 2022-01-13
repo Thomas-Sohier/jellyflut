@@ -7,92 +7,19 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart'
     as tab;
 
-class TabsItems extends StatefulWidget {
+class TabsItems extends StatelessWidget {
   final List<Item> items;
+  final TabController? tabController;
 
-  TabsItems({Key? key, required this.items}) : super(key: key);
-
-  @override
-  _TabsItemsState createState() => _TabsItemsState();
-}
-
-class _TabsItemsState extends State<TabsItems>
-    with SingleTickerProviderStateMixin {
-  late final double tabHeight;
-  late TabController tabController;
-  final double ITEM_HEIGHT = 200;
-  AxisDirection direction = AxisDirection.left;
-
-  @override
-  void initState() {
-    tabController = TabController(length: widget.items.length, vsync: this);
-    tabHeight = widget.items.map((e) => e.recursiveItemCount!).reduce(max) *
-        ITEM_HEIGHT;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
+  TabsItems({Key? key, required this.items, this.tabController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return tabs(widget.items);
-  }
-
-  Widget tabs(List<Item> items) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: SizedBox(
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              children: getTabsHeader(items),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 24,
-        ),
-        SizedBox(
-          height: tabHeight,
-          child: TabBarView(
-            controller: tabController,
-            physics: NeverScrollableScrollPhysics(),
-            children: getTabsChilds(items),
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> getTabsHeader(List<Item> items) {
-    final headers = <Widget>[];
-    final length = items.length;
-    items.sort((Item item1, Item item2) =>
-        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
-        length + 1);
-    items.forEach(
-        (Item item) => headers.add(tabHeader(item, items.indexOf(item))));
-    return headers;
-  }
-
-  Widget tabHeader(Item item, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: PaletteButton(
-        item.name,
-        onPressed: () => tabController.animateTo(index),
-        borderRadius: 4,
-        minWidth: 40,
-        maxWidth: 150,
-      ),
-    );
+    return TabBarView(
+        controller: tabController,
+        physics: NeverScrollableScrollPhysics(),
+        children: getTabsChilds(items));
   }
 
   List<Widget> getTabsChilds(List<Item> items) {
@@ -101,7 +28,7 @@ class _TabsItemsState extends State<TabsItems>
       final item = items.elementAt(index);
       childs.add(tab.Tab(
         item: item,
-        itemPosterHeight: ITEM_HEIGHT,
+        itemPosterHeight: 150,
       ));
     }
     return childs;
