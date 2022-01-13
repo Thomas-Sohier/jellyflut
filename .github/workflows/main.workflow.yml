@@ -120,7 +120,7 @@ jobs:
 
       - run: flutter pub get
       - run: flutter build apk
-      - run: cp build/app/outputs/flutter-apk/app-release.apk jellyflut-android.apk
+      - run: cp build/app/outputs/flutter-apk/app*.apk .
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -128,5 +128,5 @@ jobs:
           draft: true
           prerelease: false
           files: |
-            jellyflut.apk
+            app*.apk
           token: ${{ secrets.GITHUB_TOKEN }}
