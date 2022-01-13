@@ -22,6 +22,7 @@ class BookPlaceholder extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: item.getPrimaryAspectRatio(),
             child: Poster(
+                key: ValueKey(item),
                 tag: ImageType.PRIMARY,
                 heroTag: '${item.id}-${Uuid().v1()}',
                 clickable: false,

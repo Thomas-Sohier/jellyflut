@@ -96,6 +96,7 @@ class _TabletDetailsState extends State<TabletDetails> {
         child: AspectRatio(
           aspectRatio: widget.item.getPrimaryAspectRatio(showParent: true),
           child: Poster(
+            key: ValueKey(widget.item),
             item: widget.item,
             boxFit: BoxFit.cover,
             clickable: false,

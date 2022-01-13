@@ -95,6 +95,7 @@ class _ItemPosterState extends State<ItemPoster>
               aspectRatio: aspectRatio,
               child: Stack(children: [
                 Poster(
+                    key: ValueKey(widget.item),
                     showParent: widget.showParent,
                     tag: widget.tag,
                     clickable: widget.clickable,

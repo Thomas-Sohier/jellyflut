@@ -21,6 +21,7 @@ class LeftDetails extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: constraint.maxHeight * 0.9),
         child: Center(
           child: Poster(
+            key: ValueKey(item),
             item: item,
             heroTag: heroTag,
             tag: ImageType.PRIMARY,
