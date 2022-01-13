@@ -72,3 +72,4 @@ android/app/key.jks
 AppDir/**
 linux/debian/usr/**
 **.AppImage
+linux/debian/usr/bin/**
