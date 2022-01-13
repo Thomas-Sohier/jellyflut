@@ -119,7 +119,7 @@ jobs:
           ANDROID_KEYS: ${{ secrets.ANDROID_KEYS }}
 
       - run: flutter pub get
-      - run: flutter build apk
+      - run: flutter build apk --split-per-abi
       - run: cp build/app/outputs/flutter-apk/app*.apk .
 
       - name: Release
