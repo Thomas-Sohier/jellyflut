@@ -45,7 +45,10 @@ class _SongSliderState extends State<SongSlider> {
   double getSliderSize(Duration? currentPosition) {
     if (currentPosition == null) return 0;
 
-    return currentPosition.inMilliseconds.toDouble() /
+    final pos = currentPosition.inMilliseconds.toDouble() /
         musicProvider.getDuration().inMilliseconds.toDouble();
+
+    if (pos.isNaN) return 0.0;
+    return pos;
   }
 }
