@@ -56,6 +56,24 @@ class CommonStreamMPV {
     return player;
   }
 
+  static Future<Player> setupDataFromUrl({required String url}) async {
+    await MPV.initialize();
+    final player = Player();
+
+    await player.open([
+      Media(url),
+    ]);
+
+    player.volume = 50.0;
+    player.rate = 1.0;
+
+    // create common stream controller
+    final commonStream = CommonStream.parseMpvController(mpvPlayer: player);
+
+    StreamingProvider().setCommonStream(commonStream);
+    return Future.value(player);
+  }
+
   void enterFullscreen() async {
     final windowInstance = WindowManager.instance;
     await windowInstance.setFullScreen(true);

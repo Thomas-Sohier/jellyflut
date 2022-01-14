@@ -162,11 +162,28 @@ class InitStreamingUrlUtil {
       case StreamingSoftwareName.vlc:
         playerWidget = await _initVLCMediaPlayer(url);
         break;
+      case StreamingSoftwareName.mpv:
+        playerWidget = await _initMpvMediaPlayer(url);
+        break;
       case StreamingSoftwareName.exoplayer:
         playerWidget = await _initExoPlayerMediaPlayer(url);
         break;
     }
     return playerWidget;
+  }
+
+  static Future<Widget> _initMpvMediaPlayer(String url) async {
+    final player = await CommonStreamMPV.setupDataFromUrl(url: url);
+
+    // If no error while init then play
+    await player.play();
+
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        CommonControls(isComputer: true),
+      ],
+    );
   }
 
   static Future<Widget> _initVLCMediaPlayer(String url) async {
