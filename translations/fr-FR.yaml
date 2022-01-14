@@ -45,6 +45,7 @@ no_subtitles: Aucun sous-titres
 settings: Paramètres
 video_player: Lecteur vidéo
 preferred_player: Lecteur préféré
+preferred_audio_codec: Codec audio préféré
 max_bitrate: Bitrate maximum
 audio_player: Lecteur audio
 transcode_codec: Codec de transcodage

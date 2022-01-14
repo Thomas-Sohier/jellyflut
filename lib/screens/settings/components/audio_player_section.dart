@@ -17,7 +17,7 @@ class AudioPlayerSection extends StatelessWidget {
       titleTextStyle: Theme.of(context).textTheme.headline6,
       tiles: [
         SettingsTile(
-            title: 'preferred_player'.tr(),
+            title: 'preferred_audio_codec'.tr(),
             onPressed: (context) => _audioButton.currentState?.showButtonMenu(),
             trailing: TranscodeCodecPopupButton(
               popupButtonKey: _audioButton,
