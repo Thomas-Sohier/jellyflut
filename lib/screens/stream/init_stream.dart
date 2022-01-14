@@ -12,6 +12,7 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
+import 'package:jellyflut/screens/stream/CommonStream/common_stream_MPV.dart';
 import 'package:jellyflut/screens/stream/components/common_controls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_BP.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';
@@ -48,12 +49,29 @@ class InitStreamingItemUtil {
       case StreamingSoftwareName.vlc:
         playerWidget = await _initVLCMediaPlayer(_item);
         break;
+      case StreamingSoftwareName.mpv:
+        playerWidget = await _initMpvMediaPlayer(_item);
+        break;
       case StreamingSoftwareName.exoplayer:
         playerWidget = await _initExoPlayerMediaPlayer(_item);
         break;
     }
     return playerWidget;
     // await customRouter.push(StreamRoute(player: playerWidget, item: _item));
+  }
+
+  static Future<Widget> _initMpvMediaPlayer(Item item) async {
+    final player = await CommonStreamMPV.setupData(item: item);
+
+    // If no error while init then play
+    await player.play();
+
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        CommonControls(isComputer: true),
+      ],
+    );
   }
 
   static Future<Widget> _initVLCMediaPlayer(Item item) async {

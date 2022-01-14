@@ -43,6 +43,10 @@ dependencies:
   intl: ^0.17.0
   just_audio: ^0.9.18
   just_audio_libwinmedia: ^0.0.4
+  responsive_builder:
+    git:
+      url: git://github.com/georgeherby/responsive_builder.git
+      ref: master
   moor: ^4.6.1+1
   octo_image: ^1.0.1
   package_info_plus: ^1.3.0
@@ -52,9 +56,9 @@ dependencies:
   photo_view: ^0.13.0
   provider: ^6.0.2
   reactive_forms: ^11.0.0
-  responsive_builder:
+  libmpv:
     git:
-      url: git://github.com/georgeherby/responsive_builder.git
+      url: git://github.com/alexmercerind/libmpv.dart.git
       ref: master
   rxdart: ^0.27.3
   salomon_bottom_bar: ^3.2.0

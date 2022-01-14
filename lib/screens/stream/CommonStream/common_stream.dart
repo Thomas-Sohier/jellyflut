@@ -1,8 +1,10 @@
 import 'package:better_player/better_player.dart';
-import 'package:dart_vlc/dart_vlc.dart';
+import 'package:dart_vlc/dart_vlc.dart' as vlc;
+import 'package:libmpv/libmpv.dart' as mpv;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_BP.dart';
+import 'package:jellyflut/screens/stream/CommonStream/common_stream_MPV.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC_computer.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -32,8 +34,6 @@ class CommonStream {
   final BehaviorSubject<Duration> _durationStream;
   final BehaviorSubject<bool> _isPlayingStream;
   final VoidCallback _initListener;
-  final Function(VoidCallback) _addListener;
-  final Function(VoidCallback) _removeListener;
   final Function _dispose;
   final Object controller;
 
@@ -60,8 +60,6 @@ class CommonStream {
       required durationStream,
       required isPlayingStream,
       required initListener,
-      required addListener,
-      required removeListener,
       required dispose,
       required this.controller})
       : _play = play,
@@ -86,8 +84,6 @@ class CommonStream {
         _durationStream = durationStream,
         _isPlayingStream = isPlayingStream,
         _initListener = initListener,
-        _addListener = addListener,
-        _removeListener = removeListener,
         _dispose = dispose;
 
   void play() => _play();
@@ -112,8 +108,6 @@ class CommonStream {
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
   BehaviorSubject<bool> getPlayingStateStream() => _isPlayingStream;
   void initListener() => _initListener();
-  void addListener(VoidCallback listener) => _addListener(listener);
-  void removeListener(VoidCallback listener) => _removeListener(listener);
   void disposeStream() => _dispose();
 
   static CommonStream parseVLCController(
@@ -146,8 +140,6 @@ class CommonStream {
         toggleFullscreen: () => {},
         initListener: () =>
             listener != null ? vlcPlayerController.addListener(listener) : {},
-        addListener: vlcPlayerController.addListener,
-        removeListener: vlcPlayerController.removeListener,
         dispose: commonStreamVLC.stopPlayer,
         controller: vlcPlayerController);
   }
@@ -187,15 +179,12 @@ class CommonStream {
             ? betterPlayerController.videoPlayerController!
                 .addListener(listener)
             : {},
-        addListener: betterPlayerController.videoPlayerController!.addListener,
-        removeListener:
-            betterPlayerController.videoPlayerController!.removeListener,
         dispose: commonStreamBP.stopPlayer,
         controller: betterPlayerController);
   }
 
   static CommonStream parseVlcComputerController(
-      {required Player player, VoidCallback? listener}) {
+      {required vlc.Player player, VoidCallback? listener}) {
     final commonStreamVLCComputer = CommonStreamVLCComputer(player: player);
     return CommonStream._(
         pause: player.pause,
@@ -228,9 +217,44 @@ class CommonStream {
         durationStream: commonStreamVLCComputer.durationStream(),
         isPlayingStream: commonStreamVLCComputer.playingStateStream(),
         initListener: () => {},
-        addListener: commonStreamVLCComputer.addListener,
-        removeListener: (_) => commonStreamVLCComputer.removeListener(),
         dispose: commonStreamVLCComputer.stopPlayer,
         controller: player);
+  }
+
+  static CommonStream parseMpvController({required mpv.Player mpvPlayer}) {
+    final commonStreamMPV = CommonStreamMPV(mpvPlayer: mpvPlayer);
+    return CommonStream._(
+        pause: mpvPlayer.pause,
+        play: mpvPlayer.play,
+        isPlaying: () => mpvPlayer.state.isPlaying,
+        seekTo: mpvPlayer.seek,
+        duration: () => mpvPlayer.state.duration,
+        bufferingDuration: () => Duration(seconds: 0),
+        currentPosition: () => mpvPlayer.state.position,
+        isInit: true,
+        hasPip: Future.value(false),
+        pip: () => {},
+        getSubtitles: () {
+          // ignore: omit_local_variable_types
+          final List<Subtitle> subtitles = [];
+          return Future.value(subtitles);
+        },
+        setSubtitle: (_) => {},
+        disableSubtitles: () => {},
+        getAudioTracks: () {
+          // ignore: omit_local_variable_types
+          final List<AudioTrack> audioTracks = [];
+          return Future.value(audioTracks);
+        },
+        enterFullscreen: commonStreamMPV.enterFullscreen,
+        exitFullscreen: commonStreamMPV.exitFullscreen,
+        toggleFullscreen: commonStreamMPV.toggleFullscreen,
+        setAudioTrack: (_) => {},
+        positionStream: commonStreamMPV.positionStream(),
+        durationStream: commonStreamMPV.durationStream(),
+        isPlayingStream: commonStreamMPV.playingStateStream(),
+        initListener: () => {},
+        dispose: commonStreamMPV.stopPlayer,
+        controller: mpvPlayer);
   }
 }
