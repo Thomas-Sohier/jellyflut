@@ -80,6 +80,7 @@ class AppRouter extends _i13.RootStackRouter {
       return _i13.CustomPage<dynamic>(
           routeData: routeData,
           child: _i5.DownloadsParent(key: args.key),
+          transitionsBuilder: _i13.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },

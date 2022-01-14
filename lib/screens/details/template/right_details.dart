@@ -50,6 +50,7 @@ class _RightDetailsState extends State<RightDetails>
         scrollDirection: Axis.vertical,
         headerSliverBuilder: (context, value) {
           return [
+            SliverToBoxAdapter(child: SizedBox(height: 48)),
             if (item.hasLogo()) SliverToBoxAdapter(child: Logo(item: item)),
             SliverToBoxAdapter(child: SizedBox(height: 24)),
             SliverToBoxAdapter(
