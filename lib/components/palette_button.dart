@@ -69,24 +69,33 @@ class _PaletteButtonState extends State<PaletteButton>
     maxHeight = widget.maxHeight;
 
     var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
-    return IgnorePointer(
-      ignoring: !widget.enabled,
-      child: TextButton(
-          autofocus: false,
-          focusNode: _node,
-          onPressed: widget.onPressed,
-          style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: borderRadius, // <-- Radius
-                  ),
-                  backgroundColor: Colors.transparent,
-                  textStyle: TextStyle(color: Colors.black))
-              .copyWith(side: buttonBorderSide())
-              .copyWith(elevation: buttonElevation()),
-          child: widget.dominantColorFuture == null
-              ? buttonDefault(borderRadius)
-              : generatedPalette(borderRadius)),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          minHeight: minHeight,
+          minWidth: minWidth,
+          maxWidth: maxWidth,
+          maxHeight: maxHeight),
+      child: IgnorePointer(
+        ignoring: !widget.enabled,
+        child: Center(
+          child: TextButton(
+              autofocus: false,
+              focusNode: _node,
+              onPressed: widget.onPressed,
+              style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: borderRadius, // <-- Radius
+                      ),
+                      backgroundColor: Colors.transparent,
+                      textStyle: TextStyle(color: Colors.black))
+                  .copyWith(side: buttonBorderSide())
+                  .copyWith(elevation: buttonElevation()),
+              child: widget.dominantColorFuture == null
+                  ? buttonDefault(borderRadius)
+                  : generatedPalette(borderRadius)),
+        ),
+      ),
     );
   }
 

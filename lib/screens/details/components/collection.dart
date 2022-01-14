@@ -8,14 +8,15 @@ import 'package:jellyflut/screens/details/template/components/items_collection/l
 import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Collection extends StatefulWidget {
   final Item item;
   final List<Item> seasons;
-  final TabController? tabController;
+  final BehaviorSubject<int>? indexStream;
 
   const Collection(this.item,
-      {this.tabController, this.seasons = const <Item>[]});
+      {this.indexStream, this.seasons = const <Item>[]});
 
   @override
   State<StatefulWidget> createState() {
@@ -57,7 +58,7 @@ class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.only(top: 30),
       child: showCollection(),
     );
   }
@@ -80,7 +81,7 @@ class _CollectionState extends State<Collection> {
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
         return TabsItems(
-            items: widget.seasons, tabController: widget.tabController);
+            items: widget.seasons, indexStream: widget.indexStream);
       case ItemType.MUSICARTIST:
         return ListItems.fromFuture(
             itemsFuture: musicAlbumFuture,

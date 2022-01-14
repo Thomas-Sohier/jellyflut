@@ -8,7 +8,9 @@ import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RightDetails extends StatefulWidget {
   final Item item;
@@ -20,23 +22,26 @@ class RightDetails extends StatefulWidget {
 
 class _RightDetailsState extends State<RightDetails>
     with SingleTickerProviderStateMixin {
+  TabController? _tabController;
   late final Item item;
+  late final BehaviorSubject<int> _indexStream;
   late final ScrollController _scrollController;
   late final Future<Category> seasons;
-  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     item = widget.item;
     _scrollController = ScrollController();
+    _indexStream = BehaviorSubject.seeded(0);
     seasons = ItemService.getItems(
         parentId: item.id,
         limit: 100,
         fields: 'ImageTags, RecursiveItemCount',
         filter: 'IsFolder');
-    seasons.then((value) {
-      _tabController = TabController(length: value.items.length, vsync: this);
+    _tabController = TabController(length: item.childCount ?? 0, vsync: this);
+    _tabController!.addListener(() {
+      _indexStream.add(_tabController!.index);
     });
   }
 
@@ -44,12 +49,12 @@ class _RightDetailsState extends State<RightDetails>
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: NestedScrollView(
-        controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        headerSliverBuilder: (context, value) {
-          return [
+      child: SafeArea(
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          slivers: [
             SliverToBoxAdapter(child: SizedBox(height: 48)),
             if (item.hasLogo()) SliverToBoxAdapter(child: Logo(item: item)),
             SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -102,60 +107,25 @@ class _RightDetailsState extends State<RightDetails>
             SliverToBoxAdapter(child: const SizedBox(height: 12)),
             SliverToBoxAdapter(child: PeoplesDetailsWidget(item: item)),
             SliverToBoxAdapter(child: const SizedBox(height: 24)),
+            SliverPersistentHeader(
+                pinned: true,
+                floating: false,
+                delegate:
+                    TabHeader(seasons: seasons, tabController: _tabController)),
             SliverToBoxAdapter(
               child: FutureBuilder<Category>(
                   future: seasons,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return SizedBox(
-                        height: 50,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          children:
-                              getTabsHeader(snapshot.data?.items ?? <Item>[]),
-                        ),
-                      );
+                      return Collection(item,
+                          indexStream: _indexStream,
+                          seasons: snapshot.data?.items ?? <Item>[]);
                     }
                     return const SizedBox();
                   }),
             )
-          ];
-        },
-        body: FutureBuilder<Category>(
-            future: seasons,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Collection(item,
-                    tabController: _tabController,
-                    seasons: snapshot.data?.items ?? <Item>[]);
-              }
-              return const SizedBox();
-            }),
-      ),
-    );
-  }
-
-  List<Widget> getTabsHeader(List<Item> items) {
-    final headers = <Widget>[];
-    final length = items.length;
-    items.sort((Item item1, Item item2) =>
-        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
-        length + 1);
-    items.forEach(
-        (Item item) => headers.add(tabHeader(item, items.indexOf(item))));
-    return headers;
-  }
-
-  Widget tabHeader(Item item, int index) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: PaletteButton(
-        item.name,
-        onPressed: () => _tabController.animateTo(index),
-        borderRadius: 4,
-        minWidth: 40,
-        maxWidth: 150,
+          ],
+        ),
       ),
     );
   }
