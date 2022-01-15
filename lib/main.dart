@@ -6,7 +6,7 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/title_bar.dart';
+import 'package:jellyflut/components/title_bar/title_bar.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
@@ -131,31 +131,5 @@ class Jellyflut extends StatelessWidget {
                           <NavigatorObserver>[AutoRouteObserver()]),
                   routeInformationParser: customRouter.defaultRouteParser(),
                 ))));
-  }
-}
-
-final buttonColors = WindowButtonColors(
-    iconNormal: Colors.white,
-    mouseOver: Colors.grey.shade800,
-    mouseDown: Colors.grey.shade800,
-    iconMouseOver: personnal_theme.jellyLightBLue[600],
-    iconMouseDown: personnal_theme.jellyPurpleMap[700]);
-
-final closeButtonColors = WindowButtonColors(
-    mouseOver: Color(0xFFD32F2F),
-    mouseDown: Color(0xFFB71C1C),
-    iconNormal: Colors.white,
-    iconMouseOver: Colors.white);
-
-class WindowButtons extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        MinimizeWindowButton(colors: buttonColors),
-        MaximizeWindowButton(colors: buttonColors),
-        CloseWindowButton(colors: closeButtonColors),
-      ],
-    );
   }
 }

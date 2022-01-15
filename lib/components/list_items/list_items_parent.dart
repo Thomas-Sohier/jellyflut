@@ -117,8 +117,7 @@ class _ListItemsState extends State<ListItems> {
     collectionBloc.listType.add(widget.listType);
 
     // scroll listener to add items on scroll only if loadmore function as been defined
-    scrollController = ScrollController(initialScrollOffset: 5.0)
-      ..addListener(_scrollListener);
+    scrollController = ScrollController()..addListener(_scrollListener);
 
     // init Items
     if (widget.itemsFuture != null) {
