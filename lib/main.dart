@@ -16,7 +16,6 @@ import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';

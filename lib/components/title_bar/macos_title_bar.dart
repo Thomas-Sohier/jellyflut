@@ -1,6 +1,5 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/title_bar/windows_buttons.dart';
 import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 
 class MacOsTitleBar extends StatelessWidget {

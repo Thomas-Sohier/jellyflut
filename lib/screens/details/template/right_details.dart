@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
-import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';

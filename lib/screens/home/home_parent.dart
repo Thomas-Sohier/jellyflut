@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
