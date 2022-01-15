@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 
@@ -12,9 +14,24 @@ class HeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
+        SearchButton(),
+        SettingsButton(),
+        const SizedBox(width: 12),
+        DownloadButton(),
+        const SizedBox(width: 18),
+        UserIcon(),
+        const SizedBox(width: 18),
+      ],
+    );
+  }
+
+  List<Widget> logoAndText() {
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      return <Widget>[
         SizedBox(
           width: 8,
         ),
@@ -29,16 +46,9 @@ class HeaderBar extends StatelessWidget {
             style: TextStyle(
                 fontSize: 22, color: Colors.white, fontFamily: 'Quicksand'),
           ),
-        ),
-        Spacer(),
-        SearchButton(),
-        SettingsButton(),
-        const SizedBox(width: 12),
-        DownloadButton(),
-        const SizedBox(width: 18),
-        UserIcon(),
-        const SizedBox(width: 18),
-      ],
-    );
+        )
+      ];
+    }
+    return [];
   }
 }

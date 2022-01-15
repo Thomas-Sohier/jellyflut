@@ -45,27 +45,15 @@ class _HomeState extends State<Home> {
     return ChangeNotifierProvider<SearchProvider>.value(
         value: searchProvider,
         child: CustomScrollView(
-          scrollDirection: Axis.vertical,
-          controller: _scrollController,
-          slivers: [
-            SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-            SliverToBoxAdapter(
-              child: Stack(children: [
-                SearchResult(),
-                Consumer<SearchProvider>(
-                  builder: (context, value, child) {
-                    return Visibility(
-                        visible: !SearchProvider().showResults,
-                        child: HeaderBar());
-                  },
-                )
-              ]),
-            ),
-            SliverToBoxAdapter(child: Resume()),
-            SliverToBoxAdapter(child: Latest()),
-            categoryBuilder()
-          ],
-        ));
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            slivers: [
+              SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+              SliverToBoxAdapter(child: SearchResult()),
+              SliverToBoxAdapter(child: Resume()),
+              SliverToBoxAdapter(child: Latest()),
+              categoryBuilder()
+            ]));
   }
 
   /// Can show error if any

@@ -30,24 +30,19 @@ class DrawerLargeButton extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
-              borderRadius: BorderRadius.all(Radius.circular(25)),
+              borderRadius: BorderRadius.all(Radius.circular(4)),
               shape: BoxShape.rectangle),
           child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 10, 4, 10),
               child: Row(
                 children: [
-                  Icon(
-                    icon,
-                    color: isActive ? activeColor : inactiveColor,
-                    size: 28,
-                  ),
+                  Icon(icon,
+                      color: isActive ? activeColor : inactiveColor, size: 28),
                   SizedBox(width: 12),
                   Flexible(
-                      child: Text(
-                    name,
-                    style: TextStyle(
-                        color: isActive ? activeColor : inactiveColor),
-                  ))
+                      child: Text(name,
+                          style: TextStyle(
+                              color: isActive ? activeColor : inactiveColor)))
                 ],
               )),
         ));

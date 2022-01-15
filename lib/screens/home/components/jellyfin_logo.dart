@@ -7,6 +7,8 @@ class JellyfinLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image(
       image: AssetImage('img/jellyfin_logo.png'),
+      filterQuality: FilterQuality.high,
+      isAntiAlias: true,
       width: 40.0,
     );
   }

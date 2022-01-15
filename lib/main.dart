@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/title_bar.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
@@ -12,6 +14,7 @@ import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
@@ -24,6 +27,11 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
   await setUpAndroidTv();
+  doWhenWindowReady(() {
+    appWindow.alignment = Alignment.center;
+    appWindow.title = 'Jellyflut';
+    appWindow.show();
+  });
   runApp(EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
       path: 'translations',
@@ -114,11 +122,40 @@ class Jellyflut extends StatelessWidget {
                   locale: context.locale,
                   theme: personnal_theme.Theme.defaultThemeData,
                   debugShowCheckedModeBanner: false,
+                  builder: (context, child) {
+                    return TitleBar(child: child);
+                  },
                   routerDelegate: customRouter.delegate(
                       initialRoutes: [HomeRouter()],
                       navigatorObservers: () =>
                           <NavigatorObserver>[AutoRouteObserver()]),
                   routeInformationParser: customRouter.defaultRouteParser(),
                 ))));
+  }
+}
+
+final buttonColors = WindowButtonColors(
+    iconNormal: Colors.white,
+    mouseOver: Colors.grey.shade800,
+    mouseDown: Colors.grey.shade800,
+    iconMouseOver: personnal_theme.jellyLightBLue[600],
+    iconMouseDown: personnal_theme.jellyPurpleMap[700]);
+
+final closeButtonColors = WindowButtonColors(
+    mouseOver: Color(0xFFD32F2F),
+    mouseDown: Color(0xFFB71C1C),
+    iconNormal: Colors.white,
+    iconMouseOver: Colors.white);
+
+class WindowButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(colors: buttonColors),
+        MaximizeWindowButton(colors: buttonColors),
+        CloseWindowButton(colors: closeButtonColors),
+      ],
+    );
   }
 }

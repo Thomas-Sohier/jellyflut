@@ -17,14 +17,9 @@ class _DownloadsParentState extends State<DownloadsParent> {
         child: Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
                 bottom: const TabBar(
-                  tabs: [
-                    Tab(text: 'Saved items'),
-                    Tab(text: 'Active downloads')
-                  ],
-                )),
+              tabs: [Tab(text: 'Saved items'), Tab(text: 'Active downloads')],
+            )),
             body: TabBarView(
               children: [DownloadedItems(), CurrentDownloadList()],
             )));
