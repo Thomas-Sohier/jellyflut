@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
@@ -42,6 +43,9 @@ class _HomeParentState extends State<HomeParent> {
                   return Scaffold(
                       key: _scaffoldKey,
                       drawer: CustomDrawer(items: snapshot.data?.items),
+                      drawerEnableOpenDragGesture: true,
+                      drawerEdgeDragWidth:
+                          MediaQuery.of(context).size.width * 0.2,
                       appBar: AppBar(actions: [HeaderBar()]),
                       body: child);
                 },

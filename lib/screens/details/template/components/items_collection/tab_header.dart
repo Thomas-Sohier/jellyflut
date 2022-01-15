@@ -17,13 +17,15 @@ class TabHeader extends SliverPersistentHeaderDelegate {
         future: seasons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ClipRRect(
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: getTabsHeader(snapshot.data?.items ?? <Item>[]),
-                  )),
+            return SafeArea(
+              child: ClipRRect(
+                child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: getTabsHeader(snapshot.data?.items ?? <Item>[]),
+                    )),
+              ),
             );
           }
           return const SizedBox(height: 80.0);

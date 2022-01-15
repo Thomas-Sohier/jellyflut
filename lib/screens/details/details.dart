@@ -24,7 +24,7 @@ class Details extends StatefulWidget {
   }
 }
 
-class _DetailsState extends State<Details> with TickerProviderStateMixin {
+class _DetailsState extends State<Details> {
   late final DetailsBloc detailsBloc;
 
   @override

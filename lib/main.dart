@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
@@ -27,11 +29,17 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
   await setUpAndroidTv();
-  doWhenWindowReady(() {
-    appWindow.alignment = Alignment.center;
-    appWindow.title = 'Jellyflut';
-    appWindow.show();
-  });
+
+  // Prepare windows title bar while loading app
+  // Only on computer
+  if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
+    doWhenWindowReady(() {
+      appWindow.alignment = Alignment.center;
+      appWindow.title = 'Jellyflut';
+      appWindow.show();
+    });
+  }
+
   runApp(EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
       path: 'translations',
@@ -123,7 +131,13 @@ class Jellyflut extends StatelessWidget {
                   theme: personnal_theme.Theme.defaultThemeData,
                   debugShowCheckedModeBanner: false,
                   builder: (context, child) {
-                    return TitleBar(child: child);
+                    // Show only title bar on computer or we will have build error on phones
+                    if (Platform.isMacOS ||
+                        Platform.isLinux ||
+                        Platform.isWindows) {
+                      return TitleBar(child: child);
+                    }
+                    return child ?? const SizedBox();
                   },
                   routerDelegate: customRouter.delegate(
                       initialRoutes: [HomeRouter()],
