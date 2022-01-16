@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/image_type.dart';

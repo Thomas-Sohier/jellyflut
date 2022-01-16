@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/subjects.dart';
 
 class FullscreenButton extends StatefulWidget {
   final Duration duration;

@@ -12,7 +12,6 @@ import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/subtitle_button_selector.dart';
 import 'package:jellyflut/screens/stream/components/player_infos/player_infos.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommonControls extends StatefulWidget {
