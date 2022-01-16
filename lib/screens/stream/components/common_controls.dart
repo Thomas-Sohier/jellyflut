@@ -73,8 +73,7 @@ class _CommonControlsState extends State<CommonControls> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-        value: streamingProvider, child: platformBuilder());
+    return platformBuilder();
   }
 
   Widget platformBuilder() {

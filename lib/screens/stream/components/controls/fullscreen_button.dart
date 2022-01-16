@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/subjects.dart';
 
 class FullscreenButton extends StatefulWidget {
   final Duration duration;
@@ -13,14 +15,13 @@ class FullscreenButton extends StatefulWidget {
 }
 
 class _FullscreenButtonState extends State<FullscreenButton> {
+  late bool isFullscreen;
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
-  late bool isFullscreen;
 
   @override
   void initState() {
     _node = FocusNode();
-    isFullscreen = false;
     streamingProvider = StreamingProvider();
     super.initState();
   }
@@ -33,30 +34,24 @@ class _FullscreenButtonState extends State<FullscreenButton> {
 
   @override
   Widget build(BuildContext context) {
-    isFullscreen = false;
     return OutlinedButtonSelector(
       node: _node,
       onPressed: toggleFullscreen,
       shape: CircleBorder(),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
-          color: Colors.white,
-        ),
-      ),
+          padding: const EdgeInsets.all(8.0),
+          child: ChangeNotifierProvider.value(
+              value: streamingProvider,
+              child: Icon(
+                streamingProvider.isFullscreen
+                    ? Icons.fullscreen_exit
+                    : Icons.fullscreen,
+                color: Colors.white,
+              ))),
     );
   }
 
   void toggleFullscreen() {
-    if (isFullscreen) {
-      streamingProvider.commonStream!.exitFullscreen();
-      isFullscreen = false;
-      setState(() {});
-    } else {
-      streamingProvider.commonStream!.enterFullscreen();
-      isFullscreen = true;
-      setState(() {});
-    }
+    streamingProvider.toggleFullscreen();
   }
 }

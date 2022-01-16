@@ -16,6 +16,7 @@ class StreamingProvider extends ChangeNotifier {
   AudioTrack? _selectedAudioTrack;
   Subtitle? _selectedSubtitleTrack;
   Timer? _timer;
+  bool _isFullScreen = false;
 
   // Singleton
   static final StreamingProvider _streamProvider =
@@ -29,12 +30,33 @@ class StreamingProvider extends ChangeNotifier {
   AudioTrack? get selectedAudioTrack => _selectedAudioTrack;
   Subtitle? get selectedSubtitleTrack => _selectedSubtitleTrack;
   Timer? get timer => _timer;
+  bool get isFullscreen => _isFullScreen;
 
   factory StreamingProvider() {
     return _streamProvider;
   }
 
   StreamingProvider._internal();
+
+  void toggleFullscreen() {
+    if (isFullscreen) {
+      commonStream?.exitFullscreen();
+      _isFullScreen = false;
+    } else {
+      commonStream?.enterFullscreen();
+      _isFullScreen = true;
+    }
+  }
+
+  void enterFullscreen() {
+    commonStream?.enterFullscreen();
+    _isFullScreen = true;
+  }
+
+  void exitFullscreen() {
+    commonStream?.exitFullscreen();
+    _isFullScreen = false;
+  }
 
   void setItem(Item item) {
     _item = item;

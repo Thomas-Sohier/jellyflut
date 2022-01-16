@@ -134,11 +134,11 @@ class Jellyflut extends StatelessWidget {
                   localizationsDelegates: context.localizationDelegates,
                   builder: (context, child) {
                     // Show only title bar on computer or we will have build error on phones
-                    if (Platform.isMacOS ||
-                        Platform.isLinux ||
-                        Platform.isWindows) {
-                      return TitleBar(child: child);
-                    }
+                    // if (Platform.isMacOS ||
+                    //     Platform.isLinux ||
+                    //     Platform.isWindows) {
+                    //   return TitleBar(child: child);
+                    // }
                     return child ?? const SizedBox();
                   },
                   routerDelegate: customRouter.delegate(
