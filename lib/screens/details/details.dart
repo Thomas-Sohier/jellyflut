@@ -28,10 +28,10 @@ class _DetailsState extends State<Details> {
   late final DetailsBloc detailsBloc;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     detailsBloc = DetailsBloc(getDetailsInfos());
     detailsBloc.getItemBackgroundColor(widget.item);
-    super.initState();
   }
 
   @override
@@ -48,18 +48,9 @@ class _DetailsState extends State<Details> {
             child: Scaffold(
                 extendBody: true,
                 backgroundColor: Colors.transparent,
-                body: BlocListener<DetailsBloc, DetailsState>(
-                    bloc: detailsBloc,
-                    listener: (context, state) {
-                      if (state is DetailsLoadedState) {
-                        setState(() {});
-                      }
-                    },
-                    child: widget.item.type != ItemType.PHOTO
-                        ? LargeDetails(
-                            item: widget.item, heroTag: widget.heroTag)
-                        : PhotoItem(
-                            item: widget.item, heroTag: widget.heroTag)))));
+                body: widget.item.type != ItemType.PHOTO
+                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
+                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
   }
 
   DetailsInfosFuture getDetailsInfos() {
@@ -69,6 +60,7 @@ class _DetailsState extends State<Details> {
 
     return DetailsInfosFuture(
         item: item,
+        theme: Theme.of(context),
         dominantColor:
             BehaviorSubject<Future<List<Color>>>.seeded(Future.value([])));
   }

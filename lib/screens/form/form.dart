@@ -29,12 +29,12 @@ class FormBuilderState<T extends Object> extends State<FormBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<form.FormBloc<T>>(
-        create: (context) => formBloc,
+    return BlocProvider<form.FormBloc<T>>.value(
+        value: formBloc,
         child: BlocListener<form.FormBloc<T>, form.FormState<T>>(
           bloc: formBloc,
           listener: (context, state) {
-            if (state is form.FormValidState<T>) {
+            if (state is form.FormSubmittedState<T>) {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(

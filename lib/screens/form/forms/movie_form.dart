@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -21,17 +23,35 @@ class MovieForm extends StatefulWidget {
 class _MovieFormState extends State<MovieForm> {
   late final FormGroup form;
   late final Item item;
+  late final FormBloc<Item> _formBloc;
+  late final StreamSubscription<Map<String, Object?>?> _subFormChange;
 
   @override
   void initState() {
     super.initState();
     item = widget.item;
     form = buildForm();
-    listenFormChange();
+    _subFormChange = form.valueChanges.listen((f) {});
+    _subFormChange.onData((_) {
+      form.value.forEach((key, value) {
+        item[key] = value;
+      });
+
+      final i = item.copyWithItem(item: item);
+      _formBloc.add(CurrentForm<Item>(formGroup: form, value: i));
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _formBloc = BlocProvider.of<FormBloc<Item>>(context);
   }
 
   @override
   void dispose() {
+    _subFormChange.cancel();
+    form.dispose();
     super.dispose();
   }
 
@@ -95,16 +115,5 @@ class _MovieFormState extends State<MovieForm> {
             ],
           ),
         ));
-  }
-
-  void listenFormChange() {
-    form.valueChanges.listen((f) {
-      form.value.forEach((key, value) {
-        item[key] = value;
-      });
-      final i = item.copyWithItem(item: item);
-      BlocProvider.of<FormBloc<Item>>(context)
-          .add(CurrentForm<Item>(formGroup: form, value: i));
-    });
   }
 }

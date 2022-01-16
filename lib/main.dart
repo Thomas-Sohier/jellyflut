@@ -21,6 +21,8 @@ import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 import 'package:splashscreen/splashscreen.dart';
 
+import 'shared/custom_scroll_behavior.dart';
+
 void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
@@ -124,11 +126,12 @@ class Jellyflut extends StatelessWidget {
                 shortcuts: shortcuts,
                 child: MaterialApp.router(
                   title: 'JellyFlut',
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
                   locale: context.locale,
-                  theme: personnal_theme.Theme.defaultThemeData,
                   debugShowCheckedModeBanner: false,
+                  scrollBehavior: CustomScrollBehavior(),
+                  supportedLocales: context.supportedLocales,
+                  theme: personnal_theme.Theme.defaultThemeData,
+                  localizationsDelegates: context.localizationDelegates,
                   builder: (context, child) {
                     // Show only title bar on computer or we will have build error on phones
                     if (Platform.isMacOS ||

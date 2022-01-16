@@ -10,11 +10,11 @@ abstract class FormState<T> extends Equatable {
   List<Object> get props => [form];
 }
 
-class FormValidState<T extends Object> extends FormState<T> {
+class FormSubmittedState<T extends Object> extends FormState<T> {
   final String message;
   final T value;
 
-  FormValidState(
+  FormSubmittedState(
       {required this.message, required this.value, required FormGroup form})
       : super(form: form);
 

@@ -23,7 +23,7 @@ class _ManageButtonState extends State<ManageButton> {
     final i = widget.item.copyWithItem(item: widget.item);
     formBloc.add(CurrentForm<Item>(formGroup: FormGroup({}), value: i));
     formBloc.stream.listen((state) {
-      if (state is FormValidState) {
+      if (state is FormSubmittedState) {
         closeDialogAndResetForm();
       } else if (state is RefreshedState) {}
     });
@@ -108,6 +108,6 @@ class _ManageButtonState extends State<ManageButton> {
 
   void closeDialogAndResetForm() {
     customRouter.pop();
-    formBloc.add(RefreshForm());
+    // formBloc.add(RefreshForm());
   }
 }

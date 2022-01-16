@@ -23,6 +23,12 @@ class DetailsUpdateColor extends DetailsEvent {
   DetailsUpdateColor({required this.colors});
 }
 
+class DetailsUpdateTheme extends DetailsEvent {
+  final ThemeData theme;
+
+  DetailsUpdateTheme({required this.theme});
+}
+
 class DetailsUpdateDetailsInfos extends DetailsEvent {
   final DetailsInfosFuture detailsInfos;
 

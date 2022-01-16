@@ -2,12 +2,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,6 +21,7 @@ part 'details_state.dart';
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   late DetailsInfosFuture _d;
   final BehaviorSubject<List<Color>> gradientStream = BehaviorSubject();
+  final BehaviorSubject<ThemeData> themeStream = BehaviorSubject();
 
   DetailsInfosFuture get detailsInfos => _d;
 
@@ -34,9 +37,33 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       _d.item = Future.value(event.item);
       emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateColor) {
-      _d.dominantColor.add(event.colors);
-      await event.colors.then((value) => gradientStream.add(value));
+      _updateTheme(event, emit);
+    } else if (event is DetailsUpdateTheme) {
+      themeStream.add(event.theme);
+      _d.theme = event.theme;
+      emit(DetailsLoadedState(_d));
     }
+  }
+
+  void _updateTheme(DetailsUpdateColor event, Emitter<DetailsState> emit) {
+    final colors = event.colors;
+    _d.dominantColor.add(colors);
+
+    event.colors.then((List<Color> c) {
+      gradientStream.add(c);
+      if (c.isNotEmpty) {
+        final paletteColor1 =
+            ColorUtil.changeColorSaturation(c[1], 0.5).withOpacity(0.60);
+        final paletteColor2 =
+            ColorUtil.changeColorSaturation(c[2], 0.5).withOpacity(0.60);
+        final middleColor =
+            Color.lerp(paletteColor1, paletteColor2, 0.5) ?? paletteColor2;
+        final theme = Luminance.computeLuminance(middleColor);
+        _d.theme = theme;
+        themeStream.add(theme);
+        emit(DetailsLoadedState(_d));
+      }
+    });
   }
 
   void getItemBackgroundColor(final Item item,

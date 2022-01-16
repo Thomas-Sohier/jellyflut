@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
@@ -23,7 +25,9 @@ class RightDetails extends StatefulWidget {
 class _RightDetailsState extends State<RightDetails>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  late final Item item;
+  late ThemeData _theme;
+  late Item item;
+  late final DetailsBloc _detailsBloc;
   late final BehaviorSubject<int> _indexStream;
   late final ScrollController _scrollController;
   late final Future<Category> seasons;
@@ -32,6 +36,7 @@ class _RightDetailsState extends State<RightDetails>
   void initState() {
     super.initState();
     item = widget.item;
+    _detailsBloc = BlocProvider.of<DetailsBloc>(context);
     _scrollController = ScrollController();
     _indexStream = BehaviorSubject.seeded(0);
     seasons = ItemService.getItems(
@@ -46,7 +51,28 @@ class _RightDetailsState extends State<RightDetails>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _theme = Theme.of(context);
+  }
+
+  @override
+  void didUpdateWidget(RightDetails oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    item = widget.item;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return StreamBuilder<ThemeData>(
+      stream: _detailsBloc.themeStream,
+      builder: (context, snapshot) {
+        return Theme(data: snapshot.data ?? _theme, child: body(item));
+      },
+    );
+  }
+
+  Widget body(final Item item) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: CustomScrollView(

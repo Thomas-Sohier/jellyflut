@@ -38,7 +38,7 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
 
       // Update item
       await ItemService.updateItemFromForm(id: item.id, form: form)
-          .then((_) => emit(FormValidState<T>(
+          .then((_) => emit(FormSubmittedState<T>(
               message: 'Item updated', value: value, form: formGroup)))
           .onError((e, s) =>
               emit(FormErrorState(form: formGroup, error: e.toString())));
