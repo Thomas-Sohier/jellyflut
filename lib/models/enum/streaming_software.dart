@@ -1,4 +1,4 @@
-enum StreamingSoftwareName { vlc, exoplayer, mpv }
+enum StreamingSoftwareName { vlc, exoplayer }
 
 class StreamingSoftware {
   final StreamingSoftwareName name;
@@ -6,7 +6,7 @@ class StreamingSoftware {
   StreamingSoftware({required this.name});
 }
 
-enum StreamingSoftwareComputerName { vlc, mpv }
+enum StreamingSoftwareComputerName { vlc }
 
 class StreamingSoftwareComputer {
   final StreamingSoftwareComputerName name;

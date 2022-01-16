@@ -1,10 +1,10 @@
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:libmpv/libmpv.dart' as mpv;
+// import 'package:libmpv/libmpv.dart' as mpv;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_BP.dart';
-import 'package:jellyflut/screens/stream/CommonStream/common_stream_MPV.dart';
+// import 'package:jellyflut/screens/stream/CommonStream/common_stream_MPV.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC_computer.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -221,40 +221,40 @@ class CommonStream {
         controller: player);
   }
 
-  static CommonStream parseMpvController({required mpv.Player mpvPlayer}) {
-    final commonStreamMPV = CommonStreamMPV(mpvPlayer: mpvPlayer);
-    return CommonStream._(
-        pause: mpvPlayer.pause,
-        play: mpvPlayer.play,
-        isPlaying: () => mpvPlayer.state.isPlaying,
-        seekTo: mpvPlayer.seek,
-        duration: () => mpvPlayer.state.duration,
-        bufferingDuration: () => Duration(seconds: 0),
-        currentPosition: () => mpvPlayer.state.position,
-        isInit: true,
-        hasPip: Future.value(false),
-        pip: () => {},
-        getSubtitles: () {
-          // ignore: omit_local_variable_types
-          final List<Subtitle> subtitles = [];
-          return Future.value(subtitles);
-        },
-        setSubtitle: (_) => {},
-        disableSubtitles: () => {},
-        getAudioTracks: () {
-          // ignore: omit_local_variable_types
-          final List<AudioTrack> audioTracks = [];
-          return Future.value(audioTracks);
-        },
-        enterFullscreen: commonStreamMPV.enterFullscreen,
-        exitFullscreen: commonStreamMPV.exitFullscreen,
-        toggleFullscreen: commonStreamMPV.toggleFullscreen,
-        setAudioTrack: (_) => {},
-        positionStream: commonStreamMPV.positionStream(),
-        durationStream: commonStreamMPV.durationStream(),
-        isPlayingStream: commonStreamMPV.playingStateStream(),
-        initListener: () => {},
-        dispose: commonStreamMPV.stopPlayer,
-        controller: mpvPlayer);
-  }
+  // static CommonStream parseMpvController({required mpv.Player mpvPlayer}) {
+  //   final commonStreamMPV = CommonStreamMPV(mpvPlayer: mpvPlayer);
+  //   return CommonStream._(
+  //       pause: mpvPlayer.pause,
+  //       play: mpvPlayer.play,
+  //       isPlaying: () => mpvPlayer.state.isPlaying,
+  //       seekTo: mpvPlayer.seek,
+  //       duration: () => mpvPlayer.state.duration,
+  //       bufferingDuration: () => Duration(seconds: 0),
+  //       currentPosition: () => mpvPlayer.state.position,
+  //       isInit: true,
+  //       hasPip: Future.value(false),
+  //       pip: () => {},
+  //       getSubtitles: () {
+  //         // ignore: omit_local_variable_types
+  //         final List<Subtitle> subtitles = [];
+  //         return Future.value(subtitles);
+  //       },
+  //       setSubtitle: (_) => {},
+  //       disableSubtitles: () => {},
+  //       getAudioTracks: () {
+  //         // ignore: omit_local_variable_types
+  //         final List<AudioTrack> audioTracks = [];
+  //         return Future.value(audioTracks);
+  //       },
+  //       enterFullscreen: commonStreamMPV.enterFullscreen,
+  //       exitFullscreen: commonStreamMPV.exitFullscreen,
+  //       toggleFullscreen: commonStreamMPV.toggleFullscreen,
+  //       setAudioTrack: (_) => {},
+  //       positionStream: commonStreamMPV.positionStream(),
+  //       durationStream: commonStreamMPV.durationStream(),
+  //       isPlayingStream: commonStreamMPV.playingStateStream(),
+  //       initListener: () => {},
+  //       dispose: commonStreamMPV.stopPlayer,
+  //       controller: mpvPlayer);
+  // }
 }
