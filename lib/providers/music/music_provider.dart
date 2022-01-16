@@ -84,8 +84,8 @@ class MusicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playAtIndex(int index) {
-    _audioPlayer!.seek(Duration.zero, index: index);
+  void playAtIndex(int index) async {
+    await _audioPlayer!.seek(Duration(seconds: 0), index: index);
     notifyListeners();
   }
 

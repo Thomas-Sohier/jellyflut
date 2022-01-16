@@ -33,16 +33,17 @@ class _SongPlaylistState extends State<SongPlaylist> {
           axisDirection: AxisDirection.down,
           color: Theme.of(context).colorScheme.primary,
           child: ChangeNotifierProvider.value(
-              value: musicProvider,
-              child: ReorderableListView.builder(
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.vertical,
-                itemCount: musicProvider.getPlayList().length,
-                itemBuilder: (context, index) =>
-                    playlistListItem(index, musicProvider.getPlayList()[index]),
-                onReorder: (int oldIndex, int newIndex) =>
-                    musicProvider.moveMusicItem(oldIndex, newIndex),
-              )));
+            value: musicProvider,
+            child: ReorderableListView.builder(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              itemCount: musicProvider.getPlayList().length,
+              itemBuilder: (context, index) =>
+                  playlistListItem(index, musicProvider.getPlayList()[index]),
+              onReorder: (int oldIndex, int newIndex) =>
+                  musicProvider.moveMusicItem(oldIndex, newIndex),
+            ),
+          ));
     });
   }
 

@@ -85,13 +85,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
           child: Container(
               color: ColorUtil.darken(Colors.grey.shade900, 0.02),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   AppBar(
                       leading: const SizedBox(),
                       leadingWidth: 0,
                       toolbarTextStyle: Theme.of(context).textTheme.headline2,
                       title: Text('Playlist')),
-                  SongPlaylist(),
+                  Flexible(child: SongPlaylist()),
                 ],
               )),
         ),
