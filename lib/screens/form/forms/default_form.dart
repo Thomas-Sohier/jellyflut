@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -20,17 +22,32 @@ class DefaultForm extends StatefulWidget {
 class _DefaultFormState extends State<DefaultForm> {
   late final FormGroup form;
   late final Item item;
+  late final FormBloc<Item> _formBloc;
+  late final StreamSubscription<ControlStatus> _subFormChange;
 
   @override
   void initState() {
     super.initState();
     item = widget.item;
     form = buildForm();
-    listenFormChange();
+    _subFormChange = form.statusChanged.listen((event) {});
+    _subFormChange.onData((status) {
+      if (status == ControlStatus.valid) {
+        _formBloc.add(CurrentForm<Item>(formGroup: form, value: item));
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _formBloc = BlocProvider.of<FormBloc<Item>>(context);
   }
 
   @override
   void dispose() {
+    _subFormChange.cancel();
+    form.dispose();
     super.dispose();
   }
 
@@ -69,15 +86,5 @@ class _DefaultFormState extends State<DefaultForm> {
             ],
           ),
         ));
-  }
-
-  void listenFormChange() {
-    form.valueChanges.listen((f) {
-      form.value.forEach((key, value) {
-        item[key] = value;
-      });
-      BlocProvider.of<FormBloc<Item>>(context)
-          .add(CurrentForm<Item>(formGroup: form, value: item));
-    });
   }
 }

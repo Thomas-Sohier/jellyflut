@@ -100,9 +100,7 @@ class _ManageButtonState extends State<ManageButton> {
 
   void submitFormAndUpdateView() {
     formBloc.add(FormSubmitted());
-
-    final item = formBloc.value.copyWithItem(item: formBloc.value);
-    detailsBloc.add(DetailsUpdateItem(item: item));
+    detailsBloc.add(DetailsUpdateItem(item: formBloc.value));
     formBloc.add(RefreshForm());
   }
 

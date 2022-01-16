@@ -34,7 +34,10 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
     if (formGroup.valid) {
       // Add necesary data to the item to update it
       final form = Map<String, Object?>.from(formGroup.value);
-      _defaultRequiredValue(form, item as Item);
+      item as Item;
+
+      _parseFormToValue(form, item);
+      _defaultRequiredValue(form, item);
 
       // Update item
       await ItemService.updateItemFromForm(id: item.id, form: form)
@@ -55,5 +58,13 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
     form.putIfAbsent(
         FieldsEnum.LOCKEDFIELDS.getName(), () => item.lockedFields);
     form.putIfAbsent(FieldsEnum.PROVIDERIDS.getName(), () => item.providerIds);
+  }
+
+  void _parseFormToValue(final Map<String, Object?> form, final Item item) {
+    final form = Map<String, Object?>.from(formGroup.value);
+    form.forEach((key, value) {
+      item[key] = value;
+    });
+    value = item as T;
   }
 }

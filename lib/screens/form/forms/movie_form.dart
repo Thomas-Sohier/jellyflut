@@ -24,21 +24,18 @@ class _MovieFormState extends State<MovieForm> {
   late final FormGroup form;
   late final Item item;
   late final FormBloc<Item> _formBloc;
-  late final StreamSubscription<Map<String, Object?>?> _subFormChange;
+  late final StreamSubscription<ControlStatus> _subFormChange;
 
   @override
   void initState() {
     super.initState();
     item = widget.item;
     form = buildForm();
-    _subFormChange = form.valueChanges.listen((f) {});
-    _subFormChange.onData((_) {
-      form.value.forEach((key, value) {
-        item[key] = value;
-      });
-
-      final i = item.copyWithItem(item: item);
-      _formBloc.add(CurrentForm<Item>(formGroup: form, value: i));
+    _subFormChange = form.statusChanged.listen((event) {});
+    _subFormChange.onData((status) {
+      if (status == ControlStatus.valid) {
+        _formBloc.add(CurrentForm<Item>(formGroup: form, value: item));
+      }
     });
   }
 

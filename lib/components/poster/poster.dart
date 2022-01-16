@@ -95,7 +95,7 @@ class _PosterState extends State<Poster> {
   Widget dropShadowBuilder(Widget child) {
     if (widget.dropShadow) {
       return DropShadow(
-          blurRadius: 8, offset: const Offset(0, 0), child: child);
+          blurRadius: 8, spread: 1, offset: const Offset(0, 0), child: child);
     }
     return child;
   }

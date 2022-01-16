@@ -213,7 +213,7 @@ class Item {
   int? height;
 
   factory Item.fromMap(Map<String, dynamic> json) => Item(
-        name: json['Name'],
+        name: json['Name'] ?? '',
         originalTitle: json['OriginalTitle'],
         serverId: json['ServerId'],
         id: json['Id'],
