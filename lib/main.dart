@@ -8,7 +8,6 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/title_bar/title_bar.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
