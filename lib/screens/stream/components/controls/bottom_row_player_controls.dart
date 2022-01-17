@@ -32,6 +32,7 @@ class BottomRowPlayerControls extends StatelessWidget {
   Widget largeBottomRow() {
     return Column(
       children: [
+        // Row(children: [SubtitleBox()]),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

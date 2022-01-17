@@ -13,6 +13,6 @@ class SubmitButton extends StatelessWidget {
             overlayColor: submitButtonBackground(),
             backgroundColor: submitButtonBackground(),
             foregroundColor: submitButtonForeground()),
-        child: Text('Submit', style: TextStyle(fontSize: 18)));
+        child: Text('submit'.tr(), style: TextStyle(fontSize: 18)));
   }
 }

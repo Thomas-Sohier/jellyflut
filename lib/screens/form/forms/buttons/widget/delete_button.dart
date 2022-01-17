@@ -1,8 +1,8 @@
 part of '../buttons.dart';
 
-class CancelButton extends StatelessWidget {
+class DeleteButton extends StatelessWidget {
   final VoidCallback onPressed;
-  const CancelButton({Key? key, required this.onPressed}) : super(key: key);
+  const DeleteButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +12,6 @@ class CancelButton extends StatelessWidget {
             overlayColor: cancelButtonBackground(),
             backgroundColor: cancelButtonBackground(),
             foregroundColor: cancelButtonForeground()),
-        child: Text('cancel'.tr(), style: TextStyle(fontSize: 18)));
+        child: Text('delete'.tr(), style: TextStyle(fontSize: 18)));
   }
 }

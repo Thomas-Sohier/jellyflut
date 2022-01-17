@@ -18,9 +18,10 @@ class CommonStreamVLCComputer {
   const CommonStreamVLCComputer({required this.player});
 
   static Future<Player> setupData({required Item item}) async {
-    final streamURL = await item.getItemURL(directPlay: true);
+    final streamURL = await item.getItemURL();
     final _player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
+      '--no-spu'
     ]);
 
     // Detect if media is available locdally or only remotely
