@@ -27,7 +27,8 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         descendantsAreFocusable: false,
         skipTraversal: true);
     streamingProvider = StreamingProvider();
-    subtitleSelectedIndex = streamingProvider.selectedSubtitleTrack?.index ?? 0;
+    subtitleSelectedIndex =
+        streamingProvider.selectedSubtitleTrack?.index ?? -1;
     _popupMenuButtonKey = GlobalKey();
   }
 
@@ -73,42 +74,91 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
 
     // TITLE
     list.add(PopupMenuItem(child: Text('select_subtitle'.tr())));
-    list.add(PopupMenuDivider(height: 10));
 
     if (subtitlesTracks.isEmpty) {
       list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
       return list;
     }
 
+    // If subtitles list is not empty the we show disabled button at start of list
+    final disabledSubtitle =
+        Subtitle(index: -1, name: 'Disabled', mediaType: MediaType.LOCAL);
+    list.add(
+      CheckedPopupMenuItem(
+        value: disabledSubtitle,
+        checked: isSelected(disabledSubtitle),
+        child: Text(
+          'Disabled',
+        ),
+      ),
+    );
+
     // LOCAL SUBTITLES
     final localSubtitles = subtitlesTracks
         .where((element) => element.mediaType == MediaType.LOCAL)
         .toList();
-    for (var index = 0; index < localSubtitles.length; index++) {
-      list.add(
-        CheckedPopupMenuItem(
-          value: localSubtitles[index],
-          checked: isSelected(subtitlesTracks[index]),
-          child: Text(localSubtitles[index].name),
-        ),
-      );
+    list.add(PopupMenuDivider(height: 10));
+    list.add(PopupMenuItem(
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      height: 30,
+      enabled: false,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: 4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Colors.grey.shade900),
+          child: Text('Local subtitles',
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyMedium?.color))),
+    ));
+    if (localSubtitles.isEmpty) {
+      list.add(PopupMenuItem(
+          enabled: false,
+          child: Align(
+              alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
+    } else {
+      for (var index = 0; index < localSubtitles.length; index++) {
+        list.add(
+          CheckedPopupMenuItem(
+            value: localSubtitles[index],
+            checked: isSelected(subtitlesTracks[index]),
+            child: Text(localSubtitles[index].name),
+          ),
+        );
+      }
     }
 
     // REMOTE SUBTITLES
-    list.add(PopupMenuItem(child: Text('Remote subtitles')));
     list.add(PopupMenuDivider(height: 10));
+    list.add(PopupMenuItem(
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      height: 30,
+      enabled: false,
+      child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: 4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Colors.grey.shade900),
+          child: Text('Remote subtitles',
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyMedium?.color))),
+    ));
 
     final remoteSubtitles = subtitlesTracks
         .where((element) => element.mediaType == MediaType.REMOTE)
         .toList();
-    for (var index = 0; index < remoteSubtitles.length; index++) {
-      list.add(
-        CheckedPopupMenuItem(
+    if (remoteSubtitles.isEmpty) {
+      list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
+    } else {
+      for (var index = 0; index < remoteSubtitles.length; index++) {
+        list.add(CheckedPopupMenuItem(
           value: remoteSubtitles[index],
           checked: isSelected(subtitlesTracks[index]),
           child: Text(remoteSubtitles[index].name),
-        ),
-      );
+        ));
+      }
     }
     // REMOTE SUBTITLES
     return list;

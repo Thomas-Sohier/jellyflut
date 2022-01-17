@@ -1,16 +1,12 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart'
-    as stream_subtitle;
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:collection/collection.dart';
-import 'package:subtitle/subtitle.dart';
+import 'package:subtitle/subtitle.dart' hide Subtitle;
 
 class SubtitleBox extends StatefulWidget {
   SubtitleBox({Key? key}) : super(key: key);
@@ -31,7 +27,8 @@ class _SubtitleBoxState extends State<SubtitleBox> {
   void initState() {
     streamingProvider = StreamingProvider();
     subtitlesStream = BehaviorSubject();
-    subtitleControllerFuture = getSub(streamingProvider.selectedSubtitleTrack);
+    subtitleControllerFuture =
+        streamingProvider.getSub(streamingProvider.selectedSubtitleTrack);
     _subPosition =
         streamingProvider.commonStream?.getPositionStream().listen((value) {});
     _subEvent = streamingProvider.streamingEvent.listen((event) {});
@@ -46,7 +43,7 @@ class _SubtitleBoxState extends State<SubtitleBox> {
         .textTheme
         .bodyText1
         ?.copyWith(color: Colors.white)
-        .copyWith(fontSize: 22);
+        .copyWith(fontSize: 32);
   }
 
   @override
@@ -62,13 +59,17 @@ class _SubtitleBoxState extends State<SubtitleBox> {
       subtitlesStream.add(null);
       // This works now try to make it faster
       subtitleControllerFuture =
-          getSub(streamingProvider.selectedSubtitleTrack);
+          streamingProvider.getSub(streamingProvider.selectedSubtitleTrack);
       subtitleControllerFuture.then(streamingPositionListener);
     }
   }
 
   void streamingPositionListener(SubtitleController? subtitleController) {
-    if (subtitleController == null) return;
+    if (subtitleController == null) {
+      subtitlesStream.add(null);
+      _subPosition?.cancel();
+      return;
+    }
 
     _subPosition?.onData(
         (position) => subtitlePositionListener(subtitleController, position));
@@ -82,6 +83,8 @@ class _SubtitleBoxState extends State<SubtitleBox> {
     // });
     if (sub != null) {
       subtitlesStream.add(sub.data);
+    } else {
+      subtitlesStream.add(null);
     }
   }
 
@@ -90,34 +93,34 @@ class _SubtitleBoxState extends State<SubtitleBox> {
     return StreamBuilder<String?>(
         stream: subtitlesStream.stream,
         builder: (context, ss) {
-          if (ss.data != null) {
-            return Container(
-                alignment: Alignment.center,
-                child: Text(ss.data!, style: subtitleStyle));
+          if (ss.hasData && ss.data != null) {
+            return subtitleContainer(ss.data!);
           }
           return const SizedBox();
         });
   }
 
-  Future<SubtitleController?> getSub(stream_subtitle.Subtitle? subtitle) async {
-    if (subtitle == null) return null;
-
-    final subUrl = StreamingService.getSubtitleURL(
-        streamingProvider.item!.id, 'vtt', subtitle.jellyfinSubtitleIndex!);
-
-    return await Dio()
-        .get<dynamic>(subUrl)
-        .then<SubtitleController>((subFile) async {
-      final controller = SubtitleController(
-          provider: SubtitleProvider.fromString(
-        data: subFile.data ?? '',
-        type: SubtitleType.vtt,
-      ));
-
-      await controller.initial();
-      return controller;
-    }).catchError((error) {
-      log(error);
-    });
+  Widget subtitleContainer(String text) {
+    return LayoutBuilder(
+      builder: (_, constraints) {
+        return Align(
+          alignment: Alignment.center,
+          child: Stack(alignment: Alignment.center, children: <Widget>[
+            Text(text,
+                style: subtitleStyle
+                    ?.copyWith(fontSize: constraints.maxHeight * 0.1)
+                    .copyWith(
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 4
+                        ..color = Colors.black,
+                    )),
+            Text(text,
+                style: subtitleStyle?.copyWith(
+                    fontSize: constraints.maxHeight * 0.1))
+          ]),
+        );
+      },
+    );
   }
 }
