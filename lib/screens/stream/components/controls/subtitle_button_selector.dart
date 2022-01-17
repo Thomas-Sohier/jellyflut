@@ -98,20 +98,12 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         .where((element) => element.mediaType == MediaType.LOCAL)
         .toList();
     list.add(PopupMenuDivider(height: 10));
-    list.add(PopupMenuItem(
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      height: 30,
-      enabled: false,
-      child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              color: Colors.grey.shade900),
-          child: Text('Local subtitles',
-              style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyMedium?.color))),
-    ));
+    list.add(listItemTitle(
+        child: Text(
+      'Local subtitles',
+      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+    )));
+
     if (localSubtitles.isEmpty) {
       list.add(PopupMenuItem(
           enabled: false,
@@ -131,20 +123,13 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
 
     // REMOTE SUBTITLES
     list.add(PopupMenuDivider(height: 10));
-    list.add(PopupMenuItem(
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      height: 30,
-      enabled: false,
-      child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(vertical: 4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              color: Colors.grey.shade900),
-          child: Text('Remote subtitles',
-              style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyMedium?.color))),
-    ));
+    list.add(
+      listItemTitle(
+          child: Text(
+        'Remote subtitles',
+        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+      )),
+    );
 
     final remoteSubtitles = subtitlesTracks
         .where((element) => element.mediaType == MediaType.REMOTE)
@@ -162,6 +147,20 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     }
     // REMOTE SUBTITLES
     return list;
+  }
+
+  PopupMenuEntry<Subtitle> listItemTitle({required Widget child}) {
+    return PopupMenuItem(
+        padding: EdgeInsets.symmetric(horizontal: 4),
+        height: 30,
+        enabled: false,
+        child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                color: Colors.grey.shade900),
+            child: child));
   }
 
   bool isSelected(Subtitle subtitle) {

@@ -21,6 +21,7 @@ class CommonStreamVLCComputer {
     final streamURL = await item.getItemURL(directPlay: true);
     final _player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
+      '--no-spu'
     ]);
 
     // Detect if media is available locdally or only remotely
