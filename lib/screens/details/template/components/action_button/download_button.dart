@@ -43,8 +43,18 @@ class _DownloadButtonState extends State<DownloadButton> {
 
   @override
   Widget build(BuildContext context) {
-    return PaletteButton('download'.tr(),
-        onPressed: downloadItem,
+    // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
+    return PaletteButton('download'.tr(), onPressed: () {
+      setState(() => buttonEnabled = false);
+      downloadProvider
+          .downloadItem(widget.item, percentDownload, dialogRedownload)
+          .catchError((e) => SnackbarUtil.message(
+              'Error while downloading. ${e.toString()}',
+              Icons.file_download_off,
+              Colors.red))
+          .whenComplete(
+              () => mounted ? setState(() => buttonEnabled = true) : {});
+    },
         minWidth: 40,
         maxWidth: widget.maxWidth,
         borderRadius: 4,
@@ -78,61 +88,8 @@ class _DownloadButtonState extends State<DownloadButton> {
             child: Icon(Icons.download, color: Colors.black87)));
   }
 
-  void downloadItem() async {
-    try {
-      setState(() => buttonEnabled = false);
-      final downloadUrl = FileService.getDownloadFileUrl(widget.item.id);
-      final canDownload = await FileService.requestStorage();
-      final downloadPath = await FileService.getStoragePathItem(widget.item);
-
-      if (canDownload) {
-        final fileExist = await FileService.isItemDownloaded(widget.item.id);
-
-        // If file seems to already exist we show a dialog to warn user about possible overwriting of current file
-        if (fileExist) {
-          final shouldOverwrite = await dialogRedownload();
-          if (shouldOverwrite == false) {
-            return setState(() => buttonEnabled = true);
-          }
-        }
-
-        // Add download to provider to keep track of it
-        final cancelToken = CancelToken();
-        final itemDownload = ItemDownload(
-            item: widget.item,
-            downloadValueWatcher: percentDownload,
-            cancelToken: cancelToken);
-
-        await DownloadProvider().addDownload(
-            context: customRouter.navigatorKey.currentContext,
-            download: itemDownload,
-            downloadPath: downloadPath,
-            downloadUrl: downloadUrl,
-            callback: () {
-              if (mounted) setState(() => buttonEnabled = true);
-            },
-            percentDownload: percentDownload);
-      } else {
-        SnackbarUtil.message(
-            context,
-            'Do not have enough permission to download file',
-            Icons.file_download_off,
-            Colors.red);
-      }
-    } catch (e) {
-      if (mounted) {
-        log(e.toString());
-        SnackbarUtil.message(customRouter.navigatorKey.currentContext,
-            e.toString(), Icons.file_download_off, Colors.red);
-      }
-    }
-    if (mounted) {
-      setState(() => buttonEnabled = true);
-    }
-  }
-
   Future<bool?> dialogRedownload() async {
-    return showDialog<bool>(
+    return showDialog<bool?>(
         context: context,
         barrierDismissible: false,
         useSafeArea: true,
@@ -163,6 +120,14 @@ class _DownloadButtonState extends State<DownloadButton> {
                     ]))),
             actions: [
               CancelButton(onPressed: () => customRouter.pop<bool>(false)),
+              DeleteButton(onPressed: () {
+                AppDatabase()
+                    .getDatabase
+                    .downloadsDao
+                    .getDownloadById(widget.item.id)
+                    .then(downloadProvider.deleteDownloadedFile);
+                customRouter.pop<bool>(false);
+              }),
               SubmitButton(onPressed: () => customRouter.pop<bool>(true))
             ],
           );

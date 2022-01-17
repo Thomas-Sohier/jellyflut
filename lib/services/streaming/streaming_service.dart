@@ -8,6 +8,7 @@ import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
+import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
@@ -223,6 +224,12 @@ class StreamingService {
       final deviceProfile = await getExoplayerProfile();
       return json
           .encode(DeviceProfileParent(deviceProfile: deviceProfile).toMap());
+    } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      final playerProfile =
+          PlayersProfile().getByName(PlayerProfileName.VLC_COMPUTER);
+      return json.encode(
+          DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile)
+              .toMap());
     }
     return null;
   }

@@ -31,7 +31,7 @@ class CommonStreamVLC {
 
   static Future<VlcPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final streamURL = await item.getItemURL(directPlay: true);
+    final streamURL = await item.getItemURL();
 
     // Detect if media is available locdally or only remotely
     late final vlcPlayerController;

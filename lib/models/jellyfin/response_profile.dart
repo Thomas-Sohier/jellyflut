@@ -5,7 +5,7 @@ class ResponseProfile {
     required this.mimeType,
   });
 
-  Type type;
+  String type;
   String container;
   String mimeType;
 

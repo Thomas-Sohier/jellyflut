@@ -5,7 +5,6 @@ import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.d
 import 'package:jellyflut/screens/stream/components/controls/play_pause_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/video_player_progress_bar.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import '../player_infos/subtitle_box.dart';
 import 'chapter_button.dart';
 
 class BottomRowPlayerControls extends StatelessWidget {

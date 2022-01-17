@@ -158,6 +158,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
           width: double.infinity,
           height: double.infinity,
           boxFit: BoxFit.cover,
+          showParent: false,
           item: widget.itemDownload.item),
     );
   }

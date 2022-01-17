@@ -21,7 +21,7 @@ class StreamingProvider extends ChangeNotifier {
   PlayBackInfos? _playBackInfos;
   String? _url;
   CommonStream? _commonStream;
-  bool? _isDirectPlay;
+  bool _isDirectPlay = true;
   AudioTrack? _selectedAudioTrack;
   Subtitle? _selectedSubtitleTrack;
   Timer? _timer;

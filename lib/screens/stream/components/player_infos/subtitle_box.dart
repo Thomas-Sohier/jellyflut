@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart';
-import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:subtitle/subtitle.dart' hide Subtitle;
 

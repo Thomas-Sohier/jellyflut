@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/src/public_ext.dart';
@@ -6,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/components/palette_button.dart';
+import 'package:collection/collection.dart';
+import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/downloads/item_download.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
