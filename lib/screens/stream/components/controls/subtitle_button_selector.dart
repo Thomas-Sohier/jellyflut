@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 class SubtitleButtonSelector extends StatefulWidget {
@@ -48,7 +49,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   Widget changeSubtitle(BuildContext context) {
     return IgnorePointer(
         child: FutureBuilder<List<Subtitle>>(
-      future: streamingProvider.commonStream!.getSubtitles(),
+      future: streamingProvider.getSubtitles(),
       builder: (context, snapshot) => PopupMenuButton<Subtitle>(
           key: _popupMenuButtonKey,
           icon: Icon(
@@ -67,31 +68,49 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   }
 
   List<PopupMenuEntry<Subtitle>> _audioTracksListTile(
-      List<Subtitle> audioTracks) {
+      List<Subtitle> subtitlesTracks) {
     final list = <PopupMenuEntry<Subtitle>>[];
-    list.add(
-      PopupMenuItem(
-        child: Text('select_subtitle'.tr()),
-      ),
-    );
-    list.add(
-      PopupMenuDivider(
-        height: 10,
-      ),
-    );
-    if (audioTracks.isEmpty) {
+
+    // TITLE
+    list.add(PopupMenuItem(child: Text('select_subtitle'.tr())));
+    list.add(PopupMenuDivider(height: 10));
+
+    if (subtitlesTracks.isEmpty) {
       list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
       return list;
     }
-    for (var index = 0; index < audioTracks.length; index++) {
+
+    // LOCAL SUBTITLES
+    final localSubtitles = subtitlesTracks
+        .where((element) => element.mediaType == MediaType.LOCAL)
+        .toList();
+    for (var index = 0; index < localSubtitles.length; index++) {
       list.add(
         CheckedPopupMenuItem(
-          value: audioTracks[index],
-          checked: isSelected(audioTracks[index]),
-          child: Text(audioTracks[index].name),
+          value: localSubtitles[index],
+          checked: isSelected(subtitlesTracks[index]),
+          child: Text(localSubtitles[index].name),
         ),
       );
     }
+
+    // REMOTE SUBTITLES
+    list.add(PopupMenuItem(child: Text('Remote subtitles')));
+    list.add(PopupMenuDivider(height: 10));
+
+    final remoteSubtitles = subtitlesTracks
+        .where((element) => element.mediaType == MediaType.REMOTE)
+        .toList();
+    for (var index = 0; index < remoteSubtitles.length; index++) {
+      list.add(
+        CheckedPopupMenuItem(
+          value: remoteSubtitles[index],
+          checked: isSelected(subtitlesTracks[index]),
+          child: Text(remoteSubtitles[index].name),
+        ),
+      );
+    }
+    // REMOTE SUBTITLES
     return list;
   }
 
@@ -101,12 +120,21 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
 
   void disableSubtitles(Subtitle subtitle) {
     subtitleSelectedIndex = subtitle.index;
-    streamingProvider.commonStream!.disableSubtitles();
+
+    // We tell the player to hide subtitles only if it's local
+    if (subtitle.mediaType == MediaType.LOCAL) {
+      streamingProvider.commonStream!.disableSubtitles();
+    }
   }
 
   void setSubtitle(Subtitle subtitle) async {
     subtitleSelectedIndex = subtitle.index;
     streamingProvider.setSubtitleStreamIndex(subtitle);
-    streamingProvider.commonStream!.setSubtitle(subtitle);
+
+    // We tell the player to show subtitles only if it's local
+    // Via remote we use our own code for compatitbility
+    if (subtitle.mediaType == MediaType.LOCAL) {
+      streamingProvider.commonStream!.setSubtitle(subtitle);
+    }
   }
 }

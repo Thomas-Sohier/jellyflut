@@ -14,6 +14,8 @@ import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../model/media_type.dart';
+
 /// CommonStream Better Player specific code
 class CommonStreamBP {
   static final streamingProvider = StreamingProvider();
@@ -195,8 +197,10 @@ class CommonStreamBP {
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = betterPlayerController.betterPlayerSubtitlesSourceList;
     for (var i = 0; i < subtitles.length - 1; i++) {
-      parsedSubtitiles
-          .add(Subtitle(index: i, name: subtitles[i].name ?? 'Default'));
+      parsedSubtitiles.add(Subtitle(
+          index: i,
+          mediaType: MediaType.LOCAL,
+          name: subtitles[i].name ?? 'Default'));
     }
     return parsedSubtitiles;
   }
@@ -240,6 +244,7 @@ class CommonStreamBP {
     for (var i = 0; i < audioTracks.length; i++) {
       parsedAudioTrack.add(AudioTrack(
           index: i,
+          mediaType: MediaType.LOCAL,
           jellyfinSubtitleIndex: audioTracks[i].index,
           name: audioTracks[i].displayTitle ?? 'Default'));
     }

@@ -6,6 +6,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
+import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -115,6 +116,7 @@ class CommonStreamVLC {
       final subtitleKey = subtitles.keys.elementAt(i);
       parsedSubtitiles.add(Subtitle(
           index: i,
+          mediaType: MediaType.LOCAL,
           jellyfinSubtitleIndex: subtitleKey,
           name: subtitles[subtitleKey]!));
     }
@@ -135,6 +137,7 @@ class CommonStreamVLC {
       final audioTrackKey = audioTracks.keys.elementAt(i);
       parsedAudioTracks.add(AudioTrack(
           index: i,
+          mediaType: MediaType.LOCAL,
           jellyfinSubtitleIndex: audioTrackKey,
           name: audioTracks[audioTrackKey]!));
     }

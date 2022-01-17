@@ -1227,6 +1227,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  subtitle:
+    dependency: "direct main"
+    description:
+      name: subtitle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0-beta.3"
   synchronized:
     dependency: transitive
     description:

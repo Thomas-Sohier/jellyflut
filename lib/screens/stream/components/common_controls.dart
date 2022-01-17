@@ -14,6 +14,8 @@ import 'package:jellyflut/screens/stream/components/player_infos/player_infos.da
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'player_infos/subtitle_box.dart';
+
 class CommonControls extends StatefulWidget {
   final bool isComputer;
 
@@ -95,12 +97,21 @@ class _CommonControlsState extends State<CommonControls> {
         onTap: autoHideControl,
         // onDoubleTap: () => streamingProvider.commonStream!.toggleFullscreen(),
         behavior: HitTestBehavior.translucent,
-        child: SizedBox.expand(
-          child: visibility(
-              child: Stack(
-            children: [blackGradient(), controls()],
-          )),
-        ));
+        child: LayoutBuilder(
+            builder: (c, cc) => Stack(alignment: Alignment.center, children: [
+                  SizedBox.expand(
+                    child: visibility(
+                        child: Stack(
+                      children: [blackGradient(), controls()],
+                    )),
+                  ),
+                  Positioned.fill(
+                    top: cc.maxHeight * 0.6,
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SubtitleBox()),
+                  ),
+                ])));
   }
 
   Widget visibility({required Widget child}) {
