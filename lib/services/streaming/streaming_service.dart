@@ -291,7 +291,7 @@ class StreamingService {
     queryParam['api_key'] = apiKey!;
 
     var uri = Uri.https(
-        server.url.replaceAll(RegExp('http?s://'), ''),
+        server.url.replaceAll(RegExp('https?://'), ''),
         '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec',
         queryParam);
     return uri.origin + uri.path;
