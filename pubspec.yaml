@@ -88,7 +88,7 @@ dev_dependencies:
   pedantic: ^1.11.1
 
 dependency_overrides:
-  flutter_svg: ^1.0.0
+  flutter_svg: ^1.0.2
   path: ^1.8.1
 
 # The following section is specific to Flutter.

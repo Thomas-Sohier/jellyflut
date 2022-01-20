@@ -82,13 +82,13 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
 
     // If subtitles list is not empty the we show disabled button at start of list
     final disabledSubtitle =
-        Subtitle(index: -1, name: 'Disabled', mediaType: MediaType.LOCAL);
+        Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.LOCAL);
     list.add(
       CheckedPopupMenuItem(
         value: disabledSubtitle,
         checked: isSelected(disabledSubtitle),
         child: Text(
-          'Disabled',
+          'disabled'.tr(),
         ),
       ),
     );
@@ -100,7 +100,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     list.add(PopupMenuDivider(height: 10));
     list.add(listItemTitle(
         child: Text(
-      'Local subtitles',
+      'embeded_subtitles'.tr(),
       style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
     )));
 
@@ -126,7 +126,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     list.add(
       listItemTitle(
           child: Text(
-        'Remote subtitles',
+        'remote_subtitles'.tr(),
         style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
       )),
     );
