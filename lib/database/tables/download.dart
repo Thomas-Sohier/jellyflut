@@ -19,7 +19,7 @@ class JsonConverter extends TypeConverter<Map<String, dynamic>, String> {
 class Downloads extends Table {
   TextColumn get id => text()();
   TextColumn get name => text().nullable()();
-  TextColumn get path => text().nullable()();
+  TextColumn get path => text()();
   BlobColumn get primary => blob().nullable()();
   BlobColumn get backdrop => blob().nullable()();
   TextColumn get item => text().map(const JsonConverter()).nullable()();

@@ -116,9 +116,7 @@ class DownloadProvider extends ChangeNotifier {
   void deleteDownloadedFile(Download download) async {
     try {
       final db = AppDatabase().getDatabase;
-      final item = Item.fromMap(download.item!);
-      final path = await FileService.getStoragePathItem(item);
-      await File(path).delete();
+      await File(download.path).delete();
 
       final downloadCompanion = download.toCompanion(true);
       await db.downloadsDao.deleteDownload(downloadCompanion);

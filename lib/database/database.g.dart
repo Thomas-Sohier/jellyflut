@@ -894,14 +894,14 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
 class Download extends DataClass implements Insertable<Download> {
   final String id;
   final String? name;
-  final String? path;
+  final String path;
   final Uint8List? primary;
   final Uint8List? backdrop;
   final Map<String, dynamic>? item;
   Download(
       {required this.id,
       this.name,
-      this.path,
+      required this.path,
       this.primary,
       this.backdrop,
       this.item});
@@ -914,7 +914,7 @@ class Download extends DataClass implements Insertable<Download> {
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name']),
       path: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}path']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}path'])!,
       primary: const BlobType()
           .mapFromDatabaseResponse(data['${effectivePrefix}primary']),
       backdrop: const BlobType()
@@ -930,9 +930,7 @@ class Download extends DataClass implements Insertable<Download> {
     if (!nullToAbsent || name != null) {
       map['name'] = Variable<String?>(name);
     }
-    if (!nullToAbsent || path != null) {
-      map['path'] = Variable<String?>(path);
-    }
+    map['path'] = Variable<String>(path);
     if (!nullToAbsent || primary != null) {
       map['primary'] = Variable<Uint8List?>(primary);
     }
@@ -950,7 +948,7 @@ class Download extends DataClass implements Insertable<Download> {
     return DownloadsCompanion(
       id: Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      path: path == null && nullToAbsent ? const Value.absent() : Value(path),
+      path: Value(path),
       primary: primary == null && nullToAbsent
           ? const Value.absent()
           : Value(primary),
@@ -967,7 +965,7 @@ class Download extends DataClass implements Insertable<Download> {
     return Download(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String?>(json['name']),
-      path: serializer.fromJson<String?>(json['path']),
+      path: serializer.fromJson<String>(json['path']),
       primary: serializer.fromJson<Uint8List?>(json['primary']),
       backdrop: serializer.fromJson<Uint8List?>(json['backdrop']),
       item: serializer.fromJson<Map<String, dynamic>?>(json['item']),
@@ -979,7 +977,7 @@ class Download extends DataClass implements Insertable<Download> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String?>(name),
-      'path': serializer.toJson<String?>(path),
+      'path': serializer.toJson<String>(path),
       'primary': serializer.toJson<Uint8List?>(primary),
       'backdrop': serializer.toJson<Uint8List?>(backdrop),
       'item': serializer.toJson<Map<String, dynamic>?>(item),
@@ -1031,7 +1029,7 @@ class Download extends DataClass implements Insertable<Download> {
 class DownloadsCompanion extends UpdateCompanion<Download> {
   final Value<String> id;
   final Value<String?> name;
-  final Value<String?> path;
+  final Value<String> path;
   final Value<Uint8List?> primary;
   final Value<Uint8List?> backdrop;
   final Value<Map<String, dynamic>?> item;
@@ -1046,15 +1044,16 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
   DownloadsCompanion.insert({
     required String id,
     this.name = const Value.absent(),
-    this.path = const Value.absent(),
+    required String path,
     this.primary = const Value.absent(),
     this.backdrop = const Value.absent(),
     this.item = const Value.absent(),
-  }) : id = Value(id);
+  })  : id = Value(id),
+        path = Value(path);
   static Insertable<Download> custom({
     Expression<String>? id,
     Expression<String?>? name,
-    Expression<String?>? path,
+    Expression<String>? path,
     Expression<Uint8List?>? primary,
     Expression<Uint8List?>? backdrop,
     Expression<Map<String, dynamic>?>? item,
@@ -1072,7 +1071,7 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
   DownloadsCompanion copyWith(
       {Value<String>? id,
       Value<String?>? name,
-      Value<String?>? path,
+      Value<String>? path,
       Value<Uint8List?>? primary,
       Value<Uint8List?>? backdrop,
       Value<Map<String, dynamic>?>? item}) {
@@ -1096,7 +1095,7 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
       map['name'] = Variable<String?>(name.value);
     }
     if (path.present) {
-      map['path'] = Variable<String?>(path.value);
+      map['path'] = Variable<String>(path.value);
     }
     if (primary.present) {
       map['primary'] = Variable<Uint8List?>(primary.value);
@@ -1143,8 +1142,8 @@ class $DownloadsTable extends Downloads
   final VerificationMeta _pathMeta = const VerificationMeta('path');
   @override
   late final GeneratedColumn<String?> path = GeneratedColumn<String?>(
-      'path', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      'path', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _primaryMeta = const VerificationMeta('primary');
   @override
   late final GeneratedColumn<Uint8List?> primary = GeneratedColumn<Uint8List?>(
@@ -1185,6 +1184,8 @@ class $DownloadsTable extends Downloads
     if (data.containsKey('path')) {
       context.handle(
           _pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
+    } else if (isInserting) {
+      context.missing(_pathMeta);
     }
     if (data.containsKey('primary')) {
       context.handle(_primaryMeta,
