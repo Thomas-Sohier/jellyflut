@@ -7,6 +7,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
+import 'package:jellyflut/screens/stream/init_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart'
@@ -110,8 +111,7 @@ class StreamingProvider extends ChangeNotifier {
     _selectedAudioTrack = audioTrack;
 
     if (audioTrack.mediaType == MediaType.REMOTE && item != null) {
-      // TODO change data source
-      // final url = await item!.getStreamURL(item!, false);
+      changeDataSource();
     } else if (audioTrack.mediaType == MediaType.LOCAL) {
       commonStream?.setAudioTrack(audioTrack);
     }
@@ -119,6 +119,15 @@ class StreamingProvider extends ChangeNotifier {
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.AUDIO_TRACK_SELECTED);
     }
+  }
+
+  void changeDataSource() async {
+    final controller =
+        await InitStreamingItemUtil.initControllerFromItem(item: item!);
+    item?.userData?.playbackPositionTicks =
+        commonStream!.getCurrentPosition().inMicroseconds;
+    commonStream!.controller = controller;
+    streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
   }
 
   Future<List<AudioTrack>> getAudioTracks() async {

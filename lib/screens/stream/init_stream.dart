@@ -19,18 +19,28 @@ import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC_computer.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 
+import '../../models/streaming/streaming_event.dart';
+import 'exception/unsupported_player_exception.dart';
+
 //----------------//
 // ---- ITEM ---- //
 //----------------//
 
 class InitStreamingItemUtil {
   static Future<Widget> initFromItem({required Item item}) async {
+    final controller = await initControllerFromItem(item: item);
+    return playerInterface(controller: controller);
+  }
+
+  static Future<dynamic> initControllerFromItem({required Item item}) async {
     final db = AppDatabase().getDatabase;
     final streamingSoftwareDB =
         await db.settingsDao.getSettingsById(userApp!.settingsId);
     final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
         e.toString() ==
         'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+
+    // We check if item is already downloaded before trying to get it from api
     late final Item _item;
     final itemExist = await db.downloadsDao.doesExist(item.id);
 
@@ -44,20 +54,15 @@ class InitStreamingItemUtil {
     StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player
-    late final Widget playerWidget;
     switch (streamingSoftware) {
       case StreamingSoftwareName.vlc:
-        playerWidget = await _initVLCMediaPlayer(_item);
-        break;
+        return _initVLCMediaPlayer(_item);
       // case StreamingSoftwareName.mpv:
       //   playerWidget = await _initMpvMediaPlayer(_item);
       //   break;
       case StreamingSoftwareName.exoplayer:
-        playerWidget = await _initExoPlayerMediaPlayer(_item);
-        break;
+        return _initExoPlayerMediaPlayer(_item);
     }
-    return playerWidget;
-    // await customRouter.push(StreamRoute(player: playerWidget, item: _item));
   }
 
   // static Future<Widget> _initMpvMediaPlayer(Item item) async {
@@ -74,7 +79,7 @@ class InitStreamingItemUtil {
   //   );
   // }
 
-  static Future<Widget> _initVLCMediaPlayer(Item item) async {
+  static Future<dynamic> _initVLCMediaPlayer(Item item) async {
     if (Platform.isLinux || Platform.isWindows) {
       return await _initVlcComputerPlayer(item);
     } else {
@@ -82,60 +87,24 @@ class InitStreamingItemUtil {
     }
   }
 
-  static Future<Widget> _initVlcComputerPlayer(Item item) async {
-    final player = await CommonStreamVLCComputer.setupData(item: item);
-
-    // If no error while init then play
-    player.play();
-
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Video(
-          player: player,
-          showControls: false,
-        ),
-        CommonControls(isComputer: true),
-      ],
-    );
+  static Future<Player> _initVlcComputerPlayer(Item item) async {
+    return CommonStreamVLCComputer.setupData(item: item);
   }
 
-  static Future<Widget> _initVlcPhonePlayer(Item item) async {
+  static Future<VlcPlayerController> _initVlcPhonePlayer(Item item) async {
     final vlcPlayerController = await CommonStreamVLC.setupData(item: item);
 
     vlcPlayerController.addOnInitListener(() async {
       await vlcPlayerController.startRendererScanning();
     });
 
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        VlcPlayer(
-          controller: vlcPlayerController,
-          aspectRatio: item.getAspectRatio(),
-          placeholder: Center(child: CircularProgressIndicator()),
-        ),
-        CommonControls(),
-      ],
-    );
+    return vlcPlayerController;
   }
 
-  static Future<Widget> _initExoPlayerMediaPlayer(Item item) async {
+  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(
+      Item item) async {
     // Setup data with Better Player
-    final betterPlayerController = await CommonStreamBP.setupData(item: item);
-
-    // Init widget player to use in Stream widget
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        BetterPlayer(
-            key: betterPlayerController.betterPlayerGlobalKey,
-            controller: betterPlayerController),
-        CommonControls(),
-      ],
-    );
+    return CommonStreamBP.setupData(item: item);
   }
 }
 
@@ -145,6 +114,14 @@ class InitStreamingItemUtil {
 
 class InitStreamingUrlUtil {
   static Future<Widget> initFromUrl(
+      {required String url, required String streamName}) async {
+    final controller =
+        await initControllerFromUrl(url: url, streamName: streamName);
+
+    return playerInterface(controller: controller);
+  }
+
+  static Future<dynamic> initControllerFromUrl(
       {required String url, required String streamName}) async {
     final streamingSoftwareDB = await AppDatabase()
         .getDatabase
@@ -157,19 +134,15 @@ class InitStreamingUrlUtil {
     StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player
-    late Widget playerWidget;
     switch (streamingSoftware) {
       case StreamingSoftwareName.vlc:
-        playerWidget = await _initVLCMediaPlayer(url);
-        break;
+        return _initVLCMediaPlayer(url);
       // case StreamingSoftwareName.mpv:
       //   playerWidget = await _initMpvMediaPlayer(url);
       //   break;
       case StreamingSoftwareName.exoplayer:
-        playerWidget = await _initExoPlayerMediaPlayer(url);
-        break;
+        return _initExoPlayerMediaPlayer(url);
     }
-    return playerWidget;
   }
 
   // static Future<Widget> _initMpvMediaPlayer(String url) async {
@@ -186,30 +159,19 @@ class InitStreamingUrlUtil {
   //   );
   // }
 
-  static Future<Widget> _initVLCMediaPlayer(String url) async {
+  static Future<dynamic> _initVLCMediaPlayer(String url) async {
     if (Platform.isLinux || Platform.isWindows) {
-      return await _initVlcComputerPlayer(url);
+      return _initVlcComputerPlayer(url);
     } else {
-      return await _initVlcPhonePlayer(url);
+      return _initVlcPhonePlayer(url);
     }
   }
 
-  static Future<Widget> _initVlcComputerPlayer(String url) async {
-    final player = await CommonStreamVLCComputer.setupDataFromUrl(url: url);
-
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Video(
-          player: player,
-          showControls: false,
-        ),
-        CommonControls(isComputer: true),
-      ],
-    );
+  static Future<Player> _initVlcComputerPlayer(String url) async {
+    return CommonStreamVLCComputer.setupDataFromUrl(url: url);
   }
 
-  static Future<Widget> _initVlcPhonePlayer(String url) async {
+  static Future<VlcPlayerController> _initVlcPhonePlayer(String url) async {
     final vlcPlayerController =
         await CommonStreamVLC.setupDataFromUrl(url: url);
 
@@ -217,35 +179,54 @@ class InitStreamingUrlUtil {
       await vlcPlayerController.startRendererScanning();
     });
 
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        VlcPlayer(
-          controller: vlcPlayerController,
-          aspectRatio: 16 / 9,
-          placeholder: Center(child: CircularProgressIndicator()),
-        ),
-        CommonControls(),
-      ],
-    );
+    return vlcPlayerController;
   }
 
-  static Future<Widget> _initExoPlayerMediaPlayer(String url) async {
+  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(
+      String url) async {
     // Setup data with Better Player
-    final betterPlayerController =
-        await CommonStreamBP.setupDataFromURl(url: url);
-
-    // Init widget player to use in Stream widget
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        BetterPlayer(
-            key: betterPlayerController.betterPlayerGlobalKey,
-            controller: betterPlayerController),
-        CommonControls(),
-      ],
-    );
+    return CommonStreamBP.setupDataFromURl(url: url);
   }
+}
+
+/// Automatically create widget depending of controller provided
+/// Can throw [UnsupportedPlayerException] if controller is not recognized
+Widget createWidgetController(dynamic controller) {
+  if (controller is BetterPlayerController) {
+    return BetterPlayer(
+        key: controller.betterPlayerGlobalKey, controller: controller);
+  } else if (controller is VlcPlayerController) {
+    return VlcPlayer(
+        controller: controller,
+        aspectRatio: 16 / 9,
+        placeholder: Center(child: CircularProgressIndicator()));
+  } else if (controller is Player) {
+    return Video(
+      player: controller,
+      showControls: false,
+    );
+  } else {
+    throw UnsupportedPlayerException('Unknow controller');
+  }
+}
+
+Widget playerInterface({required dynamic controller}) {
+  final streamingProvider = StreamingProvider();
+  return Stack(
+    alignment: Alignment.center,
+    clipBehavior: Clip.none,
+    children: <Widget>[
+      StreamBuilder<StreamingEvent>(
+          stream: streamingProvider.streamingEvent,
+          builder: (c, s) {
+            if (s.data == StreamingEvent.DATASOURCE_CHANGED) {
+              return createWidgetController(
+                  streamingProvider.commonStream?.controller);
+            } else {
+              return createWidgetController(controller);
+            }
+          }),
+      CommonControls(),
+    ],
+  );
 }

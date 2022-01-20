@@ -42,7 +42,7 @@ class CommonStreamVLCComputer {
     // create common stream controller
     final commonStream =
         CommonStream.parseVlcComputerController(player: _player);
-
+    _player.play();
     streamingProvider.setCommonStream(commonStream);
     return Future.value(_player);
   }

@@ -35,7 +35,7 @@ class CommonStream {
   final BehaviorSubject<bool> _isPlayingStream;
   final VoidCallback _initListener;
   final Function _dispose;
-  final Object controller;
+  dynamic controller;
 
   CommonStream._(
       {required pause,
