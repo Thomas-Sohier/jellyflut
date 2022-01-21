@@ -111,7 +111,7 @@ class StreamingProvider extends ChangeNotifier {
     _selectedAudioTrack = audioTrack;
 
     if (audioTrack.mediaType == MediaType.REMOTE && item != null) {
-      changeDataSource();
+      await changeDataSource();
     } else if (audioTrack.mediaType == MediaType.LOCAL) {
       commonStream?.setAudioTrack(audioTrack);
     }
@@ -121,13 +121,11 @@ class StreamingProvider extends ChangeNotifier {
     }
   }
 
-  void changeDataSource() async {
-    final controller =
-        await InitStreamingItemUtil.initControllerFromItem(item: item!);
-    item?.userData?.playbackPositionTicks =
-        commonStream!.getCurrentPosition().inMicroseconds;
-    commonStream!.controller = controller;
-    streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
+  Future<void> changeDataSource() async {
+    return StreamingService.deleteActiveEncoding()
+        .then((value) =>
+            InitStreamingItemUtil.initControllerFromItem(item: item!))
+        .then((value) => streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED));
   }
 
   Future<List<AudioTrack>> getAudioTracks() async {

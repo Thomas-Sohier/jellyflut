@@ -75,9 +75,7 @@ class CommonStreamBP {
     await _betterPlayerController.setupDataSource(dataSource);
     _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
     final commonStream = CommonStream.parseBetterPlayerController(
-      betterPlayerController: _betterPlayerController,
-      listener: () => {},
-    );
+        betterPlayerController: _betterPlayerController);
     streamingProvider.setCommonStream(commonStream);
     return Future.value(_betterPlayerController);
   }
@@ -205,9 +203,7 @@ class CommonStreamBP {
     return parsedSubtitiles;
   }
 
-  void setSubtitle(
-    Subtitle subtitle,
-  ) {
+  void setSubtitle(Subtitle subtitle) {
     betterPlayerController.setupSubtitleSource(
         betterPlayerController.betterPlayerSubtitlesSourceList[subtitle.index]);
   }
@@ -235,40 +231,38 @@ class CommonStreamBP {
   Future<List<AudioTrack>> getAudioTracks() async {
     // ignore: omit_local_variable_types
     final List<AudioTrack> parsedAudioTrack = [];
-    var audioTracks = StreamingProvider()
-        .item!
-        .mediaStreams
-        .where((element) => element.type == MediaStreamType.AUDIO)
-        .toList();
-    ;
-    for (var i = 0; i < audioTracks.length; i++) {
-      parsedAudioTrack.add(AudioTrack(
-          index: i,
-          mediaType: MediaType.LOCAL,
-          jellyfinSubtitleIndex: audioTracks[i].index,
-          name: audioTracks[i].displayTitle ?? 'Default'));
-    }
+    // var audioTracks = StreamingProvider()
+    //     .item!
+    //     .mediaStreams
+    //     .where((element) => element.type == MediaStreamType.AUDIO)
+    //     .toList();
+    // ;
+    // for (var i = 0; i < audioTracks.length; i++) {
+    //   parsedAudioTrack.add(AudioTrack(
+    //       index: i,
+    //       mediaType: MediaType.LOCAL,
+    //       jellyfinSubtitleIndex: audioTracks[i].index,
+    //       name: audioTracks[i].displayTitle ?? 'Default'));
+    // }
     return parsedAudioTrack;
   }
 
-  void setAudioTrack(
-    AudioTrack audioTrack,
-  ) async {
-    final newUrl = await StreamingService.getNewAudioSource(
-        audioTrack.jellyfinSubtitleIndex!,
-        playbackTick:
-            betterPlayerController.videoPlayerController!.value.position);
-    final streamModel = StreamingProvider();
-    var tick = betterPlayerController
-        .videoPlayerController!.value.position.inMicroseconds;
-    var dataSource = BetterPlayerDataSource.network(newUrl,
-        subtitles: _getSubtitlesBP(streamModel.item!));
-    betterPlayerController.betterPlayerSubtitlesSourceList.clear();
-    await betterPlayerController.clearCache();
-    await betterPlayerController.setupDataSource(dataSource);
-    betterPlayerController.playNextVideo();
-    await betterPlayerController.videoPlayerController!.play();
-    await betterPlayerController.seekTo(Duration(microseconds: tick));
+  void setAudioTrack(AudioTrack audioTrack) async {
+    // final newUrl = await StreamingService.getNewAudioSource(
+    //     audioTrack.jellyfinSubtitleIndex!,
+    //     playbackTick:
+    //         betterPlayerController.videoPlayerController!.value.position);
+    // final streamModel = StreamingProvider();
+    // var tick = betterPlayerController
+    //     .videoPlayerController!.value.position.inMicroseconds;
+    // var dataSource = BetterPlayerDataSource.network(newUrl,
+    //     subtitles: _getSubtitlesBP(streamModel.item!));
+    // betterPlayerController.betterPlayerSubtitlesSourceList.clear();
+    // await betterPlayerController.clearCache();
+    // await betterPlayerController.setupDataSource(dataSource);
+    // betterPlayerController.playNextVideo();
+    // await betterPlayerController.videoPlayerController!.play();
+    // await betterPlayerController.seekTo(Duration(microseconds: tick));
   }
 
   BehaviorSubject<Duration> positionStream() {

@@ -29,6 +29,9 @@ import 'exception/unsupported_player_exception.dart';
 class InitStreamingItemUtil {
   static Future<Widget> initFromItem({required Item item}) async {
     final controller = await initControllerFromItem(item: item);
+    final streamingProvider = StreamingProvider();
+    streamingProvider.setItem(item);
+    streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
     return playerInterface(controller: controller);
   }
 
@@ -51,7 +54,6 @@ class InitStreamingItemUtil {
       final _tempItem = await item.getPlayableItemOrLastUnplayed();
       _item = await ItemService.getItem(_tempItem.id);
     }
-    StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
@@ -117,7 +119,11 @@ class InitStreamingUrlUtil {
       {required String url, required String streamName}) async {
     final controller =
         await initControllerFromUrl(url: url, streamName: streamName);
-
+    final item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
+    final streamingProvider = StreamingProvider();
+    streamingProvider.setItem(item);
+    streamingProvider.commonStream?.controller = controller;
+    streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
     return playerInterface(controller: controller);
   }
 
@@ -130,8 +136,6 @@ class InitStreamingUrlUtil {
     final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
         e.toString() ==
         'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
-    final _item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
-    StreamingProvider().setItem(_item);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
@@ -223,7 +227,7 @@ Widget playerInterface({required dynamic controller}) {
               return createWidgetController(
                   streamingProvider.commonStream?.controller);
             } else {
-              return createWidgetController(controller);
+              return const SizedBox();
             }
           }),
       CommonControls(),

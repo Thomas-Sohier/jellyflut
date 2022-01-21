@@ -152,11 +152,11 @@ class _CommonControlsState extends State<CommonControls> {
   Widget controls() {
     return Column(
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         topRow(),
-        Spacer(),
-        BottomRowPlayerControls(),
-        SizedBox(height: 12)
+        const Spacer(),
+        const BottomRowPlayerControls(),
+        const SizedBox(height: 12)
       ],
     );
   }
@@ -167,12 +167,14 @@ class _CommonControlsState extends State<CommonControls> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           bb.BackButton(shadow: true),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [ItemTitle(), ItemParentTitle()],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [ItemTitle(), ItemParentTitle()],
+              ),
             ),
           ),
           Spacer(),

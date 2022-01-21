@@ -30,23 +30,18 @@ class StreamingService {
 
     queryParam['deviceId'] = info.id;
     queryParam['PlaySessionId'] =
-        StreamingProvider().playBackInfos!.playSessionId;
+        streamingProvider.playBackInfos!.playSessionId;
 
-    var url = '${server.url}/Videos/ActiveEncodings';
+    final url = '${server.url}/Videos/ActiveEncodings';
 
-    try {
-      var response = await dio.delete(url, queryParameters: queryParam);
+    return await dio.delete(url, queryParameters: queryParam).then((response) {
       if (response.statusCode == 204) {
         print('Stream decoding successfully deleted');
+        return response.statusCode!;
       } else {
-        print('Stream encoding cannot be deleted, ${response.data}');
         throw ('Stream encoding cannot be deleted, ${response.data}');
       }
-      return response.statusCode!;
-    } catch (e, stacktrace) {
-      log(e.toString(), stackTrace: stacktrace, level: 5);
-      rethrow;
-    }
+    });
   }
 
   static void streamingProgress(Item item,

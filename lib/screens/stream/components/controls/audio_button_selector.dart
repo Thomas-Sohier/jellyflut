@@ -112,11 +112,12 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
               child: Text('no_audio_source'.tr()))));
     } else {
       for (var index = 0; index < localAudioTracks.length; index++) {
+        final audioTrack = localAudioTracks.elementAt(index);
         list.add(
           CheckedPopupMenuItem(
-            value: localAudioTracks[index],
-            checked: isSelected(audioTracks[index]),
-            child: Text(localAudioTracks[index].name),
+            value: audioTrack,
+            checked: audioTracks.indexOf(audioTrack) == audioSelectedIndex,
+            child: Text(audioTrack.name),
           ),
         );
       }
@@ -140,10 +141,11 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
           PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
     } else {
       for (var index = 0; index < remoteAudioTracks.length; index++) {
+        final audioTrack = remoteAudioTracks.elementAt(index);
         list.add(CheckedPopupMenuItem(
-          value: remoteAudioTracks[index],
-          checked: isSelected(audioTracks[index]),
-          child: Text(remoteAudioTracks[index].name),
+          value: audioTrack,
+          checked: audioTracks.indexOf(audioTrack) == audioSelectedIndex,
+          child: Text(audioTrack.name),
         ));
       }
     }

@@ -12,6 +12,7 @@ module:
   androidX: true
 
 dependencies:
+  anim_search_bar: ^2.0.2
   archive: ^3.1.8
   audio_video_progress_bar: ^0.10.0
   auto_route: ^3.2.1

@@ -111,11 +111,12 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
               alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
     } else {
       for (var index = 0; index < localSubtitles.length; index++) {
+        final subtitle = localSubtitles[index];
         list.add(
           CheckedPopupMenuItem(
-            value: localSubtitles[index],
-            checked: isSelected(subtitlesTracks[index]),
-            child: Text(localSubtitles[index].name),
+            value: subtitle,
+            checked: subtitlesTracks.indexOf(subtitle) == subtitleSelectedIndex,
+            child: Text(subtitle.name),
           ),
         );
       }
@@ -138,10 +139,11 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
     } else {
       for (var index = 0; index < remoteSubtitles.length; index++) {
+        final subtitle = remoteSubtitles[index];
         list.add(CheckedPopupMenuItem(
-          value: remoteSubtitles[index],
-          checked: isSelected(subtitlesTracks[index]),
-          child: Text(remoteSubtitles[index].name),
+          value: subtitle,
+          checked: subtitlesTracks.indexOf(subtitle) == subtitleSelectedIndex,
+          child: Text(subtitle.name),
         ));
       }
     }
