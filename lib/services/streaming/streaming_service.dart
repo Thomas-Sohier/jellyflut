@@ -11,6 +11,7 @@ import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
+import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
@@ -112,9 +113,7 @@ class StreamingService {
 
     final url = 'Audio/$itemId/universal';
 
-    final uri = Uri.https(
-        server.url.replaceAll(RegExp('https?://'), ''), url, queryParams);
-    return uri.toString();
+    return UriUtils.contructUrl(url, queryParams);
   }
 
   static Future<PlayBackInfos> playbackInfos(String? json, String itemId,
@@ -199,24 +198,16 @@ class StreamingService {
     queryParam['api_key'] = apiKey!;
 
     // TODO rework that shit to be more readable and clear
-    late final url;
+    late final path;
     switch (item.type) {
       case ItemType.TVCHANNEL:
-        url = 'videos/${item.id}/master.m3u8';
+        path = 'videos/${item.id}/master.m3u8';
         break;
       default:
         final ext = p.extension(playBackInfos.mediaSources.first.path!);
-        url = 'Videos/${item.id}/stream$ext';
+        path = 'Videos/${item.id}/stream$ext';
     }
-
-    final uriParts = UriUtils.extractUriParts(server.url);
-    if (uriParts.domain == null) {
-      throw Exception('Url is not valid');
-    } else {
-      final uri =
-          Uri.https(uriParts.domain!, uriParts.path ?? '' + url, queryParam);
-      return uri.toString();
-    }
+    return UriUtils.contructUrl(path, queryParam);
   }
 
   static Future<String?> isCodecSupported() async {
@@ -247,9 +238,7 @@ class StreamingService {
       var uri = Uri.parse(url!);
       var queryParams = Map<String, String>.from(uri.queryParameters);
       queryParams['AudioStreamIndex'] = audioIndex.toString();
-      return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
-              Uri.parse(url).path, queryParams)
-          .toString();
+      return UriUtils.contructUrl(url, queryParams);
     }
     return createURL(item!, backInfos,
         startTick: startTick, audioStreamIndex: audioIndex);
@@ -267,9 +256,7 @@ class StreamingService {
       var uri = Uri.parse(url!);
       var queryParams = Map<String, String>.from(uri.queryParameters);
       queryParams['SubtitleStreamIndex'] = subtitleIndex.toString();
-      return Uri.https(server.url.replaceAll(RegExp('http?s://'), ''),
-              Uri.parse(url).path, queryParams)
-          .toString();
+      UriUtils.contructUrl(url, queryParams);
     }
     return createURL(item!, backInfos,
         startTick: startTick, subtitleStreamIndex: subtitleIndex);
@@ -286,16 +273,14 @@ class StreamingService {
         '-' +
         itemId.substring(20, itemId.length);
 
-    var parsedCodec = codec.substring(codec.indexOf('.') + 1);
+    final parsedCodec = codec.substring(codec.indexOf('.') + 1);
+    final path =
+        '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec';
 
-    var queryParam = <String, String>{};
-    queryParam['api_key'] = apiKey!;
+    final queryParams = <String, String>{};
+    queryParams['api_key'] = apiKey!;
 
-    var uri = Uri.https(
-        server.url.replaceAll(RegExp('https?://'), ''),
-        '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec',
-        queryParam);
-    return uri.origin + uri.path;
+    return UriUtils.contructUrl(path, queryParams);
   }
 
   static Future<dynamic> bitrateTest({required int size}) async {

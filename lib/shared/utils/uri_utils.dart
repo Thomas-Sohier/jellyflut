@@ -1,3 +1,6 @@
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/shared/extensions/string_extensions.dart';
+
 class UriUtils {
   static UrlParts extractUriParts(final String uri) {
     // http://www.ics.uci.edu/pub/ietf/uri/#Related
@@ -16,6 +19,29 @@ class UriUtils {
     final matches = _urlPattern.allMatches(uri);
     return UrlParts(matches.elementAt(0).group(2),
         matches.elementAt(0).group(4), matches.elementAt(0).group(9));
+  }
+
+  /// Construct an url with query params based of server globals
+  /// Can throw an Exception if URL is not valid
+  static String contructUrl(
+      final String path, Map<String, dynamic>? queryParams) {
+    final uriParts = UriUtils.extractUriParts(server.url);
+    late final uri;
+    if (uriParts.domain == null) {
+      throw Exception('Url is not valid');
+    } else {
+      if (uriParts.http.equalsIgnoreCase('http')) {
+        uri =
+            Uri.http(uriParts.domain!, uriParts.path ?? '' + path, queryParams);
+      } else if (uriParts.http.equalsIgnoreCase('https')) {
+        uri = Uri.https(
+            uriParts.domain!, uriParts.path ?? '' + path, queryParams);
+      } else {
+        throw Exception('Url is not valid');
+      }
+
+      return uri.toString();
+    }
   }
 }
 
