@@ -13,14 +13,13 @@ import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 // import 'package:jellyflut/screens/stream/CommonStream/common_stream_MPV.dart';
-import 'package:jellyflut/screens/stream/components/common_controls.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_BP.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC_computer.dart';
+import 'package:jellyflut/screens/stream/components/player_interface.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 
 import '../../models/streaming/streaming_event.dart';
-import 'exception/unsupported_player_exception.dart';
 
 //----------------//
 // ---- ITEM ---- //
@@ -32,7 +31,7 @@ class InitStreamingItemUtil {
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
     streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
-    return playerInterface(controller: controller);
+    return PlayerInterface(controller: controller);
   }
 
   static Future<dynamic> initControllerFromItem({required Item item}) async {
@@ -124,7 +123,7 @@ class InitStreamingUrlUtil {
     streamingProvider.setItem(item);
     streamingProvider.commonStream?.controller = controller;
     streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
-    return playerInterface(controller: controller);
+    return PlayerInterface(controller: controller);
   }
 
   static Future<dynamic> initControllerFromUrl(
@@ -191,46 +190,4 @@ class InitStreamingUrlUtil {
     // Setup data with Better Player
     return CommonStreamBP.setupDataFromURl(url: url);
   }
-}
-
-/// Automatically create widget depending of controller provided
-/// Can throw [UnsupportedPlayerException] if controller is not recognized
-Widget createWidgetController(dynamic controller) {
-  if (controller is BetterPlayerController) {
-    return BetterPlayer(
-        key: controller.betterPlayerGlobalKey, controller: controller);
-  } else if (controller is VlcPlayerController) {
-    return VlcPlayer(
-        controller: controller,
-        aspectRatio: 16 / 9,
-        placeholder: Center(child: CircularProgressIndicator()));
-  } else if (controller is Player) {
-    return Video(
-      player: controller,
-      showControls: false,
-    );
-  } else {
-    throw UnsupportedPlayerException('Unknow controller');
-  }
-}
-
-Widget playerInterface({required dynamic controller}) {
-  final streamingProvider = StreamingProvider();
-  return Stack(
-    alignment: Alignment.center,
-    clipBehavior: Clip.none,
-    children: <Widget>[
-      StreamBuilder<StreamingEvent>(
-          stream: streamingProvider.streamingEvent,
-          builder: (c, s) {
-            if (s.data == StreamingEvent.DATASOURCE_CHANGED) {
-              return createWidgetController(
-                  streamingProvider.commonStream?.controller);
-            } else {
-              return const SizedBox();
-            }
-          }),
-      CommonControls(),
-    ],
-  );
 }
