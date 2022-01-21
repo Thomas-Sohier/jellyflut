@@ -11,7 +11,6 @@ import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
-import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
