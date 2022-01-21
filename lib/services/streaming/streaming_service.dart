@@ -10,6 +10,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/shared/utils/uri_utils.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 
@@ -208,9 +209,14 @@ class StreamingService {
         url = 'Videos/${item.id}/stream$ext';
     }
 
-    final uri = Uri.https(
-        server.url.replaceAll(RegExp('https?://'), ''), url, queryParam);
-    return uri.toString();
+    final uriParts = UriUtils.extractUriParts(server.url);
+    if (uriParts.domain == null) {
+      throw Exception('Url is not valid');
+    } else {
+      final uri =
+          Uri.https(uriParts.domain!, uriParts.path ?? '' + url, queryParam);
+      return uri.toString();
+    }
   }
 
   static Future<String?> isCodecSupported() async {

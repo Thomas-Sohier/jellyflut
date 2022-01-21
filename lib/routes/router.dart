@@ -25,21 +25,15 @@ import 'router.gr.dart';
   // durationInMilliseconds: 250,
   routes: <AutoRoute>[
     AutoRoute(page: AuthParent, path: 'authentication'),
-    AutoRoute(
-        page: HomeParent,
-        path: 'home',
-        name: 'HomeRouter',
-        guards: [AuthGuard],
-        initial: true,
-        children: [
-          AutoRoute(page: Home, name: 'HomeRoute', initial: true, path: ''),
-          AutoRoute(
-              page: CollectionParent,
-              name: 'CollectionRoute',
-              guards: [AuthGuard]),
-          AutoRoute(page: Iptv, name: 'IptvRoute', guards: [AuthGuard]),
-          RedirectRoute(path: '*', redirectTo: ''),
-        ]),
+    AutoRoute(page: HomeParent, path: 'home', name: 'HomeRouter', guards: [
+      AuthGuard
+    ], children: [
+      AutoRoute(page: Home, name: 'HomeRoute', initial: true, path: ''),
+      AutoRoute(
+          page: CollectionParent, name: 'CollectionRoute', guards: [AuthGuard]),
+      AutoRoute(page: Iptv, name: 'IptvRoute', guards: [AuthGuard]),
+      RedirectRoute(path: '*', redirectTo: ''),
+    ]),
     CustomRoute(
         page: CollectionParent,
         name: 'CollectionParentRoute',

@@ -156,8 +156,6 @@ class AppRouter extends _i13.RootStackRouter {
 
   @override
   List<_i13.RouteConfig> get routes => [
-        _i13.RouteConfig('/#redirect',
-            path: '/', redirectTo: 'home', fullMatch: true),
         _i13.RouteConfig(AuthParentRoute.name, path: 'authentication'),
         _i13.RouteConfig(HomeRouter.name, path: 'home', guards: [
           authGuard

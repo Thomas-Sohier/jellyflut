@@ -115,7 +115,7 @@ class PlayersProfile {
             codecProfiles: [
               CodecProfile(
                   type: 'VideoAudio',
-                  container: 'avi,mkv,mp4,webm',
+                  container: 'avi,mkv,mp4,webm,mov',
                   codec: 'aac,mp3,ac3,dts,opus,flac,vorbis',
                   conditions: [
                     Condition(
@@ -162,7 +162,7 @@ class PlayersProfile {
                   videoCodec: 'vp8,vp9,av1',
                   audioCodec: 'vorbis,opus'),
               DirectPlayProfile(
-                  container: 'mp4,m4v',
+                  container: 'mp4,m4v,mov',
                   type: 'Video',
                   videoCodec: 'h264,hevc,vp8,vp9,av1',
                   audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
@@ -171,11 +171,6 @@ class PlayersProfile {
                   type: 'Video',
                   videoCodec: 'h264,hevc',
                   audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
-              DirectPlayProfile(
-                  container: 'mov',
-                  type: 'Video',
-                  videoCodec: 'h264',
-                  audioCodec: 'aac,mp3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'webm', audioCodec: 'opus', type: 'Audio'),
               DirectPlayProfile(

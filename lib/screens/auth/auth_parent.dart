@@ -80,7 +80,7 @@ class _AuthParentState extends State<AuthParent> {
                     if (widget.onAuthenticated != null) {
                       widget.onAuthenticated!();
                     } else {
-                      await AutoRouter.of(context).replace(HomeRoute());
+                      await AutoRouter.of(context).replace(HomeRouter());
                     }
                   }
                 },

@@ -14,7 +14,7 @@ class UserIcon extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(24)),
       child: CachedNetworkImage(
         imageUrl:
-            '${server.url}/Users/${userJellyfin!.id}/Images/Primary?quality=90',
+            '${server.url}/Users/${userJellyfin?.id}/Images/Primary?quality=90',
         width: size,
         errorWidget: (context, url, error) => Container(
           padding: EdgeInsets.all(2),
