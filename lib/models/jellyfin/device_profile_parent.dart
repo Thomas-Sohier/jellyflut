@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:jellyflut/shared/json_deserializer.dart';
-import 'package:jellyflut/shared/json_serializer.dart';
-
 import 'device_profile.dart';
 
 DeviceProfileParent deviceCodecsFromMap(String str) =>

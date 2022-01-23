@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
-import 'package:jellyflut/models/jellyfin/identification.dart';
 import 'package:jellyflut/models/jellyfin/media_played_infos.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';

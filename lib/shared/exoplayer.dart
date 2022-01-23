@@ -8,7 +8,6 @@ import 'package:jellyflut/models/jellyfin/condition.dart';
 import 'package:jellyflut/models/jellyfin/device_codecs.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/direct_play_profile.dart';
-import 'package:jellyflut/models/jellyfin/identification.dart';
 import 'package:jellyflut/models/jellyfin/subtitle_profile.dart';
 import 'package:jellyflut/models/jellyfin/transcoding_profile.dart';
 
