@@ -1,10 +1,14 @@
 # globals
 unknown: Unknown
 disable: Désactiver
+disabled: Désactivé
 delete: Supprimer
 back: Précédent
 no: Non
 yes: Oui
+cancel: Annuler
+submit: Envoyer
+default: Par défaut
 like: Aimer
 manage: Gérer
 play: Lire
@@ -34,12 +38,16 @@ search_no_results: Aucun résultats...
 search_field_hint: Rechercher
 
 # Streaming controls
-select_audio_source: Sélctionner une source audio
+select_audio_source: Sélectionner une source audio
 no_audio_source: Aucune source audio
+embeded_audio_tracks: Piste audio intégrées
+remote_audio_tracks: Piste audio externes
 select_chapter: Sélectionner un chapitre
 no_chapters: Aucun chapitre
 select_subtitle: Sélectionner des sous-titres
 no_subtitles: Aucun sous-titres
+embeded_subtitles: Sous-titres intégrés
+remote_subtitles: Sous-titres externes
 
 # Settings
 settings: Paramètres

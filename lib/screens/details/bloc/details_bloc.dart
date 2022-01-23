@@ -36,7 +36,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       _d.item = Future.value(event.item);
       emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateColor) {
-      _updateTheme(event, emit);
+      await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
       themeStream.add(event.theme);
       _d.theme = event.theme;
@@ -44,11 +44,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
   }
 
-  void _updateTheme(DetailsUpdateColor event, Emitter<DetailsState> emit) {
+  Future<void> _updateTheme(
+      DetailsUpdateColor event, Emitter<DetailsState> emit) async {
     final colors = event.colors;
     _d.dominantColor.add(colors);
 
-    event.colors.then((List<Color> c) {
+    return await event.colors.then((List<Color> c) {
       gradientStream.add(c);
       if (c.isNotEmpty) {
         final paletteColor1 =

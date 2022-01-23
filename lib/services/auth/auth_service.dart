@@ -17,25 +17,11 @@ import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static final _urlPattern = RegExp(
-      r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)');
-
   static Future<AuthenticationResponse> login(
       String username, String password) async {
     final login = '/Users/authenticatebyname';
     final data = jsonEncode({'Username': username, 'Pw': password});
     final authEmby = await authHeader();
-    final matches = _urlPattern.allMatches(server.url);
-    if (matches
-            .elementAt(0)
-            .group(matches.elementAt(0).groupCount)
-            ?.startsWith('/') ??
-        false) {
-      final finalUrl = server.url.replaceFirstMapped(_urlPattern, (match) {
-        return '${match.group(2)}';
-      });
-      server = server.copyWith(url: finalUrl);
-    }
 
     try {
       final response = await dio.post('${server.url}$login',

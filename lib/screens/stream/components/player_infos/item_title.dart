@@ -11,6 +11,7 @@ class ItemTitle extends StatelessWidget {
     return Text(
       streamingProvider.item!.name,
       textAlign: TextAlign.left,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
           fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
     );

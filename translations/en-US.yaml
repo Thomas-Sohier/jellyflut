@@ -1,11 +1,15 @@
 # globals
 unknown: Unknown
 disable: Disable
+disabled: Disabled
 delete: Delete
 previous: Previous
 no: No
 yes: Yes
+cancel: Cancel
+submit: Submit
 like: Like
+default: Default
 manage: Manage
 play: Play
 trailer: Trailer
@@ -35,10 +39,14 @@ search_field_hint: Research
 # Streaming controls
 select_audio_source: Select audio source
 no_audio_source: No audio source
+embeded_audio_tracks: Embeded audio tracks
+remote_audio_tracks: Remote audio tracks
 select_chapter: Select a chapter
 no_chapters: No chapters
 select_subtitle: Select a subtitle
 no_subtitles: No subtitles
+embeded_subtitles: Embeded subtitles
+remote_subtitles: Remote subtitles
 
 # Settings
 settings: Settings

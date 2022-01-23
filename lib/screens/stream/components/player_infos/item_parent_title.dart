@@ -7,9 +7,6 @@ class ItemParentTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (streamingProvider.item == null || streamingProvider.item!.hasParent()) {
-      return SizedBox();
-    }
     return Text(
       streamingProvider.item!.parentName(),
       textAlign: TextAlign.left,

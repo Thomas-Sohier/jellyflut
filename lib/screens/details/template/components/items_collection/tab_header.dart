@@ -17,18 +17,26 @@ class TabHeader extends SliverPersistentHeaderDelegate {
         future: seasons,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return SafeArea(
-              child: ClipRRect(
-                child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: getTabsHeader(snapshot.data?.items ?? <Item>[]),
-                    )),
-              ),
+            return ClipRRect(
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: SafeArea(
+                      child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 54),
+                      Expanded(
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children:
+                              getTabsHeader(snapshot.data?.items ?? <Item>[]),
+                        ),
+                      ),
+                    ],
+                  ))),
             );
           }
-          return const SizedBox(height: 80.0);
+          return const SizedBox(height: 144.0);
         });
   }
 
@@ -58,13 +66,13 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 80.0;
+  double get maxExtent => 144.0;
 
   @override
-  double get minExtent => 80.0;
+  double get minExtent => 144.0;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
+    return false;
   }
 }

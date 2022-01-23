@@ -8,6 +8,8 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
+import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'init_stream.dart';
@@ -48,14 +50,7 @@ class _StreamState extends State<Stream> {
       log(stackTrace.toString());
       if (error is DioError) msg = error.message;
 
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-            content: Row(children: [
-              Flexible(child: Text(msg)),
-              Icon(Icons.play_disabled, color: Colors.red)
-            ]),
-            width: 600));
+      SnackbarUtil.message(msg, Icons.play_disabled, Colors.red);
       return Future.value(Text(msg));
     });
 
@@ -76,8 +71,11 @@ class _StreamState extends State<Stream> {
     if (!Platform.isLinux) {
       Wakelock.disable();
     }
+    // Disable and stop every service
+    StreamingService.deleteActiveEncoding();
     streamingProvider.commonStream?.disposeStream();
     streamingProvider.timer?.cancel();
+
     // Show device overlays
     // device orientation
     SystemChrome.setPreferredOrientations([

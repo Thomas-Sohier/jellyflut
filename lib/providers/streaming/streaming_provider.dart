@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +8,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
+import 'package:jellyflut/screens/stream/init_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart'
@@ -106,18 +108,77 @@ class StreamingProvider extends ChangeNotifier {
     _isDirectPlay = isDirectPlay;
   }
 
-  void setAudioStreamIndex(AudioTrack? audioTrack) {
+  void setAudioStreamIndex(AudioTrack audioTrack) async {
     _selectedAudioTrack = audioTrack;
+
+    if (audioTrack.mediaType == MediaType.REMOTE && item != null) {
+      await changeDataSource();
+    } else if (audioTrack.mediaType == MediaType.LOCAL) {
+      commonStream?.setAudioTrack(audioTrack);
+    }
 
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.AUDIO_TRACK_SELECTED);
     }
   }
 
-  Future<List<streaming_subtitle.Subtitle>> getSubtitles() async {
-    final subtitles =
-        await commonStream?.getSubtitles() ?? <streaming_subtitle.Subtitle>[];
+  Future<void> changeDataSource() async {
+    return StreamingService.deleteActiveEncoding()
+        .then((_) async => await commonStream?.disposeStream())
+        .then((_) => InitStreamingItemUtil.initControllerFromItem(item: item!))
+        .then((controller) {
+      _commonStream?.controller = controller;
+      streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
+    });
+  }
 
+  Future<List<AudioTrack>> getAudioTracks() async {
+    final audioTracks = <AudioTrack>[];
+    final localAudioTracks = await commonStream?.getAudioTracks() ?? [];
+    audioTracks.addAll(localAudioTracks);
+    final lastIndex = audioTracks.map((e) => e.index).fold(0, max);
+    audioTracks.addAll(_getRemoteAudiotracks(lastIndex + 1));
+
+    return audioTracks;
+  }
+
+  List<AudioTrack> _getRemoteAudiotracks([final int startIndex = 0]) {
+    final audioTracks = <AudioTrack>[];
+
+    if (isDirectPlay ?? false) return audioTracks;
+
+    final remoteAudioTracksMediaStream = item?.mediaStreams
+        .where((e) => e.type == MediaStreamType.AUDIO)
+        .toList();
+
+    if (remoteAudioTracksMediaStream != null &&
+        remoteAudioTracksMediaStream.isNotEmpty) {
+      for (var i = 0; i < remoteAudioTracksMediaStream.length; i++) {
+        final at = remoteAudioTracksMediaStream[i];
+        final remoteAudioTrack = AudioTrack(
+            index: audioTracks.length + startIndex,
+            name: at.displayTitle ?? '',
+            mediaType: MediaType.REMOTE,
+            jellyfinSubtitleIndex: at.index);
+        audioTracks.add(remoteAudioTrack);
+      }
+    }
+    return audioTracks;
+  }
+
+  Future<List<streaming_subtitle.Subtitle>> getSubtitles() async {
+    final subtitles = <streaming_subtitle.Subtitle>[];
+    final localSubtitles = await commonStream?.getSubtitles() ?? [];
+    subtitles.addAll(localSubtitles);
+    final lastIndex = subtitles.map((e) => e.index).fold(0, max);
+    subtitles.addAll(_getRemoteSubtitles(lastIndex + 1));
+
+    return subtitles;
+  }
+
+  List<streaming_subtitle.Subtitle> _getRemoteSubtitles(
+      [final int startIndex = 0]) {
+    final subtitles = <streaming_subtitle.Subtitle>[];
     final remoteSubtitlesMediaStream = item?.mediaStreams
         .where((e) => e.type == MediaStreamType.SUBTITLE)
         .toList();
@@ -126,14 +187,14 @@ class StreamingProvider extends ChangeNotifier {
         remoteSubtitlesMediaStream.isNotEmpty) {
       for (var i = 0; i < remoteSubtitlesMediaStream.length; i++) {
         final ls = remoteSubtitlesMediaStream[i];
-        subtitles.add(streaming_subtitle.Subtitle(
-            index: subtitles.length,
-            name: ls.title ?? '',
+        final remoteSubtitle = streaming_subtitle.Subtitle(
+            index: subtitles.length + startIndex,
+            name: ls.displayTitle ?? '',
             mediaType: MediaType.REMOTE,
-            jellyfinSubtitleIndex: ls.index));
+            jellyfinSubtitleIndex: ls.index);
+        subtitles.add(remoteSubtitle);
       }
     }
-
     return subtitles;
   }
 
@@ -158,8 +219,12 @@ class StreamingProvider extends ChangeNotifier {
     });
   }
 
-  void setSubtitleStreamIndex(Subtitle? subtitleTrack) {
+  void setSubtitleStreamIndex(Subtitle subtitleTrack) {
     _selectedSubtitleTrack = subtitleTrack;
+
+    if (subtitleTrack.mediaType == MediaType.LOCAL) {
+      commonStream?.setSubtitle(subtitleTrack);
+    }
 
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.SUBTITLE_SELECTED);

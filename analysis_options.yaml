@@ -1,7 +1,5 @@
 include: package:pedantic/analysis_options.yaml
 analyzer:
-  enable-experiment:
-    - non-nullable
   exclude:
     - lib/database/*.g.dart
     - lib/routes/*.g.dart

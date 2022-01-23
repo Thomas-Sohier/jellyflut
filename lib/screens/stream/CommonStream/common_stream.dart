@@ -34,8 +34,8 @@ class CommonStream {
   final BehaviorSubject<Duration> _durationStream;
   final BehaviorSubject<bool> _isPlayingStream;
   final VoidCallback _initListener;
-  final Function _dispose;
-  final Object controller;
+  final Future<void> Function() _dispose;
+  dynamic controller;
 
   CommonStream._(
       {required pause,
@@ -108,7 +108,7 @@ class CommonStream {
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
   BehaviorSubject<bool> getPlayingStateStream() => _isPlayingStream;
   void initListener() => _initListener();
-  void disposeStream() => _dispose();
+  Future<void> disposeStream() => _dispose();
 
   static CommonStream parseVLCController(
       {required VlcPlayerController vlcPlayerController,
@@ -127,7 +127,8 @@ class CommonStream {
         hasPip: Future.value(false),
         pip: () => throw ('Not supported on VLC player'),
         getSubtitles: commonStreamVLC.getSubtitles,
-        setSubtitle: (subtitle) => commonStreamVLC.setSubtitle(subtitle),
+        setSubtitle: (Subtitle subtitle) =>
+            vlcPlayerController.setSpuTrack(subtitle.index),
         disableSubtitles: () => vlcPlayerController.setSpuTrack(-1),
         getAudioTracks: commonStreamVLC.getAudioTracks,
         setAudioTrack: (audioTrack) =>

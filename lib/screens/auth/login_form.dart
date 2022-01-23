@@ -30,7 +30,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
         FieldsType.USER_PASSWORD.getValue(): FormControl<String>(
           value: authBloc.userPassword ?? '',
-          validators: [Validators.required],
+          validators: [],
         )
       });
 

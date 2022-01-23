@@ -65,12 +65,10 @@ class _EpisodeItemState extends State<EpisodeItem>
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             if (constraints.maxWidth > 350)
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
-                      child: poster())),
+              ConstrainedBox(
+                  constraints: BoxConstraints(
+                      minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
+                  child: poster()),
             Expanded(
               child: Padding(
                   padding: rightPartPadding,

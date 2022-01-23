@@ -12,6 +12,7 @@ module:
   androidX: true
 
 dependencies:
+  anim_search_bar: ^2.0.2
   archive: ^3.1.8
   audio_video_progress_bar: ^0.10.0
   auto_route: ^3.2.1
@@ -88,7 +89,7 @@ dev_dependencies:
   pedantic: ^1.11.1
 
 dependency_overrides:
-  flutter_svg: ^1.0.0
+  flutter_svg: ^1.0.2
   path: ^1.8.1
 
 # The following section is specific to Flutter.

@@ -16,6 +16,20 @@ class Drawer extends StatefulWidget {
 }
 
 class _DrawerState extends State<Drawer> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -24,6 +38,7 @@ class _DrawerState extends State<Drawer> {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 200),
           child: ListView(
+              controller: _scrollController,
               children:
                   createButtonRouteDesktop(widget.items, widget.tabsContext)),
         ));

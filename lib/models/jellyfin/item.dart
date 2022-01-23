@@ -1231,11 +1231,11 @@ class Item {
   }
 
   Future<String> getItemURL({bool directPlay = false}) async {
-    if (directPlay == false && offlineMode == false) {
-      await StreamingService.bitrateTest(size: 500000);
-      await StreamingService.bitrateTest(size: 1000000);
-      await StreamingService.bitrateTest(size: 3000000);
-    }
+    // if (directPlay == false && offlineMode == false) {
+    //   await StreamingService.bitrateTest(size: 500000);
+    //   await StreamingService.bitrateTest(size: 1000000);
+    //   await StreamingService.bitrateTest(size: 3000000);
+    // }
 
     late final Item item;
 
@@ -1372,7 +1372,7 @@ class Item {
     final videoId = itemURi.queryParameters['v'];
     final yt = YoutubeExplode();
     final manifest = await yt.videos.streamsClient.getManifest(videoId);
-    final streamInfo = manifest.muxed.withHighestBitrate();
+    final streamInfo = manifest.muxed.toList().last;
     yt.close();
     return streamInfo.url;
   }

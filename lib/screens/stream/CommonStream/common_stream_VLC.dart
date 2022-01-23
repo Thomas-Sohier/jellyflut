@@ -115,18 +115,12 @@ class CommonStreamVLC {
     for (var i = 0; i < subtitles.length; i++) {
       final subtitleKey = subtitles.keys.elementAt(i);
       parsedSubtitiles.add(Subtitle(
-          index: i,
+          index: subtitleKey,
           mediaType: MediaType.LOCAL,
-          jellyfinSubtitleIndex: subtitleKey,
+          jellyfinSubtitleIndex: null,
           name: subtitles[subtitleKey]!));
     }
     return parsedSubtitiles;
-  }
-
-  void setSubtitle(
-    Subtitle subtitle,
-  ) {
-    vlcPlayerController.setSpuTrack(subtitle.jellyfinSubtitleIndex!);
   }
 
   Future<List<AudioTrack>> getAudioTracks() async {
@@ -173,9 +167,9 @@ class CommonStreamVLC {
     return streamController;
   }
 
-  void stopPlayer() {
-    StreamingService.deleteActiveEncoding();
-    vlcPlayerController.stop();
-    vlcPlayerController.dispose();
+  Future<void> stopPlayer() async {
+    await StreamingService.deleteActiveEncoding();
+    await vlcPlayerController.stop();
+    return await vlcPlayerController.dispose();
   }
 }

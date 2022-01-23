@@ -90,13 +90,18 @@ class _LargeDetailsState extends State<LargeDetails> {
                       item: snapshot.data!,
                       posterAndLogoWidget: posterAndLogoWidget(constraints));
                 }
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 48),
-                    posterAndLogoWidget(constraints),
-                    Flexible(child: SkeletonRightDetails()),
-                  ],
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 48),
+                      posterAndLogoWidget(constraints),
+                      Flexible(child: SkeletonRightDetails()),
+                    ],
+                  ),
                 );
               });
         });
