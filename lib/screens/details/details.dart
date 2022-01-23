@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
 import 'package:jellyflut/globals.dart';
@@ -45,12 +46,18 @@ class _DetailsState extends State<Details> {
     return MusicPlayerFAB(
         child: BlocProvider<DetailsBloc>(
             create: (context) => detailsBloc,
-            child: Scaffold(
-                extendBody: true,
-                backgroundColor: Colors.transparent,
-                body: widget.item.type != ItemType.PHOTO
-                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
-                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                ),
+                child: Scaffold(
+                    extendBody: true,
+                    backgroundColor: Colors.transparent,
+                    body: widget.item.type != ItemType.PHOTO
+                        ? LargeDetails(
+                            item: widget.item, heroTag: widget.heroTag)
+                        : PhotoItem(
+                            item: widget.item, heroTag: widget.heroTag)))));
   }
 
   DetailsInfosFuture getDetailsInfos() {

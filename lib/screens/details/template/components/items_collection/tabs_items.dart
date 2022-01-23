@@ -40,13 +40,14 @@ class _TabsItemsState extends State<TabsItems> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<int>(
-        stream: widget.indexStream?.stream,
-        builder: (c, a) {
-          if (a.hasData) {
-            return _widgets[a.data ?? 0];
-          }
-          return const SizedBox();
-        });
+      stream: widget.indexStream?.stream,
+      builder: (c, a) {
+        if (a.hasData) {
+          return _widgets[a.data ?? 0];
+        }
+        return const SizedBox();
+      },
+    );
   }
 
   List<Widget> getTabsChilds(List<Item> items) {
