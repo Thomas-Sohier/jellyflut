@@ -1372,7 +1372,7 @@ class Item {
     final videoId = itemURi.queryParameters['v'];
     final yt = YoutubeExplode();
     final manifest = await yt.videos.streamsClient.getManifest(videoId);
-    final streamInfo = manifest.muxed.withHighestBitrate();
+    final streamInfo = manifest.muxed.toList().last;
     yt.close();
     return streamInfo.url;
   }
