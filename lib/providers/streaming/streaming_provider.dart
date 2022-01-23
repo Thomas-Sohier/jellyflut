@@ -123,9 +123,12 @@ class StreamingProvider extends ChangeNotifier {
 
   Future<void> changeDataSource() async {
     return StreamingService.deleteActiveEncoding()
-        .then((value) =>
-            InitStreamingItemUtil.initControllerFromItem(item: item!))
-        .then((value) => streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED));
+        .then((_) async => await commonStream?.disposeStream())
+        .then((_) => InitStreamingItemUtil.initControllerFromItem(item: item!))
+        .then((controller) {
+      _commonStream?.controller = controller;
+      streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
+    });
   }
 
   Future<List<AudioTrack>> getAudioTracks() async {

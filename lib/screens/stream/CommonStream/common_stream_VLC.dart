@@ -173,9 +173,9 @@ class CommonStreamVLC {
     return streamController;
   }
 
-  void stopPlayer() {
-    StreamingService.deleteActiveEncoding();
-    vlcPlayerController.stop();
-    vlcPlayerController.dispose();
+  Future<void> stopPlayer() async {
+    await StreamingService.deleteActiveEncoding();
+    await vlcPlayerController.stop();
+    return await vlcPlayerController.dispose();
   }
 }

@@ -68,7 +68,6 @@ class CommonStreamBP {
         streamingProvider.setTimer(timer);
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.finished) {
-        StreamingService.deleteActiveEncoding();
         streamingProvider.timer?.cancel();
       }
     });
@@ -288,9 +287,9 @@ class CommonStreamBP {
     return streamController;
   }
 
-  void stopPlayer() {
-    StreamingService.deleteActiveEncoding();
-    betterPlayerController.pause();
-    betterPlayerController.dispose();
+  Future<void> stopPlayer() async {
+    await StreamingService.deleteActiveEncoding();
+    await betterPlayerController.pause();
+    return betterPlayerController.dispose();
   }
 }

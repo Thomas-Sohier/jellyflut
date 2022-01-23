@@ -19,8 +19,6 @@ import 'package:jellyflut/screens/stream/CommonStream/common_stream_VLC_computer
 import 'package:jellyflut/screens/stream/components/player_interface.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 
-import '../../models/streaming/streaming_event.dart';
-
 //----------------//
 // ---- ITEM ---- //
 //----------------//
@@ -30,7 +28,6 @@ class InitStreamingItemUtil {
     final controller = await initControllerFromItem(item: item);
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
-    streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
     return PlayerInterface(controller: controller);
   }
 
@@ -122,7 +119,6 @@ class InitStreamingUrlUtil {
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
     streamingProvider.commonStream?.controller = controller;
-    streamingProvider.streamingEvent.add(StreamingEvent.DATASOURCE_CHANGED);
     return PlayerInterface(controller: controller);
   }
 

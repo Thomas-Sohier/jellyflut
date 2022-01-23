@@ -8,6 +8,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
+import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -70,8 +71,11 @@ class _StreamState extends State<Stream> {
     if (!Platform.isLinux) {
       Wakelock.disable();
     }
+    // Disable and stop every service
+    StreamingService.deleteActiveEncoding();
     streamingProvider.commonStream?.disposeStream();
     streamingProvider.timer?.cancel();
+
     // Show device overlays
     // device orientation
     SystemChrome.setPreferredOrientations([

@@ -8,6 +8,7 @@ import 'package:jellyflut/models/jellyfin/condition.dart';
 import 'package:jellyflut/models/jellyfin/device_codecs.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/direct_play_profile.dart';
+import 'package:jellyflut/models/jellyfin/identification.dart';
 import 'package:jellyflut/models/jellyfin/subtitle_profile.dart';
 import 'package:jellyflut/models/jellyfin/transcoding_profile.dart';
 
@@ -77,9 +78,9 @@ const subtitleProfiles = [
 ];
 
 Future<DeviceProfile> getExoplayerProfile() async {
-  var profile = DeviceProfile();
-  var db = AppDatabase().getDatabase;
-  var settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
+  final profile = DeviceProfile();
+  final db = AppDatabase().getDatabase;
+  final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
 
   if (savedDeviceProfile != null) {
     return savedDeviceProfile!;

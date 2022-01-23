@@ -1,4 +1,5 @@
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
+import 'package:jellyflut/models/jellyfin/identification.dart';
 import 'package:jellyflut/models/jellyfin/image_tag.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/models/jellyfin/studio.dart';

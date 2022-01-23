@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut/models/jellyfin/device_profile.dart';
+import 'package:jellyflut/models/jellyfin/identification.dart';
 import 'package:jellyflut/models/jellyfin/media_played_infos.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';
@@ -115,7 +118,8 @@ class StreamingService {
     return UriUtils.contructUrl(url, queryParams);
   }
 
-  static Future<PlayBackInfos> playbackInfos(String? json, String itemId,
+  static Future<PlayBackInfos> playbackInfos(
+      DeviceProfileParent? profile, String itemId,
       {startTimeTick = 0,
       int? subtitleStreamIndex,
       int? audioStreamIndex,
@@ -125,6 +129,8 @@ class StreamingService {
         .settingsDao
         .getSettingsById(userApp!.settingsId);
     final streamingProvider = StreamingProvider();
+
+    // Query params are deprecated but still used for older version of jellyfin server
     final queryParams = <String, dynamic>{};
     queryParams['UserId'] = userJellyfin!.id;
     queryParams['StartTimeTicks'] = startTimeTick;
@@ -133,12 +139,14 @@ class StreamingService {
     // queryParams['MaxStreamingBitrate'] = maxStreamingBitrate ?? settings.maxVideoBitrate;
     queryParams['VideoBitrate'] = settings.maxVideoBitrate.toString();
     queryParams['AudioBitrate'] = settings.maxAudioBitrate.toString();
+
     if (subtitleStreamIndex != null) {
       queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     } else if (streamingProvider.selectedSubtitleTrack != null) {
       queryParams['SubtitleStreamIndex'] =
           streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex;
     }
+
     if (audioStreamIndex != null) {
       queryParams['AudioStreamIndex'] = audioStreamIndex;
     } else if (streamingProvider.selectedAudioTrack != null) {
@@ -146,14 +154,33 @@ class StreamingService {
           streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
     }
 
+    final _audioStreamIndex = audioStreamIndex ??
+        streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
+    final _subtitleStreamIndex = subtitleStreamIndex ??
+        streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
+
+    profile ??= DeviceProfileParent();
+    profile.userId ??= userJellyfin!.id;
+    profile.enableDirectPlay ??= true;
+    profile.allowAudioStreamCopy ??= true;
+    profile.allowVideoStreamCopy ??= true;
+    profile.enableTranscoding ??= true;
+    profile.enableDirectStream ??= true;
+    profile.autoOpenLiveStream ??= true;
+    profile.deviceProfile ??= DeviceProfile();
+    profile.audioStreamIndex ??= _audioStreamIndex;
+    profile.subtitleStreamIndex ??= _subtitleStreamIndex;
+    profile.startTimeTicks ??= startTimeTick;
+    profile.mediaSourceId ??= itemId;
+    // profile.liveStreamId ??= itemId;
+    profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
+    profile.maxAudioChannels ??= 5; // TODO make this configurable
+
     final url = '${server.url}/Items/$itemId/PlaybackInfo';
 
     try {
-      final response = await dio.post(
-        url,
-        queryParameters: queryParams,
-        data: json,
-      );
+      final response = await dio.post(url,
+          queryParameters: queryParams, data: profile.toJson());
       return PlayBackInfos.fromMap(response.data);
     } catch (e, stacktrace) {
       log(e.toString(), stackTrace: stacktrace, level: 5);
@@ -209,18 +236,15 @@ class StreamingService {
     return UriUtils.contructUrl(path, queryParam);
   }
 
-  static Future<String?> isCodecSupported() async {
-    // TODO make IOS/Linux/Windows/Macos....
+  static Future<DeviceProfileParent?> isCodecSupported() async {
+    // TODO make IOS
     if (Platform.isAndroid) {
       final deviceProfile = await getExoplayerProfile();
-      return json
-          .encode(DeviceProfileParent(deviceProfile: deviceProfile).toMap());
+      return DeviceProfileParent(deviceProfile: deviceProfile);
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       final playerProfile =
           PlayersProfile().getByName(PlayerProfileName.VLC_COMPUTER);
-      return json.encode(
-          DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile)
-              .toMap());
+      return DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile);
     }
     return null;
   }
