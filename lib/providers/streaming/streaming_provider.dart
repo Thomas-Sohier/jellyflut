@@ -136,7 +136,7 @@ class StreamingProvider extends ChangeNotifier {
     final audioTracks = <AudioTrack>[];
     final localAudioTracks = await commonStream?.getAudioTracks() ?? [];
     audioTracks.addAll(localAudioTracks);
-    final lastIndex = audioTracks.map((e) => e.index).reduce(max);
+    final lastIndex = audioTracks.map((e) => e.index).fold(0, max);
     audioTracks.addAll(_getRemoteAudiotracks(lastIndex + 1));
 
     return audioTracks;
@@ -170,7 +170,7 @@ class StreamingProvider extends ChangeNotifier {
     final subtitles = <streaming_subtitle.Subtitle>[];
     final localSubtitles = await commonStream?.getSubtitles() ?? [];
     subtitles.addAll(localSubtitles);
-    final lastIndex = subtitles.map((e) => e.index).reduce(max);
+    final lastIndex = subtitles.map((e) => e.index).fold(0, max);
     subtitles.addAll(_getRemoteSubtitles(lastIndex + 1));
 
     return subtitles;
