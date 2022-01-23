@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -135,7 +136,8 @@ class StreamingProvider extends ChangeNotifier {
     final audioTracks = <AudioTrack>[];
     final localAudioTracks = await commonStream?.getAudioTracks() ?? [];
     audioTracks.addAll(localAudioTracks);
-    audioTracks.addAll(_getRemoteAudiotracks(audioTracks.length));
+    final lastIndex = audioTracks.map((e) => e.index).reduce(max);
+    audioTracks.addAll(_getRemoteAudiotracks(lastIndex + 1));
 
     return audioTracks;
   }
@@ -168,7 +170,8 @@ class StreamingProvider extends ChangeNotifier {
     final subtitles = <streaming_subtitle.Subtitle>[];
     final localSubtitles = await commonStream?.getSubtitles() ?? [];
     subtitles.addAll(localSubtitles);
-    subtitles.addAll(_getRemoteSubtitles(subtitles.length));
+    final lastIndex = subtitles.map((e) => e.index).reduce(max);
+    subtitles.addAll(_getRemoteSubtitles(lastIndex + 1));
 
     return subtitles;
   }
@@ -219,10 +222,12 @@ class StreamingProvider extends ChangeNotifier {
   void setSubtitleStreamIndex(Subtitle subtitleTrack) {
     _selectedSubtitleTrack = subtitleTrack;
 
+    if (subtitleTrack.mediaType == MediaType.LOCAL) {
+      commonStream?.setSubtitle(subtitleTrack);
+    }
+
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.SUBTITLE_SELECTED);
-    } else if (subtitleTrack.mediaType == MediaType.LOCAL) {
-      commonStream?.setSubtitle(subtitleTrack);
     }
   }
 

@@ -115,7 +115,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         list.add(
           CheckedPopupMenuItem(
             value: subtitle,
-            checked: subtitlesTracks.indexOf(subtitle) == subtitleSelectedIndex,
+            checked: subtitle.index == subtitleSelectedIndex,
             child: Text(subtitle.name),
           ),
         );
@@ -142,7 +142,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         final subtitle = remoteSubtitles[index];
         list.add(CheckedPopupMenuItem(
           value: subtitle,
-          checked: subtitlesTracks.indexOf(subtitle) == subtitleSelectedIndex,
+          checked: subtitle.index == subtitleSelectedIndex,
           child: Text(subtitle.name),
         ));
       }

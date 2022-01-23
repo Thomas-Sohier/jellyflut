@@ -127,7 +127,8 @@ class CommonStream {
         hasPip: Future.value(false),
         pip: () => throw ('Not supported on VLC player'),
         getSubtitles: commonStreamVLC.getSubtitles,
-        setSubtitle: (subtitle) => commonStreamVLC.setSubtitle(subtitle),
+        setSubtitle: (Subtitle subtitle) =>
+            vlcPlayerController.setSpuTrack(subtitle.index),
         disableSubtitles: () => vlcPlayerController.setSpuTrack(-1),
         getAudioTracks: commonStreamVLC.getAudioTracks,
         setAudioTrack: (audioTrack) =>

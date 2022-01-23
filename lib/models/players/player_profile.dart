@@ -191,6 +191,12 @@ class PlayersProfile {
               SubtitleProfile(format: 'dvdsub', method: 'External'),
               SubtitleProfile(format: 'srt', method: 'External'),
               SubtitleProfile(format: 'vtt', method: 'External'),
+              SubtitleProfile(format: 'subrip', method: 'External'),
+              SubtitleProfile(format: 'sub', method: 'External'),
+              SubtitleProfile(format: 'smi', method: 'External'),
+              SubtitleProfile(format: 'pgsub', method: 'External'),
+              SubtitleProfile(format: 'pgs', method: 'External'),
+              SubtitleProfile(format: 'idx', method: 'External'),
               SubtitleProfile(format: 'ass', method: 'External'),
               SubtitleProfile(format: 'ssa', method: 'External')
             ],
@@ -299,8 +305,8 @@ class PlayersProfile {
             codecProfiles: [
               CodecProfile(
                   type: 'VideoAudio',
-                  container: 'avi,mkv,mp4,webm',
-                  codec: 'aac,mp3,ac3,opus,flac,vorbis',
+                  container: 'avi,mkv,mp4,webm,mov',
+                  codec: 'aac,mp3,ac3,dts,opus,flac,vorbis',
                   conditions: [
                     Condition(
                         condition: 'Equals',
@@ -346,7 +352,7 @@ class PlayersProfile {
                   videoCodec: 'vp8,vp9,av1',
                   audioCodec: 'vorbis,opus'),
               DirectPlayProfile(
-                  container: 'mp4,m4v',
+                  container: 'mp4,m4v,mov',
                   type: 'Video',
                   videoCodec: 'h264,hevc,vp8,vp9,av1',
                   audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
@@ -355,11 +361,6 @@ class PlayersProfile {
                   type: 'Video',
                   videoCodec: 'h264,hevc',
                   audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
-              DirectPlayProfile(
-                  container: 'mov',
-                  type: 'Video',
-                  videoCodec: 'h264',
-                  audioCodec: 'aac,mp3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'webm', audioCodec: 'opus', type: 'Audio'),
               DirectPlayProfile(
@@ -380,6 +381,12 @@ class PlayersProfile {
               SubtitleProfile(format: 'dvdsub', method: 'External'),
               SubtitleProfile(format: 'srt', method: 'External'),
               SubtitleProfile(format: 'vtt', method: 'External'),
+              SubtitleProfile(format: 'subrip', method: 'External'),
+              SubtitleProfile(format: 'sub', method: 'External'),
+              SubtitleProfile(format: 'smi', method: 'External'),
+              SubtitleProfile(format: 'pgsub', method: 'External'),
+              SubtitleProfile(format: 'pgs', method: 'External'),
+              SubtitleProfile(format: 'idx', method: 'External'),
               SubtitleProfile(format: 'ass', method: 'External'),
               SubtitleProfile(format: 'ssa', method: 'External')
             ],

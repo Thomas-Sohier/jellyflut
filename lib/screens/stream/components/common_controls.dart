@@ -177,7 +177,6 @@ class _CommonControlsState extends State<CommonControls> {
               ),
             ),
           ),
-          Spacer(),
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: streamingProvider.isDirectPlay ?? true

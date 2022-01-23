@@ -116,7 +116,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
         list.add(
           CheckedPopupMenuItem(
             value: audioTrack,
-            checked: audioTracks.indexOf(audioTrack) == audioSelectedIndex,
+            checked: audioTrack.index == audioSelectedIndex,
             child: Text(audioTrack.name),
           ),
         );
@@ -144,7 +144,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
         final audioTrack = remoteAudioTracks.elementAt(index);
         list.add(CheckedPopupMenuItem(
           value: audioTrack,
-          checked: audioTracks.indexOf(audioTrack) == audioSelectedIndex,
+          checked: audioTrack.index == audioSelectedIndex,
           child: Text(audioTrack.name),
         ));
       }

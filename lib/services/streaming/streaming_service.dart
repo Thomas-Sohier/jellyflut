@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/media_played_infos.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
@@ -196,7 +197,7 @@ class StreamingService {
         .settingsDao
         .getSettingsById(userApp!.settingsId);
     final info = await DeviceInfo.getCurrentDeviceInfo();
-    final queryParam = <String, String>{};
+    final queryParam = <String, String?>{};
     queryParam['StartTimeTicks'] = startTick.toString();
     queryParam['Static'] = true.toString();
     queryParam['MediaSourceId'] = item.id;
@@ -221,6 +222,8 @@ class StreamingService {
     }
     queryParam['api_key'] = apiKey!;
 
+    queryParam.removeWhere((key, value) => value == null || value == 'null');
+
     // TODO rework that shit to be more readable and clear
     late final path;
     switch (item.type) {
@@ -237,8 +240,24 @@ class StreamingService {
   static Future<DeviceProfileParent?> isCodecSupported() async {
     // TODO make IOS
     if (Platform.isAndroid) {
-      final deviceProfile = await getExoplayerProfile();
-      return DeviceProfileParent(deviceProfile: deviceProfile);
+      final streamingSoftwareDB = await AppDatabase()
+          .getDatabase
+          .settingsDao
+          .getSettingsById(userApp!.settingsId);
+      final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
+          e.toString() ==
+          'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+
+      switch (streamingSoftware) {
+        case StreamingSoftwareName.vlc:
+          final playerProfile =
+              PlayersProfile().getByName(PlayerProfileName.VLC_PHONE);
+          return DeviceProfileParent(
+              deviceProfile: playerProfile?.deviceProfile);
+        case StreamingSoftwareName.exoplayer:
+          final deviceProfile = await getExoplayerProfile();
+          return DeviceProfileParent(deviceProfile: deviceProfile);
+      }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       final playerProfile =
           PlayersProfile().getByName(PlayerProfileName.VLC_COMPUTER);
