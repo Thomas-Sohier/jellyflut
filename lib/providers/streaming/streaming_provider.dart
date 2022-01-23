@@ -135,13 +135,16 @@ class StreamingProvider extends ChangeNotifier {
     final audioTracks = <AudioTrack>[];
     final localAudioTracks = await commonStream?.getAudioTracks() ?? [];
     audioTracks.addAll(localAudioTracks);
-    audioTracks.addAll(_getRemoteAudiotracks());
+    audioTracks.addAll(_getRemoteAudiotracks(audioTracks.length));
 
     return audioTracks;
   }
 
-  List<AudioTrack> _getRemoteAudiotracks() {
+  List<AudioTrack> _getRemoteAudiotracks([final int startIndex = 0]) {
     final audioTracks = <AudioTrack>[];
+
+    if (isDirectPlay ?? false) return audioTracks;
+
     final remoteAudioTracksMediaStream = item?.mediaStreams
         .where((e) => e.type == MediaStreamType.AUDIO)
         .toList();
@@ -151,7 +154,7 @@ class StreamingProvider extends ChangeNotifier {
       for (var i = 0; i < remoteAudioTracksMediaStream.length; i++) {
         final at = remoteAudioTracksMediaStream[i];
         final remoteAudioTrack = AudioTrack(
-            index: audioTracks.length,
+            index: audioTracks.length + startIndex,
             name: at.displayTitle ?? '',
             mediaType: MediaType.REMOTE,
             jellyfinSubtitleIndex: at.index);
@@ -165,12 +168,13 @@ class StreamingProvider extends ChangeNotifier {
     final subtitles = <streaming_subtitle.Subtitle>[];
     final localSubtitles = await commonStream?.getSubtitles() ?? [];
     subtitles.addAll(localSubtitles);
-    subtitles.addAll(_getRemoteSubtitles());
+    subtitles.addAll(_getRemoteSubtitles(subtitles.length));
 
     return subtitles;
   }
 
-  List<streaming_subtitle.Subtitle> _getRemoteSubtitles() {
+  List<streaming_subtitle.Subtitle> _getRemoteSubtitles(
+      [final int startIndex = 0]) {
     final subtitles = <streaming_subtitle.Subtitle>[];
     final remoteSubtitlesMediaStream = item?.mediaStreams
         .where((e) => e.type == MediaStreamType.SUBTITLE)
@@ -181,7 +185,7 @@ class StreamingProvider extends ChangeNotifier {
       for (var i = 0; i < remoteSubtitlesMediaStream.length; i++) {
         final ls = remoteSubtitlesMediaStream[i];
         final remoteSubtitle = streaming_subtitle.Subtitle(
-            index: subtitles.length,
+            index: subtitles.length + startIndex,
             name: ls.displayTitle ?? '',
             mediaType: MediaType.REMOTE,
             jellyfinSubtitleIndex: ls.index);
