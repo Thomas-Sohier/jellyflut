@@ -2,10 +2,12 @@
 
 import 'dart:io';
 
+import 'package:jellyflut/database/class/servers_with_users.dart';
 import 'package:jellyflut/database/tables/download.dart';
 import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
 import 'package:jellyflut/database/tables/user.dart';
+import 'package:collection/collection.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path_provider/path_provider.dart';
@@ -65,6 +67,29 @@ class Database extends _$Database {
           await m.addColumn(settings, settings.downloadPath);
         }
       });
+
+  Stream<List<ServersWithUsers>> serversWithUsers() {
+    final query = (select(servers)
+        .join([innerJoin(users, servers.id.equalsExp(users.serverId))]));
+
+    return query.watch().map((rows) {
+      // read both the entry and the associated category for each row
+      final results = rows.map((row) {
+        return ServersWithUsersDao(
+            server: row.readTable(servers), user: row.readTable(users));
+      }).toList();
+
+      final listResult = <ServersWithUsers>[];
+      final mapResults =
+          groupBy(results.toList(), (ServersWithUsersDao s) => s.server);
+      mapResults.forEach((server, swu) {
+        final users = swu.map((e) => e.user);
+        final s = ServersWithUsers(server: server, users: users.toList());
+        listResult.add(s);
+      });
+      return listResult;
+    });
+  }
 }
 
 @UseDao(tables: [Users])
@@ -104,6 +129,8 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
   ServersDao(Database db) : super(db);
   Future<List<Server>> get allWatchingServers => select(servers).get();
   Stream<List<Server>> get watchAllServers => select(servers).watch();
+  Stream<List<ServersWithUsers>> get watchAllServersWithUsers =>
+      db.serversWithUsers();
   Future<Server> getServerById(int serverId) =>
       (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();
   Stream<Server> watchServerById(int serverId) =>

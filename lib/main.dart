@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -131,19 +130,8 @@ class Jellyflut extends StatelessWidget {
                   supportedLocales: context.supportedLocales,
                   theme: personnal_theme.Theme.defaultThemeData,
                   localizationsDelegates: context.localizationDelegates,
-                  builder: (context, child) {
-                    // Show only title bar on computer or we will have build error on phones
-                    // if (Platform.isMacOS ||
-                    //     Platform.isLinux ||
-                    //     Platform.isWindows) {
-                    //   return TitleBar(child: child);
-                    // }
-                    return child ?? const SizedBox();
-                  },
-                  routerDelegate: customRouter.delegate(
-                      initialRoutes: [HomeRouter()],
-                      navigatorObservers: () =>
-                          <NavigatorObserver>[AutoRouteObserver()]),
+                  routerDelegate:
+                      customRouter.delegate(initialRoutes: [HomeRouter()]),
                   routeInformationParser: customRouter.defaultRouteParser(),
                 ))));
   }

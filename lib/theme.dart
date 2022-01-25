@@ -119,6 +119,7 @@ class Theme {
         onPrimary: Colors.grey.shade900,
         secondary: jellyPurple,
         onSecondary: Colors.white,
+        tertiary: jellyLightBLue,
         surface: Colors.grey.shade700,
         onSurface: Colors.white,
       ),

@@ -10,38 +10,39 @@
 //
 // ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i13;
-import 'package:flutter/material.dart' as _i14;
+import 'package:auto_route/auto_route.dart' as _i14;
+import 'package:flutter/material.dart' as _i15;
 
-import '../models/jellyfin/item.dart' as _i16;
+import '../models/jellyfin/item.dart' as _i17;
 import '../screens/auth/auth_parent.dart' as _i1;
-import '../screens/book/book_reader.dart' as _i10;
+import '../screens/book/book_reader.dart' as _i11;
 import '../screens/collection/collection_parent.dart' as _i3;
 import '../screens/details/details.dart' as _i4;
 import '../screens/downloads/downloads_parent.dart' as _i5;
-import '../screens/home/home.dart' as _i11;
+import '../screens/home/home.dart' as _i12;
 import '../screens/home/home_parent.dart' as _i2;
-import '../screens/iptv/iptv.dart' as _i12;
+import '../screens/iptv/iptv.dart' as _i13;
 import '../screens/musicPlayer/music_player.dart' as _i7;
-import '../screens/musicPlayer/routes/playlist.dart' as _i8;
+import '../screens/musicPlayer/routes/playlist.dart' as _i9;
+import '../screens/server/server_parent.dart' as _i8;
 import '../screens/settings/settings.dart' as _i6;
-import '../screens/stream/stream.dart' as _i9;
-import 'router.dart' as _i15;
+import '../screens/stream/stream.dart' as _i10;
+import 'router.dart' as _i16;
 
-class AppRouter extends _i13.RootStackRouter {
+class AppRouter extends _i14.RootStackRouter {
   AppRouter(
-      {_i14.GlobalKey<_i14.NavigatorState>? navigatorKey,
+      {_i15.GlobalKey<_i15.NavigatorState>? navigatorKey,
       required this.authGuard})
       : super(navigatorKey);
 
-  final _i15.AuthGuard authGuard;
+  final _i16.AuthGuard authGuard;
 
   @override
-  final Map<String, _i13.PageFactory> pagesMap = {
+  final Map<String, _i14.PageFactory> pagesMap = {
     AuthParentRoute.name: (routeData) {
       final args = routeData.argsAs<AuthParentRouteArgs>(
           orElse: () => const AuthParentRouteArgs());
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i1.AuthParent(
               key: args.key, onAuthenticated: args.onAuthenticated),
@@ -51,7 +52,7 @@ class AppRouter extends _i13.RootStackRouter {
     HomeRouter.name: (routeData) {
       final args = routeData.argsAs<HomeRouterArgs>(
           orElse: () => const HomeRouterArgs());
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i2.HomeParent(key: args.key),
           opaque: true,
@@ -59,85 +60,95 @@ class AppRouter extends _i13.RootStackRouter {
     },
     CollectionParentRoute.name: (routeData) {
       final args = routeData.argsAs<CollectionParentRouteArgs>();
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i3.CollectionParent(item: args.item),
-          transitionsBuilder: _i13.TransitionsBuilders.slideLeft,
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },
     DetailsRoute.name: (routeData) {
       final args = routeData.argsAs<DetailsRouteArgs>();
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i4.Details(item: args.item, heroTag: args.heroTag),
           opaque: true,
           barrierDismissible: false);
     },
-    DownloadsParentRoute.name: (routeData) {
-      final args = routeData.argsAs<DownloadsParentRouteArgs>(
-          orElse: () => const DownloadsParentRouteArgs());
-      return _i13.CustomPage<dynamic>(
+    DownloadsRoute.name: (routeData) {
+      final args = routeData.argsAs<DownloadsRouteArgs>(
+          orElse: () => const DownloadsRouteArgs());
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i5.DownloadsParent(key: args.key),
-          transitionsBuilder: _i13.TransitionsBuilders.slideLeft,
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },
     SettingsRoute.name: (routeData) {
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i6.Settings(),
-          transitionsBuilder: _i13.TransitionsBuilders.slideLeft,
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },
     MusicPlayerRoute.name: (routeData) {
       final args = routeData.argsAs<MusicPlayerRouteArgs>(
           orElse: () => const MusicPlayerRouteArgs());
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i7.MusicPlayer(key: args.key),
           opaque: true,
           barrierDismissible: false);
     },
+    ServersRoute.name: (routeData) {
+      final args = routeData.argsAs<ServersRouteArgs>(
+          orElse: () => const ServersRouteArgs());
+      return _i14.CustomPage<dynamic>(
+          routeData: routeData,
+          child: _i8.ServerParent(key: args.key),
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
+          opaque: true,
+          barrierDismissible: false);
+    },
     PlaylistRoute.name: (routeData) {
       final args = routeData.argsAs<PlaylistRouteArgs>();
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i8.Playlist(key: args.key, body: args.body),
-          transitionsBuilder: _i13.TransitionsBuilders.slideLeft,
+          child: _i9.Playlist(key: args.key, body: args.body),
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
     },
     StreamRoute.name: (routeData) {
       final args = routeData.argsAs<StreamRouteArgs>(
           orElse: () => const StreamRouteArgs());
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i9.Stream(item: args.item, url: args.url),
-          transitionsBuilder: _i13.TransitionsBuilders.zoomIn,
+          child: _i10.Stream(item: args.item, url: args.url),
+          transitionsBuilder: _i14.TransitionsBuilders.zoomIn,
           opaque: true,
           barrierDismissible: false);
     },
-    BookReaderPageRoute.name: (routeData) {
-      final args = routeData.argsAs<BookReaderPageRouteArgs>();
-      return _i13.CustomPage<dynamic>(
+    EpubRoute.name: (routeData) {
+      final args = routeData.argsAs<EpubRouteArgs>();
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i10.BookReaderPage(key: args.key, item: args.item),
+          child: _i11.BookReaderPage(key: args.key, item: args.item),
           opaque: true,
           barrierDismissible: false);
     },
     HomeRoute.name: (routeData) {
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i11.Home(),
+          child: _i12.Home(),
           opaque: true,
           barrierDismissible: false);
     },
     CollectionRoute.name: (routeData) {
       final args = routeData.argsAs<CollectionRouteArgs>();
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i3.CollectionParent(item: args.item),
           opaque: true,
@@ -146,55 +157,54 @@ class AppRouter extends _i13.RootStackRouter {
     IptvRoute.name: (routeData) {
       final args =
           routeData.argsAs<IptvRouteArgs>(orElse: () => const IptvRouteArgs());
-      return _i13.CustomPage<dynamic>(
+      return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i12.Iptv(key: args.key),
+          child: _i13.Iptv(key: args.key),
           opaque: true,
           barrierDismissible: false);
     }
   };
 
   @override
-  List<_i13.RouteConfig> get routes => [
-        _i13.RouteConfig(AuthParentRoute.name, path: 'authentication'),
-        _i13.RouteConfig(HomeRouter.name, path: 'home', guards: [
+  List<_i14.RouteConfig> get routes => [
+        _i14.RouteConfig(AuthParentRoute.name, path: 'authentication'),
+        _i14.RouteConfig(HomeRouter.name, path: 'home', guards: [
           authGuard
         ], children: [
-          _i13.RouteConfig(HomeRoute.name, path: '', parent: HomeRouter.name),
-          _i13.RouteConfig(CollectionRoute.name,
-              path: 'collection-parent',
-              parent: HomeRouter.name,
-              guards: [authGuard]),
-          _i13.RouteConfig(IptvRoute.name,
-              path: 'Iptv', parent: HomeRouter.name, guards: [authGuard]),
-          _i13.RouteConfig('*#redirect',
+          _i14.RouteConfig(HomeRoute.name, path: '', parent: HomeRouter.name),
+          _i14.RouteConfig(CollectionRoute.name,
+              path: 'collection', parent: HomeRouter.name, guards: [authGuard]),
+          _i14.RouteConfig(IptvRoute.name,
+              path: 'iptv', parent: HomeRouter.name, guards: [authGuard]),
+          _i14.RouteConfig('*#redirect',
               path: '*',
               parent: HomeRouter.name,
               redirectTo: '',
               fullMatch: true)
         ]),
-        _i13.RouteConfig(CollectionParentRoute.name,
-            path: '/collection-parent', guards: [authGuard]),
-        _i13.RouteConfig(DetailsRoute.name,
+        _i14.RouteConfig(CollectionParentRoute.name,
+            path: 'collection', guards: [authGuard]),
+        _i14.RouteConfig(DetailsRoute.name,
             path: 'details', guards: [authGuard]),
-        _i13.RouteConfig(DownloadsParentRoute.name,
+        _i14.RouteConfig(DownloadsRoute.name,
             path: 'downloads', guards: [authGuard]),
-        _i13.RouteConfig(SettingsRoute.name,
+        _i14.RouteConfig(SettingsRoute.name,
             path: 'settings', guards: [authGuard]),
-        _i13.RouteConfig(MusicPlayerRoute.name,
-            path: 'music-player', guards: [authGuard]),
-        _i13.RouteConfig(PlaylistRoute.name,
+        _i14.RouteConfig(MusicPlayerRoute.name,
+            path: 'musicPlayer', guards: [authGuard]),
+        _i14.RouteConfig(ServersRoute.name,
+            path: 'servers', guards: [authGuard]),
+        _i14.RouteConfig(PlaylistRoute.name,
             path: 'playlist', guards: [authGuard]),
-        _i13.RouteConfig(StreamRoute.name, path: 'stream', guards: [authGuard]),
-        _i13.RouteConfig(BookReaderPageRoute.name,
-            path: 'epub', guards: [authGuard])
+        _i14.RouteConfig(StreamRoute.name, path: 'stream', guards: [authGuard]),
+        _i14.RouteConfig(EpubRoute.name, path: 'epub', guards: [authGuard])
       ];
 }
 
 /// generated route for
 /// [_i1.AuthParent]
-class AuthParentRoute extends _i13.PageRouteInfo<AuthParentRouteArgs> {
-  AuthParentRoute({_i14.Key? key, void Function()? onAuthenticated})
+class AuthParentRoute extends _i14.PageRouteInfo<AuthParentRouteArgs> {
+  AuthParentRoute({_i15.Key? key, void Function()? onAuthenticated})
       : super(AuthParentRoute.name,
             path: 'authentication',
             args: AuthParentRouteArgs(
@@ -206,7 +216,7 @@ class AuthParentRoute extends _i13.PageRouteInfo<AuthParentRouteArgs> {
 class AuthParentRouteArgs {
   const AuthParentRouteArgs({this.key, this.onAuthenticated});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   final void Function()? onAuthenticated;
 
@@ -218,8 +228,8 @@ class AuthParentRouteArgs {
 
 /// generated route for
 /// [_i2.HomeParent]
-class HomeRouter extends _i13.PageRouteInfo<HomeRouterArgs> {
-  HomeRouter({_i14.Key? key, List<_i13.PageRouteInfo>? children})
+class HomeRouter extends _i14.PageRouteInfo<HomeRouterArgs> {
+  HomeRouter({_i15.Key? key, List<_i14.PageRouteInfo>? children})
       : super(HomeRouter.name,
             path: 'home',
             args: HomeRouterArgs(key: key),
@@ -231,7 +241,7 @@ class HomeRouter extends _i13.PageRouteInfo<HomeRouterArgs> {
 class HomeRouterArgs {
   const HomeRouterArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -242,11 +252,10 @@ class HomeRouterArgs {
 /// generated route for
 /// [_i3.CollectionParent]
 class CollectionParentRoute
-    extends _i13.PageRouteInfo<CollectionParentRouteArgs> {
-  CollectionParentRoute({required _i16.Item item})
+    extends _i14.PageRouteInfo<CollectionParentRouteArgs> {
+  CollectionParentRoute({required _i17.Item item})
       : super(CollectionParentRoute.name,
-            path: '/collection-parent',
-            args: CollectionParentRouteArgs(item: item));
+            path: 'collection', args: CollectionParentRouteArgs(item: item));
 
   static const String name = 'CollectionParentRoute';
 }
@@ -254,7 +263,7 @@ class CollectionParentRoute
 class CollectionParentRouteArgs {
   const CollectionParentRouteArgs({required this.item});
 
-  final _i16.Item item;
+  final _i17.Item item;
 
   @override
   String toString() {
@@ -264,8 +273,8 @@ class CollectionParentRouteArgs {
 
 /// generated route for
 /// [_i4.Details]
-class DetailsRoute extends _i13.PageRouteInfo<DetailsRouteArgs> {
-  DetailsRoute({required _i16.Item item, required String? heroTag})
+class DetailsRoute extends _i14.PageRouteInfo<DetailsRouteArgs> {
+  DetailsRoute({required _i17.Item item, required String? heroTag})
       : super(DetailsRoute.name,
             path: 'details',
             args: DetailsRouteArgs(item: item, heroTag: heroTag));
@@ -276,7 +285,7 @@ class DetailsRoute extends _i13.PageRouteInfo<DetailsRouteArgs> {
 class DetailsRouteArgs {
   const DetailsRouteArgs({required this.item, required this.heroTag});
 
-  final _i16.Item item;
+  final _i17.Item item;
 
   final String? heroTag;
 
@@ -288,29 +297,28 @@ class DetailsRouteArgs {
 
 /// generated route for
 /// [_i5.DownloadsParent]
-class DownloadsParentRoute
-    extends _i13.PageRouteInfo<DownloadsParentRouteArgs> {
-  DownloadsParentRoute({_i14.Key? key})
-      : super(DownloadsParentRoute.name,
-            path: 'downloads', args: DownloadsParentRouteArgs(key: key));
+class DownloadsRoute extends _i14.PageRouteInfo<DownloadsRouteArgs> {
+  DownloadsRoute({_i15.Key? key})
+      : super(DownloadsRoute.name,
+            path: 'downloads', args: DownloadsRouteArgs(key: key));
 
-  static const String name = 'DownloadsParentRoute';
+  static const String name = 'DownloadsRoute';
 }
 
-class DownloadsParentRouteArgs {
-  const DownloadsParentRouteArgs({this.key});
+class DownloadsRouteArgs {
+  const DownloadsRouteArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
-    return 'DownloadsParentRouteArgs{key: $key}';
+    return 'DownloadsRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
 /// [_i6.Settings]
-class SettingsRoute extends _i13.PageRouteInfo<void> {
+class SettingsRoute extends _i14.PageRouteInfo<void> {
   const SettingsRoute() : super(SettingsRoute.name, path: 'settings');
 
   static const String name = 'SettingsRoute';
@@ -318,10 +326,10 @@ class SettingsRoute extends _i13.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.MusicPlayer]
-class MusicPlayerRoute extends _i13.PageRouteInfo<MusicPlayerRouteArgs> {
-  MusicPlayerRoute({_i14.Key? key})
+class MusicPlayerRoute extends _i14.PageRouteInfo<MusicPlayerRouteArgs> {
+  MusicPlayerRoute({_i15.Key? key})
       : super(MusicPlayerRoute.name,
-            path: 'music-player', args: MusicPlayerRouteArgs(key: key));
+            path: 'musicPlayer', args: MusicPlayerRouteArgs(key: key));
 
   static const String name = 'MusicPlayerRoute';
 }
@@ -329,7 +337,7 @@ class MusicPlayerRoute extends _i13.PageRouteInfo<MusicPlayerRouteArgs> {
 class MusicPlayerRouteArgs {
   const MusicPlayerRouteArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -338,9 +346,30 @@ class MusicPlayerRouteArgs {
 }
 
 /// generated route for
-/// [_i8.Playlist]
-class PlaylistRoute extends _i13.PageRouteInfo<PlaylistRouteArgs> {
-  PlaylistRoute({_i14.Key? key, required _i14.Widget body})
+/// [_i8.ServerParent]
+class ServersRoute extends _i14.PageRouteInfo<ServersRouteArgs> {
+  ServersRoute({_i15.Key? key})
+      : super(ServersRoute.name,
+            path: 'servers', args: ServersRouteArgs(key: key));
+
+  static const String name = 'ServersRoute';
+}
+
+class ServersRouteArgs {
+  const ServersRouteArgs({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return 'ServersRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i9.Playlist]
+class PlaylistRoute extends _i14.PageRouteInfo<PlaylistRouteArgs> {
+  PlaylistRoute({_i15.Key? key, required _i15.Widget body})
       : super(PlaylistRoute.name,
             path: 'playlist', args: PlaylistRouteArgs(key: key, body: body));
 
@@ -350,9 +379,9 @@ class PlaylistRoute extends _i13.PageRouteInfo<PlaylistRouteArgs> {
 class PlaylistRouteArgs {
   const PlaylistRouteArgs({this.key, required this.body});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
-  final _i14.Widget body;
+  final _i15.Widget body;
 
   @override
   String toString() {
@@ -361,9 +390,9 @@ class PlaylistRouteArgs {
 }
 
 /// generated route for
-/// [_i9.Stream]
-class StreamRoute extends _i13.PageRouteInfo<StreamRouteArgs> {
-  StreamRoute({_i16.Item? item, String? url})
+/// [_i10.Stream]
+class StreamRoute extends _i14.PageRouteInfo<StreamRouteArgs> {
+  StreamRoute({_i17.Item? item, String? url})
       : super(StreamRoute.name,
             path: 'stream', args: StreamRouteArgs(item: item, url: url));
 
@@ -373,7 +402,7 @@ class StreamRoute extends _i13.PageRouteInfo<StreamRouteArgs> {
 class StreamRouteArgs {
   const StreamRouteArgs({this.item, this.url});
 
-  final _i16.Item? item;
+  final _i17.Item? item;
 
   final String? url;
 
@@ -384,31 +413,31 @@ class StreamRouteArgs {
 }
 
 /// generated route for
-/// [_i10.BookReaderPage]
-class BookReaderPageRoute extends _i13.PageRouteInfo<BookReaderPageRouteArgs> {
-  BookReaderPageRoute({_i14.Key? key, required _i16.Item item})
-      : super(BookReaderPageRoute.name,
-            path: 'epub', args: BookReaderPageRouteArgs(key: key, item: item));
+/// [_i11.BookReaderPage]
+class EpubRoute extends _i14.PageRouteInfo<EpubRouteArgs> {
+  EpubRoute({_i15.Key? key, required _i17.Item item})
+      : super(EpubRoute.name,
+            path: 'epub', args: EpubRouteArgs(key: key, item: item));
 
-  static const String name = 'BookReaderPageRoute';
+  static const String name = 'EpubRoute';
 }
 
-class BookReaderPageRouteArgs {
-  const BookReaderPageRouteArgs({this.key, required this.item});
+class EpubRouteArgs {
+  const EpubRouteArgs({this.key, required this.item});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
-  final _i16.Item item;
+  final _i17.Item item;
 
   @override
   String toString() {
-    return 'BookReaderPageRouteArgs{key: $key, item: $item}';
+    return 'EpubRouteArgs{key: $key, item: $item}';
   }
 }
 
 /// generated route for
-/// [_i11.Home]
-class HomeRoute extends _i13.PageRouteInfo<void> {
+/// [_i12.Home]
+class HomeRoute extends _i14.PageRouteInfo<void> {
   const HomeRoute() : super(HomeRoute.name, path: '');
 
   static const String name = 'HomeRoute';
@@ -416,10 +445,10 @@ class HomeRoute extends _i13.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.CollectionParent]
-class CollectionRoute extends _i13.PageRouteInfo<CollectionRouteArgs> {
-  CollectionRoute({required _i16.Item item})
+class CollectionRoute extends _i14.PageRouteInfo<CollectionRouteArgs> {
+  CollectionRoute({required _i17.Item item})
       : super(CollectionRoute.name,
-            path: 'collection-parent', args: CollectionRouteArgs(item: item));
+            path: 'collection', args: CollectionRouteArgs(item: item));
 
   static const String name = 'CollectionRoute';
 }
@@ -427,7 +456,7 @@ class CollectionRoute extends _i13.PageRouteInfo<CollectionRouteArgs> {
 class CollectionRouteArgs {
   const CollectionRouteArgs({required this.item});
 
-  final _i16.Item item;
+  final _i17.Item item;
 
   @override
   String toString() {
@@ -436,10 +465,10 @@ class CollectionRouteArgs {
 }
 
 /// generated route for
-/// [_i12.Iptv]
-class IptvRoute extends _i13.PageRouteInfo<IptvRouteArgs> {
-  IptvRoute({_i14.Key? key})
-      : super(IptvRoute.name, path: 'Iptv', args: IptvRouteArgs(key: key));
+/// [_i13.Iptv]
+class IptvRoute extends _i14.PageRouteInfo<IptvRouteArgs> {
+  IptvRoute({_i15.Key? key})
+      : super(IptvRoute.name, path: 'iptv', args: IptvRouteArgs(key: key));
 
   static const String name = 'IptvRoute';
 }
@@ -447,7 +476,7 @@ class IptvRoute extends _i13.PageRouteInfo<IptvRouteArgs> {
 class IptvRouteArgs {
   const IptvRouteArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {

@@ -9,6 +9,7 @@ import 'package:jellyflut/screens/home/home_parent.dart';
 import 'package:jellyflut/screens/iptv/iptv.dart';
 import 'package:jellyflut/screens/musicPlayer/music_player.dart';
 import 'package:jellyflut/screens/musicPlayer/routes/playlist.dart';
+import 'package:jellyflut/screens/server/server_parent.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
@@ -28,40 +29,59 @@ import 'router.gr.dart';
     AutoRoute(page: HomeParent, path: 'home', name: 'HomeRouter', guards: [
       AuthGuard
     ], children: [
-      AutoRoute(page: Home, name: 'HomeRoute', initial: true, path: ''),
+      AutoRoute(page: Home, name: 'HomeRoute', path: '', initial: true),
       AutoRoute(
-          page: CollectionParent, name: 'CollectionRoute', guards: [AuthGuard]),
-      AutoRoute(page: Iptv, name: 'IptvRoute', guards: [AuthGuard]),
+          page: CollectionParent,
+          name: 'CollectionRoute',
+          path: 'collection',
+          guards: [AuthGuard]),
+      AutoRoute(
+          page: Iptv, name: 'IptvRoute', path: 'iptv', guards: [AuthGuard]),
       RedirectRoute(path: '*', redirectTo: ''),
     ]),
     CustomRoute(
         page: CollectionParent,
-        name: 'CollectionParentRoute',
+        name: 'collectionParentRoute',
+        path: 'collection',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     AutoRoute(page: Details, path: 'details', guards: [AuthGuard]),
     CustomRoute(
         page: DownloadsParent,
+        name: 'downloadsRoute',
         path: 'downloads',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     CustomRoute(
         page: Settings,
+        name: 'settingsRoute',
         path: 'settings',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(page: MusicPlayer, path: 'music-player', guards: [AuthGuard]),
+    AutoRoute(page: MusicPlayer, path: 'musicPlayer', guards: [AuthGuard]),
+    CustomRoute(
+        page: ServerParent,
+        name: 'serversRoute',
+        path: 'servers',
+        transitionsBuilder: TransitionsBuilders.slideLeft,
+        guards: [AuthGuard]),
     CustomRoute(
         page: Playlist,
+        name: 'playlistRoute',
         path: 'playlist',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
     CustomRoute(
         page: Stream,
+        name: 'streamRoute',
         path: 'stream',
         transitionsBuilder: TransitionsBuilders.zoomIn,
         guards: [AuthGuard]),
-    AutoRoute(page: BookReaderPage, path: 'epub', guards: [AuthGuard]),
+    AutoRoute(
+        page: BookReaderPage,
+        name: 'epubRoute',
+        path: 'epub',
+        guards: [AuthGuard]),
   ],
 )
 class $AppRouter {}

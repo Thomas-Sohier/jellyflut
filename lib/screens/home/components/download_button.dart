@@ -46,7 +46,7 @@ class _DownloadButtonState extends State<DownloadButton> {
           border: Border.all(width: 2, color: _focusColor)),
       child: InkWell(
         focusNode: _node,
-        onTap: () => customRouter.push(DownloadsParentRoute()),
+        onTap: () => customRouter.push(DownloadsRoute()),
         radius: 60,
         borderRadius: BorderRadius.all(Radius.circular(80)),
         child: Padding(

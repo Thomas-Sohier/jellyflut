@@ -9,6 +9,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
+import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';

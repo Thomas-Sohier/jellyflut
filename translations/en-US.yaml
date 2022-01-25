@@ -17,6 +17,7 @@ download: Download
 viewed: Viewed
 loading: Loading
 loading_dots: Loading...
+servers: Servers
 
 # error
 error: Error
@@ -64,6 +65,7 @@ select_preferred_video_player: Select preferred video player
 select_preferred_audio_player: Select preferred audio player
 interface: Interface
 language: Language
+change_server: Change server
 download_path: 'Download path'
 
 # details

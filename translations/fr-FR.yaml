@@ -18,6 +18,7 @@ previous: Précédent
 viewed: Vu
 loading: Chargement
 loading_dots: Chargement...
+servers: Serveurs
 
 # Error
 error: Erreur
@@ -65,6 +66,7 @@ select_preferred_video_player: Sélectionner le lecteur video préféré
 select_preferred_audio_player: Sélectionner le lecteur audio préféré
 interface: Interface
 language: Langage
+change_server: Changer de serveur
 download_path: 'Dossier de téléchargement'
 
 # details

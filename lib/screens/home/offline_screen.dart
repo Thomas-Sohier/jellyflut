@@ -50,8 +50,7 @@ class OffLineScreen extends StatelessWidget {
                     PaletteButton('Go to my offline library',
                         borderRadius: 4,
                         minHeight: 40,
-                        onPressed: () =>
-                            customRouter.push(DownloadsParentRoute())),
+                        onPressed: () => customRouter.push(DownloadsRoute())),
                     Divider(height: 32),
                     ErrorUserActions(
                         reloadFunction: reloadFunction,
