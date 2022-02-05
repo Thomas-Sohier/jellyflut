@@ -1,12 +1,10 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
-import 'package:jellyflut/routes/router.gr.dart';
-
-import 'package:jellyflut/screens/settings/components/sections.dart';
+import 'package:jellyflut/components/back_button.dart' as bb;
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/components/back_button.dart' as bb;
+import 'package:jellyflut/screens/settings/components/sections.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 

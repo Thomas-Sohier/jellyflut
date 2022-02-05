@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -29,16 +26,6 @@ void main() async {
   await setUpSharedPrefs();
   await setUpAndroidTv();
 
-  // Prepare windows title bar while loading app
-  // Only on computer
-  if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
-    doWhenWindowReady(() {
-      appWindow.alignment = Alignment.center;
-      appWindow.title = 'Jellyflut';
-      appWindow.show();
-    });
-  }
-
   runApp(EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
       path: 'translations',
@@ -56,11 +43,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      title: Text(''),
-      loadingText: Text(''),
-      styleTextUnderTheLoader: TextStyle(fontSize: 16),
       useLoader: false,
-      loadingTextPadding: EdgeInsets.all(2),
       image: Image.asset('img/jellyfin_logo.png'),
       backgroundColor: Color(0xFF252525),
       photoSize: 80.0,

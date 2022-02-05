@@ -10,10 +10,11 @@ import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:just_audio/just_audio.dart';
+
+import '../../shared/responsive_builder.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
