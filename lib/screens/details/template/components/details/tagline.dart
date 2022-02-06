@@ -12,7 +12,7 @@ class TaglineDetailsWidget extends StatelessWidget {
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
-          .headline4!
+          .headline5!
           .copyWith(fontStyle: FontStyle.italic)
           .copyWith(fontFamily: 'Quicksand'),
     );
