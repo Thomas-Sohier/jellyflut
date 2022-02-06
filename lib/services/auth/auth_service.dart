@@ -85,9 +85,8 @@ class AuthService {
     return false;
   }
 
-  static Future<void> storeAccountData(
-      String name, Server server, AuthenticationResponse authenticationResponse,
-      [String? password]) async {
+  static Future<void> storeAccountData(String name, Server server,
+      AuthenticationResponse authenticationResponse, String password) async {
     final db = AppDatabase().getDatabase;
 
     final serverId = await createOrGetServer(server);
@@ -95,7 +94,7 @@ class AuthService {
 
     final userCompanion = UsersCompanion.insert(
         name: name,
-        password: Value(password),
+        password: password,
         apiKey: authenticationResponse.accessToken,
         settingsId: Value(settingsId),
         serverId: Value(serverId));

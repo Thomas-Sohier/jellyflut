@@ -33,7 +33,7 @@ class _SearchButtonState extends State<SearchButton> {
         shape: CircleBorder(),
         child: Icon(
           Icons.search,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onBackground,
           size: 28,
         ));
   }

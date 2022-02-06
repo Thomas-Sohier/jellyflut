@@ -62,7 +62,7 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<CollectionParentRouteArgs>();
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i3.CollectionParent(item: args.item),
+          child: _i3.CollectionParent(key: args.key, item: args.item),
           transitionsBuilder: _i14.TransitionsBuilders.slideLeft,
           opaque: true,
           barrierDismissible: false);
@@ -140,9 +140,11 @@ class AppRouter extends _i14.RootStackRouter {
           barrierDismissible: false);
     },
     HomeRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i12.Home(),
+          child: _i12.Home(key: args.key),
           opaque: true,
           barrierDismissible: false);
     },
@@ -150,7 +152,7 @@ class AppRouter extends _i14.RootStackRouter {
       final args = routeData.argsAs<CollectionRouteArgs>();
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i3.CollectionParent(item: args.item),
+          child: _i3.CollectionParent(key: args.key, item: args.item),
           opaque: true,
           barrierDismissible: false);
     },
@@ -253,21 +255,24 @@ class HomeRouterArgs {
 /// [_i3.CollectionParent]
 class CollectionParentRoute
     extends _i14.PageRouteInfo<CollectionParentRouteArgs> {
-  CollectionParentRoute({required _i17.Item item})
+  CollectionParentRoute({_i15.Key? key, required _i17.Item item})
       : super(CollectionParentRoute.name,
-            path: 'collection', args: CollectionParentRouteArgs(item: item));
+            path: 'collection',
+            args: CollectionParentRouteArgs(key: key, item: item));
 
   static const String name = 'CollectionParentRoute';
 }
 
 class CollectionParentRouteArgs {
-  const CollectionParentRouteArgs({required this.item});
+  const CollectionParentRouteArgs({this.key, required this.item});
+
+  final _i15.Key? key;
 
   final _i17.Item item;
 
   @override
   String toString() {
-    return 'CollectionParentRouteArgs{item: $item}';
+    return 'CollectionParentRouteArgs{key: $key, item: $item}';
   }
 }
 
@@ -437,30 +442,45 @@ class EpubRouteArgs {
 
 /// generated route for
 /// [_i12.Home]
-class HomeRoute extends _i14.PageRouteInfo<void> {
-  const HomeRoute() : super(HomeRoute.name, path: '');
+class HomeRoute extends _i14.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({_i15.Key? key})
+      : super(HomeRoute.name, path: '', args: HomeRouteArgs(key: key));
 
   static const String name = 'HomeRoute';
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({this.key});
+
+  final _i15.Key? key;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
 /// [_i3.CollectionParent]
 class CollectionRoute extends _i14.PageRouteInfo<CollectionRouteArgs> {
-  CollectionRoute({required _i17.Item item})
+  CollectionRoute({_i15.Key? key, required _i17.Item item})
       : super(CollectionRoute.name,
-            path: 'collection', args: CollectionRouteArgs(item: item));
+            path: 'collection',
+            args: CollectionRouteArgs(key: key, item: item));
 
   static const String name = 'CollectionRoute';
 }
 
 class CollectionRouteArgs {
-  const CollectionRouteArgs({required this.item});
+  const CollectionRouteArgs({this.key, required this.item});
+
+  final _i15.Key? key;
 
   final _i17.Item item;
 
   @override
   String toString() {
-    return 'CollectionRouteArgs{item: $item}';
+    return 'CollectionRouteArgs{key: $key, item: $item}';
   }
 }
 

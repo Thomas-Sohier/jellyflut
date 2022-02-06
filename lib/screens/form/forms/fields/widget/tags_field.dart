@@ -78,7 +78,7 @@ class _TagsFieldState extends State<TagsField> {
                     icon: Icon(
                       Icons.remove_circle_outline,
                       size: 16,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ))
               ],
             )));

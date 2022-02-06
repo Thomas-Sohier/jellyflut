@@ -53,7 +53,6 @@ class _SettingsButtonState extends State<SettingsButton> {
             padding: const EdgeInsets.all(6),
             child: Icon(
               Icons.settings,
-              color: Colors.white,
               size: 28,
             )),
       ),

@@ -100,7 +100,8 @@ class Theme {
     );
 
     return theme
-        .copyWith(textTheme: getTextThemeWithColor())
+        .copyWith(
+            textTheme: getTextThemeWithColor(theme.colorScheme.onBackground))
         .copyWith(
             appBarTheme: AppBarTheme(
                 elevation: 0,

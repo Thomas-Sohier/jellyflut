@@ -7,10 +7,12 @@ import 'package:jellyflut/screens/form/form.dart';
 class DialogStructure extends StatelessWidget {
   final void Function() onClose;
   final void Function() onSubmit;
+  final bool expanded;
   final FormBloc<Item> formBloc;
 
   const DialogStructure(
       {Key? key,
+      this.expanded = false,
       required this.onClose,
       required this.onSubmit,
       required this.formBloc})
@@ -18,12 +20,12 @@ class DialogStructure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).dialogTheme.backgroundColor,
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.background,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
           children: [
             DecoratedBox(
                 decoration: BoxDecoration(
@@ -48,7 +50,7 @@ class DialogStructure extends StatelessWidget {
                         ),
                       ],
                     ))),
-            Flexible(child: FormBuilder<Item>(formBloc: formBloc)),
+            form(),
             DecoratedBox(
                 decoration: BoxDecoration(
                     border: Border(
@@ -67,5 +69,12 @@ class DialogStructure extends StatelessWidget {
                 )),
           ]),
     );
+  }
+
+  Widget form() {
+    if (expanded) {
+      return Expanded(child: FormBuilder<Item>(formBloc: formBloc));
+    }
+    return Flexible(child: FormBuilder<Item>(formBloc: formBloc));
   }
 }

@@ -50,7 +50,7 @@ class _BackButtonState extends State<BackButton> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onBackground,
             size: 28,
           )),
     );

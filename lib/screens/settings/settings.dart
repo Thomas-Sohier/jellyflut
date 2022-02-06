@@ -30,8 +30,12 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(title: Text('settings'.tr()), leading: bb.BackButton()),
+        appBar: AppBar(
+            title: Text(
+              'settings'.tr(),
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            leading: bb.BackButton()),
         body: FutureBuilder(
             future: settingsInfosFuture,
             builder: (context, snapshot) {

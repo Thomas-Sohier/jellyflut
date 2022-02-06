@@ -27,12 +27,10 @@ class ThemeProvider extends ChangeNotifier {
   void toggleTheme() {
     _themeMode =
         _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-
     final brightness = _themeData.colorScheme.brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
     _themeData = personnal_theme.Theme.generateThemeData(brightness);
-
     notifyListeners();
   }
 }

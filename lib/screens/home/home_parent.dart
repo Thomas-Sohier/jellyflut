@@ -77,14 +77,14 @@ class _HomeParentState extends State<HomeParent> {
     final i = items ?? <Item>[];
 
     //initial route
-    routes.add(HomeRoute());
+    routes.add(HomeRoute(key: UniqueKey()));
     i.forEach((item) {
       switch (item.collectionType) {
         case CollectionType.LIVETV:
-          routes.add(IptvRoute());
+          routes.add(IptvRoute(key: UniqueKey()));
           break;
         default:
-          routes.add(CollectionRoute(item: item));
+          routes.add(CollectionRoute(key: ValueKey(item), item: item));
       }
     });
     return routes;

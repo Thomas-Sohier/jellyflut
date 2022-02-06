@@ -14,10 +14,13 @@ class ManageButton extends StatefulWidget {
 class _ManageButtonState extends State<ManageButton> {
   late final FormBloc<Item> formBloc;
   late final DetailsBloc detailsBloc;
+  late final ThemeProvider themeProvider;
+  late ThemeData themedata;
 
   @override
   void initState() {
     formBloc = FormBloc<Item>();
+    themeProvider = ThemeProvider();
     // ignore: unnecessary_this
     detailsBloc = BlocProvider.of<DetailsBloc>(this.context);
     final i = widget.item.copyWithItem(item: widget.item);
@@ -27,7 +30,16 @@ class _ManageButtonState extends State<ManageButton> {
         closeDialogAndResetForm();
       } else if (state is RefreshedState) {}
     });
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    themedata = personnal_theme.Theme.generateThemeData(
+        themeProvider.getThemeData.colorScheme.brightness,
+        Theme.of(context).colorScheme.primary);
+    super.didChangeDependencies();
   }
 
   @override
@@ -56,34 +68,36 @@ class _ManageButtonState extends State<ManageButton> {
   }
 
   Widget dialogParent(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Center(child: dialogBuilder(context)),
+    return Theme(
+      data: themedata,
+      child: Material(
+        color: Colors.transparent,
+        child: Center(child: dialogBuilder(context)),
+      ),
     );
   }
 
-  Widget dialogBody(BuildContext context) {
-    return Theme(
-        data: ThemeProvider().getThemeData.copyWith(
-            textTheme:
-                personnal_theme.Theme.getTextThemeWithColor(Colors.black)),
-        child: DialogStructure(
-            formBloc: formBloc,
-            onClose: closeDialogAndResetForm,
-            onSubmit: submitFormAndUpdateView));
+  Widget dialogBody(BuildContext context, [bool expanded = false]) {
+    return DialogStructure(
+        formBloc: formBloc,
+        expanded: expanded,
+        onClose: closeDialogAndResetForm,
+        onSubmit: submitFormAndUpdateView);
   }
 
   Widget dialogBuilder(BuildContext context) {
     return LayoutBuilder(builder: (_, constraints) {
       if (constraints.maxWidth > 960) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ConstrainedBox(
+            padding: const EdgeInsets.all(8.0),
+            child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
-              child: dialogBody(context)),
-        );
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  child: dialogBody(context)),
+            ));
       }
-      return dialogBody(context);
+      return dialogBody(context, true);
     });
   }
 

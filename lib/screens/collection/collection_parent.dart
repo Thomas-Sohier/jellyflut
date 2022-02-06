@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class CollectionParent extends StatefulWidget {
   final Item item;
 
-  const CollectionParent({required this.item});
+  const CollectionParent({Key? key, required this.item}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {

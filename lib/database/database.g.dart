@@ -215,14 +215,14 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
 class User extends DataClass implements Insertable<User> {
   final int id;
   final String name;
-  final String? password;
+  final String password;
   final String apiKey;
   final int settingsId;
   final int serverId;
   User(
       {required this.id,
       required this.name,
-      this.password,
+      required this.password,
       required this.apiKey,
       required this.settingsId,
       required this.serverId});
@@ -235,7 +235,7 @@ class User extends DataClass implements Insertable<User> {
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       password: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}password']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
       apiKey: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}api_key'])!,
       settingsId: const IntType()
@@ -249,9 +249,7 @@ class User extends DataClass implements Insertable<User> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    if (!nullToAbsent || password != null) {
-      map['password'] = Variable<String?>(password);
-    }
+    map['password'] = Variable<String>(password);
     map['api_key'] = Variable<String>(apiKey);
     map['settings_id'] = Variable<int>(settingsId);
     map['server_id'] = Variable<int>(serverId);
@@ -262,9 +260,7 @@ class User extends DataClass implements Insertable<User> {
     return UsersCompanion(
       id: Value(id),
       name: Value(name),
-      password: password == null && nullToAbsent
-          ? const Value.absent()
-          : Value(password),
+      password: Value(password),
       apiKey: Value(apiKey),
       settingsId: Value(settingsId),
       serverId: Value(serverId),
@@ -277,7 +273,7 @@ class User extends DataClass implements Insertable<User> {
     return User(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      password: serializer.fromJson<String?>(json['password']),
+      password: serializer.fromJson<String>(json['password']),
       apiKey: serializer.fromJson<String>(json['apiKey']),
       settingsId: serializer.fromJson<int>(json['settingsId']),
       serverId: serializer.fromJson<int>(json['serverId']),
@@ -289,7 +285,7 @@ class User extends DataClass implements Insertable<User> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'password': serializer.toJson<String?>(password),
+      'password': serializer.toJson<String>(password),
       'apiKey': serializer.toJson<String>(apiKey),
       'settingsId': serializer.toJson<int>(settingsId),
       'serverId': serializer.toJson<int>(serverId),
@@ -342,7 +338,7 @@ class User extends DataClass implements Insertable<User> {
 class UsersCompanion extends UpdateCompanion<User> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String?> password;
+  final Value<String> password;
   final Value<String> apiKey;
   final Value<int> settingsId;
   final Value<int> serverId;
@@ -357,16 +353,17 @@ class UsersCompanion extends UpdateCompanion<User> {
   UsersCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    this.password = const Value.absent(),
+    required String password,
     required String apiKey,
     this.settingsId = const Value.absent(),
     this.serverId = const Value.absent(),
   })  : name = Value(name),
+        password = Value(password),
         apiKey = Value(apiKey);
   static Insertable<User> custom({
     Expression<int>? id,
     Expression<String>? name,
-    Expression<String?>? password,
+    Expression<String>? password,
     Expression<String>? apiKey,
     Expression<int>? settingsId,
     Expression<int>? serverId,
@@ -384,7 +381,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   UsersCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<String?>? password,
+      Value<String>? password,
       Value<String>? apiKey,
       Value<int>? settingsId,
       Value<int>? serverId}) {
@@ -408,7 +405,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       map['name'] = Variable<String>(name.value);
     }
     if (password.present) {
-      map['password'] = Variable<String?>(password.value);
+      map['password'] = Variable<String>(password.value);
     }
     if (apiKey.present) {
       map['api_key'] = Variable<String>(apiKey.value);
@@ -455,8 +452,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
   @override
   late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
-      'password', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      'password', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
   @override
   late final GeneratedColumn<String?> apiKey = GeneratedColumn<String?>(
@@ -500,6 +497,8 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
     if (data.containsKey('password')) {
       context.handle(_passwordMeta,
           password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+    } else if (isInserting) {
+      context.missing(_passwordMeta);
     }
     if (data.containsKey('api_key')) {
       context.handle(_apiKeyMeta,

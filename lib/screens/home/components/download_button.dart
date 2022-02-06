@@ -53,7 +53,6 @@ class _DownloadButtonState extends State<DownloadButton> {
             padding: const EdgeInsets.all(6),
             child: Icon(
               Icons.download,
-              color: Colors.white,
               size: 28,
             )),
       ),
