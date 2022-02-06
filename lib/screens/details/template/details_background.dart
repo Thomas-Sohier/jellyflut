@@ -14,7 +14,8 @@ class DetailsBackground extends StatelessWidget {
           return AnimatedContainer(
             duration: Duration(milliseconds: 500),
             decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor.withOpacity(0.55),
+                color:
+                    Theme.of(context).colorScheme.background.withOpacity(0.55),
                 gradient: gradient.isNotEmpty
                     ? LinearGradient(colors: gradient)
                     : null),

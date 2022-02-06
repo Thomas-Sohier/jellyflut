@@ -16,7 +16,7 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle> {
     return Row(children: [
       Text(
         widget.categoryTitle,
-        style: TextStyle(color: Colors.white, fontSize: 28),
+        style: Theme.of(context).textTheme.headline4,
       )
     ]);
   }

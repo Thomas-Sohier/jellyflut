@@ -19,8 +19,8 @@ class DrawerLargeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = Theme.of(context).colorScheme.secondary;
-    final inactiveColor = Theme.of(context).primaryColor;
+    final activeColor = Theme.of(context).colorScheme.primary;
+    final inactiveColor = Theme.of(context).colorScheme.onBackground;
     final isActive = tabsContext.tabsRouter.activeIndex == index;
     return InkWell(
         onTap: () => tabsContext.tabsRouter

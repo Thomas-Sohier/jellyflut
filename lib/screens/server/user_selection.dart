@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/user_item.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';

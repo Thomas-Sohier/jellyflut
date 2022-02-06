@@ -12,7 +12,7 @@ class TitleDetailsWidget extends StatelessWidget {
       child: Text(
         title,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.headline3,
+        style: Theme.of(context).textTheme.headline4,
       ),
     ));
   }

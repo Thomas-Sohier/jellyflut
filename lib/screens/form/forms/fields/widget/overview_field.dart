@@ -14,7 +14,8 @@ class OverviewField extends StatelessWidget {
         maxLines: 10,
         decoration: InputDecoration(
             labelText: 'Overview',
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+            labelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.onBackground),
             isDense: true,
             border: DEFAULT_BORDER,
             errorBorder: ERROR_BORDER,

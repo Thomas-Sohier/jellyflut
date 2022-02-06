@@ -5,7 +5,7 @@ import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/home/cutsom_drawer.dart';
+import 'package:jellyflut/screens/home/custom_drawer.dart';
 import 'package:jellyflut/screens/home/offline_screen.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 
@@ -57,14 +57,16 @@ class _HomeParentState extends State<HomeParent> {
   Widget homeTabs(final List<Item>? items) {
     return AutoTabsScaffold(
         routes: generateRouteFromItems(items ?? <Item>[]),
-        backgroundColor: Theme.of(context).backgroundColor,
         builder: (context, child, animation) {
           return Scaffold(
               drawer: CustomDrawer(items: items),
+              backgroundColor: Theme.of(context).colorScheme.background,
               key: _scaffoldKey,
               drawerEnableOpenDragGesture: true,
               drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
-              appBar: AppBar(actions: [HeaderBar()]),
+              appBar: AppBar(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  actions: [HeaderBar()]),
               body: child);
         });
   }

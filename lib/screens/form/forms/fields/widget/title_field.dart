@@ -14,7 +14,8 @@ class TitleField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
             labelText: 'Title',
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+            labelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.onBackground),
             isDense: true,
             border: DEFAULT_BORDER,
             errorBorder: ERROR_BORDER,

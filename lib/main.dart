@@ -9,10 +9,10 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
 
 import 'shared/custom_scroll_behavior.dart';
@@ -72,6 +72,7 @@ class Jellyflut extends StatelessWidget {
             dispose: (context, db) => db.close(),
           ),
           ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
+          ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
           ChangeNotifierProvider<DownloadProvider>(
               create: (_) => DownloadProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(
@@ -87,17 +88,20 @@ class Jellyflut extends StatelessWidget {
             child: Shortcuts(
                 // needed for AndroidTV to be able to select
                 shortcuts: shortcuts,
-                child: MaterialApp.router(
-                  title: 'JellyFlut',
-                  locale: context.locale,
-                  debugShowCheckedModeBanner: false,
-                  scrollBehavior: CustomScrollBehavior(),
-                  supportedLocales: context.supportedLocales,
-                  theme: personnal_theme.Theme.defaultThemeData,
-                  localizationsDelegates: context.localizationDelegates,
-                  routerDelegate:
-                      customRouter.delegate(initialRoutes: [HomeRouter()]),
-                  routeInformationParser: customRouter.defaultRouteParser(),
-                ))));
+                child: Consumer<ThemeProvider>(
+                    builder: (context, ThemeProvider themeNotifier, child) =>
+                        MaterialApp.router(
+                          title: 'JellyFlut',
+                          locale: context.locale,
+                          debugShowCheckedModeBanner: false,
+                          scrollBehavior: CustomScrollBehavior(),
+                          supportedLocales: context.supportedLocales,
+                          theme: themeNotifier.getThemeData,
+                          localizationsDelegates: context.localizationDelegates,
+                          routerDelegate: customRouter
+                              .delegate(initialRoutes: [HomeRouter()]),
+                          routeInformationParser:
+                              customRouter.defaultRouteParser(),
+                        )))));
   }
 }

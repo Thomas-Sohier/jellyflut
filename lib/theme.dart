@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 // App main color
@@ -85,111 +84,91 @@ Map<int, Color> jellyLightBlueMap = {
 };
 
 class Theme {
-  static final ThemeData defaultThemeData = ThemeData(
-      primaryColor: Colors.white,
-      primaryColorDark: Colors.grey.shade900,
-      primaryColorLight: Colors.white.withAlpha(220),
-      primarySwatch: jellyPurple,
-      primaryIconTheme: IconThemeData(color: Colors.black),
-      iconTheme: IconThemeData(color: Colors.white),
-      backgroundColor: Colors.grey.shade900,
-      scaffoldBackgroundColor: Colors.grey.shade900,
-      bottomAppBarColor: Colors.grey.shade900,
-      dialogBackgroundColor: Colors.grey.shade900,
-      tabBarTheme: TabBarTheme(
-          indicator: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: jellyPurple),
-        ),
-      )),
-      snackBarTheme: SnackBarThemeData(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.grey.shade900,
-          contentTextStyle: TextStyle(fontSize: 18, color: Colors.white)),
-      textSelectionTheme: TextSelectionThemeData(
-          cursorColor: jellyLightBLue,
-          selectionColor: jellyLightBLue.withAlpha(50)),
-      colorScheme: ColorScheme(
-        background: Colors.grey.shade900,
-        brightness: Brightness.dark,
-        onBackground: Colors.white.withAlpha(230),
-        error: Colors.red,
-        onError: Colors.grey.shade900,
-        primary: Colors.white,
-        onPrimary: Colors.grey.shade900,
-        secondary: jellyPurple,
-        onSecondary: Colors.white,
-        tertiary: jellyLightBLue,
-        surface: Colors.grey.shade700,
-        onSurface: Colors.white,
+  static ThemeData generateThemeData(
+      [Brightness brightness = Brightness.light, Color? seedColor]) {
+    seedColor ??= jellyPurple;
+    final background =
+        brightness == Brightness.light ? null : Colors.grey.shade900;
+    final theme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: seedColor,
+        brightness: brightness,
+        background: background,
       ),
-      inputDecorationTheme: InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-          disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-          border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-          filled: false,
-          hintStyle: TextStyle(color: Colors.black)),
-      brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade900,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          actionsIconTheme: IconThemeData(color: Colors.white),
-          foregroundColor: Colors.white.withAlpha(220),
-          titleTextStyle: TextStyle(
-              color: Colors.white.withAlpha(220),
-              fontFamily: 'Poppins',
-              fontSize: 26)),
-      dialogTheme: DialogTheme(
-          backgroundColor: Colors.grey.shade900,
-          titleTextStyle: TextStyle(
-              color: Colors.white.withAlpha(220),
-              fontFamily: 'Poppins',
-              fontSize: 24),
-          elevation: 4),
       visualDensity: VisualDensity.standard,
-      cardTheme: CardTheme(
-          color: Colors.white,
-          shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)),
       useMaterial3: true,
-      primaryTextTheme: getTextThemeWithColor(Colors.white),
-      textTheme: getTextThemeWithColor(Colors.white));
+    );
 
-  static TextTheme getTextThemeWithColor(Color color) {
-    return TextTheme(
-        headline1: TextStyle(color: color, fontFamily: 'Poppins', fontSize: 38),
-        headline2: TextStyle(color: color, fontFamily: 'Poppins', fontSize: 34),
-        headline3: TextStyle(
-            color: color.withAlpha(240), fontFamily: 'Poppins', fontSize: 30),
-        headline4: TextStyle(
-            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 26),
-        headline5: TextStyle(
-            color: color.withAlpha(230), fontFamily: 'Poppins', fontSize: 24),
-        headline6: TextStyle(
-            color: color.withAlpha(220), fontFamily: 'Poppins', fontSize: 22),
-        bodyText1: TextStyle(
-            color: color.withAlpha(220),
-            fontFamily: 'HindMadurai',
-            fontSize: 22),
-        bodyText2: TextStyle(
-            color: color.withAlpha(220),
-            fontFamily: 'HindMadurai',
-            fontSize: 16),
-        subtitle1: TextStyle(
-            color: color.withAlpha(220),
-            fontFamily: 'HindMadurai',
-            fontSize: 20),
-        subtitle2: TextStyle(
-            color: color.withAlpha(220),
-            fontFamily: 'HindMadurai',
-            fontSize: 18));
+    return theme
+        .copyWith(textTheme: getTextThemeWithColor())
+        .copyWith(
+            appBarTheme: AppBarTheme(
+                elevation: 0,
+                color: theme.colorScheme.background,
+                foregroundColor: theme.colorScheme.onBackground,
+                iconTheme: IconThemeData(color: theme.colorScheme.onBackground),
+                titleTextStyle: TextStyle(fontFamily: 'Poppins', fontSize: 26)))
+        .copyWith(
+            snackBarTheme: SnackBarThemeData(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: theme.colorScheme.background,
+                contentTextStyle: TextStyle(
+                    fontSize: 18, color: theme.colorScheme.onSurface)))
+        .copyWith(
+            tabBarTheme: TabBarTheme(
+                indicator: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: jellyPurple)))))
+        .copyWith(
+            dialogTheme: DialogTheme(
+                elevation: 4,
+                titleTextStyle: getTextThemeWithColor().headline5,
+                contentTextStyle: getTextThemeWithColor().bodyText1))
+        .copyWith(
+            inputDecorationTheme: InputDecorationTheme(
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                disabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.red.shade400, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.red.shade400, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                filled: false,
+                hintStyle: TextStyle(color: Colors.black)))
+        .copyWith(
+            cardTheme: CardTheme(
+                shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)));
+  }
+
+  static TextTheme getTextThemeWithColor([Color? color]) {
+    final poppinsFont = TextStyle(fontFamily: 'Poppins', color: color);
+    final hindMaduraiFont = TextStyle(fontFamily: 'HindMadurai', color: color);
+    return Typography.blackCupertino
+        .copyWith(headline1: poppinsFont)
+        .copyWith(headline2: poppinsFont)
+        .copyWith(headline3: poppinsFont)
+        .copyWith(headline4: poppinsFont)
+        .copyWith(headline5: poppinsFont)
+        .copyWith(headline6: poppinsFont)
+        .copyWith(subtitle1: poppinsFont)
+        .copyWith(subtitle2: poppinsFont)
+        .copyWith(bodyLarge: hindMaduraiFont.copyWith(fontSize: 18))
+        .copyWith(bodyMedium: hindMaduraiFont.copyWith(fontSize: 16))
+        .copyWith(bodySmall: hindMaduraiFont.copyWith(fontSize: 14))
+        .copyWith(titleLarge: hindMaduraiFont)
+        .copyWith(titleMedium: hindMaduraiFont)
+        .copyWith(titleSmall: hindMaduraiFont)
+        .copyWith(bodyText1: hindMaduraiFont.copyWith(fontSize: 18))
+        .copyWith(bodyText2: hindMaduraiFont.copyWith(fontSize: 16))
+        .copyWith(button: hindMaduraiFont.copyWith(fontSize: 16))
+        .apply(bodyColor: color)
+        .apply(displayColor: color)
+        .apply(decorationColor: color);
   }
 }

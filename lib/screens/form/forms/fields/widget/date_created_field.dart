@@ -12,7 +12,8 @@ class DateCreatedField extends StatelessWidget {
         readOnly: true,
         decoration: InputDecoration(
           labelText: 'Date added',
-          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+          labelStyle:
+              TextStyle(color: Theme.of(context).colorScheme.onBackground),
           isDense: true,
           border: DEFAULT_BORDER,
           errorBorder: ERROR_BORDER,

@@ -2,14 +2,10 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 
 class LocaleButtonSelector extends StatelessWidget {
-  final Color foregroundColor;
   final bool showCurrentValue;
   final GlobalKey<PopupMenuButtonState<Locale>>? localeKey;
   const LocaleButtonSelector(
-      {Key? key,
-      this.localeKey,
-      this.foregroundColor = Colors.white,
-      this.showCurrentValue = false})
+      {Key? key, this.localeKey, this.showCurrentValue = false})
       : super(key: key);
 
   @override
@@ -22,9 +18,8 @@ class LocaleButtonSelector extends StatelessWidget {
       },
       itemBuilder: (BuildContext c) => _localeListTile(c),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
-        Text(context.locale.toLanguageTag(),
-            style: TextStyle(color: foregroundColor)),
-        Icon(Icons.arrow_drop_down, color: foregroundColor),
+        Text(context.locale.toLanguageTag()),
+        Icon(Icons.arrow_drop_down),
       ]),
     );
   }

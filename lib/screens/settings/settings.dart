@@ -30,7 +30,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(title: Text('settings'.tr()), leading: bb.BackButton()),
         body: FutureBuilder(
             future: settingsInfosFuture,
@@ -40,8 +40,8 @@ class _SettingsState extends State<Settings> {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 600),
                     child: SettingsList(
-                      contentPadding: EdgeInsets.only(top: 20, bottom: 30),
-                      backgroundColor: Theme.of(context).backgroundColor,
+                      contentPadding: EdgeInsets.only(bottom: 30),
+                      backgroundColor: Theme.of(context).colorScheme.background,
                       darkBackgroundColor: Theme.of(context).primaryColorDark,
                       lightBackgroundColor: Theme.of(context).primaryColorLight,
                       sections: [
@@ -57,6 +57,7 @@ class _SettingsState extends State<Settings> {
                                 downloadPath: downloadPath)
                             .build(context),
                         InterfaceSection().build(context),
+                        ThemeSwitcherSection().build(context),
                         AccountSection().build(context)
                       ],
                     ),

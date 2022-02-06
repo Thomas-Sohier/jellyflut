@@ -58,8 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
                 Spacer(),
-                LocaleButtonSelector(
-                    foregroundColor: Colors.black, showCurrentValue: true)
+                LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 12),
               UserUsernameField(

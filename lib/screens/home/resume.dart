@@ -8,7 +8,7 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:shimmer/shimmer.dart';
 
 class Resume extends StatefulWidget {
@@ -74,7 +74,7 @@ class _ResumeState extends State<Resume> {
           padding: const EdgeInsets.all(10),
           child: Text(
             'resume',
-            style: TextStyle(color: Colors.white, fontSize: 28),
+            style: Theme.of(context).textTheme.headline4,
           ).tr(),
         ),
         SizedBox(
@@ -105,8 +105,8 @@ class _ResumeState extends State<Resume> {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        baseColor: shimmerColor1,
-        highlightColor: shimmerColor2,
+        baseColor: personnal_theme.shimmerColor1,
+        highlightColor: personnal_theme.shimmerColor2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

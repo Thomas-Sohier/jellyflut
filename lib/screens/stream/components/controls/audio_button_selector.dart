@@ -5,6 +5,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 
 class AudioButtonSelector extends StatefulWidget {
   AudioButtonSelector({Key? key}) : super(key: key);
@@ -101,7 +102,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     list.add(listItemTitle(
         child: Text(
       'embeded_audio_tracks'.tr(),
-      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+      style: Theme.of(context).textTheme.bodyText2,
     )));
 
     if (localAudioTracks.isEmpty) {
@@ -129,7 +130,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       listItemTitle(
           child: Text(
         'remote_audio_tracks'.tr(),
-        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        style: Theme.of(context).textTheme.bodyText2,
       )),
     );
 
@@ -163,7 +164,8 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
             padding: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: Colors.grey.shade900),
+                color: ColorUtil.darken(
+                    Theme.of(context).colorScheme.background, 0.1)),
             child: child));
   }
 

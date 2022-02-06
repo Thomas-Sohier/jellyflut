@@ -7,7 +7,7 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/services/user/user_service.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:shimmer/shimmer.dart';
 
 class Latest extends StatefulWidget {
@@ -65,7 +65,7 @@ class _LatestState extends State<Latest> {
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: Text(
             'latest',
-            style: TextStyle(color: Colors.white, fontSize: 28),
+            style: Theme.of(context).textTheme.headline4,
           ).tr(),
         ),
         SizedBox(
@@ -96,8 +96,8 @@ class _LatestState extends State<Latest> {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: g.shimmerAnimation,
-        baseColor: shimmerColor1,
-        highlightColor: shimmerColor2,
+        baseColor: personnal_theme.shimmerColor1,
+        highlightColor: personnal_theme.shimmerColor2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

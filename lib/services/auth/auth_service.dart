@@ -5,15 +5,14 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
-import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/screens/home/home_parent.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
-import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/authentication_response.dart';
+import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/services/dio/auth_header.dart';
+import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -87,13 +86,11 @@ class AuthService {
   }
 
   static Future<void> storeAccountData(
-      String name, AuthenticationResponse authenticationResponse,
+      String name, Server server, AuthenticationResponse authenticationResponse,
       [String? password]) async {
     final db = AppDatabase().getDatabase;
-    final serverCompanion =
-        ServersCompanion.insert(url: server.url, name: server.name);
 
-    final serverId = await db.serversDao.createServer(serverCompanion);
+    final serverId = await createOrGetServer(server);
     final settingsId = await db.settingsDao.createSettings(SettingsCompanion());
 
     final userCompanion = UsersCompanion.insert(
@@ -106,6 +103,17 @@ class AuthService {
     await _saveToSharedPreferences(
         serverId, settingsId, userId, authenticationResponse);
     return await _saveToGlobals();
+  }
+
+  static Future<int> createOrGetServer(final Server server) async {
+    final db = AppDatabase().getDatabase;
+    try {
+      return db.serversDao.getServerByUrl(server.url).then((value) => value.id);
+    } catch (error) {
+      final serverCompanion =
+          ServersCompanion.insert(url: server.url, name: server.name);
+      return db.serversDao.createServer(serverCompanion);
+    }
   }
 
   static Future<void> _saveToSharedPreferences(int serverId, int settingId,

@@ -70,7 +70,8 @@ class _LargeBookViewState extends State<LargeBookView> {
           height: double.maxFinite,
           child: Row(children: [
             Container(
-              color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.1),
+              color: ColorUtil.lighten(
+                  Theme.of(context).colorScheme.background, 0.1),
               width: 200,
               child: Column(
                 children: [

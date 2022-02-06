@@ -63,60 +63,14 @@ class _ManageButtonState extends State<ManageButton> {
   }
 
   Widget dialogBody(BuildContext context) {
-    return Card(
-      elevation: 4,
-      color: Theme.of(context).dialogBackgroundColor,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DecoratedBox(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1, color: Colors.black26))),
-                child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        IconButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: closeDialogAndResetForm,
-                            icon: Icon(Icons.close)),
-                        const SizedBox(width: 16),
-                        Flexible(
-                          child: Text('edit_infos'.tr(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleLarge),
-                        ),
-                      ],
-                    ))),
-            Flexible(child: form.FormBuilder<Item>(formBloc: formBloc)),
-            DecoratedBox(
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(width: 1, color: Colors.black26))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                            onPressed: closeDialogAndResetForm,
-                            child: Text('cancel'.tr(),
-                                style: TextStyle(fontSize: 18))),
-                        TextButton(
-                            onPressed: submitFormAndUpdateView,
-                            child: Text('edit'.tr(),
-                                style: TextStyle(fontSize: 18)))
-                      ]),
-                )),
-          ]),
-    );
+    return Theme(
+        data: ThemeProvider().getThemeData.copyWith(
+            textTheme:
+                personnal_theme.Theme.getTextThemeWithColor(Colors.black)),
+        child: DialogStructure(
+            formBloc: formBloc,
+            onClose: closeDialogAndResetForm,
+            onSubmit: submitFormAndUpdateView));
   }
 
   Widget dialogBuilder(BuildContext context) {

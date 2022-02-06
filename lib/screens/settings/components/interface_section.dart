@@ -13,8 +13,6 @@ class InterfaceSection extends StatelessWidget {
         SettingsTile(
             title: 'language'.tr(),
             onPressed: (context) => _localeKey.currentState?.showButtonMenu(),
-            titleTextStyle: TextStyle(color: Colors.white),
-            subtitleTextStyle: TextStyle(color: Colors.white60),
             trailing: LocaleButtonSelector(localeKey: _localeKey)),
       ],
     );

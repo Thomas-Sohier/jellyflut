@@ -137,8 +137,10 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
       (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();
   Stream<Server> watchServerById(int serverId) =>
       (select(servers)..where((tbl) => tbl.id.equals(serverId))).watchSingle();
+  Future<Server> getServerByUrl(String url) =>
+      (select(servers)..where((tbl) => tbl.url.equals(url))).getSingle();
   Future<int> createServer(ServersCompanion server) =>
-      into(servers).insert(server);
+      into(servers).insert(server, mode: InsertMode.insertOrReplace);
   Future<bool> updateserver(ServersCompanion server) =>
       update(servers).replace(server);
   Future<int> deleteServer(ServersCompanion server) =>

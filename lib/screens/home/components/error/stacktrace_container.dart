@@ -24,7 +24,8 @@ class StacktraceContainer extends StatelessWidget {
   Widget errorContainer(final BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: ColorUtil.darken(Theme.of(context).backgroundColor, 0.05),
+          color:
+              ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       constraints: BoxConstraints(maxHeight: 400),
       child: SingleChildScrollView(

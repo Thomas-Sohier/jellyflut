@@ -42,7 +42,7 @@ class _CarousselItemState extends State<CarousselItem> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => setFirstPoster());
+    WidgetsBinding.instance.addPostFrameCallback((_) => setFirstPoster());
     return _buildCarousel(widget.items);
   }
 

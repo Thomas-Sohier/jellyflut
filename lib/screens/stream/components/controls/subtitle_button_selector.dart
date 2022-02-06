@@ -5,6 +5,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 
 class SubtitleButtonSelector extends StatefulWidget {
   SubtitleButtonSelector({Key? key}) : super(key: key);
@@ -101,7 +102,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     list.add(listItemTitle(
         child: Text(
       'embeded_subtitles'.tr(),
-      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+      style: Theme.of(context).textTheme.bodyText2,
     )));
 
     if (localSubtitles.isEmpty) {
@@ -128,7 +129,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       listItemTitle(
           child: Text(
         'remote_subtitles'.tr(),
-        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        style: Theme.of(context).textTheme.bodyText2,
       )),
     );
 
@@ -161,7 +162,8 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
             padding: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: Colors.grey.shade900),
+                color: ColorUtil.darken(
+                    Theme.of(context).colorScheme.background, 0.1)),
             child: child));
   }
 

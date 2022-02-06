@@ -22,7 +22,8 @@ class FontSizeField extends StatelessWidget {
         maxLines: 1,
         decoration: InputDecoration(
             labelText: fieldName,
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+            labelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.onBackground),
             isDense: true,
             border: DEFAULT_BORDER,
             errorBorder: ERROR_BORDER,

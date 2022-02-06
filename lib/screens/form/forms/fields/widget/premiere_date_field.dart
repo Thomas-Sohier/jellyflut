@@ -12,7 +12,8 @@ class PremiereDateField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Premiere date',
-          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+          labelStyle:
+              TextStyle(color: Theme.of(context).colorScheme.onBackground),
           isDense: true,
           border: DEFAULT_BORDER,
           errorBorder: ERROR_BORDER,

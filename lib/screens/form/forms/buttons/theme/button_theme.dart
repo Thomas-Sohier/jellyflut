@@ -3,7 +3,7 @@ import 'package:jellyflut/theme.dart';
 
 MaterialStateProperty<Color> cancelButtonForeground() {
   return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-    return Colors.red;
+    return Colors.red.shade400;
   });
 }
 

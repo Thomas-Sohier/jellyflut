@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:jellyflut/components/critics.dart';
+import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
+import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut/services/item/item_service.dart';
@@ -102,29 +102,7 @@ class _RightDetailsState extends State<RightDetails>
             SliverToBoxAdapter(
                 child: OriginalTitleDetailsWidget(title: item.originalTitle)),
           SliverToBoxAdapter(child: SizedBox(height: 8)),
-          SliverToBoxAdapter(
-              child: Row(
-            children: [
-              Expanded(
-                child: Wrap(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.spaceBetween,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      if (item.hasRatings())
-                        Critics(
-                            item: item,
-                            fontSize: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2
-                                    ?.fontSize ??
-                                16),
-                      // Spacer(),
-                      InfosDetailsWidget(item: item),
-                    ]),
-              ),
-            ],
-          )),
+          SliverToBoxAdapter(child: QuickInfos(item: item)),
           SliverToBoxAdapter(child: const SizedBox(height: 12)),
           SliverToBoxAdapter(
               child: OverviewDetailsWidget(overview: item.overview)),
@@ -132,11 +110,13 @@ class _RightDetailsState extends State<RightDetails>
           SliverToBoxAdapter(child: ProvidersDetailsWidget(item: item)),
           SliverToBoxAdapter(child: const SizedBox(height: 12)),
           SliverToBoxAdapter(child: PeoplesDetailsWidget(item: item)),
-          SliverPersistentHeader(
-              pinned: true,
-              floating: false,
-              delegate:
-                  TabHeader(seasons: seasons, tabController: _tabController)),
+          // Shown only if current item is a series (because it contains seasons)
+          if (item.type == ItemType.SERIES)
+            SliverPersistentHeader(
+                pinned: true,
+                floating: false,
+                delegate:
+                    TabHeader(seasons: seasons, tabController: _tabController)),
           SliverToBoxAdapter(
             child: FutureBuilder<Category>(
                 future: seasons,

@@ -20,7 +20,8 @@ class PageCounter extends StatelessWidget {
               children: [
             Text('${currentPage ?? '∞'}',
                 maxLines: 1,
-                style: TextStyle(color: Theme.of(context).primaryColor)),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground)),
             Container(
               padding: EdgeInsets.all(0),
               margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -29,7 +30,8 @@ class PageCounter extends StatelessWidget {
             ),
             Text('${nbPages ?? '∞'}',
                 maxLines: 1,
-                style: TextStyle(color: Theme.of(context).primaryColor))
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground))
           ])),
     );
   }

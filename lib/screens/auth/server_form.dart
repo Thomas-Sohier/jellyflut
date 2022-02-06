@@ -67,8 +67,7 @@ class _ServerFormState extends State<ServerForm> {
                   textAlign: TextAlign.center,
                 ),
                 Spacer(),
-                LocaleButtonSelector(
-                    foregroundColor: Colors.black, showCurrentValue: true)
+                LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 12),
               ServerNameField(

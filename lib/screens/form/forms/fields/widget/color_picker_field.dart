@@ -25,20 +25,5 @@ class ColorPickerField extends StatelessWidget {
                 form.patchValue({formKey: selectedColor})),
       ],
     );
-    // ReactiveTextField<double>(
-    //     formControlName: 'font_size',
-    //     onSubmitted: () => {},
-    //     textInputAction: TextInputAction.next,
-    //     keyboardType: TextInputType.number,
-    //     minLines: 1,
-    //     maxLines: 1,
-    //     decoration: InputDecoration(
-    //         labelText: 'Font Size',
-    //         labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-    //         isDense: true,
-    //         border: DEFAULT_BORDER,
-    //         errorBorder: ERROR_BORDER,
-    //         enabledBorder: ENABLED_BORDER,
-    //         focusedBorder: FOCUSED_BORDER));
   }
 }

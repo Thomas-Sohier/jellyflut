@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
   const ItemPoster(this.item,
-      {this.textColor = Colors.white,
+      {this.textColor,
       this.heroTag,
       this.widgetAspectRatio,
       this.height,
@@ -26,7 +26,7 @@ class ItemPoster extends StatefulWidget {
   final Item item;
   final String? heroTag;
   final double? widgetAspectRatio;
-  final Color textColor;
+  final Color? textColor;
   final bool imagefilter;
   final bool backup;
   final double? height;
@@ -57,6 +57,7 @@ class _ItemPosterState extends State<ItemPoster>
   late final FocusNode _node;
   late final String posterHeroTag;
   late final double aspectRatio;
+  late final Color textColor;
 
   @override
   bool get wantKeepAlive => true;
@@ -70,6 +71,12 @@ class _ItemPosterState extends State<ItemPoster>
     aspectRatio = widget.widgetAspectRatio ??
         widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    textColor = widget.textColor ?? Theme.of(context).colorScheme.onBackground;
+    super.didChangeDependencies();
   }
 
   @override
@@ -156,7 +163,7 @@ class _ItemPosterState extends State<ItemPoster>
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(fontSize: 16, color: widget.textColor),
+                .copyWith(fontSize: 16, color: textColor),
           ),
         ),
         if (hasSubTitle)
@@ -167,7 +174,7 @@ class _ItemPosterState extends State<ItemPoster>
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(fontSize: 12, color: widget.textColor),
+                .copyWith(fontSize: 12, color: textColor),
             textAlign: TextAlign.center,
           ),
       ],
