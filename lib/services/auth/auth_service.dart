@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/home/home_parent.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/database/database.dart';
@@ -17,14 +18,15 @@ import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static Future<AuthenticationResponse> login(
-      String username, String password) async {
+  static Future<AuthenticationResponse> login(String username, String password,
+      [String? serverUrl]) async {
     final login = '/Users/authenticatebyname';
     final data = jsonEncode({'Username': username, 'Pw': password});
-    final authEmby = await authHeader();
+    final authEmby = await authHeader(embedToken: false);
+    serverUrl ??= server.url;
 
     try {
-      final response = await dio.post('${server.url}$login',
+      final response = await dio.post('$serverUrl$login',
           data: data,
           // X-Emby-Authorization needs to be set manually here
           // I don't know why...
@@ -85,7 +87,8 @@ class AuthService {
   }
 
   static Future<void> storeAccountData(
-      String name, AuthenticationResponse authenticationResponse) async {
+      String name, AuthenticationResponse authenticationResponse,
+      [String? password]) async {
     final db = AppDatabase().getDatabase;
     final serverCompanion =
         ServersCompanion.insert(url: server.url, name: server.name);
@@ -95,6 +98,7 @@ class AuthService {
 
     final userCompanion = UsersCompanion.insert(
         name: name,
+        password: Value(password),
         apiKey: authenticationResponse.accessToken,
         settingsId: Value(settingsId),
         serverId: Value(serverId));
@@ -162,5 +166,25 @@ class AuthService {
         .add(ResetStates());
     await AutoRouter.of(customRouter.navigatorKey.currentContext!)
         .replace(AuthParentRoute());
+  }
+
+  static Future<void> changeUser(
+    final String username,
+    final String password,
+    final String serverUrl,
+    final int serverId,
+    final int settingsId,
+    final int userId,
+  ) async {
+    // Try to connect first
+    // If there is an error then an exception is thrown
+    // or we juste flush all data on connect with second account
+    final response = await AuthService.login(username, password, serverUrl);
+    await _removeGlobals();
+    await _removeSharedPreferences();
+    await _saveToSharedPreferences(serverId, settingsId, userId, response);
+    await _saveToGlobals();
+    await AutoRouter.of(customRouter.navigatorKey.currentContext!)
+        .replace(HomeRouter());
   }
 }

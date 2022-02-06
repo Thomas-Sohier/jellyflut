@@ -2,7 +2,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-Future<String> authHeader() async {
+Future<String> authHeader({bool embedToken = true}) async {
   // device infos
   final device = await DeviceInfo.getCurrentDeviceInfo();
   final packageInfos = await PackageInfo.fromPlatform();
@@ -17,6 +17,6 @@ Future<String> authHeader() async {
 
   var auth =
       'MediaBrowser Client=\"$name\", Device=\"$host\", DeviceId=\"$id\", Version=\"$version\"';
-  if (apiKey != null) auth = auth + ', Token="$token"';
+  if (embedToken && apiKey != null) auth = auth + ', Token="$token"';
   return auth;
 }

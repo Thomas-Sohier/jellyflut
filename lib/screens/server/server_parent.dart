@@ -46,12 +46,12 @@ class _ServerParentState extends State<ServerParent> {
                         itemBuilder: (_, index) {
                           final serverWithUser =
                               snapshot.data!.elementAt(index);
-                          final isInUsed =
+                          final isInUse =
                               serverWithUser.server.id == userApp!.serverId;
                           return ServerItem(
                               key: ValueKey(serverWithUser),
                               serverWithUser: serverWithUser,
-                              isInUsed: isInUsed);
+                              isInUse: isInUse);
                         });
                   }
                   return const SizedBox();

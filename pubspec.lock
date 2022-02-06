@@ -1313,7 +1313,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   video_player:
     dependency: transitive
     description:
