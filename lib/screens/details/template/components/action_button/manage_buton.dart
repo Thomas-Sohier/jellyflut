@@ -48,54 +48,89 @@ class _ManageButtonState extends State<ManageButton> {
 
   void dialog(BuildContext context) {
     showDialog(
-      builder: (_) => ResponsiveBuilder.builder(
-          mobile: () => editInfosFullscreen(context),
-          tablet: () => editInfos(context),
-          desktop: () => editInfos(context)),
+      barrierDismissible: false,
+      barrierLabel: 'Dialog',
+      builder: (c) => dialogParent(c),
       context: context,
     );
   }
 
-  Widget editInfos(BuildContext context) {
-    return AlertDialog(
-        title: Text('edit_infos'.tr()),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: CancelButton(onPressed: closeDialogAndResetForm),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: SubmitButton(onPressed: submitFormAndUpdateView))
-        ],
-        content: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: 300, maxHeight: 700, minWidth: 350, maxWidth: 500),
-            child: form.FormBuilder<Item>(formBloc: formBloc)));
+  Widget dialogParent(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Center(child: dialogBuilder(context)),
+    );
   }
 
-  Widget editInfosFullscreen(BuildContext context) {
-    return AlertDialog(
-        title: Text('edit_infos'.tr()),
-        insetPadding: EdgeInsets.zero,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: CancelButton(onPressed: closeDialogAndResetForm),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: SubmitButton(onPressed: submitFormAndUpdateView))
-        ],
-        content: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: double.maxFinite,
-                maxHeight: double.maxFinite,
-                minWidth: double.maxFinite,
-                maxWidth: double.maxFinite),
-            child: form.FormBuilder<Item>(
-              formBloc: formBloc,
-            )));
+  Widget dialogBody(BuildContext context) {
+    return Card(
+      elevation: 4,
+      color: Theme.of(context).dialogBackgroundColor,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DecoratedBox(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.black26))),
+                child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: closeDialogAndResetForm,
+                            icon: Icon(Icons.close)),
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Text('edit_infos'.tr(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleLarge),
+                        ),
+                      ],
+                    ))),
+            Flexible(child: form.FormBuilder<Item>(formBloc: formBloc)),
+            DecoratedBox(
+                decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(width: 1, color: Colors.black26))),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            onPressed: closeDialogAndResetForm,
+                            child: Text('cancel'.tr(),
+                                style: TextStyle(fontSize: 18))),
+                        TextButton(
+                            onPressed: submitFormAndUpdateView,
+                            child: Text('edit'.tr(),
+                                style: TextStyle(fontSize: 18)))
+                      ]),
+                )),
+          ]),
+    );
+  }
+
+  Widget dialogBuilder(BuildContext context) {
+    return LayoutBuilder(builder: (_, constraints) {
+      if (constraints.maxWidth > 960) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
+              child: dialogBody(context)),
+        );
+      }
+      return dialogBody(context);
+    });
   }
 
   void submitFormAndUpdateView() {

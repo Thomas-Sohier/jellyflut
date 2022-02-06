@@ -3,7 +3,8 @@ unknown: Unknown
 disable: Désactiver
 disabled: Désactivé
 delete: Supprimer
-back: Précédent
+edit: Modifier
+previous: Précédent
 no: Non
 yes: Oui
 cancel: Annuler
@@ -14,7 +15,6 @@ manage: Gérer
 play: Lire
 trailer: Trailer
 download: Télécharger
-previous: Précédent
 viewed: Vu
 loading: Chargement
 loading_dots: Chargement...

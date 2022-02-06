@@ -71,19 +71,22 @@ class _DefaultFormState extends State<DefaultForm> {
     return ReactiveForm(
         formGroup: form,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 12.0),
-              TitleField(form: form),
-              const SizedBox(height: 24.0),
-              OriginalTitleField(form: form),
-              const SizedBox(height: 24.0),
-              ProductionYearField(form: form),
-              const SizedBox(height: 24.0),
-              OverviewField(form: form),
-              const SizedBox(height: 24.0),
-              DateCreatedField(form: form),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                const SizedBox(height: 12.0),
+                TitleField(form: form),
+                const SizedBox(height: 24.0),
+                OriginalTitleField(form: form),
+                const SizedBox(height: 24.0),
+                ProductionYearField(form: form),
+                const SizedBox(height: 24.0),
+                OverviewField(form: form),
+                const SizedBox(height: 24.0),
+                DateCreatedField(form: form),
+              ],
+            ),
           ),
         ));
   }

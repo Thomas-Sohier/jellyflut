@@ -32,25 +32,13 @@ class _HomeParentState extends State<HomeParent> {
   @override
   Widget build(BuildContext context) {
     return MusicPlayerFAB(
-      positionBottom: 80,
+      positionBottom: 20,
       child: FutureBuilder<Category>(
         future: categoryFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return AutoTabsScaffold(
-                builder: (context, child, animation) {
-                  return Scaffold(
-                      key: _scaffoldKey,
-                      drawer: CustomDrawer(items: snapshot.data?.items),
-                      drawerEnableOpenDragGesture: true,
-                      drawerEdgeDragWidth:
-                          MediaQuery.of(context).size.width * 0.2,
-                      appBar: AppBar(actions: [HeaderBar()]),
-                      body: child);
-                },
-                routes:
-                    generateRouteFromItems(snapshot.data?.items ?? <Item>[]),
-                backgroundColor: Theme.of(context).backgroundColor);
+            final items = snapshot.data?.items;
+            return homeTabs(items);
           } else if (snapshot.hasError) {
             return OffLineScreen(
                 error: snapshot.error,
@@ -64,6 +52,21 @@ class _HomeParentState extends State<HomeParent> {
         },
       ),
     );
+  }
+
+  Widget homeTabs(final List<Item>? items) {
+    return AutoTabsScaffold(
+        routes: generateRouteFromItems(items ?? <Item>[]),
+        backgroundColor: Theme.of(context).backgroundColor,
+        builder: (context, child, animation) {
+          return Scaffold(
+              drawer: CustomDrawer(items: items),
+              key: _scaffoldKey,
+              drawerEnableOpenDragGesture: true,
+              drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
+              appBar: AppBar(actions: [HeaderBar()]),
+              body: child);
+        });
   }
 
   /// generate appropriate route for each button

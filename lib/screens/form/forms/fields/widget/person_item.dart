@@ -27,12 +27,14 @@ class PersonItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              PeoplePoster(person: person!, clickable: false),
+              Flexible(child: PeoplePoster(person: person!, clickable: false)),
               SizedBox(width: 12),
               Expanded(
+                flex: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(person!.name,
                         overflow: TextOverflow.ellipsis,
@@ -49,7 +51,6 @@ class PersonItem extends StatelessWidget {
                   ],
                 ),
               ),
-              Spacer(),
               IconButton(
                   onPressed: onPressed,
                   hoverColor: Colors.red.withOpacity(0.1),

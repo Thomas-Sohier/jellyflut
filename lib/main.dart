@@ -14,7 +14,6 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 import 'shared/custom_scroll_behavior.dart';
 
@@ -32,23 +31,6 @@ void main() async {
       assetLoader: YamlAssetLoader(),
       fallbackLocale: Locale('en', 'US'),
       child: Jellyflut(authenticated: auth)));
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return SplashScreen(
-      useLoader: false,
-      image: Image.asset('img/jellyfin_logo.png'),
-      backgroundColor: Color(0xFF252525),
-      photoSize: 80.0,
-    );
-  }
 }
 
 class Jellyflut extends StatelessWidget {
