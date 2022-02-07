@@ -38,6 +38,13 @@ class ThemeProvider extends ChangeNotifier {
 
       notifyListeners();
     });
+
+    _themeData = personnal_theme.Theme.generateThemeData(Brightness.light);
+    _themeMode = _themeData.colorScheme.brightness == Brightness.dark
+        ? ThemeMode.dark
+        : ThemeMode.light;
+
+    notifyListeners();
   }
 
   void toggleTheme() async {

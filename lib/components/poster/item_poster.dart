@@ -57,7 +57,7 @@ class _ItemPosterState extends State<ItemPoster>
   late final FocusNode _node;
   late final String posterHeroTag;
   late final double aspectRatio;
-  late final Color textColor;
+  late Color textColor;
 
   @override
   bool get wantKeepAlive => true;
