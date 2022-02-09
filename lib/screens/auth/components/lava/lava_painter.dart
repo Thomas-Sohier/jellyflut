@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'ball.dart';
 
+// Thanks to jamesblasco for this repo for the original code
+// https://github.com/jamesblasco/flutter_lava_clock
+// The code has been updated to Flutter 2.0
+
 class LavaPainter extends CustomPainter {
   late Lava lava;
   late Color color;

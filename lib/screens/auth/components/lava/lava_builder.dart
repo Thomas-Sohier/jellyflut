@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'lava_painter.dart';
 
+// Thanks to jamesblasco for this repo for the original code
+// https://github.com/jamesblasco/flutter_lava_clock
+// The code has been updated to Flutter 2.0
+
 /// Lava clock.
 class LavaBuilder extends StatefulWidget {
   final AnimationController? animationController;

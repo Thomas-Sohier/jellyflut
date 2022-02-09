@@ -1,6 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 
+// Thanks to jamesblasco for this repo for the original code
+// https://github.com/jamesblasco/flutter_lava_clock
+// The code has been updated to Flutter 2.0
+
 class ForcePoint<T extends double> {
   var x, y;
 
