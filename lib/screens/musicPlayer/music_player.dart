@@ -65,7 +65,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
     var height = size.height - statusBarHeight;
     return Scaffold(
         extendBody: false,
-        backgroundColor: Colors.grey.shade900,
         body: ResponsiveBuilder.builder(
             mobile: () => phoneTemplate(height, statusBarHeight),
             tablet: () => largeScreenTemplate(height, statusBarHeight),

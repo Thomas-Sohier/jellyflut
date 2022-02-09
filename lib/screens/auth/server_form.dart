@@ -60,16 +60,13 @@ class _ServerFormState extends State<ServerForm> {
               Row(children: [
                 Text(
                   'server_configuration'.tr(),
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                  style: Theme.of(context).textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
                 Spacer(),
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               ServerNameField(
                   form: form,
                   onSubmitted: () =>
@@ -78,6 +75,9 @@ class _ServerFormState extends State<ServerForm> {
               ServerUrlField(form: form, onSubmitted: () => addServer(form)),
               const SizedBox(height: 24),
               GradienButton('add_server'.tr(), () => addServer(form),
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  color1: Theme.of(context).colorScheme.primary,
+                  color2: Theme.of(context).colorScheme.tertiary,
                   borderRadius: 4),
               const SizedBox(height: 24),
             ],

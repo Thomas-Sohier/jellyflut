@@ -53,14 +53,11 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(height: 38),
               Row(children: [
                 Text('connection'.tr(),
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    style: Theme.of(context).textTheme.headline5),
                 Spacer(),
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               UserUsernameField(
                   form: form,
                   onSubmitted: () =>
@@ -95,17 +92,17 @@ class _LoginFormState extends State<LoginForm> {
           onPressed: () => backToFirstForm(form, context),
           style: TextButton.styleFrom(
                   padding: EdgeInsets.only(left: 6, right: 6),
-                  backgroundColor: Colors.white)
-              .copyWith(side: buttonBorderSide())
+                  backgroundColor: Theme.of(context).colorScheme.primary)
+              .copyWith(side: buttonBorderSide(context))
               .copyWith(elevation: buttonElevation()),
           child: Row(children: [
             Icon(
               Icons.arrow_back_ios,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
             Text(
               'previous'.tr(),
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ])),
     );
@@ -136,6 +133,9 @@ class _LoginFormState extends State<LoginForm> {
                     color: Theme.of(context).colorScheme.secondary));
           } else {
             return GradienButton('login'.tr(), () => addUser(form, context),
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                color1: Theme.of(context).colorScheme.primary,
+                color2: Theme.of(context).colorScheme.tertiary,
                 borderRadius: 4);
           }
         },

@@ -6,6 +6,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
+import 'package:jellyflut/screens/home/home_category_title.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:shimmer/shimmer.dart';
@@ -61,13 +62,7 @@ class _LatestState extends State<Latest> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          child: Text(
-            'latest',
-            style: Theme.of(context).textTheme.headline4,
-          ).tr(),
-        ),
+        HomeCategoryTitle('latest'.tr(), onTap: () => {}),
         SizedBox(
             height: (itemPosterHeight + itemPosterLabelHeight) *
                 scalePosterSizeValue,

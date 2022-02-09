@@ -13,7 +13,7 @@ class RatingDetailsWidget extends StatelessWidget {
           border: Border.all(
               width: 1,
               style: BorderStyle.solid,
-              color: Theme.of(context).primaryColor),
+              color: Theme.of(context).colorScheme.onBackground),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Text(
         rating!,

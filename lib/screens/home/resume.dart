@@ -11,6 +11,8 @@ import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:shimmer/shimmer.dart';
 
+import 'home_category_title.dart';
+
 class Resume extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -70,13 +72,7 @@ class _ResumeState extends State<Resume> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            'resume',
-            style: Theme.of(context).textTheme.headline4,
-          ).tr(),
-        ),
+        HomeCategoryTitle('resume'.tr(), onTap: () => {}),
         SizedBox(
             height: (itemPosterHeight + itemPosterLabelHeight) *
                 scalePosterSizeValue,

@@ -16,6 +16,7 @@ class QuickInfos extends StatelessWidget {
               direction: Axis.horizontal,
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
+              runAlignment: WrapAlignment.center,
               children: [
                 if (item.hasRatings())
                   Critics(

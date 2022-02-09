@@ -9,6 +9,10 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/authentication_response.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
+import 'package:jellyflut/providers/home/home_provider.dart';
+import 'package:jellyflut/providers/items/items_provider.dart';
+import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';
@@ -169,6 +173,9 @@ class AuthService {
   static Future<void> logout() async {
     await _removeGlobals();
     await _removeSharedPreferences();
+    HomeCategoryProvider().clear();
+    ItemsProvider().reset();
+    MusicProvider().reset();
     BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!)
         .add(ResetStates());
     await AutoRouter.of(customRouter.navigatorKey.currentContext!)
@@ -191,6 +198,9 @@ class AuthService {
     await _removeSharedPreferences();
     await _saveToSharedPreferences(serverId, settingsId, userId, response);
     await _saveToGlobals();
+    HomeCategoryProvider().clear();
+    ItemsProvider().reset();
+    MusicProvider().reset();
     await AutoRouter.of(customRouter.navigatorKey.currentContext!)
         .replace(HomeRouter());
   }

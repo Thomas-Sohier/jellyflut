@@ -16,14 +16,8 @@ class UserUsernameField extends StatelessWidget {
         autofocus: true,
         keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
-        style: INPUT_TEXT_STYLE,
         decoration: InputDecoration(
             labelText: 'user_username_field_label'.tr(),
-            labelStyle: INPUT_TEXT_STYLE,
-            prefixIcon: Icon(Icons.person_outline, color: Colors.black),
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+            prefixIcon: Icon(Icons.person_outline)));
   }
 }

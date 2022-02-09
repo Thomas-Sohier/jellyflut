@@ -13,16 +13,10 @@ class UserPasswordField extends StatelessWidget {
     return ReactiveTextField<String>(
         formControlName: FieldsType.USER_PASSWORD.getValue(),
         onSubmitted: onSubmitted,
-        style: INPUT_TEXT_STYLE,
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
             labelText: 'user_password_field_label'.tr(),
-            labelStyle: INPUT_TEXT_STYLE,
-            prefixIcon: Icon(Icons.password, color: Colors.black),
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+            prefixIcon: Icon(Icons.password)));
   }
 }

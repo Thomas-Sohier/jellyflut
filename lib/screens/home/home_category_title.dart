@@ -13,11 +13,13 @@ class HomeCategoryTitle extends StatefulWidget {
 class _HomeCategoryTitleState extends State<HomeCategoryTitle> {
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Text(
-        widget.categoryTitle,
-        style: Theme.of(context).textTheme.headline4,
-      )
-    ]);
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+        child: Row(children: [
+          Text(
+            widget.categoryTitle,
+            style: Theme.of(context).textTheme.headline4,
+          )
+        ]));
   }
 }

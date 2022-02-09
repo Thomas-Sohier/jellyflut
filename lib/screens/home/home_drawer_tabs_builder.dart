@@ -35,7 +35,6 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
         builder: (context, child, animation) {
           return Scaffold(
               drawer: CustomDrawer(items: items),
-              backgroundColor: Theme.of(context).colorScheme.background,
               key: _scaffoldKey,
               drawerEnableOpenDragGesture: true,
               drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,

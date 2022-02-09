@@ -102,6 +102,13 @@ class Theme {
     return theme
         .copyWith(
             textTheme: getTextThemeWithColor(theme.colorScheme.onBackground))
+        .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
+        .copyWith(
+            dialogTheme: DialogTheme(
+                elevation: 4,
+                backgroundColor: theme.colorScheme.background,
+                titleTextStyle: getTextThemeWithColor().headline5,
+                contentTextStyle: getTextThemeWithColor().bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
                 elevation: 0,
@@ -117,14 +124,11 @@ class Theme {
                     fontSize: 18, color: theme.colorScheme.onSurface)))
         .copyWith(
             tabBarTheme: TabBarTheme(
+                labelColor: theme.colorScheme.onBackground,
+                labelStyle: theme.textTheme.headline5,
                 indicator: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: jellyPurple)))))
-        .copyWith(
-            dialogTheme: DialogTheme(
-                elevation: 4,
-                backgroundColor: theme.colorScheme.background,
-                titleTextStyle: getTextThemeWithColor().headline5,
-                contentTextStyle: getTextThemeWithColor().bodyText1))
+                    border: Border(
+                        bottom: BorderSide(color: theme.colorScheme.primary)))))
         .copyWith(
             inputDecorationTheme: InputDecorationTheme(
                 enabledBorder: OutlineInputBorder(
@@ -145,13 +149,13 @@ class Theme {
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 filled: false,
                 isDense: true,
+                prefixIconColor: theme.colorScheme.onBackground,
+                suffixIconColor: theme.colorScheme.onBackground,
                 labelStyle: TextStyle(color: theme.colorScheme.onBackground),
                 floatingLabelStyle:
                     TextStyle(color: theme.colorScheme.onBackground),
                 hintStyle: TextStyle(color: theme.colorScheme.onBackground)))
-        .copyWith(
-            cardTheme: CardTheme(
-                shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)));
+        .copyWith(cardTheme: CardTheme(color: theme.colorScheme.background));
   }
 
   static TextTheme getTextThemeWithColor([Color? color]) {

@@ -23,6 +23,10 @@ class HomeCategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clear() {
+    _categories.clear();
+  }
+
   // Singleton
   static final HomeCategoryProvider _ItemsProvider =
       HomeCategoryProvider._internal();

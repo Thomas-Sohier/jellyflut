@@ -119,6 +119,11 @@ class MusicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reset() {
+    _playlist.clear();
+    _audioPlayer?.stop();
+  }
+
   Future<void> playRemoteAudio(Item item) async {
     // final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
     final streamURL = await item.getItemURL();
