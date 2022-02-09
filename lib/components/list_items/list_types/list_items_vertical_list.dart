@@ -39,7 +39,7 @@ class ListItemsVerticalList extends StatelessWidget {
         child: Divider(
             height: 2,
             thickness: 2,
-            color: Theme.of(context).primaryColor.withOpacity(0.2)),
+            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
       );
     }
     return const SizedBox();

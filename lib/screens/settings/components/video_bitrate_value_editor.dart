@@ -55,7 +55,10 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
         context: context,
         builder: (c) {
           return AlertDialog(
-              title: Text('Edit max video bitrate'),
+              title: Text(
+                'Edit max video bitrate',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               actions: [
                 CancelButton(onPressed: () => customRouter.pop()),
                 SubmitButton(onPressed: () {
@@ -78,16 +81,9 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
                         keyboardType: TextInputType.number,
                         controller: controller,
                         decoration: InputDecoration(
-                            labelText: 'max_bitrate'.tr(),
-                            labelStyle: TextStyle(),
-                            border: OutlineInputBorder(),
-                            errorBorder: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade600, width: 2.0)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade300, width: 2.0)))),
+                          labelText: 'max_bitrate'.tr(),
+                          labelStyle: TextStyle(),
+                        )),
                     const SizedBox(height: 12),
                     StreamBuilder<String>(
                         stream: textControllerStreamValue,

@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/screens/form/forms/fields/theme/input_theme.dart';
 import 'package:jellyflut/screens/form/forms/fields/widget/person_item.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';

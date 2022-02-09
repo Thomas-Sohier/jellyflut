@@ -20,14 +20,6 @@ class FontSizeField extends StatelessWidget {
         keyboardType: TextInputType.number,
         minLines: 1,
         maxLines: 1,
-        decoration: InputDecoration(
-            labelText: fieldName,
-            labelStyle:
-                TextStyle(color: Theme.of(context).colorScheme.onBackground),
-            isDense: true,
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+        decoration: InputDecoration(labelText: fieldName));
   }
 }

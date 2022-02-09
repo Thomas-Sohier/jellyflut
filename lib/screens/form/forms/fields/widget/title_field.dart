@@ -12,14 +12,6 @@ class TitleField extends StatelessWidget {
             {ValidationMessage.required: 'The title must not be empty'},
         onSubmitted: () => form.focus(FieldsEnum.ORIGINALTITLE.getName()),
         textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            labelText: 'Title',
-            labelStyle:
-                TextStyle(color: Theme.of(context).colorScheme.onBackground),
-            isDense: true,
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+        decoration: InputDecoration(labelText: 'Title'));
   }
 }

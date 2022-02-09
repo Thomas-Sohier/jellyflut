@@ -59,9 +59,9 @@ class _PosterState extends State<Poster> {
         style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(6))),
                 backgroundColor: Colors.transparent)
+            .copyWith(shadowColor: buttonShadow())
             .copyWith(side: buttonBorderSide())
             .copyWith(padding: buttonPadding())
             .copyWith(elevation: buttonElevation()),
@@ -100,12 +100,24 @@ class _PosterState extends State<Poster> {
     return child;
   }
 
+  MaterialStateProperty<Color> buttonShadow() {
+    return MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.hovered) ||
+            states.contains(MaterialState.focused)) {
+          return Theme.of(context).colorScheme.secondary;
+        }
+        return Colors.transparent; // defer to the default
+      },
+    );
+  }
+
   MaterialStateProperty<double> buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.hovered) ||
             states.contains(MaterialState.focused)) {
-          return 2;
+          return 8;
         }
         return 0; // defer to the default
       },
@@ -119,7 +131,7 @@ class _PosterState extends State<Poster> {
             states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onBackground,
           );
         }
         return BorderSide(

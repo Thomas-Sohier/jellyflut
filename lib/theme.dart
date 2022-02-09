@@ -122,26 +122,33 @@ class Theme {
         .copyWith(
             dialogTheme: DialogTheme(
                 elevation: 4,
+                backgroundColor: theme.colorScheme.background,
                 titleTextStyle: getTextThemeWithColor().headline5,
                 contentTextStyle: getTextThemeWithColor().bodyText1))
         .copyWith(
             inputDecorationTheme: InputDecorationTheme(
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                    borderSide: BorderSide(
+                        color: theme.colorScheme.onBackground, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
                 disabledBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Colors.red.shade400, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
                 focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Colors.red.shade400, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                    borderSide: BorderSide(
+                        color: theme.colorScheme.onBackground, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
                 border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                    borderSide: BorderSide(
+                        color: theme.colorScheme.onBackground, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(4))),
                 filled: false,
-                hintStyle: TextStyle(color: Colors.black)))
+                isDense: true,
+                labelStyle: TextStyle(color: theme.colorScheme.onBackground),
+                floatingLabelStyle:
+                    TextStyle(color: theme.colorScheme.onBackground),
+                hintStyle: TextStyle(color: theme.colorScheme.onBackground)))
         .copyWith(
             cardTheme: CardTheme(
                 shadowColor: ColorUtil.darken(Colors.grey.shade900, 0.01)));

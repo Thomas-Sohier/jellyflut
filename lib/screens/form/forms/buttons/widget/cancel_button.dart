@@ -8,10 +8,6 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-            overlayColor: cancelButtonBackground(),
-            backgroundColor: cancelButtonBackground(),
-            foregroundColor: cancelButtonForeground()),
         child: Text('cancel'.tr(), style: TextStyle(fontSize: 18)));
   }
 }

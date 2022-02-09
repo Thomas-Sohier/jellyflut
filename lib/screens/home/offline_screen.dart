@@ -39,8 +39,7 @@ class OffLineScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(iconError,
-                        size: 24, color: Theme.of(context).primaryColor),
+                    Icon(iconError, size: 24),
                     const SizedBox(height: 18),
                     Text(
                         'You seems to not be able to access your server or to have internet',

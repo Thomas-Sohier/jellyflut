@@ -16,7 +16,7 @@ class HeaderBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       children: [
         SearchButton(),
         SettingsButton(),

@@ -12,14 +12,6 @@ class OverviewField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         minLines: 3,
         maxLines: 10,
-        decoration: InputDecoration(
-            labelText: 'Overview',
-            labelStyle:
-                TextStyle(color: Theme.of(context).colorScheme.onBackground),
-            isDense: true,
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+        decoration: InputDecoration(labelText: 'Overview'));
   }
 }

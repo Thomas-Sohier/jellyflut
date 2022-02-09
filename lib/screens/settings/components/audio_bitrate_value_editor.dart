@@ -53,7 +53,10 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
         context: context,
         builder: (c) {
           return AlertDialog(
-              title: Text('Edit max audio bitrate'),
+              title: Text(
+                'Edit max audio bitrate',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               actions: [
                 CancelButton(onPressed: () => customRouter.pop()),
                 SubmitButton(onPressed: () {
@@ -76,16 +79,9 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                         keyboardType: TextInputType.number,
                         controller: controller,
                         decoration: InputDecoration(
-                            labelText: 'max_bitrate'.tr(),
-                            labelStyle: TextStyle(),
-                            border: OutlineInputBorder(),
-                            errorBorder: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade600, width: 2.0)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade300, width: 2.0)))),
+                          labelText: 'max_bitrate'.tr(),
+                          labelStyle: TextStyle(),
+                        )),
                     const SizedBox(height: 12),
                     StreamBuilder<String>(
                         stream: textControllerStreamValue,
@@ -95,10 +91,7 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                             controller.value.text.isNotEmpty
                                 ? '${int.parse(s.data!) / 1000000} Mbps'
                                 : '0 Mbps',
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                ?.copyWith(color: Colors.grey.shade400),
+                            style: Theme.of(context).textTheme.caption,
                           );
                         })
                   ]));

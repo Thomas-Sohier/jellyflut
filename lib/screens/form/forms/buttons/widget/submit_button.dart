@@ -9,10 +9,6 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-            overlayColor: submitButtonBackground(),
-            backgroundColor: submitButtonBackground(),
-            foregroundColor: submitButtonForeground()),
         child: Text('submit'.tr(), style: TextStyle(fontSize: 18)));
   }
 }

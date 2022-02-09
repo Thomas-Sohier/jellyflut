@@ -26,19 +26,19 @@ class OutlinedButtonSelector extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 shape: shape,
                 backgroundColor: Colors.transparent)
-            .copyWith(side: buttonBorderSide())
+            .copyWith(side: buttonBorderSide(context))
             // .copyWith(elevation: buttonElevation())
-            .copyWith(backgroundColor: buttonColor()),
+            .copyWith(backgroundColor: buttonColor(context)),
         child: child);
   }
 
-  MaterialStateProperty<BorderSide> buttonBorderSide() {
+  MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onBackground,
           );
         }
         return BorderSide(
@@ -59,12 +59,12 @@ class OutlinedButtonSelector extends StatelessWidget {
     );
   }
 
-  MaterialStateProperty<Color> buttonColor() {
+  MaterialStateProperty<Color> buttonColor(BuildContext context) {
     return MaterialStateProperty.resolveWith<Color>(
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.hovered) ||
             states.contains(MaterialState.focused)) {
-          return Colors.white12;
+          return Theme.of(context).colorScheme.onBackground.withOpacity(0.05);
         }
         return Colors.transparent; // defer to the default
       },
