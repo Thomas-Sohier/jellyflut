@@ -6,6 +6,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
 import 'package:jellyflut/screens/book/components/setting_buton.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:path/path.dart';
 
 import 'components/book_placeholder.dart';
 import 'components/page_counter_parent.dart';
@@ -121,11 +122,11 @@ class _LargeBookViewState extends State<LargeBookView> {
           itemCount: nbPages,
           shrinkWrap: true,
           itemBuilder: (context, index) =>
-              pageButton(listValues.elementAt(index), currentPage)),
+              pageButton(listValues.elementAt(index), currentPage, context)),
     );
   }
 
-  Widget pageButton(int pageNumber, int currentPage) {
+  Widget pageButton(int pageNumber, int currentPage, BuildContext context) {
     return TextButton(
         onPressed: () => pageController.animateToPage(pageNumber,
             duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
@@ -139,7 +140,8 @@ class _LargeBookViewState extends State<LargeBookView> {
                   child: Icon(Icons.check, size: 24),
                 ),
               if (pageNumber != currentPage) SizedBox(width: 28),
-              Text('page_number'.tr(args: [pageNumber.toString()]))
+              Text('page_number'.tr(args: [pageNumber.toString()]),
+                  style: Theme.of(context).textTheme.bodyText2)
             ]));
   }
 }

@@ -37,15 +37,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   void initState() {
     super.initState();
-    backgroundColor1 = personnal_theme.jellyLightPurple;
-    backgroundColor2 = personnal_theme.jellyDarkPurple;
-    foregroundColor = Colors.white;
     musicProvider = MusicProvider();
     musicProvider
         .getCurrentMusicStream()
         .listen((SequenceState? sequenceState) {
       setAlbumPrimaryColor();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    backgroundColor1 = Theme.of(context).colorScheme.primary;
+    backgroundColor2 = Theme.of(context).colorScheme.secondary;
+    foregroundColor = Theme.of(context).colorScheme.onPrimary;
+    super.didChangeDependencies();
   }
 
   @override
@@ -82,22 +87,19 @@ class _MusicPlayerState extends State<MusicPlayer> {
       ])),
       Expanded(
         child: ClipRect(
-          child: Container(
-              color: ColorUtil.darken(Colors.grey.shade900, 0.02),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppBar(
-                      leading: const SizedBox(),
-                      leadingWidth: 0,
-                      toolbarTextStyle: Theme.of(context).textTheme.headline2,
-                      title: Text('Playlist')),
-                  Flexible(child: SongPlaylist()),
-                ],
-              )),
-        ),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppBar(
+                leading: const SizedBox(),
+                leadingWidth: 0,
+                title: Text('Playlist',
+                    style: Theme.of(context).textTheme.headline5)),
+            Flexible(child: SongPlaylist()),
+          ],
+        )),
       ),
     ]);
   }

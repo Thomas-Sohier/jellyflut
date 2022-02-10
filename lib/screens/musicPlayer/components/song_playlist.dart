@@ -56,7 +56,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
       direction: DismissDirection.endToStart,
       background: Container(
         padding: EdgeInsets.only(right: 48),
-        color: Colors.red,
+        color: Theme.of(context).colorScheme.error,
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -65,10 +65,12 @@ class _SongPlaylistState extends State<SongPlaylist> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.delete),
+                  Icon(Icons.delete,
+                      color: Theme.of(context).colorScheme.onError),
                   Text(
                     'Delete',
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).colorScheme.onError),
                   )
                 ],
               )
@@ -101,7 +103,10 @@ class _SongPlaylistState extends State<SongPlaylist> {
           padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
           child: Text(
             index.toString(),
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: Theme.of(context)
+                .textTheme
+                .headline6
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
@@ -113,18 +118,24 @@ class _SongPlaylistState extends State<SongPlaylist> {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(metadata.title,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontWeight: FontWeight.bold)),
               ),
               Text(metadata.artist,
                   overflow: TextOverflow.ellipsis,
-                  style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      ?.copyWith(fontSize: 14)),
               if (metadata.album != null)
                 Text(metadata.album!,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal))
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(fontSize: 14))
             ],
           ),
         )

@@ -26,7 +26,10 @@ class _SettingButtonState extends State<SettingButton> {
         onPressed: () => editInfos(context),
         shape: CircleBorder(),
         node: _node,
-        child: Icon(Icons.settings));
+        child: Icon(
+          Icons.settings,
+          color: Theme.of(context).colorScheme.onBackground,
+        ));
   }
 
   void editInfos(BuildContext context) {
