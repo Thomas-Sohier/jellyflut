@@ -12,12 +12,6 @@ class PremiereDateField extends StatelessWidget {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Premiere date',
-          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-          isDense: true,
-          border: DEFAULT_BORDER,
-          errorBorder: ERROR_BORDER,
-          enabledBorder: ENABLED_BORDER,
-          focusedBorder: FOCUSED_BORDER,
           suffixIcon: ReactiveDatePicker<DateTime>(
             formControlName: FieldsEnum.DATEADDED.getName(),
             firstDate: DateTime(1900),

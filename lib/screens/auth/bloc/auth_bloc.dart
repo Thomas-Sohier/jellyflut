@@ -44,7 +44,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userPassword = event.password;
       globals.server = server!;
       final response = await AuthService.login(event.username, event.password);
-      await AuthService.storeAccountData(event.username, response);
+      await AuthService.storeAccountData(
+          event.username, server!, response, userPassword!);
       emit(AuthenticationSuccessful());
     } catch (e) {
       errors.add(e.toString());

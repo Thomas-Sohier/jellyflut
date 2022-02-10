@@ -8,7 +8,6 @@ import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/screens/musicPlayer/music_player.dart';
-import 'package:jellyflut/theme.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayerFAB extends StatefulWidget {
@@ -77,9 +76,13 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
               width: 200,
               height: 60,
               padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(blurRadius: 6, color: Colors.black54, spreadRadius: 2)
-              ], borderRadius: BorderRadius.circular(30), color: jellyPurple),
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 6, color: Colors.black54, spreadRadius: 2)
+                  ],
+                  borderRadius: BorderRadius.circular(30),
+                  color: Theme.of(context).colorScheme.primary),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -87,7 +90,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                     onTap: () => customRouter.push(MusicPlayerRoute()),
                     child: Icon(
                       Icons.more_vert,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 28,
                     ),
                   ),
@@ -102,14 +105,25 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                             audioMetadata?.title ?? '',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           )),
                           Expanded(
                               child: StreamBuilder<Duration?>(
                                   stream: musicPlayer.getPositionStream(),
                                   builder: (context, snapshot) => Slider(
-                                        activeColor: Colors.white,
-                                        inactiveColor: Colors.white12,
+                                        activeColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        inactiveColor: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary
+                                            .withAlpha(32),
                                         value: getSliderSize(snapshot.data),
                                         min: 0.0,
                                         max: getSliderMaxSize(snapshot.data),
@@ -133,7 +147,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                             isPlaying(snapshot.data)
                                 ? Icons.pause_circle_filled_outlined
                                 : Icons.play_circle_fill_outlined,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             size: 28,
                           ),
                         ),

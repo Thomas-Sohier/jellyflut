@@ -5,26 +5,30 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
-import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
-import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/authentication_response.dart';
+import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
+import 'package:jellyflut/providers/home/home_provider.dart';
+import 'package:jellyflut/providers/items/items_provider.dart';
+import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/services/dio/auth_header.dart';
+import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:moor/moor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static Future<AuthenticationResponse> login(
-      String username, String password) async {
+  static Future<AuthenticationResponse> login(String username, String password,
+      [String? serverUrl]) async {
     final login = '/Users/authenticatebyname';
     final data = jsonEncode({'Username': username, 'Pw': password});
-    final authEmby = await authHeader();
+    final authEmby = await authHeader(embedToken: false);
+    serverUrl ??= server.url;
 
     try {
-      final response = await dio.post('${server.url}$login',
+      final response = await dio.post('$serverUrl$login',
           data: data,
           // X-Emby-Authorization needs to be set manually here
           // I don't know why...
@@ -84,24 +88,51 @@ class AuthService {
     return false;
   }
 
-  static Future<void> storeAccountData(
-      String name, AuthenticationResponse authenticationResponse) async {
+  static Future<void> storeAccountData(String name, Server server,
+      AuthenticationResponse authenticationResponse, String password) async {
     final db = AppDatabase().getDatabase;
-    final serverCompanion =
-        ServersCompanion.insert(url: server.url, name: server.name);
 
-    final serverId = await db.serversDao.createServer(serverCompanion);
+    final serverId = await createOrGetServer(server);
     final settingsId = await db.settingsDao.createSettings(SettingsCompanion());
 
-    final userCompanion = UsersCompanion.insert(
-        name: name,
-        apiKey: authenticationResponse.accessToken,
-        settingsId: Value(settingsId),
-        serverId: Value(serverId));
-    final userId = await db.usersDao.createUser(userCompanion);
+    final userId = await createOrGetUser(
+        name, authenticationResponse, password, serverId, settingsId);
     await _saveToSharedPreferences(
         serverId, settingsId, userId, authenticationResponse);
     return await _saveToGlobals();
+  }
+
+  static Future<int> createOrGetServer(final Server server) async {
+    final db = AppDatabase().getDatabase;
+    try {
+      return db.serversDao.getServerByUrl(server.url).then((value) => value.id);
+    } catch (error) {
+      final serverCompanion =
+          ServersCompanion.insert(url: server.url, name: server.name);
+      return db.serversDao.createServer(serverCompanion);
+    }
+  }
+
+  static Future<int> createOrGetUser(
+      String name,
+      AuthenticationResponse authenticationResponse,
+      String password,
+      int serverId,
+      int settingsId) async {
+    final db = AppDatabase().getDatabase;
+    try {
+      return db.usersDao
+          .getUserByNameAndServerId(name, serverId)
+          .then((value) => value.id);
+    } catch (error) {
+      final userCompanion = UsersCompanion.insert(
+          name: name,
+          password: password,
+          apiKey: authenticationResponse.accessToken,
+          settingsId: Value(settingsId),
+          serverId: Value(serverId));
+      return db.usersDao.createUser(userCompanion);
+    }
   }
 
   static Future<void> _saveToSharedPreferences(int serverId, int settingId,
@@ -158,9 +189,35 @@ class AuthService {
   static Future<void> logout() async {
     await _removeGlobals();
     await _removeSharedPreferences();
+    HomeCategoryProvider().clear();
+    ItemsProvider().reset();
+    MusicProvider().reset();
     BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!)
         .add(ResetStates());
     await AutoRouter.of(customRouter.navigatorKey.currentContext!)
         .replace(AuthParentRoute());
+  }
+
+  static Future<void> changeUser(
+    final String username,
+    final String password,
+    final String serverUrl,
+    final int serverId,
+    final int settingsId,
+    final int userId,
+  ) async {
+    // Try to connect first
+    // If there is an error then an exception is thrown
+    // or we juste flush all data on connect with second account
+    final response = await AuthService.login(username, password, serverUrl);
+    await _removeGlobals();
+    await _removeSharedPreferences();
+    await _saveToSharedPreferences(serverId, settingsId, userId, response);
+    await _saveToGlobals();
+    HomeCategoryProvider().clear();
+    ItemsProvider().reset();
+    MusicProvider().reset();
+    await AutoRouter.of(customRouter.navigatorKey.currentContext!)
+        .replace(HomeRouter());
   }
 }

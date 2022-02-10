@@ -22,20 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
-  anim_search_bar:
-    dependency: "direct main"
-    description:
-      name: anim_search_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   archive:
     dependency: "direct main"
     description:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.9"
+    version: "3.1.11"
   args:
     dependency: transitive
     description:
@@ -85,41 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.81"
-  bitsdojo_window:
-    dependency: "direct main"
-    description:
-      name: bitsdojo_window
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1+1"
-  bitsdojo_window_linux:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
-  bitsdojo_window_macos:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
-  bitsdojo_window_platform_interface:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
-  bitsdojo_window_windows:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   bloc:
     dependency: "direct main"
     description:
@@ -288,6 +246,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  community_material_icon:
+    dependency: "direct main"
+    description:
+      name: community_material_icon
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.9.55"
   convert:
     dependency: transitive
     description:
@@ -364,7 +329,7 @@ packages:
       name: device_info_plus_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -476,7 +441,7 @@ packages:
       name: file_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.2"
+    version: "4.3.3"
   fixnum:
     dependency: transitive
     description:
@@ -556,7 +521,7 @@ packages:
       name: flutter_native_splash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.3"
+    version: "2.0.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -589,14 +554,14 @@ packages:
       name: flutter_vlc_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.5"
+    version: "7.0.1"
   flutter_vlc_player_platform_interface:
     dependency: transitive
     description:
       name: flutter_vlc_player_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
+    version: "2.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -636,7 +601,7 @@ packages:
       name: fwfh_text_style
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.2"
+    version: "2.7.3+1"
   glob:
     dependency: transitive
     description:
@@ -706,7 +671,7 @@ packages:
       name: js
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.4"
+    version: "0.6.3"
   json_annotation:
     dependency: transitive
     description:
@@ -720,7 +685,7 @@ packages:
       name: just_audio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.18"
+    version: "0.9.19"
   just_audio_libwinmedia:
     dependency: "direct main"
     description:
@@ -734,14 +699,14 @@ packages:
       name: just_audio_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   just_audio_web:
     dependency: transitive
     description:
       name: just_audio_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.4"
   libwinmedia:
     dependency: transitive
     description:
@@ -1035,7 +1000,7 @@ packages:
       name: reactive_forms
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "11.0.0"
+    version: "11.0.1"
   recase:
     dependency: transitive
     description:
@@ -1046,11 +1011,9 @@ packages:
   responsive_builder:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "0475688bb26f6d1f5966be1b9a371f02a136da45"
-      url: "git://github.com/georgeherby/responsive_builder.git"
-    source: git
+      name: responsive_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.4.1"
   rxdart:
     dependency: "direct main"
@@ -1059,20 +1022,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
-  salomon_bottom_bar:
-    dependency: "direct main"
-    description:
-      name: salomon_bottom_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.0"
   shared_preferences:
     dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.13"
   shared_preferences_android:
     dependency: transitive
     description:
@@ -1162,15 +1118,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-  splashscreen:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: master
-      resolved-ref: a05b64f8326f7c2615491e9f47a1f2dcf8b28a69
-      url: "https://github.com/DPLYR-dev/SplashScreenFlutterPackage.git"
-    source: git
-    version: "1.4.0"
   sqflite:
     dependency: transitive
     description:
@@ -1205,7 +1152,7 @@ packages:
       name: sqlparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.19.1"
+    version: "0.19.2"
   stack_trace:
     dependency: transitive
     description:
@@ -1261,7 +1208,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.9"
+    version: "0.4.8"
   timing:
     dependency: transitive
     description:
@@ -1310,28 +1257,28 @@ packages:
       name: url_launcher_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.14"
+    version: "6.0.15"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   url_launcher_platform_interface:
     dependency: transitive
     description:
@@ -1345,14 +1292,14 @@ packages:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.6"
+    version: "2.0.8"
   url_launcher_windows:
     dependency: transitive
     description:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   uuid:
     dependency: "direct main"
     description:
@@ -1373,7 +1320,21 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.14"
+    version: "2.2.18"
+  video_player_android:
+    dependency: transitive
+    description:
+      name: video_player_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.17"
+  video_player_avfoundation:
+    dependency: transitive
+    description:
+      name: video_player_avfoundation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.18"
   video_player_platform_interface:
     dependency: transitive
     description:
@@ -1401,7 +1362,7 @@ packages:
       name: wakelock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.6"
+    version: "0.6.1+1"
   wakelock_macos:
     dependency: transitive
     description:
@@ -1478,21 +1439,21 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.8"
+    version: "2.3.11"
   window_manager:
     dependency: "direct main"
     description:
       name: window_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   xdg_directories:
     dependency: transitive
     description:
       name: xdg_directories
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.0+1"
   xml:
     dependency: transitive
     description:
@@ -1515,5 +1476,5 @@ packages:
     source: hosted
     version: "1.10.9+1"
 sdks:
-  dart: ">=2.16.0-100.0.dev <3.0.0"
-  flutter: ">=2.8.0"
+  dart: ">=2.15.1 <3.0.0"
+  flutter: ">=2.10.0"

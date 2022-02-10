@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
   const ItemPoster(this.item,
-      {this.textColor = Colors.white,
+      {this.textColor,
       this.heroTag,
       this.widgetAspectRatio,
       this.height,
@@ -26,7 +26,7 @@ class ItemPoster extends StatefulWidget {
   final Item item;
   final String? heroTag;
   final double? widgetAspectRatio;
-  final Color textColor;
+  final Color? textColor;
   final bool imagefilter;
   final bool backup;
   final double? height;
@@ -57,6 +57,7 @@ class _ItemPosterState extends State<ItemPoster>
   late final FocusNode _node;
   late final String posterHeroTag;
   late final double aspectRatio;
+  late Color textColor;
 
   @override
   bool get wantKeepAlive => true;
@@ -70,6 +71,12 @@ class _ItemPosterState extends State<ItemPoster>
     aspectRatio = widget.widgetAspectRatio ??
         widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    textColor = widget.textColor ?? Theme.of(context).colorScheme.onBackground;
+    super.didChangeDependencies();
   }
 
   @override
@@ -88,49 +95,46 @@ class _ItemPosterState extends State<ItemPoster>
   Widget body(BuildContext context) {
     return Column(children: [
       Flexible(
-        flex: 8,
-        child: ClipRRect(
-            clipBehavior: Clip.antiAlias,
-            child: AspectRatio(
-              aspectRatio: aspectRatio,
-              child: Stack(children: [
-                Poster(
-                    key: ValueKey(widget.item),
-                    showParent: widget.showParent,
-                    tag: widget.tag,
-                    clickable: widget.clickable,
-                    heroTag: posterHeroTag,
-                    boxFit: widget.boxFit,
-                    width: widget.width,
-                    backup: widget.backup,
-                    height: widget.height,
-                    item: widget.item),
-                if (widget.imagefilter)
-                  IgnorePointer(
-                      child: Container(
-                          constraints: BoxConstraints.expand(),
-                          decoration: BoxDecoration(
-                              color: Colors.black.withAlpha(100)))),
-                if (widget.showOverlay)
-                  IgnorePointer(
-                      child: Stack(
-                    children: [
-                      if (widget.item.isNew())
-                        Positioned(top: 8, left: 8, child: newBanner()),
-                      if (widget.item.isPlayed())
-                        Positioned(top: 8, right: 8, child: playedBanner()),
-                    ],
-                  )),
-                if (widget.showLogo && widget.showOverlay)
-                  IgnorePointer(
-                      child: Align(
-                    alignment: Alignment.center,
-                    child: Logo(item: widget.item),
-                  )),
-                if (widget.item.hasProgress() && widget.showOverlay) progress(),
-              ]),
-            )),
-      ),
+          flex: 8,
+          child: AspectRatio(
+            aspectRatio: aspectRatio,
+            child: Stack(clipBehavior: Clip.none, children: [
+              Poster(
+                  key: ValueKey(widget.item),
+                  showParent: widget.showParent,
+                  tag: widget.tag,
+                  clickable: widget.clickable,
+                  heroTag: posterHeroTag,
+                  boxFit: widget.boxFit,
+                  width: widget.width,
+                  backup: widget.backup,
+                  height: widget.height,
+                  item: widget.item),
+              if (widget.imagefilter)
+                IgnorePointer(
+                    child: Container(
+                        constraints: BoxConstraints.expand(),
+                        decoration:
+                            BoxDecoration(color: Colors.black.withAlpha(100)))),
+              if (widget.showOverlay)
+                IgnorePointer(
+                    child: Stack(
+                  children: [
+                    if (widget.item.isNew())
+                      Positioned(top: 8, left: 8, child: newBanner()),
+                    if (widget.item.isPlayed())
+                      Positioned(top: 8, right: 8, child: playedBanner()),
+                  ],
+                )),
+              if (widget.showLogo && widget.showOverlay)
+                IgnorePointer(
+                    child: Align(
+                  alignment: Alignment.center,
+                  child: Logo(item: widget.item),
+                )),
+              if (widget.item.hasProgress() && widget.showOverlay) progress(),
+            ]),
+          )),
       if (hasTitle) name()
     ]);
   }
@@ -156,7 +160,7 @@ class _ItemPosterState extends State<ItemPoster>
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(fontSize: 16, color: widget.textColor),
+                .copyWith(fontSize: 16, color: textColor),
           ),
         ),
         if (hasSubTitle)
@@ -167,7 +171,7 @@ class _ItemPosterState extends State<ItemPoster>
             style: Theme.of(context)
                 .textTheme
                 .bodyText1!
-                .copyWith(fontSize: 12, color: widget.textColor),
+                .copyWith(fontSize: 12, color: textColor),
             textAlign: TextAlign.center,
           ),
       ],

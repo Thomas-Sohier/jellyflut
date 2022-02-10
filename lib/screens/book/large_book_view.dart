@@ -70,7 +70,8 @@ class _LargeBookViewState extends State<LargeBookView> {
           height: double.maxFinite,
           child: Row(children: [
             Container(
-              color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.1),
+              color: ColorUtil.lighten(
+                  Theme.of(context).colorScheme.background, 0.1),
               width: 200,
               child: Column(
                 children: [
@@ -120,11 +121,11 @@ class _LargeBookViewState extends State<LargeBookView> {
           itemCount: nbPages,
           shrinkWrap: true,
           itemBuilder: (context, index) =>
-              pageButton(listValues.elementAt(index), currentPage)),
+              pageButton(listValues.elementAt(index), currentPage, context)),
     );
   }
 
-  Widget pageButton(int pageNumber, int currentPage) {
+  Widget pageButton(int pageNumber, int currentPage, BuildContext context) {
     return TextButton(
         onPressed: () => pageController.animateToPage(pageNumber,
             duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
@@ -138,7 +139,8 @@ class _LargeBookViewState extends State<LargeBookView> {
                   child: Icon(Icons.check, size: 24),
                 ),
               if (pageNumber != currentPage) SizedBox(width: 28),
-              Text('page_number'.tr(args: [pageNumber.toString()]))
+              Text('page_number'.tr(args: [pageNumber.toString()]),
+                  style: Theme.of(context).textTheme.bodyText2)
             ]));
   }
 }

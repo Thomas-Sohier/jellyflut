@@ -19,7 +19,7 @@ class _DrawerState extends State<Drawer> {
   Widget build(BuildContext context) {
     return Material(
       elevation: 4,
-      color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.02),
+      color: ColorUtil.lighten(Theme.of(context).colorScheme.background, 0.02),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 80),
         child: Align(

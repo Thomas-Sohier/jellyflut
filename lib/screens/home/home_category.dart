@@ -83,10 +83,7 @@ class _HomeCategoryState extends State<HomeCategory>
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-              child:
-                  HomeCategoryTitle(categoryTitle, onTap: slideToPageDetail)),
+          HomeCategoryTitle(categoryTitle, onTap: slideToPageDetail),
           SizedBox(
               height: itemPosterHeight + itemPosterLabelHeight,
               child: displayItems()),

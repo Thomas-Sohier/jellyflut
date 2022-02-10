@@ -7,7 +7,7 @@ class OverviewDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (overview == null) return SizedBox();
+    if (overview == null || overview!.isEmpty) return const SizedBox();
     return Text(
       overview!,
       textAlign: TextAlign.justify,

@@ -34,7 +34,8 @@ class _DrawerState extends State<Drawer> {
   Widget build(BuildContext context) {
     return Material(
         elevation: 6,
-        color: ColorUtil.lighten(Theme.of(context).backgroundColor, 0.02),
+        color:
+            ColorUtil.lighten(Theme.of(context).colorScheme.background, 0.02),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 200),
           child: ListView(

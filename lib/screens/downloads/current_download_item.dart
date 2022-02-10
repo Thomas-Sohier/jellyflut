@@ -130,7 +130,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
               CircularProgressIndicator(
                 value: (snapshot.data?.toDouble() ?? 0) / 100,
                 backgroundColor:
-                    ColorUtil.lighten(Theme.of(context).backgroundColor),
+                    ColorUtil.lighten(Theme.of(context).colorScheme.background),
                 color: Colors.green,
               ),
               IconButton(

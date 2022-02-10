@@ -12,15 +12,7 @@ class InfosSection extends StatelessWidget {
       titleTextStyle: Theme.of(context).textTheme.headline6,
       tiles: [
         SettingsTile(
-          title: 'version'.tr(),
-          subtitle: version ?? 'unknown'.tr(),
-          titleTextStyle: TextStyle(color: Colors.white),
-          subtitleTextStyle: TextStyle(color: Colors.white60),
-          trailing: Container(
-            height: 0,
-            width: 0,
-          ),
-        ),
+            title: 'version'.tr(), trailing: Text(version ?? 'unknown'.tr()))
       ],
     );
   }

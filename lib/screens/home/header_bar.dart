@@ -16,7 +16,7 @@ class HeaderBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       children: [
         SearchButton(),
         SettingsButton(),
@@ -32,20 +32,13 @@ class HeaderBar extends StatelessWidget {
   List<Widget> logoAndText() {
     if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       return <Widget>[
-        SizedBox(
-          width: 8,
-        ),
+        const SizedBox(width: 8),
         Hero(tag: 'logo', child: const JellyfinLogo()),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-        ),
+        const Padding(padding: EdgeInsets.fromLTRB(6, 0, 0, 0)),
         Hero(
           tag: 'logo_text',
-          child: Text(
-            'Jellyfin',
-            style: TextStyle(
-                fontSize: 22, color: Colors.white, fontFamily: 'Quicksand'),
-          ),
+          child: Text('Jellyfin',
+              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand')),
         )
       ];
     }

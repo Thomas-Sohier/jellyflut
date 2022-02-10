@@ -1,7 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/theme.dart';
 
 class VideoPlayerProgressBar extends StatefulWidget {
   VideoPlayerProgressBar({Key? key}) : super(key: key);
@@ -33,7 +32,7 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
           buffered: streamingProvider.commonStream!.getBufferingDuration(),
           total: streamingProvider.commonStream!.getDuration() ??
               Duration(seconds: 0),
-          progressBarColor: jellyLightPurple,
+          progressBarColor: Theme.of(context).colorScheme.primary,
           baseBarColor: Colors.white.withOpacity(0.24),
           bufferedBarColor: Colors.white.withOpacity(0.24),
           thumbColor: Colors.white,

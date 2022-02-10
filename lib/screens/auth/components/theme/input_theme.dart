@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Borders
-final InputBorder DEFAULT_BORDER = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey.shade700, width: 2.0));
-final InputBorder FOCUSED_BORDER = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey.shade900, width: 2.0));
-final InputBorder ERROR_BORDER =
-    OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 2.0));
-final InputBorder ENABLED_BORDER = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey.shade800, width: 2.0));
-
-// Input text
-final TextStyle INPUT_TEXT_STYLE = TextStyle(color: Colors.black);
-
 // Back button
 MaterialStateProperty<EdgeInsetsGeometry> buttonPadding() {
   return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
@@ -34,15 +21,13 @@ MaterialStateProperty<double> buttonElevation() {
   );
 }
 
-MaterialStateProperty<BorderSide> buttonBorderSide() {
+MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
   return MaterialStateProperty.resolveWith<BorderSide>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.hovered) ||
           states.contains(MaterialState.focused)) {
         return BorderSide(
-          width: 2,
-          color: Colors.grey.shade900,
-        );
+            width: 2, color: Theme.of(context).colorScheme.onBackground);
       }
       return BorderSide(
           width: 0, color: Colors.transparent); // defer to the default

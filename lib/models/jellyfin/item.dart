@@ -1226,7 +1226,7 @@ class Item {
       }
       return await musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
-      await customRouter.push(BookReaderPageRoute(item: this));
+      await customRouter.push(EpubRoute(item: this));
     }
   }
 

@@ -11,13 +11,6 @@ class ProductionYearField extends StatelessWidget {
         keyboardType: TextInputType.number,
         onSubmitted: () => form.focus(FieldsEnum.OVERVIEW.getName()),
         textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            labelText: 'Year',
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-            isDense: true,
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+        decoration: InputDecoration(labelText: 'Year'));
   }
 }

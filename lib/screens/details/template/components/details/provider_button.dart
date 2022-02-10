@@ -22,7 +22,7 @@ class ProviderButton extends StatelessWidget {
               side: BorderSide(
                   width: 1,
                   style: BorderStyle.solid,
-                  color: Theme.of(context).primaryColor))
+                  color: Theme.of(context).colorScheme.onBackground))
           .copyWith(backgroundColor: buttonBackground(context))
           .copyWith(foregroundColor: buttonForeground(context))
           .copyWith(overlayColor: buttonBackground(context)),
@@ -42,9 +42,9 @@ class ProviderButton extends StatelessWidget {
         (Set<MaterialState> states) {
       if (states.contains(MaterialState.hovered) ||
           states.contains(MaterialState.focused)) {
-        return Theme.of(context).primaryColor;
+        return Theme.of(context).colorScheme.onBackground;
       } else if (states.contains(MaterialState.pressed)) {
-        return Theme.of(context).primaryColor.withOpacity(0.1);
+        return Theme.of(context).colorScheme.onBackground.withOpacity(0.1);
       }
       return Colors.transparent;
     });
@@ -55,9 +55,9 @@ class ProviderButton extends StatelessWidget {
         (Set<MaterialState> states) {
       if (states.contains(MaterialState.hovered) ||
           states.contains(MaterialState.focused)) {
-        return ColorUtil.invert(Theme.of(context).primaryColor);
+        return ColorUtil.invert(Theme.of(context).colorScheme.onBackground);
       }
-      return Theme.of(context).primaryColor;
+      return Theme.of(context).colorScheme.onBackground;
     });
   }
 }

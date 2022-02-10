@@ -15,13 +15,6 @@ class OriginalTitleField extends StatelessWidget {
             },
         onSubmitted: () => form.focus(FieldsEnum.DATECREATED.getName()),
         textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            labelText: 'Original title',
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-            isDense: true,
-            border: DEFAULT_BORDER,
-            errorBorder: ERROR_BORDER,
-            enabledBorder: ENABLED_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+        decoration: InputDecoration(labelText: 'Original title'));
   }
 }

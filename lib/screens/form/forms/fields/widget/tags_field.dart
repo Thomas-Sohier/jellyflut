@@ -31,7 +31,7 @@ class _TagsFieldState extends State<TagsField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Tags', style: Theme.of(context).textTheme.headline6),
+        Text('Tags', style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 24),
         SizedBox(
             width: double.maxFinite,
@@ -67,7 +67,8 @@ class _TagsFieldState extends State<TagsField> {
                 Flexible(
                     child: Text(
                   tag.capitalize(),
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      color: Theme.of(context).colorScheme.onSecondary),
                 )),
                 IconButton(
                     onPressed: () => setState(() {
@@ -77,7 +78,7 @@ class _TagsFieldState extends State<TagsField> {
                     icon: Icon(
                       Icons.remove_circle_outline,
                       size: 16,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ))
               ],
             )));

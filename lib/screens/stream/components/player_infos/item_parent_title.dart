@@ -12,7 +12,7 @@ class ItemParentTitle extends StatelessWidget {
       textAlign: TextAlign.left,
       style: TextStyle(
           fontWeight: FontWeight.w600,
-          foreground: Paint()..shader = linearGradient,
+          foreground: Paint()..shader = CustomGradient(context).linearGradient,
           fontSize: 14),
     );
   }

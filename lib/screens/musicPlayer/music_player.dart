@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
@@ -10,10 +9,10 @@ import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:just_audio/just_audio.dart';
+
+import '../../shared/responsive_builder.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
@@ -28,23 +27,24 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late Color backgroundColor2;
   late Color foregroundColor;
   late int musicPlayerIndex;
-  final ThemeData playlistThemeData = ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: personnal_theme.jellyPurple,
-      backgroundColor: ColorUtil.darken(Colors.grey.shade900, 0.05));
 
   @override
   void initState() {
     super.initState();
-    backgroundColor1 = personnal_theme.jellyLightPurple;
-    backgroundColor2 = personnal_theme.jellyDarkPurple;
-    foregroundColor = Colors.white;
     musicProvider = MusicProvider();
     musicProvider
         .getCurrentMusicStream()
         .listen((SequenceState? sequenceState) {
       setAlbumPrimaryColor();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    backgroundColor1 = Theme.of(context).colorScheme.primary;
+    backgroundColor2 = Theme.of(context).colorScheme.secondary;
+    foregroundColor = Theme.of(context).colorScheme.onPrimary;
+    super.didChangeDependencies();
   }
 
   @override
@@ -64,7 +64,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
     var height = size.height - statusBarHeight;
     return Scaffold(
         extendBody: false,
-        backgroundColor: Colors.grey.shade900,
         body: ResponsiveBuilder.builder(
             mobile: () => phoneTemplate(height, statusBarHeight),
             tablet: () => largeScreenTemplate(height, statusBarHeight),
@@ -82,22 +81,19 @@ class _MusicPlayerState extends State<MusicPlayer> {
       ])),
       Expanded(
         child: ClipRect(
-          child: Container(
-              color: ColorUtil.darken(Colors.grey.shade900, 0.02),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppBar(
-                      leading: const SizedBox(),
-                      leadingWidth: 0,
-                      toolbarTextStyle: Theme.of(context).textTheme.headline2,
-                      title: Text('Playlist')),
-                  Flexible(child: SongPlaylist()),
-                ],
-              )),
-        ),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppBar(
+                leading: const SizedBox(),
+                leadingWidth: 0,
+                title: Text('Playlist',
+                    style: Theme.of(context).textTheme.headline5)),
+            Flexible(child: SongPlaylist()),
+          ],
+        )),
       ),
     ]);
   }

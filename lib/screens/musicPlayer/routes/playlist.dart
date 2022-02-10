@@ -8,8 +8,10 @@ class Playlist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Playlist')),
-        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+            title:
+                Text('Playlist', style: Theme.of(context).textTheme.headline5)),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: body);
   }
 }

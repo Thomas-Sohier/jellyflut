@@ -21,9 +21,9 @@ BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
 double get _itemHeightTemp =>
     log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
-    35;
+    30;
 
-double get itemPosterHeight => (_itemHeightTemp <= 200 ? 200 : _itemHeightTemp);
+double get itemPosterHeight => (_itemHeightTemp <= 150 ? 150 : _itemHeightTemp);
 
 double get itemPosterLabelHeight => 39;
 

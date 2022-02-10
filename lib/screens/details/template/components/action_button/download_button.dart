@@ -119,16 +119,22 @@ class _DownloadButtonState extends State<DownloadButton> {
                           style: Theme.of(context).textTheme.bodyText1),
                     ]))),
             actions: [
-              CancelButton(onPressed: () => customRouter.pop<bool>(false)),
-              DeleteButton(onPressed: () {
-                AppDatabase()
-                    .getDatabase
-                    .downloadsDao
-                    .getDownloadById(widget.item.id)
-                    .then(downloadProvider.deleteDownloadedFile);
-                customRouter.pop<bool>(false);
-              }),
-              SubmitButton(onPressed: () => customRouter.pop<bool>(true))
+              TextButton(
+                  onPressed: () => customRouter.pop<bool>(false),
+                  child: Text('cancel'.tr())),
+              TextButton(
+                  onPressed: () {
+                    AppDatabase()
+                        .getDatabase
+                        .downloadsDao
+                        .getDownloadById(widget.item.id)
+                        .then(downloadProvider.deleteDownloadedFile);
+                    customRouter.pop<bool>(false);
+                  },
+                  child: Text('delete'.tr())),
+              TextButton(
+                  onPressed: () => customRouter.pop<bool>(true),
+                  child: Text('download'.tr()))
             ],
           );
         });

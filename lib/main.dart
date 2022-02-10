@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:auto_route/auto_route.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -13,12 +9,11 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:provider/provider.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 import 'shared/custom_scroll_behavior.dart';
 
@@ -30,43 +25,12 @@ void main() async {
   await setUpSharedPrefs();
   await setUpAndroidTv();
 
-  // Prepare windows title bar while loading app
-  // Only on computer
-  if (Platform.isMacOS || Platform.isLinux || Platform.isWindows) {
-    doWhenWindowReady(() {
-      appWindow.alignment = Alignment.center;
-      appWindow.title = 'Jellyflut';
-      appWindow.show();
-    });
-  }
-
   runApp(EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
       path: 'translations',
       assetLoader: YamlAssetLoader(),
       fallbackLocale: Locale('en', 'US'),
       child: Jellyflut(authenticated: auth)));
-}
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return SplashScreen(
-      title: Text(''),
-      loadingText: Text(''),
-      styleTextUnderTheLoader: TextStyle(fontSize: 16),
-      useLoader: false,
-      loadingTextPadding: EdgeInsets.all(2),
-      image: Image.asset('img/jellyfin_logo.png'),
-      backgroundColor: Color(0xFF252525),
-      photoSize: 80.0,
-    );
-  }
 }
 
 class Jellyflut extends StatelessWidget {
@@ -108,6 +72,7 @@ class Jellyflut extends StatelessWidget {
             dispose: (context, db) => db.close(),
           ),
           ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
+          ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
           ChangeNotifierProvider<DownloadProvider>(
               create: (_) => DownloadProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(
@@ -123,28 +88,20 @@ class Jellyflut extends StatelessWidget {
             child: Shortcuts(
                 // needed for AndroidTV to be able to select
                 shortcuts: shortcuts,
-                child: MaterialApp.router(
-                  title: 'JellyFlut',
-                  locale: context.locale,
-                  debugShowCheckedModeBanner: false,
-                  scrollBehavior: CustomScrollBehavior(),
-                  supportedLocales: context.supportedLocales,
-                  theme: personnal_theme.Theme.defaultThemeData,
-                  localizationsDelegates: context.localizationDelegates,
-                  builder: (context, child) {
-                    // Show only title bar on computer or we will have build error on phones
-                    // if (Platform.isMacOS ||
-                    //     Platform.isLinux ||
-                    //     Platform.isWindows) {
-                    //   return TitleBar(child: child);
-                    // }
-                    return child ?? const SizedBox();
-                  },
-                  routerDelegate: customRouter.delegate(
-                      initialRoutes: [HomeRouter()],
-                      navigatorObservers: () =>
-                          <NavigatorObserver>[AutoRouteObserver()]),
-                  routeInformationParser: customRouter.defaultRouteParser(),
-                ))));
+                child: Consumer<ThemeProvider>(
+                    builder: (context, ThemeProvider themeNotifier, child) =>
+                        MaterialApp.router(
+                          title: 'JellyFlut',
+                          locale: context.locale,
+                          debugShowCheckedModeBanner: false,
+                          scrollBehavior: CustomScrollBehavior(),
+                          supportedLocales: context.supportedLocales,
+                          theme: themeNotifier.getThemeData,
+                          localizationsDelegates: context.localizationDelegates,
+                          routerDelegate: customRouter
+                              .delegate(initialRoutes: [HomeRouter()]),
+                          routeInformationParser:
+                              customRouter.defaultRouteParser(),
+                        )))));
   }
 }

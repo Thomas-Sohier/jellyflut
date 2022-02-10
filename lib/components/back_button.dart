@@ -15,7 +15,7 @@ class BackButton extends StatefulWidget {
 
 class _BackButtonState extends State<BackButton> {
   late final FocusNode _node;
-  late final List<BoxShadow> shadows;
+  late List<BoxShadow> shadows;
 
   @override
   void initState() {
@@ -50,7 +50,8 @@ class _BackButtonState extends State<BackButton> {
           padding: const EdgeInsets.all(6),
           child: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: Colors
+                .white, // Here we force white color to have something always visible
             size: 28,
           )),
     );

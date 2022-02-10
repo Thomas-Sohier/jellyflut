@@ -1,13 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/auth_bubble_indicator.dart';
+import 'package:jellyflut/screens/auth/components/lava/lava_builder.dart';
 import 'package:jellyflut/screens/auth/login_form.dart';
 import 'package:jellyflut/screens/auth/server_form.dart';
+
+import 'components/lava/lava_painter.dart';
 
 class AuthParent extends StatefulWidget {
   final VoidCallback? onAuthenticated;
@@ -20,6 +22,7 @@ class AuthParent extends StatefulWidget {
 
 class _AuthParentState extends State<AuthParent> {
   final FToast fToast = FToast();
+  late Lava lava = Lava(6);
   late final AuthBloc authBloc;
 
   @override
@@ -41,66 +44,68 @@ class _AuthParentState extends State<AuthParent> {
   Widget build(BuildContext context) {
     final paddingTop = MediaQuery.of(context).padding.top;
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: Center(
-          child: ListView(children: [
-            SizedBox(
-              height: paddingTop + 32,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                    tag: 'logo',
-                    child: Image(
-                      image: AssetImage('img/jellyfin_logo.png'),
-                      width: 64,
-                      height: 64,
-                      alignment: Alignment.center,
-                    )),
-                SizedBox(width: 24),
-                Hero(
-                  tag: 'logo_text',
-                  child: Text(
-                    'Jellyfin',
-                    style: TextStyle(
-                        fontSize: 48,
-                        color: Colors.white,
-                        fontFamily: 'Quicksand'),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 64),
-            Align(
-              child: BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) async {
-                  if (state is AuthenticationSuccessful) {
-                    if (widget.onAuthenticated != null) {
-                      widget.onAuthenticated!();
-                    } else {
-                      await AutoRouter.of(context).replace(HomeRouter());
-                    }
-                  }
-                },
-                builder: (context, state) {
-                  if (state is AuthenticationUnauthenticated ||
-                      state is AuthenticationFirstForm ||
-                      state is AuthenticationInitialized) {
-                    return firstForm(context);
-                  } else if (state is AuthenticationServerAdded) {
-                    return secondForm(context);
-                  } else if (state is AuthenticationUserAdded ||
-                      state is AuthenticationInProgress ||
-                      state is AuthenticationError) {
-                    return secondForm(context);
-                  }
-                  return SizedBox();
-                },
+        backgroundColor: Colors.transparent,
+        body: LavaBuilder(
+          child: Center(
+            child: ListView(children: [
+              SizedBox(
+                height: paddingTop + 32,
               ),
-            ),
-          ]),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                      tag: 'logo',
+                      child: Image(
+                        image: AssetImage('img/jellyfin_logo.png'),
+                        width: 64,
+                        height: 64,
+                        alignment: Alignment.center,
+                      )),
+                  SizedBox(width: 24),
+                  Hero(
+                    tag: 'logo_text',
+                    child: Text(
+                      'Jellyfin',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline2
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 64),
+              Align(
+                child: BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) async {
+                    if (state is AuthenticationSuccessful) {
+                      if (widget.onAuthenticated != null) {
+                        widget.onAuthenticated!();
+                      } else {
+                        await AutoRouter.of(context).replace(HomeRouter());
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AuthenticationUnauthenticated ||
+                        state is AuthenticationFirstForm ||
+                        state is AuthenticationInitialized) {
+                      return firstForm(context);
+                    } else if (state is AuthenticationServerAdded) {
+                      return secondForm(context);
+                    } else if (state is AuthenticationUserAdded ||
+                        state is AuthenticationInProgress ||
+                        state is AuthenticationError) {
+                      return secondForm(context);
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ),
+            ]),
+          ),
         ));
   }
 

@@ -53,19 +53,26 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
         context: context,
         builder: (c) {
           return AlertDialog(
-              title: Text('Edit max audio bitrate'),
+              title: Text(
+                'Edit max audio bitrate',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               actions: [
-                CancelButton(onPressed: () => customRouter.pop()),
-                SubmitButton(onPressed: () {
-                  maxBitrate = controller.text;
-                  _maxBitrateValue = int.parse(maxBitrate);
-                  final s = setting
-                      .toCompanion(true)
-                      .copyWith(maxAudioBitrate: Value(_maxBitrateValue));
-                  AppDatabase().getDatabase.settingsDao.updateSettings(s);
-                  setState(() {});
-                  customRouter.pop();
-                })
+                TextButton(
+                    onPressed: () => customRouter.pop(),
+                    child: Text('cancel'.tr())),
+                TextButton(
+                    onPressed: () {
+                      maxBitrate = controller.text;
+                      _maxBitrateValue = int.parse(maxBitrate);
+                      final s = setting
+                          .toCompanion(true)
+                          .copyWith(maxAudioBitrate: Value(_maxBitrateValue));
+                      AppDatabase().getDatabase.settingsDao.updateSettings(s);
+                      setState(() {});
+                      customRouter.pop();
+                    },
+                    child: Text('save'.tr()))
               ],
               content: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -76,16 +83,9 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                         keyboardType: TextInputType.number,
                         controller: controller,
                         decoration: InputDecoration(
-                            labelText: 'max_bitrate'.tr(),
-                            labelStyle: TextStyle(),
-                            border: OutlineInputBorder(),
-                            errorBorder: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade600, width: 2.0)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade300, width: 2.0)))),
+                          labelText: 'max_bitrate'.tr(),
+                          labelStyle: TextStyle(),
+                        )),
                     const SizedBox(height: 12),
                     StreamBuilder<String>(
                         stream: textControllerStreamValue,
@@ -95,10 +95,7 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                             controller.value.text.isNotEmpty
                                 ? '${int.parse(s.data!) / 1000000} Mbps'
                                 : '0 Mbps',
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                ?.copyWith(color: Colors.grey.shade400),
+                            style: Theme.of(context).textTheme.caption,
                           );
                         })
                   ]));

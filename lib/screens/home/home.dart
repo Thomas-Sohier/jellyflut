@@ -11,6 +11,8 @@ import 'package:jellyflut/services/user/user_service.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();

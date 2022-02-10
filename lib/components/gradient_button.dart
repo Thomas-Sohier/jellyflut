@@ -9,6 +9,7 @@ class GradienButton extends StatefulWidget {
       this.enabled = true,
       this.item,
       this.icon,
+      this.foregroundColor = const Color(0xFFFFFFFF),
       this.color1 = const Color(0xFFa95dc3),
       this.color2 = const Color(0xFF04a2db)});
 
@@ -18,6 +19,7 @@ class GradienButton extends StatefulWidget {
   final VoidCallback onPressed;
   final String text;
   final double borderRadius;
+  final Color foregroundColor;
   final Color color1;
   final Color color2;
   final IconData? icon;
@@ -43,8 +45,7 @@ class _GradienButtonState extends State<GradienButton> {
                 padding: EdgeInsets.zero,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                side: BorderSide.none,
-                textStyle: TextStyle(color: Colors.black))
+                side: BorderSide.none)
             .copyWith(side: buttonBorderSide())
             .copyWith(elevation: butonElevation()),
         child: customPalette());
@@ -71,7 +72,7 @@ class _GradienButtonState extends State<GradienButton> {
                 Text(
                   widget.text,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(color: widget.foregroundColor, fontSize: 18),
                 ),
                 if (widget.child != null) widget.child!,
                 if (widget.icon != null)
@@ -79,7 +80,7 @@ class _GradienButtonState extends State<GradienButton> {
                     padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                     child: Icon(
                       widget.icon,
-                      color: Colors.white,
+                      color: widget.foregroundColor,
                     ),
                   )
               ])),
@@ -97,7 +98,7 @@ class _GradienButtonState extends State<GradienButton> {
 
           return BorderSide(
             width: 2,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onBackground,
           );
         }
         return BorderSide(width: 0, color: Colors.transparent);

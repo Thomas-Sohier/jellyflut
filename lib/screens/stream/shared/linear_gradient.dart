@@ -1,10 +1,15 @@
-// mask layer
+import 'package:flutter/material.dart';
 
-import 'package:flutter/painting.dart';
-import 'package:jellyflut/theme.dart';
-
-final Shader linearGradient = LinearGradient(
-  begin: Alignment.topLeft,
-  end: Alignment.bottomRight,
-  colors: [jellyLightBLue, jellyLightPurple],
-).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+class CustomGradient {
+  late final BuildContext context;
+  Shader get linearGradient => LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Theme.of(context).colorScheme.primary,
+          Theme.of(context).colorScheme.secondary,
+          Theme.of(context).colorScheme.tertiary
+        ],
+      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+  CustomGradient(this.context);
+}

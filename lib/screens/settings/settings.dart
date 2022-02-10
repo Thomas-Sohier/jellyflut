@@ -1,11 +1,9 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
-
-import 'package:jellyflut/screens/settings/components/sections.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/components/back_button.dart' as bb;
+import 'package:jellyflut/screens/settings/components/sections.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -31,8 +29,11 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(title: Text('settings'.tr()), leading: bb.BackButton()),
+        appBar: AppBar(
+            title: Text(
+          'settings'.tr(),
+          style: Theme.of(context).textTheme.headline5,
+        )),
         body: FutureBuilder(
             future: settingsInfosFuture,
             builder: (context, snapshot) {
@@ -41,8 +42,8 @@ class _SettingsState extends State<Settings> {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 600),
                     child: SettingsList(
-                      contentPadding: EdgeInsets.only(top: 20, bottom: 30),
-                      backgroundColor: Theme.of(context).backgroundColor,
+                      contentPadding: EdgeInsets.only(bottom: 30),
+                      backgroundColor: Theme.of(context).colorScheme.background,
                       darkBackgroundColor: Theme.of(context).primaryColorDark,
                       lightBackgroundColor: Theme.of(context).primaryColorLight,
                       sections: [
@@ -58,6 +59,7 @@ class _SettingsState extends State<Settings> {
                                 downloadPath: downloadPath)
                             .build(context),
                         InterfaceSection().build(context),
+                        ThemeSwitcherSection().build(context),
                         AccountSection().build(context)
                       ],
                     ),

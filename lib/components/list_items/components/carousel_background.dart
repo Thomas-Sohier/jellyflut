@@ -10,7 +10,7 @@ class CarouselBackground extends StatelessWidget {
     return ClipRect(
         child: Container(
             decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor.withAlpha(170)),
+                color: Theme.of(context).colorScheme.background.withAlpha(170)),
             child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
                 child: Container(

@@ -3,7 +3,7 @@ part of '../fields.dart';
 class GenresField extends StatefulWidget {
   final Item item;
   final FormGroup form;
-  final double ITEM_HEIGHT = 50;
+  final double ITEM_HEIGHT = 40;
 
   const GenresField({Key? key, required this.form, required this.item})
       : super(key: key);
@@ -32,7 +32,7 @@ class _GenresFieldState extends State<GenresField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Genres', style: Theme.of(context).textTheme.headline6),
+        Text('Genres', style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 24),
         SizedBox(
           height: (ITEM_HEIGHT * (item.genreItems.length)).toDouble(),

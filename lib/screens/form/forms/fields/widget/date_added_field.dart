@@ -12,12 +12,6 @@ class DateAddedField extends StatelessWidget {
         readOnly: true,
         decoration: InputDecoration(
           labelText: 'Date added',
-          labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-          isDense: true,
-          border: DEFAULT_BORDER,
-          errorBorder: ERROR_BORDER,
-          enabledBorder: ENABLED_BORDER,
-          focusedBorder: FOCUSED_BORDER,
           suffixIcon: ReactiveDatePicker<DateTime>(
             formControlName: FieldsEnum.DATEADDED.getValue(),
             firstDate: DateTime(1900),

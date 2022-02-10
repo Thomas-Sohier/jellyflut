@@ -39,8 +39,7 @@ class OffLineScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(iconError,
-                        size: 24, color: Theme.of(context).primaryColor),
+                    Icon(iconError, size: 24),
                     const SizedBox(height: 18),
                     Text(
                         'You seems to not be able to access your server or to have internet',
@@ -50,8 +49,7 @@ class OffLineScreen extends StatelessWidget {
                     PaletteButton('Go to my offline library',
                         borderRadius: 4,
                         minHeight: 40,
-                        onPressed: () =>
-                            customRouter.push(DownloadsParentRoute())),
+                        onPressed: () => customRouter.push(DownloadsRoute())),
                     Divider(height: 32),
                     ErrorUserActions(
                         reloadFunction: reloadFunction,

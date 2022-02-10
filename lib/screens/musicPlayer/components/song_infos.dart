@@ -45,7 +45,12 @@ class _SongInfosState extends State<SongInfos> {
         stream: musicProvider.getCurrentMusicStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            final metadata = snapshot.data!.currentSource!.tag as AudioMetadata;
+            // If we have no metadata we show enty box
+            if (snapshot.data!.currentSource?.tag == null) {
+              return const SizedBox();
+            }
+
+            final metadata = snapshot.data!.currentSource?.tag as AudioMetadata;
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,12 +75,12 @@ class _SongInfosState extends State<SongInfos> {
   Widget songTitleLabel(AudioMetadata metadata) {
     return Padding(
       padding: const EdgeInsets.only(top: 12),
-      child: Text(
-        metadata.title,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: 26, color: widget.color, fontWeight: FontWeight.bold),
-      ),
+      child: Text(metadata.title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              ?.copyWith(fontWeight: FontWeight.bold)),
     );
   }
 
@@ -90,7 +95,7 @@ class _SongInfosState extends State<SongInfos> {
         },
         child: Text(
           metadata.artist,
-          style: TextStyle(fontSize: 20, color: widget.color),
+          style: Theme.of(context).textTheme.headline6,
         ),
       );
     }
@@ -106,11 +111,11 @@ class _SongInfosState extends State<SongInfos> {
                   snapshot.data != null
                       ? printDuration(snapshot.data!)
                       : '0.00',
-                  style: TextStyle(fontSize: 18, color: widget.color),
+                  style: Theme.of(context).textTheme.bodyText1,
                 )),
         Spacer(),
         Text(printDuration(musicProvider.getDuration()),
-            style: TextStyle(fontSize: 18, color: widget.color))
+            style: Theme.of(context).textTheme.bodyText1)
       ],
     );
   }

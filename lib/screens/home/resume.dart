@@ -8,8 +8,10 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:shimmer/shimmer.dart';
+
+import 'home_category_title.dart';
 
 class Resume extends StatefulWidget {
   @override
@@ -70,13 +72,7 @@ class _ResumeState extends State<Resume> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            'resume',
-            style: TextStyle(color: Colors.white, fontSize: 28),
-          ).tr(),
-        ),
+        HomeCategoryTitle('resume'.tr(), onTap: () => {}),
         SizedBox(
             height: (itemPosterHeight + itemPosterLabelHeight) *
                 scalePosterSizeValue,
@@ -105,8 +101,8 @@ class _ResumeState extends State<Resume> {
   Widget placeholder() {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
-        baseColor: shimmerColor1,
-        highlightColor: shimmerColor2,
+        baseColor: personnal_theme.shimmerColor1,
+        highlightColor: personnal_theme.shimmerColor2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
