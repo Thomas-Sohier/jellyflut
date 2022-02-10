@@ -96,13 +96,8 @@ class AuthService {
     final serverId = await createOrGetServer(server);
     final settingsId = await db.settingsDao.createSettings(SettingsCompanion());
 
-    final userCompanion = UsersCompanion.insert(
-        name: name,
-        password: password,
-        apiKey: authenticationResponse.accessToken,
-        settingsId: Value(settingsId),
-        serverId: Value(serverId));
-    final userId = await db.usersDao.createUser(userCompanion);
+    final userId = await createOrGetUser(
+        name, authenticationResponse, password, serverId, settingsId);
     await _saveToSharedPreferences(
         serverId, settingsId, userId, authenticationResponse);
     return await _saveToGlobals();
@@ -116,6 +111,28 @@ class AuthService {
       final serverCompanion =
           ServersCompanion.insert(url: server.url, name: server.name);
       return db.serversDao.createServer(serverCompanion);
+    }
+  }
+
+  static Future<int> createOrGetUser(
+      String name,
+      AuthenticationResponse authenticationResponse,
+      String password,
+      int serverId,
+      int settingsId) async {
+    final db = AppDatabase().getDatabase;
+    try {
+      return db.usersDao
+          .getUserByNameAndServerId(name, serverId)
+          .then((value) => value.id);
+    } catch (error) {
+      final userCompanion = UsersCompanion.insert(
+          name: name,
+          password: password,
+          apiKey: authenticationResponse.accessToken,
+          settingsId: Value(settingsId),
+          serverId: Value(serverId));
+      return db.usersDao.createUser(userCompanion);
     }
   }
 

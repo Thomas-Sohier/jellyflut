@@ -99,8 +99,15 @@ class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
   Stream<List<User>> get watchAllUsers => select(users).watch();
   Future<User> getUserById(int userId) =>
       (select(users)..where((tbl) => tbl.id.equals(userId))).getSingle();
-  Future<List<User>> getUserByserverId(int serverId) =>
+  Future<User> getUserByNameAndServerId(String username, int serverId) =>
+      (select(users)
+            ..where((tbl) => tbl.name.equals(username))
+            ..where((tbl) => tbl.serverId.equals(serverId)))
+          .getSingle();
+  Future<List<User>> getUsersByserverId(int serverId) =>
       (select(users)..where((tbl) => tbl.serverId.equals(serverId))).get();
+  Stream<List<User>> watchUsersByserverId(int serverId) =>
+      (select(users)..where((tbl) => tbl.serverId.equals(serverId))).watch();
   Stream<User> watchUserById(int userId) =>
       (select(users)..where((tbl) => tbl.id.equals(userId))).watchSingle();
   Future<int> createUser(UsersCompanion user) => into(users).insert(user);

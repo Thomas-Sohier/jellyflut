@@ -13,9 +13,9 @@ class UserSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final users =
-        AppDatabase().getDatabase.usersDao.getUserByserverId(server.id);
-    return FutureBuilder<List<User>>(
-        future: users,
+        AppDatabase().getDatabase.usersDao.watchUsersByserverId(server.id);
+    return StreamBuilder<List<User>>(
+        stream: users,
         builder: (_, a) {
           if (a.hasData) {
             return listUser(a.data, context);
@@ -37,25 +37,34 @@ class UserSelection extends StatelessWidget {
                 'Select users',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: users.length,
-                  itemBuilder: (_, index) {
-                    final u = users.elementAt(index);
-                    return UserItem(
-                      user: u,
-                      onUserSelection: (user) {
-                        AuthService.changeUser(user.name, user.password,
-                                server.url, server.id, user.settingsId, user.id)
-                            .catchError((error) {
-                          customRouter.pop();
-                          SnackbarUtil.message(
-                              error.toString(), Icons.error, Colors.red);
-                        });
-                      },
-                    );
-                  }),
+              Flexible(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    itemCount: users.length,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (_, index) {
+                      final u = users.elementAt(index);
+                      return UserItem(
+                        user: u,
+                        onUserSelection: (user) {
+                          AuthService.changeUser(
+                                  user.name,
+                                  user.password,
+                                  server.url,
+                                  server.id,
+                                  user.settingsId,
+                                  user.id)
+                              .catchError((error) {
+                            customRouter.pop();
+                            SnackbarUtil.message(
+                                error.toString(), Icons.error, Colors.red);
+                          });
+                        },
+                      );
+                    }),
+              ),
             ],
           ));
     }
