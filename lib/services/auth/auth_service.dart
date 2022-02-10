@@ -12,7 +12,6 @@ import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/items/items_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';

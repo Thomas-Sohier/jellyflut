@@ -28,7 +28,11 @@ class _ServerParentState extends State<ServerParent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('servers'.tr())),
+        appBar: AppBar(
+            title: Text(
+          'servers'.tr(),
+          style: Theme.of(context).textTheme.headline5,
+        )),
         body: Align(
           alignment: Alignment.topCenter,
           child: ConstrainedBox(

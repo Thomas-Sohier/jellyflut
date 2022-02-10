@@ -6,7 +6,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
 import 'package:jellyflut/screens/book/components/setting_buton.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:path/path.dart';
 
 import 'components/book_placeholder.dart';
 import 'components/page_counter_parent.dart';

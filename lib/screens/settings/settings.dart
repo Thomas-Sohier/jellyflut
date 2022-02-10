@@ -32,10 +32,9 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              'settings'.tr(),
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            leading: bb.BackButton()),
+          'settings'.tr(),
+          style: Theme.of(context).textTheme.headline5,
+        )),
         body: FutureBuilder(
             future: settingsInfosFuture,
             builder: (context, snapshot) {

@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
@@ -11,7 +10,6 @@ import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:just_audio/just_audio.dart';
 
 import '../../shared/responsive_builder.dart';
@@ -29,10 +27,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late Color backgroundColor2;
   late Color foregroundColor;
   late int musicPlayerIndex;
-  final ThemeData playlistThemeData = ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: personnal_theme.jellyPurple,
-      backgroundColor: ColorUtil.darken(Colors.grey.shade900, 0.05));
 
   @override
   void initState() {

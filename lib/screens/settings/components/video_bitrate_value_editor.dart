@@ -60,17 +60,21 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               actions: [
-                CancelButton(onPressed: () => customRouter.pop()),
-                SubmitButton(onPressed: () {
-                  maxBitrate = controller.text;
-                  _maxBitrateValue = int.parse(maxBitrate);
-                  final s = setting
-                      .toCompanion(true)
-                      .copyWith(maxVideoBitrate: Value(_maxBitrateValue));
-                  AppDatabase().getDatabase.settingsDao.updateSettings(s);
-                  setState(() {});
-                  customRouter.pop();
-                })
+                TextButton(
+                    onPressed: () => customRouter.pop(),
+                    child: Text('cancel'.tr())),
+                TextButton(
+                    onPressed: () {
+                      maxBitrate = controller.text;
+                      _maxBitrateValue = int.parse(maxBitrate);
+                      final s = setting
+                          .toCompanion(true)
+                          .copyWith(maxVideoBitrate: Value(_maxBitrateValue));
+                      AppDatabase().getDatabase.settingsDao.updateSettings(s);
+                      setState(() {});
+                      customRouter.pop();
+                    },
+                    child: Text('save'.tr()))
               ],
               content: Column(
                   mainAxisSize: MainAxisSize.min,

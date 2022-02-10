@@ -2,7 +2,6 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
-import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';
 import 'package:jellyflut/screens/form/forms/epub_form.dart';
 
 class SettingButton extends StatefulWidget {
@@ -40,11 +39,13 @@ class _SettingButtonState extends State<SettingButton> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: CancelButton(onPressed: customRouter.pop),
+                child: TextButton(
+                    onPressed: customRouter.pop, child: Text('cancel'.tr())),
               ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: SubmitButton(onPressed: () => {}))
+                  child:
+                      TextButton(onPressed: () => {}, child: Text('save'.tr())))
             ],
             content: ConstrainedBox(
                 constraints: BoxConstraints(

@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:flutter/material.dart';
 
 class GradientMask extends StatelessWidget {
   final double radius;
@@ -15,7 +14,10 @@ class GradientMask extends StatelessWidget {
         return RadialGradient(
           center: Alignment.topLeft,
           radius: radius,
-          colors: <Color>[jellyLightBLue, jellyLightPurple],
+          colors: <Color>[
+            Theme.of(context).colorScheme.primary,
+            Theme.of(context).colorScheme.secondary
+          ],
           tileMode: TileMode.mirror,
         ).createShader(bounds);
       },

@@ -13,7 +13,6 @@ import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/download_animation.dart';
 import 'package:jellyflut/screens/details/template/components/dialog_structure.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
-import 'package:jellyflut/screens/form/forms/buttons/buttons.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/toast.dart';

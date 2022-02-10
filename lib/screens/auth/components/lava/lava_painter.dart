@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'ball.dart';
@@ -11,9 +12,7 @@ class LavaPainter extends CustomPainter {
   late Lava lava;
   late Color color;
 
-  LavaPainter(this.lava, {required this.color})
-      : assert(lava != null, 'lava param cannot be null'),
-        assert(color != null, 'You need to provide a color');
+  LavaPainter(this.lava, {required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {

@@ -57,7 +57,7 @@ class _CompactBookViewState extends State<CompactBookView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(item.name, style: Theme.of(context).textTheme.headline5),
+          title: Text(item.name),
           actions: [
             SettingButton(),
             PageCounterParent(

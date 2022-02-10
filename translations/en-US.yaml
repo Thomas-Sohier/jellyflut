@@ -20,6 +20,7 @@ loading: Loading
 loading_dots: Loading...
 servers: Servers
 theme: Theme
+save: Save
 
 # error
 error: Error
