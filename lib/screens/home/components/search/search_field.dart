@@ -1,33 +1,44 @@
-import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/screens/home/components/search/search_rest_call.dart';
-
 class SearchField extends StatelessWidget {
-  const SearchField({Key? key}) : super(key: key);
+  final Icon? icon;
+  final Color? fieldColor;
+  final EdgeInsets? padding;
+  final TextEditingController? textEditingController;
+
+  const SearchField(
+      {Key? key,
+      this.icon,
+      this.fieldColor = Colors.transparent,
+      this.padding,
+      this.textEditingController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final border = OutlineInputBorder(
+        borderSide: BorderSide(
+            width: 0, color: Colors.transparent, style: BorderStyle.none),
+        borderRadius: BorderRadius.all(Radius.circular(4)));
+
     return TextFormField(
-        onFieldSubmitted: (String value) => searchItemsFuture(value),
-        textInputAction: TextInputAction.search,
-        cursorColor: Colors.white,
-        enabled: true,
-        maxLines: 1,
-        decoration: InputDecoration(
-            labelText: 'search_field_hint'.tr(),
-            labelStyle: TextStyle(color: Colors.white),
-            fillColor: Colors.white,
-            isDense: true,
-            border: DEFAULT_BORDER,
-            enabledBorder: DEFAULT_BORDER,
-            focusedBorder: FOCUSED_BORDER));
+      controller: textEditingController,
+      minLines: 1,
+      maxLines: 1,
+      decoration: InputDecoration(
+        border: border,
+        errorBorder: border,
+        enabledBorder: border,
+        focusedBorder: border,
+        disabledBorder: border,
+        focusedErrorBorder: border,
+        filled: true,
+        fillColor: fieldColor,
+        hoverColor: fieldColor,
+        suffixIcon: icon,
+        contentPadding: padding,
+        hintText: 'Your search here...',
+      ),
+    );
   }
 }
-
-final InputBorder DEFAULT_BORDER = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.deepPurple.shade300, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(4)));
-final InputBorder FOCUSED_BORDER = OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.deepPurple.shade300, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(4)));

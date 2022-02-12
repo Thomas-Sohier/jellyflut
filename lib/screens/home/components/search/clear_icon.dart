@@ -37,7 +37,7 @@ class _ClearIconState extends State<ClearIcon> {
           searchProvider.clearSearchResult();
           if (!_node.hasFocus) {
             setState(() {
-              searchProvider.hideResult();
+              // searchProvider.hideResult();
             });
           }
         },

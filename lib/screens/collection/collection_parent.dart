@@ -23,8 +23,7 @@ class CollectionParent extends StatefulWidget {
   }
 }
 
-class _CollectionParentState extends State<CollectionParent>
-    with AutoRouteAware {
+class _CollectionParentState extends State<CollectionParent> {
   late final CarrousselProvider carrousselProvider;
 
   @override
@@ -40,24 +39,22 @@ class _CollectionParentState extends State<CollectionParent>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(children: [
-          if (widget.item.collectionType == CollectionType.MOVIES ||
-              widget.item.collectionType == CollectionType.BOOKS ||
-              widget.item.collectionType == CollectionType.TVSHOWS)
-            ChangeNotifierProvider.value(
-                value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ListItems.fromFuture(
-              itemsFuture: getItems(item: widget.item),
-              verticalListPosterHeight: 250,
-              loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
-                  getItems(
-                      item: widget.item,
-                      startIndex: startIndex,
-                      limit: numberOfItemsToLoad),
-              listType: ListType.GRID),
-        ]));
+    return Stack(children: [
+      if (widget.item.collectionType == CollectionType.MOVIES ||
+          widget.item.collectionType == CollectionType.BOOKS ||
+          widget.item.collectionType == CollectionType.TVSHOWS)
+        ChangeNotifierProvider.value(
+            value: carrousselProvider, child: CarrousselBackGroundImage()),
+      ListItems.fromFuture(
+          itemsFuture: getItems(item: widget.item),
+          verticalListPosterHeight: 250,
+          loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
+              getItems(
+                  item: widget.item,
+                  startIndex: startIndex,
+                  limit: numberOfItemsToLoad),
+          listType: ListType.GRID),
+    ]);
   }
 
   Future<Category> getItems(

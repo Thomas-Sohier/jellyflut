@@ -23,13 +23,10 @@ class PeoplePoster extends StatefulWidget {
 }
 
 class _PeoplePosterState extends State<PeoplePoster>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -47,7 +44,6 @@ class _PeoplePosterState extends State<PeoplePoster>
   Widget build(BuildContext context) {
     // TODO do something to handle image correctly when item removed from list
     final finalPoster = widget.bigPoster ? bigPoster() : poster();
-    super.build(context);
     if (widget.clickable) {
       return OutlinedButton(
           onPressed: widget.onPressed,

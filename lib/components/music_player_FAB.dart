@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
@@ -11,18 +12,7 @@ import 'package:jellyflut/screens/musicPlayer/music_player.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayerFAB extends StatefulWidget {
-  final Widget child;
-  final double positionBottom;
-  final double positionLeft;
-  final double positionRight;
-  final double positionTop;
-
-  const MusicPlayerFAB(
-      {required this.child,
-      this.positionBottom = 15,
-      this.positionLeft = 0,
-      this.positionRight = 15,
-      this.positionTop = 0});
+  const MusicPlayerFAB();
 
   @override
   State<StatefulWidget> createState() => _MusicPlayerFABState();
@@ -47,21 +37,9 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        widget.child,
-        Positioned(
-            bottom: widget.positionBottom,
-            right: widget.positionRight,
-            child: Consumer<MusicProvider>(
-                builder: (context, musicPlayer, child) => isInit()
-                    ? body(musicPlayer)
-                    : Container(
-                        height: 0,
-                        width: 0,
-                      )))
-      ],
-    );
+    return Consumer<MusicProvider>(
+        builder: (context, musicPlayer, child) =>
+            isInit() ? body(musicPlayer) : const SizedBox());
   }
 
   Widget body(MusicProvider musicPlayer) {
@@ -79,9 +57,9 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                        blurRadius: 6, color: Colors.black54, spreadRadius: 2)
+                        blurRadius: 4, color: Colors.black38, spreadRadius: 2)
                   ],
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(8),
                   color: Theme.of(context).colorScheme.primary),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

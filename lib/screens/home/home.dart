@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
-import 'package:jellyflut/screens/home/latest.dart';
 import 'package:jellyflut/screens/home/home_category.dart';
+import 'package:jellyflut/screens/home/latest.dart';
 import 'package:jellyflut/screens/home/resume.dart';
-import 'package:jellyflut/screens/home/components/search/search_result.dart';
 import 'package:jellyflut/services/user/user_service.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -43,18 +41,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
-    return ChangeNotifierProvider<SearchProvider>.value(
-        value: searchProvider,
-        child: CustomScrollView(
-            scrollDirection: Axis.vertical,
-            controller: _scrollController,
-            slivers: [
-              SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-              SliverToBoxAdapter(child: SearchResult()),
-              SliverToBoxAdapter(child: Resume()),
-              SliverToBoxAdapter(child: Latest()),
-              categoryBuilder()
-            ]));
+    return CustomScrollView(
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        slivers: [
+          SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+          SliverToBoxAdapter(child: Resume()),
+          SliverToBoxAdapter(child: Latest()),
+          categoryBuilder()
+        ]);
   }
 
   /// Can show error if any

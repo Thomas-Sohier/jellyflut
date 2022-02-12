@@ -13,6 +13,7 @@ module:
 
 dependencies:
   archive: ^3.1.11
+  animations: ^2.0.2
   audio_video_progress_bar: ^0.10.0
   auto_route: ^3.2.2
   better_player: ^0.0.81

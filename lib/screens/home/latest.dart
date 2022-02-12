@@ -36,11 +36,6 @@ class _LatestState extends State<Latest> {
 
   @override
   Widget build(Object context) {
-    return categoryBuilder();
-  }
-
-  /// Prevent from re-query the API on resize
-  Widget categoryBuilder() {
     return FutureBuilder<List<Item>>(
       future: itemsFuture,
       builder: (context, snapshot) {

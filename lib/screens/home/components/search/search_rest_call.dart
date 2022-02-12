@@ -1,38 +1,25 @@
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 
 void searchItemsFuture(String searchTerm) {
   final searchProvider = SearchProvider();
-  final results = <String, List<Item>>{};
+  searchProvider.clearSearchResult();
 
-  ItemService.searchItems(searchTerm: searchTerm, includeItemTypes: 'Movie')
-      .then((value) {
-    results.putIfAbsent('Movie', () => value.items);
-    searchProvider.addSearchResult(results);
-  });
-  ItemService.searchItems(searchTerm: searchTerm, includeItemTypes: 'Series')
-      .then((value) {
-    results.putIfAbsent('Series', () => value.items);
-    searchProvider.addSearchResult(results);
-  });
-  ItemService.searchItems(searchTerm: searchTerm, includeItemTypes: 'Episode')
-      .then((value) {
-    results.putIfAbsent('Episode', () => value.items);
-    searchProvider.addSearchResult(results);
-  });
-  ItemService.searchItems(
-          searchTerm: searchTerm, includeItemTypes: 'LiveTvProgram')
-      .then((value) {
-    results.putIfAbsent('LiveTvProgram', () => value.items);
-    searchProvider.addSearchResult(results);
-  });
-  ItemService.searchItems(
-          searchTerm: searchTerm,
-          excludeItemTypes: 'Movie,Episode',
-          mediaTypes: 'Video')
-      .then((value) {
-    results.putIfAbsent('Video', () => value.items);
-    searchProvider.addSearchResult(results);
-  });
+  final movies = ItemService.searchItems(
+      searchTerm: searchTerm, includeItemTypes: 'Movie');
+  searchProvider.addSearchResult('Movie', movies);
+  final series = ItemService.searchItems(
+      searchTerm: searchTerm, includeItemTypes: 'Series');
+  searchProvider.addSearchResult('Series', series);
+  final episode = ItemService.searchItems(
+      searchTerm: searchTerm, includeItemTypes: 'Episode');
+  searchProvider.addSearchResult('Episode', episode);
+  final iptv = ItemService.searchItems(
+      searchTerm: searchTerm, includeItemTypes: 'LiveTvProgram');
+  searchProvider.addSearchResult('LiveTvProgram', iptv);
+  final videos = ItemService.searchItems(
+      searchTerm: searchTerm,
+      excludeItemTypes: 'Movie,Episode',
+      mediaTypes: 'Video');
+  searchProvider.addSearchResult('Video', videos);
 }

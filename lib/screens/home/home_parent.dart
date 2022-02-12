@@ -25,9 +25,9 @@ class _HomeParentState extends State<HomeParent> {
 
   @override
   Widget build(BuildContext context) {
-    return MusicPlayerFAB(
-      positionBottom: 20,
-      child: FutureBuilder<Category>(
+    return Scaffold(
+      floatingActionButton: MusicPlayerFAB(),
+      body: FutureBuilder<Category>(
         future: categoryFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

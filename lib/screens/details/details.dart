@@ -43,21 +43,18 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-    return MusicPlayerFAB(
-        child: BlocProvider<DetailsBloc>(
-            create: (context) => detailsBloc,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                ),
-                child: Scaffold(
-                    extendBody: true,
-                    backgroundColor: Colors.transparent,
-                    body: widget.item.type != ItemType.PHOTO
-                        ? LargeDetails(
-                            item: widget.item, heroTag: widget.heroTag)
-                        : PhotoItem(
-                            item: widget.item, heroTag: widget.heroTag)))));
+    return BlocProvider<DetailsBloc>(
+        create: (context) => detailsBloc,
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+            ),
+            child: Scaffold(
+                extendBody: true,
+                backgroundColor: Colors.transparent,
+                body: widget.item.type != ItemType.PHOTO
+                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
+                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
   }
 
   DetailsInfosFuture getDetailsInfos() {

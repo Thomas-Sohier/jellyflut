@@ -86,7 +86,8 @@ late double horizontalListPosterHeight;
 late double verticalListPosterHeight;
 late double gridPosterHeight;
 
-class _ListItemsState extends State<ListItems> {
+class _ListItemsState extends State<ListItems>
+    with AutomaticKeepAliveClientMixin {
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
@@ -118,7 +119,24 @@ class _ListItemsState extends State<ListItems> {
 
     // scroll listener to add items on scroll only if loadmore function as been defined
     scrollController = ScrollController()..addListener(_scrollListener);
+    _setdataToBloc();
+  }
 
+  @override
+  void didChangeDependencies() {
+    _setdataToBloc();
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
+    collectionBloc.close();
+    super.dispose();
+  }
+
+  void _setdataToBloc() {
     // init Items
     if (widget.itemsFuture != null) {
       widget.itemsFuture!.then((Category category) {
@@ -130,15 +148,8 @@ class _ListItemsState extends State<ListItems> {
   }
 
   @override
-  void dispose() {
-    scrollController.removeListener(_scrollListener);
-    scrollController.dispose();
-    collectionBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
         child: BlocProvider.value(
       value: collectionBloc,
@@ -229,4 +240,7 @@ class _ListItemsState extends State<ListItems> {
           }
         });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

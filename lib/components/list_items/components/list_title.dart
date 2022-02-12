@@ -19,9 +19,12 @@ class ListTitle extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              item.type.getValue().toLowerCase().capitalize(),
-              style: Theme.of(context).textTheme.headline2,
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(
+                item.type.getValue().toLowerCase().capitalize(),
+                style: Theme.of(context).textTheme.headline4,
+              ),
             ),
             SizedBox(height: 12),
             child

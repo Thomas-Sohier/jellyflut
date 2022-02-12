@@ -44,7 +44,7 @@ class ItemPoster extends StatefulWidget {
 }
 
 class _ItemPosterState extends State<ItemPoster>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   // bool properties to show hide title accordingly
   bool hasTitle = true;
   bool hasSubTitle = false;
@@ -58,9 +58,6 @@ class _ItemPosterState extends State<ItemPoster>
   late final String posterHeroTag;
   late final double aspectRatio;
   late Color textColor;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -87,7 +84,6 @@ class _ItemPosterState extends State<ItemPoster>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     updatePosterProperties();
     return AspectRatio(aspectRatio: aspectRatio, child: body(context));
   }

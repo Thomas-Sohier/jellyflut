@@ -1,10 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 
-import 'custom_drawer.dart';
+import 'components/drawer/custom_drawer.dart';
 import 'header_bar.dart';
 
 class HomeDrawerTabsBuilder extends StatefulWidget {
@@ -31,17 +32,30 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
+        scaffoldKey: _scaffoldKey,
+        drawer: CustomDrawer(items: items),
+        drawerEnableOpenDragGesture: true,
+        drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
         routes: routes,
+        appBarBuilder: (_, __) => AppBar(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            actions: [HeaderBar()]),
         builder: (context, child, animation) {
-          return Scaffold(
-              drawer: CustomDrawer(items: items),
-              key: _scaffoldKey,
-              drawerEnableOpenDragGesture: true,
-              drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
-              appBar: AppBar(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  actions: [HeaderBar()]),
-              body: child);
+          return PageTransitionSwitcher(
+            transitionBuilder: (
+              Widget child,
+              Animation<double> _,
+              Animation<double> secondaryAnimation,
+            ) {
+              return FadeThroughTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                fillColor: Theme.of(context).colorScheme.background,
+                child: child,
+              );
+            },
+            child: child,
+          );
         });
   }
 

@@ -22,17 +22,14 @@ class _IptvState extends State<Iptv> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ListItems.fromFuture(
-        itemsFuture: programs,
-        verticalListPosterHeight: 250,
-        listType: ListType.GRID,
-        loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
-          return IptvService.getPrograms(
-              startIndex: startIndex, limit: numberOfItemsToLoad);
-        },
-      ),
+    return ListItems.fromFuture(
+      itemsFuture: programs,
+      verticalListPosterHeight: 250,
+      listType: ListType.GRID,
+      loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
+        return IptvService.getPrograms(
+            startIndex: startIndex, limit: numberOfItemsToLoad);
+      },
     );
   }
 }
