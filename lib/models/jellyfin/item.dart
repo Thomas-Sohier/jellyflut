@@ -1028,10 +1028,16 @@ class Item {
   /// Example : .cbz, .epub
   /// Can return [null]
   String? getFileExtension() {
-    final regexString = r'\.[0-9a-z]+$';
-    final regExp = RegExp(regexString);
-    final matches = regExp.allMatches(path ?? '');
-    return matches.elementAt(0).group(0) ?? '';
+    if (path != null && path!.isNotEmpty) {
+      final regexString = r'\.[0-9a-z]+$';
+      final regExp = RegExp(regexString);
+      final matches = regExp.allMatches(path ?? '');
+      return matches.elementAt(0).group(0) ?? '';
+    } else if (container != null && container!.isNotEmpty) {
+      final fileExtension = container!.split(',').first;
+      return '.$fileExtension';
+    }
+    throw 'Cannot find valid extension for current file';
   }
 
   /// Get collection type such as requested by API

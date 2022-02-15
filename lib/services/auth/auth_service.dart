@@ -93,38 +93,43 @@ class AuthService {
     final db = AppDatabase().getDatabase;
 
     final serverId = await createOrGetServer(server);
-    final settingsId = await db.settingsDao.createSettings(SettingsCompanion());
-
-    final userId = await createOrGetUser(
-        name, authenticationResponse, password, serverId, settingsId);
+    final userId =
+        await createOrGetUser(name, authenticationResponse, password, serverId);
+    final user = await db.usersDao.getUserById(userId);
     await _saveToSharedPreferences(
-        serverId, settingsId, userId, authenticationResponse);
+        user.serverId, user.settingsId, user.id, authenticationResponse);
     return await _saveToGlobals();
   }
 
   static Future<int> createOrGetServer(final Server server) async {
     final db = AppDatabase().getDatabase;
-    try {
-      return db.serversDao.getServerByUrl(server.url).then((value) => value.id);
-    } catch (error) {
+
+    return db.serversDao
+        .getServerByUrl(server.url)
+        .then((value) => value.id)
+        .catchError((e) {
+      // Create server if not present
       final serverCompanion =
           ServersCompanion.insert(url: server.url, name: server.name);
       return db.serversDao.createServer(serverCompanion);
-    }
+    });
   }
 
   static Future<int> createOrGetUser(
       String name,
       AuthenticationResponse authenticationResponse,
       String password,
-      int serverId,
-      int settingsId) async {
+      int serverId) async {
     final db = AppDatabase().getDatabase;
-    try {
-      return db.usersDao
-          .getUserByNameAndServerId(name, serverId)
-          .then((value) => value.id);
-    } catch (error) {
+    return db.usersDao
+        .getUserByNameAndServerId(name, serverId)
+        .then((value) => value.id)
+        .catchError((e) async {
+      // Create default settings if not present
+      final settingsCompanion = SettingsCompanion.insert();
+      final settingsId = await db.settingsDao.createSettings(settingsCompanion);
+
+      // Create default user if not present
       final userCompanion = UsersCompanion.insert(
           name: name,
           password: password,
@@ -132,7 +137,7 @@ class AuthService {
           settingsId: Value(settingsId),
           serverId: Value(serverId));
       return db.usersDao.createUser(userCompanion);
-    }
+    });
   }
 
   static Future<void> _saveToSharedPreferences(int serverId, int settingId,

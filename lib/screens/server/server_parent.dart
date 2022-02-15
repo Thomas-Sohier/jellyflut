@@ -26,6 +26,12 @@ class _ServerParentState extends State<ServerParent> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -56,6 +62,8 @@ class _ServerParentState extends State<ServerParent> {
                               serverWithUser: serverWithUser,
                               isInUse: isInUse);
                         });
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
                   }
                   return const SizedBox();
                 }),

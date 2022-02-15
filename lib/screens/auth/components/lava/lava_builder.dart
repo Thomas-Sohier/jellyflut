@@ -40,6 +40,12 @@ class _LavaBuilderState extends State<LavaBuilder>
     tweenColors = initTweenColors();
   }
 
+  @override
+  void dispose() {
+    _animation.dispose();
+    super.dispose();
+  }
+
   List<Color> initColors() {
     final colors = <Color>[];
     colors.add(Theme.of(context).colorScheme.primary);

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
@@ -48,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.username, server!, response, userPassword!);
       emit(AuthenticationSuccessful());
     } catch (e) {
+      log(e.toString());
       errors.add(e.toString());
       emit(AuthenticationError(e.toString()));
     }

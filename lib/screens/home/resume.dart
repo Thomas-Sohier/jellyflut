@@ -68,35 +68,33 @@ class _ResumeState extends State<Resume> {
 
   Widget body() {
     final items = homeCategoryprovider.getCategoryItem(categoryTitle);
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          HomeCategoryTitle('resume'.tr(), onTap: () => {}),
-          SizedBox(
-              height: (itemPosterHeight + itemPosterLabelHeight) *
-                  scalePosterSizeValue,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 8),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  var _item = items[index];
-                  return ItemPoster(
-                    _item,
-                    width: double.infinity,
-                    height: double.infinity,
-                    showLogo: true,
-                    imagefilter: true,
-                    backup: false,
-                    tag: ImageType.BACKDROP,
-                    widgetAspectRatio: 16 / 9,
-                  );
-                },
-              ))
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HomeCategoryTitle('resume'.tr(), onTap: () => {}),
+        SizedBox(
+            height: (itemPosterHeight + itemPosterLabelHeight) *
+                scalePosterSizeValue,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(left: 8),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                var _item = items[index];
+                return ItemPoster(
+                  _item,
+                  width: double.infinity,
+                  height: double.infinity,
+                  showLogo: true,
+                  imagefilter: true,
+                  backup: false,
+                  tag: ImageType.BACKDROP,
+                  widgetAspectRatio: 16 / 9,
+                );
+              },
+            ))
+      ],
     );
   }
 
