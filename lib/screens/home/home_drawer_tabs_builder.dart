@@ -1,11 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Drawer;
+import 'package:jellyflut/components/home_tab.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/screens/home/components/drawer/custom_drawer.dart';
 
-import 'components/drawer/custom_drawer.dart';
 import 'header_bar.dart';
 
 class HomeDrawerTabsBuilder extends StatefulWidget {
@@ -33,7 +34,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
         scaffoldKey: _scaffoldKey,
-        drawer: CustomDrawer(items: items),
+        drawer: CutsomDrawer(items: items),
         drawerEnableOpenDragGesture: true,
         drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
         routes: routes,

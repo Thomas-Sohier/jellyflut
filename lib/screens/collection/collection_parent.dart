@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
+import 'package:jellyflut/components/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -28,13 +29,8 @@ class _CollectionParentState extends State<CollectionParent> {
 
   @override
   void initState() {
-    super.initState();
     carrousselProvider = CarrousselProvider();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    super.initState();
   }
 
   @override

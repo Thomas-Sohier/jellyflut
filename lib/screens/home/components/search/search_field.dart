@@ -4,6 +4,7 @@ class SearchField extends StatelessWidget {
   final Icon? icon;
   final Color? fieldColor;
   final EdgeInsets? padding;
+  final BoxConstraints? constraints;
   final TextEditingController? textEditingController;
 
   const SearchField(
@@ -11,6 +12,7 @@ class SearchField extends StatelessWidget {
       this.icon,
       this.fieldColor = Colors.transparent,
       this.padding,
+      this.constraints,
       this.textEditingController})
       : super(key: key);
 
@@ -26,6 +28,7 @@ class SearchField extends StatelessWidget {
       minLines: 1,
       maxLines: 1,
       decoration: InputDecoration(
+        constraints: constraints,
         border: border,
         errorBorder: border,
         enabledBorder: border,

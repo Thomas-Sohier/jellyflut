@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:jellyflut/components/home_tab.dart';
 import 'package:jellyflut/screens/auth/auth_parent.dart';
 import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
@@ -30,6 +31,7 @@ import 'router.gr.dart';
       AuthGuard
     ], children: [
       AutoRoute(page: Home, name: 'HomeRoute', path: '', initial: true),
+      AutoRoute(page: HomeTab, name: 'HomeTabRoute', path: '', initial: true),
       AutoRoute(
           page: CollectionParent,
           name: 'CollectionRoute',

@@ -51,14 +51,13 @@ class _SearchButtonState extends State<SearchButton> {
     return IgnorePointer(
         child: Padding(
             padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
-            child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 300),
-                child: SearchField(
-                  fieldColor: fieldColor,
-                  icon: const Icon(Icons.search),
-                  padding: EdgeInsets.only(left: 24, top: 8),
-                  textEditingController: textEditingController,
-                ))));
+            child: SearchField(
+              fieldColor: fieldColor,
+              icon: const Icon(Icons.search),
+              constraints: BoxConstraints(maxWidth: 300),
+              padding: EdgeInsets.only(left: 24, top: 8),
+              textEditingController: textEditingController,
+            )));
   }
 
   Widget fullscreenSearch() {
