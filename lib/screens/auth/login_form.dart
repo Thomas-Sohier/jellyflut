@@ -52,9 +52,13 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               const SizedBox(height: 38),
               Row(children: [
-                Text('connection'.tr(),
-                    style: Theme.of(context).textTheme.headline5),
-                Spacer(),
+                Expanded(
+                  child: Text('connection'.tr(),
+                      style: Theme.of(context).textTheme.headline5,
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis),
+                ),
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
