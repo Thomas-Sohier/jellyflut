@@ -10,7 +10,6 @@ import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:just_audio/just_audio.dart';
 

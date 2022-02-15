@@ -72,67 +72,64 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                       size: 28,
                     ),
                   ),
-                  Expanded(
-                      flex: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Text(
-                            audioMetadata?.title ?? '',
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2
-                                ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                          )),
-                          Expanded(
-                              child: StreamBuilder<Duration?>(
-                                  stream: musicPlayer.getPositionStream(),
-                                  builder: (context, snapshot) => Slider(
-                                        activeColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        inactiveColor: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary
-                                            .withAlpha(32),
-                                        value: getSliderSize(snapshot.data),
-                                        min: 0.0,
-                                        max: getSliderMaxSize(snapshot.data),
-                                        onChanged: (value) {
-                                          musicPlayer.seekTo(Duration(
-                                              milliseconds: value.toInt()));
-                                        },
-                                      )))
-                        ],
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: StreamBuilder<bool>(
-                        stream: musicPlayer.isPlaying(),
-                        builder: (context, snapshot) => InkWell(
-                          onTap: () => isPlaying(snapshot.data)
-                              ? musicPlayer.pause()
-                              : musicPlayer.play(),
-                          child: Icon(
-                            isPlaying(snapshot.data)
-                                ? Icons.pause_circle_filled_outlined
-                                : Icons.play_circle_fill_outlined,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            size: 28,
-                          ),
-                        ),
-                      )))
+                  ExcludeFocus(
+                      excluding: true,
+                      child: Expanded(flex: 4, child: centerPart())),
+                  Flexible(child: Center(child: playPauseButton()))
                 ],
               ),
             )));
+  }
+
+  Widget playPauseButton() {
+    return StreamBuilder<bool>(
+      stream: musicPlayer.isPlaying(),
+      builder: (context, snapshot) => InkWell(
+        onTap: () =>
+            isPlaying(snapshot.data) ? musicPlayer.pause() : musicPlayer.play(),
+        child: Icon(
+          isPlaying(snapshot.data)
+              ? Icons.pause_circle_filled_outlined
+              : Icons.play_circle_fill_outlined,
+          color: Theme.of(context).colorScheme.onPrimary,
+          size: 28,
+        ),
+      ),
+    );
+  }
+
+  Widget centerPart() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+            child: Text(
+          audioMetadata?.title ?? '',
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+        )),
+        Expanded(
+            child: StreamBuilder<Duration?>(
+                stream: musicPlayer.getPositionStream(),
+                builder: (context, snapshot) => Slider(
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      inactiveColor:
+                          Theme.of(context).colorScheme.onPrimary.withAlpha(32),
+                      value: getSliderSize(snapshot.data),
+                      min: 0.0,
+                      max: getSliderMaxSize(snapshot.data),
+                      onChanged: (value) {
+                        musicPlayer
+                            .seekTo(Duration(milliseconds: value.toInt()));
+                      },
+                    )))
+      ],
+    );
   }
 
   double getSliderSize(Duration? currentPosition) {

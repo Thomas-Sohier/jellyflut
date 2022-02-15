@@ -29,11 +29,12 @@ class StreamingService {
     final queryParam = <String, String>{};
     final streamingProvider = StreamingProvider();
 
-    if (streamingProvider.playBackInfos == null) return 200;
+    if (streamingProvider.playBackInfos == null ||
+        streamingProvider.playBackInfos!.playSessionId == null) return 200;
 
     queryParam['deviceId'] = info.id;
     queryParam['PlaySessionId'] =
-        streamingProvider.playBackInfos!.playSessionId;
+        streamingProvider.playBackInfos!.playSessionId!;
 
     final url = '${server.url}/Videos/ActiveEncodings';
 
@@ -170,7 +171,7 @@ class StreamingService {
     profile.audioStreamIndex ??= _audioStreamIndex;
     profile.subtitleStreamIndex ??= _subtitleStreamIndex;
     profile.startTimeTicks ??= startTimeTick;
-    profile.mediaSourceId ??= itemId;
+    // profile.mediaSourceId ??= itemId;
     // profile.liveStreamId ??= itemId;
     profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
     profile.maxAudioChannels ??= 5; // TODO make this configurable
@@ -180,7 +181,14 @@ class StreamingService {
     try {
       final response = await dio.post(url,
           queryParameters: queryParams, data: profile.toJson());
-      return PlayBackInfos.fromMap(response.data);
+      final playbackInfos = PlayBackInfos.fromMap(response.data);
+
+      // If there is an error response from API then we throw an error
+      if (playbackInfos.hasError()) {
+        throw playbackInfos.getErrorMessage();
+      }
+
+      return playbackInfos;
     } catch (e, stacktrace) {
       log(e.toString(), stackTrace: stacktrace, level: 5);
       rethrow;
@@ -228,7 +236,8 @@ class StreamingService {
     late final path;
     switch (item.type) {
       case ItemType.TVCHANNEL:
-        path = 'videos/${item.id}/master.m3u8';
+        final id = _generateItemIdWithHyphen(item.id);
+        path = 'videos/$id/live.m3u8';
         break;
       default:
         final ext = p.extension(playBackInfos.mediaSources.first.path!);
@@ -303,15 +312,7 @@ class StreamingService {
   }
 
   static String getSubtitleURL(String itemId, String codec, int subtitleId) {
-    var mediaSourceId = itemId.substring(0, 8) +
-        '-' +
-        itemId.substring(8, 12) +
-        '-' +
-        itemId.substring(12, 16) +
-        '-' +
-        itemId.substring(16, 20) +
-        '-' +
-        itemId.substring(20, itemId.length);
+    var mediaSourceId = _generateItemIdWithHyphen(itemId);
 
     final parsedCodec = codec.substring(codec.indexOf('.') + 1);
     final path =
@@ -321,6 +322,18 @@ class StreamingService {
     queryParams['api_key'] = apiKey!;
 
     return UriUtils.contructUrl(path, queryParams);
+  }
+
+  static String _generateItemIdWithHyphen(String id) {
+    return id.substring(0, 8) +
+        '-' +
+        id.substring(8, 12) +
+        '-' +
+        id.substring(12, 16) +
+        '-' +
+        id.substring(16, 20) +
+        '-' +
+        id.substring(20, id.length);
   }
 
   static Future<dynamic> bitrateTest({required int size}) async {
