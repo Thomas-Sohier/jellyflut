@@ -35,7 +35,6 @@ class _ChapterButtonState extends State<ChapterButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
       onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
       shape: CircleBorder(),
       child: changeChapter(context),

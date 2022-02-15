@@ -42,7 +42,7 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFolder = await getApplicationSupportDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return VmDatabase(file);
+    return VmDatabase(file, logStatements: false);
   });
 }
 
@@ -60,13 +60,14 @@ class Database extends _$Database {
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
-      }, onUpgrade: (Migrator m, int from, int to) async {
-        if (from == 1 && to == 2) {
-          // we added the dueDate property in the change from version 1
-          await m.createTable(downloads);
-          await m.addColumn(settings, settings.downloadPath);
-        }
       });
+
+  Future<Setting> settingsFromUserId(int userId) {
+    return (select(settings)
+          ..join([innerJoin(users, settings.id.equalsExp(users.settingsId))])
+              .where(users.id.equals(userId)))
+        .getSingle();
+  }
 
   Stream<List<ServersWithUsers>> serversWithUsers() {
     final query = (select(servers)
@@ -122,11 +123,13 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
   Stream<List<Setting>> get watchAllSettings => select(settings).watch();
   Future<Setting> getSettingsById(int settingsId) =>
       (select(settings)..where((tbl) => tbl.id.equals(settingsId))).getSingle();
+  Future<Setting> getSettingsByUserId(int userId) =>
+      db.settingsFromUserId(userId);
   Stream<Setting> watchSettingsById(int settingsId) =>
       (select(settings)..where((tbl) => tbl.id.equals(settingsId)))
           .watchSingle();
   Future<int> createSettings(SettingsCompanion setting) =>
-      into(settings).insert(setting);
+      into(settings).insert(setting, mode: InsertMode.insertOrReplace);
   Future<bool> updateSettings(SettingsCompanion setting) =>
       update(settings).replace(setting);
   Future<int> deleteSettings(SettingsCompanion setting) =>

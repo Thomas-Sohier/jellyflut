@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/music_player_FAB.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -43,21 +42,18 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
-    return MusicPlayerFAB(
-        child: BlocProvider<DetailsBloc>(
-            create: (context) => detailsBloc,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                ),
-                child: Scaffold(
-                    extendBody: true,
-                    backgroundColor: Colors.transparent,
-                    body: widget.item.type != ItemType.PHOTO
-                        ? LargeDetails(
-                            item: widget.item, heroTag: widget.heroTag)
-                        : PhotoItem(
-                            item: widget.item, heroTag: widget.heroTag)))));
+    return BlocProvider<DetailsBloc>(
+        create: (context) => detailsBloc,
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+            ),
+            child: Scaffold(
+                extendBody: true,
+                backgroundColor: Colors.transparent,
+                body: widget.item.type != ItemType.PHOTO
+                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
+                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
   }
 
   DetailsInfosFuture getDetailsInfos() {

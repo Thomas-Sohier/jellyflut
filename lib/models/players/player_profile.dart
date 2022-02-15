@@ -89,8 +89,8 @@ class PlayersProfile {
                   maxAudioChannels: '6'),
               TranscodingProfile(
                   container: 'ts',
-                  audioCodec: 'aac,mp3',
-                  videoCodec: 'h264',
+                  audioCodec: 'aac,mp3,opus',
+                  videoCodec: 'h264,hevc',
                   context: 'Streaming',
                   protocol: 'hls',
                   maxAudioChannels: '6',
@@ -116,43 +116,8 @@ class PlayersProfile {
               CodecProfile(
                   type: 'VideoAudio',
                   container: 'avi,mkv,mp4,webm,mov',
-                  codec: 'aac,mp3,ac3,dts,opus,flac,vorbis',
-                  conditions: [
-                    Condition(
-                        condition: 'Equals',
-                        property: 'IsSecondaryAudio',
-                        value: 'false',
-                        isRequired: false)
-                  ]),
-              CodecProfile(type: 'VideoAudio', conditions: [
-                Condition(
-                    condition: 'Equals',
-                    property: 'IsSecondaryAudio',
-                    value: 'false',
-                    isRequired: false)
-              ]),
-              CodecProfile(
-                  type: 'Video',
-                  codec: 'hevc,h264',
-                  container: 'avi,mkv,mp4,webm',
-                  conditions: [
-                    Condition(
-                        condition: 'NotEquals',
-                        property: 'IsAnamorphic',
-                        value: 'true',
-                        isRequired: false),
-                    Condition(
-                        condition: 'EqualsAny',
-                        property: 'VideoProfile',
-                        value:
-                            'high|main|main 10|baseline|constrained baseline|high 10',
-                        isRequired: false),
-                    Condition(
-                        condition: 'NotEquals',
-                        property: 'IsInterlaced',
-                        value: 'true',
-                        isRequired: false)
-                  ]),
+                  codec: 'aac,mp3,ac3,eac3,dts,opus,flac,vorbis',
+                  conditions: []),
             ],
             containerProfiles: [],
             directPlayProfiles: [
@@ -160,25 +125,33 @@ class PlayersProfile {
                   container: 'webm',
                   type: 'Video',
                   videoCodec: 'vp8,vp9,av1',
-                  audioCodec: 'vorbis,opus'),
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'mp4,m4v,mov',
                   type: 'Video',
                   videoCodec: 'h264,hevc,vp8,vp9,av1',
-                  audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'mkv,avi',
                   type: 'Video',
                   videoCodec: 'h264,hevc',
-                  audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
               DirectPlayProfile(
-                  container: 'webm', audioCodec: 'opus', type: 'Audio'),
+                  container: 'webm',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
+                  type: 'Audio'),
               DirectPlayProfile(
-                  container: 'm4a', audioCodec: 'aac', type: 'Audio'),
+                  container: 'm4a',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
+                  type: 'Audio'),
               DirectPlayProfile(
-                  container: 'm4b', audioCodec: 'aac', type: 'Audio'),
+                  container: 'm4b',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
+                  type: 'Audio'),
               DirectPlayProfile(
-                  container: 'webm', audioCodec: 'webma', type: 'Audio'),
+                  container: 'webm',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
+                  type: 'Audio'),
               DirectPlayProfile(container: 'mp3', type: 'Audio'),
               DirectPlayProfile(container: 'aac', type: 'Audio'),
               DirectPlayProfile(container: 'm4a', type: 'Audio'),
@@ -200,10 +173,7 @@ class PlayersProfile {
               SubtitleProfile(format: 'ass', method: 'External'),
               SubtitleProfile(format: 'ssa', method: 'External')
             ],
-            responseProfiles: [
-              ResponseProfile(
-                  type: 'Video', container: 'm4v', mimeType: 'video/mp4')
-            ]));
+            responseProfiles: []));
     final vlcPhone = PlayerProfile(
         name: PlayerProfileName.VLC_PHONE.getValue(),
         deviceProfile: DeviceProfile(
@@ -355,12 +325,12 @@ class PlayersProfile {
                   container: 'mp4,m4v,mov',
                   type: 'Video',
                   videoCodec: 'h264,hevc,vp8,vp9,av1',
-                  audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'mkv,avi',
                   type: 'Video',
                   videoCodec: 'h264,hevc',
-                  audioCodec: 'aac,mp3,ac3,opus,flac,vorbis'),
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
               DirectPlayProfile(
                   container: 'webm', audioCodec: 'opus', type: 'Audio'),
               DirectPlayProfile(

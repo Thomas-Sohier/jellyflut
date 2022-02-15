@@ -6,7 +6,7 @@ import 'package:flutter/painting.dart';
 class ColorUtil {
   /// darken gibvn color
   /// ranges from 0.0 to 1.0
-  static Color darken(Color color, [double amount = .1]) {
+  static Color darken(Color color, [double amount = .05]) {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(color);

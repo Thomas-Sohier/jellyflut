@@ -149,9 +149,10 @@ class ServersCompanion extends UpdateCompanion<Server> {
 }
 
 class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ServersTable(this._db, [this._alias]);
+  $ServersTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -202,13 +203,13 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Server.fromData(data, _db,
+    return Server.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $ServersTable createAlias(String alias) {
-    return $ServersTable(_db, alias);
+    return $ServersTable(attachedDatabase, alias);
   }
 }
 
@@ -434,9 +435,10 @@ class UsersCompanion extends UpdateCompanion<User> {
 }
 
 class $UsersTable extends Users with TableInfo<$UsersTable, User> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UsersTable(this._db, [this._alias]);
+  $UsersTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -523,13 +525,13 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data, _db,
+    return User.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $UsersTable createAlias(String alias) {
-    return $UsersTable(_db, alias);
+    return $UsersTable(attachedDatabase, alias);
   }
 }
 
@@ -772,9 +774,10 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 }
 
 class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SettingsTable(this._db, [this._alias]);
+  $SettingsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -880,13 +883,13 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data, _db,
+    return Setting.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $SettingsTable createAlias(String alias) {
-    return $SettingsTable(_db, alias);
+    return $SettingsTable(attachedDatabase, alias);
   }
 }
 
@@ -1125,9 +1128,10 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
 
 class $DownloadsTable extends Downloads
     with TableInfo<$DownloadsTable, Download> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $DownloadsTable(this._db, [this._alias]);
+  $DownloadsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -1202,13 +1206,13 @@ class $DownloadsTable extends Downloads
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Download.fromData(data, _db,
+    return Download.fromData(data, attachedDatabase,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $DownloadsTable createAlias(String alias) {
-    return $DownloadsTable(_db, alias);
+    return $DownloadsTable(attachedDatabase, alias);
   }
 
   static TypeConverter<Map<String, dynamic>, String> $converter0 =

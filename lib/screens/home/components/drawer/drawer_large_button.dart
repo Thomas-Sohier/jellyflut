@@ -1,31 +1,30 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/globals.dart';
 
 import 'package:jellyflut/routes/router.gr.dart';
 
 class DrawerLargeButton extends StatelessWidget {
-  final BuildContext tabsContext;
   final int index;
   final IconData icon;
   final String name;
 
   const DrawerLargeButton(
-      {Key? key,
-      required this.tabsContext,
-      required this.index,
-      required this.icon,
-      required this.name})
+      {Key? key, required this.index, required this.icon, required this.name})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final activeColor = Theme.of(context).colorScheme.primary;
     final inactiveColor = Theme.of(context).colorScheme.onBackground;
-    final isActive = tabsContext.tabsRouter.activeIndex == index;
+    final isActive = context.tabsRouter.activeIndex == index;
     return InkWell(
-        onTap: () => tabsContext.tabsRouter
-          ..setActiveIndex(index)
-          ..innerRouterOf<StackRouter>(HomeRouter.name)?.push(HomeRoute()),
+        onTap: () {
+          context.tabsRouter
+            ..setActiveIndex(index)
+            ..innerRouterOf<StackRouter>(HomeRouter.name)?.push(HomeRoute());
+          customRouter.pop();
+        },
         child: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(

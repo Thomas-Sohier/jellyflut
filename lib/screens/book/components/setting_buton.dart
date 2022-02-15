@@ -12,19 +12,11 @@ class SettingButton extends StatefulWidget {
 }
 
 class _SettingButtonState extends State<SettingButton> {
-  late final FocusNode _node;
-  @override
-  void initState() {
-    _node = FocusNode();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         onPressed: () => editInfos(context),
         shape: CircleBorder(),
-        node: _node,
         child: Icon(
           Icons.settings,
           color: Theme.of(context).colorScheme.onBackground,

@@ -1,16 +1,13 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import '../../models/jellyfin/category.dart';
 
 class SearchProvider extends ChangeNotifier {
-  final Map<String, List<Item>> _searchResult = <String, List<Item>>{};
-  bool _showResults = false;
+  final Map<String, Future<Category>> _searchResult =
+      <String, Future<Category>>{};
 
-  UnmodifiableMapView<String, List<Item>> get searchResult =>
+  UnmodifiableMapView<String, Future<Category>> get searchResult =>
       UnmodifiableMapView(_searchResult);
-
-  bool get showResults => _showResults;
 
   // Singleton
   static final SearchProvider _searchProvider = SearchProvider._internal();
@@ -21,24 +18,13 @@ class SearchProvider extends ChangeNotifier {
 
   SearchProvider._internal();
 
-  void showResult() {
-    _showResults = true;
-    notifyListeners();
-  }
-
-  void hideResult() {
-    _showResults = false;
-    notifyListeners();
-  }
-
-  void addSearchResult(Map<String, List<Item>> searchResult) {
-    _searchResult.addAll(searchResult);
+  void addSearchResult(String key, Future<Category> result) {
+    _searchResult.putIfAbsent(key, () => result);
     notifyListeners();
   }
 
   void clearSearchResult() {
     _searchResult.clear();
-    _showResults = false;
     notifyListeners();
   }
 }

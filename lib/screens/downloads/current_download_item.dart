@@ -65,7 +65,6 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
             children: [
               Flexible(
                   child: OutlinedButtonSelector(
-                      node: _node,
                       onPressed: () => _onTap(posterHeroTag),
                       child: Row(
                           mainAxisSize: MainAxisSize.min,

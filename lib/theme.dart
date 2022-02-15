@@ -89,6 +89,7 @@ class Theme {
         .copyWith(
             textTheme: getTextThemeWithColor(theme.colorScheme.onBackground))
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
+        .copyWith(backgroundColor: theme.backgroundColor)
         .copyWith(
             dialogTheme: DialogTheme(
                 elevation: 4,
@@ -97,7 +98,6 @@ class Theme {
                 contentTextStyle: getTextThemeWithColor().bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
-                elevation: 0,
                 color: theme.colorScheme.background,
                 foregroundColor: theme.colorScheme.onBackground,
                 iconTheme: IconThemeData(color: theme.colorScheme.onBackground),
@@ -116,6 +116,9 @@ class Theme {
                 indicator: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(color: theme.colorScheme.primary)))))
+        .copyWith(
+            drawerTheme:
+                DrawerThemeData(backgroundColor: theme.colorScheme.background))
         .copyWith(
             inputDecorationTheme: InputDecorationTheme(
                 enabledBorder: OutlineInputBorder(

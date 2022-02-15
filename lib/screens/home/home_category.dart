@@ -44,15 +44,6 @@ class _HomeCategoryState extends State<HomeCategory>
   }
 
   @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Material(
-      color: Colors.transparent,
-      child: categoryBuilder(),
-    );
-  }
-
-  @override
   bool get wantKeepAlive => true;
 
   void slideToPageDetail() {
@@ -61,7 +52,10 @@ class _HomeCategoryState extends State<HomeCategory>
     ));
   }
 
-  Widget categoryBuilder() {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
     return FutureBuilder<List<Item>>(
       future: itemsFuture,
       builder: (context, snapshot) {

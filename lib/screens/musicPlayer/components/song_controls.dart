@@ -18,21 +18,14 @@ class SongControls extends StatefulWidget {
 
 class _SongControlsState extends State<SongControls> {
   late final MusicProvider musicProvider;
-  late final FocusNode _node;
   final List<BoxShadow> shadows = [
     BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)
   ];
 
   @override
   void initState() {
-    _node = FocusNode();
     musicProvider = MusicProvider();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -66,7 +59,6 @@ class _SongControlsState extends State<SongControls> {
                     onPressed: () => isPlaying(snapshot.data)
                         ? musicProvider.pause()
                         : musicProvider.play(),
-                    node: _node,
                     shape: CircleBorder(),
                     child: Icon(
                       isPlaying(snapshot.data) ? Icons.pause : Icons.play_arrow,

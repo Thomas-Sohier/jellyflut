@@ -17,6 +17,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   void initState() {
+    musicProvider = MusicProvider();
     super.initState();
   }
 
@@ -27,22 +28,17 @@ class _SongPlaylistState extends State<SongPlaylist> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicProvider>(builder: (context, mp, child) {
-      musicProvider = mp;
-      return GlowingOverscrollIndicator(
-          axisDirection: AxisDirection.down,
-          color: Theme.of(context).colorScheme.primary,
-          child: ChangeNotifierProvider.value(
-            value: musicProvider,
-            child: ReorderableListView.builder(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              itemCount: musicProvider.getPlayList().length,
-              itemBuilder: (context, index) =>
-                  playlistListItem(index, musicProvider.getPlayList()[index]),
-              onReorder: (int oldIndex, int newIndex) =>
-                  musicProvider.moveMusicItem(oldIndex, newIndex),
-            ),
+    return Consumer<MusicProvider>(builder: (_, __, ___) {
+      return ChangeNotifierProvider.value(
+          value: musicProvider,
+          child: ReorderableListView.builder(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            itemCount: musicProvider.getPlayList().length,
+            itemBuilder: (context, index) =>
+                playlistListItem(index, musicProvider.getPlayList()[index]),
+            onReorder: (int oldIndex, int newIndex) =>
+                musicProvider.moveMusicItem(oldIndex, newIndex),
           ));
     });
   }

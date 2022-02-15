@@ -9,5 +9,5 @@ class Users extends Table {
   IntColumn get serverId => integer().withDefault(const Constant(0))();
 
   @override
-  List<String> get customConstraints => ['UNIQUE (name,serverId)'];
+  List<String> get customConstraints => ['UNIQUE (name,server_id)'];
 }

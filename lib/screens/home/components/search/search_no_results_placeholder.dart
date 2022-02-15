@@ -10,11 +10,7 @@ class SearchNoResultsPlaceholder extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(children: [
-            Icon(
-              Icons.movie,
-              size: 42,
-              color: Colors.white,
-            ),
+            Icon(Icons.movie, size: 42, color: Colors.white),
             Text(
               'search_no_results'.tr(),
               style: TextStyle(fontSize: 18, color: Colors.white70),

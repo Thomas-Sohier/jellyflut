@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
-import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/screens/home/components/search/result_card.dart';
 import 'package:jellyflut/screens/home/components/search/search_no_results_placeholder.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +16,7 @@ class SearchResult extends StatefulWidget {
 
 class _SearchResultState extends State<SearchResult> {
   late final SearchProvider searchProvider;
+  late final ScrollController scrollController;
   late final TextEditingController searchController;
   late final List<Item> items;
   late final FocusNode _focusNode;
@@ -28,6 +27,7 @@ class _SearchResultState extends State<SearchResult> {
     _focusNode = FocusNode();
     searchProvider = SearchProvider();
     searchController = TextEditingController();
+    scrollController = ScrollController();
     items = [];
   }
 
@@ -40,43 +40,32 @@ class _SearchResultState extends State<SearchResult> {
   @override
   Widget build(BuildContext context) {
     return Consumer<SearchProvider>(builder: (context, search, child) {
-      if (search.searchResult.values.any((element) => element.isNotEmpty) &&
-          search.showResults) {
-        return ResultCard(
-            searchController: searchController,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: resultRows(search.searchResult),
-              ),
-            ));
-      } else if (search.searchResult.values
-              .every((element) => element.isEmpty) &&
-          search.showResults) {
-        return ResultCard(
-          searchController: searchController,
-          child: const SearchNoResultsPlaceholder(),
+      if (search.searchResult.isNotEmpty) {
+        return ListView.builder(
+          itemCount: search.searchResult.length,
+          controller: scrollController,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (_, index) {
+            final category =
+                search.searchResult.values.toList().elementAt(index);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: ListItems.fromFuture(
+                  key: ValueKey(category),
+                  itemsFuture: category,
+                  horizontalListPosterHeight: itemPosterHeight,
+                  showIfEmpty: false,
+                  showTitle: true,
+                  showSorting: false,
+                  listType: ListType.POSTER),
+            );
+          },
         );
+      } else if (search.searchResult.isEmpty) {
+        return const SearchNoResultsPlaceholder();
       } else {
         return const SizedBox();
       }
     });
-  }
-
-  List<Widget> resultRows(Map<String, List<Item>> searchResult) {
-    var rows = <Widget>[];
-    searchResult.forEach((key, value) => value.isNotEmpty
-        ? rows.add(ListItems.fromList(
-            category:
-                Category(items: value, startIndex: 0, totalRecordCount: 0),
-            horizontalListPosterHeight: itemPosterHeight,
-            showTitle: true,
-            showSorting: false,
-            listType: ListType.POSTER))
-        : const SizedBox());
-    return rows;
   }
 }

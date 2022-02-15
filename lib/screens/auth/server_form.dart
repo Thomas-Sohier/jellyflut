@@ -58,12 +58,15 @@ class _ServerFormState extends State<ServerForm> {
             children: [
               const SizedBox(height: 24),
               Row(children: [
-                Text(
-                  'server_configuration'.tr(),
-                  style: Theme.of(context).textTheme.headline5,
-                  textAlign: TextAlign.center,
+                Expanded(
+                  child: Text(
+                    'server_configuration'.tr(),
+                    style: Theme.of(context).textTheme.headline5,
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                Spacer(),
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),

@@ -32,7 +32,6 @@ class _BackwardButtonState extends State<BackwardButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
       onPressed: backward,
       shape: CircleBorder(),
       child: Padding(

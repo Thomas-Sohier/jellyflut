@@ -32,7 +32,6 @@ class _ForwardButtonState extends State<ForwardButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
       onPressed: forward,
       shape: CircleBorder(),
       child: Padding(

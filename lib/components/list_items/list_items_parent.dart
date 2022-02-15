@@ -86,7 +86,8 @@ late double horizontalListPosterHeight;
 late double verticalListPosterHeight;
 late double gridPosterHeight;
 
-class _ListItemsState extends State<ListItems> {
+class _ListItemsState extends State<ListItems>
+    with AutomaticKeepAliveClientMixin {
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
@@ -118,15 +119,13 @@ class _ListItemsState extends State<ListItems> {
 
     // scroll listener to add items on scroll only if loadmore function as been defined
     scrollController = ScrollController()..addListener(_scrollListener);
+    _setdataToBloc();
+  }
 
-    // init Items
-    if (widget.itemsFuture != null) {
-      widget.itemsFuture!.then((Category category) {
-        collectionBloc.add(AddItem(items: category.items));
-      });
-    } else {
-      collectionBloc.add(AddItem(items: widget.category?.items ?? <Item>[]));
-    }
+  @override
+  void didChangeDependencies() {
+    _setdataToBloc();
+    super.didChangeDependencies();
   }
 
   @override
@@ -137,8 +136,27 @@ class _ListItemsState extends State<ListItems> {
     super.dispose();
   }
 
+  void _setdataToBloc() {
+    // If it's closed we prevent this method from using closed objects
+    if (collectionBloc.isClosed) return;
+
+    // init Items
+    if (widget.itemsFuture != null) {
+      widget.itemsFuture!.then((Category category) {
+        if (!collectionBloc.isClosed) {
+          collectionBloc.add(AddItem(items: category.items));
+        }
+      });
+    } else {
+      if (!collectionBloc.isClosed) {
+        collectionBloc.add(AddItem(items: widget.category?.items ?? <Item>[]));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
         child: BlocProvider.value(
       value: collectionBloc,
@@ -229,4 +247,7 @@ class _ListItemsState extends State<ListItems> {
           }
         });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

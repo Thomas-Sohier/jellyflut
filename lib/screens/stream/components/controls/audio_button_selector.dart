@@ -41,7 +41,6 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        node: _node,
         onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
         shape: CircleBorder(),
         child: changeAudioTrack(context));
