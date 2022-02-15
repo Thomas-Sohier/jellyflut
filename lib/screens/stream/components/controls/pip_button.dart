@@ -34,7 +34,6 @@ class _PipButtonState extends State<PipButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
       onPressed: () {
         try {
           streamingProvider.commonStream?.pip();

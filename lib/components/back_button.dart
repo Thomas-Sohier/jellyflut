@@ -42,7 +42,6 @@ class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      node: _node,
       shape: CircleBorder(),
       onPressed: customRouter.pop,
       child: Container(

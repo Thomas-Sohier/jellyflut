@@ -47,9 +47,7 @@ class _EpisodeItemState extends State<EpisodeItem>
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        node: _node,
-        onPressed: () => _onTap(posterHeroTag),
-        child: epsiodeItem());
+        onPressed: () => _onTap(posterHeroTag), child: epsiodeItem());
   }
 
   Widget epsiodeItem() {

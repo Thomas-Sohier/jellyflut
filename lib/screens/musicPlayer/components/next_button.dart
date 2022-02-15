@@ -15,28 +15,20 @@ class NextButton extends StatefulWidget {
 
 class _NextButtonState extends State<NextButton> {
   late final MusicProvider musicProvider;
-  late final FocusNode _node;
   final List<BoxShadow> shadows = [
     BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)
   ];
 
   @override
   void initState() {
-    _node = FocusNode();
     musicProvider = MusicProvider();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         onPressed: () => musicProvider.next(),
-        node: _node,
         shape: CircleBorder(),
         child: Container(
           padding: EdgeInsets.all(8),

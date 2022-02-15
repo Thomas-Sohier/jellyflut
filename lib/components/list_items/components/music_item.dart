@@ -18,14 +18,6 @@ class MusicItem extends StatefulWidget {
 }
 
 class _MusicItemState extends State<MusicItem> {
-  late final FocusNode _node;
-
-  @override
-  void initState() {
-    _node = FocusNode();
-    super.initState();
-  }
-
   void _onTap() {
     widget.item.playItem();
   }
@@ -42,7 +34,6 @@ class _MusicItemState extends State<MusicItem> {
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Expanded(
               child: OutlinedButtonSelector(
-                  node: _node,
                   onPressed: _onTap,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

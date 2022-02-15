@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with HomeTab {
   late final PageController _pageController;
   late final ScrollController _scrollController;
   late SearchProvider searchProvider;
@@ -42,15 +42,18 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final statusBarHeight = MediaQuery.of(context).padding.top;
-    return CustomScrollView(
-        scrollDirection: Axis.vertical,
-        controller: _scrollController,
-        slivers: [
-          SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-          SliverToBoxAdapter(child: Resume()),
-          SliverToBoxAdapter(child: Latest()),
-          categoryBuilder()
-        ]);
+    return ExcludeFocus(
+      excluding: excluding,
+      child: CustomScrollView(
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
+          slivers: [
+            SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+            SliverToBoxAdapter(child: Resume()),
+            SliverToBoxAdapter(child: Latest()),
+            categoryBuilder()
+          ]),
+    );
   }
 
   /// Can show error if any

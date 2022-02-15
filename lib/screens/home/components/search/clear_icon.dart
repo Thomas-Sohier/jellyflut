@@ -31,7 +31,6 @@ class _ClearIconState extends State<ClearIcon> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        node: _node,
         onPressed: () {
           widget.searchController.clear();
           searchProvider.clearSearchResult();

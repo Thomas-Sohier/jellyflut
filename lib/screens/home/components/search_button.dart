@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
 import 'package:jellyflut/screens/home/components/search/search_field.dart';
 import 'package:jellyflut/screens/home/components/search/search_icon.dart';
 import 'package:jellyflut/screens/home/components/search/search_result.dart';
@@ -44,20 +45,27 @@ class _SearchButtonState extends State<SearchButton> {
         closedShape: const RoundedRectangleBorder(),
         closedElevation: 0.0,
         closedBuilder: (BuildContext _, VoidCallback openContainer) =>
-            fieldClosed());
+            fieldClosed(openContainer));
   }
 
-  Widget fieldClosed() {
-    return IgnorePointer(
-        child: Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
-            child: SearchField(
-              fieldColor: fieldColor,
-              icon: const Icon(Icons.search),
-              constraints: BoxConstraints(maxWidth: 300),
-              padding: EdgeInsets.only(left: 24, top: 8),
-              textEditingController: textEditingController,
-            )));
+  Widget fieldClosed(VoidCallback openContainer) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
+      child: OutlinedButtonSelector(
+        onPressed: openContainer,
+        child: ExcludeFocus(
+            excluding: true,
+            child: IgnorePointer(
+                ignoring: true,
+                child: SearchField(
+                  fieldColor: fieldColor,
+                  icon: const Icon(Icons.search),
+                  constraints: BoxConstraints(maxWidth: 300),
+                  padding: EdgeInsets.only(left: 24, top: 8),
+                  textEditingController: textEditingController,
+                ))),
+      ),
+    );
   }
 
   Widget fullscreenSearch() {

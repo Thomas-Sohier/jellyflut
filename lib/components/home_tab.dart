@@ -1,21 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
 
-class HomeTab extends StatefulWidget {
-  final Widget child;
-  HomeTab({Key? key, required this.child}) : super(key: key);
-
-  @override
-  State<HomeTab> createState() => _HomeTabState();
-}
-
-class _HomeTabState extends State<HomeTab> {
+/// This mixin allow to handle focus while tabs is inactive
+/// It prevent the cursor from focusing off-screen tab while using d-pad
+mixin HomeTab<T extends StatefulWidget> on State<T> {
   late final TabsRouter _tabsRouter;
   late bool excluding;
 
   @override
   void initState() {
     super.initState();
+    excluding = false;
     _tabsRouter = context.tabsRouter;
     _tabsRouter.addListener(_excludeWatcher);
   }
@@ -34,10 +29,5 @@ class _HomeTabState extends State<HomeTab> {
     } else {
       setState(() => excluding = true);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
   }
 }

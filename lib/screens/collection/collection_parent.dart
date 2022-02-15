@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/components/home_tab.dart';
@@ -24,7 +23,7 @@ class CollectionParent extends StatefulWidget {
   }
 }
 
-class _CollectionParentState extends State<CollectionParent> {
+class _CollectionParentState extends State<CollectionParent> with HomeTab {
   late final CarrousselProvider carrousselProvider;
 
   @override
@@ -35,22 +34,25 @@ class _CollectionParentState extends State<CollectionParent> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      if (widget.item.collectionType == CollectionType.MOVIES ||
-          widget.item.collectionType == CollectionType.BOOKS ||
-          widget.item.collectionType == CollectionType.TVSHOWS)
-        ChangeNotifierProvider.value(
-            value: carrousselProvider, child: CarrousselBackGroundImage()),
-      ListItems.fromFuture(
-          itemsFuture: getItems(item: widget.item),
-          verticalListPosterHeight: 250,
-          loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
-              getItems(
-                  item: widget.item,
-                  startIndex: startIndex,
-                  limit: numberOfItemsToLoad),
-          listType: ListType.GRID),
-    ]);
+    return ExcludeFocus(
+      excluding: excluding,
+      child: Stack(children: [
+        if (widget.item.collectionType == CollectionType.MOVIES ||
+            widget.item.collectionType == CollectionType.BOOKS ||
+            widget.item.collectionType == CollectionType.TVSHOWS)
+          ChangeNotifierProvider.value(
+              value: carrousselProvider, child: CarrousselBackGroundImage()),
+        ListItems.fromFuture(
+            itemsFuture: getItems(item: widget.item),
+            verticalListPosterHeight: 250,
+            loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
+                getItems(
+                    item: widget.item,
+                    startIndex: startIndex,
+                    limit: numberOfItemsToLoad),
+            listType: ListType.GRID),
+      ]),
+    );
   }
 
   Future<Category> getItems(

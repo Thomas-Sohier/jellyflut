@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
@@ -11,7 +12,7 @@ class Iptv extends StatefulWidget {
   _IptvState createState() => _IptvState();
 }
 
-class _IptvState extends State<Iptv> {
+class _IptvState extends State<Iptv> with HomeTab {
   late final Future<Category> programs;
 
   @override
@@ -22,14 +23,16 @@ class _IptvState extends State<Iptv> {
 
   @override
   Widget build(BuildContext context) {
-    return ListItems.fromFuture(
-      itemsFuture: programs,
-      verticalListPosterHeight: 250,
-      listType: ListType.GRID,
-      loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
-        return IptvService.getPrograms(
-            startIndex: startIndex, limit: numberOfItemsToLoad);
-      },
-    );
+    return ExcludeFocus(
+        excluding: excluding,
+        child: ListItems.fromFuture(
+          itemsFuture: programs,
+          verticalListPosterHeight: 250,
+          listType: ListType.GRID,
+          loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
+            return IptvService.getPrograms(
+                startIndex: startIndex, limit: numberOfItemsToLoad);
+          },
+        ));
   }
 }

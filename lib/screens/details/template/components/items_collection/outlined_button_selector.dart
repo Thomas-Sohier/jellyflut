@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 
 class OutlinedButtonSelector extends StatelessWidget {
   final Widget child;
-  final FocusNode node;
   final VoidCallback onPressed;
   final OutlinedBorder shape;
 
   const OutlinedButtonSelector(
       {Key? key,
       required this.child,
-      required this.node,
       required this.onPressed,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -20,7 +18,6 @@ class OutlinedButtonSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
         autofocus: false,
-        focusNode: node,
         onPressed: onPressed,
         style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,

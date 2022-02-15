@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/music_player_FAB.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
