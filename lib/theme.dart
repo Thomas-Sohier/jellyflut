@@ -98,7 +98,6 @@ class Theme {
                 contentTextStyle: getTextThemeWithColor().bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
-                elevation: 0,
                 color: theme.colorScheme.background,
                 foregroundColor: theme.colorScheme.onBackground,
                 iconTheme: IconThemeData(color: theme.colorScheme.onBackground),
