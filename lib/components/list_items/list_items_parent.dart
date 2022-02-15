@@ -137,13 +137,20 @@ class _ListItemsState extends State<ListItems>
   }
 
   void _setdataToBloc() {
+    // If it's closed we prevent this method from using closed objects
+    if (collectionBloc.isClosed) return;
+
     // init Items
     if (widget.itemsFuture != null) {
       widget.itemsFuture!.then((Category category) {
-        collectionBloc.add(AddItem(items: category.items));
+        if (!collectionBloc.isClosed) {
+          collectionBloc.add(AddItem(items: category.items));
+        }
       });
     } else {
-      collectionBloc.add(AddItem(items: widget.category?.items ?? <Item>[]));
+      if (!collectionBloc.isClosed) {
+        collectionBloc.add(AddItem(items: widget.category?.items ?? <Item>[]));
+      }
     }
   }
 

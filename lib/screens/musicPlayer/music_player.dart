@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
@@ -9,6 +10,7 @@ import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -80,21 +82,25 @@ class _MusicPlayerState extends State<MusicPlayer> {
             padding: const EdgeInsets.all(16), child: songDetails(singleSize))
       ])),
       Expanded(
+          child: Card(
+        margin: EdgeInsets.all(12),
+        color: ColorUtil.darken(Theme.of(context).cardTheme.color!, 0.05),
         child: ClipRect(
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppBar(
-                leading: const SizedBox(),
-                leadingWidth: 0,
-                title: Text('Playlist',
-                    style: Theme.of(context).textTheme.headline5)),
-            Flexible(child: SongPlaylist()),
+            Flexible(
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('playlist'.tr(),
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline5),
+            )),
+            Expanded(child: SongPlaylist())
           ],
         )),
-      ),
+      )),
     ]);
   }
 
