@@ -56,6 +56,8 @@ class _ServerParentState extends State<ServerParent> {
                               serverWithUser: serverWithUser,
                               isInUse: isInUse);
                         });
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
                   }
                   return const SizedBox();
                 }),
