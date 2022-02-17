@@ -15,10 +15,13 @@ class ListItemsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      final height =
+          gridPosterHeight.isInfinite ? itemPosterHeight : gridPosterHeight;
       final itemAspectRatio =
           items.first.getPrimaryAspectRatio(showParent: true);
       final numberOfItemRow =
-          (constraints.maxWidth / (itemPosterHeight * itemAspectRatio)).round();
+          (constraints.maxWidth / (height * itemAspectRatio)).round();
+      ;
       return CustomScrollView(
           controller: scrollController,
           scrollDirection: Axis.vertical,
@@ -27,7 +30,7 @@ class ListItemsGrid extends StatelessWidget {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: items.first.getPrimaryAspectRatio(),
                     crossAxisCount: numberOfItemRow,
-                    mainAxisExtent: itemPosterHeight + itemPosterLabelHeight,
+                    mainAxisExtent: height + itemPosterLabelHeight,
                     mainAxisSpacing: 5,
                     crossAxisSpacing: 5),
                 delegate:

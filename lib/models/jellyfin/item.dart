@@ -86,6 +86,7 @@ class Item {
     this.number,
     this.channelNumber,
     this.channelType,
+    this.channelId,
     this.currentProgram,
     this.startDate,
     this.endDate,
@@ -152,6 +153,7 @@ class Item {
   DateTime? premiereDate;
   String? number;
   String? channelNumber;
+  String? channelId;
   String? channelType;
   Item? currentProgram;
   DateTime? startDate;
@@ -325,6 +327,7 @@ class Item {
         seriesName: json['SeriesName'],
         number: json['Number'],
         channelNumber: json['ChannelNumber'],
+        channelId: json['ChannelId'],
         channelType: json['ChannelType'],
         startDate: json['StartDate'] == null
             ? null
@@ -436,6 +439,7 @@ class Item {
       'Number': number,
       'channelNumber': channelNumber,
       'channelType': channelType,
+      'ChannelId': channelId,
       'CurrentProgram': currentProgram,
       'StartDate': startDate,
       'EndDate': endDate,

@@ -18,6 +18,8 @@ double parentAspectRatio({ItemType? type}) {
     return 4 / 3;
   } else if (type == ItemType.EPISODE) {
     return 2 / 3;
+  } else if (type == ItemType.TVCHANNEL || type == ItemType.TVPROGRAM) {
+    return 16 / 9;
   }
   return 2 / 3;
 }
