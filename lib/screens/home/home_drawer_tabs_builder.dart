@@ -38,8 +38,9 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
         drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
         routes: routes,
         appBarBuilder: (_, __) => AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            actions: [HeaderBar()]),
+              backgroundColor: Theme.of(context).colorScheme.background,
+              flexibleSpace: HeaderBar(),
+            ),
         builder: (context, child, animation) {
           return PageTransitionSwitcher(
             transitionBuilder: (

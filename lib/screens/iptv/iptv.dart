@@ -3,7 +3,6 @@ import 'package:jellyflut/components/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/iptv/channels_request_body.dart';
-import 'package:jellyflut/models/iptv/programs_request_body.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/screens/iptv/guide.dart';
 import 'package:jellyflut/services/livetv/livetv_service.dart';
@@ -45,8 +44,9 @@ class _IptvState extends State<Iptv> with HomeTab {
   Widget listItems() {
     return ListItems.fromFuture(
       itemsFuture: programs,
-      verticalListPosterHeight: 250,
+      verticalListPosterHeight: 150,
       gridPosterHeight: 100,
+      boxFit: BoxFit.contain,
       listType: ListType.GRID,
       loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
         return IptvService.getChannels(

@@ -33,6 +33,7 @@ class ListItems extends StatefulWidget {
   final Category? category;
   final CollectionBloc? collectionBloc;
   final ListType listType;
+  final BoxFit boxFit;
   final bool showTitle;
   final bool showIfEmpty;
   final bool showSorting;
@@ -47,6 +48,7 @@ class ListItems extends StatefulWidget {
       this.loadMoreFunction = _defaultLoadMore,
       this.collectionBloc,
       this.showTitle = false,
+      this.boxFit = BoxFit.cover,
       this.showIfEmpty = true,
       this.showSorting = true,
       this.horizontalListPosterHeight = double.infinity,
@@ -63,6 +65,7 @@ class ListItems extends StatefulWidget {
       this.collectionBloc,
       this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
+      this.boxFit = BoxFit.cover,
       this.showIfEmpty = true,
       this.showSorting = true,
       this.horizontalListPosterHeight = double.infinity,
@@ -82,15 +85,15 @@ class ListItems extends StatefulWidget {
   _ListItemsState createState() => _ListItemsState();
 }
 
-late double horizontalListPosterHeight;
-late double verticalListPosterHeight;
-late double gridPosterHeight;
-
 class _ListItemsState extends State<ListItems>
     with AutomaticKeepAliveClientMixin {
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
+  late double horizontalListPosterHeight;
+  late double verticalListPosterHeight;
+  late double gridPosterHeight;
+  late BoxFit boxFit;
 
   // late final CarrousselProvider carrousselProvider;
 
@@ -104,9 +107,6 @@ class _ListItemsState extends State<ListItems>
   void initState() {
     super.initState();
     // carrousselProvider = CarrousselProvider();
-    horizontalListPosterHeight = widget.horizontalListPosterHeight;
-    verticalListPosterHeight = widget.verticalListPosterHeight;
-    gridPosterHeight = widget.gridPosterHeight;
     listTypes = ListType.values;
 
     // BLoC init part
@@ -115,16 +115,18 @@ class _ListItemsState extends State<ListItems>
             listType: widget.listType,
             loadMoreFunction: widget.loadMoreFunction);
     collectionBloc.listType.add(widget.listType);
-    collectionBloc.listType.add(widget.listType);
 
     // scroll listener to add items on scroll only if loadmore function as been defined
     scrollController = ScrollController()..addListener(_scrollListener);
-    _setdataToBloc();
   }
 
   @override
   void didChangeDependencies() {
     _setdataToBloc();
+    horizontalListPosterHeight = widget.horizontalListPosterHeight;
+    verticalListPosterHeight = widget.verticalListPosterHeight;
+    gridPosterHeight = widget.gridPosterHeight;
+    boxFit = widget.boxFit;
     super.didChangeDependencies();
   }
 
@@ -185,6 +187,9 @@ class _ListItemsState extends State<ListItems>
             return Center(child: Text('error'.tr()));
           } else if (collectionState is CollectionLoadingState) {
             return ListItemsSkeleton(
+                gridPosterHeight: gridPosterHeight,
+                verticalListPosterHeight: verticalListPosterHeight,
+                horizontalListPosterHeight: horizontalListPosterHeight,
                 listType: collectionBloc.listType.stream.value);
           }
           return const SizedBox();
@@ -214,6 +219,8 @@ class _ListItemsState extends State<ListItems>
                     showTitle: widget.showTitle,
                     child: ListItemsVerticalList(
                       items: items,
+                      boxFit: boxFit,
+                      verticalListPosterHeight: verticalListPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController,
                     ),
@@ -224,6 +231,8 @@ class _ListItemsState extends State<ListItems>
                 showTitle: widget.showTitle,
                 child: ListItemsHorizontalList(
                     items: items,
+                    boxFit: boxFit,
+                    horizontalListPosterHeight: horizontalListPosterHeight,
                     scrollPhysics: widget.physics,
                     scrollController: scrollController),
               );
@@ -233,6 +242,8 @@ class _ListItemsState extends State<ListItems>
                   showTitle: widget.showTitle,
                   child: ListItemsGrid(
                       items: items,
+                      boxFit: boxFit,
+                      gridPosterHeight: gridPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController));
             default:
@@ -241,6 +252,8 @@ class _ListItemsState extends State<ListItems>
                 showTitle: widget.showTitle,
                 child: ListItemsGrid(
                     items: items,
+                    boxFit: boxFit,
+                    gridPosterHeight: gridPosterHeight,
                     scrollPhysics: widget.physics,
                     scrollController: scrollController),
               );

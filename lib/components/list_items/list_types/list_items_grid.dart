@@ -4,11 +4,15 @@ class ListItemsGrid extends StatelessWidget {
   final List<Item> items;
   final ScrollController scrollController;
   final ScrollPhysics scrollPhysics;
+  final double gridPosterHeight;
+  final BoxFit boxFit;
 
   const ListItemsGrid(
       {Key? key,
+      this.boxFit = BoxFit.cover,
       required this.scrollPhysics,
       required this.scrollController,
+      required this.gridPosterHeight,
       required this.items})
       : super(key: key);
 
@@ -37,6 +41,7 @@ class ListItemsGrid extends StatelessWidget {
                     SliverChildBuilderDelegate((BuildContext c, int index) {
                   return ItemPoster(
                     items.elementAt(index),
+                    boxFit: boxFit,
                     width: double.infinity,
                     height: double.infinity,
                   );

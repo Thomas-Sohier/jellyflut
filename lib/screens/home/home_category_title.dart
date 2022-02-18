@@ -16,9 +16,13 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle> {
     return Padding(
         padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
         child: Row(children: [
-          Text(
-            widget.categoryTitle,
-            style: Theme.of(context).textTheme.headline4,
+          Expanded(
+            child: Text(
+              widget.categoryTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.headline4,
+            ),
           )
         ]));
   }

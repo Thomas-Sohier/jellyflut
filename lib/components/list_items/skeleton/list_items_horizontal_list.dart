@@ -1,8 +1,10 @@
 part of 'list_items_skeleton.dart';
 
 class ListItemsHorizontalSkeleton extends StatelessWidget {
-  final count;
-  ListItemsHorizontalSkeleton({this.count = 10});
+  final int count;
+  final double horizontalListPosterHeight;
+  ListItemsHorizontalSkeleton(
+      {this.count = 10, required this.horizontalListPosterHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ListItemsHorizontalSkeleton extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                itemCount: 6,
+                itemCount: count,
                 itemBuilder: (context, index) => SkeletonItemPoster(
                       height: horizontalListPosterHeight,
                       padding: EdgeInsets.only(right: 8),

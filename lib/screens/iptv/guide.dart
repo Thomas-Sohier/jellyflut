@@ -37,7 +37,7 @@ class _GuideState extends State<Guide> {
             return ListView.builder(
                 itemCount: programs.length,
                 itemBuilder: ((context, index) => Card(
-                      color:w
+                      color:
                           ColorUtil.darken(Theme.of(context).cardTheme.color!),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

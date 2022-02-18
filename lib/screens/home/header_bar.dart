@@ -16,13 +16,14 @@ class HeaderBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
       children: [
-        SearchButton(),
+        const SizedBox(width: 48),
+        Flexible(child: SearchButton()),
+        const SizedBox(width: 6),
         SettingsButton(),
-        const SizedBox(width: 12),
+        const SizedBox(width: 6),
         DownloadButton(),
-        const SizedBox(width: 18),
+        const SizedBox(width: 12),
         UserIcon(),
         const SizedBox(width: 18),
       ],

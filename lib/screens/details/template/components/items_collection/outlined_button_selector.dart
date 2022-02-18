@@ -4,11 +4,13 @@ class OutlinedButtonSelector extends StatelessWidget {
   final Widget child;
   final VoidCallback onPressed;
   final OutlinedBorder shape;
+  final EdgeInsets padding;
 
   const OutlinedButtonSelector(
       {Key? key,
       required this.child,
       required this.onPressed,
+      this.padding = EdgeInsets.zero,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
       )})
@@ -20,7 +22,8 @@ class OutlinedButtonSelector extends StatelessWidget {
         autofocus: false,
         onPressed: onPressed,
         style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
+                minimumSize: Size(24, 24),
+                padding: padding,
                 shape: shape,
                 backgroundColor: Colors.transparent)
             .copyWith(side: buttonBorderSide(context))

@@ -50,21 +50,17 @@ class _SearchButtonState extends State<SearchButton> {
 
   Widget fieldClosed(VoidCallback openContainer) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 4, right: 12),
-      child: OutlinedButtonSelector(
-        onPressed: openContainer,
-        child: ExcludeFocus(
-            excluding: true,
-            child: IgnorePointer(
-                ignoring: true,
-                child: SearchField(
-                  fieldColor: fieldColor,
-                  icon: const Icon(Icons.search),
-                  constraints: BoxConstraints(maxWidth: 300),
-                  padding: EdgeInsets.only(left: 24, top: 8),
-                  textEditingController: textEditingController,
-                ))),
-      ),
+      padding: const EdgeInsets.only(top: 8, bottom: 4),
+      child: ExcludeFocus(
+          excluding: true,
+          child: IgnorePointer(
+              ignoring: true,
+              child: SearchField(
+                fieldColor: fieldColor,
+                icon: const Icon(Icons.search),
+                padding: EdgeInsets.only(left: 24, top: 8),
+                textEditingController: textEditingController,
+              ))),
     );
   }
 

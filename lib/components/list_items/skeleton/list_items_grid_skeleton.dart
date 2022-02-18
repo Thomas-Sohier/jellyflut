@@ -1,8 +1,8 @@
 part of 'list_items_skeleton.dart';
 
 class ListItemsGridSkeleton extends StatelessWidget {
-  final count;
-  ListItemsGridSkeleton({this.count = 10});
+  final double gridPosterHeight;
+  ListItemsGridSkeleton({required this.gridPosterHeight});
 
   @override
   Widget build(BuildContext context) {

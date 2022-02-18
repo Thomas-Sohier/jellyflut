@@ -13,8 +13,13 @@ import 'package:uuid/uuid.dart';
 class EpisodeItem extends StatefulWidget {
   final bool clickable;
   final Item item;
+  final BoxFit boxFit;
 
-  const EpisodeItem({Key? key, required this.item, this.clickable = true})
+  const EpisodeItem(
+      {Key? key,
+      required this.item,
+      this.clickable = true,
+      this.boxFit = BoxFit.cover})
       : super(key: key);
 
   @override
@@ -109,7 +114,7 @@ class _EpisodeItemState extends State<EpisodeItem>
           clickable: false,
           width: double.infinity,
           height: double.infinity,
-          boxFit: BoxFit.cover,
+          boxFit: widget.boxFit,
           item: widget.item),
     );
   }
