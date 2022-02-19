@@ -59,8 +59,7 @@ class _LargeDetailsState extends State<LargeDetails> {
               if (constraints.maxWidth > 960) leftDetailsPart(),
               rightDetailsPart(constraints)
             ]);
-      })),
-      DetailHeaderBar(height: 64)
+      }))
     ]);
   }
 

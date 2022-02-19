@@ -6,7 +6,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:uuid/uuid.dart';
 

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/components/list_items/components/episode_item.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -159,11 +161,10 @@ class _ListItemsState extends State<ListItems>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-        child: BlocProvider.value(
+    return BlocProvider.value(
       value: collectionBloc,
       child: sortingThenbuildSelection(),
-    ));
+    );
   }
 
   Widget sortingThenbuildSelection() {

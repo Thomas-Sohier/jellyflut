@@ -17,7 +17,12 @@ class DetailsBackground extends StatelessWidget {
                 color:
                     Theme.of(context).colorScheme.background.withOpacity(0.55),
                 gradient: gradient.isNotEmpty
-                    ? LinearGradient(colors: gradient)
+                    ? LinearGradient(
+                        colors: gradient,
+                        // stops: [0, 0.01, 0.02, 1],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      )
                     : null),
           );
         });

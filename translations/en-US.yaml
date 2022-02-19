@@ -22,6 +22,8 @@ servers: Servers
 playlist: Playlist
 theme: Theme
 save: Save
+overview: Overview
+ok: Ok
 
 # error
 error: Error

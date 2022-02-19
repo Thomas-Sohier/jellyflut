@@ -5,12 +5,14 @@ class OutlinedButtonSelector extends StatelessWidget {
   final VoidCallback onPressed;
   final OutlinedBorder shape;
   final EdgeInsets padding;
+  final Color? primary;
 
   const OutlinedButtonSelector(
       {Key? key,
       required this.child,
       required this.onPressed,
       this.padding = EdgeInsets.zero,
+      this.primary,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
       )})
@@ -23,12 +25,15 @@ class OutlinedButtonSelector extends StatelessWidget {
         onPressed: onPressed,
         style: TextButton.styleFrom(
                 minimumSize: Size(24, 24),
+                primary: primary ??
+                    Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.05),
                 padding: padding,
                 shape: shape,
                 backgroundColor: Colors.transparent)
-            .copyWith(side: buttonBorderSide(context))
-            // .copyWith(elevation: buttonElevation())
-            .copyWith(backgroundColor: buttonColor(context)),
+            .copyWith(side: buttonBorderSide(context)),
         child: child);
   }
 
@@ -38,7 +43,7 @@ class OutlinedButtonSelector extends StatelessWidget {
         if (states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
-            color: Theme.of(context).colorScheme.onBackground,
+            color: primary ?? Theme.of(context).colorScheme.onBackground,
           );
         }
         return BorderSide(
@@ -55,18 +60,6 @@ class OutlinedButtonSelector extends StatelessWidget {
           return 6;
         }
         return 0; // defer to the default
-      },
-    );
-  }
-
-  MaterialStateProperty<Color> buttonColor(BuildContext context) {
-    return MaterialStateProperty.resolveWith<Color>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
-          return Theme.of(context).colorScheme.onBackground.withOpacity(0.05);
-        }
-        return Colors.transparent; // defer to the default
       },
     );
   }

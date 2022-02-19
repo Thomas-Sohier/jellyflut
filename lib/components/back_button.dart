@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class BackButton extends StatefulWidget {
   final bool shadow;
@@ -42,17 +42,14 @@ class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      shape: CircleBorder(),
-      onPressed: customRouter.pop,
-      child: Container(
-          decoration: BoxDecoration(boxShadow: shadows),
-          padding: const EdgeInsets.all(6),
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors
-                .white, // Here we force white color to have something always visible
-            size: 28,
-          )),
-    );
+        shape: CircleBorder(),
+        onPressed: customRouter.pop,
+        padding: EdgeInsets.all(8),
+        primary: Colors.white,
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 28,
+        ));
   }
 }

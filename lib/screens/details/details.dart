@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/back_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -50,7 +51,13 @@ class _DetailsState extends State<Details> {
             ),
             child: Scaffold(
                 extendBody: true,
+                extendBodyBehindAppBar: true,
                 backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: BackButton(),
+                ),
                 body: widget.item.type != ItemType.PHOTO
                     ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
                     : PhotoItem(item: widget.item, heroTag: widget.heroTag))));

@@ -21,6 +21,7 @@ class ListItemsVerticalList extends StatelessWidget {
     return ListView.builder(
         itemCount: items.length,
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         scrollDirection: Axis.vertical,
         controller: scrollController,
         physics: scrollPhysics,
