@@ -14,10 +14,12 @@ class EpisodeItem extends StatefulWidget {
   final bool clickable;
   final Item item;
   final BoxFit boxFit;
+  final Widget Function(BuildContext)? placeholder;
 
   const EpisodeItem(
       {Key? key,
       required this.item,
+      this.placeholder,
       this.clickable = true,
       this.boxFit = BoxFit.cover})
       : super(key: key);
@@ -112,6 +114,7 @@ class _EpisodeItemState extends State<EpisodeItem>
           tag: ImageType.PRIMARY,
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
+          placeholder: widget.placeholder,
           width: double.infinity,
           height: double.infinity,
           boxFit: widget.boxFit,

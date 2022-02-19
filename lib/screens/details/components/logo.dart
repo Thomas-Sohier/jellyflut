@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/async_image.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/globals.dart';
@@ -52,8 +50,8 @@ class Logo extends StatelessWidget {
           item: item,
           showParent: true,
           boxFit: BoxFit.contain,
-          errorWidget: SizedBox(),
-          placeholder: SizedBox(),
+          errorWidget: (_, __, ___) => const SizedBox(),
+          placeholder: (_) => const SizedBox(),
           tag: ImageType.LOGO,
         ));
   }

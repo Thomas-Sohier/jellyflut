@@ -6,6 +6,7 @@ import 'package:jellyflut/models/iptv/channels_request_body.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/screens/iptv/guide.dart';
 import 'package:jellyflut/services/livetv/livetv_service.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Iptv extends StatefulWidget {
   Iptv({Key? key}) : super(key: key);
@@ -44,6 +45,13 @@ class _IptvState extends State<Iptv> with HomeTab {
   Widget listItems() {
     return ListItems.fromFuture(
       itemsFuture: programs,
+      placeholder: (_) => Container(
+        color: ColorUtil.darken(Theme.of(context).colorScheme.background),
+        child: Center(
+          child:
+              Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
+        ),
+      ),
       verticalListPosterHeight: 150,
       gridPosterHeight: 100,
       boxFit: BoxFit.contain,

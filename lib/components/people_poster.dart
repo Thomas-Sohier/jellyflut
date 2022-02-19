@@ -70,7 +70,7 @@ class _PeoplePosterState extends State<PeoplePoster>
             child: AsyncImage(
               item: widget.person.asItem(),
               boxFit: BoxFit.contain,
-              placeholder: Container(
+              placeholder: (_) => Container(
                 decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -94,7 +94,7 @@ class _PeoplePosterState extends State<PeoplePoster>
                   AsyncImage(
                     item: widget.person.asItem(),
                     boxFit: BoxFit.contain,
-                    placeholder: Container(
+                    placeholder: (_) => Container(
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.all(Radius.circular(5))),

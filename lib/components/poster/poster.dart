@@ -18,6 +18,7 @@ class Poster extends StatefulWidget {
   final bool dropShadow;
   final bool clickable;
   final String? heroTag;
+  final Widget Function(BuildContext)? placeholder;
 
   const Poster(
       {Key? key,
@@ -25,6 +26,7 @@ class Poster extends StatefulWidget {
       this.dropShadow = false,
       this.backup = true,
       this.height,
+      this.placeholder,
       this.width,
       this.heroTag,
       this.clickable = true,
@@ -78,6 +80,7 @@ class _PosterState extends State<Poster> {
         child: dropShadowBuilder(AsyncImage(
             item: widget.item,
             tag: widget.tag,
+            placeholder: widget.placeholder,
             boxFit: widget.boxFit,
             width: widget.width,
             height: widget.height,

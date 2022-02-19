@@ -43,12 +43,14 @@ class ListItems extends StatefulWidget {
   final double verticalListPosterHeight;
   final double gridPosterHeight;
   final ScrollPhysics physics;
+  final Widget Function(BuildContext)? placeholder;
 
   const ListItems.fromFuture(
       {Key? key,
       required this.itemsFuture,
       this.loadMoreFunction = _defaultLoadMore,
       this.collectionBloc,
+      this.placeholder,
       this.showTitle = false,
       this.boxFit = BoxFit.cover,
       this.showIfEmpty = true,
@@ -65,6 +67,7 @@ class ListItems extends StatefulWidget {
       {Key? key,
       required this.category,
       this.collectionBloc,
+      this.placeholder,
       this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
       this.boxFit = BoxFit.cover,
@@ -92,6 +95,7 @@ class _ListItemsState extends State<ListItems>
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
+  late Widget Function(BuildContext)? placeholder;
   late double horizontalListPosterHeight;
   late double verticalListPosterHeight;
   late double gridPosterHeight;
@@ -129,6 +133,7 @@ class _ListItemsState extends State<ListItems>
     verticalListPosterHeight = widget.verticalListPosterHeight;
     gridPosterHeight = widget.gridPosterHeight;
     boxFit = widget.boxFit;
+    placeholder = widget.placeholder;
     super.didChangeDependencies();
   }
 
@@ -221,6 +226,7 @@ class _ListItemsState extends State<ListItems>
                     child: ListItemsVerticalList(
                       items: items,
                       boxFit: boxFit,
+                      placeholder: placeholder,
                       verticalListPosterHeight: verticalListPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController,
@@ -233,6 +239,7 @@ class _ListItemsState extends State<ListItems>
                 child: ListItemsHorizontalList(
                     items: items,
                     boxFit: boxFit,
+                    placeholder: placeholder,
                     horizontalListPosterHeight: horizontalListPosterHeight,
                     scrollPhysics: widget.physics,
                     scrollController: scrollController),
@@ -244,6 +251,7 @@ class _ListItemsState extends State<ListItems>
                   child: ListItemsGrid(
                       items: items,
                       boxFit: boxFit,
+                      placeholder: placeholder,
                       gridPosterHeight: gridPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController));
@@ -253,6 +261,7 @@ class _ListItemsState extends State<ListItems>
                 showTitle: widget.showTitle,
                 child: ListItemsGrid(
                     items: items,
+                    placeholder: placeholder,
                     boxFit: boxFit,
                     gridPosterHeight: gridPosterHeight,
                     scrollPhysics: widget.physics,
