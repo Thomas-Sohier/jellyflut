@@ -26,9 +26,9 @@ class Poster extends StatefulWidget {
       this.backup = true,
       this.height,
       this.width,
+      this.heroTag,
+      this.clickable = true,
       required this.tag,
-      required this.heroTag,
-      required this.clickable,
       required this.boxFit,
       required this.item})
       : super(key: key);

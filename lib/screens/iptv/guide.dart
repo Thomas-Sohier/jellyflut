@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/models/iptv/programs_request_body.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/iptv/program.dart';
 import 'package:jellyflut/services/livetv/livetv_service.dart';
-import 'package:collection/collection.dart' as c;
-import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Guide extends StatefulWidget {
   final List<Item> items;
@@ -32,36 +31,8 @@ class _GuideState extends State<Guide> {
         future: programsFuture,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
-            final programs =
-                c.groupBy(snapshot.data!.items, (Item v) => v.channelId);
-            return ListView.builder(
-                itemCount: programs.length,
-                itemBuilder: ((context, index) => Card(
-                      color:
-                          ColorUtil.darken(Theme.of(context).cardTheme.color!),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                                widget.items
-                                    .firstWhere((element) =>
-                                        element.id ==
-                                        programs.keys.elementAt(index))
-                                    .name,
-                                style: Theme.of(context).textTheme.headline6),
-                            const SizedBox(height: 12),
-                            Text(programs.values
-                                .elementAt(index)
-                                .map((e) => e.name)
-                                .join(', ')),
-                          ],
-                        ),
-                      ),
-                    )));
+            return Channels(
+                channels: widget.items, programs: snapshot.data!.items);
           }
           return const SizedBox();
         });
