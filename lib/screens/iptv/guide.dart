@@ -44,6 +44,7 @@ class _GuideState extends State<Guide> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build;
     return FutureBuilder<SplayTreeMap<Item, List<Item>>>(
         future: parsedPrograms,
         builder: (_, snapshot) {
