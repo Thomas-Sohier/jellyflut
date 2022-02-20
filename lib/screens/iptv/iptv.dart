@@ -15,31 +15,34 @@ class Iptv extends StatefulWidget {
   _IptvState createState() => _IptvState();
 }
 
-class _IptvState extends State<Iptv> with HomeTab {
+class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
   late final Future<Category> programs;
 
   @override
+  List<Widget> get tabs => [Tab(text: 'Chaines'), Tab(text: 'Guide')];
+
+  @override
+  set tabController(TabController _tabController) {
+    super.tabController = _tabController;
+  }
+
+  @override
   void initState() {
-    super.initState();
     programs = IptvService.getChannels();
+    tabController = TabController(length: tabs.length, vsync: this);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ExcludeFocus(excluding: excluding, child: tabs());
+    return ExcludeFocus(excluding: excluding, child: tabsBuilder());
   }
 
-  Widget tabs() {
-    return DefaultTabController(
-        length: 2,
-        child: Column(children: [
-          const TabBar(tabs: [Tab(text: 'Chaines'), Tab(text: 'Guide')]),
-          Expanded(
-            child: TabBarView(
-              children: [listItems(), guide()],
-            ),
-          )
-        ]));
+  Widget tabsBuilder() {
+    return TabBarView(
+      controller: super.tabController,
+      children: [listItems(), guide()],
+    );
   }
 
   Widget listItems() {

@@ -28,11 +28,11 @@ class HomeCategoryProvider extends ChangeNotifier {
   }
 
   // Singleton
-  static final HomeCategoryProvider _ItemsProvider =
+  static final HomeCategoryProvider _HomeCategoryProvider =
       HomeCategoryProvider._internal();
 
   factory HomeCategoryProvider() {
-    return _ItemsProvider;
+    return _HomeCategoryProvider;
   }
 
   HomeCategoryProvider._internal();

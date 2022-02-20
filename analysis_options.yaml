@@ -1,5 +1,7 @@
 include: package:pedantic/analysis_options.yaml
 analyzer:
+  language:
+    enableSuperMixins: true
   exclude:
     - lib/database/*.g.dart
     - lib/routes/*.g.dart

@@ -23,12 +23,19 @@ class CollectionParent extends StatefulWidget {
   }
 }
 
-class _CollectionParentState extends State<CollectionParent> with HomeTab {
+class _CollectionParentState extends State<CollectionParent>
+    with HomeTab, TickerProviderStateMixin {
   late final CarrousselProvider carrousselProvider;
+
+  @override
+  set tabController(TabController _tabController) {
+    super.tabController = _tabController;
+  }
 
   @override
   void initState() {
     carrousselProvider = CarrousselProvider();
+    tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 
