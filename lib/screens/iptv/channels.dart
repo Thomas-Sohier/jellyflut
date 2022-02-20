@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:collection/collection.dart' as c;
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/poster.dart';
@@ -12,41 +12,31 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Channels extends StatefulWidget {
-  final List<Item> channels;
-  final List<Item> programs;
-  Channels({Key? key, required this.channels, required this.programs})
-      : super(key: key);
+  final SplayTreeMap<Item, List<Item>> channels;
+  Channels({Key? key, required this.channels}) : super(key: key);
 
   @override
   State<Channels> createState() => _ChannelsState();
 }
 
 class _ChannelsState extends State<Channels> {
-  late final SplayTreeMap<Item, List<Item>> channels;
   late final ScrollController _controller;
   final DateFormat formatter = DateFormat('HH:mm');
 
   @override
   void initState() {
     _controller = ScrollController();
-    channels = SplayTreeMap.from(
-        c.groupBy(widget.programs, (Item v) => v.channelId).map((key, value) {
-          final item = widget.channels.firstWhere((c) => c.id == key);
-          return MapEntry(item, value);
-        }),
-        (item1, item2) => int.parse(item1.channelNumber!)
-            .compareTo(int.parse(item2.channelNumber!)));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: channels.length,
+        itemCount: widget.channels.length,
         padding: EdgeInsets.zero,
         itemBuilder: ((context, index) {
-          final channel = channels.keys.elementAt(index);
-          final programs = channels.values.elementAt(index);
+          final channel = widget.channels.keys.elementAt(index);
+          final programs = widget.channels.values.elementAt(index);
           return SizedBox(
             height: 70,
             child: Padding(
