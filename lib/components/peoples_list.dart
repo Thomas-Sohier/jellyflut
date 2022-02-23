@@ -86,15 +86,16 @@ class _PeoplesListState extends State<PeoplesList> {
                       style: TextStyle(
                           color: fontColor.withAlpha(240), fontSize: 16),
                     )),
-                Flexible(
-                    fit: FlexFit.loose,
-                    child: Text(
-                      person.role,
-                      overflow: TextOverflow.clip,
-                      softWrap: false,
-                      style: TextStyle(
-                          color: fontColor.withAlpha(200), fontSize: 12),
-                    ))
+                if (person.role != null)
+                  Flexible(
+                      fit: FlexFit.loose,
+                      child: Text(
+                        person.role!,
+                        overflow: TextOverflow.clip,
+                        softWrap: false,
+                        style: TextStyle(
+                            color: fontColor.withAlpha(200), fontSize: 12),
+                      ))
               ],
             )));
   }

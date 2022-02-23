@@ -39,15 +39,16 @@ class PersonItem extends StatelessWidget {
                     Text(person!.name,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.subtitle1),
-                    Text(
-                      person!.role,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(fontSize: 16)
-                          .copyWith(color: headlineColor!.withAlpha(180)),
-                    ),
+                    if (person?.role != null)
+                      Text(
+                        person!.role!,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(fontSize: 16)
+                            .copyWith(color: headlineColor!.withAlpha(180)),
+                      ),
                   ],
                 ),
               ),

@@ -131,13 +131,14 @@ class _PeoplePosterState extends State<PeoplePoster>
                             softWrap: false,
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
-                          Text(
-                            widget.person.role,
-                            overflow: TextOverflow.clip,
-                            softWrap: false,
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 12),
-                          )
+                          if (widget.person.role != null)
+                            Text(
+                              widget.person.role!,
+                              overflow: TextOverflow.clip,
+                              softWrap: false,
+                              style: TextStyle(
+                                  color: Colors.white70, fontSize: 12),
+                            )
                         ],
                       ),
                     ),

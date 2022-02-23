@@ -17,7 +17,7 @@ class Person {
 
   String name;
   String id;
-  String role;
+  String? role;
   PersonType type;
   String? primaryImageTag;
   ImageBlurHashes? imageBlurHashes;
