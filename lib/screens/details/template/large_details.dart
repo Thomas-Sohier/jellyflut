@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/detail_header_bar.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
@@ -9,9 +8,9 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/background_image.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/components/logo.dart';
+import 'package:jellyflut/screens/details/template/details_background_builder.dart';
 import 'package:jellyflut/screens/details/template/left_details.dart';
 import 'package:jellyflut/screens/details/template/right_details.dart';
-import 'package:jellyflut/screens/details/template/details_background_builder.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class LargeDetails extends StatefulWidget {
@@ -59,8 +58,7 @@ class _LargeDetailsState extends State<LargeDetails> {
               if (constraints.maxWidth > 960) leftDetailsPart(),
               rightDetailsPart(constraints)
             ]);
-      })),
-      DetailHeaderBar(height: 64)
+      }))
     ]);
   }
 

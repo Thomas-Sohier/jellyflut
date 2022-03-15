@@ -22,6 +22,8 @@ servers: Serveurs
 theme: Thème
 playlist: Playlist
 save: Enregistrer
+overview: Synopsis
+ok: Ok
 
 # Error
 error: Erreur

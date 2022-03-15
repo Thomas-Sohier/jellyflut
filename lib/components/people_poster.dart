@@ -70,7 +70,7 @@ class _PeoplePosterState extends State<PeoplePoster>
             child: AsyncImage(
               item: widget.person.asItem(),
               boxFit: BoxFit.contain,
-              placeholder: Container(
+              placeholder: (_) => Container(
                 decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                     borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -94,7 +94,7 @@ class _PeoplePosterState extends State<PeoplePoster>
                   AsyncImage(
                     item: widget.person.asItem(),
                     boxFit: BoxFit.contain,
-                    placeholder: Container(
+                    placeholder: (_) => Container(
                       decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -131,13 +131,14 @@ class _PeoplePosterState extends State<PeoplePoster>
                             softWrap: false,
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
-                          Text(
-                            widget.person.role,
-                            overflow: TextOverflow.clip,
-                            softWrap: false,
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 12),
-                          )
+                          if (widget.person.role != null)
+                            Text(
+                              widget.person.role!,
+                              overflow: TextOverflow.clip,
+                              softWrap: false,
+                              style: TextStyle(
+                                  color: Colors.white70, fontSize: 12),
+                            )
                         ],
                       ),
                     ),

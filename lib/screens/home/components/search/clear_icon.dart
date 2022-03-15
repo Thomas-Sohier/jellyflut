@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/search/search_provider.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class ClearIcon extends StatefulWidget {
   final TextEditingController searchController;

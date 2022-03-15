@@ -237,7 +237,7 @@ class StreamingService {
     switch (item.type) {
       case ItemType.TVCHANNEL:
         final id = _generateItemIdWithHyphen(item.id);
-        path = 'videos/$id/live.m3u8';
+        path = 'videos/$id/master.m3u8';
         break;
       default:
         final ext = p.extension(playBackInfos.mediaSources.first.path!);

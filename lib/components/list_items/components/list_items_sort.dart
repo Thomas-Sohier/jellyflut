@@ -14,20 +14,41 @@ class ListItemsSort extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                    icon: Icon(Icons.grid_view),
-                    onPressed: () => getNextListType(context)),
-                IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () => sortByDate(context)),
-                IconButton(
-                    icon: Icon(Icons.sort_by_alpha),
-                    onPressed: () => sortByName(context)),
-              ]),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  OutlinedButtonSelector(
+                      padding: EdgeInsets.all(8),
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.grid_view,
+                        size: 26,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                      onPressed: () => getNextListType(context)),
+                  OutlinedButtonSelector(
+                      padding: EdgeInsets.all(8),
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.date_range_outlined,
+                        size: 26,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                      onPressed: () => sortByDate(context)),
+                  OutlinedButtonSelector(
+                      padding: EdgeInsets.all(8),
+                      shape: CircleBorder(),
+                      child: Icon(
+                        CommunityMaterialIcons.alphabetical,
+                        size: 26,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                      onPressed: () => sortByName(context)),
+                ]),
+          ),
           child
         ]);
   }

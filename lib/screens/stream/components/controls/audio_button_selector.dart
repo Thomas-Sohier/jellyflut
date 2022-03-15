@@ -2,7 +2,7 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';

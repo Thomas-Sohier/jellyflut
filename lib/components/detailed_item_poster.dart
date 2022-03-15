@@ -48,7 +48,8 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                   AsyncImage(
                                       item: widget.item,
                                       boxFit: BoxFit.cover,
-                                      errorWidget: const SizedBox(),
+                                      errorWidget: (_, __, ___) =>
+                                          const SizedBox(),
                                       width: double.infinity,
                                       height: double.infinity,
                                       tag: ImageType.BACKDROP),

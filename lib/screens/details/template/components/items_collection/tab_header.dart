@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -20,24 +21,21 @@ class TabHeader extends SliverPersistentHeaderDelegate {
             return ClipRRect(
               child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: SafeArea(
-                      child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 54),
-                      Expanded(
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children:
-                              getTabsHeader(snapshot.data?.items ?? <Item>[]),
-                        ),
-                      ),
-                    ],
-                  ))),
+                  child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children:
+                          getTabsHeader(snapshot.data?.items ?? <Item>[]))),
             );
           }
-          return const SizedBox(height: 144.0);
+          return const SizedBox(height: 50.0);
         });
+  }
+
+  Widget safeAreaBuilder(Widget child) {
+    if (Platform.isAndroid || Platform.isIOS) {
+      return SafeArea(child: child);
+    }
+    return child;
   }
 
   List<Widget> getTabsHeader(List<Item> items) {
@@ -66,10 +64,10 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 144.0;
+  double get maxExtent => 70.0;
 
   @override
-  double get minExtent => 144.0;
+  double get minExtent => 70.0;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

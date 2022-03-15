@@ -2,10 +2,14 @@ part of 'list_items_skeleton.dart';
 
 class SkeletonItemPoster extends StatelessWidget {
   final double height;
+  final double aspectRatio;
   final EdgeInsets padding;
 
   const SkeletonItemPoster(
-      {Key? key, this.height = double.infinity, this.padding = EdgeInsets.zero})
+      {Key? key,
+      this.height = double.infinity,
+      this.aspectRatio = 2 / 3,
+      this.padding = EdgeInsets.zero})
       : super(key: key);
 
   @override
@@ -15,7 +19,7 @@ class SkeletonItemPoster extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: AspectRatio(
-          aspectRatio: 2 / 3,
+          aspectRatio: aspectRatio,
           child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               child: Container(

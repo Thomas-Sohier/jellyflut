@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class NextButton extends StatefulWidget {
   final Color color;

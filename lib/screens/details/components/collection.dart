@@ -57,13 +57,6 @@ class _CollectionState extends State<Collection> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: showCollection(),
-    );
-  }
-
-  Widget showCollection() {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
         return ListItems.fromFuture(

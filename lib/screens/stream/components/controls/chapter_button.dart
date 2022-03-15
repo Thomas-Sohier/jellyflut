@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/models/jellyfin/chapter.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/outlined_button_selector.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class ChapterButton extends StatefulWidget {

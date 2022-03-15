@@ -18,11 +18,16 @@ class Home extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<Home> with HomeTab {
+class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
   late final PageController _pageController;
   late final ScrollController _scrollController;
   late SearchProvider searchProvider;
   late Future<Category> categoryFuture;
+
+  @override
+  set tabController(TabController _tabController) {
+    super.tabController = _tabController;
+  }
 
   @override
   void initState() {
@@ -30,6 +35,7 @@ class _HomeState extends State<Home> with HomeTab {
     _scrollController = ScrollController(initialScrollOffset: 0);
     categoryFuture = UserService.getLibraryCategory();
     _pageController = PageController();
+    tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 

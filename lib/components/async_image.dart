@@ -4,14 +4,15 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/utils/blurhash_util.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class AsyncImage extends StatefulWidget {
   final Item item;
   final ImageType tag;
   final BoxFit boxFit;
-  final Widget? placeholder;
-  final Widget? errorWidget;
+  final Widget Function(BuildContext)? placeholder;
+  final Widget Function(BuildContext, Object, StackTrace?)? errorWidget;
   final double? width;
   final double? height;
   final bool showParent;
@@ -95,22 +96,23 @@ class _AsyncImageState extends State<AsyncImage> {
   Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(
       String? hash) {
     if (widget.errorWidget != null) {
-      return (_, o, e) => widget.errorWidget!;
+      return widget.errorWidget!;
     }
 
     if (hash != null) {
       if (widget.tag != ImageType.LOGO) {
         return OctoError.blurHash(hash, icon: Icons.warning_amber_rounded);
       }
-      return (_, o, e) => const SizedBox();
+      return (_, __, ___) => const SizedBox();
     }
-    return (_, o, e) =>
-        widget.errorWidget != null ? widget.errorWidget! : noPhotoActor();
+    return widget.errorWidget != null
+        ? widget.errorWidget!
+        : (_, __, ___) => noPhotoActor();
   }
 
   Widget Function(BuildContext) imagePlaceholder(String? hash) {
     if (widget.placeholder != null) {
-      return (_) => widget.placeholder!;
+      return widget.placeholder!;
     }
 
     // If we don't have any hash then we don't have image so --> placeholder
@@ -121,15 +123,17 @@ class _AsyncImageState extends State<AsyncImage> {
       }
       return (_) => const SizedBox();
     }
-    return (_) =>
-        widget.placeholder != null ? widget.placeholder! : noPhotoActor();
+    return widget.placeholder != null
+        ? widget.placeholder!
+        : (_) => noPhotoActor();
   }
 
   Widget noPhotoActor() {
     return Container(
-      color: Colors.grey[800],
+      color: ColorUtil.darken(Theme.of(context).colorScheme.background),
       child: Center(
-        child: Icon(Icons.no_photography, color: Colors.white),
+        child: Icon(Icons.no_photography,
+            color: Theme.of(context).colorScheme.onBackground),
       ),
     );
   }

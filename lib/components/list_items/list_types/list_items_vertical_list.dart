@@ -4,11 +4,17 @@ class ListItemsVerticalList extends StatelessWidget {
   final List<Item> items;
   final ScrollPhysics scrollPhysics;
   final ScrollController scrollController;
+  final double verticalListPosterHeight;
+  final BoxFit boxFit;
+  final Widget Function(BuildContext)? placeholder;
 
   const ListItemsVerticalList(
       {Key? key,
+      this.boxFit = BoxFit.cover,
+      this.placeholder,
       required this.scrollPhysics,
       required this.items,
+      required this.verticalListPosterHeight,
       required this.scrollController})
       : super(key: key);
 
@@ -17,6 +23,7 @@ class ListItemsVerticalList extends StatelessWidget {
     return ListView.builder(
         itemCount: items.length,
         shrinkWrap: true,
+        padding: EdgeInsets.zero,
         scrollDirection: Axis.vertical,
         controller: scrollController,
         physics: scrollPhysics,
@@ -60,13 +67,15 @@ class ListItemsVerticalList extends StatelessWidget {
         return ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: verticalListPosterHeight, minHeight: 50),
-            child: EpisodeItem(item: item));
+            child: EpisodeItem(
+                item: item, boxFit: boxFit, placeholder: placeholder));
       default:
         // Episode items need height to avoid unbounded height
         return ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: verticalListPosterHeight, minHeight: 50),
-            child: EpisodeItem(item: item));
+            child: EpisodeItem(
+                item: item, boxFit: boxFit, placeholder: placeholder));
     }
   }
 }
