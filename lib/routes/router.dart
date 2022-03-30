@@ -31,7 +31,6 @@ import 'router.gr.dart';
       AuthGuard
     ], children: [
       AutoRoute(page: Home, name: 'HomeRoute', path: '', initial: true),
-      AutoRoute(page: HomeTab, name: 'HomeTabRoute', path: '', initial: true),
       AutoRoute(
           page: CollectionParent,
           name: 'CollectionRoute',
