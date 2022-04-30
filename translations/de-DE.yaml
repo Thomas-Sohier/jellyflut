@@ -28,7 +28,7 @@ ok: Ok
 # error
 error: Fehler
 error_loading_item: 'Fehler beim Laden von {}'
-error_unzip_file: 'Fehler: Entpacken gescheitert'
+error_unzip_file: 'Fehler beim Entpacken'
 cannot_open_file: 'Öffnen der Datei {} gescheitert'
 cannot_download_item: 'Herunterladen von {} gescheitert'
 cannot_access_storage: 'Zugriff auf Speicher nicht möglich'
@@ -36,21 +36,21 @@ cannot_load_page: 'Laden der Seite gescheitert'
 functionnality_not_implemented: 'Funktion noch nicht verfügbar'
 
 # Category titles
-latest: 'Zuletzt hinzugefügt'
+latest: Zuletzt hinzugefügt
 resume: Fortsetzen
 
 # Search
-search_no_results: 'Nichts gefunden...'
+search_no_results: Nichts gefunden...
 search_field_hint: Suchen
 
 # Streaming controls
-select_audio_source: Audioquelle auswählen
+select_audio_source: Audioauswahl
 no_audio_source: Keine Audioquelle
 embeded_audio_tracks: Eingebettete Tonspuren
 remote_audio_tracks: Externe Audiospuren
-select_chapter: Kapitel auswählen
+select_chapter: Kapitelauswahl
 no_chapters: Keine Kapitel
-select_subtitle: Untertitel auswählen
+select_subtitle: Untertitelauswahl
 no_subtitles: Keine Untertitel
 embeded_subtitles: Eingebettete Untertitel
 remote_subtitles: Externe Untertitel
@@ -108,9 +108,9 @@ mark_item_unviewed: '{} als ungesehen markiert'
 cannot_open: 'Konnte {} nicht öffnen'
 
 # list items
-empty_collection: Leere Sammlung
+empty_collection: Keine Einträge
 
 # book reader
 no_pages: Keine Seiten
-select_page: Seite auswählen
-page_number: 'Seitenzahl: {}'
+select_page: Zu Seite blättern
+page_number: 'Seite {}'
