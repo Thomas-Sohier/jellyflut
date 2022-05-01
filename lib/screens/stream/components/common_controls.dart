@@ -15,6 +15,7 @@ import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'player_infos/subtitle_box.dart';
+import 'player_infos/transcode_state.dart';
 
 class CommonControls extends StatefulWidget {
   final bool isComputer;
@@ -177,16 +178,7 @@ class _CommonControlsState extends State<CommonControls> {
               ),
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: streamingProvider.isDirectPlay ?? true
-                  ? const GradientMask(
-                      child: Icon(Icons.play_for_work, color: Colors.white))
-                  : const GradientMask(
-                      child: Icon(
-                      Icons.cloud_outlined,
-                      color: Colors.white,
-                    ))),
+          Padding(padding: const EdgeInsets.all(8.0), child: TranscodeState()),
           FutureBuilder<bool>(
               future: hasPip,
               builder: (context, snapshot) => snapshot.hasData && snapshot.data!

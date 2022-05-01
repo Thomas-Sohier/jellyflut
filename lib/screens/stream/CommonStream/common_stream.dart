@@ -207,6 +207,7 @@ class CommonStream {
         disableSubtitles: () => {},
         getAudioTracks: () {
           // ignore: omit_local_variable_types
+          
           final List<AudioTrack> audioTracks = [];
           return Future.value(audioTracks);
         },
