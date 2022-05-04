@@ -28,7 +28,11 @@ void main() async {
   await setUpAndroidTv();
 
   runApp(EasyLocalization(
-      supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR')],
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('fr', 'FR'),
+        Locale('de', 'DE')
+      ],
       path: 'translations',
       assetLoader: YamlAssetLoader(),
       fallbackLocale: Locale('en', 'US'),
