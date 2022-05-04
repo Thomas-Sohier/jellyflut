@@ -1,0 +1,116 @@
+# globals
+unknown: Unbekannt
+disable: Deaktivieren
+disabled: Deaktiviert
+delete: Löschen
+edit: Bearbeiten
+previous: Zurück
+no: Nein
+yes: Ja
+cancel: Abbrechen
+submit: Absenden
+like: Favorit
+default: Standard
+manage: Bearbeiten
+play: Abspielen
+trailer: Trailer
+download: Herunterladen
+viewed: Angesehen
+loading: Wird geladen
+loading_dots: Wird geladen...
+servers: Server
+playlist: Playlist
+theme: Aussehen
+save: Speichern
+overview: Übersicht
+ok: Ok
+
+# error
+error: Fehler
+error_loading_item: 'Fehler beim Laden von {}'
+error_unzip_file: 'Fehler beim Entpacken'
+cannot_open_file: 'Öffnen der Datei {} gescheitert'
+cannot_download_item: 'Herunterladen von {} gescheitert'
+cannot_access_storage: 'Zugriff auf Speicher nicht möglich'
+cannot_load_page: 'Laden der Seite gescheitert'
+functionnality_not_implemented: 'Funktion noch nicht verfügbar'
+
+# Category titles
+latest: Zuletzt hinzugefügt
+resume: Fortsetzen
+
+# Search
+search_no_results: Nichts gefunden...
+search_field_hint: Suchen
+
+# Streaming controls
+select_audio_source: Audioauswahl
+no_audio_source: Keine Audioquelle
+embeded_audio_tracks: Eingebettete Tonspuren
+remote_audio_tracks: Externe Audiospuren
+select_chapter: Kapitelauswahl
+no_chapters: Keine Kapitel
+select_subtitle: Untertitelauswahl
+no_subtitles: Keine Untertitel
+embeded_subtitles: Eingebettete Untertitel
+remote_subtitles: Externe Untertitel
+
+# Settings
+settings: Einstellungen
+video_player: Videoplayer
+preferred_player: Bevorzugter Player
+preferred_audio_codec: Bevorzugter Audio-Codec
+max_bitrate: Max. Bitrate
+audio_player: Audioplayer
+transcode_codec: Codec für Transkodierung
+infos: Infos
+version: Version
+account: Account
+deconnect: Verbindung trennen
+select_preferred_video_player: Bevorzugten Videoplayer auswählen
+select_preferred_audio_player: Bevorzugten Audioplayer auswählen
+interface: Oberfläche
+language: Sprache
+change_server: Server wechseln
+download_path: 'Downloadordner'
+
+# details
+add_to_playlist: Zu Playlist hinzufügen
+edit_infos: Details bearbeiten
+see_artist: Künstler anzeigen
+cannot_get_artist: Kann Künstler nicht anzeigen
+see_album: Album anzeigen
+cannot_delete_item: Löschen gescheitert
+item_added_playlist: '{} wurde zur Playlist hinzugefügt'
+item_ends: 'Endet um {}'
+item_cast: 'Besetzung von {}'
+
+# auth
+connection: Verbindung
+login: Anmelden
+url_not_correct: Die URL ist ungültig
+field_required: '{} wird benötigt'
+form_not_valid: 'Eingegebene Daten sind ungültig'
+server_configuration: Serverkonfiguration
+add_server: Server hinzufügen
+user_username_field_label: Benutzername
+user_password_field_label: Passwort
+server_name_field_label: Servername
+server_url_field_label: URL
+
+# action button
+delete_item_question: '{} löschen?'
+action_cannot_reverse: Diese Aktion kann nicht rückgängig gemacht werden
+add_item_favorite: '{} zu Favoriten hinzugefügt'
+remove_item_favorite: '{} aus Favoriten entfernt'
+mark_item_viewed: '{} als gesehen markiert'
+mark_item_unviewed: '{} als ungesehen markiert'
+cannot_open: 'Konnte {} nicht öffnen'
+
+# list items
+empty_collection: Keine Einträge
+
+# book reader
+no_pages: Keine Seiten
+select_page: Zu Seite blättern
+page_number: 'Seite {}'
