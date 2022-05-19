@@ -56,7 +56,6 @@ class _ControllerbuilderState extends State<Controllerbuilder> {
     } else if (controller is Player) {
       return Video(
         player: controller,
-        playlistLength: 0,
         showControls: false,
       );
     } else {

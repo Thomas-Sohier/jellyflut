@@ -64,10 +64,10 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 70.0;
+  double get maxExtent => 80.0;
 
   @override
-  double get minExtent => 70.0;
+  double get minExtent => 80.0;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

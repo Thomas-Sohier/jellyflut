@@ -1,8 +1,7 @@
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ProviderButton extends StatelessWidget {
   final String providerName;
@@ -33,8 +32,8 @@ class ProviderButton extends StatelessWidget {
     );
   }
 
-  void _launchURL(String _url) async => await canLaunch(_url)
-      ? await launch(_url)
+  void _launchURL(String _url) async => await canLaunchUrlString(_url)
+      ? await launchUrlString(_url)
       : throw 'cannot_open.'.tr(args: [_url]);
 
   MaterialStateProperty<Color> buttonBackground(BuildContext context) {

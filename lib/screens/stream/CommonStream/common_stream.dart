@@ -207,8 +207,8 @@ class CommonStream {
         disableSubtitles: () => {},
         getAudioTracks: () {
           // ignore: omit_local_variable_types
-          
-          final List<AudioTrack> audioTracks = [];
+
+          final audioTracks = <AudioTrack>[];
           return Future.value(audioTracks);
         },
         enterFullscreen: commonStreamVLCComputer.enterFullscreen,
