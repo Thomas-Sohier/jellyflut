@@ -17,7 +17,15 @@ mixin AppThemeGrabber<T extends StatefulWidget> on State<T> {
 
   @override
   void didChangeDependencies() {
-    _themedata = _themeProvider.getThemeData;
+    if (useColorScheme) {
+      // Use current global theme to get brightness
+      // And regenerate using local theme colorscheme primary
+      _themedata = personnal_theme.Theme.generateThemeData(
+          _themeProvider.getThemeData.brightness,
+          Theme.of(context).colorScheme.primary);
+    } else {
+      _themedata = _themeProvider.getThemeData;
+    }
     super.didChangeDependencies();
   }
 
@@ -27,4 +35,5 @@ mixin AppThemeGrabber<T extends StatefulWidget> on State<T> {
   }
 
   ThemeData get getThemeData => _themedata;
+  bool get useColorScheme => false;
 }

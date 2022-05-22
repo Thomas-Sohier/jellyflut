@@ -15,6 +15,9 @@ class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
   late String? overview;
 
   @override
+  bool get useColorScheme => true;
+
+  @override
   void initState() {
     overview = widget.overview;
     super.initState();

@@ -16,6 +16,9 @@ class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
   late final FormBloc<Item> formBloc;
 
   @override
+  bool get useColorScheme => true;
+
+  @override
   void initState() {
     formBloc = FormBloc<Item>();
     detailsBloc = BlocProvider.of<DetailsBloc>(context);
