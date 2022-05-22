@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Shimmering color
 final Color shimmerColor1 = Colors.grey.shade500.withAlpha(150);
@@ -76,31 +77,38 @@ class Theme {
     final background =
         brightness == Brightness.light ? null : Colors.grey.shade900;
     final theme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: seedColor,
-        brightness: brightness,
-        background: background,
-      ),
-      visualDensity: VisualDensity.standard,
-      useMaterial3: true,
-    );
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: seedColor,
+          brightness: brightness,
+          background: background,
+        ),
+        visualDensity: VisualDensity.standard,
+        useMaterial3: true);
+    final textTheme = getTextThemeWithColor(theme.colorScheme.onBackground);
 
     return theme
-        .copyWith(
-            textTheme: getTextThemeWithColor(theme.colorScheme.onBackground))
+        .copyWith(textTheme: textTheme)
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
         .copyWith(backgroundColor: theme.backgroundColor)
         .copyWith(
             dialogTheme: DialogTheme(
-                elevation: 4,
                 backgroundColor: theme.colorScheme.background,
-                titleTextStyle: getTextThemeWithColor().headline5,
-                contentTextStyle: getTextThemeWithColor().bodyText1))
+                titleTextStyle: textTheme.headline4,
+                contentTextStyle: textTheme.bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
                 color: theme.colorScheme.background,
                 foregroundColor: theme.colorScheme.onBackground,
-                iconTheme: IconThemeData(color: theme.colorScheme.onBackground),
+                surfaceTintColor: Colors.transparent,
+                scrolledUnderElevation: 0,
+                elevation: 0,
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarBrightness: theme.brightness,
+                  statusBarIconBrightness: theme.brightness,
+                  statusBarColor: theme.colorScheme.background,
+                  systemNavigationBarColor: theme.colorScheme.background,
+                  systemNavigationBarContrastEnforced: false,
+                ),
                 toolbarTextStyle: theme.textTheme.headline5,
                 titleTextStyle: theme.textTheme.headline5))
         .copyWith(
@@ -109,6 +117,8 @@ class Theme {
                 backgroundColor: theme.colorScheme.background,
                 contentTextStyle: TextStyle(
                     fontSize: 18, color: theme.colorScheme.onSurface)))
+        .copyWith(
+            iconTheme: IconThemeData(color: theme.colorScheme.onBackground))
         .copyWith(
             tabBarTheme: TabBarTheme(
                 labelColor: theme.colorScheme.onBackground,

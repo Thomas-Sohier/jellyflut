@@ -21,12 +21,12 @@ class OverviewDetailsWidget extends StatelessWidget {
 
   void overviewDialog(BuildContext context) {
     showDialog(
+        barrierDismissible: true,
         context: context,
         builder: (_) {
           return AlertDialog(
-            title: Text('overview'.tr(),
-                style: Theme.of(context).textTheme.headline5),
-            titlePadding: const EdgeInsets.only(left: 8, top: 8, bottom: 12),
+            title: Text('overview'.tr()),
+            titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
             contentPadding: const EdgeInsets.all(8.0),
             backgroundColor: Theme.of(context).colorScheme.background,
             actions: [
