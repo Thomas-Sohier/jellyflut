@@ -93,7 +93,7 @@ class Theme {
         .copyWith(
             dialogTheme: DialogTheme(
                 backgroundColor: theme.colorScheme.background,
-                titleTextStyle: textTheme.headline4,
+                titleTextStyle: textTheme.headline5,
                 contentTextStyle: textTheme.bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
@@ -159,26 +159,30 @@ class Theme {
   }
 
   static TextTheme getTextThemeWithColor([Color? color]) {
-    final poppinsFont = TextStyle(fontFamily: 'Poppins', color: color);
-    final hindMaduraiFont = TextStyle(fontFamily: 'HindMadurai', color: color);
-    return Typography.blackCupertino
-        .copyWith(headline1: poppinsFont)
-        .copyWith(headline2: poppinsFont)
-        .copyWith(headline3: poppinsFont)
-        .copyWith(headline4: poppinsFont)
-        .copyWith(headline5: poppinsFont)
-        .copyWith(headline6: poppinsFont)
-        .copyWith(subtitle1: poppinsFont)
-        .copyWith(subtitle2: poppinsFont)
-        .copyWith(bodyLarge: hindMaduraiFont.copyWith(fontSize: 18))
-        .copyWith(bodyMedium: hindMaduraiFont.copyWith(fontSize: 16))
-        .copyWith(bodySmall: hindMaduraiFont.copyWith(fontSize: 14))
-        .copyWith(titleLarge: hindMaduraiFont)
-        .copyWith(titleMedium: hindMaduraiFont)
-        .copyWith(titleSmall: hindMaduraiFont)
-        .copyWith(bodyText1: hindMaduraiFont.copyWith(fontSize: 18))
-        .copyWith(bodyText2: hindMaduraiFont.copyWith(fontSize: 16))
-        .copyWith(button: hindMaduraiFont.copyWith(fontSize: 16))
+    final poppinsFont = (TextStyle? textStyle) =>
+        textStyle?.copyWith(fontFamily: 'Poppins', color: color);
+    final hindMaduraiFont = (TextStyle? textStyle) =>
+        textStyle?.copyWith(fontFamily: 'HindMadurai', color: color);
+    final typography = Typography.englishLike2021;
+
+    return typography
+        .copyWith(headline1: poppinsFont(typography.headline1))
+        .copyWith(headline2: poppinsFont(typography.headline2))
+        .copyWith(headline3: poppinsFont(typography.headline3))
+        .copyWith(headline4: poppinsFont(typography.headline4))
+        .copyWith(headline5: poppinsFont(typography.headline5))
+        .copyWith(headline6: poppinsFont(typography.headline6))
+        .copyWith(subtitle1: poppinsFont(typography.subtitle1))
+        .copyWith(subtitle2: poppinsFont(typography.subtitle2))
+        .copyWith(bodyLarge: hindMaduraiFont(typography.bodyLarge))
+        .copyWith(bodyMedium: hindMaduraiFont(typography.bodyMedium))
+        .copyWith(bodySmall: hindMaduraiFont(typography.bodySmall))
+        .copyWith(titleLarge: hindMaduraiFont(typography.titleLarge))
+        .copyWith(titleMedium: hindMaduraiFont(typography.titleMedium))
+        .copyWith(titleSmall: hindMaduraiFont(typography.titleSmall))
+        .copyWith(bodyText1: hindMaduraiFont(typography.bodyText1))
+        .copyWith(bodyText2: hindMaduraiFont(typography.bodyText2))
+        .copyWith(button: hindMaduraiFont(typography.button))
         .apply(bodyColor: color)
         .apply(displayColor: color)
         .apply(decorationColor: color);

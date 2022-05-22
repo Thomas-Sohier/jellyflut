@@ -64,9 +64,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                           children: [
                                             title(),
                                             Row(children: [
-                                              Critics(
-                                                  item: widget.item,
-                                                  fontSize: 18),
+                                              Critics(item: widget.item),
                                               Spacer(),
                                               if (widget.item.runTimeTicks !=
                                                   null)

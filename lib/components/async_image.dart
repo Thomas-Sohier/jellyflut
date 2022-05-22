@@ -42,10 +42,10 @@ class AsyncImage extends StatefulWidget {
 
 class _AsyncImageState extends State<AsyncImage> {
   late final Widget child;
-  late final String itemId;
-  late final String? hash;
-  late final ImageType imageType;
-  late final String? imageTag;
+  late ImageType imageType;
+  late String? imageTag;
+  late String? hash;
+  late String itemId;
 
   @override
   void didChangeDependencies() {

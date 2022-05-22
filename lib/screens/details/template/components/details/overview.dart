@@ -1,9 +1,24 @@
 part of '../details_widgets.dart';
 
-class OverviewDetailsWidget extends StatelessWidget {
+class OverviewDetailsWidget extends StatefulWidget {
   final String? overview;
+
   const OverviewDetailsWidget({Key? key, required this.overview})
       : super(key: key);
+
+  @override
+  _OverviewDetailsWidgetState createState() => _OverviewDetailsWidgetState();
+}
+
+class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
+    with AppThemeGrabber {
+  late String? overview;
+
+  @override
+  void didChangeDependencies() {
+    overview = widget.overview;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +26,7 @@ class OverviewDetailsWidget extends StatelessWidget {
     return OutlinedButtonSelector(
       padding: EdgeInsets.all(4),
       onPressed: () => overviewDialog(context),
+      alignment: Alignment.centerLeft,
       child: Text(
         overview!,
         textAlign: TextAlign.justify,
@@ -24,26 +40,30 @@ class OverviewDetailsWidget extends StatelessWidget {
         barrierDismissible: true,
         context: context,
         builder: (_) {
-          return AlertDialog(
-            title: Text('overview'.tr()),
-            titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
-            contentPadding: const EdgeInsets.all(8.0),
-            backgroundColor: Theme.of(context).colorScheme.background,
-            actions: [
-              TextButton(
-                  autofocus: true,
-                  onPressed: customRouter.pop,
-                  child: Text('ok'.tr()))
-            ],
-            content: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600),
-              child: Text(
-                overview!,
-                textAlign: TextAlign.justify,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-          );
+          return Theme(
+              data: getThemeData,
+              child: Builder(
+                  // Create an inner BuildContext so that we can refer to
+                  // the Theme with Theme.of().
+                  builder: (BuildContext dialogContext) => AlertDialog(
+                        title: Text('overview'.tr()),
+                        titlePadding:
+                            const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                        contentPadding: const EdgeInsets.all(8.0),
+                        actions: [
+                          TextButton(
+                              autofocus: true,
+                              onPressed: customRouter.pop,
+                              child: Text('ok'.tr()))
+                        ],
+                        content: ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 600),
+                          child: SelectableText(
+                            overview!,
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      )));
         });
   }
 }

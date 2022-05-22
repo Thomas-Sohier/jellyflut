@@ -43,7 +43,7 @@ class InfosDetailsWidget extends StatelessWidget {
     return listOfText
         .where((t) => t != null && t.isNotEmpty && t != 'null')
         .map((e) => [
-              Text(e!, style: Theme.of(context).textTheme.bodySmall),
+              Text(e!, style: Theme.of(context).textTheme.subtitle1),
               DetailsSeparator()
             ])
         .fold<List<Widget>>([const SizedBox()],

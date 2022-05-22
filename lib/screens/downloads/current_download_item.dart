@@ -95,9 +95,8 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
                                             if (widget.itemDownload.item
                                                 .hasRatings())
                                               Critics(
-                                                item: widget.itemDownload.item,
-                                                fontSize: 18,
-                                              ),
+                                                  item:
+                                                      widget.itemDownload.item),
                                             if (widget.itemDownload.item
                                                     .getDuration() !=
                                                 0)

@@ -88,10 +88,7 @@ class _EpisodeItemState extends State<EpisodeItem>
                         child: Row(
                           children: [
                             if (widget.item.hasRatings())
-                              Critics(
-                                item: widget.item,
-                                fontSize: 18,
-                              ),
+                              Critics(item: widget.item),
                             if (widget.item.getDuration() != 0) duration()
                           ],
                         ),

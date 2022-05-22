@@ -9,7 +9,7 @@ class TitleDetailsWidget extends StatelessWidget {
     return Flexible(
         child: Align(
       alignment: Alignment.centerLeft,
-      child: Text(
+      child: SelectableText(
         title,
         textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.headline4,

@@ -3,10 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class Critics extends StatelessWidget {
-  const Critics({required this.item, this.fontSize = 16, this.iconSize = 20});
+  const Critics({required this.item, this.iconSize = 20});
 
   final Item item;
-  final double fontSize;
   final double iconSize;
 
   @override
@@ -24,10 +23,7 @@ class Critics extends StatelessWidget {
               width: 4,
             ),
             Text(item.communityRating.toString(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: fontSize))
+                style: Theme.of(context).textTheme.subtitle1)
           ]),
         ),
       if (item.criticRating != null)
@@ -39,10 +35,7 @@ class Critics extends StatelessWidget {
               width: 4,
             ),
             Text(item.criticRating.toString(),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(fontSize: fontSize))
+                style: Theme.of(context).textTheme.subtitle1)
           ]),
         )
     ]);

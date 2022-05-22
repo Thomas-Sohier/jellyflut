@@ -4,6 +4,7 @@ class OutlinedButtonSelector extends StatelessWidget {
   final Widget child;
   final VoidCallback onPressed;
   final OutlinedBorder shape;
+  final Alignment? alignment;
   final EdgeInsets padding;
   final Color? primary;
 
@@ -12,6 +13,7 @@ class OutlinedButtonSelector extends StatelessWidget {
       required this.child,
       required this.onPressed,
       this.padding = EdgeInsets.zero,
+      this.alignment,
       this.primary,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -30,6 +32,7 @@ class OutlinedButtonSelector extends StatelessWidget {
                         .colorScheme
                         .onBackground
                         .withOpacity(0.05),
+                alignment: alignment,
                 padding: padding,
                 shape: shape,
                 backgroundColor: Colors.transparent)

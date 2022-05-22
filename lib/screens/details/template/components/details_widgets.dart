@@ -5,6 +5,7 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/mixins/details_theme_grabber.dart';
 import 'package:jellyflut/models/jellyfin/external_url.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';

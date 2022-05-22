@@ -11,18 +11,14 @@ class ManageButton extends StatefulWidget {
   _ManageButtonState createState() => _ManageButtonState();
 }
 
-class _ManageButtonState extends State<ManageButton> {
-  late final FormBloc<Item> formBloc;
+class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
   late final DetailsBloc detailsBloc;
-  late final ThemeProvider themeProvider;
-  late ThemeData themedata;
+  late final FormBloc<Item> formBloc;
 
   @override
   void initState() {
     formBloc = FormBloc<Item>();
-    themeProvider = ThemeProvider();
-    // ignore: unnecessary_this
-    detailsBloc = BlocProvider.of<DetailsBloc>(this.context);
+    detailsBloc = BlocProvider.of<DetailsBloc>(context);
     final i = widget.item.copyWithItem(item: widget.item);
     formBloc.add(CurrentForm<Item>(formGroup: FormGroup({}), value: i));
     formBloc.stream.listen((state) {
@@ -32,14 +28,6 @@ class _ManageButtonState extends State<ManageButton> {
     });
 
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    themedata = personnal_theme.Theme.generateThemeData(
-        themeProvider.getThemeData.colorScheme.brightness,
-        Theme.of(context).colorScheme.primary);
-    super.didChangeDependencies();
   }
 
   @override
@@ -69,7 +57,7 @@ class _ManageButtonState extends State<ManageButton> {
 
   Widget dialogParent(BuildContext context) {
     return Theme(
-      data: themedata,
+      data: getThemeData,
       child: Material(
         color: Colors.transparent,
         child: Center(child: dialogBuilder(context)),
@@ -109,6 +97,5 @@ class _ManageButtonState extends State<ManageButton> {
 
   void closeDialogAndResetForm() {
     customRouter.pop();
-    // formBloc.add(RefreshForm());
   }
 }

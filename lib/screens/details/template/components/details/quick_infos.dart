@@ -18,13 +18,7 @@ class QuickInfos extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               runAlignment: WrapAlignment.center,
               children: [
-                if (item.hasRatings())
-                  Critics(
-                      item: item,
-                      fontSize:
-                          Theme.of(context).textTheme.bodyText2?.fontSize ??
-                              16),
-                // Spacer(),
+                if (item.hasRatings()) Critics(item: item),
                 InfosDetailsWidget(item: item),
               ]),
         ),
