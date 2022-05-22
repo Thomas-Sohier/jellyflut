@@ -15,9 +15,15 @@ class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
   late String? overview;
 
   @override
-  void didChangeDependencies() {
+  void initState() {
     overview = widget.overview;
-    super.didChangeDependencies();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(OverviewDetailsWidget oldWidget) {
+    overview = widget.overview;
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

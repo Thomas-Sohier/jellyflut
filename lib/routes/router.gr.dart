@@ -72,6 +72,7 @@ class AppRouter extends _i14.RootStackRouter {
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i4.Details(item: args.item, heroTag: args.heroTag),
+          transitionsBuilder: _i14.TransitionsBuilders.slideLeftWithFade,
           opaque: true,
           barrierDismissible: false);
     },

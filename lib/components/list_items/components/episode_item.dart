@@ -109,7 +109,7 @@ class _EpisodeItemState extends State<EpisodeItem>
       child: Poster(
           key: ValueKey(widget.item),
           tag: ImageType.PRIMARY,
-          heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
+          heroTag: posterHeroTag,
           clickable: false,
           placeholder: widget.placeholder,
           width: double.infinity,

@@ -17,9 +17,7 @@ mixin AppThemeGrabber<T extends StatefulWidget> on State<T> {
 
   @override
   void didChangeDependencies() {
-    _themedata = personnal_theme.Theme.generateThemeData(
-        _themeProvider.getThemeData.colorScheme.brightness,
-        Theme.of(context).colorScheme.primary);
+    _themedata = _themeProvider.getThemeData;
     super.didChangeDependencies();
   }
 

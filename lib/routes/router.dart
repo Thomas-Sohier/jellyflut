@@ -45,7 +45,11 @@ import 'router.gr.dart';
         path: 'collection',
         transitionsBuilder: TransitionsBuilders.slideLeft,
         guards: [AuthGuard]),
-    AutoRoute(page: Details, path: 'details', guards: [AuthGuard]),
+    CustomRoute(
+        page: Details,
+        path: 'details',
+        transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+        guards: [AuthGuard]),
     CustomRoute(
         page: DownloadsParent,
         name: 'downloadsRoute',

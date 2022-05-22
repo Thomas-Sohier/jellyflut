@@ -12,6 +12,7 @@
 .pub-cache/
 .pub/
 build/
+metrics/
 lib/generated_plugin_registrant.dart
 
 # Android related

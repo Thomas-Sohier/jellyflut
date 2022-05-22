@@ -10,7 +10,7 @@ class OriginalTitleDetailsWidget extends StatelessWidget {
     if (title == null) return SizedBox();
     return Align(
         alignment: Alignment.centerLeft,
-        child: Text(
+        child: SelectableText(
           title!,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.headline5,

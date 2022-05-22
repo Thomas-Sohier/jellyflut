@@ -76,7 +76,7 @@ class _PosterState extends State<Poster> {
   Widget poster() {
     if (widget.heroTag != null) {
       return Hero(
-        tag: '${widget.heroTag!}-${widget.item.name}-poster',
+        tag: widget.heroTag!,
         child: dropShadowBuilder(AsyncImage(
             item: widget.item,
             tag: widget.tag,

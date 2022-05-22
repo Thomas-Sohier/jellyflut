@@ -55,7 +55,6 @@ class _DetailsState extends State<Details> {
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
                   backgroundColor: Colors.transparent,
-                  elevation: 0,
                   leading: BackButton(),
                 ),
                 body: widget.item.type != ItemType.PHOTO

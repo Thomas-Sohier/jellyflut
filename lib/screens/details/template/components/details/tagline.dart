@@ -7,7 +7,7 @@ class TaglineDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (item.taglines.isEmpty) return SizedBox();
-    return Text(
+    return SelectableText(
       '“ ${item.taglines.first} „',
       textAlign: TextAlign.center,
       style: Theme.of(context)

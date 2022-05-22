@@ -19,7 +19,6 @@ class DetailsBackground extends StatelessWidget {
                 gradient: gradient.isNotEmpty
                     ? LinearGradient(
                         colors: gradient,
-                        // stops: [0, 0.01, 0.02, 1],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       )
