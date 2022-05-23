@@ -116,40 +116,18 @@ class PlayersProfile {
               CodecProfile(
                   type: 'VideoAudio',
                   container: 'avi,mkv,mp4,webm,mov',
-                  codec: 'aac,mp3,ac3,eac3,dts,opus,flac,vorbis',
+                  codec: 'aac,mp2,mp3,ac3,eac3,dts,opus,flac,vorbis',
                   conditions: []),
             ],
             containerProfiles: [],
             directPlayProfiles: [
               DirectPlayProfile(
-                  container: 'webm',
+                  container: 'webm,mp4,m4v,mov,mkv,avi',
                   type: 'Video',
-                  videoCodec: 'vp8,vp9,av1',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
+                  videoCodec: 'h264,hevc,vp8,vp9,av1,mpeg4',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,dts,opus,flac,vorbis'),
               DirectPlayProfile(
-                  container: 'mp4,m4v,mov',
-                  type: 'Video',
-                  videoCodec: 'h264,hevc,vp8,vp9,av1',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
-              DirectPlayProfile(
-                  container: 'mkv,avi',
-                  type: 'Video',
-                  videoCodec: 'h264,hevc',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis'),
-              DirectPlayProfile(
-                  container: 'webm',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
-                  type: 'Audio'),
-              DirectPlayProfile(
-                  container: 'm4a',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
-                  type: 'Audio'),
-              DirectPlayProfile(
-                  container: 'm4b',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
-                  type: 'Audio'),
-              DirectPlayProfile(
-                  container: 'webm',
+                  container: 'webm,m4a,m4b,webm',
                   audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
                   type: 'Audio'),
               DirectPlayProfile(container: 'mp3', type: 'Audio'),
