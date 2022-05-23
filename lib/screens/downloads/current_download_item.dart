@@ -135,7 +135,6 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
                   icon: Icon(Icons.close),
                   onPressed: () {
                     widget.callbackOnDelete?.call();
-                    widget.itemDownload.cancelToken.cancel();
                     DownloadProvider().removeDownload(widget.itemDownload);
                   },
                   color: Colors.green),
