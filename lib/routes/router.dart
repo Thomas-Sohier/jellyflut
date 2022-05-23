@@ -79,7 +79,7 @@ import 'router.gr.dart';
         page: Stream,
         name: 'streamRoute',
         path: 'stream',
-        transitionsBuilder: TransitionsBuilders.zoomIn,
+        transitionsBuilder: TransitionsBuilders.fadeIn,
         guards: [AuthGuard]),
     AutoRoute(
         page: BookReaderPage,

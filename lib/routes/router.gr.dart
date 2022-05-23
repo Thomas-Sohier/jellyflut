@@ -128,7 +128,7 @@ class AppRouter extends _i14.RootStackRouter {
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
           child: _i10.Stream(item: args.item, url: args.url),
-          transitionsBuilder: _i14.TransitionsBuilders.zoomIn,
+          transitionsBuilder: _i14.TransitionsBuilders.fadeIn,
           opaque: true,
           barrierDismissible: false);
     },
