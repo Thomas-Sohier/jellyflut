@@ -71,21 +71,47 @@ Map<int, Color> jellyLightBlueMap = {
 };
 
 class Theme {
-  static ThemeData generateThemeData(
+  /// Generate a theme from a colorScheme
+  /// You can provide a [brightness] if needed (by default -> Brightness.light), it will override colorscheme's one
+  /// You need to provide a [colorScheme]
+  static ThemeData generateThemeDataFromColorScheme(ColorScheme colorScheme,
+      [Brightness? brightness]) {
+    final _brightness = brightness ?? colorScheme.brightness;
+    final _background =
+        _brightness == Brightness.light ? null : Colors.grey.shade900;
+    final _colorScheme = ColorScheme.fromSeed(
+        seedColor: colorScheme.primary,
+        brightness: _brightness,
+        background: _background);
+    final theme = ThemeData(
+        colorScheme: _colorScheme,
+        visualDensity: VisualDensity.standard,
+        useMaterial3: true);
+    return _generateTheme(theme);
+  }
+
+  /// Generate a theme from a colorScheme
+  /// You can provide a [brightness] if needed (by default -> Brightness.light)
+  /// You can provide a [seedColor] if needed (by default -> jellyfin purple color)
+  static ThemeData generateThemeDataFromSeedColor(
       [Brightness brightness = Brightness.light, Color? seedColor]) {
-    seedColor ??= jellyLightPurpleMap[500]!;
     final background =
         brightness == Brightness.light ? null : Colors.grey.shade900;
     final theme = ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: seedColor,
-          brightness: brightness,
-          background: background,
-        ),
+            seedColor: seedColor ?? jellyLightPurpleMap[500]!,
+            brightness: brightness,
+            background: background),
         visualDensity: VisualDensity.standard,
         useMaterial3: true);
-    final textTheme = getTextThemeWithColor(theme.colorScheme.onBackground);
+    return _generateTheme(theme);
+  }
 
+  /// Generate a custom theme
+  /// You need to provide a [theme]
+  static ThemeData _generateTheme(ThemeData theme) {
+    final textTheme =
+        _generateTextThemeFromColor(theme.colorScheme.onBackground);
     return theme
         .copyWith(textTheme: textTheme)
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
@@ -158,7 +184,9 @@ class Theme {
         .copyWith(cardTheme: CardTheme(color: theme.colorScheme.background));
   }
 
-  static TextTheme getTextThemeWithColor([Color? color]) {
+  /// Generate a text theme specific to this app
+  /// You can provide a [color] to specify font color
+  static TextTheme _generateTextThemeFromColor([Color? color]) {
     final poppinsFont = (TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'Poppins', color: color);
     final hindMaduraiFont = (TextStyle? textStyle) =>

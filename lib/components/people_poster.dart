@@ -8,7 +8,7 @@ class PeoplePoster extends StatefulWidget {
   final Person person;
   final bool clickable;
   final bool bigPoster;
-  final VoidCallback? onPressed;
+  final Function(String)? onPressed;
 
   PeoplePoster(
       {Key? key,
@@ -43,17 +43,17 @@ class _PeoplePosterState extends State<PeoplePoster>
   @override
   Widget build(BuildContext context) {
     // TODO do something to handle image correctly when item removed from list
-    final finalPoster = widget.bigPoster ? bigPoster() : poster();
+    final heroTag = '${widget.person.id}-${Uuid().v1()}-person';
+    final finalPoster = widget.bigPoster ? bigPoster(heroTag) : poster(heroTag);
     if (widget.clickable) {
       return OutlinedButton(
-          onPressed: widget.onPressed,
+          onPressed: () => widget.onPressed?.call(heroTag),
           autofocus: false,
           focusNode: _node,
           style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                  ),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
                   backgroundColor: Colors.transparent)
               .copyWith(side: buttonBorderSide())
               .copyWith(elevation: buttonElevation()),
@@ -62,9 +62,9 @@ class _PeoplePosterState extends State<PeoplePoster>
     return finalPoster;
   }
 
-  Widget poster() {
+  Widget poster(String heroTag) {
     return Hero(
-        tag: '${widget.person.id}-${Uuid().v1()}-person',
+        tag: heroTag,
         child: AspectRatio(
             aspectRatio: 2 / 3,
             child: AsyncImage(
@@ -81,9 +81,9 @@ class _PeoplePosterState extends State<PeoplePoster>
             )));
   }
 
-  Widget bigPoster() {
+  Widget bigPoster(String heroTag) {
     return Hero(
-        tag: '${widget.person.id}-${Uuid().v1()}-person',
+        tag: heroTag,
         child: AspectRatio(
           aspectRatio: 2 / 3,
           child: ClipRRect(

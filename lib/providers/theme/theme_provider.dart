@@ -27,10 +27,12 @@ class ThemeProvider extends ChangeNotifier {
         final brightnessName = sharedPreferences.getString(THEME_KEY);
         final brightness =
             Brightness.values.firstWhere((e) => e.name == brightnessName);
-        _themeData = personnal_theme.Theme.generateThemeData(brightness);
+        _themeData =
+            personnal_theme.Theme.generateThemeDataFromSeedColor(brightness);
       } else {
         // Set default
-        _themeData = personnal_theme.Theme.generateThemeData(Brightness.light);
+        _themeData = personnal_theme.Theme.generateThemeDataFromSeedColor(
+            Brightness.light);
       }
       _themeMode = _themeData.colorScheme.brightness == Brightness.dark
           ? ThemeMode.dark
@@ -39,7 +41,8 @@ class ThemeProvider extends ChangeNotifier {
       notifyListeners();
     });
 
-    _themeData = personnal_theme.Theme.generateThemeData(Brightness.light);
+    _themeData =
+        personnal_theme.Theme.generateThemeDataFromSeedColor(Brightness.light);
     _themeMode = _themeData.colorScheme.brightness == Brightness.dark
         ? ThemeMode.dark
         : ThemeMode.light;
@@ -54,7 +57,8 @@ class ThemeProvider extends ChangeNotifier {
     final brightness = _themeData.colorScheme.brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
-    _themeData = personnal_theme.Theme.generateThemeData(brightness);
+    _themeData =
+        personnal_theme.Theme.generateThemeDataFromSeedColor(brightness);
     await sharedPreferences.setString(THEME_KEY, brightness.name);
     notifyListeners();
   }

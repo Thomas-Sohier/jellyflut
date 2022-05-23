@@ -6,6 +6,7 @@ class Luminance {
     final brightness = dominantColor.computeLuminance() > 0.5
         ? Brightness.light
         : Brightness.dark;
-    return personnal_theme.Theme.generateThemeData(brightness, dominantColor);
+    return personnal_theme.Theme.generateThemeDataFromSeedColor(
+        brightness, dominantColor);
   }
 }
