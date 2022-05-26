@@ -122,13 +122,13 @@ class PlayersProfile {
             containerProfiles: [],
             directPlayProfiles: [
               DirectPlayProfile(
-                  container: 'webm,mp4,m4v,mov,mkv,avi',
+                  container: 'webm,mp4,m4v,mov,mkv,avi,mpegts',
                   type: 'Video',
                   videoCodec: 'h264,hevc,vp8,vp9,av1,mpeg4',
                   audioCodec: 'aac,mp2,mp3,ac3,eac3,dts,opus,flac,vorbis'),
               DirectPlayProfile(
-                  container: 'webm,m4a,m4b,webm',
-                  audioCodec: 'aac,mp2,mp3,ac3,eac3,opus,flac,vorbis',
+                  container: 'webm,m4a,m4b,webm,mpegts',
+                  audioCodec: 'aac,mp2,mp3,ac3,eac3,dts,opus,flac,vorbis',
                   type: 'Audio'),
               DirectPlayProfile(container: 'mp3', type: 'Audio'),
               DirectPlayProfile(container: 'aac', type: 'Audio'),
