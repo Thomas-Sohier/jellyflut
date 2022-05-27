@@ -407,13 +407,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.2"
-  epubx:
-    dependency: "direct main"
-    description:
-      name: epubx
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   equatable:
     dependency: "direct main"
     description:
@@ -1015,13 +1008,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   reactive_forms:
     dependency: "direct main"
     description:
@@ -1127,6 +1113,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  shu_epub:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "6288dbbaabb4ac2155b39c5ef61b11f58bca6769"
+      url: "https://github.com/getBoolean/shu_epub.git"
+    source: git
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -6,7 +6,6 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:logging/logging.dart';
 import 'package:easy_localization/src/public_ext.dart';
-import 'package:epubx/epubx.dart' as epubx;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';
@@ -20,6 +19,7 @@ import 'package:jellyflut/screens/book/util/book_utils.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
 
 import 'package:rxdart/subjects.dart';
+import 'package:shu_epub/shu_epub.dart';
 
 class BookReaderPage extends StatefulWidget {
   final Item item;
@@ -62,9 +62,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
 
   Future<void> constructView(Future<Uint8List> book) async {
     final fileExtension = item.getFileExtension();
-    final bookExtension =
-        epubx.EnumFromString<BookExtensions>(BookExtensions.values)
-            .get(fileExtension!.substring(1, fileExtension.length));
+    final bookExtension = BookExtensions.fromString(fileExtension);
     switch (bookExtension) {
       case BookExtensions.CBA:
       case BookExtensions.CBZ:
@@ -77,8 +75,9 @@ class _BookReaderPageState extends State<BookReaderPage> {
         break;
       case BookExtensions.EPUB:
       default:
-        final epub = await epubx.EpubReader.readBook(book);
-        final bookView = await constructEpubView(epub);
+        final epubController =
+            EpubArchiveController(await book, enableCache: true);
+        final bookView = await constructEpubView(epubController);
         bookBloc.add(BookLoaded(bookView: bookView));
         RawKeyboard.instance.addListener(_onKey);
     }
@@ -117,11 +116,12 @@ class _BookReaderPageState extends State<BookReaderPage> {
     }
   }
 
-  Future<Widget> constructEpubView(epubx.EpubBook book) async {
-    _pageListener.add({0: book.Content?.Html?.length ?? 0});
+  Future<Widget> constructEpubView(EpubArchiveController book) async {
+    final epubDetails = await book.getEpubDetails();
+    _pageListener.add({0: epubDetails?.package?.manifest?.items.length ?? 0});
     return EpubView(
         controller: _controller,
-        epubBook: book,
+        epubDetails: epubDetails!,
         listener: (currentPage, nbPage) =>
             _pageListener.add({currentPage: nbPage}));
   }

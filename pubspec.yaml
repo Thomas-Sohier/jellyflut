@@ -6,7 +6,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.1.55
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 module:
   androidX: true
@@ -29,7 +29,10 @@ dependencies:
   drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.0
-  epubx: ^3.0.0
+  shu_epub:
+    git:
+      url: https://github.com/getBoolean/shu_epub.git
+      ref: main
   equatable: ^2.0.3
   file_picker: ^4.6.0
   flutter:
