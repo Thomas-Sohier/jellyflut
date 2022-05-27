@@ -35,7 +35,7 @@ class _HomeParentState extends State<HomeParent> {
             return HomeDrawerTabsBuilder(items: items);
           } else if (snapshot.hasError) {
             return OffLineScreen(
-                error: snapshot.error,
+                error: snapshot.error as Error?,
                 reloadFunction: () {
                   setState(() {
                     categoryFuture = UserService.getLibraryViews();

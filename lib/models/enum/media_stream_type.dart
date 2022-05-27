@@ -1,5 +1,3 @@
-import 'enum_values.dart';
-
 ///Audio
 /// The audio.
 ///
@@ -12,11 +10,19 @@ import 'enum_values.dart';
 /// Video
 /// The video.
 
-enum MediaStreamType { AUDIO, EMBEDDEDIMAGE, SUBTITLE, VIDEO }
+enum MediaStreamType {
+  AUDIO('Audio'),
+  Book('Book'),
+  EMBEDDEDIMAGE('EmbeddedImage'),
+  Photo('Photo'),
+  SUBTITLE('Subtitle'),
+  VIDEO('Video');
 
-final mediaStreamType = EnumValues({
-  'Audio': MediaStreamType.AUDIO,
-  'EmbeddedImage': MediaStreamType.EMBEDDEDIMAGE,
-  'Subtitle': MediaStreamType.SUBTITLE,
-  'Video': MediaStreamType.VIDEO
-});
+  final String value;
+  const MediaStreamType(this.value);
+
+  static MediaStreamType fromString(String value) {
+    return MediaStreamType.values
+        .firstWhere((type) => type.value.toLowerCase() == value.toLowerCase());
+  }
+}

@@ -9,7 +9,6 @@ import 'dart:io';
 
 // import 'package:fereader/fereader.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -31,6 +30,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/stream/init_stream.dart';
+import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
@@ -223,8 +223,7 @@ class Item {
         parentIndexNumber: json['ParentIndexNumber'],
         etag: json['Etag'],
         collectionType: json['CollectionType'] != null
-            ? EnumFromString<CollectionType>(CollectionType.values)
-                .get(json['CollectionType'])
+            ? CollectionType.fromString(json['CollectionType'])
             : null,
         dateCreated: json['DateCreated'] == null
             ? null
@@ -275,7 +274,7 @@ class Item {
         parentId: json['ParentId'],
         seriesId: json['SeriesId'],
         seasonId: json['SeasonId'],
-        type: EnumFromString<ItemType>(ItemType.values).get(json['Type'])!,
+        type: ItemType.fromString(json['Type']),
         artists: json['Artists'] == null
             ? <Artist>[]
             : List<Artist>.from(json['Artists'].map((x) => Artist.fromMap(x))),
@@ -351,7 +350,9 @@ class Item {
             : List<Chapter>.from(
                 json['Chapters'].map((x) => Chapter.fromMap(x))),
         locationType: json['LocationType'],
-        mediaType: mediaStreamType.map[json['MediaType']],
+        mediaType: json['MediaType'] != null
+            ? MediaStreamType.fromString(json['MediaType'])
+            : null,
         lockedFields: json['LockedFields'] == null
             ? <dynamic>[]
             : List<dynamic>.from(json['LockedFields'].map((x) => x)),
@@ -457,7 +458,7 @@ class Item {
           ? List<dynamic>.from(chapters.map((x) => x.toMap()))
           : null,
       'LocationType': locationType,
-      'MediaType': itemTypeValues.reverse[mediaType],
+      'MediaType': mediaType?.value,
       'LockedFields': lockedFields.isNotEmpty
           ? List<dynamic>.from(lockedFields.map((x) => x))
           : null,
@@ -1031,7 +1032,7 @@ class Item {
   /// Return the item file's extension
   /// Example : .cbz, .epub
   /// Can return [null]
-  String? getFileExtension() {
+  String getFileExtension() {
     if (path != null && path!.isNotEmpty) {
       final regexString = r'\.[0-9a-z]+$';
       final regExp = RegExp(regexString);
