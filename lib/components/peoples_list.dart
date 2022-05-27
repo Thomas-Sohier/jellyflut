@@ -110,7 +110,7 @@ class _PeoplesListState extends State<PeoplesList> {
     );
   }
 
-  void onTap(Item item, Person person, String heroTag) {
-    customRouter.push(DetailsRoute(item: item, heroTag: heroTag));
+  Future<void> onTap(Item item, Person person, String heroTag) {
+    return customRouter.push(DetailsRoute(item: item, heroTag: heroTag));
   }
 }

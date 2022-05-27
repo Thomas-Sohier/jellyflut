@@ -1,6 +1,7 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -38,7 +39,7 @@ class Poster extends StatefulWidget {
   _PosterState createState() => _PosterState();
 }
 
-class _PosterState extends State<Poster> {
+class _PosterState extends State<Poster> with AbsordAction {
   late final FocusNode node;
 
   @override
@@ -47,15 +48,16 @@ class _PosterState extends State<Poster> {
     super.initState();
   }
 
-  void onTap() {
-    customRouter.push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
+  Future<void> redirection() {
+    return customRouter
+        .push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.clickable) {
       return OutlinedButton(
-        onPressed: () => onTap(),
+        onPressed: () => action(redirection),
         autofocus: false,
         focusNode: node,
         style: OutlinedButton.styleFrom(

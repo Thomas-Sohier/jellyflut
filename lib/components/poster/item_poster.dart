@@ -64,7 +64,6 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   void initState() {
     _node = FocusNode();
-    updatePosterProperties();
     // hero tag setter
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
     aspectRatio = widget.widgetAspectRatio ??
@@ -75,7 +74,14 @@ class _ItemPosterState extends State<ItemPoster>
   @override
   void didChangeDependencies() {
     textColor = widget.textColor ?? Theme.of(context).colorScheme.onBackground;
+    updatePosterProperties();
     super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(ItemPoster oldWidget) {
+    updatePosterProperties();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -86,7 +92,6 @@ class _ItemPosterState extends State<ItemPoster>
 
   @override
   Widget build(BuildContext context) {
-    updatePosterProperties();
     return AspectRatio(aspectRatio: aspectRatio, child: body(context));
   }
 

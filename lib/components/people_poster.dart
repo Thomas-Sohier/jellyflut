@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,14 +24,16 @@ class PeoplePoster extends StatefulWidget {
 }
 
 class _PeoplePosterState extends State<PeoplePoster>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AbsordAction {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;
+  late final heroTag;
 
   @override
   void initState() {
     _node = FocusNode();
+    heroTag = '${widget.person.id}-${Uuid().v1()}-person';
     super.initState();
   }
 
@@ -40,14 +43,19 @@ class _PeoplePosterState extends State<PeoplePoster>
     super.dispose();
   }
 
+  Future<void> onTap() {
+    if (widget.onPressed != null) {
+      return widget.onPressed!(heroTag);
+    }
+    return Future.value(null);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO do something to handle image correctly when item removed from list
-    final heroTag = '${widget.person.id}-${Uuid().v1()}-person';
     final finalPoster = widget.bigPoster ? bigPoster(heroTag) : poster(heroTag);
     if (widget.clickable) {
       return OutlinedButton(
-          onPressed: () => widget.onPressed?.call(heroTag),
+          onPressed: () => action(onTap),
           autofocus: false,
           focusNode: _node,
           style: OutlinedButton.styleFrom(

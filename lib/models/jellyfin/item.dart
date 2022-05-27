@@ -1213,7 +1213,7 @@ class Item {
   /// If Book open Epub reader
   /// If Video open video player
   /// If music play it and show music button
-  void playItem() async {
+  Future<void> playItem() {
     var musicProvider = MusicProvider();
     if (type == ItemType.EPISODE ||
         type == ItemType.SEASON ||
@@ -1221,22 +1221,23 @@ class Item {
         type == ItemType.MOVIE ||
         type == ItemType.TVCHANNEL ||
         type == ItemType.VIDEO) {
-      // return InitStreamingItemUtil.initFromItem(item: this);
-      await customRouter.push(StreamRoute(item: this));
+      return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
       if (musicProvider.getAudioPlayer == null) {
         final audioPlayer = AudioPlayer();
         musicProvider.setAudioPlayer(audioPlayer);
       }
-      return await musicProvider.playRemoteAudio(this);
+      return musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       if (musicProvider.getAudioPlayer == null) {
         final audioPlayer = AudioPlayer();
         musicProvider.setAudioPlayer(audioPlayer);
       }
-      return await musicProvider.playPlaylist(this);
+      return musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
-      await customRouter.push(EpubRoute(item: this));
+      return customRouter.push(EpubRoute(item: this));
+    } else {
+      throw UnimplementedError('Item is not playable (type : $type');
     }
   }
 

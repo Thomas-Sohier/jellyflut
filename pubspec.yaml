@@ -12,7 +12,7 @@ module:
   androidX: true
 
 dependencies:
-  animations: ^2.0.2
+  animations: ^2.0.3
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0
   auto_route: ^4.0.1
@@ -23,7 +23,7 @@ dependencies:
   carousel_slider: ^4.1.1
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.4
-  dart_vlc: ^0.2.0
+  dart_vlc: ^0.2.1
   device_info_plus: ^3.2.3
   dio: ^4.0.6
   drop_shadow: ^0.0.1+4
@@ -31,17 +31,15 @@ dependencies:
   easy_localization_loader: ^1.0.0
   epubx: ^3.0.0
   equatable: ^2.0.3
-  file_picker: ^4.5.1
+  file_picker: ^4.6.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_colorpicker: ^1.0.3
-  flutter_html: ^2.2.1
   flutter_settings_ui: ^2.0.1
-  flutter_svg: ^1.0.3
+  flutter_svg: ^0.23.0+1
   flutter_vlc_player: ^7.1.4
   fluttertoast: ^8.0.9
-  image: ^3.1.3
   intl: ^0.17.0
   just_audio: ^0.9.21
   just_audio_libwinmedia: ^0.0.4
@@ -51,9 +49,9 @@ dependencies:
   path: ^1.8.1
   path_provider: ^2.0.10
   permission_handler: ^9.2.0
-  photo_view: ^0.13.0
-  provider: ^6.0.2
-  reactive_forms: ^12.0.0
+  photo_view: ^0.14.0
+  provider: ^6.0.3
+  reactive_forms: ^13.0.0
   responsive_builder: ^0.4.2
   rxdart: ^0.27.3
   shared_preferences: ^2.0.15
@@ -71,16 +69,11 @@ dev_dependencies:
   build_runner: ^2.1.11
   dart_code_metrics: ^4.15.2
   flutter_launcher_icons: ^0.9.2
+  flutter_lints: ^2.0.1
   flutter_native_splash: ^2.2.0+1
   flutter_test:
     sdk: flutter
   moor_generator: ^4.6.0+1
-  pedantic: ^1.11.1
-
-dependency_overrides:
-  flutter_svg: ^1.0.3
-  wakelock: ^0.6.1+2
-  path: ^1.8.1
 
 # The following section is specific to Flutter.
 flutter:

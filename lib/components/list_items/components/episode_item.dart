@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -29,7 +30,7 @@ class EpisodeItem extends StatefulWidget {
 }
 
 class _EpisodeItemState extends State<EpisodeItem>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AbsordAction {
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;
@@ -47,14 +48,15 @@ class _EpisodeItemState extends State<EpisodeItem>
     super.dispose();
   }
 
-  void _onTap(String heroTag) {
-    customRouter.push(DetailsRoute(item: widget.item, heroTag: heroTag));
+  Future<void> _onTap() {
+    return customRouter
+        .push(DetailsRoute(item: widget.item, heroTag: posterHeroTag));
   }
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => _onTap(posterHeroTag), child: epsiodeItem());
+        onPressed: () => action(_onTap), child: epsiodeItem());
   }
 
   Widget epsiodeItem() {

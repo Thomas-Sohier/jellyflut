@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
@@ -39,7 +40,7 @@ class PaletteButton extends StatefulWidget {
 }
 
 class _PaletteButtonState extends State<PaletteButton>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, AbsordAction {
   // variable for both button
   // size
   late double minWidth;
@@ -81,7 +82,7 @@ class _PaletteButtonState extends State<PaletteButton>
           child: TextButton(
               autofocus: false,
               focusNode: _node,
-              onPressed: widget.onPressed,
+              onPressed: () => action(widget.onPressed),
               style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
