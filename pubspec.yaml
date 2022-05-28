@@ -45,7 +45,7 @@ dependencies:
   fluttertoast: ^8.0.9
   intl: ^0.17.0
   just_audio: ^0.9.21
-  just_audio_libwinmedia: ^0.0.4
+  just_audio_mpv: ^0.1.1
   moor: ^4.6.1+1
   octo_image: ^1.0.2
   package_info_plus: ^1.4.2

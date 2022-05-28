@@ -8,7 +8,6 @@
 
 #include <dart_vlc/dart_vlc_plugin.h>
 #include <flutter_native_view/flutter_native_view_plugin.h>
-#include <libwinmedia/libwinmedia_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 #include <sqlite3_flutter_libs/sqlite3_flutter_libs_plugin.h>
 #include <url_launcher_windows/url_launcher_windows.h>
@@ -19,8 +18,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("DartVlcPlugin"));
   FlutterNativeViewPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterNativeViewPlugin"));
-  LibwinmediaPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("LibwinmediaPlugin"));
   PermissionHandlerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
   Sqlite3FlutterLibsPluginRegisterWithRegistrar(
