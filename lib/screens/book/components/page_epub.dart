@@ -1,4 +1,3 @@
-import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 
 class PageEpub extends StatelessWidget {

@@ -43,11 +43,11 @@ class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
 
   List<PopupMenuEntry<String>> _playerListTile(BuildContext context) {
     final languageItems = <PopupMenuEntry<String>>[];
-    getVideoPlayerOptions()
-        .forEach((String player) => languageItems.add(CheckedPopupMenuItem(
-              value: player,
-              checked: currentValue == player,
-              child: Text(player),
+    StreamingSoftware.getVideoPlayerOptions()
+        .forEach((player) => languageItems.add(CheckedPopupMenuItem(
+              value: player.name,
+              checked: currentValue == player.name,
+              child: Text(player.name),
             )));
     return languageItems;
   }
@@ -63,12 +63,5 @@ class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
         currentValue = value;
       });
     }
-  }
-
-  List<String> getVideoPlayerOptions() {
-    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      return StreamingSoftwareComputerName.values.map((e) => e.name).toList();
-    }
-    return StreamingSoftwareName.values.map((e) => e.name).toList();
   }
 }

@@ -253,17 +253,19 @@ class StreamingService {
           .getDatabase
           .settingsDao
           .getSettingsById(userApp!.settingsId);
-      final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
+      final streamingSoftware = StreamingSoftware.values.firstWhere((e) =>
           e.toString() ==
           'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
 
       switch (streamingSoftware) {
-        case StreamingSoftwareName.vlc:
+        case StreamingSoftware.VLC:
           final playerProfile =
               PlayersProfile().getByName(PlayerProfileName.VLC_PHONE);
           return DeviceProfileParent(
               deviceProfile: playerProfile?.deviceProfile);
-        case StreamingSoftwareName.exoplayer:
+        case StreamingSoftware.EXOPLAYER:
+        case StreamingSoftware.AVPLAYER:
+        default:
           final deviceProfile = await getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }

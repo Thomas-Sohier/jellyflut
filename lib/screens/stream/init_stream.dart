@@ -33,11 +33,9 @@ class InitStreamingItemUtil {
 
   static Future<dynamic> initControllerFromItem({required Item item}) async {
     final db = AppDatabase().getDatabase;
-    final streamingSoftwareDB =
-        await db.settingsDao.getSettingsById(userApp!.settingsId);
-    final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
-        e.toString() ==
-        'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+    final setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
+    final streamingSoftware =
+        StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
     late final Item _item;
@@ -53,29 +51,14 @@ class InitStreamingItemUtil {
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
-      case StreamingSoftwareName.vlc:
+      case StreamingSoftware.VLC:
         return _initVLCMediaPlayer(_item);
-      // case StreamingSoftwareName.mpv:
-      //   playerWidget = await _initMpvMediaPlayer(_item);
-      //   break;
-      case StreamingSoftwareName.exoplayer:
+      case StreamingSoftware.AVPLAYER:
+      case StreamingSoftware.EXOPLAYER:
+      default:
         return _initExoPlayerMediaPlayer(_item);
     }
   }
-
-  // static Future<Widget> _initMpvMediaPlayer(Item item) async {
-  //   final player = await CommonStreamMPV.setupData(item: item);
-
-  //   // If no error while init then play
-  //   await player.play();
-
-  //   return Stack(
-  //     alignment: Alignment.center,
-  //     children: <Widget>[
-  //       CommonControls(isComputer: true),
-  //     ],
-  //   );
-  // }
 
   static Future<dynamic> _initVLCMediaPlayer(Item item) async {
     if (Platform.isLinux || Platform.isWindows) {
@@ -128,35 +111,20 @@ class InitStreamingUrlUtil {
         .getDatabase
         .settingsDao
         .getSettingsById(userApp!.settingsId);
-    final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
+    final streamingSoftware = StreamingSoftware.values.firstWhere((e) =>
         e.toString() ==
         'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
-      case StreamingSoftwareName.vlc:
+      case StreamingSoftware.VLC:
         return _initVLCMediaPlayer(url);
-      // case StreamingSoftwareName.mpv:
-      //   playerWidget = await _initMpvMediaPlayer(url);
-      //   break;
-      case StreamingSoftwareName.exoplayer:
+      case StreamingSoftware.AVPLAYER:
+      case StreamingSoftware.EXOPLAYER:
+      default:
         return _initExoPlayerMediaPlayer(url);
     }
   }
-
-  // static Future<Widget> _initMpvMediaPlayer(String url) async {
-  //   final player = await CommonStreamMPV.setupDataFromUrl(url: url);
-
-  //   // If no error while init then play
-  //   await player.play();
-
-  //   return Stack(
-  //     alignment: Alignment.center,
-  //     children: <Widget>[
-  //       CommonControls(isComputer: true),
-  //     ],
-  //   );
-  // }
 
   static Future<dynamic> _initVLCMediaPlayer(String url) async {
     if (Platform.isLinux || Platform.isWindows) {
