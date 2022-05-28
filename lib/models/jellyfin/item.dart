@@ -1224,6 +1224,7 @@ class Item {
         type == ItemType.VIDEO) {
       return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
+      musicProvider.initPlayer();
       if (musicProvider.getAudioPlayer == null) {
         final audioPlayer = AudioPlayer();
         musicProvider.setAudioPlayer(audioPlayer);

@@ -1,17 +1,25 @@
+import 'dart:io';
+
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_mpv/just_audio_mpv.dart';
+import 'package:just_audio_platform_interface/just_audio_platform_interface.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
   // ignore: prefer_final_fields
   ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: []);
-  AudioPlayer? _audioPlayer;
+  CommonPlayer? _commonPlayer;
   final _colorController = BehaviorSubject<AudioColors>();
 
   // Singleton
@@ -23,13 +31,25 @@ class MusicProvider extends ChangeNotifier {
 
   MusicProvider._internal();
 
-  AudioPlayer? get getAudioPlayer => _audioPlayer;
+  CommonPlayer? get getAudioPlayer => _commonPlayer;
   ConcatenatingAudioSource get getPlaylist => _playlist;
   Item? get getItemPlayer => _item;
   Stream<AudioColors> get getColorcontroller => _colorController;
 
-  void setAudioPlayer(AudioPlayer audioPlayer) {
-    _audioPlayer = audioPlayer;
+  void initPlayer() async {
+    if (Platform.isLinux || Platform.isWindows) {
+      final player = Player(id: audioPlayerId);
+      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
+    } else if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
+      final player = AudioPlayer();
+      _commonPlayer =
+          CommonPlayer.parseJustAudioController(audioPlayer: player);
+    } else {
+      final currentPlatform =
+          Theme.of(customRouter.navigatorKey.currentContext!).platform;
+      throw UnimplementedError(
+          'No audio player on this platform (platform : $currentPlatform');
+    }
   }
 
   void setNewColors(final AudioColors audioColors) {
@@ -41,7 +61,7 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Stream<int?> playingIndex() {
-    return _audioPlayer!.currentIndexStream;
+    return 0;
   }
 
   IndexedAudioSource? getCurrentMusic() {
