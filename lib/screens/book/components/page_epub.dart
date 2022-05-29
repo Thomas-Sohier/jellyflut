@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PageEpub extends StatelessWidget {
   final String? content;
-  const PageEpub({Key? key, required this.content}) : super(key: key);
+  const PageEpub({super.key, required this.content});
 
   @override
   Widget build(BuildContext context) {

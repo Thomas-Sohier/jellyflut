@@ -17,7 +17,7 @@ class LargeDetails extends StatefulWidget {
   final Item item;
   final String? heroTag;
 
-  LargeDetails({Key? key, required this.item, this.heroTag}) : super(key: key);
+  LargeDetails({super.key, required this.item, this.heroTag});
 
   @override
   _LargeDetailsState createState() => _LargeDetailsState();

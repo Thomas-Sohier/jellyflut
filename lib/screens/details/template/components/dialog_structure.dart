@@ -11,12 +11,11 @@ class DialogStructure extends StatelessWidget {
   final FormBloc<Item> formBloc;
 
   const DialogStructure(
-      {Key? key,
+      {super.key,
       this.expanded = false,
       required this.onClose,
       required this.onSubmit,
-      required this.formBloc})
-      : super(key: key);
+      required this.formBloc});
 
   @override
   Widget build(BuildContext context) {

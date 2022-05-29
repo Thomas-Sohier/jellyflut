@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class DateAddedField extends StatelessWidget {
   final FormGroup form;
-  const DateAddedField({Key? key, required this.form}) : super(key: key);
+  const DateAddedField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

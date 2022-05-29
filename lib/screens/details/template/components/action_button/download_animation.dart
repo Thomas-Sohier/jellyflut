@@ -5,8 +5,7 @@ class DownloadAnimation extends StatefulWidget {
   final BehaviorSubject<int> percentDownload;
   final Widget child;
   DownloadAnimation(
-      {Key? key, required this.percentDownload, required this.child})
-      : super(key: key);
+      {super.key, required this.percentDownload, required this.child});
 
   @override
   _DownloadAnimationState createState() => _DownloadAnimationState();

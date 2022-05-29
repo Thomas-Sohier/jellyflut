@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/auth/enum/fields_enum.dart';
 import 'package:jellyflut/shared/extensions/enum_extensions.dart';

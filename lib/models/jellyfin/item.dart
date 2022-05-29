@@ -257,9 +257,7 @@ class Item {
         genres: json['Genres'] == null
             ? <String>[]
             : List<String>.from(json['Genres'].map((x) => x)),
-        communityRating: json['CommunityRating'] == null
-            ? null
-            : json['CommunityRating'].toDouble(),
+        communityRating: json['CommunityRating']?.toDouble(),
         runTimeTicks: json['RunTimeTicks'],
         playAccess: json['PlayAccess'],
         productionYear: json['ProductionYear'],
@@ -311,9 +309,7 @@ class Item {
         tags: json['Tags'] == null
             ? <dynamic>[]
             : List<dynamic>.from(json['Tags'].map((x) => x)),
-        primaryImageAspectRatio: json['PrimaryImageAspectRatio'] == null
-            ? null
-            : json['PrimaryImageAspectRatio'].toDouble(),
+        primaryImageAspectRatio: json['PrimaryImageAspectRatio']?.toDouble(),
         mediaStreams: json['MediaStreams'] == null
             ? <MediaStream>[]
             : List<MediaStream>.from(
@@ -1363,8 +1359,7 @@ class Item {
         .getSettingsById(userApp!.settingsId);
     var streamingSoftware = TranscodeAudioCodecName.values.firstWhere((e) =>
         e.toString() ==
-        'TranscodeAudioCodecName.' +
-            streamingSoftwareDB.preferredTranscodeAudioCodec);
+        'TranscodeAudioCodecName.${streamingSoftwareDB.preferredTranscodeAudioCodec}');
 
     // First we try to fetch item locally to play it
     final database = db.AppDatabase().getDatabase;

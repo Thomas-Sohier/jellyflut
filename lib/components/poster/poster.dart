@@ -22,7 +22,7 @@ class Poster extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const Poster(
-      {Key? key,
+      {super.key,
       this.showParent = false,
       this.dropShadow = false,
       this.backup = true,
@@ -33,8 +33,7 @@ class Poster extends StatefulWidget {
       this.clickable = true,
       required this.tag,
       required this.boxFit,
-      required this.item})
-      : super(key: key);
+      required this.item});
   @override
   _PosterState createState() => _PosterState();
 }

@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class ProductionYearField extends StatelessWidget {
   final FormGroup form;
-  const ProductionYearField({Key? key, required this.form}) : super(key: key);
+  const ProductionYearField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class JellyfinLogo extends StatelessWidget {
-  const JellyfinLogo({Key? key}) : super(key: key);
+  const JellyfinLogo({super.key});
 
   @override
   Widget build(BuildContext context) {

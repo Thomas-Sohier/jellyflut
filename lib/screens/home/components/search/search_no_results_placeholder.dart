@@ -1,8 +1,8 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SearchNoResultsPlaceholder extends StatelessWidget {
-  const SearchNoResultsPlaceholder({Key? key}) : super(key: key);
+  const SearchNoResultsPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {

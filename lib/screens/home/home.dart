@@ -10,7 +10,7 @@ import 'package:jellyflut/screens/home/resume.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  Home({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -25,8 +25,8 @@ class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
   late Future<Category> categoryFuture;
 
   @override
-  set tabController(TabController _tabController) {
-    super.tabController = _tabController;
+  set tabController(TabController tabController) {
+    super.tabController = tabController;
   }
 
   @override
@@ -100,8 +100,8 @@ class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
   Widget buildCategory(Category category) {
     return SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
-      var _item = category.items[index];
-      return HomeCategory(_item);
+      var item = category.items[index];
+      return HomeCategory(item);
     }, childCount: category.items.length));
   }
 }

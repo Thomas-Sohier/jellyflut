@@ -76,15 +76,15 @@ class Theme {
   /// You need to provide a [colorScheme]
   static ThemeData generateThemeDataFromColorScheme(ColorScheme colorScheme,
       [Brightness? brightness]) {
-    final _brightness = brightness ?? colorScheme.brightness;
-    final _background =
-        _brightness == Brightness.light ? null : Colors.grey.shade900;
-    final _colorScheme = ColorScheme.fromSeed(
+    final newBrightness = brightness ?? colorScheme.brightness;
+    final background =
+        brightness == Brightness.light ? null : Colors.grey.shade900;
+    final newColorScheme = ColorScheme.fromSeed(
         seedColor: colorScheme.primary,
-        brightness: _brightness,
-        background: _background);
+        brightness: newBrightness,
+        background: background);
     final theme = ThemeData(
-        colorScheme: _colorScheme,
+        colorScheme: newColorScheme,
         visualDensity: VisualDensity.standard,
         useMaterial3: true);
     return _generateTheme(theme);
@@ -187,9 +187,9 @@ class Theme {
   /// Generate a text theme specific to this app
   /// You can provide a [color] to specify font color
   static TextTheme _generateTextThemeFromColor([Color? color]) {
-    final poppinsFont = (TextStyle? textStyle) =>
+    TextStyle? poppinsFont(TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'Poppins', color: color);
-    final hindMaduraiFont = (TextStyle? textStyle) =>
+    TextStyle? hindMaduraiFont(TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'HindMadurai', color: color);
     final typography = Typography.englishLike2021;
 

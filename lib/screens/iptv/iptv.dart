@@ -9,7 +9,7 @@ import 'package:jellyflut/services/livetv/livetv_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Iptv extends StatefulWidget {
-  Iptv({Key? key}) : super(key: key);
+  Iptv({super.key});
 
   @override
   _IptvState createState() => _IptvState();
@@ -22,8 +22,8 @@ class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
   List<Widget> get tabs => [Tab(text: 'Chaines'), Tab(text: 'Guide')];
 
   @override
-  set tabController(TabController _tabController) {
-    super.tabController = _tabController;
+  set tabController(TabController tabController) {
+    super.tabController = tabController;
   }
 
   @override

@@ -12,7 +12,7 @@ import 'header_bar.dart';
 
 class HomeDrawerTabsBuilder extends StatefulWidget {
   final List<Item> items;
-  HomeDrawerTabsBuilder({Key? key, required this.items}) : super(key: key);
+  HomeDrawerTabsBuilder({super.key, required this.items});
 
   @override
   State<HomeDrawerTabsBuilder> createState() => _HomeDrawerTabsBuilderState();
@@ -72,7 +72,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder>
 
     //initial route
     routes.add(HomeRoute(key: UniqueKey()));
-    i.forEach((item) {
+    for (var item in i) {
       switch (item.collectionType) {
         case CollectionType.LIVETV:
           routes.add(IptvRoute(key: UniqueKey()));
@@ -80,7 +80,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder>
         default:
           routes.add(CollectionRoute(key: ValueKey(item), item: item));
       }
-    });
+    }
     return routes;
   }
 

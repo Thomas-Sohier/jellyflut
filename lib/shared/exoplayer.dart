@@ -94,13 +94,17 @@ Future<DeviceProfile> getExoplayerProfile() async {
   profile.directPlayProfiles = [];
   profile.codecProfiles = [];
 
-  subtitleProfiles.forEach((sp) => profile.subtitleProfiles!
-      .add(SubtitleProfile(format: sp, method: 'Embed')));
+  for (var sp in subtitleProfiles) {
+    profile.subtitleProfiles!
+      .add(SubtitleProfile(format: sp, method: 'Embed'));
+  }
 
   var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
 
-  externalSubtitleProfiles.forEach((sp) => profile.subtitleProfiles!
-      .add(SubtitleProfile(format: sp, method: 'External')));
+  for (var sp in externalSubtitleProfiles) {
+    profile.subtitleProfiles!
+      .add(SubtitleProfile(format: sp, method: 'External'));
+  }
 
   profile.subtitleProfiles!
       .add(SubtitleProfile(format: 'dvdsub', method: 'Encode'));
@@ -111,7 +115,7 @@ Future<DeviceProfile> getExoplayerProfile() async {
   var videoCodecs = <Codec>[];
   var audioCodecs = <Codec>[];
 
-  codecs.audioCodecs!.forEach((audioCodec) {
+  for (var audioCodec in codecs.audioCodecs!) {
     audioCodecs.add(audioCodec);
 
     var profiles = audioCodec.profiles.join('|');
@@ -141,9 +145,9 @@ Future<DeviceProfile> getExoplayerProfile() async {
 
     profile.codecProfiles!.add(CodecProfile(
         type: 'Audio', codec: audioCodec.codec, conditions: conditions));
-  });
+  }
 
-  codecs.videoCodecs!.forEach((videoCodec) {
+  for (var videoCodec in codecs.videoCodecs!) {
     videoCodecs.add(videoCodec);
 
     var profiles = videoCodec.profiles.join('|');
@@ -174,7 +178,7 @@ Future<DeviceProfile> getExoplayerProfile() async {
       profile.codecProfiles!.add(CodecProfile(
           type: 'Video', codec: videoCodec.codec, conditions: conditions));
     }
-  });
+  }
 
   videoProfiles.forEach((key, value) {
     profile.directPlayProfiles!.add(DirectPlayProfile(

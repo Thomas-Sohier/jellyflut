@@ -5,7 +5,7 @@ import 'drawer_large_button.dart';
 
 class CutsomDrawer extends StatefulWidget {
   final List<Item> items;
-  CutsomDrawer({Key? key, required this.items}) : super(key: key);
+  CutsomDrawer({super.key, required this.items});
 
   @override
   _CutsomDrawerState createState() => _CutsomDrawerState();
@@ -40,10 +40,12 @@ class _CutsomDrawerState extends State<CutsomDrawer> {
     //initial route
     navBarItems.add(
         DrawerLargeButton(name: 'Home', index: 0, icon: Icons.home_outlined));
-    items.forEach((item) => navBarItems.add(DrawerLargeButton(
+    for (var item in items) {
+      navBarItems.add(DrawerLargeButton(
         index: items.indexOf(item) + 1,
         name: item.name,
-        icon: getRightIconForCollectionType(item.collectionType))));
+        icon: getRightIconForCollectionType(item.collectionType)));
+    }
     return navBarItems;
   }
 }

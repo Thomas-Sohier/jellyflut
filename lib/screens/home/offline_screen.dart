@@ -10,8 +10,7 @@ class OffLineScreen extends StatelessWidget {
   final Error? error;
   final void Function() reloadFunction;
   const OffLineScreen(
-      {Key? key, required this.error, required this.reloadFunction})
-      : super(key: key);
+      {super.key, required this.error, required this.reloadFunction});
 
   @override
   Widget build(BuildContext context) {

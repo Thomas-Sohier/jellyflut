@@ -7,8 +7,7 @@ class AudioPlayerSection extends StatelessWidget {
   final GlobalKey<_AudioBitrateValueEditorState> _bitrateEditorButton =
       GlobalKey();
 
-  AudioPlayerSection({Key? key, required this.setting, required this.database})
-      : super(key: key);
+  AudioPlayerSection({super.key, required this.setting, required this.database});
 
   @override
   SettingsSection build(BuildContext context) {

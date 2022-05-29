@@ -17,8 +17,7 @@ class CurrentDownloadItem extends StatefulWidget {
   final void Function()? callbackOnDelete;
 
   const CurrentDownloadItem(
-      {Key? key, required this.itemDownload, this.callbackOnDelete})
-      : super(key: key);
+      {super.key, required this.itemDownload, this.callbackOnDelete});
 
   @override
   _CurrentDownloadItemState createState() => _CurrentDownloadItemState();
@@ -163,7 +162,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
   Widget title() {
     final title = widget.itemDownload.item.indexNumber != null
         ? '${widget.itemDownload.item.indexNumber} - ${widget.itemDownload.item.name}'
-        : '${widget.itemDownload.item.name}';
+        : widget.itemDownload.item.name;
 
     return Flexible(
       child: Text(title,

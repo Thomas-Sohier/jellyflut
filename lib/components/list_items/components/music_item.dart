@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 
 class MusicItem extends StatefulWidget {
   final Item item;
-  MusicItem({Key? key, required this.item}) : super(key: key);
+  MusicItem({super.key, required this.item});
 
   @override
   _MusicItemState createState() => _MusicItemState();

@@ -12,12 +12,11 @@ class PeoplePoster extends StatefulWidget {
   final Function(String)? onPressed;
 
   PeoplePoster(
-      {Key? key,
+      {super.key,
       required this.person,
       this.onPressed,
       this.bigPoster = false,
-      this.clickable = true})
-      : super(key: key);
+      this.clickable = true});
 
   @override
   _PeoplePosterState createState() => _PeoplePosterState();

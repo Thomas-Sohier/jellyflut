@@ -4,7 +4,7 @@ import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SkeletonRightDetails extends StatelessWidget {
-  const SkeletonRightDetails({Key? key}) : super(key: key);
+  const SkeletonRightDetails({super.key});
 
   @override
   Widget build(BuildContext context) {

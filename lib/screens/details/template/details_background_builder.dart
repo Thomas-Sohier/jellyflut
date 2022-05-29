@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/details/template/details_background.dart';
 
 class DetailsBackgroundBuilder extends StatelessWidget {
-  const DetailsBackgroundBuilder({Key? key}) : super(key: key);
+  const DetailsBackgroundBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

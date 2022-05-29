@@ -7,7 +7,7 @@ import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 
 class DownloadedItems extends StatefulWidget {
-  const DownloadedItems({Key? key}) : super(key: key);
+  const DownloadedItems({super.key});
 
   @override
   _DownloadedItemsState createState() => _DownloadedItemsState();

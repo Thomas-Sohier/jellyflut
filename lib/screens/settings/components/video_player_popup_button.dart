@@ -7,12 +7,11 @@ class VideoPlayerPopupButton extends StatefulWidget {
   final GlobalKey<PopupMenuButtonState<String>>? popupButtonKey;
 
   const VideoPlayerPopupButton(
-      {Key? key,
+      {super.key,
       required this.setting,
       required this.database,
       this.popupButtonKey,
-      this.initialValue})
-      : super(key: key);
+      this.initialValue});
 
   @override
   _VideoPlayerPopupButtonState createState() => _VideoPlayerPopupButtonState();

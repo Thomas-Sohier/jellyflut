@@ -9,14 +9,13 @@ class ListItemsGrid extends StatelessWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const ListItemsGrid(
-      {Key? key,
+      {super.key,
       this.boxFit = BoxFit.cover,
       this.placeholder,
       required this.scrollPhysics,
       required this.scrollController,
       required this.gridPosterHeight,
-      required this.items})
-      : super(key: key);
+      required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,6 @@ class ListItemsGrid extends StatelessWidget {
           items.first.getPrimaryAspectRatio(showParent: true);
       final numberOfItemRow =
           (constraints.maxWidth / (height * itemAspectRatio)).round();
-      ;
       return CustomScrollView(
           controller: scrollController,
           scrollDirection: Axis.vertical,

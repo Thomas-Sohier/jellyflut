@@ -5,8 +5,7 @@ class ServerNameField extends StatelessWidget {
   final VoidCallback onSubmitted;
 
   const ServerNameField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {

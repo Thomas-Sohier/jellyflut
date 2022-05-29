@@ -7,8 +7,7 @@ class VideoPlayerSection extends StatelessWidget {
   final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton =
       GlobalKey();
 
-  VideoPlayerSection({Key? key, required this.setting, required this.database})
-      : super(key: key);
+  VideoPlayerSection({super.key, required this.setting, required this.database});
 
   @override
   SettingsSection build(BuildContext context) {

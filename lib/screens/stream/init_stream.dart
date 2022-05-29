@@ -38,25 +38,24 @@ class InitStreamingItemUtil {
         StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
-    late final Item _item;
     final itemExist = await db.downloadsDao.doesExist(item.id);
 
     if (itemExist) {
       final download = await db.downloadsDao.getDownloadById(item.id);
-      _item = Item.fromMap(download.item!);
+      item = Item.fromMap(download.item!);
     } else {
-      final _tempItem = await item.getPlayableItemOrLastUnplayed();
-      _item = await ItemService.getItem(_tempItem.id);
+      final tempItem = await item.getPlayableItemOrLastUnplayed();
+      item = await ItemService.getItem(tempItem.id);
     }
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
       case StreamingSoftware.VLC:
-        return _initVLCMediaPlayer(_item);
+        return _initVLCMediaPlayer(item);
       case StreamingSoftware.AVPLAYER:
       case StreamingSoftware.EXOPLAYER:
       default:
-        return _initExoPlayerMediaPlayer(_item);
+        return _initExoPlayerMediaPlayer(item);
     }
   }
 
@@ -111,9 +110,8 @@ class InitStreamingUrlUtil {
         .getDatabase
         .settingsDao
         .getSettingsById(userApp!.settingsId);
-    final streamingSoftware = StreamingSoftware.values.firstWhere((e) =>
-        e.toString() ==
-        'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+    final streamingSoftware =
+        StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {

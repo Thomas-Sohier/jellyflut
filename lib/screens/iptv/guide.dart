@@ -14,7 +14,7 @@ import 'package:shimmer/shimmer.dart';
 
 class Guide extends StatefulWidget {
   final List<Item> items;
-  Guide({Key? key, required this.items}) : super(key: key);
+  Guide({super.key, required this.items});
 
   @override
   State<Guide> createState() => _GuideState();

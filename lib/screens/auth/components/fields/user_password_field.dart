@@ -5,8 +5,7 @@ class UserPasswordField extends StatelessWidget {
   final VoidCallback onSubmitted;
 
   const UserPasswordField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {

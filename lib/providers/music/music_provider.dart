@@ -139,13 +139,13 @@ class MusicProvider extends ChangeNotifier {
     await ItemService.getItems(parentId: item.id).then((value) async {
       final indexToReturn = _playlist.length;
       final items =
-          value.items.where((_item) => _item.isFolder == false).toList();
+          value.items.where((item) => item.isFolder == false).toList();
       //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
       for (var index = 0; index < items.length; index++) {
-        final _item = items.elementAt(index);
+        final item = items.elementAt(index);
         final streamURL =
-            await StreamingService.contructAudioURL(itemId: _item.id);
-        final musicItem = await AudioMetadata.parseFromItem(streamURL, _item);
+            await StreamingService.contructAudioURL(itemId: item.id);
+        final musicItem = await AudioMetadata.parseFromItem(streamURL, item);
         insertIntoPlaylist(musicItem);
       }
       return indexToReturn;

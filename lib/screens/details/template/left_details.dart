@@ -9,10 +9,10 @@ class LeftDetails extends StatelessWidget {
   final String? heroTag;
 
   const LeftDetails({
-    Key? key,
+    super.key,
     required this.item,
     this.heroTag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
   final Color color;
-  SongInfos({Key? key, required this.color}) : super(key: key);
+  SongInfos({super.key, required this.color});
 
   @override
   _SongInfosState createState() => _SongInfosState();

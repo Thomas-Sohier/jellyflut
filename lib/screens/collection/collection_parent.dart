@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class CollectionParent extends StatefulWidget {
   final Item item;
 
-  const CollectionParent({Key? key, required this.item}) : super(key: key);
+  const CollectionParent({super.key, required this.item});
 
   @override
   State<StatefulWidget> createState() {
@@ -28,8 +28,8 @@ class _CollectionParentState extends State<CollectionParent>
   late final CarrousselProvider carrousselProvider;
 
   @override
-  set tabController(TabController _tabController) {
-    super.tabController = _tabController;
+  set tabController(TabController tabController) {
+    super.tabController = tabController;
   }
 
   @override

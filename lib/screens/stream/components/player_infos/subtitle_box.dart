@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:subtitle/subtitle.dart' hide Subtitle;
 
 class SubtitleBox extends StatefulWidget {
-  SubtitleBox({Key? key}) : super(key: key);
+  SubtitleBox({super.key});
 
   @override
   _SubtitleBoxState createState() => _SubtitleBoxState();

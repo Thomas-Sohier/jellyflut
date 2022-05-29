@@ -5,8 +5,7 @@ class TagsField extends StatefulWidget {
   final FormGroup form;
   final double ITEM_HEIGHT = 35;
 
-  const TagsField({Key? key, required this.form, required this.item})
-      : super(key: key);
+  const TagsField({super.key, required this.form, required this.item});
 
   @override
   _TagsFieldState createState() => _TagsFieldState();

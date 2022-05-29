@@ -2,7 +2,7 @@ part of '../details_widgets.dart';
 
 class PeoplesDetailsWidget extends StatelessWidget {
   final Item item;
-  const PeoplesDetailsWidget({Key? key, required this.item}) : super(key: key);
+  const PeoplesDetailsWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

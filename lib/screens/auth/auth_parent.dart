@@ -14,7 +14,7 @@ import 'components/lava/lava_painter.dart';
 class AuthParent extends StatefulWidget {
   final VoidCallback? onAuthenticated;
 
-  AuthParent({Key? key, this.onAuthenticated}) : super(key: key);
+  AuthParent({super.key, this.onAuthenticated});
 
   @override
   _AuthParentState createState() => _AuthParentState();

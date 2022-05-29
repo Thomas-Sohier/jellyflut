@@ -9,7 +9,7 @@ class OutlinedButtonSelector extends StatelessWidget {
   final Color? primary;
 
   const OutlinedButtonSelector(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.onPressed,
       this.padding = EdgeInsets.zero,
@@ -17,8 +17,7 @@ class OutlinedButtonSelector extends StatelessWidget {
       this.primary,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
-      )})
-      : super(key: key);
+      )});
 
   @override
   Widget build(BuildContext context) {

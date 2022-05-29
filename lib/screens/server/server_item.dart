@@ -10,8 +10,7 @@ class ServerItem extends StatelessWidget {
   final bool isInUse;
   final ServersWithUsers serverWithUser;
   const ServerItem(
-      {Key? key, required this.serverWithUser, this.isInUse = false})
-      : super(key: key);
+      {super.key, required this.serverWithUser, this.isInUse = false});
 
   @override
   Widget build(BuildContext context) {

@@ -1,17 +1,16 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
+import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class SubtitleButtonSelector extends StatefulWidget {
-  SubtitleButtonSelector({Key? key}) : super(key: key);
+  SubtitleButtonSelector({super.key});
 
   @override
-  _SubtitleButtonSelectorState createState() => _SubtitleButtonSelectorState();
+  State<SubtitleButtonSelector> createState() => _SubtitleButtonSelectorState();
 }
 
 class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {

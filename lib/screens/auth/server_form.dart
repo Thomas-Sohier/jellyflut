@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
@@ -105,7 +105,7 @@ class _ServerFormState extends State<ServerForm> {
         errors.add('field_required'.tr(args: [fieldName]));
       });
       authBloc
-          .add(AuthError('form_not_valid'.tr() + '\n${errors.join(',\n')}'));
+          .add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
     }
   }
 }

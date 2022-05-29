@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,13 +17,12 @@ class LargeBookView extends StatefulWidget {
   final Stream<Map<int, int>> streamPosition;
   final PageController pageController;
   const LargeBookView(
-      {Key? key,
+      {super.key,
       required this.item,
       required this.bookBloc,
       required this.pageController,
       required this.streamPosition,
-      required this.listener})
-      : super(key: key);
+      required this.listener});
 
   @override
   _LargeBookViewState createState() => _LargeBookViewState();

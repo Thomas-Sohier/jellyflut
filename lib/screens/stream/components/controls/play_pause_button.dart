@@ -3,7 +3,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PlayPauseButton extends StatefulWidget {
-  PlayPauseButton({Key? key}) : super(key: key);
+  PlayPauseButton({super.key});
 
   @override
   _PlayPauseButtonState createState() => _PlayPauseButtonState();

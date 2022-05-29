@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SongBackground extends StatefulWidget {
   final Color color;
-  SongBackground({Key? key, required this.color}) : super(key: key);
+  SongBackground({super.key, required this.color});
 
   @override
   _SongBackgroundState createState() => _SongBackgroundState();

@@ -4,8 +4,7 @@ class GradientMask extends StatelessWidget {
   final double radius;
   final Widget child;
 
-  const GradientMask({Key? key, required this.child, this.radius = 0.5})
-      : super(key: key);
+  const GradientMask({super.key, required this.child, this.radius = 0.5});
 
   @override
   Widget build(BuildContext context) {

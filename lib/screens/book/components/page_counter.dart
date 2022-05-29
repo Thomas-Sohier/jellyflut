@@ -4,8 +4,7 @@ class PageCounter extends StatelessWidget {
   final int? currentPage;
   final int? nbPages;
   const PageCounter(
-      {Key? key, required this.currentPage, required this.nbPages})
-      : super(key: key);
+      {super.key, required this.currentPage, required this.nbPages});
 
   @override
   Widget build(BuildContext context) {

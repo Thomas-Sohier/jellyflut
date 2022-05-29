@@ -8,7 +8,7 @@ import 'package:jellyflut/screens/downloads/current_download_item.dart';
 import 'package:provider/provider.dart';
 
 class CurrentDownloadList extends StatefulWidget {
-  CurrentDownloadList({Key? key}) : super(key: key);
+  CurrentDownloadList({super.key});
 
   @override
   _CurrentDownloadListState createState() => _CurrentDownloadListState();

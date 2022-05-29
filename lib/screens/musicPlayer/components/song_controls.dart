@@ -9,8 +9,7 @@ import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 class SongControls extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  SongControls({Key? key, required this.color, required this.backgroundColor})
-      : super(key: key);
+  SongControls({super.key, required this.color, required this.backgroundColor});
 
   @override
   _SongControlsState createState() => _SongControlsState();

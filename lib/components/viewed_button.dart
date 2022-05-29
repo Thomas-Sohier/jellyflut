@@ -9,8 +9,7 @@ class ViewedButton extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   const ViewedButton(this.item,
-      {Key? key, this.padding = const EdgeInsets.all(10)})
-      : super(key: key);
+      {super.key, this.padding = const EdgeInsets.all(10)});
 
   @override
   State<StatefulWidget> createState() {

@@ -3,8 +3,7 @@ part of '../details_widgets.dart';
 class OverviewDetailsWidget extends StatefulWidget {
   final String? overview;
 
-  const OverviewDetailsWidget({Key? key, required this.overview})
-      : super(key: key);
+  const OverviewDetailsWidget({super.key, required this.overview});
 
   @override
   _OverviewDetailsWidgetState createState() => _OverviewDetailsWidgetState();

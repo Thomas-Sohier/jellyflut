@@ -13,7 +13,7 @@ class Logo extends StatelessWidget {
     ),
   };
 
-  Logo({Key? key, required this.item}) : super(key: key);
+  Logo({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

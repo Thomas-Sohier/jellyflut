@@ -1,7 +1,7 @@
 part of 'sections.dart';
 
 class ThemeSwitcherSection extends StatelessWidget {
-  ThemeSwitcherSection({Key? key}) : super(key: key);
+  ThemeSwitcherSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {

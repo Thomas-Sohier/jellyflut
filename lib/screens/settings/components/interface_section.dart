@@ -2,7 +2,7 @@ part of 'sections.dart';
 
 class InterfaceSection extends StatelessWidget {
   final GlobalKey<PopupMenuButtonState<Locale>> _localeKey = GlobalKey();
-  InterfaceSection({Key? key}) : super(key: key);
+  InterfaceSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {

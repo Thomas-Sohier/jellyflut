@@ -21,7 +21,7 @@ class Stream extends StatefulWidget {
   const Stream({this.item, this.url});
 
   @override
-  _StreamState createState() => _StreamState();
+  State<Stream> createState() => _StreamState();
 }
 
 class _StreamState extends State<Stream> {

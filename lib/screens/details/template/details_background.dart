@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 class DetailsBackground extends StatelessWidget {
-  const DetailsBackground({Key? key}) : super(key: key);
+  const DetailsBackground({super.key});
 
   @override
   Widget build(BuildContext context) {

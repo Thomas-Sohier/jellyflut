@@ -62,9 +62,7 @@ class MediaPlayedInfos {
         shuffleMode: json['ShuffleMode'],
         maxStreamingBitrate: json['MaxStreamingBitrate'],
         positionTicks: json['PositionTicks'],
-        playbackStartTimeTicks: json['PlaybackStartTimeTicks'] == null
-            ? null
-            : json['PlaybackStartTimeTicks'].toDouble(),
+        playbackStartTimeTicks: json['PlaybackStartTimeTicks']?.toDouble(),
         subtitleStreamIndex: json['SubtitleStreamIndex'],
         audioStreamIndex: json['AudioStreamIndex'],
         bufferedRanges: json['BufferedRanges'] == null

@@ -19,7 +19,7 @@ class CommonStreamVLCComputer {
 
   static Future<Player> setupData({required Item item}) async {
     final streamURL = await item.getItemURL();
-    final _player = Player(id: videoPlayerId, commandlineArguments: [
+    final player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
       '--no-spu'
     ]);
@@ -32,19 +32,19 @@ class CommonStreamVLCComputer {
       media = Media.file(File(streamURL));
     }
 
-    _player.open(media, autoStart: false);
+    player.open(media, autoStart: false);
 
     // create timer to save progress
-    final timer = _startProgressTimer(item, _player);
+    final timer = _startProgressTimer(item, player);
     streamingProvider.timer?.cancel();
     streamingProvider.setTimer(timer);
 
     // create common stream controller
     final commonStream =
-        CommonStream.parseVlcComputerController(player: _player);
-    _player.play();
+        CommonStream.parseVlcComputerController(player: player);
+    player.play();
     streamingProvider.setCommonStream(commonStream);
-    return Future.value(_player);
+    return Future.value(player);
   }
 
   static Future<Player> setupDataFromUrl({required String url}) async {
@@ -69,18 +69,20 @@ class CommonStreamVLCComputer {
   }
 
   void removeListener() {
-    timers.forEach((t) => t.cancel());
+    for (var t in timers) {
+      t.cancel();
+    }
   }
 
-  static Timer _startProgressTimer(Item item, Player _player) {
+  static Timer _startProgressTimer(Item item, Player player) {
     return Timer.periodic(
         Duration(seconds: 15),
         (Timer t) => StreamingService.streamingProgress(item,
-            canSeek: _player.playback.isSeekable,
-            isMuted: _player.general.volume > 0 ? true : false,
-            isPaused: !_player.playback.isPlaying,
-            positionTicks: _player.position.position?.inMicroseconds ?? 0,
-            volumeLevel: _player.general.volume.round(),
+            canSeek: player.playback.isSeekable,
+            isMuted: player.general.volume > 0 ? true : false,
+            isPaused: !player.playback.isPlaying,
+            positionTicks: player.position.position?.inMicroseconds ?? 0,
+            volumeLevel: player.general.volume.round(),
             subtitlesIndex: 0));
   }
 

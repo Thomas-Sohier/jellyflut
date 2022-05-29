@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/models/jellyfin/chapter.dart';
@@ -7,10 +7,10 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class ChapterButton extends StatefulWidget {
-  ChapterButton({Key? key}) : super(key: key);
+  ChapterButton({super.key});
 
   @override
-  _ChapterButtonState createState() => _ChapterButtonState();
+  State<ChapterButton> createState() => _ChapterButtonState();
 }
 
 class _ChapterButtonState extends State<ChapterButton> {

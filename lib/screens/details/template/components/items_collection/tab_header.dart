@@ -13,7 +13,8 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   TabHeader({Key? key, required this.seasons, this.tabController});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return FutureBuilder<Category>(
         future: seasons,
         builder: (context, snapshot) {
@@ -44,8 +45,9 @@ class TabHeader extends SliverPersistentHeaderDelegate {
     items.sort((Item item1, Item item2) =>
         item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
         length + 1);
-    items.forEach(
-        (Item item) => headers.add(tabHeader(item, items.indexOf(item))));
+    for (var item in items) {
+      headers.add(tabHeader(item, items.indexOf(item)));
+    }
     return headers;
   }
 

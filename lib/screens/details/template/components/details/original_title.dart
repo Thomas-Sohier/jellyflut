@@ -2,8 +2,7 @@ part of '../details_widgets.dart';
 
 class OriginalTitleDetailsWidget extends StatelessWidget {
   final String? title;
-  const OriginalTitleDetailsWidget({Key? key, required this.title})
-      : super(key: key);
+  const OriginalTitleDetailsWidget({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

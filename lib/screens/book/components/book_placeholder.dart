@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 class BookPlaceholder extends StatelessWidget {
   final Item item;
-  const BookPlaceholder({Key? key, required this.item}) : super(key: key);
+  const BookPlaceholder({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

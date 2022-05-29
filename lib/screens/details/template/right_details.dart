@@ -15,8 +15,7 @@ import 'package:rxdart/rxdart.dart';
 class RightDetails extends StatefulWidget {
   final Item item;
   final Widget? posterAndLogoWidget;
-  RightDetails({Key? key, required this.item, this.posterAndLogoWidget})
-      : super(key: key);
+  RightDetails({super.key, required this.item, this.posterAndLogoWidget});
 
   @override
   _RightDetailsState createState() => _RightDetailsState();

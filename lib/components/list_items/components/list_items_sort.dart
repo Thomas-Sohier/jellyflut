@@ -5,8 +5,7 @@ class ListItemsSort extends StatelessWidget {
   final List<ListType> listTypes;
 
   const ListItemsSort(
-      {Key? key, this.child = const SizedBox(), required this.listTypes})
-      : super(key: key);
+      {super.key, this.child = const SizedBox(), required this.listTypes});
 
   @override
   Widget build(BuildContext context) {

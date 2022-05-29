@@ -46,7 +46,7 @@ class ListItems extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const ListItems.fromFuture(
-      {Key? key,
+      {super.key,
       required this.itemsFuture,
       this.loadMoreFunction = _defaultLoadMore,
       this.collectionBloc,
@@ -60,11 +60,10 @@ class ListItems extends StatefulWidget {
       this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
       this.listType = ListType.POSTER})
-      : category = null,
-        super(key: key);
+      : category = null;
 
   const ListItems.fromList(
-      {Key? key,
+      {super.key,
       required this.category,
       this.collectionBloc,
       this.placeholder,
@@ -78,8 +77,7 @@ class ListItems extends StatefulWidget {
       this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
       this.listType = ListType.POSTER})
-      : itemsFuture = null,
-        super(key: key);
+      : itemsFuture = null;
 
   static Future<Category> _defaultLoadMore(int i, int l) {
     return Future.value(
@@ -87,7 +85,7 @@ class ListItems extends StatefulWidget {
   }
 
   @override
-  _ListItemsState createState() => _ListItemsState();
+  State<ListItems> createState() => _ListItemsState();
 }
 
 class _ListItemsState extends State<ListItems>

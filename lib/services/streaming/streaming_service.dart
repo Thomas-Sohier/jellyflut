@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 import 'dart:developer';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
@@ -67,14 +67,14 @@ class StreamingService {
 
     final url = '${server.url}/Sessions/Playing/Progress';
 
-    final _mediaPlayedInfos = mediaPlayedInfos.toJson();
-    _mediaPlayedInfos.removeWhere((key, value) => value == null);
+    final mediaPlayedInfosJSON = mediaPlayedInfos.toJson();
+    mediaPlayedInfosJSON.removeWhere((key, value) => value == null);
 
-    final _json = json.encode(_mediaPlayedInfos);
+    final json = convert.json.encode(mediaPlayedInfos);
 
     dio.options.contentType = 'application/json';
     dio
-        .post(url, data: _json)
+        .post(url, data: json)
         .then((_) => print('progress ok'))
         .catchError((onError) => print(onError));
   }
@@ -154,9 +154,9 @@ class StreamingService {
           streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
     }
 
-    final _audioStreamIndex = audioStreamIndex ??
+    final finalAudioStreamIndex = audioStreamIndex ??
         streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
-    final _subtitleStreamIndex = subtitleStreamIndex ??
+    final finalSubtitleStreamIndex = subtitleStreamIndex ??
         streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
 
     profile ??= DeviceProfileParent();
@@ -168,11 +168,9 @@ class StreamingService {
     profile.enableDirectStream ??= true;
     profile.autoOpenLiveStream ??= true;
     profile.deviceProfile ??= DeviceProfile();
-    profile.audioStreamIndex ??= _audioStreamIndex;
-    profile.subtitleStreamIndex ??= _subtitleStreamIndex;
+    profile.audioStreamIndex ??= finalAudioStreamIndex;
+    profile.subtitleStreamIndex ??= finalSubtitleStreamIndex;
     profile.startTimeTicks ??= startTimeTick;
-    // profile.mediaSourceId ??= itemId;
-    // profile.liveStreamId ??= itemId;
     profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
     profile.maxAudioChannels ??= 5; // TODO make this configurable
 
@@ -255,7 +253,7 @@ class StreamingService {
           .getSettingsById(userApp!.settingsId);
       final streamingSoftware = StreamingSoftware.values.firstWhere((e) =>
           e.toString() ==
-          'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+          'StreamingSoftwareName.${streamingSoftwareDB.preferredPlayer}');
 
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:
@@ -327,15 +325,7 @@ class StreamingService {
   }
 
   static String _generateItemIdWithHyphen(String id) {
-    return id.substring(0, 8) +
-        '-' +
-        id.substring(8, 12) +
-        '-' +
-        id.substring(12, 16) +
-        '-' +
-        id.substring(16, 20) +
-        '-' +
-        id.substring(20, id.length);
+    return '${id.substring(0, 8)}-${id.substring(8, 12)}-${id.substring(12, 16)}-${id.substring(16, 20)}-${id.substring(20, id.length)}';
   }
 
   static Future<dynamic> bitrateTest({required int size}) async {

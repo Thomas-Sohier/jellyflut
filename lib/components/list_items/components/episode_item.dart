@@ -18,12 +18,11 @@ class EpisodeItem extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const EpisodeItem(
-      {Key? key,
+      {super.key,
       required this.item,
       this.placeholder,
       this.clickable = true,
-      this.boxFit = BoxFit.cover})
-      : super(key: key);
+      this.boxFit = BoxFit.cover});
 
   @override
   _EpisodeItemState createState() => _EpisodeItemState();
@@ -124,7 +123,7 @@ class _EpisodeItemState extends State<EpisodeItem>
   Widget title() {
     final title = widget.item.indexNumber != null
         ? '${widget.item.indexNumber} - ${widget.item.name}'
-        : '${widget.item.name}';
+        : widget.item.name;
 
     return Flexible(
       child: Text(title,

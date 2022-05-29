@@ -104,12 +104,8 @@ class MediaStream {
         isForced: json['IsForced'],
         height: json['Height'],
         width: json['Width'],
-        averageFrameRate: json['AverageFrameRate'] == null
-            ? null
-            : json['AverageFrameRate'].toDouble(),
-        realFrameRate: json['RealFrameRate'] == null
-            ? null
-            : json['RealFrameRate'].toDouble(),
+        averageFrameRate: json['AverageFrameRate']?.toDouble(),
+        realFrameRate: json['RealFrameRate']?.toDouble(),
         profile: json['Profile'],
         type: MediaStreamType.fromString(json['Type']),
         aspectRatio: json['AspectRatio'],
