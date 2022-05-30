@@ -14,7 +14,7 @@ class VideoPlayerPopupButton extends StatefulWidget {
       this.initialValue});
 
   @override
-  _VideoPlayerPopupButtonState createState() => _VideoPlayerPopupButtonState();
+  State<VideoPlayerPopupButton> createState() => _VideoPlayerPopupButtonState();
 }
 
 class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {

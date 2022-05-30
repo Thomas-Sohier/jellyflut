@@ -14,7 +14,7 @@ class SongInfos extends StatefulWidget {
   SongInfos({super.key, required this.color});
 
   @override
-  _SongInfosState createState() => _SongInfosState();
+  State<SongInfos> createState() => _SongInfosState();
 }
 
 class _SongInfosState extends State<SongInfos> {

@@ -22,7 +22,7 @@ class CommonControls extends StatefulWidget {
   const CommonControls({super.key, this.isComputer = false});
 
   @override
-  _CommonControlsState createState() => _CommonControlsState();
+  State<CommonControls> createState() => _CommonControlsState();
 }
 
 class _CommonControlsState extends State<CommonControls> {

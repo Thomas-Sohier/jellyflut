@@ -8,7 +8,7 @@ class BackwardButton extends StatefulWidget {
   BackwardButton({super.key, this.duration = const Duration(seconds: 10)});
 
   @override
-  _BackwardButtonState createState() => _BackwardButtonState();
+  State<BackwardButton> createState() => _BackwardButtonState();
 }
 
 class _BackwardButtonState extends State<BackwardButton> {

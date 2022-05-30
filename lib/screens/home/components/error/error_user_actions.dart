@@ -11,7 +11,7 @@ class ErrorUserActions extends StatefulWidget {
       {super.key, required this.reloadFunction, required this.errorMessage});
 
   @override
-  _ErrorUserActionsState createState() => _ErrorUserActionsState();
+  State<ErrorUserActions> createState() => _ErrorUserActionsState();
 }
 
 class _ErrorUserActionsState extends State<ErrorUserActions> {

@@ -15,7 +15,7 @@ class Controllerbuilder extends StatefulWidget {
   Controllerbuilder({super.key, required this.controller});
 
   @override
-  _ControllerbuilderState createState() => _ControllerbuilderState();
+  State<Controllerbuilder> createState() => _ControllerbuilderState();
 }
 
 class _ControllerbuilderState extends State<Controllerbuilder> {

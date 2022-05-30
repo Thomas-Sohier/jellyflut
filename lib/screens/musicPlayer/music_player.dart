@@ -19,7 +19,7 @@ class MusicPlayer extends StatefulWidget {
   MusicPlayer({super.key});
 
   @override
-  _MusicPlayerState createState() => _MusicPlayerState();
+  State<MusicPlayer> createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {

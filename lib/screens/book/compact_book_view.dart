@@ -22,7 +22,7 @@ class CompactBookView extends StatefulWidget {
       required this.listener});
 
   @override
-  _CompactBookViewState createState() => _CompactBookViewState();
+  State<CompactBookView> createState() => _CompactBookViewState();
 }
 
 class _CompactBookViewState extends State<CompactBookView> {

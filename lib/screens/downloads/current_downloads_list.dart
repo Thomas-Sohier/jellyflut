@@ -11,7 +11,7 @@ class CurrentDownloadList extends StatefulWidget {
   CurrentDownloadList({super.key});
 
   @override
-  _CurrentDownloadListState createState() => _CurrentDownloadListState();
+  State<CurrentDownloadList> createState() => _CurrentDownloadListState();
 }
 
 class _CurrentDownloadListState extends State<CurrentDownloadList> {

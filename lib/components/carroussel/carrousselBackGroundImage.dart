@@ -8,7 +8,7 @@ class CarrousselBackGroundImage extends StatefulWidget {
   CarrousselBackGroundImage({super.key});
 
   @override
-  _CarrousselBackGroundImageState createState() =>
+  State<CarrousselBackGroundImage> createState() =>
       _CarrousselBackGroundImageState();
 }
 

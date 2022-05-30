@@ -8,7 +8,7 @@ class PlayerInterface extends StatefulWidget {
   PlayerInterface({super.key, this.controller});
 
   @override
-  _PlayerInterfaceState createState() => _PlayerInterfaceState();
+  State<PlayerInterface> createState() => _PlayerInterfaceState();
 }
 
 class _PlayerInterfaceState extends State<PlayerInterface> {

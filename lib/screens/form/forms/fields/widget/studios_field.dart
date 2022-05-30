@@ -8,7 +8,7 @@ class StudiosField extends StatefulWidget {
   const StudiosField({super.key, required this.form, required this.item});
 
   @override
-  _StudiosFieldState createState() => _StudiosFieldState();
+  State<StudiosField> createState() => _StudiosFieldState();
 }
 
 class _StudiosFieldState extends State<StudiosField> {

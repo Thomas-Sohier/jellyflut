@@ -42,7 +42,7 @@ class ItemPoster extends StatefulWidget {
   final BoxFit boxFit;
 
   @override
-  _ItemPosterState createState() => _ItemPosterState();
+  State<ItemPoster> createState() => _ItemPosterState();
 }
 
 class _ItemPosterState extends State<ItemPoster>

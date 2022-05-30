@@ -27,7 +27,7 @@ class BookReaderPage extends StatefulWidget {
   const BookReaderPage({super.key, required this.item});
 
   @override
-  _BookReaderPageState createState() => _BookReaderPageState();
+  State<BookReaderPage> createState() => _BookReaderPageState();
 }
 
 class _BookReaderPageState extends State<BookReaderPage> {

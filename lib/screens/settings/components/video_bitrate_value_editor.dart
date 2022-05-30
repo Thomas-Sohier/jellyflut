@@ -5,7 +5,7 @@ class VideoBitrateValueEditor extends StatefulWidget {
   VideoBitrateValueEditor({super.key, required this.database});
 
   @override
-  _VideoBitrateValueEditorState createState() =>
+  State<VideoBitrateValueEditor> createState() =>
       _VideoBitrateValueEditorState();
 }
 

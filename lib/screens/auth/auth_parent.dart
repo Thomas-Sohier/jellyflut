@@ -17,7 +17,7 @@ class AuthParent extends StatefulWidget {
   AuthParent({super.key, this.onAuthenticated});
 
   @override
-  _AuthParentState createState() => _AuthParentState();
+  State<AuthParent> createState() => _AuthParentState();
 }
 
 class _AuthParentState extends State<AuthParent> {

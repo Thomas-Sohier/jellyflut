@@ -5,7 +5,7 @@ class AudioBitrateValueEditor extends StatefulWidget {
   AudioBitrateValueEditor({super.key, required this.database});
 
   @override
-  _AudioBitrateValueEditorState createState() =>
+  State<AudioBitrateValueEditor> createState() =>
       _AudioBitrateValueEditorState();
 }
 

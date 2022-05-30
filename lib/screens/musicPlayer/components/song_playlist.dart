@@ -9,7 +9,7 @@ class SongPlaylist extends StatefulWidget {
   SongPlaylist({super.key});
 
   @override
-  _SongPlaylistState createState() => _SongPlaylistState();
+  State<SongPlaylist> createState() => _SongPlaylistState();
 }
 
 class _SongPlaylistState extends State<SongPlaylist> {

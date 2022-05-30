@@ -8,7 +8,7 @@ class SettingButton extends StatefulWidget {
   SettingButton({super.key});
 
   @override
-  _SettingButtonState createState() => _SettingButtonState();
+  State<SettingButton> createState() => _SettingButtonState();
 }
 
 class _SettingButtonState extends State<SettingButton> {

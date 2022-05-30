@@ -6,7 +6,7 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class DownloadButton extends StatefulWidget {
   @override
-  _DownloadButtonState createState() => _DownloadButtonState();
+  State<DownloadButton> createState() => _DownloadButtonState();
 }
 
 class _DownloadButtonState extends State<DownloadButton> {

@@ -12,7 +12,7 @@ class SongControls extends StatefulWidget {
   SongControls({super.key, required this.color, required this.backgroundColor});
 
   @override
-  _SongControlsState createState() => _SongControlsState();
+  State<SongControls> createState() => _SongControlsState();
 }
 
 class _SongControlsState extends State<SongControls> {

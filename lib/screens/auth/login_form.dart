@@ -18,7 +18,7 @@ class LoginForm extends StatefulWidget {
   LoginForm({super.key, this.onAuthenticated});
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {

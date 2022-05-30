@@ -8,7 +8,7 @@ class PipButton extends StatefulWidget {
   PipButton({super.key});
 
   @override
-  _PipButtonState createState() => _PipButtonState();
+  State<PipButton> createState() => _PipButtonState();
 }
 
 class _PipButtonState extends State<PipButton> {

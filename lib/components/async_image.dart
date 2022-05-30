@@ -36,7 +36,7 @@ class AsyncImage extends StatefulWidget {
       this.showParent = false});
 
   @override
-  _AsyncImageState createState() => _AsyncImageState();
+  State<AsyncImage> createState() => _AsyncImageState();
 }
 
 class _AsyncImageState extends State<AsyncImage> {

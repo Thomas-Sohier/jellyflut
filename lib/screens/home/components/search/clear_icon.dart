@@ -8,7 +8,7 @@ class ClearIcon extends StatefulWidget {
   ClearIcon({super.key, required this.searchController});
 
   @override
-  _ClearIconState createState() => _ClearIconState();
+  State<ClearIcon> createState() => _ClearIconState();
 }
 
 class _ClearIconState extends State<ClearIcon> {

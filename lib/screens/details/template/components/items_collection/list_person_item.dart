@@ -13,7 +13,7 @@ class ListPersonItem extends StatefulWidget {
   const ListPersonItem({super.key, required this.item});
 
   @override
-  _ListPersonItemState createState() => _ListPersonItemState();
+  State<ListPersonItem> createState() => _ListPersonItemState();
 }
 
 class _ListPersonItemState extends State<ListPersonItem> {

@@ -9,7 +9,7 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 
 class SearchButton extends StatefulWidget {
   @override
-  _SearchButtonState createState() => _SearchButtonState();
+  State<SearchButton> createState() => _SearchButtonState();
 }
 
 class _SearchButtonState extends State<SearchButton> {

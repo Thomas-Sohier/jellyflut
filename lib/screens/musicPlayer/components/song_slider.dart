@@ -9,7 +9,7 @@ class SongSlider extends StatefulWidget {
   SongSlider({super.key, required this.albumColors});
 
   @override
-  _SongSliderState createState() => _SongSliderState();
+  State<SongSlider> createState() => _SongSliderState();
 }
 
 class _SongSliderState extends State<SongSlider> {

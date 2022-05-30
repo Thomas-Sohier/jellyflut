@@ -6,7 +6,7 @@ class DownloadsParent extends StatefulWidget {
   DownloadsParent({super.key});
 
   @override
-  _DownloadsParentState createState() => _DownloadsParentState();
+  State<DownloadsParent> createState() => _DownloadsParentState();
 }
 
 class _DownloadsParentState extends State<DownloadsParent> {

@@ -8,7 +8,7 @@ class CutsomDrawer extends StatefulWidget {
   CutsomDrawer({super.key, required this.items});
 
   @override
-  _CutsomDrawerState createState() => _CutsomDrawerState();
+  State<CutsomDrawer> createState() => _CutsomDrawerState();
 }
 
 class _CutsomDrawerState extends State<CutsomDrawer> {
@@ -42,9 +42,9 @@ class _CutsomDrawerState extends State<CutsomDrawer> {
         DrawerLargeButton(name: 'Home', index: 0, icon: Icons.home_outlined));
     for (var item in items) {
       navBarItems.add(DrawerLargeButton(
-        index: items.indexOf(item) + 1,
-        name: item.name,
-        icon: getRightIconForCollectionType(item.collectionType)));
+          index: items.indexOf(item) + 1,
+          name: item.name,
+          icon: getRightIconForCollectionType(item.collectionType)));
     }
     return navBarItems;
   }

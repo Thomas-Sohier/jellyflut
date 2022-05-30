@@ -17,7 +17,7 @@ class MovieForm extends StatefulWidget {
   const MovieForm({required this.item});
 
   @override
-  _MovieFormState createState() => _MovieFormState();
+  State<MovieForm> createState() => _MovieFormState();
 }
 
 class _MovieFormState extends State<MovieForm> {

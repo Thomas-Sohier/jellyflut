@@ -9,7 +9,7 @@ class NextButton extends StatefulWidget {
   NextButton({super.key, required this.color, required this.backgroundColor});
 
   @override
-  _NextButtonState createState() => _NextButtonState();
+  State<NextButton> createState() => _NextButtonState();
 }
 
 class _NextButtonState extends State<NextButton> {

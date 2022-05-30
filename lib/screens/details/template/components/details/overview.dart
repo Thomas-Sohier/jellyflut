@@ -6,7 +6,7 @@ class OverviewDetailsWidget extends StatefulWidget {
   const OverviewDetailsWidget({super.key, required this.overview});
 
   @override
-  _OverviewDetailsWidgetState createState() => _OverviewDetailsWidgetState();
+  State<OverviewDetailsWidget> createState() => _OverviewDetailsWidgetState();
 }
 
 class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>

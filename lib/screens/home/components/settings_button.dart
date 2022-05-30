@@ -6,7 +6,7 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class SettingsButton extends StatefulWidget {
   @override
-  _SettingsButtonState createState() => _SettingsButtonState();
+  State<SettingsButton> createState() => _SettingsButtonState();
 }
 
 class _SettingsButtonState extends State<SettingsButton> {

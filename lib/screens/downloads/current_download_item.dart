@@ -20,7 +20,7 @@ class CurrentDownloadItem extends StatefulWidget {
       {super.key, required this.itemDownload, this.callbackOnDelete});
 
   @override
-  _CurrentDownloadItemState createState() => _CurrentDownloadItemState();
+  State<CurrentDownloadItem> createState() => _CurrentDownloadItemState();
 }
 
 class _CurrentDownloadItemState extends State<CurrentDownloadItem>

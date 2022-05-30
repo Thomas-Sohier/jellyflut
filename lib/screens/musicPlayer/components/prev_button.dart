@@ -8,7 +8,7 @@ class PrevButton extends StatefulWidget {
   PrevButton({super.key, required this.color, required this.backgroundColor});
 
   @override
-  _PrevButtonState createState() => _PrevButtonState();
+  State<PrevButton> createState() => _PrevButtonState();
 }
 
 class _PrevButtonState extends State<PrevButton> {

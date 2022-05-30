@@ -10,7 +10,7 @@ class DownloadedItems extends StatefulWidget {
   const DownloadedItems({super.key});
 
   @override
-  _DownloadedItemsState createState() => _DownloadedItemsState();
+  State<DownloadedItems> createState() => _DownloadedItemsState();
 }
 
 class _DownloadedItemsState extends State<DownloadedItems> {

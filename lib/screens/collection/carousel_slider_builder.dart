@@ -10,7 +10,7 @@ class CarouselSliderBuilder extends StatefulWidget {
   CarouselSliderBuilder({super.key});
 
   @override
-  _CarouselSliderBuilderState createState() => _CarouselSliderBuilderState();
+  State<CarouselSliderBuilder> createState() => _CarouselSliderBuilderState();
 }
 
 class _CarouselSliderBuilderState extends State<CarouselSliderBuilder> {

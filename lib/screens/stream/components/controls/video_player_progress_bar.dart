@@ -6,7 +6,7 @@ class VideoPlayerProgressBar extends StatefulWidget {
   VideoPlayerProgressBar({super.key});
 
   @override
-  _VideoPlayerProgressBarState createState() => _VideoPlayerProgressBarState();
+  State<VideoPlayerProgressBar> createState() => _VideoPlayerProgressBarState();
 }
 
 class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {

@@ -25,7 +25,7 @@ class EpisodeItem extends StatefulWidget {
       this.boxFit = BoxFit.cover});
 
   @override
-  _EpisodeItemState createState() => _EpisodeItemState();
+  State<EpisodeItem> createState() => _EpisodeItemState();
 }
 
 class _EpisodeItemState extends State<EpisodeItem>

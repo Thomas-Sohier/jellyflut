@@ -10,7 +10,7 @@ class HomeParent extends StatefulWidget {
   HomeParent({super.key});
 
   @override
-  _HomeParentState createState() => _HomeParentState();
+  State<HomeParent> createState() => _HomeParentState();
 }
 
 class _HomeParentState extends State<HomeParent> {

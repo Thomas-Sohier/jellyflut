@@ -14,7 +14,7 @@ class LavaBuilder extends StatefulWidget {
   const LavaBuilder({this.animationController, this.child = const SizedBox()});
 
   @override
-  _LavaBuilderState createState() => _LavaBuilderState();
+  State<LavaBuilder> createState() => _LavaBuilderState();
 }
 
 class _LavaBuilderState extends State<LavaBuilder>

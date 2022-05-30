@@ -18,7 +18,7 @@ class DetailedItemPoster extends StatefulWidget {
       {required this.item, required this.textColor, required this.heroTag});
 
   @override
-  _DetailedItemPosterState createState() => _DetailedItemPosterState();
+  State<DetailedItemPoster> createState() => _DetailedItemPosterState();
 }
 
 class _DetailedItemPosterState extends State<DetailedItemPoster> {

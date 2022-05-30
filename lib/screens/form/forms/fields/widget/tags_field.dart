@@ -8,7 +8,7 @@ class TagsField extends StatefulWidget {
   const TagsField({super.key, required this.form, required this.item});
 
   @override
-  _TagsFieldState createState() => _TagsFieldState();
+  State<TagsField> createState() => _TagsFieldState();
 }
 
 class _TagsFieldState extends State<TagsField> {

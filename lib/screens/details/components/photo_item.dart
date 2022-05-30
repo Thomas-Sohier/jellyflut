@@ -13,7 +13,7 @@ class PhotoItem extends StatefulWidget {
   PhotoItem({super.key, required this.item, required this.heroTag, this.items});
 
   @override
-  _PhotoItemState createState() => _PhotoItemState();
+  State<PhotoItem> createState() => _PhotoItemState();
 }
 
 class _PhotoItemState extends State<PhotoItem> {

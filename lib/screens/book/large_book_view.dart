@@ -25,7 +25,7 @@ class LargeBookView extends StatefulWidget {
       required this.listener});
 
   @override
-  _LargeBookViewState createState() => _LargeBookViewState();
+  State<LargeBookView> createState() => _LargeBookViewState();
 }
 
 class _LargeBookViewState extends State<LargeBookView> {

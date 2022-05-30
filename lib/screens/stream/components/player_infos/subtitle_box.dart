@@ -9,7 +9,7 @@ class SubtitleBox extends StatefulWidget {
   SubtitleBox({super.key});
 
   @override
-  _SubtitleBoxState createState() => _SubtitleBoxState();
+  State<SubtitleBox> createState() => _SubtitleBoxState();
 }
 
 class _SubtitleBoxState extends State<SubtitleBox> {

@@ -14,7 +14,7 @@ class TranscodeCodecPopupButton extends StatefulWidget {
       this.initialValue});
 
   @override
-  _TranscodeCodecPopupButtonState createState() =>
+  State<TranscodeCodecPopupButton> createState() =>
       _TranscodeCodecPopupButtonState();
 }
 

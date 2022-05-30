@@ -11,7 +11,7 @@ class AudioButtonSelector extends StatefulWidget {
   AudioButtonSelector({super.key});
 
   @override
-  _AudioButtonSelectorState createState() => _AudioButtonSelectorState();
+  State<AudioButtonSelector> createState() => _AudioButtonSelectorState();
 }
 
 class _AudioButtonSelectorState extends State<AudioButtonSelector> {

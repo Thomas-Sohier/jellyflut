@@ -14,7 +14,7 @@ class TabsItems extends StatefulWidget {
   TabsItems({super.key, required this.items, this.indexStream});
 
   @override
-  _TabsItemsState createState() => _TabsItemsState();
+  State<TabsItems> createState() => _TabsItemsState();
 }
 
 class _TabsItemsState extends State<TabsItems> {

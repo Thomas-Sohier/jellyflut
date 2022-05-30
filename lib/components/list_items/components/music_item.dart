@@ -14,7 +14,7 @@ class MusicItem extends StatefulWidget {
   MusicItem({super.key, required this.item});
 
   @override
-  _MusicItemState createState() => _MusicItemState();
+  State<MusicItem> createState() => _MusicItemState();
 }
 
 class _MusicItemState extends State<MusicItem> {

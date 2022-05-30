@@ -18,7 +18,7 @@ class SongImage extends StatefulWidget {
       required this.albumColors});
 
   @override
-  _SongImageState createState() => _SongImageState();
+  State<SongImage> createState() => _SongImageState();
 }
 
 class _SongImageState extends State<SongImage> {

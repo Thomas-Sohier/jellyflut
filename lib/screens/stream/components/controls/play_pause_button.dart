@@ -6,7 +6,7 @@ class PlayPauseButton extends StatefulWidget {
   PlayPauseButton({super.key});
 
   @override
-  _PlayPauseButtonState createState() => _PlayPauseButtonState();
+  State<PlayPauseButton> createState() => _PlayPauseButtonState();
 }
 
 class _PlayPauseButtonState extends State<PlayPauseButton> {

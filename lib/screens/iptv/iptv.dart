@@ -12,7 +12,7 @@ class Iptv extends StatefulWidget {
   Iptv({super.key});
 
   @override
-  _IptvState createState() => _IptvState();
+  State<Iptv> createState() => _IptvState();
 }
 
 class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {

@@ -19,7 +19,7 @@ class PeoplePoster extends StatefulWidget {
       this.clickable = true});
 
   @override
-  _PeoplePosterState createState() => _PeoplePosterState();
+  State<PeoplePoster> createState() => _PeoplePosterState();
 }
 
 class _PeoplePosterState extends State<PeoplePoster>
