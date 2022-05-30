@@ -1,7 +1,14 @@
-enum TranscodeAudioCodecName { auto, ACC, MP3, OPUS }
+enum TranscodeAudioCodec {
+  auto('auto'),
+  ACC('ACC'),
+  MP3('MP3'),
+  OPUS('OPUS');
 
-class TranscodeAudioCodec {
-  final TranscodeAudioCodecName name;
+  final String name;
+  const TranscodeAudioCodec(this.name);
 
-  TranscodeAudioCodec({required this.name});
+  static TranscodeAudioCodec fromString(String name) {
+    return TranscodeAudioCodec.values
+        .firstWhere((codec) => codec.name.toLowerCase() == name.toLowerCase());
+  }
 }

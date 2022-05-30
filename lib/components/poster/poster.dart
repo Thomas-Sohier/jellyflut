@@ -35,7 +35,7 @@ class Poster extends StatefulWidget {
       required this.boxFit,
       required this.item});
   @override
-  _PosterState createState() => _PosterState();
+  State<Poster> createState() => _PosterState();
 }
 
 class _PosterState extends State<Poster> with AbsordAction {

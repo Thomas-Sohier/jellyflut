@@ -1353,13 +1353,12 @@ class Item {
   }
 
   Future<String> createMusicURL() async {
-    var streamingSoftwareDB = await db.AppDatabase()
+    final streamingSoftwareDB = await db.AppDatabase()
         .getDatabase
         .settingsDao
         .getSettingsById(userApp!.settingsId);
-    var streamingSoftware = TranscodeAudioCodecName.values.firstWhere((e) =>
-        e.toString() ==
-        'TranscodeAudioCodecName.${streamingSoftwareDB.preferredTranscodeAudioCodec}');
+    final streamingSoftware = TranscodeAudioCodec.fromString(
+        streamingSoftwareDB.preferredTranscodeAudioCodec);
 
     // First we try to fetch item locally to play it
     final database = db.AppDatabase().getDatabase;

@@ -67,6 +67,6 @@ class _TranscodeCodecPopupButtonState extends State<TranscodeCodecPopupButton> {
   }
 
   List<String> getTranscodeAudioCodecOptions() {
-    return TranscodeAudioCodecName.values.map((e) => e.name).toList();
+    return TranscodeAudioCodec.values.map((e) => e.name).toList();
   }
 }

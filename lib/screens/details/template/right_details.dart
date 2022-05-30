@@ -18,7 +18,7 @@ class RightDetails extends StatefulWidget {
   RightDetails({super.key, required this.item, this.posterAndLogoWidget});
 
   @override
-  _RightDetailsState createState() => _RightDetailsState();
+  State<RightDetails> createState() => _RightDetailsState();
 }
 
 class _RightDetailsState extends State<RightDetails>
@@ -112,10 +112,11 @@ class _RightDetailsState extends State<RightDetails>
           // Shown only if current item is a series (because it contains seasons)
           if (item.type == ItemType.SERIES)
             SliverPersistentHeader(
-                pinned: true,
-                floating: false,
-                delegate:
-                    TabHeader(seasons: seasons, tabController: _tabController)),
+              pinned: true,
+              floating: false,
+              delegate:
+                  TabHeader(seasons: seasons, tabController: _tabController),
+            ),
           SliverToBoxAdapter(
             child: FutureBuilder<Category>(
                 future: seasons,
