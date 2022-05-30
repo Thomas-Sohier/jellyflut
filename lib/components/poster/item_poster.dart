@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progress_bar.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
