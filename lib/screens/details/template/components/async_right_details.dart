@@ -36,15 +36,12 @@ class _AsyncRightDetailsState extends State<AsyncRightDetails>
                 }
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                  child: ListView(
                     children: [
                       const SizedBox(height: 48),
                       Header(
                           item: widget.item, constraints: widget.constraints),
-                      Flexible(child: const SkeletonRightDetails()),
+                      const SkeletonRightDetails(),
                     ],
                   ),
                 );
