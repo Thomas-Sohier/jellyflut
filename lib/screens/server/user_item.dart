@@ -10,7 +10,8 @@ import '../../shared/utils/color_util.dart';
 class UserItem extends StatelessWidget {
   final User user;
   final void Function(User user) onUserSelection;
-  const UserItem({super.key, required this.user, required this.onUserSelection});
+  const UserItem(
+      {super.key, required this.user, required this.onUserSelection});
 
   @override
   Widget build(BuildContext context) {

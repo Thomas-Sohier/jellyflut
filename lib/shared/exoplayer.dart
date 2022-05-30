@@ -95,15 +95,14 @@ Future<DeviceProfile> getExoplayerProfile() async {
   profile.codecProfiles = [];
 
   for (var sp in subtitleProfiles) {
-    profile.subtitleProfiles!
-      .add(SubtitleProfile(format: sp, method: 'Embed'));
+    profile.subtitleProfiles!.add(SubtitleProfile(format: sp, method: 'Embed'));
   }
 
   var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
 
   for (var sp in externalSubtitleProfiles) {
     profile.subtitleProfiles!
-      .add(SubtitleProfile(format: sp, method: 'External'));
+        .add(SubtitleProfile(format: sp, method: 'External'));
   }
 
   profile.subtitleProfiles!

@@ -31,11 +31,9 @@ class UriUtils {
       throw Exception('Url is not valid');
     } else {
       if (uriParts.http.equalsIgnoreCase('http')) {
-        uri =
-            Uri.http(uriParts.domain!, uriParts.path ?? path, queryParams);
+        uri = Uri.http(uriParts.domain!, uriParts.path ?? path, queryParams);
       } else if (uriParts.http.equalsIgnoreCase('https')) {
-        uri = Uri.https(
-            uriParts.domain!, uriParts.path ?? path, queryParams);
+        uri = Uri.https(uriParts.domain!, uriParts.path ?? path, queryParams);
       } else {
         throw Exception('Url is not valid');
       }
