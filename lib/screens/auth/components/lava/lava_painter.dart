@@ -21,7 +21,7 @@ class LavaPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(LavaPainter paint) {
+  bool shouldRepaint(LavaPainter oldDelegate) {
     return true;
   }
 }
@@ -191,10 +191,10 @@ class Lava {
     }
 
     if (debug) {
-      balls.forEach((ball) => canvas.drawCircle(
-          Offset(ball!.pos.x.toDouble(), ball.pos.y.toDouble()),
-          ball.size,
-          Paint()..color = Colors.black.withOpacity(0.5)));
+      for (var ball in balls) {
+        canvas.drawCircle(Offset(ball!.pos.x.toDouble(), ball.pos.y.toDouble()),
+            ball.size, Paint()..color = Colors.black.withOpacity(0.5));
+      }
 
       matrix.forEach((_, item) => item.forEach((_, point) => canvas.drawCircle(
           Offset(point.x.toDouble(), point.y.toDouble()),

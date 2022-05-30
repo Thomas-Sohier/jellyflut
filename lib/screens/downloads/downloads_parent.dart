@@ -3,10 +3,10 @@ import 'package:jellyflut/screens/downloads/current_downloads_list.dart';
 import 'package:jellyflut/screens/downloads/downloaded_items.dart';
 
 class DownloadsParent extends StatefulWidget {
-  DownloadsParent({Key? key}) : super(key: key);
+  DownloadsParent({super.key});
 
   @override
-  _DownloadsParentState createState() => _DownloadsParentState();
+  State<DownloadsParent> createState() => _DownloadsParentState();
 }
 
 class _DownloadsParentState extends State<DownloadsParent> {

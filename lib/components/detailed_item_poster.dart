@@ -18,7 +18,7 @@ class DetailedItemPoster extends StatefulWidget {
       {required this.item, required this.textColor, required this.heroTag});
 
   @override
-  _DetailedItemPosterState createState() => _DetailedItemPosterState();
+  State<DetailedItemPoster> createState() => _DetailedItemPosterState();
 }
 
 class _DetailedItemPosterState extends State<DetailedItemPoster> {
@@ -64,9 +64,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                           children: [
                                             title(),
                                             Row(children: [
-                                              Critics(
-                                                  item: widget.item,
-                                                  fontSize: 18),
+                                              Critics(item: widget.item),
                                               Spacer(),
                                               if (widget.item.runTimeTicks !=
                                                   null)

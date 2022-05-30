@@ -6,7 +6,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 
 class PlaceholderScreen extends StatelessWidget {
   final Item? item;
-  const PlaceholderScreen({Key? key, this.item}) : super(key: key);
+  const PlaceholderScreen({super.key, this.item});
 
   @override
   Widget build(BuildContext context) {

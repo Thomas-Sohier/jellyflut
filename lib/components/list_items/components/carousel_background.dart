@@ -2,8 +2,7 @@ part of '../list_items_parent.dart';
 
 class CarouselBackground extends StatelessWidget {
   final Widget child;
-  const CarouselBackground({Key? key, this.child = const SizedBox()})
-      : super(key: key);
+  const CarouselBackground({super.key, this.child = const SizedBox()});
 
   @override
   Widget build(BuildContext context) {

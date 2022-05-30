@@ -1,11 +1,15 @@
-import 'enum_values.dart';
+enum PersonType {
+  ACTOR('Actor'),
+  DIRECTOR('Director'),
+  GUESTSTAR('GuestStar'),
+  WRITER('Producer'),
+  PRODUCER('Writer');
 
-enum PersonType { ACTOR, DIRECTOR, GUESTSTAR, WRITER, PRODUCER }
+  final String value;
+  const PersonType(this.value);
 
-final personTypeValues = EnumValues({
-  'Actor': PersonType.ACTOR,
-  'Director': PersonType.DIRECTOR,
-  'GuestStar': PersonType.GUESTSTAR,
-  'Producer': PersonType.PRODUCER,
-  'Writer': PersonType.WRITER
-});
+  static PersonType fromString(String value) {
+    return PersonType.values
+        .firstWhere((type) => type.value.toLowerCase() == value.toLowerCase());
+  }
+}

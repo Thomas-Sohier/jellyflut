@@ -1,14 +1,16 @@
-// \.[0-9a-z]+$
+enum BookExtensions {
+  CBA('.cba'),
+  CBR('.cbr'),
+  CBT('.cbt'),
+  CBZ('.cbz'),
+  CB7('.cb7'),
+  EPUB('.epub');
 
-import 'enum_values.dart';
+  final String fileExtension;
+  const BookExtensions(this.fileExtension);
 
-enum BookExtensions { CBA, CBR, CBT, CBZ, CB7, EPUB }
-
-final bookExtensionsValues = EnumValues({
-  '.cba': BookExtensions.CBA,
-  '.cbr': BookExtensions.CBR,
-  '.cbt': BookExtensions.CBT,
-  '.cbz': BookExtensions.CBZ,
-  '.cb7': BookExtensions.CB7,
-  '.epub': BookExtensions.EPUB
-});
+  static BookExtensions fromString(String extension) {
+    return BookExtensions.values.firstWhere(
+        (ext) => ext.fileExtension.toLowerCase() == extension.toLowerCase());
+  }
+}

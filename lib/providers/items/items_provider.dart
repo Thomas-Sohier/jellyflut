@@ -112,9 +112,9 @@ class ItemsProvider extends ChangeNotifier {
               startIndex: startIndex,
               // includeItemTypes: _typeOfItems,
               limit: 100)
-          .then((_category) {
-        addNewItems(_category.items);
-        if (_category.items.isNotEmpty) {
+          .then((category) {
+        addNewItems(category.items);
+        if (category.items.isNotEmpty) {
           startIndex = startIndex + 100;
           pageCount++;
           notifyListeners();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
-import 'package:jellyflut/components/home_tab.dart';
+import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class CollectionParent extends StatefulWidget {
   final Item item;
 
-  const CollectionParent({Key? key, required this.item}) : super(key: key);
+  const CollectionParent({super.key, required this.item});
 
   @override
   State<StatefulWidget> createState() {
@@ -28,8 +28,8 @@ class _CollectionParentState extends State<CollectionParent>
   late final CarrousselProvider carrousselProvider;
 
   @override
-  set tabController(TabController _tabController) {
-    super.tabController = _tabController;
+  set tabController(TabController tabController) {
+    super.tabController = tabController;
   }
 
   @override

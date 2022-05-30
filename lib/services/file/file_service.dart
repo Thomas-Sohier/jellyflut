@@ -78,7 +78,7 @@ class FileService {
   }
 
   static String getItemStorageName(Item item) {
-    return '${item.id}';
+    return item.id;
   }
 
   static Future<bool> requestStorage() async {

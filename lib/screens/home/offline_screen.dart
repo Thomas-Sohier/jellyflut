@@ -7,11 +7,10 @@ import 'package:jellyflut/screens/home/components/error/error_user_actions.dart'
 import 'package:jellyflut/screens/home/header_bar.dart';
 
 class OffLineScreen extends StatelessWidget {
-  final Object? error;
+  final Error? error;
   final void Function() reloadFunction;
   const OffLineScreen(
-      {Key? key, required this.error, required this.reloadFunction})
-      : super(key: key);
+      {super.key, required this.error, required this.reloadFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +52,8 @@ class OffLineScreen extends StatelessWidget {
                     Divider(height: 32),
                     ErrorUserActions(
                         reloadFunction: reloadFunction,
-                        errorMessage: error.toString())
+                        errorMessage:
+                            '${error.toString()}\n${error?.stackTrace.toString()})')
                   ],
                 ),
               ),

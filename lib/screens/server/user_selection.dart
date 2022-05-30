@@ -8,7 +8,7 @@ import '../../database/database.dart';
 
 class UserSelection extends StatelessWidget {
   final Server server;
-  const UserSelection({Key? key, required this.server}) : super(key: key);
+  const UserSelection({super.key, required this.server});
 
   @override
   Widget build(BuildContext context) {

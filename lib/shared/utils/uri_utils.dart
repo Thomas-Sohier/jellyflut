@@ -14,9 +14,9 @@ class UriUtils {
     //    $7 = <undefined>
     //    $8 = #Related
     //    $9 = Related
-    final _urlPattern =
+    final urlPattern =
         RegExp(r'^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?');
-    final matches = _urlPattern.allMatches(uri);
+    final matches = urlPattern.allMatches(uri);
     return UrlParts(matches.elementAt(0).group(2),
         matches.elementAt(0).group(4), matches.elementAt(0).group(9));
   }
@@ -31,11 +31,9 @@ class UriUtils {
       throw Exception('Url is not valid');
     } else {
       if (uriParts.http.equalsIgnoreCase('http')) {
-        uri =
-            Uri.http(uriParts.domain!, uriParts.path ?? '' + path, queryParams);
+        uri = Uri.http(uriParts.domain!, uriParts.path ?? path, queryParams);
       } else if (uriParts.http.equalsIgnoreCase('https')) {
-        uri = Uri.https(
-            uriParts.domain!, uriParts.path ?? '' + path, queryParams);
+        uri = Uri.https(uriParts.domain!, uriParts.path ?? path, queryParams);
       } else {
         throw Exception('Url is not valid');
       }

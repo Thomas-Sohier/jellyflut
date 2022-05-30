@@ -9,14 +9,13 @@ class ListItemsHorizontalList extends StatelessWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const ListItemsHorizontalList(
-      {Key? key,
+      {super.key,
       this.boxFit = BoxFit.cover,
       this.placeholder,
       required this.items,
       required this.scrollPhysics,
       required this.horizontalListPosterHeight,
-      required this.scrollController})
-      : super(key: key);
+      required this.scrollController});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,3 @@
-import 'enum_values.dart';
-
 /// Art
 /// The art.
 ///
@@ -40,33 +38,25 @@ import 'enum_values.dart';
 /// The thumb.
 
 enum ImageType {
-  ART,
-  BACKDROP,
-  BANNER,
-  BOX,
-  BOXREAR,
-  CHAPTER,
-  DISC,
-  LOGO,
-  MENU,
-  PRIMARY,
-  PROFILE,
-  SCREENSHOT,
-  THUMB,
-}
+  ART('Art'),
+  BACKDROP('Backdrop'),
+  BANNER('Banner'),
+  BOX('Box'),
+  BOXREAR('Boxrear'),
+  CHAPTER('Chapter'),
+  DISC('Disc'),
+  LOGO('Logo'),
+  MENU('Menu'),
+  PRIMARY('Primary'),
+  PROFILE('Profile'),
+  SCREENSHOT('Screenshot'),
+  THUMB('Thumb');
 
-final imageTypeValues = EnumValues({
-  'Art': ImageType.ART,
-  'Backdrop': ImageType.BACKDROP,
-  'Banner': ImageType.BANNER,
-  'Box': ImageType.BOX,
-  'Boxrear': ImageType.BOXREAR,
-  'Chapter': ImageType.CHAPTER,
-  'Disc': ImageType.DISC,
-  'Logo': ImageType.LOGO,
-  'Menu': ImageType.MENU,
-  'Primary': ImageType.PRIMARY,
-  'Profile': ImageType.PROFILE,
-  'Screenshot': ImageType.SCREENSHOT,
-  'Thumb': ImageType.THUMB,
-});
+  final String value;
+  const ImageType(this.value);
+
+  static ImageType fromString(String value) {
+    return ImageType.values
+        .firstWhere((ext) => ext.value.toLowerCase() == value.toLowerCase());
+  }
+}

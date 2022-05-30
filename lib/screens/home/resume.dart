@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
@@ -53,8 +53,8 @@ class _ResumeState extends State<Resume> {
         future: categoryFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData && !snapshot.hasError) {
-            var _items = snapshot.data!.items;
-            if (_items.isNotEmpty) {
+            var items = snapshot.data!.items;
+            if (items.isNotEmpty) {
               return body();
             } else {
               return const SizedBox();
@@ -81,9 +81,9 @@ class _ResumeState extends State<Resume> {
               padding: EdgeInsets.only(left: 8),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                var _item = items[index];
+                var item = items[index];
                 return ItemPoster(
-                  _item,
+                  item,
                   width: double.infinity,
                   height: double.infinity,
                   showLogo: true,

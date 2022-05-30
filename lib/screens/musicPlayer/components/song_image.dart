@@ -12,14 +12,13 @@ class SongImage extends StatefulWidget {
   final List<Color> albumColors;
 
   SongImage(
-      {Key? key,
+      {super.key,
       required this.singleSize,
       required this.color,
-      required this.albumColors})
-      : super(key: key);
+      required this.albumColors});
 
   @override
-  _SongImageState createState() => _SongImageState();
+  State<SongImage> createState() => _SongImageState();
 }
 
 class _SongImageState extends State<SongImage> {

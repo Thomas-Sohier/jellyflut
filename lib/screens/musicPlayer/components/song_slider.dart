@@ -6,10 +6,10 @@ import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 class SongSlider extends StatefulWidget {
   final List<Color> albumColors;
 
-  SongSlider({Key? key, required this.albumColors}) : super(key: key);
+  SongSlider({super.key, required this.albumColors});
 
   @override
-  _SongSliderState createState() => _SongSliderState();
+  State<SongSlider> createState() => _SongSliderState();
 }
 
 class _SongSliderState extends State<SongSlider> {

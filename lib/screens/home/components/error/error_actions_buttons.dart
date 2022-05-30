@@ -5,8 +5,7 @@ class ErrorActionsbuttons extends StatelessWidget {
   final BehaviorSubject<bool> togglestream;
   final void Function() reloadFunction;
   const ErrorActionsbuttons(
-      {Key? key, required this.togglestream, required this.reloadFunction})
-      : super(key: key);
+      {super.key, required this.togglestream, required this.reloadFunction});
 
   @override
   Widget build(BuildContext context) {

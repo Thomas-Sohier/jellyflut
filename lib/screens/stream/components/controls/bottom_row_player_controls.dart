@@ -8,7 +8,7 @@ import 'package:jellyflut/shared/responsive_builder.dart';
 import 'chapter_button.dart';
 
 class BottomRowPlayerControls extends StatelessWidget {
-  const BottomRowPlayerControls({Key? key}) : super(key: key);
+  const BottomRowPlayerControls({super.key});
 
   @override
   Widget build(BuildContext context) {

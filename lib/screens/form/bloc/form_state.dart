@@ -15,8 +15,7 @@ class FormSubmittedState<T extends Object> extends FormState<T> {
   final T value;
 
   FormSubmittedState(
-      {required this.message, required this.value, required FormGroup form})
-      : super(form: form);
+      {required this.message, required this.value, required super.form});
 
   @override
   List<Object> get props => [message, value];
@@ -25,10 +24,9 @@ class FormSubmittedState<T extends Object> extends FormState<T> {
 class FormErrorState<T> extends FormState<T> {
   final String error;
 
-  FormErrorState({required this.error, required FormGroup form})
-      : super(form: form);
+  FormErrorState({required this.error, required super.form});
 }
 
 class RefreshedState<T> extends FormState<T> {
-  RefreshedState({required FormGroup form}) : super(form: form);
+  RefreshedState({required super.form});
 }

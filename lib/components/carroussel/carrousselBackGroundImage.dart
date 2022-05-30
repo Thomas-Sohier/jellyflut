@@ -5,10 +5,10 @@ import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:provider/provider.dart';
 
 class CarrousselBackGroundImage extends StatefulWidget {
-  CarrousselBackGroundImage({Key? key}) : super(key: key);
+  CarrousselBackGroundImage({super.key});
 
   @override
-  _CarrousselBackGroundImageState createState() =>
+  State<CarrousselBackGroundImage> createState() =>
       _CarrousselBackGroundImageState();
 }
 

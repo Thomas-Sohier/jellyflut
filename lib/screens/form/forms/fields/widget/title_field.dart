@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class TitleField extends StatelessWidget {
   final FormGroup form;
-  const TitleField({Key? key, required this.form}) : super(key: key);
+  const TitleField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

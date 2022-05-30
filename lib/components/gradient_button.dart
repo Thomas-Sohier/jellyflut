@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 
 import 'package:jellyflut/models/jellyfin/item.dart';
 
@@ -28,7 +29,7 @@ class GradienButton extends StatefulWidget {
   State<StatefulWidget> createState() => _GradienButtonState();
 }
 
-class _GradienButtonState extends State<GradienButton> {
+class _GradienButtonState extends State<GradienButton> with AbsordAction {
   @override
   void initState() {
     super.initState();
@@ -37,7 +38,7 @@ class _GradienButtonState extends State<GradienButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: widget.enabled ? widget.onPressed : null,
+        onPressed: () => widget.enabled ? action(widget.onPressed) : null,
         style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius:

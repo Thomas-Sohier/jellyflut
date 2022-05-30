@@ -6,10 +6,10 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
-  SongPlaylist({Key? key}) : super(key: key);
+  SongPlaylist({super.key});
 
   @override
-  _SongPlaylistState createState() => _SongPlaylistState();
+  State<SongPlaylist> createState() => _SongPlaylistState();
 }
 
 class _SongPlaylistState extends State<SongPlaylist> {

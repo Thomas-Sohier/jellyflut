@@ -1,25 +1,19 @@
-import 'enum_values.dart';
-
 enum CollectionType {
-  BOOKS,
-  BOXSETS,
-  HOMEVIDEOS,
-  MIXED,
-  MOVIES,
-  MUSIC,
-  MUSICVIDEOS,
-  TVSHOWS,
-  LIVETV,
-}
+  BOOKS('Books'),
+  BOXSETS('BoxSets'),
+  HOMEVIDEOS('HomeVideos'),
+  MIXED('Mixed'),
+  MOVIES('Movies'),
+  MUSIC('Music'),
+  MUSICVIDEOS('MusicVideos'),
+  TVSHOWS('TvShows'),
+  LIVETV('LiveTv');
 
-final collectionType = EnumValues({
-  'Books': CollectionType.BOOKS,
-  'BoxSets': CollectionType.BOXSETS,
-  'HomeVideos': CollectionType.HOMEVIDEOS,
-  'Mixed': CollectionType.MIXED,
-  'Movies': CollectionType.MOVIES,
-  'Music': CollectionType.MUSIC,
-  'MusicVideos': CollectionType.MUSICVIDEOS,
-  'TvShows': CollectionType.TVSHOWS,
-  'LiveTv': CollectionType.LIVETV,
-});
+  final String value;
+  const CollectionType(this.value);
+
+  static CollectionType fromString(String value) {
+    return CollectionType.values
+        .firstWhere((type) => type.value.toLowerCase() == value.toLowerCase());
+  }
+}

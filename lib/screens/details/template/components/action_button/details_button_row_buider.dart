@@ -5,8 +5,7 @@ import '../action_button.dart';
 
 class DetailsButtonRowBuilder extends StatelessWidget {
   final Item item;
-  const DetailsButtonRowBuilder({Key? key, required this.item})
-      : super(key: key);
+  const DetailsButtonRowBuilder({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

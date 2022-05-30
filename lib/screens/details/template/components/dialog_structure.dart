@@ -11,12 +11,11 @@ class DialogStructure extends StatelessWidget {
   final FormBloc<Item> formBloc;
 
   const DialogStructure(
-      {Key? key,
+      {super.key,
       this.expanded = false,
       required this.onClose,
       required this.onSubmit,
-      required this.formBloc})
-      : super(key: key);
+      required this.formBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +39,15 @@ class DialogStructure extends StatelessWidget {
                         IconButton(
                             padding: EdgeInsets.zero,
                             onPressed: onClose,
+                            color: Theme.of(context).iconTheme.color,
                             icon: Icon(Icons.close)),
                         const SizedBox(width: 16),
                         Flexible(
                           child: Text('edit_infos'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline5),
+                              style:
+                                  Theme.of(context).dialogTheme.titleTextStyle),
                         ),
                       ],
                     ))),

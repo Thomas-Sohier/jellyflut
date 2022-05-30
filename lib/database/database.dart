@@ -95,7 +95,7 @@ class Database extends _$Database {
 
 @UseDao(tables: [Users])
 class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
-  UsersDao(Database db) : super(db);
+  UsersDao(super.db);
   Future<List<User>> get allWatchingUsers => select(users).get();
   Stream<List<User>> get watchAllUsers => select(users).watch();
   Future<User> getUserById(int userId) =>
@@ -118,7 +118,7 @@ class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
 
 @UseDao(tables: [Settings])
 class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
-  SettingsDao(Database db) : super(db);
+  SettingsDao(super.db);
   Future<List<Setting>> get allWatchingSettings => select(settings).get();
   Stream<List<Setting>> get watchAllSettings => select(settings).watch();
   Future<Setting> getSettingsById(int settingsId) =>
@@ -138,7 +138,7 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
 
 @UseDao(tables: [Servers])
 class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
-  ServersDao(Database db) : super(db);
+  ServersDao(super.db);
   Future<List<Server>> get allWatchingServers => select(servers).get();
   Stream<List<Server>> get watchAllServers => select(servers).watch();
   Stream<List<ServersWithUsers>> get watchAllServersWithUsers =>
@@ -159,7 +159,7 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
 
 @UseDao(tables: [Downloads])
 class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
-  DownloadsDao(Database db) : super(db);
+  DownloadsDao(super.db);
   Future<List<Download>> get allWatchingDownloads => select(downloads).get();
   Stream<List<Download>> get watchAllDownloads => select(downloads).watch();
   Future<Download> getDownloadById(String downloadId) =>

@@ -19,10 +19,10 @@ import 'player_infos/transcode_state.dart';
 class CommonControls extends StatefulWidget {
   final bool isComputer;
 
-  const CommonControls({Key? key, this.isComputer = false}) : super(key: key);
+  const CommonControls({super.key, this.isComputer = false});
 
   @override
-  _CommonControlsState createState() => _CommonControlsState();
+  State<CommonControls> createState() => _CommonControlsState();
 }
 
 class _CommonControlsState extends State<CommonControls> {

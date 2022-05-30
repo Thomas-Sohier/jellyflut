@@ -17,11 +17,10 @@ class CurrentDownloadItem extends StatefulWidget {
   final void Function()? callbackOnDelete;
 
   const CurrentDownloadItem(
-      {Key? key, required this.itemDownload, this.callbackOnDelete})
-      : super(key: key);
+      {super.key, required this.itemDownload, this.callbackOnDelete});
 
   @override
-  _CurrentDownloadItemState createState() => _CurrentDownloadItemState();
+  State<CurrentDownloadItem> createState() => _CurrentDownloadItemState();
 }
 
 class _CurrentDownloadItemState extends State<CurrentDownloadItem>
@@ -95,9 +94,8 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
                                             if (widget.itemDownload.item
                                                 .hasRatings())
                                               Critics(
-                                                item: widget.itemDownload.item,
-                                                fontSize: 18,
-                                              ),
+                                                  item:
+                                                      widget.itemDownload.item),
                                             if (widget.itemDownload.item
                                                     .getDuration() !=
                                                 0)
@@ -136,7 +134,6 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
                   icon: Icon(Icons.close),
                   onPressed: () {
                     widget.callbackOnDelete?.call();
-                    widget.itemDownload.cancelToken.cancel();
                     DownloadProvider().removeDownload(widget.itemDownload);
                   },
                   color: Colors.green),
@@ -165,7 +162,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem>
   Widget title() {
     final title = widget.itemDownload.item.indexNumber != null
         ? '${widget.itemDownload.item.indexNumber} - ${widget.itemDownload.item.name}'
-        : '${widget.itemDownload.item.name}';
+        : widget.itemDownload.item.name;
 
     return Flexible(
       child: Text(title,

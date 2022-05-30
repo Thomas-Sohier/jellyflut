@@ -1,4 +1,3 @@
-import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 
 class ImageTag {
@@ -9,12 +8,11 @@ class ImageTag {
 
   static List<ImageTag> fromMap(Map<String, dynamic> json) {
     final imageTags = <ImageTag>[];
-    json.forEach((key, value) => imageTags.add(ImageTag(
-        imageType: EnumFromString<ImageType>(ImageType.values).get(key)!,
-        value: value)));
+    json.forEach((key, value) => imageTags
+        .add(ImageTag(imageType: ImageType.fromString(key), value: value)));
     return imageTags;
   }
 
   Map<String, dynamic> toMap() =>
-      {'ImageType': imageTypeValues.reverse[imageType], 'value': value};
+      {'ImageType': imageType.value, 'value': value};
 }

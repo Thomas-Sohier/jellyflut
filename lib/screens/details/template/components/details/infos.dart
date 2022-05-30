@@ -3,7 +3,7 @@ part of '../details_widgets.dart';
 class InfosDetailsWidget extends StatelessWidget {
   final Item item;
 
-  const InfosDetailsWidget({Key? key, required this.item}) : super(key: key);
+  const InfosDetailsWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class InfosDetailsWidget extends StatelessWidget {
     return listOfText
         .where((t) => t != null && t.isNotEmpty && t != 'null')
         .map((e) => [
-              Text(e!, style: Theme.of(context).textTheme.bodySmall),
+              Text(e!, style: Theme.of(context).textTheme.subtitle1),
               DetailsSeparator()
             ])
         .fold<List<Widget>>([const SizedBox()],

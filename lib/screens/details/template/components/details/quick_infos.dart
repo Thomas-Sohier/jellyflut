@@ -5,7 +5,7 @@ import 'package:jellyflut/screens/details/template/components/details_widgets.da
 
 class QuickInfos extends StatelessWidget {
   final Item item;
-  const QuickInfos({Key? key, required this.item}) : super(key: key);
+  const QuickInfos({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,7 @@ class QuickInfos extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               runAlignment: WrapAlignment.center,
               children: [
-                if (item.hasRatings())
-                  Critics(
-                      item: item,
-                      fontSize:
-                          Theme.of(context).textTheme.bodyText2?.fontSize ??
-                              16),
-                // Spacer(),
+                if (item.hasRatings()) Critics(item: item),
                 InfosDetailsWidget(item: item),
               ]),
         ),

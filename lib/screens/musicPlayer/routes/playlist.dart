@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Playlist extends StatelessWidget {
-  const Playlist({Key? key, required this.body}) : super(key: key);
+  const Playlist({super.key, required this.body});
 
   final Widget body;
 

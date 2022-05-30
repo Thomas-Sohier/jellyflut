@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/home_tab.dart';
+import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/iptv/channels_request_body.dart';
@@ -9,10 +9,10 @@ import 'package:jellyflut/services/livetv/livetv_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Iptv extends StatefulWidget {
-  Iptv({Key? key}) : super(key: key);
+  Iptv({super.key});
 
   @override
-  _IptvState createState() => _IptvState();
+  State<Iptv> createState() => _IptvState();
 }
 
 class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
@@ -22,8 +22,8 @@ class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
   List<Widget> get tabs => [Tab(text: 'Chaines'), Tab(text: 'Guide')];
 
   @override
-  set tabController(TabController _tabController) {
-    super.tabController = _tabController;
+  set tabController(TabController tabController) {
+    super.tabController = tabController;
   }
 
   @override

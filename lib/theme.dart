@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Shimmering color
 final Color shimmerColor1 = Colors.grey.shade500.withAlpha(150);
@@ -70,37 +71,70 @@ Map<int, Color> jellyLightBlueMap = {
 };
 
 class Theme {
-  static ThemeData generateThemeData(
+  /// Generate a theme from a colorScheme
+  /// You can provide a [brightness] if needed (by default -> Brightness.light), it will override colorscheme's one
+  /// You need to provide a [colorScheme]
+  static ThemeData generateThemeDataFromColorScheme(ColorScheme colorScheme,
+      [Brightness? brightness]) {
+    final newBrightness = brightness ?? colorScheme.brightness;
+    final background =
+        brightness == Brightness.light ? null : Colors.grey.shade900;
+    final newColorScheme = ColorScheme.fromSeed(
+        seedColor: colorScheme.primary,
+        brightness: newBrightness,
+        background: background);
+    final theme = ThemeData(
+        colorScheme: newColorScheme,
+        visualDensity: VisualDensity.standard,
+        useMaterial3: true);
+    return _generateTheme(theme);
+  }
+
+  /// Generate a theme from a colorScheme
+  /// You can provide a [brightness] if needed (by default -> Brightness.light)
+  /// You can provide a [seedColor] if needed (by default -> jellyfin purple color)
+  static ThemeData generateThemeDataFromSeedColor(
       [Brightness brightness = Brightness.light, Color? seedColor]) {
-    seedColor ??= jellyLightPurpleMap[500]!;
     final background =
         brightness == Brightness.light ? null : Colors.grey.shade900;
     final theme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: seedColor,
-        brightness: brightness,
-        background: background,
-      ),
-      visualDensity: VisualDensity.standard,
-      useMaterial3: true,
-    );
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: seedColor ?? jellyLightPurpleMap[500]!,
+            brightness: brightness,
+            background: background),
+        visualDensity: VisualDensity.standard,
+        useMaterial3: true);
+    return _generateTheme(theme);
+  }
 
+  /// Generate a custom theme
+  /// You need to provide a [theme]
+  static ThemeData _generateTheme(ThemeData theme) {
+    final textTheme =
+        _generateTextThemeFromColor(theme.colorScheme.onBackground);
     return theme
-        .copyWith(
-            textTheme: getTextThemeWithColor(theme.colorScheme.onBackground))
+        .copyWith(textTheme: textTheme)
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
         .copyWith(backgroundColor: theme.backgroundColor)
         .copyWith(
             dialogTheme: DialogTheme(
-                elevation: 4,
                 backgroundColor: theme.colorScheme.background,
-                titleTextStyle: getTextThemeWithColor().headline5,
-                contentTextStyle: getTextThemeWithColor().bodyText1))
+                titleTextStyle: textTheme.headline5,
+                contentTextStyle: textTheme.bodyText1))
         .copyWith(
             appBarTheme: AppBarTheme(
                 color: theme.colorScheme.background,
                 foregroundColor: theme.colorScheme.onBackground,
-                iconTheme: IconThemeData(color: theme.colorScheme.onBackground),
+                surfaceTintColor: Colors.transparent,
+                scrolledUnderElevation: 0,
+                elevation: 0,
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarBrightness: theme.brightness,
+                  statusBarIconBrightness: theme.brightness,
+                  statusBarColor: theme.colorScheme.background,
+                  systemNavigationBarColor: theme.colorScheme.background,
+                  systemNavigationBarContrastEnforced: false,
+                ),
                 toolbarTextStyle: theme.textTheme.headline5,
                 titleTextStyle: theme.textTheme.headline5))
         .copyWith(
@@ -109,6 +143,8 @@ class Theme {
                 backgroundColor: theme.colorScheme.background,
                 contentTextStyle: TextStyle(
                     fontSize: 18, color: theme.colorScheme.onSurface)))
+        .copyWith(
+            iconTheme: IconThemeData(color: theme.colorScheme.onBackground))
         .copyWith(
             tabBarTheme: TabBarTheme(
                 labelColor: theme.colorScheme.onBackground,
@@ -148,27 +184,33 @@ class Theme {
         .copyWith(cardTheme: CardTheme(color: theme.colorScheme.background));
   }
 
-  static TextTheme getTextThemeWithColor([Color? color]) {
-    final poppinsFont = TextStyle(fontFamily: 'Poppins', color: color);
-    final hindMaduraiFont = TextStyle(fontFamily: 'HindMadurai', color: color);
-    return Typography.blackCupertino
-        .copyWith(headline1: poppinsFont)
-        .copyWith(headline2: poppinsFont)
-        .copyWith(headline3: poppinsFont)
-        .copyWith(headline4: poppinsFont)
-        .copyWith(headline5: poppinsFont)
-        .copyWith(headline6: poppinsFont)
-        .copyWith(subtitle1: poppinsFont)
-        .copyWith(subtitle2: poppinsFont)
-        .copyWith(bodyLarge: hindMaduraiFont.copyWith(fontSize: 18))
-        .copyWith(bodyMedium: hindMaduraiFont.copyWith(fontSize: 16))
-        .copyWith(bodySmall: hindMaduraiFont.copyWith(fontSize: 14))
-        .copyWith(titleLarge: hindMaduraiFont)
-        .copyWith(titleMedium: hindMaduraiFont)
-        .copyWith(titleSmall: hindMaduraiFont)
-        .copyWith(bodyText1: hindMaduraiFont.copyWith(fontSize: 18))
-        .copyWith(bodyText2: hindMaduraiFont.copyWith(fontSize: 16))
-        .copyWith(button: hindMaduraiFont.copyWith(fontSize: 16))
+  /// Generate a text theme specific to this app
+  /// You can provide a [color] to specify font color
+  static TextTheme _generateTextThemeFromColor([Color? color]) {
+    TextStyle? poppinsFont(TextStyle? textStyle) =>
+        textStyle?.copyWith(fontFamily: 'Poppins', color: color);
+    TextStyle? hindMaduraiFont(TextStyle? textStyle) =>
+        textStyle?.copyWith(fontFamily: 'HindMadurai', color: color);
+    final typography = Typography.englishLike2021;
+
+    return typography
+        .copyWith(headline1: poppinsFont(typography.headline1))
+        .copyWith(headline2: poppinsFont(typography.headline2))
+        .copyWith(headline3: poppinsFont(typography.headline3))
+        .copyWith(headline4: poppinsFont(typography.headline4))
+        .copyWith(headline5: poppinsFont(typography.headline5))
+        .copyWith(headline6: poppinsFont(typography.headline6))
+        .copyWith(subtitle1: poppinsFont(typography.subtitle1))
+        .copyWith(subtitle2: poppinsFont(typography.subtitle2))
+        .copyWith(bodyLarge: hindMaduraiFont(typography.bodyLarge))
+        .copyWith(bodyMedium: hindMaduraiFont(typography.bodyMedium))
+        .copyWith(bodySmall: hindMaduraiFont(typography.bodySmall))
+        .copyWith(titleLarge: hindMaduraiFont(typography.titleLarge))
+        .copyWith(titleMedium: hindMaduraiFont(typography.titleMedium))
+        .copyWith(titleSmall: hindMaduraiFont(typography.titleSmall))
+        .copyWith(bodyText1: hindMaduraiFont(typography.bodyText1))
+        .copyWith(bodyText2: hindMaduraiFont(typography.bodyText2))
+        .copyWith(button: hindMaduraiFont(typography.button))
         .apply(bodyColor: color)
         .apply(displayColor: color)
         .apply(decorationColor: color);

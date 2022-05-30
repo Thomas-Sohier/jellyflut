@@ -52,18 +52,18 @@ class CommonStreamBP {
     }
 
     final aspectRatio = item.getAspectRatio();
-    final _betterPlayerKey = GlobalKey();
-    final _betterPlayerController = BetterPlayerController(
+    final betterPlayerKey = GlobalKey();
+    final betterPlayerController = BetterPlayerController(
         _setupPlayerControllerConfiguration(
             aspectRatio: aspectRatio,
             startAt: item.getPlaybackPosition(),
             customConfiguration: _configuration()));
-    _betterPlayerController.addEventsListener((event) {
+    betterPlayerController.addEventsListener((event) {
       if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
         customRouter.pop();
       } else if (event.betterPlayerEventType ==
           BetterPlayerEventType.initialized) {
-        final timer = _startProgressTimer(item, _betterPlayerController);
+        final timer = _startProgressTimer(item, betterPlayerController);
         streamingProvider.timer?.cancel();
         streamingProvider.setTimer(timer);
       } else if (event.betterPlayerEventType ==
@@ -71,31 +71,31 @@ class CommonStreamBP {
         streamingProvider.timer?.cancel();
       }
     });
-    await _betterPlayerController.setupDataSource(dataSource);
-    _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
+    await betterPlayerController.setupDataSource(dataSource);
+    betterPlayerController.setBetterPlayerGlobalKey(betterPlayerKey);
     final commonStream = CommonStream.parseBetterPlayerController(
-        betterPlayerController: _betterPlayerController);
+        betterPlayerController: betterPlayerController);
     streamingProvider.setCommonStream(commonStream);
-    return Future.value(_betterPlayerController);
+    return Future.value(betterPlayerController);
   }
 
   static Future<BetterPlayerController> setupDataFromURl(
       {required String url}) async {
     final dataSource = BetterPlayerDataSource.network(url);
     final aspectRatio = 16 / 9;
-    final _betterPlayerKey = GlobalKey();
-    final _betterPlayerController = BetterPlayerController(
+    final betterPlayerKey = GlobalKey();
+    final betterPlayerController = BetterPlayerController(
         _setupPlayerControllerConfiguration(
             aspectRatio: aspectRatio, customConfiguration: _configuration()));
 
-    await _betterPlayerController.setupDataSource(dataSource);
-    _betterPlayerController.setBetterPlayerGlobalKey(_betterPlayerKey);
+    await betterPlayerController.setupDataSource(dataSource);
+    betterPlayerController.setBetterPlayerGlobalKey(betterPlayerKey);
     final commonStream = CommonStream.parseBetterPlayerController(
-      betterPlayerController: _betterPlayerController,
+      betterPlayerController: betterPlayerController,
       listener: () => {},
     );
     StreamingProvider().setCommonStream(commonStream);
-    return Future.value(_betterPlayerController);
+    return Future.value(betterPlayerController);
   }
 
   static BetterPlayerConfiguration _setupPlayerControllerConfiguration(

@@ -5,11 +5,10 @@ class GenresField extends StatefulWidget {
   final FormGroup form;
   final double ITEM_HEIGHT = 40;
 
-  const GenresField({Key? key, required this.form, required this.item})
-      : super(key: key);
+  const GenresField({super.key, required this.form, required this.item});
 
   @override
-  _GenresFieldState createState() => _GenresFieldState();
+  State<GenresField> createState() => _GenresFieldState();
 }
 
 class _GenresFieldState extends State<GenresField> {

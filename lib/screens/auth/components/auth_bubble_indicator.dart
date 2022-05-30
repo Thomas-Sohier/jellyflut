@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AuthBubbleIndicator extends StatelessWidget {
   final String value;
 
-  const AuthBubbleIndicator({Key? key, required this.value}) : super(key: key);
+  const AuthBubbleIndicator({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {

@@ -5,11 +5,10 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 class PrevButton extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  PrevButton({Key? key, required this.color, required this.backgroundColor})
-      : super(key: key);
+  PrevButton({super.key, required this.color, required this.backgroundColor});
 
   @override
-  _PrevButtonState createState() => _PrevButtonState();
+  State<PrevButton> createState() => _PrevButtonState();
 }
 
 class _PrevButtonState extends State<PrevButton> {

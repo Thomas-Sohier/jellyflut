@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class PremiereDateField extends StatelessWidget {
   final FormGroup form;
-  const PremiereDateField({Key? key, required this.form}) : super(key: key);
+  const PremiereDateField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

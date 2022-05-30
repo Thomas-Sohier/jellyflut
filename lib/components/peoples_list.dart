@@ -8,7 +8,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:uuid/uuid.dart';
 
 class PeoplesList extends StatefulWidget {
   final List<Person> persons;
@@ -44,8 +43,8 @@ class _PeoplesListState extends State<PeoplesList> {
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
-            var person = peoples[index];
-            var item = Item(
+            final person = peoples[index];
+            final item = Item(
                 name: person.name,
                 id: person.id,
                 imageBlurHashes: person.imageBlurHashes,
@@ -66,38 +65,37 @@ class _PeoplesListState extends State<PeoplesList> {
   Widget phonePoster(Item item, Person person, int index) {
     return Padding(
         padding: EdgeInsets.only(left: 5, right: 5),
-        child: InkWell(
-            onTap: () => onTap(item, person),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                    flex: 5,
-                    child: PeoplePoster(
-                        person: person, onPressed: () => onTap(item, person))),
-                Flexible(
-                    fit: FlexFit.loose,
-                    child: Text(
-                      person.name,
-                      overflow: TextOverflow.clip,
-                      softWrap: false,
-                      style: TextStyle(
-                          color: fontColor.withAlpha(240), fontSize: 16),
-                    )),
-                if (person.role != null)
-                  Flexible(
-                      fit: FlexFit.loose,
-                      child: Text(
-                        person.role!,
-                        overflow: TextOverflow.clip,
-                        softWrap: false,
-                        style: TextStyle(
-                            color: fontColor.withAlpha(200), fontSize: 12),
-                      ))
-              ],
-            )));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+                flex: 5,
+                child: PeoplePoster(
+                    person: person,
+                    onPressed: (heroTag) => onTap(item, person, heroTag))),
+            Flexible(
+                fit: FlexFit.loose,
+                child: Text(
+                  person.name,
+                  overflow: TextOverflow.clip,
+                  softWrap: false,
+                  style:
+                      TextStyle(color: fontColor.withAlpha(240), fontSize: 16),
+                )),
+            if (person.role != null)
+              Flexible(
+                  fit: FlexFit.loose,
+                  child: Text(
+                    person.role!,
+                    overflow: TextOverflow.clip,
+                    softWrap: false,
+                    style: TextStyle(
+                        color: fontColor.withAlpha(200), fontSize: 12),
+                  ))
+          ],
+        ));
   }
 
   Widget largeScreenTemplate(Item item, Person person, int index) {
@@ -107,12 +105,11 @@ class _PeoplesListState extends State<PeoplesList> {
           person: person,
           bigPoster: true,
           clickable: true,
-          onPressed: () => onTap(item, person)),
+          onPressed: (heroTag) => onTap(item, person, heroTag)),
     );
   }
 
-  void onTap(Item item, Person person) {
-    customRouter.push(
-        DetailsRoute(item: item, heroTag: '${person.id}-${Uuid().v1()}person'));
+  Future<void> onTap(Item item, Person person, String heroTag) {
+    return customRouter.push(DetailsRoute(item: item, heroTag: heroTag));
   }
 }

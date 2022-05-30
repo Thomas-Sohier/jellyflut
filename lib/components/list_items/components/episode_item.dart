@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -17,19 +18,18 @@ class EpisodeItem extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const EpisodeItem(
-      {Key? key,
+      {super.key,
       required this.item,
       this.placeholder,
       this.clickable = true,
-      this.boxFit = BoxFit.cover})
-      : super(key: key);
+      this.boxFit = BoxFit.cover});
 
   @override
-  _EpisodeItemState createState() => _EpisodeItemState();
+  State<EpisodeItem> createState() => _EpisodeItemState();
 }
 
 class _EpisodeItemState extends State<EpisodeItem>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AbsordAction {
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;
@@ -47,14 +47,15 @@ class _EpisodeItemState extends State<EpisodeItem>
     super.dispose();
   }
 
-  void _onTap(String heroTag) {
-    customRouter.push(DetailsRoute(item: widget.item, heroTag: heroTag));
+  Future<void> _onTap() {
+    return customRouter
+        .push(DetailsRoute(item: widget.item, heroTag: posterHeroTag));
   }
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => _onTap(posterHeroTag), child: epsiodeItem());
+        onPressed: () => action(_onTap), child: epsiodeItem());
   }
 
   Widget epsiodeItem() {
@@ -88,10 +89,7 @@ class _EpisodeItemState extends State<EpisodeItem>
                         child: Row(
                           children: [
                             if (widget.item.hasRatings())
-                              Critics(
-                                item: widget.item,
-                                fontSize: 18,
-                              ),
+                              Critics(item: widget.item),
                             if (widget.item.getDuration() != 0) duration()
                           ],
                         ),
@@ -112,7 +110,7 @@ class _EpisodeItemState extends State<EpisodeItem>
       child: Poster(
           key: ValueKey(widget.item),
           tag: ImageType.PRIMARY,
-          heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
+          heroTag: posterHeroTag,
           clickable: false,
           placeholder: widget.placeholder,
           width: double.infinity,
@@ -125,7 +123,7 @@ class _EpisodeItemState extends State<EpisodeItem>
   Widget title() {
     final title = widget.item.indexNumber != null
         ? '${widget.item.indexNumber} - ${widget.item.name}'
-        : '${widget.item.name}';
+        : widget.item.name;
 
     return Flexible(
       child: Text(title,

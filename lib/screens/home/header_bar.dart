@@ -9,7 +9,7 @@ import 'components/search_button.dart';
 import 'components/settings_button.dart';
 
 class HeaderBar extends StatelessWidget {
-  const HeaderBar({Key? key}) : super(key: key);
+  const HeaderBar({super.key});
 
   @override
   Widget build(BuildContext context) {

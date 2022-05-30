@@ -16,10 +16,10 @@ import 'package:just_audio/just_audio.dart';
 import '../../shared/responsive_builder.dart';
 
 class MusicPlayer extends StatefulWidget {
-  MusicPlayer({Key? key}) : super(key: key);
+  MusicPlayer({super.key});
 
   @override
-  _MusicPlayerState createState() => _MusicPlayerState();
+  State<MusicPlayer> createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {

@@ -40,9 +40,9 @@ class _LatestState extends State<Latest> {
       future: itemsFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData && !snapshot.hasError) {
-          var _items = snapshot.data!;
-          if (_items.isNotEmpty) {
-            return body(_items);
+          var items = snapshot.data!;
+          if (items.isNotEmpty) {
+            return body(items);
           } else {
             return const SizedBox();
           }
@@ -66,9 +66,9 @@ class _LatestState extends State<Latest> {
               padding: EdgeInsets.only(left: 8),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                var _item = items[index];
+                var item = items[index];
                 return ItemPoster(
-                  _item,
+                  item,
                   width: double.infinity,
                   height: double.infinity,
                   showLogo: true,

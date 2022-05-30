@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class CommunityRatingField extends StatelessWidget {
   final FormGroup form;
-  const CommunityRatingField({Key? key, required this.form}) : super(key: key);
+  const CommunityRatingField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

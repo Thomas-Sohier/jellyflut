@@ -10,10 +10,10 @@ import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 class ListPersonItem extends StatefulWidget {
   final Item item;
 
-  const ListPersonItem({Key? key, required this.item}) : super(key: key);
+  const ListPersonItem({super.key, required this.item});
 
   @override
-  _ListPersonItemState createState() => _ListPersonItemState();
+  State<ListPersonItem> createState() => _ListPersonItemState();
 }
 
 class _ListPersonItemState extends State<ListPersonItem> {

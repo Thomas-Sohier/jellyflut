@@ -1,4 +1,3 @@
-import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/person_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -26,7 +25,7 @@ class Person {
         name: json['Name'],
         id: json['Id'],
         role: json['Role'],
-        type: EnumFromString<PersonType>(PersonType.values).get(json['Type'])!,
+        type: PersonType.fromString(json['Type']),
         primaryImageTag: json['PrimaryImageTag'],
         imageBlurHashes: json['ImageBlurHashes'] != null
             ? ImageBlurHashes.fromMap(json['ImageBlurHashes'])

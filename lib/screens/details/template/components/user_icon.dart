@@ -6,7 +6,7 @@ import 'package:jellyflut/globals.dart';
 class UserIcon extends StatelessWidget {
   final double size;
 
-  const UserIcon({Key? key, this.size = 28}) : super(key: key);
+  const UserIcon({super.key, this.size = 28});
 
   @override
   Widget build(BuildContext context) {

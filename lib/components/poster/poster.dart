@@ -1,6 +1,7 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -21,7 +22,7 @@ class Poster extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const Poster(
-      {Key? key,
+      {super.key,
       this.showParent = false,
       this.dropShadow = false,
       this.backup = true,
@@ -32,13 +33,12 @@ class Poster extends StatefulWidget {
       this.clickable = true,
       required this.tag,
       required this.boxFit,
-      required this.item})
-      : super(key: key);
+      required this.item});
   @override
-  _PosterState createState() => _PosterState();
+  State<Poster> createState() => _PosterState();
 }
 
-class _PosterState extends State<Poster> {
+class _PosterState extends State<Poster> with AbsordAction {
   late final FocusNode node;
 
   @override
@@ -47,15 +47,16 @@ class _PosterState extends State<Poster> {
     super.initState();
   }
 
-  void onTap() {
-    customRouter.push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
+  Future<void> redirection() {
+    return customRouter
+        .push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.clickable) {
       return OutlinedButton(
-        onPressed: () => onTap(),
+        onPressed: () => action(redirection),
         autofocus: false,
         focusNode: node,
         style: OutlinedButton.styleFrom(
@@ -76,7 +77,7 @@ class _PosterState extends State<Poster> {
   Widget poster() {
     if (widget.heroTag != null) {
       return Hero(
-        tag: '${widget.heroTag!}-${widget.item.name}-poster',
+        tag: widget.heroTag!,
         child: dropShadowBuilder(AsyncImage(
             item: widget.item,
             tag: widget.tag,

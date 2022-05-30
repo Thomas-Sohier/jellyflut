@@ -11,11 +11,10 @@ class TabsItems extends StatefulWidget {
   final List<Item> items;
   final BehaviorSubject<int>? indexStream;
 
-  TabsItems({Key? key, required this.items, this.indexStream})
-      : super(key: key);
+  TabsItems({super.key, required this.items, this.indexStream});
 
   @override
-  _TabsItemsState createState() => _TabsItemsState();
+  State<TabsItems> createState() => _TabsItemsState();
 }
 
 class _TabsItemsState extends State<TabsItems> {
@@ -31,9 +30,9 @@ class _TabsItemsState extends State<TabsItems> {
     widget.items.sort((Item item1, Item item2) =>
         item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
         length + 1);
-    widget.items.forEach((Item i) {
+    for (var i in widget.items) {
       itemsFutures.add(ItemService.getItems(parentId: i.id));
-    });
+    }
     _widgets = getTabsChilds(widget.items);
   }
 

@@ -2,7 +2,7 @@ part of '../details_widgets.dart';
 
 class RatingDetailsWidget extends StatelessWidget {
   final String? rating;
-  const RatingDetailsWidget({Key? key, required this.rating}) : super(key: key);
+  const RatingDetailsWidget({super.key, required this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +15,9 @@ class RatingDetailsWidget extends StatelessWidget {
               style: BorderStyle.solid,
               color: Theme.of(context).colorScheme.onBackground),
           borderRadius: BorderRadius.all(Radius.circular(4))),
-      child: Text(
-        rating!,
-        textAlign: TextAlign.justify,
-        style: Theme.of(context)
-            .textTheme
-            .bodyText1!
-            .copyWith(fontFamily: 'Quicksand')
-            .copyWith(fontSize: 16),
-      ),
+      child: Text(rating!,
+          textAlign: TextAlign.justify,
+          style: Theme.of(context).textTheme.subtitle1),
     );
   }
 }

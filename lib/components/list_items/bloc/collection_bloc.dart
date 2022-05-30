@@ -32,13 +32,9 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   bool _blockItemsLoading = false;
 
   CollectionBloc(
-      {final ListType listType = ListType.GRID,
-      required final Future<model.Category> Function(
-              int startIndex, int numberOfItemsToLoad)
-          loadMoreFunction})
+      {final ListType listType = ListType.GRID, required this.loadMoreFunction})
       : super(CollectionLoadingState()) {
     this.listType.add(listType);
-    this.loadMoreFunction = loadMoreFunction;
     on<AddItem>(addItems);
     on<ClearItem>(removeItems);
     on<LoadMoreItems>(showMoreItem);
@@ -82,17 +78,17 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
 
   void sortByName(SortByName event, Emitter<CollectionState> emit) async {
     emit(CollectionLoadingState());
-    final _items = await _sortByName();
+    final items = await _sortByName();
     items.clear();
-    items.addAll(_items);
+    items.addAll(items);
     emit(CollectionLoadedState());
   }
 
   void sortByDate(SortByDate event, Emitter<CollectionState> emit) async {
     emit(CollectionLoadingState());
-    final _items = await _sortByDate();
+    final items = await _sortByDate();
     items.clear();
-    items.addAll(_items);
+    items.addAll(items);
     emit(CollectionLoadedState());
   }
 

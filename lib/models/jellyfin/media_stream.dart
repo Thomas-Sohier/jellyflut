@@ -1,4 +1,3 @@
-import 'package:epubx/epubx.dart';
 import 'package:jellyflut/models/enum/codec.dart';
 import 'package:jellyflut/models/enum/codec_time_base.dart';
 import 'package:jellyflut/models/enum/language.dart';
@@ -105,15 +104,10 @@ class MediaStream {
         isForced: json['IsForced'],
         height: json['Height'],
         width: json['Width'],
-        averageFrameRate: json['AverageFrameRate'] == null
-            ? null
-            : json['AverageFrameRate'].toDouble(),
-        realFrameRate: json['RealFrameRate'] == null
-            ? null
-            : json['RealFrameRate'].toDouble(),
+        averageFrameRate: json['AverageFrameRate']?.toDouble(),
+        realFrameRate: json['RealFrameRate']?.toDouble(),
         profile: json['Profile'],
-        type: EnumFromString<MediaStreamType>(MediaStreamType.values)
-            .get(json['Type'])!,
+        type: MediaStreamType.fromString(json['Type']),
         aspectRatio: json['AspectRatio'],
         index: json['Index'],
         isExternal: json['IsExternal'],
@@ -154,7 +148,7 @@ class MediaStream {
         'AverageFrameRate': averageFrameRate,
         'RealFrameRate': realFrameRate,
         'Profile': profile,
-        'Type': mediaStreamType.reverse[type],
+        'Type': type.value,
         'AspectRatio': aspectRatio,
         'Index': index,
         'IsExternal': isExternal,

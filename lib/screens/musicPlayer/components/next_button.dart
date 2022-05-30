@@ -6,11 +6,10 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 class NextButton extends StatefulWidget {
   final Color color;
   final Color backgroundColor;
-  NextButton({Key? key, required this.color, required this.backgroundColor})
-      : super(key: key);
+  NextButton({super.key, required this.color, required this.backgroundColor});
 
   @override
-  _NextButtonState createState() => _NextButtonState();
+  State<NextButton> createState() => _NextButtonState();
 }
 
 class _NextButtonState extends State<NextButton> {

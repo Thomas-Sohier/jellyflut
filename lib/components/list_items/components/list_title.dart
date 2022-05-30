@@ -6,11 +6,10 @@ class ListTitle extends StatelessWidget {
   final bool showTitle;
 
   const ListTitle(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.item,
-      this.showTitle = false})
-      : super(key: key);
+      this.showTitle = false});
 
   @override
   Widget build(BuildContext context) {

@@ -25,7 +25,7 @@ class AsyncImage extends StatefulWidget {
   /// * [placeholder] can be used to determine a placeholder while loading image
   const AsyncImage(
       {required this.item,
-      Key? key,
+      super.key,
       this.tag = ImageType.PRIMARY,
       this.boxFit = BoxFit.fitHeight,
       this.placeholder,
@@ -33,19 +33,18 @@ class AsyncImage extends StatefulWidget {
       this.width,
       this.height,
       this.backup = true,
-      this.showParent = false})
-      : super(key: key);
+      this.showParent = false});
 
   @override
-  _AsyncImageState createState() => _AsyncImageState();
+  State<AsyncImage> createState() => _AsyncImageState();
 }
 
 class _AsyncImageState extends State<AsyncImage> {
   late final Widget child;
-  late final String itemId;
-  late final String? hash;
-  late final ImageType imageType;
-  late final String? imageTag;
+  late ImageType imageType;
+  late String? imageTag;
+  late String? hash;
+  late String itemId;
 
   @override
   void didChangeDependencies() {

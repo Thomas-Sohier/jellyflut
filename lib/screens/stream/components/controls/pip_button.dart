@@ -5,10 +5,10 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PipButton extends StatefulWidget {
-  PipButton({Key? key}) : super(key: key);
+  PipButton({super.key});
 
   @override
-  _PipButtonState createState() => _PipButtonState();
+  State<PipButton> createState() => _PipButtonState();
 }
 
 class _PipButtonState extends State<PipButton> {

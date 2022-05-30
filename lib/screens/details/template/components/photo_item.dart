@@ -10,11 +10,10 @@ class PhotoItem extends StatefulWidget {
   final List<Item>? items;
   final String? heroTag;
 
-  PhotoItem({Key? key, required this.item, required this.heroTag, this.items})
-      : super(key: key);
+  PhotoItem({super.key, required this.item, required this.heroTag, this.items});
 
   @override
-  _PhotoItemState createState() => _PhotoItemState();
+  State<PhotoItem> createState() => _PhotoItemState();
 }
 
 class _PhotoItemState extends State<PhotoItem> {
@@ -51,10 +50,10 @@ class _PhotoItemState extends State<PhotoItem> {
     return PhotoViewGallery.builder(
       scrollPhysics: const BouncingScrollPhysics(),
       builder: (BuildContext context, int index) {
-        var _item = items[index];
+        var item = items[index];
         return PhotoViewGalleryPageOptions(
           imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
-              _item.correctImageId(), _item.correctImageTags()!)),
+              item.correctImageId(), item.correctImageTags()!)),
           initialScale: PhotoViewComputedScale.contained,
         );
       },

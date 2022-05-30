@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import 'shared/custom_scroll_behavior.dart';
 
 void main() async {
-  DartVLC.initialize();
+  await DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();
@@ -67,7 +67,7 @@ class Jellyflut extends StatelessWidget {
         ignoreTextFields: false),
   };
 
-  Jellyflut({Key? key, required this.authenticated}) : super(key: key);
+  Jellyflut({super.key, required this.authenticated});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

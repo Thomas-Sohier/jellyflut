@@ -9,8 +9,7 @@ class BackgroundImage extends StatelessWidget {
   final ImageType imageType;
 
   const BackgroundImage(
-      {Key? key, required this.item, this.imageType = ImageType.PRIMARY})
-      : super(key: key);
+      {super.key, required this.item, this.imageType = ImageType.PRIMARY});
 
   @override
   Widget build(BuildContext context) {

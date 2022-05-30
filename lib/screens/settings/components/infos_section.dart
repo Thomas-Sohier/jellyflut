@@ -3,7 +3,7 @@ part of 'sections.dart';
 class InfosSection extends StatelessWidget {
   final String? version;
 
-  const InfosSection({Key? key, this.version}) : super(key: key);
+  const InfosSection({super.key, this.version});
 
   @override
   SettingsSection build(BuildContext context) {

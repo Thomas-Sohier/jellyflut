@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 class DetailsBackground extends StatelessWidget {
-  const DetailsBackground({Key? key}) : super(key: key);
+  const DetailsBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,6 @@ class DetailsBackground extends StatelessWidget {
                 gradient: gradient.isNotEmpty
                     ? LinearGradient(
                         colors: gradient,
-                        // stops: [0, 0.01, 0.02, 1],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       )

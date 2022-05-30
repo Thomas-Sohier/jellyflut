@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LoadingText extends StatelessWidget {
@@ -23,7 +23,7 @@ class LoadingText extends StatelessWidget {
       color: Color.fromARGB(255, 0, 0, 0),
     )
   ];
-  const LoadingText({Key? key}) : super(key: key);
+  const LoadingText({super.key});
 
   @override
   Widget build(BuildContext context) {

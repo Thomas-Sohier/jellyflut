@@ -7,7 +7,7 @@ class HomeCategoryTitle extends StatefulWidget {
   final VoidCallback onTap;
 
   @override
-  _HomeCategoryTitleState createState() => _HomeCategoryTitleState();
+  State<HomeCategoryTitle> createState() => _HomeCategoryTitleState();
 }
 
 class _HomeCategoryTitleState extends State<HomeCategoryTitle> {

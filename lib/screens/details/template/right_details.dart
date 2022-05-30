@@ -4,8 +4,8 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
-import 'package:jellyflut/screens/details/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
+import 'package:jellyflut/screens/details/template/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
@@ -15,11 +15,10 @@ import 'package:rxdart/rxdart.dart';
 class RightDetails extends StatefulWidget {
   final Item item;
   final Widget? posterAndLogoWidget;
-  RightDetails({Key? key, required this.item, this.posterAndLogoWidget})
-      : super(key: key);
+  RightDetails({super.key, required this.item, this.posterAndLogoWidget});
 
   @override
-  _RightDetailsState createState() => _RightDetailsState();
+  State<RightDetails> createState() => _RightDetailsState();
 }
 
 class _RightDetailsState extends State<RightDetails>
@@ -113,10 +112,11 @@ class _RightDetailsState extends State<RightDetails>
           // Shown only if current item is a series (because it contains seasons)
           if (item.type == ItemType.SERIES)
             SliverPersistentHeader(
-                pinned: true,
-                floating: false,
-                delegate:
-                    TabHeader(seasons: seasons, tabController: _tabController)),
+              pinned: true,
+              floating: false,
+              delegate:
+                  TabHeader(seasons: seasons, tabController: _tabController),
+            ),
           SliverToBoxAdapter(
             child: FutureBuilder<Category>(
                 future: seasons,

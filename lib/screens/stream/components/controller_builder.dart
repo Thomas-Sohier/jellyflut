@@ -12,10 +12,10 @@ import 'package:jellyflut/screens/stream/exception/unsupported_player_exception.
 /// Can throw [UnsupportedPlayerException] if controller is not recognized
 class Controllerbuilder extends StatefulWidget {
   final dynamic controller;
-  Controllerbuilder({Key? key, required this.controller}) : super(key: key);
+  Controllerbuilder({super.key, required this.controller});
 
   @override
-  _ControllerbuilderState createState() => _ControllerbuilderState();
+  State<Controllerbuilder> createState() => _ControllerbuilderState();
 }
 
 class _ControllerbuilderState extends State<Controllerbuilder> {

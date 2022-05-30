@@ -2,10 +2,10 @@ part of 'sections.dart';
 
 class VideoBitrateValueEditor extends StatefulWidget {
   final Database database;
-  VideoBitrateValueEditor({Key? key, required this.database}) : super(key: key);
+  VideoBitrateValueEditor({super.key, required this.database});
 
   @override
-  _VideoBitrateValueEditorState createState() =>
+  State<VideoBitrateValueEditor> createState() =>
       _VideoBitrateValueEditorState();
 }
 

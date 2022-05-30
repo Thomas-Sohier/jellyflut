@@ -5,11 +5,10 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class ForwardButton extends StatefulWidget {
   final Duration duration;
-  ForwardButton({Key? key, this.duration = const Duration(seconds: 10)})
-      : super(key: key);
+  ForwardButton({super.key, this.duration = const Duration(seconds: 10)});
 
   @override
-  _ForwardButtonState createState() => _ForwardButtonState();
+  State<ForwardButton> createState() => _ForwardButtonState();
 }
 
 class _ForwardButtonState extends State<ForwardButton> {

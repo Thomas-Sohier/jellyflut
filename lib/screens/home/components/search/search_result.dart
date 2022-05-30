@@ -11,7 +11,7 @@ class SearchResult extends StatefulWidget {
   SearchResult();
 
   @override
-  _SearchResultState createState() => _SearchResultState();
+  State<SearchResult> createState() => _SearchResultState();
 }
 
 class _SearchResultState extends State<SearchResult> {

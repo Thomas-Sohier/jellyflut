@@ -9,7 +9,6 @@ import 'dart:io';
 
 // import 'package:fereader/fereader.dart';
 import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:epubx/epubx.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -31,6 +30,7 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
 import 'package:jellyflut/screens/stream/init_stream.dart';
+import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
@@ -223,8 +223,7 @@ class Item {
         parentIndexNumber: json['ParentIndexNumber'],
         etag: json['Etag'],
         collectionType: json['CollectionType'] != null
-            ? EnumFromString<CollectionType>(CollectionType.values)
-                .get(json['CollectionType'])
+            ? CollectionType.fromString(json['CollectionType'])
             : null,
         dateCreated: json['DateCreated'] == null
             ? null
@@ -258,9 +257,7 @@ class Item {
         genres: json['Genres'] == null
             ? <String>[]
             : List<String>.from(json['Genres'].map((x) => x)),
-        communityRating: json['CommunityRating'] == null
-            ? null
-            : json['CommunityRating'].toDouble(),
+        communityRating: json['CommunityRating']?.toDouble(),
         runTimeTicks: json['RunTimeTicks'],
         playAccess: json['PlayAccess'],
         productionYear: json['ProductionYear'],
@@ -275,7 +272,7 @@ class Item {
         parentId: json['ParentId'],
         seriesId: json['SeriesId'],
         seasonId: json['SeasonId'],
-        type: EnumFromString<ItemType>(ItemType.values).get(json['Type'])!,
+        type: ItemType.fromString(json['Type']),
         artists: json['Artists'] == null
             ? <Artist>[]
             : List<Artist>.from(json['Artists'].map((x) => Artist.fromMap(x))),
@@ -312,9 +309,7 @@ class Item {
         tags: json['Tags'] == null
             ? <dynamic>[]
             : List<dynamic>.from(json['Tags'].map((x) => x)),
-        primaryImageAspectRatio: json['PrimaryImageAspectRatio'] == null
-            ? null
-            : json['PrimaryImageAspectRatio'].toDouble(),
+        primaryImageAspectRatio: json['PrimaryImageAspectRatio']?.toDouble(),
         mediaStreams: json['MediaStreams'] == null
             ? <MediaStream>[]
             : List<MediaStream>.from(
@@ -351,7 +346,9 @@ class Item {
             : List<Chapter>.from(
                 json['Chapters'].map((x) => Chapter.fromMap(x))),
         locationType: json['LocationType'],
-        mediaType: mediaStreamType.map[json['MediaType']],
+        mediaType: json['MediaType'] != null
+            ? MediaStreamType.fromString(json['MediaType'])
+            : null,
         lockedFields: json['LockedFields'] == null
             ? <dynamic>[]
             : List<dynamic>.from(json['LockedFields'].map((x) => x)),
@@ -457,7 +454,7 @@ class Item {
           ? List<dynamic>.from(chapters.map((x) => x.toMap()))
           : null,
       'LocationType': locationType,
-      'MediaType': itemTypeValues.reverse[mediaType],
+      'MediaType': mediaType?.value,
       'LockedFields': lockedFields.isNotEmpty
           ? List<dynamic>.from(lockedFields.map((x) => x))
           : null,
@@ -1031,7 +1028,7 @@ class Item {
   /// Return the item file's extension
   /// Example : .cbz, .epub
   /// Can return [null]
-  String? getFileExtension() {
+  String getFileExtension() {
     if (path != null && path!.isNotEmpty) {
       final regexString = r'\.[0-9a-z]+$';
       final regExp = RegExp(regexString);
@@ -1213,7 +1210,7 @@ class Item {
   /// If Book open Epub reader
   /// If Video open video player
   /// If music play it and show music button
-  void playItem() async {
+  Future<void> playItem() {
     var musicProvider = MusicProvider();
     if (type == ItemType.EPISODE ||
         type == ItemType.SEASON ||
@@ -1221,22 +1218,23 @@ class Item {
         type == ItemType.MOVIE ||
         type == ItemType.TVCHANNEL ||
         type == ItemType.VIDEO) {
-      // return InitStreamingItemUtil.initFromItem(item: this);
-      await customRouter.push(StreamRoute(item: this));
+      return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
       if (musicProvider.getAudioPlayer == null) {
         final audioPlayer = AudioPlayer();
         musicProvider.setAudioPlayer(audioPlayer);
       }
-      return await musicProvider.playRemoteAudio(this);
+      return musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       if (musicProvider.getAudioPlayer == null) {
         final audioPlayer = AudioPlayer();
         musicProvider.setAudioPlayer(audioPlayer);
       }
-      return await musicProvider.playPlaylist(this);
+      return musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
-      await customRouter.push(EpubRoute(item: this));
+      return customRouter.push(EpubRoute(item: this));
+    } else {
+      throw UnimplementedError('Item is not playable (type : $type');
     }
   }
 
@@ -1355,14 +1353,12 @@ class Item {
   }
 
   Future<String> createMusicURL() async {
-    var streamingSoftwareDB = await db.AppDatabase()
+    final streamingSoftwareDB = await db.AppDatabase()
         .getDatabase
         .settingsDao
         .getSettingsById(userApp!.settingsId);
-    var streamingSoftware = TranscodeAudioCodecName.values.firstWhere((e) =>
-        e.toString() ==
-        'TranscodeAudioCodecName.' +
-            streamingSoftwareDB.preferredTranscodeAudioCodec);
+    final streamingSoftware = TranscodeAudioCodec.fromString(
+        streamingSoftwareDB.preferredTranscodeAudioCodec);
 
     // First we try to fetch item locally to play it
     final database = db.AppDatabase().getDatabase;
@@ -1382,7 +1378,7 @@ class Item {
     final videoId = itemURi.queryParameters['v'];
     final yt = YoutubeExplode();
     final manifest = await yt.videos.streamsClient.getManifest(videoId);
-    final streamInfo = manifest.muxed.toList().last;
+    final streamInfo = manifest.muxed.withHighestBitrate();
     yt.close();
     return streamInfo.url;
   }

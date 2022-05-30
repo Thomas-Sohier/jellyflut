@@ -40,7 +40,7 @@ class AuthService {
         case 401:
           throw ('Authentication error, check your login, password and server\'s url');
         case 404:
-          throw ('Url error, check that your\e using the correct url and/or subpath');
+          throw ('Url error, check that youre using the correct url and/or subpath');
         case 500:
           throw ('Server error, check that you can connect to your server');
         default:

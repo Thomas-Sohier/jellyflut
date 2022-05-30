@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,29 +9,30 @@ class PeoplePoster extends StatefulWidget {
   final Person person;
   final bool clickable;
   final bool bigPoster;
-  final VoidCallback? onPressed;
+  final Function(String)? onPressed;
 
   PeoplePoster(
-      {Key? key,
+      {super.key,
       required this.person,
       this.onPressed,
       this.bigPoster = false,
-      this.clickable = true})
-      : super(key: key);
+      this.clickable = true});
 
   @override
-  _PeoplePosterState createState() => _PeoplePosterState();
+  State<PeoplePoster> createState() => _PeoplePosterState();
 }
 
 class _PeoplePosterState extends State<PeoplePoster>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AbsordAction {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;
+  late final heroTag;
 
   @override
   void initState() {
     _node = FocusNode();
+    heroTag = '${widget.person.id}-${Uuid().v1()}-person';
     super.initState();
   }
 
@@ -40,20 +42,25 @@ class _PeoplePosterState extends State<PeoplePoster>
     super.dispose();
   }
 
+  Future<void> onTap() {
+    if (widget.onPressed != null) {
+      return widget.onPressed!(heroTag);
+    }
+    return Future.value(null);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO do something to handle image correctly when item removed from list
-    final finalPoster = widget.bigPoster ? bigPoster() : poster();
+    final finalPoster = widget.bigPoster ? bigPoster(heroTag) : poster(heroTag);
     if (widget.clickable) {
       return OutlinedButton(
-          onPressed: widget.onPressed,
+          onPressed: () => action(onTap),
           autofocus: false,
           focusNode: _node,
           style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                  ),
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
                   backgroundColor: Colors.transparent)
               .copyWith(side: buttonBorderSide())
               .copyWith(elevation: buttonElevation()),
@@ -62,9 +69,9 @@ class _PeoplePosterState extends State<PeoplePoster>
     return finalPoster;
   }
 
-  Widget poster() {
+  Widget poster(String heroTag) {
     return Hero(
-        tag: '${widget.person.id}-${Uuid().v1()}-person',
+        tag: heroTag,
         child: AspectRatio(
             aspectRatio: 2 / 3,
             child: AsyncImage(
@@ -81,9 +88,9 @@ class _PeoplePosterState extends State<PeoplePoster>
             )));
   }
 
-  Widget bigPoster() {
+  Widget bigPoster(String heroTag) {
     return Hero(
-        tag: '${widget.person.id}-${Uuid().v1()}-person',
+        tag: heroTag,
         child: AspectRatio(
           aspectRatio: 2 / 3,
           child: ClipRRect(

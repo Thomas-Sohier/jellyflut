@@ -3,7 +3,7 @@ part of 'player_infos.dart';
 class ItemTitle extends StatelessWidget {
   final StreamingProvider streamingProvider = StreamingProvider();
 
-  ItemTitle({Key? key}) : super(key: key);
+  ItemTitle({super.key});
 
   @override
   Widget build(BuildContext context) {

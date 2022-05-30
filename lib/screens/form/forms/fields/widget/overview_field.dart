@@ -2,7 +2,7 @@ part of '../fields.dart';
 
 class OverviewField extends StatelessWidget {
   final FormGroup form;
-  const OverviewField({Key? key, required this.form}) : super(key: key);
+  const OverviewField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {

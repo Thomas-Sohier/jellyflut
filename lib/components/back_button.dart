@@ -6,11 +6,10 @@ class BackButton extends StatefulWidget {
   final bool shadow;
   final VoidCallback? onPressedCallback;
 
-  const BackButton({Key? key, this.shadow = false, this.onPressedCallback})
-      : super(key: key);
+  const BackButton({super.key, this.shadow = false, this.onPressedCallback});
 
   @override
-  _BackButtonState createState() => _BackButtonState();
+  State<BackButton> createState() => _BackButtonState();
 }
 
 class _BackButtonState extends State<BackButton> {

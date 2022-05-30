@@ -8,13 +8,12 @@ class SearchField extends StatelessWidget {
   final TextEditingController? textEditingController;
 
   const SearchField(
-      {Key? key,
+      {super.key,
       this.icon,
       this.fieldColor = Colors.transparent,
       this.padding,
       this.constraints,
-      this.textEditingController})
-      : super(key: key);
+      this.textEditingController});
 
   @override
   Widget build(BuildContext context) {
