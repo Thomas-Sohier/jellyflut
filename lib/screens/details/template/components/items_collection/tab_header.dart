@@ -1,15 +1,19 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 class TabHeader extends SliverPersistentHeaderDelegate {
   final Future<Category> seasons;
   final TabController? tabController;
   final EdgeInsets padding;
+  static const height = 80.0;
 
   TabHeader(
       {Key? key,
@@ -20,6 +24,8 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BlocProvider.of<DetailsBloc>(context).shrinkOffsetChanged(shrinkOffset);
+
     return FutureBuilder<Category>(
         future: seasons,
         builder: (context, snapshot) {
@@ -27,14 +33,25 @@ class TabHeader extends SliverPersistentHeaderDelegate {
             return ClipRRect(
               child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      padding: padding,
-                      children:
-                          getTabsHeader(snapshot.data?.items ?? <Item>[]))),
+                  child: SizedBox(
+                    height: height,
+                    child: StreamBuilder<bool>(
+                        initialData: false,
+                        stream: BlocProvider.of<DetailsBloc>(context)
+                            .pinnedHeaderStream,
+                        builder: (_, headerSnapsot) => AnimatedPadding(
+                            padding: headerSnapsot.data!
+                                ? padding.copyWith(left: padding.left + 40)
+                                : padding,
+                            duration: Duration(milliseconds: 200),
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: getTabsHeader(
+                                    snapshot.data?.items ?? <Item>[])))),
+                  )),
             );
           }
-          return const SizedBox(height: 50.0);
+          return const SizedBox(height: height);
         });
   }
 
@@ -72,10 +89,10 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 80.0;
+  double get maxExtent => height;
 
   @override
-  double get minExtent => 80.0;
+  double get minExtent => height;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

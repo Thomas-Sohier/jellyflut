@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -24,6 +26,7 @@ class RightDetails extends StatefulWidget {
 class _RightDetailsState extends State<RightDetails>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+  bool isHeaderPinned = false;
   late ThemeData _theme;
   late Item item;
   late final DetailsBloc _detailsBloc;
@@ -82,7 +85,6 @@ class _RightDetailsState extends State<RightDetails>
 
     return CustomScrollView(
         controller: _scrollController,
-        physics: AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         slivers: [
           boxAdapter(widget.posterAndLogoWidget),
@@ -122,18 +124,20 @@ class _RightDetailsState extends State<RightDetails>
                   tabController: _tabController,
                   padding: horizotalScrollbaleWidgetPadding),
             ),
-          boxAdapter(
-            FutureBuilder<Category>(
-                future: seasons,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Collection(item,
-                        indexStream: _indexStream,
-                        seasons: snapshot.data?.items ?? <Item>[]);
-                  }
-                  return const SizedBox();
-                }),
-          )
+          boxAdapter(SeasonEpisode())
         ]);
+  }
+
+  Widget SeasonEpisode() {
+    return FutureBuilder<Category>(
+        future: seasons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Collection(item,
+                indexStream: _indexStream,
+                seasons: snapshot.data?.items ?? <Item>[]);
+          }
+          return const SizedBox();
+        });
   }
 }

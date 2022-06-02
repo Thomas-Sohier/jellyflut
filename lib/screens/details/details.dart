@@ -30,7 +30,7 @@ class _DetailsState extends State<Details> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    detailsBloc = DetailsBloc(getDetailsInfos());
+    detailsBloc = DetailsBloc(getDetailsInfos(), ScreenLayout.desktop);
     detailsBloc.getItemBackgroundColor(widget.item);
   }
 
@@ -49,13 +49,6 @@ class _DetailsState extends State<Details> {
               statusBarColor: Colors.transparent,
             ),
             child: Scaffold(
-                extendBody: true,
-                extendBodyBehindAppBar: true,
-                backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  backgroundColor: Colors.transparent,
-                  leading: BackButton(),
-                ),
                 body: widget.item.type != ItemType.PHOTO
                     ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
                     : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
