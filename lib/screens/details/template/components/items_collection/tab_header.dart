@@ -9,8 +9,13 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 class TabHeader extends SliverPersistentHeaderDelegate {
   final Future<Category> seasons;
   final TabController? tabController;
+  final EdgeInsets padding;
 
-  TabHeader({Key? key, required this.seasons, this.tabController});
+  TabHeader(
+      {Key? key,
+      required this.seasons,
+      this.tabController,
+      this.padding = const EdgeInsets.only(left: 12)});
 
   @override
   Widget build(
@@ -24,6 +29,7 @@ class TabHeader extends SliverPersistentHeaderDelegate {
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: ListView(
                       scrollDirection: Axis.horizontal,
+                      padding: padding,
                       children:
                           getTabsHeader(snapshot.data?.items ?? <Item>[]))),
             );

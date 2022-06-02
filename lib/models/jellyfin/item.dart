@@ -898,6 +898,15 @@ class Item {
     return playableItems.contains(type);
   }
 
+  ///Check if original title is different from Localized title
+  ///
+  /// Return [true] if is different
+  /// Return [false] if same
+  bool haveDifferentOriginalTitle() {
+    return originalTitle != null &&
+        originalTitle!.toLowerCase() != name.toLowerCase();
+  }
+
   /// Duration in microseconds from the item
   ///
   /// Return the [duration] if known

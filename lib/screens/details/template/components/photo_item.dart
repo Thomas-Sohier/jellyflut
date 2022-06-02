@@ -26,12 +26,6 @@ class _PhotoItemState extends State<PhotoItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: null,
-    );
-  }
-
-  Widget photoItem() {
     if (widget.items != null && widget.items!.isEmpty) {
       return PhotoView(
         heroAttributes: widget.heroTag != null
