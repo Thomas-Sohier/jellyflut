@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/models/downloads/item_download.dart';
+import 'package:jellyflut/providers/downloads/download_event.dart';
+import 'package:jellyflut/providers/downloads/download_event_type.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/screens/downloads/current_download_item.dart';
 import 'package:provider/provider.dart';

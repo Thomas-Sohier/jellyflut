@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class BackButton extends StatefulWidget {
+class SelectableBackButton extends StatefulWidget {
   final bool shadow;
-  final VoidCallback? onPressedCallback;
-
-  const BackButton({super.key, this.shadow = false, this.onPressedCallback});
+  const SelectableBackButton({super.key, this.shadow = false});
 
   @override
-  State<BackButton> createState() => _BackButtonState();
+  State<SelectableBackButton> createState() => _SelectableBackButtonState();
 }
 
-class _BackButtonState extends State<BackButton> {
+class _SelectableBackButtonState extends State<SelectableBackButton> {
   late final FocusNode _node;
   late List<BoxShadow> shadows;
 
@@ -41,14 +39,9 @@ class _BackButtonState extends State<BackButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        shape: CircleBorder(),
-        onPressed: customRouter.pop,
-        padding: EdgeInsets.all(8),
+        shape: const CircleBorder(),
+        onPressed: () => {},
         primary: Colors.white,
-        child: Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-          size: 28,
-        ));
+        child: const BackButton());
   }
 }

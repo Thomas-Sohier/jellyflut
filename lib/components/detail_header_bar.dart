@@ -21,7 +21,7 @@ class DetailHeaderBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                back_button.BackButton(
+                back_button.SelectableBackButton(
                   shadow: true,
                 )
               ],

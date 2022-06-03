@@ -166,7 +166,7 @@ class _CommonControlsState extends State<CommonControls> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          bb.BackButton(shadow: true),
+          bb.SelectableBackButton(shadow: true),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

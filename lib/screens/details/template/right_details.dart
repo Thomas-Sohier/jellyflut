@@ -87,6 +87,7 @@ class _RightDetailsState extends State<RightDetails>
         controller: _scrollController,
         scrollDirection: Axis.vertical,
         slivers: [
+          boxAdapter(const SizedBox(height: 48)),
           boxAdapter(widget.posterAndLogoWidget),
           boxAdapter(const SizedBox(height: 24)),
           boxAdapter(Align(
@@ -124,7 +125,8 @@ class _RightDetailsState extends State<RightDetails>
                   tabController: _tabController,
                   padding: horizotalScrollbaleWidgetPadding),
             ),
-          boxAdapter(SeasonEpisode())
+          boxAdapter(SeasonEpisode()),
+          boxAdapter(const SizedBox(height: 24)),
         ]);
   }
 

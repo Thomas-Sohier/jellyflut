@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/back_button.dart';
 import 'package:jellyflut/mixins/details_mixin.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -52,7 +53,7 @@ class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
                   duration: Duration(milliseconds: 200),
                   left: 0,
                   top: snapshot.data! ? 15 : 0,
-                  child: BackButton()))
+                  child: SelectableBackButton()))
         ]);
       }))
     ]);
