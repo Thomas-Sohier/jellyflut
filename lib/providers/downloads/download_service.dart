@@ -44,7 +44,6 @@ class DownloadService {
   /// deepest level
   /// If there is no child then we return current [item]
   Future<List<Item>> _itemsToDownload(Item item) async {
-    final itemsToDownload = <Item>[];
     Future<List<Item>> getChildrens(String itemId) async {
       final category = await ItemService.getItems(parentId: item.id);
       return category.items;
@@ -52,13 +51,7 @@ class DownloadService {
 
     final childrens = await getChildrens(item.id);
     if (childrens.isEmpty) return [item];
-
-    for (final children in childrens) {
-      final childrens = await getChildrens(children.id);
-      itemsToDownload.addAll(childrens);
-    }
-
-    return itemsToDownload;
+    return childrens.where((e) => e.isPlayable()).toList();
   }
 
   Future<String> getDownloadPath(Item item) async {
@@ -66,9 +59,7 @@ class DownloadService {
   }
 
   Future<List<Future<int>>> addDownloads(
-      {required final List<Item> items,
-      BuildContext? context,
-      BehaviorSubject<int>? percentDownload}) async {
+      {required final List<Item> items, BuildContext? context}) async {
     final downloads = <Future<int>>[];
     for (final item in items) {
       final downloadUrl = FileService.getDownloadFileUrl(item.id);
@@ -78,8 +69,7 @@ class DownloadService {
           item: item,
           context: context ?? customRouter.navigatorKey.currentContext,
           downloadPath: downloadPath,
-          downloadUrl: downloadUrl,
-          percentDownload: percentDownload);
+          downloadUrl: downloadUrl);
       downloads.add(download);
     }
     return downloads;
@@ -89,13 +79,13 @@ class DownloadService {
       {required final Item item,
       required BuildContext? context,
       required String downloadUrl,
-      required String downloadPath,
-      BehaviorSubject<int>? percentDownload}) {
+      required String downloadPath}) {
     // Add download to provider to keep track of it
     final cancelToken = CancelToken();
+    final percentDownload = BehaviorSubject<int>();
     final itemDownload = ItemDownload(
         item: item,
-        downloadValueWatcher: percentDownload ?? BehaviorSubject<int>(),
+        downloadValueWatcher: percentDownload,
         cancelToken: cancelToken);
     downloads.add(itemDownload);
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class SelectableBackButton extends StatefulWidget {

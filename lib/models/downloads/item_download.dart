@@ -7,8 +7,9 @@ class ItemDownload {
   final CancelToken cancelToken;
   final BehaviorSubject<int> downloadValueWatcher;
 
-  const ItemDownload(
-      {required this.item,
-      required this.downloadValueWatcher,
-      required this.cancelToken});
+  const ItemDownload({
+    required this.item,
+    required this.cancelToken,
+    required this.downloadValueWatcher,
+  });
 }

@@ -15,7 +15,7 @@ class _DownloadsParentState extends State<DownloadsParent> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-            extendBodyBehindAppBar: true,
+            extendBodyBehindAppBar: false,
             appBar: AppBar(
                 bottom: const TabBar(
               tabs: [Tab(text: 'Saved items'), Tab(text: 'Active downloads')],
