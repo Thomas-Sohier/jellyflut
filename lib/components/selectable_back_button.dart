@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
+import 'package:jellyflut/globals.dart';
 
 class SelectableBackButton extends StatefulWidget {
   final bool shadow;
@@ -39,8 +40,8 @@ class _SelectableBackButtonState extends State<SelectableBackButton> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         shape: const CircleBorder(),
-        onPressed: () => {},
+        onPressed: customRouter.pop,
         primary: Colors.white,
-        child: const BackButton());
+        child: IgnorePointer(child: const BackButton()));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/back_button.dart' as back_button;
+import 'package:jellyflut/components/selectable_back_button.dart'
+    as back_button;
 
 class DetailHeaderBar extends StatelessWidget {
   final double height;
