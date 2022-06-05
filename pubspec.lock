@@ -91,7 +91,7 @@ packages:
       name: better_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.82"
+    version: "0.0.83"
   bloc:
     dependency: "direct main"
     description:
@@ -1343,7 +1343,7 @@ packages:
       name: visibility_detector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.2"
+    version: "0.3.3"
   wakelock:
     dependency: "direct main"
     description:
@@ -1415,7 +1415,7 @@ packages:
     source: hosted
     version: "0.2.0+1"
   xml:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: xml
       url: "https://pub.dartlang.org"

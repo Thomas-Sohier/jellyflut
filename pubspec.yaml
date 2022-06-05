@@ -16,7 +16,7 @@ dependencies:
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0
   auto_route: ^4.0.1
-  better_player: ^0.0.82
+  better_player: ^0.0.83
   bloc: ^8.0.3
   blurhash_dart: ^1.1.0
   cached_network_image: ^3.2.1
@@ -66,6 +66,9 @@ dependencies:
   wakelock: ^0.6.1+2
   window_manager: ^0.2.5
   youtube_explode_dart: ^1.11.0
+
+dependency_overrides: 
+  xml: ^5.3.1
 
 dev_dependencies:
   auto_route_generator: ^4.0.0

@@ -1,5 +1,6 @@
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
@@ -18,6 +19,7 @@ class Poster extends StatefulWidget {
   final bool showParent;
   final bool dropShadow;
   final bool clickable;
+  final bool showOverlay;
   final String? heroTag;
   final Widget Function(BuildContext)? placeholder;
 
@@ -26,6 +28,7 @@ class Poster extends StatefulWidget {
       this.showParent = false,
       this.dropShadow = false,
       this.backup = true,
+      this.showOverlay = false,
       this.height,
       this.placeholder,
       this.width,
@@ -40,10 +43,19 @@ class Poster extends StatefulWidget {
 
 class _PosterState extends State<Poster> with AbsordAction {
   late final FocusNode node;
+  late final ZoomableImageController _zoomableImageController;
 
   @override
   void initState() {
     node = FocusNode();
+    node.addListener(() {
+      if (node.hasFocus) {
+        _zoomableImageController.zoom();
+      } else {
+        _zoomableImageController.zoomOut();
+      }
+    });
+    _zoomableImageController = ZoomableImageController();
     super.initState();
   }
 
@@ -66,9 +78,11 @@ class _PosterState extends State<Poster> with AbsordAction {
                 backgroundColor: Colors.transparent)
             .copyWith(shadowColor: buttonShadow())
             .copyWith(side: buttonBorderSide())
-            .copyWith(padding: buttonPadding())
             .copyWith(elevation: buttonElevation()),
-        child: poster(),
+        child: MouseRegion(
+            onEnter: (_) => _zoomableImageController.zoom(),
+            onExit: (_) => _zoomableImageController.zoomOut(),
+            child: poster()),
       );
     }
     return poster();
@@ -86,6 +100,8 @@ class _PosterState extends State<Poster> with AbsordAction {
             width: widget.width,
             height: widget.height,
             backup: widget.backup,
+            zoomableImageController: _zoomableImageController,
+            showOverlay: widget.showOverlay,
             showParent: widget.showParent)),
       );
     }
@@ -134,7 +150,7 @@ class _PosterState extends State<Poster> with AbsordAction {
         if (states.contains(MaterialState.hovered) ||
             states.contains(MaterialState.focused)) {
           return BorderSide(
-            width: 2,
+            width: 3,
             color: Theme.of(context).colorScheme.onBackground,
           );
         }
@@ -148,7 +164,7 @@ class _PosterState extends State<Poster> with AbsordAction {
     return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
         (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
-        return EdgeInsets.all(4);
+        return EdgeInsets.all(3);
       }
       return EdgeInsets.zero;
     });

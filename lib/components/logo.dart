@@ -7,39 +7,43 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 
 class Logo extends StatelessWidget {
   final Item item;
+  final bool selectable;
   final actions = <Type, Action<Intent>>{
     ActivateIntent: CallbackAction<Intent>(
       onInvoke: (Intent intent) => customRouter.pop(),
     ),
   };
 
-  Logo({super.key, required this.item});
+  Logo({super.key, required this.item, this.selectable = true});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonSelector(
-        onPressed: (() => showDialog(
-            context: context,
-            barrierColor: Colors.black.withOpacity(0.64),
-            builder: (_) {
-              return GestureDetector(
-                onTap: () => customRouter.pop(),
-                child: FocusableActionDetector(
-                  autofocus: true,
-                  descendantsAreFocusable: false,
-                  mouseCursor: SystemMouseCursors.click,
-                  actions: actions,
-                  child: Center(
-                      child: logo(
-                          context,
-                          BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width / 2,
-                              maxHeight:
-                                  MediaQuery.of(context).size.height / 2))),
-                ),
-              );
-            })),
-        child: logo(context, BoxConstraints(maxHeight: 100)));
+    if (selectable) {
+      return OutlinedButtonSelector(
+          onPressed: (() => showDialog(
+              context: context,
+              barrierColor: Colors.black.withOpacity(0.64),
+              builder: (_) {
+                return GestureDetector(
+                  onTap: () => customRouter.pop(),
+                  child: FocusableActionDetector(
+                    autofocus: true,
+                    descendantsAreFocusable: false,
+                    mouseCursor: SystemMouseCursors.click,
+                    actions: actions,
+                    child: Center(
+                        child: logo(
+                            context,
+                            BoxConstraints(
+                                maxWidth: MediaQuery.of(context).size.width / 2,
+                                maxHeight:
+                                    MediaQuery.of(context).size.height / 2))),
+                  ),
+                );
+              })),
+          child: logo(context, BoxConstraints(maxHeight: 100)));
+    }
+    return logo(context, BoxConstraints(maxHeight: 100));
   }
 
   Widget logo(BuildContext context, BoxConstraints constraints) {

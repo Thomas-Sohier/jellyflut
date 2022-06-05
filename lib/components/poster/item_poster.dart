@@ -112,14 +112,9 @@ class _ItemPosterState extends State<ItemPoster>
                   placeholder: widget.placeholder,
                   width: widget.width,
                   backup: widget.backup,
+                  showOverlay: widget.imagefilter,
                   height: widget.height,
                   item: widget.item),
-              if (widget.imagefilter)
-                IgnorePointer(
-                    child: Container(
-                        constraints: BoxConstraints.expand(),
-                        decoration:
-                            BoxDecoration(color: Colors.black.withAlpha(100)))),
               if (widget.showOverlay)
                 IgnorePointer(
                     child: Stack(
@@ -134,7 +129,7 @@ class _ItemPosterState extends State<ItemPoster>
                 IgnorePointer(
                     child: Align(
                   alignment: Alignment.center,
-                  child: Logo(item: widget.item),
+                  child: Logo(item: widget.item, selectable: false),
                 )),
               if (widget.item.hasProgress() && widget.showOverlay) progress(),
             ]),
