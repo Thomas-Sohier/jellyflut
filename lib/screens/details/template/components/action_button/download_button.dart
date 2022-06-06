@@ -47,6 +47,7 @@ class _DownloadButtonState extends State<DownloadButton> {
       setState(() => buttonEnabled = false);
       downloadProvider
           .downloadItem(widget.item, percentDownload, dialogRedownload)
+          // ignore: invalid_return_type_for_catch_error
           .catchError((e) => SnackbarUtil.message(
               'Error while downloading. ${e.toString()}',
               Icons.file_download_off,

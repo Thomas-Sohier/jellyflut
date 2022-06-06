@@ -22,8 +22,7 @@ class PeoplePoster extends StatefulWidget {
   State<PeoplePoster> createState() => _PeoplePosterState();
 }
 
-class _PeoplePosterState extends State<PeoplePoster>
-    with SingleTickerProviderStateMixin, AbsordAction {
+class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;

@@ -18,8 +18,7 @@ class HomeDrawerTabsBuilder extends StatefulWidget {
   State<HomeDrawerTabsBuilder> createState() => _HomeDrawerTabsBuilderState();
 }
 
-class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder>
-    with SingleTickerProviderStateMixin {
+class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
   late final GlobalKey<ScaffoldState> _scaffoldKey;
   late final List<PageRouteInfo<dynamic>> routes;
   late final List<Item> items;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/back_button.dart' as back_button;
+import 'package:jellyflut/components/selectable_back_button.dart'
+    as back_button;
 
 class DetailHeaderBar extends StatelessWidget {
   final double height;
@@ -21,7 +22,7 @@ class DetailHeaderBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                back_button.BackButton(
+                back_button.SelectableBackButton(
                   shadow: true,
                 )
               ],

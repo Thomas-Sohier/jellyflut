@@ -23,8 +23,7 @@ class CurrentDownloadItem extends StatefulWidget {
   State<CurrentDownloadItem> createState() => _CurrentDownloadItemState();
 }
 
-class _CurrentDownloadItemState extends State<CurrentDownloadItem>
-    with SingleTickerProviderStateMixin {
+class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;

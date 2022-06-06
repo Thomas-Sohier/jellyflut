@@ -10,13 +10,13 @@ You can :
   - Epub is pretty limited for now as it's a juste a parser combined with an HTML viewer
   - need some work
 - [x] Listen Music
-  - Seems buggy Linux (need to investigate)
+  - Buggy on Linux (need to investigate, or to use another package for linux )
 - [x] Look photos
 - [x] SQLite to have logging and to save server URL
 - [x] Browse all files
-- [x] ~~BIGGEST THING TO DO make transcoding work, for now i don't know how to check if file can be direct play and if no how to tell jellyfin to send me the correct url~~ It works
+- [x] ~~BIGGEST THING TO DO make transcoding work, for now i don't know how to check if file can be direct play and if no how to tell jellyfin to send me the correct url~~ It works (not much anymore, broken since 10.8.0 beta 3)
   - Do not works correctly on Windows (seems broken due to libvlc dll, certificate issue)
-  - For now there is only direct play on computer as vlc can play almost anything right now
+  - On computer I added supported codec manually. Some codecs can be missing, if so, create an issue and I will check if it's playable
 - [x] Control music from any screen
 - [x] Extract or/and parse subtitles from video file
  - Only remote srt, cannot parse from mkv file (except in VLC)
@@ -28,13 +28,23 @@ You can :
   - [x] Async details loading
   - [x] Navigation details back stutter
   - [x] Responsive (WIP)
+  - [x] Navigation with D-pad (seems ok but web can still select things from outside of the screen on home page)
+    - Still need more works but you can navigate 80% of app which is sufficient for now
+  - [x] Handle multiple users and servers
+  - [x] Have a better handling of data when resizing to avoid reload from API
+    - Seems pretty good right now, may need more works in future
+  - [X] Theme (dark/light)
+  - [X] Localization (ENG,FR,DE)
 
 ## Todo
-  - [ ] Navigation with D-pad (seems ok but web can still select things from outside of the screen on home page)
+  - [ ] Always refactor everything
+  - [ ] Add unit test
+  - [ ] Correct "transcodeReasons=0" from jellyfin
   - [ ] Correct all flutter things, make things faster
-  - [ ] Handle multiple users and servers
   - [ ] Make IPTV on par with web version
-  - [ ] Have a better handling of data when resizing to avoid reload from API
+    - Guide is working
+    - Can play IPTV channels
+    - still need to add recording
 
 ## Screens
 
@@ -43,17 +53,16 @@ You can :
 ### Phone
 
 <div style="display: flex">
- <img src="./img/readme/movie_details_phone.png"/>
- <img src="./img/readme/movie_details_tablet.png"/>
+ <img src="./img/readme/series_details_phone_1.png"/>
+ <img src="./img/readme/series_details_phone_2.png"/>
 </div>
 
 ### Desktop
 
 <div style="display: flex">
- <img src="./img/readme/movie_details_desktop.png" height="360" />
- <img src="./img/readme/movie_collection_desktop.png" height="360" />
+ <img src="./img/readme/details_desktop.png" height="360" />
+ <img src="./img/readme/series_details_desktop.png" height="360" />
  <img src="./img/readme/music_details_desktop.png" height="360" />
- <img src="./img/readme/music_player_desktop.png" height="360" />
 </div>
 
 ## Getting Started

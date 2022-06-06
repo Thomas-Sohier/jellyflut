@@ -78,7 +78,7 @@ class Theme {
       [Brightness? brightness]) {
     final newBrightness = brightness ?? colorScheme.brightness;
     final background =
-        brightness == Brightness.light ? null : Colors.grey.shade900;
+        newBrightness == Brightness.light ? null : Colors.grey.shade900;
     final newColorScheme = ColorScheme.fromSeed(
         seedColor: colorScheme.primary,
         brightness: newBrightness,

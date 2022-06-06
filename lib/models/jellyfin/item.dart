@@ -829,7 +829,10 @@ class Item {
     return false;
   }
 
-  bool isPlayable() {
+  /// Tell if current item is playable or can contains children which are playable
+  /// Return [true] if item or children can be played
+  /// Else return [false] if not playable
+  bool isPlayableOrCanHavePlayableChilren() {
     final playableItems = [
       ItemType.AUDIO,
       ItemType.MUSICALBUM,
@@ -845,7 +848,25 @@ class Item {
     return playableItems.contains(type);
   }
 
-  bool isDownload() {
+  /// Tell if current item is playable (not like [isPlayableOrCanHavePlayableChilren()])
+  /// Return [true] if item ocan be played
+  /// Else return [false] if not playable
+  bool isPlayable() {
+    final playableItems = [
+      ItemType.MOVIE,
+      ItemType.EPISODE,
+      ItemType.PHOTO,
+      ItemType.RECORDING,
+      ItemType.VIDEO,
+      ItemType.MUSICVIDEO,
+      ItemType.AUDIO,
+      ItemType.BOOK,
+      ItemType.VIDEO
+    ];
+    return playableItems.contains(type);
+  }
+
+  bool isDownloable() {
     final playableItems = [
       ItemType.AUDIO,
       ItemType.MUSICALBUM,
@@ -873,6 +894,12 @@ class Item {
     return playableItems.contains(collectionType);
   }
 
+  /// Tell if item have trailer available
+  /// Check if remote trailers is not empty
+  /// Do not call any remote API, only based on jellyfin datas
+  ///
+  /// Return [true] if have atleast one trailer
+  /// Else return [false] if it doesn't have any trailers
   bool hasTrailer() {
     if (remoteTrailers.isNotEmpty || localTrailerCount != null) {
       return remoteTrailers.isNotEmpty
@@ -882,11 +909,10 @@ class Item {
     return false;
   }
 
-  String getTrailer() {
-    return remoteTrailers.elementAt(0).url;
-  }
-
-  bool canBeViewed() {
+  /// Tell if item can be viewed in sense of already played before
+  /// Return [yes] if already seen (played)
+  /// Else returl [false] if not seen (played)
+  bool isViewable() {
     final playableItems = [
       ItemType.MOVIE,
       ItemType.SERIES,
@@ -896,6 +922,23 @@ class Item {
       ItemType.VIDEO
     ];
     return playableItems.contains(type);
+  }
+
+  /// Method to get trailer
+  /// WIP
+  /// Return only he first of item of collection for nom
+  String getTrailer() {
+    // TODO add a possibility to choose remote trailer
+    return remoteTrailers.elementAt(0).url;
+  }
+
+  ///Check if original title is different from Localized title
+  ///
+  /// Return [true] if is different
+  /// Return [false] if same
+  bool haveDifferentOriginalTitle() {
+    return originalTitle != null &&
+        originalTitle!.toLowerCase() != name.toLowerCase();
   }
 
   /// Duration in microseconds from the item

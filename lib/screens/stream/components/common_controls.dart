@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/components/back_button.dart' as bb;
+import 'package:jellyflut/components/selectable_back_button.dart' as bb;
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/controls/audio_button_selector.dart';
 import 'package:jellyflut/screens/stream/components/controls/bottom_row_player_controls.dart';
@@ -166,7 +166,7 @@ class _CommonControlsState extends State<CommonControls> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          bb.BackButton(shadow: true),
+          bb.SelectableBackButton(shadow: true),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

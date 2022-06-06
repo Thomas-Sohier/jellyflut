@@ -38,4 +38,18 @@ class DetailsUpdateDetailsInfos extends DetailsEvent {
   List<Object> get props => [detailsInfos];
 }
 
+class DetailsScreenSizeChanged extends DetailsEvent {
+  final ScreenLayout screenLayout;
+
+  DetailsScreenSizeChanged({required this.screenLayout});
+
+  @override
+  List<Object> get props => [screenLayout];
+}
+
 class ResetStates extends DetailsEvent {}
+
+enum ScreenLayout {
+  mobile,
+  desktop;
+}
