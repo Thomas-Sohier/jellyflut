@@ -38,7 +38,8 @@ class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
               DetailsScreenSizeChanged(screenLayout: ScreenLayout.desktop));
         }
 
-        return Stack(alignment: Alignment.topCenter, children: [
+        return SafeArea(
+            child: Stack(alignment: Alignment.topCenter, children: [
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -54,7 +55,7 @@ class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
                   left: 0,
                   top: snapshot.data! ? 15 : 0,
                   child: SelectableBackButton()))
-        ]);
+        ]));
       }))
     ]);
   }

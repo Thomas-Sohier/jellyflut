@@ -13,20 +13,22 @@ class HeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(width: 48),
-        Flexible(child: SearchButton()),
-        const SizedBox(width: 6),
-        SettingsButton(),
-        const SizedBox(width: 6),
-        DownloadButton(),
-        const SizedBox(width: 12),
-        UserIcon(),
-        const SizedBox(width: 18),
-      ],
+    return SafeArea(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(width: 48),
+          Flexible(child: SearchButton()),
+          const SizedBox(width: 6),
+          SettingsButton(),
+          const SizedBox(width: 6),
+          DownloadButton(),
+          const SizedBox(width: 12),
+          UserIcon(),
+          const SizedBox(width: 18),
+        ],
+      ),
     );
   }
 

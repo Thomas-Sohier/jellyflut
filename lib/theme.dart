@@ -112,6 +112,9 @@ class Theme {
   static ThemeData _generateTheme(ThemeData theme) {
     final textTheme =
         _generateTextThemeFromColor(theme.colorScheme.onBackground);
+    final reveredBrightness = theme.brightness == Brightness.dark
+        ? Brightness.light
+        : Brightness.dark;
     return theme
         .copyWith(textTheme: textTheme)
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
@@ -129,8 +132,8 @@ class Theme {
                 scrolledUnderElevation: 0,
                 elevation: 0,
                 systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarBrightness: theme.brightness,
-                  statusBarIconBrightness: theme.brightness,
+                  statusBarBrightness: reveredBrightness,
+                  statusBarIconBrightness: reveredBrightness,
                   statusBarColor: theme.colorScheme.background,
                   systemNavigationBarColor: theme.colorScheme.background,
                   systemNavigationBarContrastEnforced: false,

@@ -251,9 +251,8 @@ class StreamingService {
           .getDatabase
           .settingsDao
           .getSettingsById(userApp!.settingsId);
-      final streamingSoftware = StreamingSoftware.values.firstWhere((e) =>
-          e.toString() ==
-          'StreamingSoftwareName.${streamingSoftwareDB.preferredPlayer}');
+      final streamingSoftware =
+          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:

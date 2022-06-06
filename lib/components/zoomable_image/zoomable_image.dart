@@ -19,7 +19,7 @@ class ZoomableImage extends StatefulWidget {
 class _ZoomableImageState extends State<ZoomableImage>
     with SingleTickerProviderStateMixin {
   late final ZoomableImageController? _zoomableImageController;
-  late final AnimationController _animationController;
+  late final AnimationController? _animationController;
   double scale = 1.0;
 
   @override
@@ -35,14 +35,15 @@ class _ZoomableImageState extends State<ZoomableImage>
       )..addListener(updateSCaleAnimation);
       _zoomableImageController!.controller = _animationController;
     } else {
+      _animationController = null;
       _zoomableImageController = null;
     }
   }
 
   @override
   void dispose() {
-    _animationController.removeListener(updateSCaleAnimation);
-    _animationController.dispose();
+    _animationController?.removeListener(updateSCaleAnimation);
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -64,7 +65,7 @@ class _ZoomableImageState extends State<ZoomableImage>
   }
 
   Widget scaleImage() {
-    if (_zoomableImageController != null) {
+    if (_zoomableImageController != null && _animationController != null) {
       return Transform.scale(scale: scale, child: widget.imageWidget);
     } else {
       return widget.imageWidget;
