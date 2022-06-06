@@ -2,35 +2,23 @@
 //
 //     final media = itemFromMap(jsonString);
 
-// ignore_for_file: unused_import
-
 import 'dart:convert';
-import 'dart:io';
 
-// import 'package:fereader/fereader.dart';
-import 'package:dart_vlc/dart_vlc.dart' as vlc;
-import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/main.dart';
-import 'package:jellyflut/models/enum/book_extensions.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/image_type.dart' as image_type;
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
-import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
 import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/book/book_reader.dart';
-import 'package:jellyflut/screens/stream/init_stream.dart';
-import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
@@ -61,8 +49,8 @@ class Item {
     required this.name,
     required this.id,
     required this.type,
-    this.originalTitle,
     this.serverId,
+    this.originalTitle,
     this.indexNumber,
     this.parentIndexNumber,
     this.etag,
@@ -465,11 +453,90 @@ class Item {
     return map;
   }
 
+  dynamic operator [](String key) {
+    if (key == 'name') return name;
+    if (key == 'id') return id;
+    if (key == 'type') return type;
+    if (key == 'originalTitle') return originalTitle;
+    if (key == 'indexNumber') return indexNumber;
+    if (key == 'parentIndexNumber') return parentIndexNumber;
+    if (key == 'etag') return etag;
+    if (key == 'collectionType') return collectionType;
+    if (key == 'dateCreated') return dateCreated;
+    if (key == 'canDelete') return canDelete;
+    if (key == 'canDownload') return canDownload;
+    if (key == 'hasSubtitles') return hasSubtitles;
+    if (key == 'container') return container;
+    if (key == 'sortName') return sortName;
+    if (key == 'premiereDate') return premiereDate;
+    if (key == 'externalUrls') return externalUrls;
+    if (key == 'mediaSources') return mediaSources;
+    if (key == 'criticRating') return criticRating;
+    if (key == 'productionLocations') return productionLocations;
+    if (key == 'path') return path;
+    if (key == 'enableMediaSourceDisplay') return enableMediaSourceDisplay;
+    if (key == 'overview') return overview;
+    if (key == 'taglines') return taglines;
+    if (key == 'genres') return genres;
+    if (key == 'number') return number;
+    if (key == 'channelNumber') return channelNumber;
+    if (key == 'channelType') return channelType;
+    if (key == 'channelId') return channelId;
+    if (key == 'currentProgram') return currentProgram;
+    if (key == 'startDate') return startDate;
+    if (key == 'endDate') return endDate;
+    if (key == 'communityRating') return communityRating;
+    if (key == 'runTimeTicks') return runTimeTicks;
+    if (key == 'playAccess') return playAccess;
+    if (key == 'productionYear') return productionYear;
+    if (key == 'childCount') return childCount;
+    if (key == 'remoteTrailers') return remoteTrailers;
+    if (key == 'providerIds') return providerIds;
+    if (key == 'isHd') return isHd;
+    if (key == 'isFolder') return isFolder;
+    if (key == 'parentId') return parentId;
+    if (key == 'seriesId') return seriesId;
+    if (key == 'seasonId') return seasonId;
+    if (key == 'artists') return artists;
+    if (key == 'artistItems') return artistItems;
+    if (key == 'album') return album;
+    if (key == 'albumId') return albumId;
+    if (key == 'albumPrimaryImageTag') return albumPrimaryImageTag;
+    if (key == 'albumArtist') return albumArtist;
+    if (key == 'albumArtists') return albumArtists;
+    if (key == 'people') return people;
+    if (key == 'studios') return studios;
+    if (key == 'genreItems') return genreItems;
+    if (key == 'localTrailerCount') return localTrailerCount;
+    if (key == 'userData') return userData;
+    if (key == 'specialFeatureCount') return specialFeatureCount;
+    if (key == 'displayPreferencesId') return displayPreferencesId;
+    if (key == 'tags') return tags;
+    if (key == 'primaryImageAspectRatio') return primaryImageAspectRatio;
+    if (key == 'mediaStreams') return mediaStreams;
+    if (key == 'recursiveItemCount') return recursiveItemCount;
+    if (key == 'videoType') return videoType;
+    if (key == 'imageTags') return imageTags;
+    if (key == 'officialRating') return officialRating;
+    if (key == 'seriesPrimaryImageTag') return seriesPrimaryImageTag;
+    if (key == 'seriesName') return seriesName;
+    if (key == 'backdropImageTags') return backdropImageTags;
+    if (key == 'screenshotImageTags') return screenshotImageTags;
+    if (key == 'imageBlurHashes') return imageBlurHashes;
+    if (key == 'chapters') return chapters;
+    if (key == 'locationType') return locationType;
+    if (key == 'mediaType') return mediaType;
+    if (key == 'lockedFields') return lockedFields;
+    if (key == 'lockData') return lockData;
+    if (key == 'width') return width;
+    if (key == 'height') return height;
+  }
+
   void operator []=(String key, dynamic value) {
-    if (key == 'name') name = value;
-    if (key == 'originalTitle') originalTitle = value;
-    if (key == 'serverId') serverId = value;
     if (key == 'id') id = value;
+    if (key == 'name') name = value;
+    if (key == 'type') type = value;
+    if (key == 'originalTitle') originalTitle = value;
     if (key == 'indexNumber') indexNumber = value;
     if (key == 'parentIndexNumber') parentIndexNumber = value;
     if (key == 'etag') etag = value;
@@ -490,10 +557,18 @@ class Item {
     if (key == 'overview') overview = value;
     if (key == 'taglines') taglines = value;
     if (key == 'genres') genres = value;
+    if (key == 'number') number = value;
+    if (key == 'channelNumber') channelNumber = value;
+    if (key == 'channelType') channelType = value;
+    if (key == 'channelId') channelId = value;
+    if (key == 'currentProgram') currentProgram = value;
+    if (key == 'startDate') startDate = value;
+    if (key == 'endDate') endDate = value;
     if (key == 'communityRating') communityRating = value;
     if (key == 'runTimeTicks') runTimeTicks = value;
     if (key == 'playAccess') playAccess = value;
     if (key == 'productionYear') productionYear = value;
+    if (key == 'childCount') childCount = value;
     if (key == 'remoteTrailers') remoteTrailers = value;
     if (key == 'providerIds') providerIds = value;
     if (key == 'isHd') isHd = value;
@@ -501,7 +576,6 @@ class Item {
     if (key == 'parentId') parentId = value;
     if (key == 'seriesId') seriesId = value;
     if (key == 'seasonId') seasonId = value;
-    if (key == 'type') type = value;
     if (key == 'artists') artists = value;
     if (key == 'artistItems') artistItems = value;
     if (key == 'album') album = value;

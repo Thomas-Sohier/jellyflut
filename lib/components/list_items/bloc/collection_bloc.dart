@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart' as model;
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,6 +29,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   bool _sortByDateASC = false;
   bool _sortByDateDSC = true;
 
+  SortBy _sortBy = SortBy.ASC;
+
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
@@ -43,6 +46,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<LoadMoreItems>(showMoreItem);
     on<SortByName>(sortByName);
     on<SortByDate>(sortByDate);
+    on<SortByField>(sortByField);
   }
 
   void initialize(Item item) {
@@ -95,6 +99,14 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     emit(CollectionLoadedState());
   }
 
+  void sortByField(SortByField event, Emitter<CollectionState> emit) async {
+    emit(CollectionLoadingState());
+    final items = await _sortByField(event.fieldEnum, _sortBy);
+    _items.clear();
+    _items.addAll(items);
+    emit(CollectionLoadedState());
+  }
+
   Future<List<Item>> _sortByName() async {
     final i = await compute(_sortItemByName, {
       'items': _items,
@@ -117,6 +129,13 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     return i['items'];
   }
 
+  Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
+    final i = await compute(_sortItemByField,
+        {'items': _items, 'field': fieldEnum.name, 'sortBy': sortBy});
+    _sortBy = sortBy.reverse();
+    return i['items'];
+  }
+
   Future<model.Category> getItems(
       {required Item item, int startIndex = 0}) async {
     return ItemService.getItems(
@@ -131,6 +150,15 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
             item.getCollectionType().map((e) => e.value).toList().join(','),
         limit: 100);
   }
+}
+
+enum SortBy {
+  ASC,
+  DESC;
+
+  const SortBy();
+
+  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
 }
 
 Map<String, dynamic> _sortItemByName(Map<String, dynamic> arg) {
@@ -183,4 +211,45 @@ Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
     'sortByDateASC': sortByDateASC,
     'sortByDateDSC': sortByDateDSC
   };
+}
+
+Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
+  late final sortingFunction;
+  final List<Item> items = arg['items'];
+  final String fieldToSort = arg['field'];
+  final SortBy sortBy = arg['sortBy'];
+
+  if (sortBy == SortBy.ASC) {
+    sortingFunction = _sortByASC;
+  } else if (sortBy == SortBy.DESC) {
+    sortingFunction = _sortByDESC;
+  }
+
+  items.sort((a, b) {
+    final aField = a[fieldToSort];
+    final bField = b[fieldToSort];
+    return sortingFunction(aField, bField);
+  });
+
+  return {'items': items};
+}
+
+int _sortByASC(dynamic a, dynamic b) {
+  if (a != null && b != null) {
+    return a.compareTo(b);
+  } else if (a != null && b == null) {
+    return -1;
+  }
+  if (a == null && b == null) {
+    return 1;
+  }
+  return 0;
+}
+
+int _sortByDESC(dynamic a, dynamic b) {
+  if (a != null && b != null) {
+    return b.compareTo(a);
+  } else {
+    return -1;
+  }
 }

@@ -46,6 +46,7 @@ class ListItemsSort extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                       onPressed: () => sortByName(context)),
+                  ListItemsSortFieldButton()
                 ]),
           ),
           child

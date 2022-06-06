@@ -22,6 +22,12 @@ class SortByName extends CollectionEvent {
   const SortByName();
 }
 
+class SortByField extends CollectionEvent {
+  final FieldsEnum fieldEnum;
+
+  const SortByField({required this.fieldEnum});
+}
+
 class LoadMoreItems extends CollectionEvent {
   const LoadMoreItems();
 }

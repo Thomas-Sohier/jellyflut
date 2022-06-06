@@ -1,5 +1,4 @@
 import 'package:flutter/animation.dart';
-import 'package:flutter/foundation.dart';
 
 class ZoomableImageController {
   bool _animationControllerMounted = false;
@@ -8,10 +7,9 @@ class ZoomableImageController {
 
   AnimationController? get controller => _controller;
 
-  void setController(AnimationController? controller, [Key? key]) {
+  void setController(AnimationController? controller) {
     _controller = controller;
     _animationControllerMounted = true;
-    print('$key has been mounted !');
   }
 
   ZoomableImageController();
@@ -24,8 +22,7 @@ class ZoomableImageController {
     if (_animationControllerMounted) controller?.forward();
   }
 
-  void dispose([Key? key]) {
-    print('$key has been unmounted !');
+  void dispose() {
     _animationControllerMounted = false;
   }
 }

@@ -29,14 +29,13 @@ class _ZoomableImageState extends State<ZoomableImage>
       lowerBound: 1.0,
       upperBound: 1.1,
     )..addListener(updateScaleAnimation);
-    widget.zoomableImageController
-        ?.setController(_animationController, widget.key);
+    widget.zoomableImageController?.setController(_animationController);
     super.didChangeDependencies();
   }
 
   @override
   void deactivate() {
-    widget.zoomableImageController?.dispose(widget.key);
+    widget.zoomableImageController?.dispose();
     super.deactivate();
   }
 

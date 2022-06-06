@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/components/episode_item.dart';
+import 'package:jellyflut/components/list_items/components/list_items_sort_field_button.dart';
 import 'package:jellyflut/components/list_items/skeleton/list_items_skeleton.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
@@ -13,6 +14,7 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'bloc/collection_bloc.dart';
