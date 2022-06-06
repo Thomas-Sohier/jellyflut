@@ -123,16 +123,17 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
     final title = widget.item.indexNumber != null
         ? '${widget.item.indexNumber} - ${widget.item.name}'
         : widget.item.name;
+    final style = Theme.of(context)
+        .textTheme
+        .bodyText1!
+        .copyWith(fontWeight: FontWeight.bold)
+        .apply(fontSizeFactor: 1.2);
 
-    return Flexible(
-      child: Text(title,
-          textAlign: TextAlign.left,
-          maxLines: 2,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(fontSize: 20, fontWeight: FontWeight.bold)),
-    );
+    return Text(title,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.left,
+        maxLines: 2,
+        style: style);
   }
 
   Widget duration() {
@@ -149,8 +150,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
       child: Text(
         widget.item.overview!,
         textAlign: TextAlign.justify,
-        maxLines: 4,
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+        style: Theme.of(context).textTheme.bodyText2!,
       ),
     );
   }
