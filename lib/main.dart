@@ -73,7 +73,6 @@ class Jellyflut extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    FlutterNativeSplash.remove();
     return MultiProvider(
         providers: [
           Provider<Database>(
@@ -102,19 +101,20 @@ class Jellyflut extends StatelessWidget {
                 // needed for AndroidTV to be able to select
                 shortcuts: shortcuts,
                 child: Consumer<ThemeProvider>(
-                    builder: (context, ThemeProvider themeNotifier, child) =>
-                        MaterialApp.router(
-                          title: 'JellyFlut',
-                          locale: context.locale,
-                          debugShowCheckedModeBanner: false,
-                          scrollBehavior: CustomScrollBehavior(),
-                          supportedLocales: context.supportedLocales,
-                          theme: themeNotifier.getThemeData,
-                          localizationsDelegates: context.localizationDelegates,
-                          routerDelegate: customRouter
-                              .delegate(initialRoutes: [HomeRouter()]),
-                          routeInformationParser:
-                              customRouter.defaultRouteParser(),
-                        )))));
+                    builder: (context, ThemeProvider themeNotifier, child) {
+                  FlutterNativeSplash.remove();
+                  return MaterialApp.router(
+                    title: 'JellyFlut',
+                    locale: context.locale,
+                    debugShowCheckedModeBanner: false,
+                    scrollBehavior: CustomScrollBehavior(),
+                    supportedLocales: context.supportedLocales,
+                    theme: themeNotifier.getThemeData,
+                    localizationsDelegates: context.localizationDelegates,
+                    routerDelegate:
+                        customRouter.delegate(initialRoutes: [HomeRouter()]),
+                    routeInformationParser: customRouter.defaultRouteParser(),
+                  );
+                }))));
   }
 }
