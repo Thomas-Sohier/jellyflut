@@ -18,10 +18,12 @@ import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:provider/provider.dart';
 
 import 'shared/custom_scroll_behavior.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
   await DartVLC.initialize();
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
@@ -71,6 +73,7 @@ class Jellyflut extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return MultiProvider(
         providers: [
           Provider<Database>(
