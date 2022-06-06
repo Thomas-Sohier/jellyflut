@@ -1,26 +1,16 @@
 import 'package:flutter/animation.dart';
 
 class ZoomableImageController {
-  AnimationController? _controller;
-  double _scale = 1.0;
-
-  double get scale => _scale;
-  set scale(double scale) {
-    _scale = scale;
-  }
-
-  AnimationController? get controller => _controller;
-  set controller(AnimationController? controller) {
-    _controller = controller;
-  }
+  AnimationController? controller;
+  double scale = 1.0;
 
   ZoomableImageController();
 
   void zoomOut() {
-    _controller?.reverse();
+    controller?.reverse();
   }
 
   void zoom() {
-    _controller?.forward();
+    controller?.forward();
   }
 }
