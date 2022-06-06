@@ -45,8 +45,7 @@ class ItemPoster extends StatefulWidget {
   State<ItemPoster> createState() => _ItemPosterState();
 }
 
-class _ItemPosterState extends State<ItemPoster>
-    with SingleTickerProviderStateMixin {
+class _ItemPosterState extends State<ItemPoster> {
   // bool properties to show hide title accordingly
   bool hasTitle = true;
   bool hasSubTitle = false;

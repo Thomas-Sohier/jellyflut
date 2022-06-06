@@ -28,8 +28,7 @@ class EpisodeItem extends StatefulWidget {
   State<EpisodeItem> createState() => _EpisodeItemState();
 }
 
-class _EpisodeItemState extends State<EpisodeItem>
-    with SingleTickerProviderStateMixin, AbsordAction {
+class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
   // Dpad navigation
   late final FocusNode _node;
   late final String posterHeroTag;

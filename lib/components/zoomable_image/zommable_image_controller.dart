@@ -1,5 +1,4 @@
 import 'package:flutter/animation.dart';
-import 'package:flutter/rendering.dart';
 
 class ZoomableImageController {
   AnimationController? _controller;
@@ -23,9 +22,5 @@ class ZoomableImageController {
 
   void zoom() {
     _controller?.forward();
-  }
-
-  void dispose() {
-    _controller?.dispose();
   }
 }
