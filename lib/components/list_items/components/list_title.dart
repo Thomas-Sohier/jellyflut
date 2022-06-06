@@ -21,7 +21,7 @@ class ListTitle extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
-                item.type.getValue().toLowerCase().capitalize(),
+                item.type.value,
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),

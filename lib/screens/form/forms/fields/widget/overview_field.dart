@@ -7,7 +7,7 @@ class OverviewField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsEnum.OVERVIEW.getName(),
+        formControlName: FieldsEnum.OVERVIEW.name,
         onSubmitted: () => {},
         textInputAction: TextInputAction.next,
         minLines: 3,

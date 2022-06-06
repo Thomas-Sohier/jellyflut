@@ -8,12 +8,12 @@ class OriginalTitleField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsEnum.ORIGINALTITLE.getName(),
+        formControlName: FieldsEnum.ORIGINALTITLE.name,
         validationMessages: (control) => {
               ValidationMessage.required:
                   'The original title must not be empty',
             },
-        onSubmitted: () => form.focus(FieldsEnum.DATECREATED.getName()),
+        onSubmitted: () => form.focus(FieldsEnum.DATECREATED.name),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(labelText: 'Original title'));
   }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:jellyflut/models/enum/enum_values.dart';
 import 'package:jellyflut/models/jellyfin/codec_profile.dart';
 import 'package:jellyflut/models/jellyfin/condition.dart';
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
@@ -8,16 +7,15 @@ import 'package:jellyflut/models/jellyfin/direct_play_profile.dart';
 import 'package:jellyflut/models/jellyfin/response_profile.dart';
 import 'package:jellyflut/models/jellyfin/subtitle_profile.dart';
 import 'package:jellyflut/models/jellyfin/transcoding_profile.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 class PlayersProfile {
   late final List<PlayerProfile> playersProfile;
 
   PlayersProfile() {
     final vlcComputer = PlayerProfile(
-        name: PlayerProfileName.VLC_COMPUTER.getValue(),
+        name: PlayerProfileName.VLC_COMPUTER.value,
         deviceProfile: DeviceProfile(
-            name: PlayerProfileName.VLC_COMPUTER.getValue(),
+            name: PlayerProfileName.VLC_COMPUTER.value,
             maxStreamingBitrate: 120000000,
             maxStaticBitrate: 100000000,
             musicStreamingTranscodingBitrate: 384000,
@@ -153,9 +151,9 @@ class PlayersProfile {
             ],
             responseProfiles: []));
     final vlcPhone = PlayerProfile(
-        name: PlayerProfileName.VLC_PHONE.getValue(),
+        name: PlayerProfileName.VLC_PHONE.value,
         deviceProfile: DeviceProfile(
-            name: PlayerProfileName.VLC_PHONE.getValue(),
+            name: PlayerProfileName.VLC_PHONE.value,
             maxStreamingBitrate: 120000000,
             maxStaticBitrate: 100000000,
             musicStreamingTranscodingBitrate: 384000,
@@ -349,8 +347,7 @@ class PlayersProfile {
   }
 
   PlayerProfile? getByName(PlayerProfileName name) {
-    return playersProfile
-        .firstWhere((profile) => profile.name == name.getValue());
+    return playersProfile.firstWhere((profile) => profile.name == name.value);
   }
 }
 
@@ -409,9 +406,11 @@ class PlayerProfile {
   int get hashCode => name.hashCode ^ deviceProfile.hashCode;
 }
 
-enum PlayerProfileName { VLC_COMPUTER, VLC_PHONE }
+enum PlayerProfileName {
+  VLC_COMPUTER('VlcComputer'),
+  VLC_PHONE('VlcPhone');
 
-final bookExtensionsValues = EnumValues({
-  'VlcComputer': PlayerProfileName.VLC_COMPUTER,
-  'VlcPhone': PlayerProfileName.VLC_PHONE
-});
+  final String value;
+
+  const PlayerProfileName(this.value);
+}

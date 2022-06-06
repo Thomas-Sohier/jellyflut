@@ -5,7 +5,7 @@ import 'package:jellyflut/components/gradient_button.dart';
 import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -24,11 +24,11 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   late final AuthBloc authBloc;
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsType.USER_USERNAME.getValue(): FormControl<String>(
+        FieldsType.USER_USERNAME.value: FormControl<String>(
           value: authBloc.username ?? '',
           validators: [Validators.required],
         ),
-        FieldsType.USER_PASSWORD.getValue(): FormControl<String>(
+        FieldsType.USER_PASSWORD.value: FormControl<String>(
           value: authBloc.userPassword ?? '',
           validators: [],
         )
@@ -113,8 +113,8 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void backToFirstForm(FormGroup form, BuildContext context) {
-    final username = form.value[FieldsType.USER_USERNAME.getValue()].toString();
-    final password = form.value[FieldsType.USER_PASSWORD.getValue()].toString();
+    final username = form.value[FieldsType.USER_USERNAME.value].toString();
+    final password = form.value[FieldsType.USER_PASSWORD.value].toString();
     authBloc.userPassword = password;
     authBloc.username = username;
     authBloc.add(BackToFirstForm());
@@ -149,10 +149,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void addUser(FormGroup form, BuildContext context) {
     if (form.valid) {
-      final username =
-          form.value[FieldsType.USER_USERNAME.getValue()].toString();
-      final password =
-          form.value[FieldsType.USER_PASSWORD.getValue()].toString();
+      final username = form.value[FieldsType.USER_USERNAME.value].toString();
+      final password = form.value[FieldsType.USER_PASSWORD.value].toString();
       authBloc.add(RequestAuth(username: username, password: password));
     } else {
       form.markAllAsTouched();

@@ -7,7 +7,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 class Collection extends StatefulWidget {
@@ -44,7 +44,7 @@ class _CollectionState extends State<Collection> {
         break;
       case ItemType.MUSICARTIST:
         musicAlbumFuture = ItemService.getItems(
-            includeItemTypes: ItemType.MUSICALBUM.getValue(),
+            includeItemTypes: ItemType.MUSICALBUM.value,
             sortBy: 'ProductionYear,Sortname',
             albumArtistIds: widget.item.id,
             fields:

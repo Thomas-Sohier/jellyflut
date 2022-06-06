@@ -7,13 +7,13 @@ class DateAddedField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<DateTime>(
-        formControlName: FieldsEnum.DATEADDED.getValue(),
-        onSubmitted: () => form.focus(FieldsEnum.PREMIEREDATE.getValue()),
+        formControlName: FieldsEnum.DATEADDED.name,
+        onSubmitted: () => form.focus(FieldsEnum.PREMIEREDATE.name),
         readOnly: true,
         decoration: InputDecoration(
           labelText: 'Date added',
           suffixIcon: ReactiveDatePicker<DateTime>(
-            formControlName: FieldsEnum.DATEADDED.getValue(),
+            formControlName: FieldsEnum.DATEADDED.name,
             firstDate: DateTime(1900),
             lastDate: DateTime(2100),
             builder: (context, picker, child) {

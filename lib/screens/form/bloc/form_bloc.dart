@@ -5,7 +5,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 part 'form_event.dart';
 part 'form_state.dart';
@@ -49,15 +48,14 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
   }
 
   void _defaultRequiredValue(final Map<String, Object?> form, final Item item) {
-    form.putIfAbsent(FieldsEnum.ALBUMARTISTS.getName(), () => item.albumArtist);
-    form.putIfAbsent(FieldsEnum.ARTISTITEMS.getName(), () => item.artistItems);
-    form.putIfAbsent(FieldsEnum.PEOPLE.getName(), () => item.people);
-    form.putIfAbsent(FieldsEnum.AIRDAYS.getName(), () => []);
-    form.putIfAbsent(FieldsEnum.GENRES.getName(), () => item.genres);
-    form.putIfAbsent(FieldsEnum.TAGS.getName(), () => item.tags);
-    form.putIfAbsent(
-        FieldsEnum.LOCKEDFIELDS.getName(), () => item.lockedFields);
-    form.putIfAbsent(FieldsEnum.PROVIDERIDS.getName(), () => item.providerIds);
+    form.putIfAbsent(FieldsEnum.ALBUMARTISTS.name, () => item.albumArtist);
+    form.putIfAbsent(FieldsEnum.ARTISTITEMS.name, () => item.artistItems);
+    form.putIfAbsent(FieldsEnum.PEOPLE.name, () => item.people);
+    form.putIfAbsent(FieldsEnum.AIRDAYS.name, () => []);
+    form.putIfAbsent(FieldsEnum.GENRES.name, () => item.genres);
+    form.putIfAbsent(FieldsEnum.TAGS.name, () => item.tags);
+    form.putIfAbsent(FieldsEnum.LOCKEDFIELDS.name, () => item.lockedFields);
+    form.putIfAbsent(FieldsEnum.PROVIDERIDS.name, () => item.providerIds);
   }
 
   void _parseFormToValue(final Map<String, Object?> form, final Item item) {

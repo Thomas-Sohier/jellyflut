@@ -6,7 +6,6 @@ import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart' as model;
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'collection_event.dart';
@@ -128,11 +127,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         imageTypeLimit: 1,
         recursive: false,
         startIndex: startIndex,
-        includeItemTypes: item
-            .getCollectionType()
-            .map((e) => e.getValue())
-            .toList()
-            .join(','),
+        includeItemTypes:
+            item.getCollectionType().map((e) => e.value).toList().join(','),
         limit: 100);
   }
 }

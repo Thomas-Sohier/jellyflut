@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 class EpubForm extends StatelessWidget {
@@ -15,12 +15,12 @@ class EpubForm extends StatelessWidget {
       this.backgroundColor = Colors.black});
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsEnum.FONTSIZE.getName(): FormControl<double>(
+        FieldsEnum.FONTSIZE.name: FormControl<double>(
           value: fontSize,
           validators: [Validators.required],
         ),
-        FieldsEnum.FONTCOLOR.getName(): FormControl<Color>(value: fontColor),
-        FieldsEnum.BACKGROUNDCOLOR.getName():
+        FieldsEnum.FONTCOLOR.name: FormControl<Color>(value: fontColor),
+        FieldsEnum.BACKGROUNDCOLOR.name:
             FormControl<Color>(value: backgroundColor),
       });
 
@@ -36,19 +36,19 @@ class EpubForm extends StatelessWidget {
               FontSizeField(
                 form: form,
                 fieldName: 'Font size',
-                formKey: FieldsEnum.FONTSIZE.getName(),
+                formKey: FieldsEnum.FONTSIZE.name,
               ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Font color',
-                formKey: FieldsEnum.FONTCOLOR.getName(),
+                formKey: FieldsEnum.FONTCOLOR.name,
               ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Background color',
-                formKey: FieldsEnum.BACKGROUNDCOLOR.getName(),
+                formKey: FieldsEnum.BACKGROUNDCOLOR.name,
               )
             ],
           ),

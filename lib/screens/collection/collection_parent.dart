@@ -9,7 +9,7 @@ import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:provider/provider.dart';
 
 class CollectionParent extends StatefulWidget {
@@ -74,7 +74,7 @@ class _CollectionParentState extends State<CollectionParent>
         startIndex: startIndex,
         includeItemTypes: item
             .getCollectionType()
-            .map((ItemType e) => e.getValue())
+            .map((ItemType e) => e.value)
             .toList()
             .join(','),
         limit: limit);
