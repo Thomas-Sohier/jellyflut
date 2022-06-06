@@ -45,7 +45,8 @@ class AsyncImage extends StatefulWidget {
   State<AsyncImage> createState() => _AsyncImageState();
 }
 
-class _AsyncImageState extends State<AsyncImage> {
+class _AsyncImageState extends State<AsyncImage>
+    with AutomaticKeepAliveClientMixin<AsyncImage> {
   late final Widget child;
   late final Color? overlay;
   late ImageType imageType;
@@ -79,6 +80,7 @@ class _AsyncImageState extends State<AsyncImage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5)), child: builder());
   }
@@ -145,4 +147,7 @@ class _AsyncImageState extends State<AsyncImage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
