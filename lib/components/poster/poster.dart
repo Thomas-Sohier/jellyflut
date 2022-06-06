@@ -50,13 +50,25 @@ class _PosterState extends State<Poster> with AbsordAction {
     node = FocusNode();
     node.addListener(() {
       if (node.hasFocus) {
-        _zoomableImageController.zoom();
+        zoom();
       } else {
-        _zoomableImageController.zoomOut();
+        zoomOut();
       }
     });
     _zoomableImageController = ZoomableImageController();
     super.initState();
+  }
+
+  void zoom([PointerEvent? event]) {
+    if (mounted) {
+      _zoomableImageController.zoom();
+    }
+  }
+
+  void zoomOut([PointerEvent? event]) {
+    if (mounted) {
+      _zoomableImageController.zoomOut();
+    }
   }
 
   Future<void> redirection() {
@@ -79,10 +91,7 @@ class _PosterState extends State<Poster> with AbsordAction {
             .copyWith(shadowColor: buttonShadow())
             .copyWith(side: buttonBorderSide())
             .copyWith(elevation: buttonElevation()),
-        child: MouseRegion(
-            onEnter: (_) => _zoomableImageController.zoom(),
-            onExit: (_) => _zoomableImageController.zoomOut(),
-            child: poster()),
+        child: MouseRegion(onEnter: zoom, onExit: zoomOut, child: poster()),
       );
     }
     return poster();

@@ -86,27 +86,19 @@ class _AsyncImageState extends State<AsyncImage> {
   Widget builder() {
     final url =
         ItemImageService.getItemImageUrl(itemId, imageTag, type: imageType);
-    if (widget.width != null && widget.height != null) {
-      return OctoImage(
-          image: CachedNetworkImageProvider(url),
-          placeholderBuilder: imagePlaceholder(hash),
-          errorBuilder: imagePlaceholderError(hash),
-          imageBuilder: (_, image) => ZoomableImage(
-              zoomableImageController: widget.zoomableImageController,
-              imageWidget: image,
-              overlay: overlay),
-          fit: widget.boxFit,
-          width: widget.width,
-          height: widget.height,
-          fadeInDuration: Duration(milliseconds: 300));
-    } else {
-      return OctoImage(
-          image: CachedNetworkImageProvider(url),
-          placeholderBuilder: imagePlaceholder(hash),
-          errorBuilder: imagePlaceholderError(hash),
-          fit: widget.boxFit,
-          fadeInDuration: Duration(milliseconds: 300));
-    }
+    return OctoImage(
+        image: CachedNetworkImageProvider(url),
+        placeholderBuilder: imagePlaceholder(hash),
+        errorBuilder: imagePlaceholderError(hash),
+        imageBuilder: (_, image) => ZoomableImage(
+            key: UniqueKey(),
+            zoomableImageController: widget.zoomableImageController,
+            imageWidget: image,
+            overlay: overlay),
+        fit: widget.boxFit,
+        width: widget.width,
+        height: widget.height,
+        fadeInDuration: Duration(milliseconds: 200));
   }
 
   Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(

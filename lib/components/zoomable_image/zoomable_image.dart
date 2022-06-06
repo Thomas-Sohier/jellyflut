@@ -18,38 +18,38 @@ class ZoomableImage extends StatefulWidget {
 
 class _ZoomableImageState extends State<ZoomableImage>
     with SingleTickerProviderStateMixin {
-  late final ZoomableImageController? _zoomableImageController;
-  late final AnimationController? _animationController;
+  late AnimationController _animationController;
   double scale = 1.0;
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.zoomableImageController != null) {
-      _zoomableImageController = widget.zoomableImageController!;
-      _animationController = AnimationController(
-        duration: const Duration(milliseconds: 300),
-        vsync: this,
-        lowerBound: 1.0,
-        upperBound: 1.1,
-      )..addListener(updateSCaleAnimation);
-      _zoomableImageController!.controller = _animationController;
-    } else {
-      _animationController = null;
-      _zoomableImageController = null;
-    }
+  void didChangeDependencies() {
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+      lowerBound: 1.0,
+      upperBound: 1.1,
+    )..addListener(updateScaleAnimation);
+    widget.zoomableImageController
+        ?.setController(_animationController, widget.key);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void deactivate() {
+    widget.zoomableImageController?.dispose(widget.key);
+    super.deactivate();
   }
 
   @override
   void dispose() {
-    _animationController?.removeListener(updateSCaleAnimation);
-    _animationController?.dispose();
+    _animationController.removeListener(updateScaleAnimation);
+    _animationController.dispose();
     super.dispose();
   }
 
-  void updateSCaleAnimation() {
+  void updateScaleAnimation() {
     if (mounted) {
-      setState(() => scale = _zoomableImageController!.controller!.value);
+      setState(() => scale = _animationController.value);
     }
   }
 
@@ -65,7 +65,7 @@ class _ZoomableImageState extends State<ZoomableImage>
   }
 
   Widget scaleImage() {
-    if (_zoomableImageController != null && _animationController != null) {
+    if (widget.zoomableImageController != null) {
       return Transform.scale(scale: scale, child: widget.imageWidget);
     } else {
       return widget.imageWidget;
