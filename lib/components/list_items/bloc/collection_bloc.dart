@@ -21,21 +21,16 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   late final Future<model.Category> Function(
       int startIndex, int numberOfItemsToLoad) loadMoreFunction;
 
-  // Sorting by name
-  bool _sortByNameASC = false;
-  bool _sortByNameDSC = true;
-
-  // Sorting by date
-  bool _sortByDateASC = false;
-  bool _sortByDateDSC = true;
-
-  SortBy _sortBy = SortBy.ASC;
-
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
+  SortBy _sortBy = SortBy.ASC;
+  ValueNotifier<FieldsEnum?> _currentSortedValue =
+      ValueNotifier<FieldsEnum?>(null);
 
   UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  SortBy get getSortOrder => _sortBy;
+  ValueNotifier<FieldsEnum?> get getCurrentSortedValue => _currentSortedValue;
 
   CollectionBloc(
       {final ListType listType = ListType.GRID, required this.loadMoreFunction})
@@ -44,8 +39,6 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<AddItem>(addItems);
     on<ClearItem>(removeItems);
     on<LoadMoreItems>(showMoreItem);
-    on<SortByName>(sortByName);
-    on<SortByDate>(sortByDate);
     on<SortByField>(sortByField);
   }
 
@@ -83,22 +76,6 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     }
   }
 
-  void sortByName(SortByName event, Emitter<CollectionState> emit) async {
-    emit(CollectionLoadingState());
-    final items = await _sortByName();
-    _items.clear();
-    _items.addAll(items);
-    emit(CollectionLoadedState());
-  }
-
-  void sortByDate(SortByDate event, Emitter<CollectionState> emit) async {
-    emit(CollectionLoadingState());
-    final items = await _sortByDate();
-    _items.clear();
-    _items.addAll(items);
-    emit(CollectionLoadedState());
-  }
-
   void sortByField(SortByField event, Emitter<CollectionState> emit) async {
     emit(CollectionLoadingState());
     final items = await _sortByField(event.fieldEnum, _sortBy);
@@ -107,32 +84,11 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     emit(CollectionLoadedState());
   }
 
-  Future<List<Item>> _sortByName() async {
-    final i = await compute(_sortItemByName, {
-      'items': _items,
-      'sortByNameASC': _sortByNameASC,
-      'sortByNameDSC': _sortByNameDSC
-    });
-    _sortByNameASC = i['sortByNameASC'];
-    _sortByNameDSC = i['sortByNameDSC'];
-    return i['items'];
-  }
-
-  Future<List<Item>> _sortByDate() async {
-    var i = await compute(_sortItemByDate, {
-      'items': _items,
-      'sortByDateASC': _sortByDateASC,
-      'sortByDateDSC': _sortByDateDSC
-    });
-    _sortByDateASC = i['sortByDateASC'];
-    _sortByDateDSC = i['sortByDateDSC'];
-    return i['items'];
-  }
-
   Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
     final i = await compute(_sortItemByField,
         {'items': _items, 'field': fieldEnum.name, 'sortBy': sortBy});
     _sortBy = sortBy.reverse();
+    _currentSortedValue.value = fieldEnum;
     return i['items'];
   }
 
@@ -161,58 +117,6 @@ enum SortBy {
   SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
 }
 
-Map<String, dynamic> _sortItemByName(Map<String, dynamic> arg) {
-  List<Item> items = arg['items'];
-  bool sortByNameASC = arg['sortByNameASC'];
-  bool sortByNameDSC = arg['sortByNameDSC'];
-  if (!sortByNameASC || (!sortByNameASC && !sortByNameDSC)) {
-    items.sort((a, b) => a.name.compareTo(b.name));
-    sortByNameASC = true;
-    sortByNameDSC = false;
-  } else if (sortByNameASC) {
-    items.sort((a, b) => b.name.compareTo(a.name));
-    sortByNameASC = false;
-    sortByNameDSC = true;
-  }
-  return {
-    'items': items,
-    'sortByNameASC': sortByNameASC,
-    'sortByNameDSC': sortByNameDSC
-  };
-}
-
-Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
-  List<Item> items = arg['items'];
-  bool sortByDateASC = arg['sortByDateASC'];
-  bool sortByDateDSC = arg['sortByDateDSC'];
-  if (!sortByDateASC || (!sortByDateASC && !sortByDateDSC)) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return a.dateCreated!.compareTo(b.dateCreated!);
-      } else {
-        return -1;
-      }
-    });
-    sortByDateASC = true;
-    sortByDateDSC = false;
-  } else if (sortByDateASC) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return b.dateCreated!.compareTo(a.dateCreated!);
-      } else {
-        return -1;
-      }
-    });
-    sortByDateASC = false;
-    sortByDateDSC = true;
-  }
-  return {
-    'items': items,
-    'sortByDateASC': sortByDateASC,
-    'sortByDateDSC': sortByDateDSC
-  };
-}
-
 Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
   late final sortingFunction;
   final List<Item> items = arg['items'];
@@ -236,7 +140,7 @@ Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
 
 int _sortByASC(dynamic a, dynamic b) {
   if (a != null && b != null) {
-    return a.compareTo(b);
+    return b.compareTo(a);
   } else if (a != null && b == null) {
     return -1;
   }
@@ -248,8 +152,12 @@ int _sortByASC(dynamic a, dynamic b) {
 
 int _sortByDESC(dynamic a, dynamic b) {
   if (a != null && b != null) {
-    return b.compareTo(a);
-  } else {
+    return a.compareTo(b);
+  } else if (a != null && b == null) {
     return -1;
   }
+  if (a == null && b == null) {
+    return 1;
+  }
+  return 0;
 }

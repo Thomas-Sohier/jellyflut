@@ -55,12 +55,12 @@ class ListItemsSort extends StatelessWidget {
 
   void sortByDate(final BuildContext context) {
     final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByDate());
+    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.DATECREATED));
   }
 
   void sortByName(final BuildContext context) {
     final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByName());
+    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.NAME));
   }
 
   void getNextListType(final BuildContext context) async {

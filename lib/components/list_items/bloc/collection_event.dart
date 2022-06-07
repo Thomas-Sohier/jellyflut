@@ -14,14 +14,6 @@ class ClearItem extends CollectionEvent {
   const ClearItem();
 }
 
-class SortByDate extends CollectionEvent {
-  const SortByDate();
-}
-
-class SortByName extends CollectionEvent {
-  const SortByName();
-}
-
 class SortByField extends CollectionEvent {
   final FieldsEnum fieldEnum;
 

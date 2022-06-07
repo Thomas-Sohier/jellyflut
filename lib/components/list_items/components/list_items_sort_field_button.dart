@@ -14,14 +14,27 @@ class ListItemsSortFieldButton extends StatefulWidget {
 }
 
 class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
+  late final CollectionBloc collectionBloc;
   late final GlobalKey<PopupMenuButtonState<FieldsEnum>> popupButtonKey;
-  late FieldsEnum currentValue;
+  late FieldsEnum? currentValue;
 
   @override
   void initState() {
     popupButtonKey = GlobalKey();
-    currentValue = FieldsEnum.AIRDAYS;
+    collectionBloc = BlocProvider.of<CollectionBloc>(context);
+    currentValue = collectionBloc.getCurrentSortedValue.value;
+    collectionBloc.getCurrentSortedValue.addListener(listSortedValue);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    collectionBloc.getCurrentSortedValue.removeListener(listSortedValue);
+    super.dispose();
+  }
+
+  void listSortedValue() {
+    currentValue = collectionBloc.getCurrentSortedValue.value;
   }
 
   @override
@@ -47,17 +60,32 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
 
   List<PopupMenuEntry<FieldsEnum>> _fieldTile(BuildContext context) {
     final fieldItems = <PopupMenuEntry<FieldsEnum>>[];
-    FieldsEnum.getSortable()
-        .forEach((field) => fieldItems.add(CheckedPopupMenuItem(
-              value: field,
-              checked: currentValue == field,
-              child: Text(field.fullName),
-            )));
+    FieldsEnum.getSortable().forEach((field) => fieldItems.add(PopupMenuItem(
+          value: field,
+          child: ListTile(
+            leading:
+                currentValue == field ? _leadingListTile() : const SizedBox(),
+            title: Text(field.fullName),
+          ),
+        )));
     return fieldItems;
+  }
+
+  Widget _leadingListTile() {
+    late final IconData icon;
+    if (collectionBloc.getSortOrder == SortBy.ASC) {
+      icon = Icons.arrow_upward;
+    } else if (collectionBloc.getSortOrder == SortBy.DESC) {
+      icon = Icons.arrow_downward;
+    }
+
+    return Icon(icon, color: Theme.of(context).iconTheme.color);
   }
 
   void sortByField(final BuildContext context, final FieldsEnum? fieldEnum) {
     if (fieldEnum == null) return;
+
+    currentValue = fieldEnum;
 
     final collectionBloc = BlocProvider.of<CollectionBloc>(context);
     collectionBloc.add(SortByField(fieldEnum: fieldEnum));
