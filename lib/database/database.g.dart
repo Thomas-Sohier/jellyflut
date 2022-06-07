@@ -625,7 +625,7 @@ class Setting extends DataClass implements Insertable<Setting> {
           String? preferredTranscodeAudioCodec,
           int? maxVideoBitrate,
           int? maxAudioBitrate,
-          String? downloadPath}) =>
+          Value<String?> downloadPath = const Value.absent()}) =>
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -633,7 +633,8 @@ class Setting extends DataClass implements Insertable<Setting> {
             preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
         maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
         maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
-        downloadPath: downloadPath ?? this.downloadPath,
+        downloadPath:
+            downloadPath.present ? downloadPath.value : this.downloadPath,
       );
   @override
   String toString() {
@@ -984,18 +985,18 @@ class Download extends DataClass implements Insertable<Download> {
 
   Download copyWith(
           {String? id,
-          String? name,
+          Value<String?> name = const Value.absent(),
           String? path,
-          Uint8List? primary,
-          Uint8List? backdrop,
-          Map<String, dynamic>? item}) =>
+          Value<Uint8List?> primary = const Value.absent(),
+          Value<Uint8List?> backdrop = const Value.absent(),
+          Value<Map<String, dynamic>?> item = const Value.absent()}) =>
       Download(
         id: id ?? this.id,
-        name: name ?? this.name,
+        name: name.present ? name.value : this.name,
         path: path ?? this.path,
-        primary: primary ?? this.primary,
-        backdrop: backdrop ?? this.backdrop,
-        item: item ?? this.item,
+        primary: primary.present ? primary.value : this.primary,
+        backdrop: backdrop.present ? backdrop.value : this.backdrop,
+        item: item.present ? item.value : this.item,
       );
   @override
   String toString() {
@@ -1217,6 +1218,7 @@ class $DownloadsTable extends Downloads
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$Database.connect(DatabaseConnection c) : super.connect(c);
   late final $ServersTable servers = $ServersTable(this);
   late final $UsersTable users = $UsersTable(this);
   late final $SettingsTable settings = $SettingsTable(this);

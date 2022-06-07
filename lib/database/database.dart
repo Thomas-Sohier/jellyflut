@@ -1,17 +1,13 @@
 // this annotation tells moor to prepare a database class that uses the tables we just defined. (Modes in our case)
 
-import 'dart:io';
-
+import 'package:collection/collection.dart';
+import 'package:drift/drift.dart';
 import 'package:jellyflut/database/class/servers_with_users.dart';
 import 'package:jellyflut/database/tables/download.dart';
 import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
 import 'package:jellyflut/database/tables/user.dart';
-import 'package:collection/collection.dart';
-import 'package:drift/native.dart';
-import 'package:drift/drift.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
 
@@ -35,23 +31,15 @@ class AppDatabase {
   Database get getDatabase => _database;
 }
 
-LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
-  return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-    final dbFolder = await getApplicationSupportDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file, logStatements: false);
-  });
-}
-
 @DriftDatabase(
-    tables: [Servers, Users, Settings, Downloads],
-    daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao])
+  tables: [Servers, Users, Settings, Downloads],
+  daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao],
+)
 class Database extends _$Database {
   // we tell the database where to store the data with this constructor
-  Database() : super(_openConnection());
+  Database() : super.connect(impl.connect());
+
+  Database.forTesting(super.connection) : super.connect();
 
   // you should bump this number whenever you change or add a table definition
   @override
