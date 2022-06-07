@@ -8,8 +8,8 @@ import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
 import 'package:jellyflut/database/tables/user.dart';
 import 'package:collection/collection.dart';
-import 'package:moor/ffi.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/native.dart';
+import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -42,11 +42,11 @@ LazyDatabase _openConnection() {
     // for your app.
     final dbFolder = await getApplicationSupportDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return VmDatabase(file, logStatements: false);
+    return NativeDatabase(file, logStatements: false);
   });
 }
 
-@UseMoor(
+@DriftDatabase(
     tables: [Servers, Users, Settings, Downloads],
     daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao])
 class Database extends _$Database {
@@ -93,7 +93,7 @@ class Database extends _$Database {
   }
 }
 
-@UseDao(tables: [Users])
+@DriftAccessor(tables: [Users])
 class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
   UsersDao(super.db);
   Future<List<User>> get allWatchingUsers => select(users).get();
@@ -116,7 +116,7 @@ class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
   Future<int> deleteUser(UsersCompanion user) => delete(users).delete(user);
 }
 
-@UseDao(tables: [Settings])
+@DriftAccessor(tables: [Settings])
 class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
   SettingsDao(super.db);
   Future<List<Setting>> get allWatchingSettings => select(settings).get();
@@ -136,7 +136,7 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
       delete(settings).delete(setting);
 }
 
-@UseDao(tables: [Servers])
+@DriftAccessor(tables: [Servers])
 class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
   ServersDao(super.db);
   Future<List<Server>> get allWatchingServers => select(servers).get();
@@ -157,7 +157,7 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
       delete(servers).delete(server);
 }
 
-@UseDao(tables: [Downloads])
+@DriftAccessor(tables: [Downloads])
 class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
   DownloadsDao(super.db);
   Future<List<Download>> get allWatchingDownloads => select(downloads).get();

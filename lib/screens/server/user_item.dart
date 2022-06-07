@@ -3,7 +3,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
-import 'package:moor/moor.dart' hide Column;
+import 'package:drift/drift.dart' hide Column;
 
 import '../../shared/utils/color_util.dart';
 

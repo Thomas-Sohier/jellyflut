@@ -3,7 +3,7 @@ import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 class AudioMetadata {
   final String? album;

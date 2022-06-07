@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 String getDefaultPlayer() {
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {

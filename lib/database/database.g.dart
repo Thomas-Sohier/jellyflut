@@ -12,8 +12,7 @@ class Server extends DataClass implements Insertable<Server> {
   final String url;
   final String name;
   Server({required this.id, required this.url, required this.name});
-  factory Server.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Server.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Server(
       id: const IntType()
@@ -43,7 +42,7 @@ class Server extends DataClass implements Insertable<Server> {
 
   factory Server.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Server(
       id: serializer.fromJson<int>(json['id']),
       url: serializer.fromJson<String>(json['url']),
@@ -52,7 +51,7 @@ class Server extends DataClass implements Insertable<Server> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'url': serializer.toJson<String>(url),
@@ -203,7 +202,7 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Server.fromData(data, attachedDatabase,
+    return Server.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -227,8 +226,7 @@ class User extends DataClass implements Insertable<User> {
       required this.apiKey,
       required this.settingsId,
       required this.serverId});
-  factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory User.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return User(
       id: const IntType()
@@ -270,7 +268,7 @@ class User extends DataClass implements Insertable<User> {
 
   factory User.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return User(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
@@ -282,7 +280,7 @@ class User extends DataClass implements Insertable<User> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
@@ -525,7 +523,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data, attachedDatabase,
+    return User.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -549,8 +547,7 @@ class Setting extends DataClass implements Insertable<Setting> {
       required this.maxVideoBitrate,
       required this.maxAudioBitrate,
       this.downloadPath});
-  factory Setting.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Setting(
       id: const IntType()
@@ -597,7 +594,7 @@ class Setting extends DataClass implements Insertable<Setting> {
 
   factory Setting.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Setting(
       id: serializer.fromJson<int>(json['id']),
       preferredPlayer: serializer.fromJson<String>(json['preferredPlayer']),
@@ -610,7 +607,7 @@ class Setting extends DataClass implements Insertable<Setting> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preferredPlayer': serializer.toJson<String>(preferredPlayer),
@@ -883,7 +880,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data, attachedDatabase,
+    return Setting.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -907,8 +904,7 @@ class Download extends DataClass implements Insertable<Download> {
       this.primary,
       this.backdrop,
       this.item});
-  factory Download.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Download.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Download(
       id: const StringType()
@@ -963,7 +959,7 @@ class Download extends DataClass implements Insertable<Download> {
 
   factory Download.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Download(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String?>(json['name']),
@@ -975,7 +971,7 @@ class Download extends DataClass implements Insertable<Download> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String?>(name),
@@ -1206,7 +1202,7 @@ class $DownloadsTable extends Downloads
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Download.fromData(data, attachedDatabase,
+    return Download.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 

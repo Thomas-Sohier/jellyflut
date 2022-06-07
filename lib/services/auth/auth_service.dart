@@ -16,7 +16,7 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {

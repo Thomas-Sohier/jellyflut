@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:jellyflut/shared/json_deserializer.dart';
 import 'package:jellyflut/shared/json_serializer.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 class JsonConverter extends TypeConverter<Map<String, dynamic>, String> {
   const JsonConverter();

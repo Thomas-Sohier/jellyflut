@@ -11,7 +11,7 @@ import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:moor/moor.dart' hide Column;
+import 'package:drift/drift.dart' hide Column;
 import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 

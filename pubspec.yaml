@@ -43,7 +43,7 @@ dependencies:
   intl: ^0.17.0
   just_audio: ^0.9.24
   just_audio_libwinmedia: ^0.0.4
-  moor: ^4.6.1+1
+  drift: ^1.6.0
   octo_image: ^1.0.2
   package_info_plus: ^1.4.2
   path: ^1.8.1
@@ -73,13 +73,13 @@ dependency_overrides:
 
 dev_dependencies:
   auto_route_generator: ^4.0.0
-  build_runner: ^2.1.11
+  drift_dev: ^1.6.0
+  build_runner: ^2.1.10
   dart_code_metrics: ^4.15.2
   flutter_launcher_icons: ^0.9.2
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  moor_generator: ^4.6.0+1
 
 # The following section is specific to Flutter.
 flutter:
