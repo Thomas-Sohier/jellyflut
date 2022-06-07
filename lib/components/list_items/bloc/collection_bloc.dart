@@ -25,7 +25,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
   SortBy _sortBy = SortBy.ASC;
-  ValueNotifier<FieldsEnum?> _currentSortedValue =
+  final ValueNotifier<FieldsEnum?> _currentSortedValue =
       ValueNotifier<FieldsEnum?>(null);
 
   UnmodifiableListView<Item> get items => UnmodifiableListView(_items);

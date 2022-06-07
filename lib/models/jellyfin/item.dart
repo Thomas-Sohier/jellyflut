@@ -5,7 +5,6 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-
 import 'package:jellyflut/database/database.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
@@ -37,7 +36,6 @@ import 'image_tag.dart';
 import 'media_source.dart';
 import 'media_stream.dart';
 import 'person.dart';
-import 'provider_ids.dart';
 import 'user_data.dart';
 
 Item itemFromMap(String str) => Item.fromMap(json.decode(str));
