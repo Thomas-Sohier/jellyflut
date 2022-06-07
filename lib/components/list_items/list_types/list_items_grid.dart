@@ -7,11 +7,13 @@ class ListItemsGrid extends StatelessWidget {
   final double gridPosterHeight;
   final BoxFit boxFit;
   final Widget Function(BuildContext)? placeholder;
+  final EdgeInsetsGeometry padding;
 
   const ListItemsGrid(
       {super.key,
       this.boxFit = BoxFit.cover,
       this.placeholder,
+      this.padding = const EdgeInsets.symmetric(horizontal: 8),
       required this.scrollPhysics,
       required this.scrollController,
       required this.gridPosterHeight,
@@ -30,23 +32,26 @@ class ListItemsGrid extends StatelessWidget {
           controller: scrollController,
           scrollDirection: Axis.vertical,
           slivers: <Widget>[
-            SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: items.first.getPrimaryAspectRatio(),
-                    crossAxisCount: numberOfItemRow,
-                    mainAxisExtent: height + itemPosterLabelHeight,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5),
-                delegate:
-                    SliverChildBuilderDelegate((BuildContext c, int index) {
-                  return ItemPoster(
-                    items.elementAt(index),
-                    boxFit: boxFit,
-                    placeholder: placeholder,
-                    width: double.infinity,
-                    height: double.infinity,
-                  );
-                }, childCount: items.length))
+            SliverPadding(
+              padding: padding,
+              sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: items.first.getPrimaryAspectRatio(),
+                      crossAxisCount: numberOfItemRow,
+                      mainAxisExtent: height + itemPosterLabelHeight,
+                      mainAxisSpacing: 5,
+                      crossAxisSpacing: 5),
+                  delegate:
+                      SliverChildBuilderDelegate((BuildContext c, int index) {
+                    return ItemPoster(
+                      items.elementAt(index),
+                      boxFit: boxFit,
+                      placeholder: placeholder,
+                      width: double.infinity,
+                      height: double.infinity,
+                    );
+                  }, childCount: items.length)),
+            )
           ]);
     });
   }
