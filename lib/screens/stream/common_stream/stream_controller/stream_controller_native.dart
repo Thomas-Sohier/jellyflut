@@ -94,8 +94,7 @@ CommonStream _parseBetterPlayerController(
       controller: betterPlayerController);
 }
 
-CommonStream _parseVlcComputerController(
-    {required Player player, VoidCallback? listener}) {
+CommonStream _parseVlcComputerController({required Player player}) {
   final commonStreamVLCComputer = CommonStreamVLCComputer(player: player);
   return CommonStream(
       pause: player.pause,
