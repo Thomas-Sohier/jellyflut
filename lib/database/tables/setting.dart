@@ -1,3 +1,4 @@
+import 'package:jellyflut/models/enum/streaming_software.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:drift/drift.dart';
@@ -5,11 +6,11 @@ import 'package:flutter/foundation.dart';
 
 String getDefaultPlayer() {
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    return 'vlc';
+    return StreamingSoftware.VLC.name;
   } else if (kIsWeb) {
-    return 'internal';
+    return StreamingSoftware.HTMLPlayer.name;
   }
-  return 'exoplayer';
+  return StreamingSoftware.EXOPLAYER.name;
 }
 
 class Settings extends Table {

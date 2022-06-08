@@ -1,24 +1,27 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/target_platform_extended.dart';
 
 enum StreamingSoftware {
   VLC('VLC', [
-    TargetPlatform.android,
-    TargetPlatform.iOS,
-    TargetPlatform.linux,
-    TargetPlatform.macOS,
-    TargetPlatform.windows
+    TargetPlatformExtended.android,
+    TargetPlatformExtended.iOS,
+    TargetPlatformExtended.linux,
+    TargetPlatformExtended.macOS,
+    TargetPlatformExtended.windows
   ]),
-  EXOPLAYER('Exoplayer', [TargetPlatform.android]),
-  AVPLAYER('AVPlayer', [TargetPlatform.iOS]),
+  HTMLPlayer('HTMLPlayer', [TargetPlatformExtended.web]),
+  EXOPLAYER('Exoplayer', [TargetPlatformExtended.android]),
+  AVPLAYER('AVPlayer', [TargetPlatformExtended.iOS]),
   MPV('MPV', []);
 
-  final List<TargetPlatform> _supportedPlatforms;
+  final List<TargetPlatformExtended> _supportedPlatforms;
   final String _name;
 
   const StreamingSoftware(this._name, this._supportedPlatforms);
 
-  List<TargetPlatform> get supportedPlatforms => _supportedPlatforms;
+  List<TargetPlatformExtended> get supportedPlatforms => _supportedPlatforms;
   String get name => _name;
 
   /// Get video player options depending on current platform.
@@ -27,7 +30,9 @@ enum StreamingSoftware {
   static List<StreamingSoftware> getVideoPlayerOptions(
       [BuildContext? context]) {
     context ??= currentContext;
-    final currentPlatform = Theme.of(context).platform;
+    final currentPlatform = kIsWeb
+        ? TargetPlatformExtended.web
+        : TargetPlatformExtended.fromTargetPlatform(Theme.of(context).platform);
 
     return StreamingSoftware.values
         .where((soft) => soft._supportedPlatforms.contains(currentPlatform))
