@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/screens/stream/components/controller_builder.dart';
+import 'controller_builder/controller_builder.dart';
 
 import 'common_controls.dart';
 

@@ -5,7 +5,7 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
+import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:window_manager/window_manager.dart';
@@ -40,8 +40,7 @@ class CommonStreamVLCComputer {
     streamingProvider.setTimer(timer);
 
     // create common stream controller
-    final commonStream =
-        CommonStream.parseVlcComputerController(player: player);
+    final commonStream = CommonStream.parse(player);
     player.play();
     streamingProvider.setCommonStream(commonStream);
     return Future.value(player);
@@ -55,8 +54,7 @@ class CommonStreamVLCComputer {
     player.open(media);
 
     // create common stream controller
-    final commonStream = CommonStream.parseVlcComputerController(
-        player: player, listener: () => {});
+    final commonStream = CommonStream.parse(player);
 
     StreamingProvider().setCommonStream(commonStream);
     return Future.value(player);

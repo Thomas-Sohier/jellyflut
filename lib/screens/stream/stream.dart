@@ -11,8 +11,7 @@ import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:wakelock/wakelock.dart';
-
-import 'init_stream.dart';
+import './init_stream/init_stream.dart';
 
 class Stream extends StatefulWidget {
   final Item? item;

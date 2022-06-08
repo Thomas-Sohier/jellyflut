@@ -1,11 +1,10 @@
-import 'dart:io';
-
-import 'package:dart_vlc/dart_vlc.dart';
+import './shared/app_init/app_init.dart' as impl;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
@@ -20,10 +19,9 @@ import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:provider/provider.dart';
 
 import 'shared/custom_scroll_behavior.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  await DartVLC.initialize();
+  await impl.init();
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final auth = await AuthService.isAuth();
