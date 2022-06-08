@@ -71,9 +71,14 @@ dependencies:
 
 dependency_overrides: 
   xml: ^5.3.1
+  universal_html:
+    git:
+      url: https://github.com/juancastillo0/universal_html.git
+      ref: 5a079ea
 
 dev_dependencies:
   auto_route_generator: ^4.0.0
+  build_web_compilers: ^3.2.3
   drift_dev: ^1.6.0
   build_runner: ^2.1.10
   dart_code_metrics: ^4.15.2

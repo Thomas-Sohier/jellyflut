@@ -11,11 +11,7 @@ targets:
       - $package$
     builders:
       drift_dev:
-        # These options change how drift generates code
         options:
-          # Drift analyzes SQL queries at compile-time. For this purpose, it needs to know which sqlite3
-          # features will be available. We depend on `sqlite3_flutter_libs`, which lets us use the latest
-          # version with fts5 enabled.
           sql:
             dialect: sqlite
             options:
@@ -23,18 +19,20 @@ targets:
               modules: [fts5]
           # This allows us to share a drift database across isolates (or different tabs on the web)
           generate_connect_constructor: true
-          # These options are generally recommended: https://drift.simonbinder.eu/docs/advanced-features/builder_options/#recommended-options
           apply_converters_on_variables: true
           generate_values_in_copy_with: true
           new_sql_code_generation: true
           scoped_dart_components: true
-      # Configuring this builder isn't required for most apps. In our case, we
-      # want to compile the web worker in `web/worker.dart` to JS and we use the
-      # build system for that.
-      build_web_compilers:entrypoint:
+          compact_query_methods: true
+          named_parameters: true
+      build_web_compilers|entrypoint:
         generate_for:
-          - web/worker.dart
+          - web/**.dart
         options:
           compiler: dart2js
-      ":copy_compiled_worker_js":
-        enabled: true
+        dev_options:
+          dart2js_args:
+            - --no-minify
+        release_options:
+          dart2js_args:
+            - -O4

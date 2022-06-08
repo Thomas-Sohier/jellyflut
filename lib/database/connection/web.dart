@@ -6,15 +6,18 @@ import 'package:drift/drift.dart';
 import 'package:drift/remote.dart';
 import 'package:drift/web.dart';
 import 'package:drift/wasm.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqlite3/wasm.dart';
 
-const _useWorker = false;
+const _useWorker = true;
+const _databaseName = 'db';
 
 /// Obtains a database connection for running drift on the web.
 DatabaseConnection connect({bool isInWebWorker = false}) {
   if (_useWorker && !isInWebWorker) {
-    final worker = SharedWorker('shared_worker.dart.js');
+    final worker = SharedWorker(
+        kReleaseMode ? 'worker.dart.min.js' : 'worker.dart.js', _databaseName);
     return remote(worker.port!.channel());
   } else {
     return DatabaseConnection.delayed(Future.sync(() async {
@@ -24,7 +27,7 @@ DatabaseConnection connect({bool isInWebWorker = false}) {
       // https://drift.simonbinder.eu/web/ instead.
 
       final response = await http.get(Uri.parse('sqlite3.wasm'));
-      final fs = await IndexedDbFileSystem.open(dbName: 'db');
+      final fs = await IndexedDbFileSystem.open(dbName: _databaseName);
       final sqlite3 = await WasmSqlite3.load(
         response.bodyBytes,
         SqliteEnvironment(fileSystem: fs),
