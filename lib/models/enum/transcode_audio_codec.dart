@@ -4,11 +4,11 @@ enum TranscodeAudioCodec {
   MP3('MP3'),
   OPUS('OPUS');
 
-  final String name;
-  const TranscodeAudioCodec(this.name);
+  final String codecName;
+  const TranscodeAudioCodec(this.codecName);
 
-  static TranscodeAudioCodec fromString(String name) {
-    return TranscodeAudioCodec.values
-        .firstWhere((codec) => codec.name.toLowerCase() == name.toLowerCase());
+  static TranscodeAudioCodec fromString(String codecName) {
+    return TranscodeAudioCodec.values.firstWhere(
+        (codec) => codec.codecName.toLowerCase() == codecName.toLowerCase());
   }
 }

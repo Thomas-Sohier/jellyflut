@@ -1,10 +1,13 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 
 String getDefaultPlayer() {
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
     return 'vlc';
+  } else if (kIsWeb) {
+    return 'internal';
   }
   return 'exoplayer';
 }

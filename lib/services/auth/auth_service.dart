@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';

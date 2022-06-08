@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';

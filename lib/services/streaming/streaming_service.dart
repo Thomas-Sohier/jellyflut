@@ -14,7 +14,7 @@ import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
 import 'package:path/path.dart' as p;
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';

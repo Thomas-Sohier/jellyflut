@@ -47,11 +47,11 @@ enum FieldsEnum {
   TAGS('tags', 'Tags', false),
   VIDEO3DFORMAT('video3DFormat', 'Video 3D format', false);
 
-  final String name;
+  final String fieldName;
   final String fullName;
   final bool sortable;
 
-  const FieldsEnum(this.name, this.fullName, this.sortable);
+  const FieldsEnum(this.fieldName, this.fullName, this.sortable);
 
   static List<FieldsEnum> getSortable() {
     return FieldsEnum.values.where((field) => field.sortable).toList();

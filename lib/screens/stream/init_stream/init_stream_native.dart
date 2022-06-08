@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';

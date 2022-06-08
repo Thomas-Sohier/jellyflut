@@ -1,6 +1,6 @@
 library globals;
 
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
