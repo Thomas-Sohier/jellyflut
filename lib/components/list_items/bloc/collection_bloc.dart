@@ -86,7 +86,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
 
   Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
     final i = await compute(_sortItemByField,
-        {'items': _items, 'field': fieldEnum.name, 'sortBy': sortBy});
+        {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
     _sortBy = sortBy.reverse();
     _currentSortedValue.value = fieldEnum;
     return i['items'];

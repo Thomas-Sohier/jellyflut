@@ -9,7 +9,7 @@ import 'package:drift/wasm.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqlite3/wasm.dart';
 
-const _useWorker = true;
+const _useWorker = false;
 
 /// Obtains a database connection for running drift on the web.
 DatabaseConnection connect({bool isInWebWorker = false}) {
@@ -24,7 +24,7 @@ DatabaseConnection connect({bool isInWebWorker = false}) {
       // https://drift.simonbinder.eu/web/ instead.
 
       final response = await http.get(Uri.parse('sqlite3.wasm'));
-      final fs = await IndexedDbFileSystem.open(dbName: 'my_app');
+      final fs = await IndexedDbFileSystem.open(dbName: 'db');
       final sqlite3 = await WasmSqlite3.load(
         response.bodyBytes,
         SqliteEnvironment(fileSystem: fs),
