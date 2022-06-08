@@ -63,6 +63,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.7
   subtitle: ^0.1.0-beta.3
   url_launcher: ^6.1.2
+  universal_io: ^2.0.4
   uuid: ^3.0.6
   wakelock: ^0.6.1+2
   window_manager: ^0.2.5
@@ -76,7 +77,7 @@ dev_dependencies:
   drift_dev: ^1.6.0
   build_runner: ^2.1.10
   dart_code_metrics: ^4.15.2
-  flutter_launcher_icons: ^0.9.2
+  icons_launcher: ^1.1.9
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter

@@ -1,6 +1,10 @@
 flutter_icons:
   android: true
   ios: true
+  web: true
+  macos: true
+  windows: true
+  linux: true
   image_path: "img/icon/icon.png"
   adaptive_icon_foreground: "img/icon/icon.png"
   adaptive_icon_background: "#FFFFFFFF"
