@@ -91,7 +91,7 @@ class _StreamState extends State<Stream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black,
       body: FutureBuilder<Widget>(
         future: videoFuture,
         builder: (context, snapshot) {

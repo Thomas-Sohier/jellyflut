@@ -5,10 +5,10 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 
 String getDefaultPlayer() {
-  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    return StreamingSoftware.VLC.name;
-  } else if (kIsWeb) {
+  if (kIsWeb) {
     return StreamingSoftware.HTMLPlayer.name;
+  } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    return StreamingSoftware.VLC.name;
   }
   return StreamingSoftware.EXOPLAYER.name;
 }

@@ -340,10 +340,91 @@ class PlayersProfile {
               ResponseProfile(
                   type: 'Video', container: 'm4v', mimeType: 'video/mp4')
             ]));
+    final webOs = PlayerProfile(
+        name: PlayerProfileName.WEB_OS.value,
+        deviceProfile: DeviceProfile(
+            name: PlayerProfileName.WEB_OS.value,
+            maxStreamingBitrate: 120000000,
+            maxStaticBitrate: 100000000,
+            musicStreamingTranscodingBitrate: 384000,
+            transcodingProfiles: [
+              TranscodingProfile(
+                  container: 'aac',
+                  audioCodec: 'aac',
+                  type: 'Audio',
+                  context: 'Streaming',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'mp3',
+                  audioCodec: 'mp3',
+                  type: 'Audio',
+                  context: 'Streaming',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'opus',
+                  audioCodec: 'opus',
+                  type: 'Audio',
+                  context: 'Static',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'mp3',
+                  audioCodec: 'mp3',
+                  type: 'Audio',
+                  context: 'Static',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'aac',
+                  audioCodec: 'aac',
+                  type: 'Audio',
+                  context: 'Static',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'webm',
+                  type: 'Video',
+                  audioCodec: 'mp3,ogg,aac',
+                  videoCodec: 'vp8,vp9,av1,h264',
+                  context: 'Streaming',
+                  protocol: 'http',
+                  maxAudioChannels: '6'),
+              TranscodingProfile(
+                  container: 'mp4',
+                  audioCodec: 'aac,mp3,opus,flac,vorbis',
+                  videoCodec: 'h264',
+                  context: 'Static',
+                  protocol: 'http')
+            ],
+            codecProfiles: [
+              CodecProfile(
+                  type: 'VideoAudio',
+                  container: 'webm,mpeg,mp4',
+                  codec: 'aac,mp2,mp3,aac',
+                  conditions: []),
+            ],
+            containerProfiles: [],
+            directPlayProfiles: [
+              DirectPlayProfile(
+                  container: 'webm,mpeg,mp4',
+                  type: 'Video',
+                  videoCodec: 'h264,vp8,vp9,av1',
+                  audioCodec: 'ogg,mp2,mp3,ac3'),
+              DirectPlayProfile(container: 'mp3', type: 'Audio'),
+              DirectPlayProfile(container: 'aac', type: 'Audio'),
+              DirectPlayProfile(container: 'm4a', type: 'Audio')
+            ],
+            subtitleProfiles: [
+              SubtitleProfile(format: 'vtt', method: 'External')
+            ],
+            responseProfiles: []));
 
     playersProfile = <PlayerProfile>[];
     playersProfile.add(vlcComputer);
     playersProfile.add(vlcPhone);
+    playersProfile.add(webOs);
   }
 
   PlayerProfile? getByName(PlayerProfileName name) {
@@ -407,6 +488,7 @@ class PlayerProfile {
 }
 
 enum PlayerProfileName {
+  WEB_OS('WebOs'),
   VLC_COMPUTER('VlcComputer'),
   VLC_PHONE('VlcPhone');
 

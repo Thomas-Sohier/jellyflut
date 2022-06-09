@@ -1,5 +1,6 @@
 import 'dart:convert' as convert;
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -246,7 +247,11 @@ class StreamingService {
 
   static Future<DeviceProfileParent?> isCodecSupported() async {
     // TODO make IOS
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      final playerProfile =
+          PlayersProfile().getByName(PlayerProfileName.WEB_OS);
+      return DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile);
+    } else if (Platform.isAndroid) {
       final streamingSoftwareDB = await AppDatabase()
           .getDatabase
           .settingsDao
