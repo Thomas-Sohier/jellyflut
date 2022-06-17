@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 
@@ -28,12 +33,27 @@ class CommonStreamVideoPlayer {
 
   static Future<VideoPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final streamURL = await item.getItemURL();
+    final streamURL = await item.getItemURL(directPlay: false);
 
     // Detect if media is available locdally or only remotely
-    late final videoPlayerController;
+    late final VideoPlayerController videoPlayerController;
     if (streamURL.startsWith(RegExp('^(http|https)://'))) {
       videoPlayerController = VideoPlayerController.network(streamURL);
+      // ignore: unawaited_futures
+      videoPlayerController.initialize().then((value) async {
+        await videoPlayerController.play();
+        streamingProvider.notifyInit();
+      }).catchError((error) {
+        String errorMessage;
+        if (error is PlatformException) {
+          errorMessage = error.details;
+        } else {
+          errorMessage = error.toString();
+        }
+        log(errorMessage, level: 5);
+        SnackbarUtil.message(errorMessage, Icons.play_disabled, Colors.red);
+        customRouter.pop();
+      });
     } else {
       // videoPlayerController = VideoPlayerController.file(File(streamURL));
       throw UnsupportedError(

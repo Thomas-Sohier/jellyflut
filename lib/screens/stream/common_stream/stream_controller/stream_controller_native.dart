@@ -72,7 +72,7 @@ CommonStream _parseBetterPlayerController(
       bufferingDuration: commonStreamBP.getBufferingDurationBP,
       currentPosition: () =>
           betterPlayerController.videoPlayerController!.value.position,
-      isInit: betterPlayerController.isVideoInitialized(),
+      isInit: betterPlayerController.isVideoInitialized() ?? false,
       hasPip: betterPlayerController.isPictureInPictureSupported(),
       pip: () => betterPlayerController.enablePictureInPicture(
           betterPlayerController.betterPlayerGlobalKey!),

@@ -12,7 +12,7 @@ class CommonStream {
   final Function _bufferingDuration;
   final Function _duration;
   final Function _currentPosition;
-  final bool? _isInit;
+  final bool _isInit;
   final Function _pip;
   final Future<bool> _hasPip;
   final Function _getSubtitles;
@@ -86,7 +86,7 @@ class CommonStream {
   Duration getBufferingDuration() => _bufferingDuration();
   Duration? getDuration() => _duration();
   Duration getCurrentPosition() => _currentPosition();
-  bool? isInit() => _isInit;
+  bool isInit() => _isInit;
   Future<bool> hasPip() => _hasPip;
   void pip() => _pip();
   void enterFullscreen() => _enterFullscreen();

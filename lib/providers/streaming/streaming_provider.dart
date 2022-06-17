@@ -122,6 +122,10 @@ class StreamingProvider extends ChangeNotifier {
     }
   }
 
+  void notifyInit() {
+    notifyListeners();
+  }
+
   Future<void> changeDataSource() async {
     return StreamingService.deleteActiveEncoding()
         .then((_) async => await commonStream?.disposeStream())
