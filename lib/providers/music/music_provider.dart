@@ -1,25 +1,24 @@
 import 'dart:io';
 
-import 'package:dart_vlc/dart_vlc.dart';
+import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_playlist.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_mpv/just_audio_mpv.dart';
-import 'package:just_audio_platform_interface/just_audio_platform_interface.dart';
+import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart';
+
+import '../../screens/musicPlayer/models/audio_source.dart';
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
-  // ignore: prefer_final_fields
-  ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: []);
   CommonPlayer? _commonPlayer;
+  final _audioPlaylist = AudioPlaylist(audioSources: []);
   final _colorController = BehaviorSubject<AudioColors>();
 
   // Singleton
@@ -32,16 +31,19 @@ class MusicProvider extends ChangeNotifier {
   MusicProvider._internal();
 
   CommonPlayer? get getAudioPlayer => _commonPlayer;
-  ConcatenatingAudioSource get getPlaylist => _playlist;
+  List<AudioSource> get getPlaylist => _audioPlaylist.getPlaylist;
   Item? get getItemPlayer => _item;
   Stream<AudioColors> get getColorcontroller => _colorController;
 
   void initPlayer() async {
+    if (_commonPlayer != null) return;
+
     if (Platform.isLinux || Platform.isWindows) {
-      final player = Player(id: audioPlayerId);
-      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
+      final player = audioplayers.AudioPlayer();
+      _commonPlayer =
+          CommonPlayer.parseAudioplayerController(audioPlayer: player);
     } else if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
-      final player = AudioPlayer();
+      final player = just_audio.AudioPlayer();
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else {
@@ -61,103 +63,104 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Stream<int?> playingIndex() {
-    return 0;
+    return Stream.value(0);
   }
 
-  IndexedAudioSource? getCurrentMusic() {
-    return _audioPlayer?.sequenceState?.currentSource;
+  AudioSource? getCurrentMusic() {
+    // return _commonPlayer?.sequenceState?.currentSource;
+    return null;
   }
 
-  Stream<SequenceState?> getCurrentMusicStream() {
-    return _audioPlayer!.sequenceStateStream;
+  Stream<AudioSource> getCurrentMusicStream() {
+    // return _commonPlayer!.sequenceStateStream;
+    return Stream.empty();
   }
 
   void moveMusicItem(int oldIndex, int newIndex) {
-    _playlist.move(oldIndex, newIndex);
+    _audioPlaylist.move(oldIndex, newIndex);
     notifyListeners();
   }
 
   void play() {
-    _audioPlayer!.play();
+    _commonPlayer?.play();
     notifyListeners();
   }
 
   void pause() {
-    _audioPlayer!.pause();
+    _commonPlayer?.pause();
     notifyListeners();
   }
 
   Duration getDuration() {
-    return _audioPlayer?.duration ?? Duration.zero;
+    return _commonPlayer?.getDuration() ?? Duration.zero;
   }
 
   Stream<Duration?> getPositionStream() {
-    return _audioPlayer!.positionStream;
+    return _commonPlayer!.getPositionStream();
   }
 
   Stream<bool> isPlaying() {
-    return _audioPlayer!.playingStream;
+    return _commonPlayer!.getPlayingStateStream();
   }
 
   void seekTo(Duration duration) {
-    _audioPlayer!.seek(duration);
+    _commonPlayer!.seekTo(duration);
     notifyListeners();
   }
 
   void playAtIndex(int index) async {
-    await _audioPlayer!.seek(Duration(seconds: 0), index: index);
+    // await _commonPlayer!.seekTo(Duration(seconds: 0), index: index);
     notifyListeners();
   }
 
-  List<IndexedAudioSource> getPlayList() {
-    return _playlist.sequence;
+  List<AudioSource> getPlayList() {
+    return _audioPlaylist.getPlaylist;
   }
 
-  IndexedAudioSource getItemFromPlaylist(int index) {
-    return _playlist.sequence.elementAt(index);
+  AudioSource getItemFromPlaylist(int index) {
+    return _audioPlaylist.getPlaylist.elementAt(index);
   }
 
   /// insert item at end of playlist
   /// return index as int
   void insertIntoPlaylist(AudioSource audioSource) {
-    _playlist.add(audioSource);
+    _audioPlaylist.insert(audioSource);
     notifyListeners();
   }
 
   void deleteFromPlaylist(int index) {
-    _playlist.removeAt(index);
+    _audioPlaylist.removeAt(index);
     notifyListeners();
   }
 
   void next() {
-    _audioPlayer!.seekToNext();
+    _commonPlayer!.nextTrack();
     notifyListeners();
   }
 
   void previous() {
-    _audioPlayer!.seekToPrevious();
+    _commonPlayer!.previousTrack();
     notifyListeners();
   }
 
   void reset() {
-    _playlist.clear();
-    _audioPlayer?.stop();
+    _audioPlaylist.clear();
+    // _commonPlayer?.stop();
   }
 
   Future<void> playRemoteAudio(Item item) async {
-    // final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
     final streamURL = await item.getItemURL();
     final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
-    await _playlist.add(audioSource);
-    await _audioPlayer?.setAudioSource(_playlist);
-    await _audioPlayer?.play();
+    _audioPlaylist.insert(audioSource);
+    // await _commonPlayer?.setAudioSource(_playlist);
+    _commonPlayer?.play();
     notifyListeners();
     return;
   }
 
   Future<void> playPlaylist(Item item) async {
     await ItemService.getItems(parentId: item.id).then((value) async {
-      final indexToReturn = _playlist.length;
+      final indexToReturn = _audioPlaylist.getPlaylist.length;
       final items =
           value.items.where((_item) => _item.isFolder == false).toList();
       //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));

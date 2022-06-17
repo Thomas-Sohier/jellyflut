@@ -9,9 +9,7 @@ import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:just_audio/just_audio.dart';
 
 import '../../shared/responsive_builder.dart';
 
@@ -33,11 +31,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   void initState() {
     super.initState();
     musicProvider = MusicProvider();
-    musicProvider
-        .getCurrentMusicStream()
-        .listen((SequenceState? sequenceState) {
-      setAlbumPrimaryColor();
-    });
+    musicProvider.getCurrentMusicStream().listen((_) => setAlbumPrimaryColor());
   }
 
   @override
@@ -155,7 +149,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   void setAlbumPrimaryColor() {
     final currentMusic = musicProvider.getCurrentMusic();
     if (currentMusic != null) {
-      final metadata = currentMusic.tag as AudioMetadata;
+      final metadata = currentMusic.metadata;
       compute(ColorUtil.extractPixelsColors, metadata.artworkByte)
           .then((List<Color> colors) {
         final backgroundColor1 = colors[0];

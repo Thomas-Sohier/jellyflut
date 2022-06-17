@@ -1,9 +1,9 @@
+import 'package:audioplayers/audioplayers.dart' as audioplayers;
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_just_audio.dart';
-import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_mpv.dart';
+import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_audioplayers.dart';
 import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_vlc.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_mpv/src/mpv_player.dart' as mpv_player;
+import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
 
 class CommonPlayer {
@@ -13,6 +13,8 @@ class CommonPlayer {
   final Function(Duration) _seekTo;
   final Function _bufferingDuration;
   final Function _duration;
+  final Function _nextTrack;
+  final Function _previousTrack;
   final Function _currentPosition;
   final BehaviorSubject<Duration> _positionStream;
   final BehaviorSubject<Duration> _durationStream;
@@ -27,6 +29,8 @@ class CommonPlayer {
       required seekTo,
       required bufferingDuration,
       required duration,
+      required nextTrack,
+      required previousTrack,
       required currentPosition,
       required positionStream,
       required durationStream,
@@ -39,6 +43,8 @@ class CommonPlayer {
         _seekTo = seekTo,
         _bufferingDuration = bufferingDuration,
         _duration = duration,
+        _nextTrack = nextTrack,
+        _previousTrack = previousTrack,
         _currentPosition = currentPosition,
         _positionStream = positionStream,
         _durationStream = durationStream,
@@ -51,6 +57,8 @@ class CommonPlayer {
   void seekTo(Duration duration) => _seekTo(duration);
   Duration getBufferingDuration() => _bufferingDuration();
   Duration? getDuration() => _duration();
+  void nextTrack() => _nextTrack();
+  void previousTrack() => _previousTrack();
   Duration getCurrentPosition() => _currentPosition();
   BehaviorSubject<Duration> getPositionStream() => _positionStream;
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
@@ -58,7 +66,7 @@ class CommonPlayer {
   Future<void> disposeStream() => _dispose();
 
   static CommonPlayer parseJustAudioController(
-      {required AudioPlayer audioPlayer}) {
+      {required just_audio.AudioPlayer audioPlayer}) {
     final commonPlayerJustAudio =
         CommonPlayerJustAudio(audioPlayer: audioPlayer);
     return CommonPlayer._(
@@ -67,6 +75,8 @@ class CommonPlayer {
         isPlaying: audioPlayer.playerState.playing,
         seekTo: audioPlayer.seek,
         duration: audioPlayer.duration,
+        nextTrack: audioPlayer.seekToPrevious,
+        previousTrack: audioPlayer.seekToNext,
         bufferingDuration: audioPlayer.durationStream,
         currentPosition: audioPlayer.position,
         positionStream: audioPlayer.positionStream,
@@ -76,20 +86,23 @@ class CommonPlayer {
         controller: audioPlayer);
   }
 
-  static CommonPlayer parseMPVController(
-      {required mpv_player.JustAudioMPVPlayer audioPlayer}) {
-    final commonPlayerMPV = CommonPlayerMPV(audioPlayer: audioPlayer);
+  static CommonPlayer parseAudioplayerController(
+      {required audioplayers.AudioPlayer audioPlayer}) {
+    final commonPlayerAudioplayers =
+        CommonPlayerAudioplayers(audioPlayer: audioPlayer);
     return CommonPlayer._(
         pause: audioPlayer.pause,
         play: audioPlayer.play,
-        isPlaying: () => {},
-        seekTo: commonPlayerMPV.seek,
-        duration: () => {},
+        isPlaying: audioPlayer.state == audioplayers.PlayerState.playing,
+        seekTo: audioPlayer.seek,
+        duration: audioPlayer.getDuration,
+        nextTrack: () => {},
+        previousTrack: () => {},
         bufferingDuration: () => {},
-        currentPosition: () => {},
-        positionStream: () => {},
-        durationStream: () => {},
-        isPlayingStream: commonPlayerMPV.playingStateStream,
+        currentPosition: audioPlayer.getCurrentPosition(),
+        positionStream: audioPlayer.onPositionChanged,
+        durationStream: audioPlayer.onDurationChanged,
+        isPlayingStream: commonPlayerAudioplayers.playingStateStream,
         dispose: audioPlayer.dispose,
         controller: audioPlayer);
   }
@@ -102,6 +115,8 @@ class CommonPlayer {
         isPlaying: audioPlayer.playback.isPlaying,
         seekTo: audioPlayer.seek,
         duration: audioPlayer.position.duration,
+        nextTrack: audioPlayer.previous,
+        previousTrack: audioPlayer.next,
         bufferingDuration: () => Duration(seconds: 0),
         currentPosition: () => audioPlayer.position.position,
         positionStream: commonPlayerVLC.positionStream(),

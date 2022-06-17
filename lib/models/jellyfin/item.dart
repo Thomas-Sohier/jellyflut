@@ -1225,16 +1225,8 @@ class Item {
       return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
       musicProvider.initPlayer();
-      if (musicProvider.getAudioPlayer == null) {
-        final audioPlayer = AudioPlayer();
-        musicProvider.setAudioPlayer(audioPlayer);
-      }
       return musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      if (musicProvider.getAudioPlayer == null) {
-        final audioPlayer = AudioPlayer();
-        musicProvider.setAudioPlayer(audioPlayer);
-      }
       return musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       return customRouter.push(EpubRoute(item: this));

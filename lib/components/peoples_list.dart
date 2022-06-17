@@ -8,7 +8,6 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
-import 'package:uuid/uuid.dart';
 
 class PeoplesList extends StatefulWidget {
   final List<Person> persons;

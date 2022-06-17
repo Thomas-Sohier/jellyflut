@@ -5,8 +5,8 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
@@ -41,16 +41,11 @@ class _SongInfosState extends State<SongInfos> {
   }
 
   Widget infos() {
-    return StreamBuilder<SequenceState?>(
+    return StreamBuilder<AudioSource>(
         stream: musicProvider.getCurrentMusicStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            // If we have no metadata we show enty box
-            if (snapshot.data!.currentSource?.tag == null) {
-              return const SizedBox();
-            }
-
-            final metadata = snapshot.data!.currentSource?.tag as AudioMetadata;
+            final metadata = snapshot.data!.metadata;
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,7 +128,7 @@ class _SongInfosState extends State<SongInfos> {
   void setAudioMetadata() {
     final currentMusic = musicProvider.getCurrentMusic();
     if (currentMusic != null) {
-      audioMetadata = currentMusic.tag as AudioMetadata;
+      audioMetadata = currentMusic.metadata;
     }
   }
 }

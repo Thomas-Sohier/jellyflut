@@ -15,6 +15,7 @@ dependencies:
   animations: ^2.0.3
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0
+  audioplayers: ^1.0.0
   auto_route: ^4.0.1
   better_player: ^0.0.82
   bloc: ^8.0.3
@@ -29,10 +30,6 @@ dependencies:
   drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.0
-  shu_epub:
-    git:
-      url: https://github.com/getBoolean/shu_epub.git
-      ref: main
   equatable: ^2.0.3
   file_picker: ^4.6.0
   flutter:
@@ -45,7 +42,6 @@ dependencies:
   fluttertoast: ^8.0.9
   intl: ^0.17.0
   just_audio: ^0.9.21
-  just_audio_mpv: ^0.1.1
   moor: ^4.6.1+1
   octo_image: ^1.0.2
   package_info_plus: ^1.4.2
@@ -59,6 +55,10 @@ dependencies:
   rxdart: ^0.27.3
   shared_preferences: ^2.0.15
   shimmer: ^2.0.0
+  shu_epub:
+    git:
+      url: https://github.com/getBoolean/shu_epub.git
+      ref: main
   sqlite3_flutter_libs: ^0.5.7
   subtitle: ^0.1.0-beta.3
   url_launcher: ^6.1.2

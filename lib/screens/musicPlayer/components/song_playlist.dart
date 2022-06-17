@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
@@ -43,7 +41,7 @@ class _SongPlaylistState extends State<SongPlaylist> {
     });
   }
 
-  Widget playlistListItem(int index, IndexedAudioSource musicItem) {
+  Widget playlistListItem(int index, AudioSource musicItem) {
     return Dismissible(
       key: ValueKey(musicItem),
       onDismissed: (direction) {
@@ -91,8 +89,8 @@ class _SongPlaylistState extends State<SongPlaylist> {
     );
   }
 
-  Widget playlistItem(int index, IndexedAudioSource musicItem) {
-    final metadata = musicItem.tag as AudioMetadata;
+  Widget playlistItem(int index, AudioSource musicItem) {
+    final metadata = musicItem.metadata;
     return Row(
       children: [
         Padding(

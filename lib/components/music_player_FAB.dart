@@ -44,7 +44,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
 
   Widget body(MusicProvider musicPlayer) {
     if (musicPlayer.getCurrentMusic() != null) {
-      audioMetadata = musicPlayer.getCurrentMusic()?.tag;
+      audioMetadata = musicPlayer.getCurrentMusic()?.metadata;
     }
     return Hero(
         tag: 'musicPlayerFAB',

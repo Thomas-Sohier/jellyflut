@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import 'shared/custom_scroll_behavior.dart';
 
 void main() async {
-  DartVLC.initialize();
+  await DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
   final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();

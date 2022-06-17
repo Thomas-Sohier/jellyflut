@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_slider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
@@ -51,7 +49,7 @@ class _SongImageState extends State<SongImage> {
           child: SizedBox(
               width: widget.singleSize,
               height: widget.singleSize,
-              child: StreamBuilder<SequenceState?>(
+              child: StreamBuilder<AudioSource>(
                   stream: musicProvider.getCurrentMusicStream(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data != null) {
@@ -73,9 +71,7 @@ class _SongImageState extends State<SongImage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                musicProvider.getCurrentMusic() != null
-                    ? imageFromByte(singleSize)
-                    : placeholder(singleSize),
+                imageFromByte(singleSize),
                 Positioned.fill(
                     child: Align(
                         alignment: Alignment.centerLeft,
@@ -90,7 +86,7 @@ class _SongImageState extends State<SongImage> {
 
   OctoImage imageFromByte(double singleSize) {
     final currentMusic = musicProvider.getCurrentMusic();
-    final metadata = currentMusic!.tag as AudioMetadata;
+    final metadata = currentMusic!.metadata;
     return OctoImage(
       image: MemoryImage(metadata.artworkByte),
       placeholderBuilder: (_) => placeholder(singleSize),
