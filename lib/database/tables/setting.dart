@@ -24,4 +24,5 @@ class Settings extends Table {
   IntColumn get maxAudioBitrate =>
       integer().withDefault(const Constant(8000000))();
   TextColumn get downloadPath => text().nullable()();
+  BoolColumn get directPlay => boolean().withDefault(const Constant(false))();
 }

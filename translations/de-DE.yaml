@@ -61,6 +61,7 @@ video_player: Videoplayer
 preferred_player: Bevorzugter Player
 preferred_audio_codec: Bevorzugter Audio-Codec
 max_bitrate: Max. Bitrate
+direct_play: Direct play
 audio_player: Audioplayer
 transcode_codec: Codec für Transkodierung
 infos: Infos

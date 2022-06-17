@@ -540,13 +540,15 @@ class Setting extends DataClass implements Insertable<Setting> {
   final int maxVideoBitrate;
   final int maxAudioBitrate;
   final String? downloadPath;
+  final bool directPlay;
   Setting(
       {required this.id,
       required this.preferredPlayer,
       required this.preferredTranscodeAudioCodec,
       required this.maxVideoBitrate,
       required this.maxAudioBitrate,
-      this.downloadPath});
+      this.downloadPath,
+      required this.directPlay});
   factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Setting(
@@ -562,6 +564,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           data['${effectivePrefix}max_audio_bitrate'])!,
       downloadPath: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}download_path']),
+      directPlay: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}direct_play'])!,
     );
   }
   @override
@@ -576,6 +580,7 @@ class Setting extends DataClass implements Insertable<Setting> {
     if (!nullToAbsent || downloadPath != null) {
       map['download_path'] = Variable<String?>(downloadPath);
     }
+    map['direct_play'] = Variable<bool>(directPlay);
     return map;
   }
 
@@ -589,6 +594,7 @@ class Setting extends DataClass implements Insertable<Setting> {
       downloadPath: downloadPath == null && nullToAbsent
           ? const Value.absent()
           : Value(downloadPath),
+      directPlay: Value(directPlay),
     );
   }
 
@@ -603,6 +609,7 @@ class Setting extends DataClass implements Insertable<Setting> {
       maxVideoBitrate: serializer.fromJson<int>(json['maxVideoBitrate']),
       maxAudioBitrate: serializer.fromJson<int>(json['maxAudioBitrate']),
       downloadPath: serializer.fromJson<String?>(json['downloadPath']),
+      directPlay: serializer.fromJson<bool>(json['directPlay']),
     );
   }
   @override
@@ -616,6 +623,7 @@ class Setting extends DataClass implements Insertable<Setting> {
       'maxVideoBitrate': serializer.toJson<int>(maxVideoBitrate),
       'maxAudioBitrate': serializer.toJson<int>(maxAudioBitrate),
       'downloadPath': serializer.toJson<String?>(downloadPath),
+      'directPlay': serializer.toJson<bool>(directPlay),
     };
   }
 
@@ -625,7 +633,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           String? preferredTranscodeAudioCodec,
           int? maxVideoBitrate,
           int? maxAudioBitrate,
-          Value<String?> downloadPath = const Value.absent()}) =>
+          Value<String?> downloadPath = const Value.absent(),
+          bool? directPlay}) =>
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -635,6 +644,7 @@ class Setting extends DataClass implements Insertable<Setting> {
         maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
         downloadPath:
             downloadPath.present ? downloadPath.value : this.downloadPath,
+        directPlay: directPlay ?? this.directPlay,
       );
   @override
   String toString() {
@@ -645,7 +655,8 @@ class Setting extends DataClass implements Insertable<Setting> {
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
-          ..write('downloadPath: $downloadPath')
+          ..write('downloadPath: $downloadPath, ')
+          ..write('directPlay: $directPlay')
           ..write(')'))
         .toString();
   }
@@ -657,7 +668,8 @@ class Setting extends DataClass implements Insertable<Setting> {
       preferredTranscodeAudioCodec,
       maxVideoBitrate,
       maxAudioBitrate,
-      downloadPath);
+      downloadPath,
+      directPlay);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -668,7 +680,8 @@ class Setting extends DataClass implements Insertable<Setting> {
               this.preferredTranscodeAudioCodec &&
           other.maxVideoBitrate == this.maxVideoBitrate &&
           other.maxAudioBitrate == this.maxAudioBitrate &&
-          other.downloadPath == this.downloadPath);
+          other.downloadPath == this.downloadPath &&
+          other.directPlay == this.directPlay);
 }
 
 class SettingsCompanion extends UpdateCompanion<Setting> {
@@ -678,6 +691,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   final Value<int> maxVideoBitrate;
   final Value<int> maxAudioBitrate;
   final Value<String?> downloadPath;
+  final Value<bool> directPlay;
   const SettingsCompanion({
     this.id = const Value.absent(),
     this.preferredPlayer = const Value.absent(),
@@ -685,6 +699,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
     this.downloadPath = const Value.absent(),
+    this.directPlay = const Value.absent(),
   });
   SettingsCompanion.insert({
     this.id = const Value.absent(),
@@ -693,6 +708,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
     this.downloadPath = const Value.absent(),
+    this.directPlay = const Value.absent(),
   });
   static Insertable<Setting> custom({
     Expression<int>? id,
@@ -701,6 +717,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     Expression<int>? maxVideoBitrate,
     Expression<int>? maxAudioBitrate,
     Expression<String?>? downloadPath,
+    Expression<bool>? directPlay,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -710,6 +727,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       if (maxVideoBitrate != null) 'max_video_bitrate': maxVideoBitrate,
       if (maxAudioBitrate != null) 'max_audio_bitrate': maxAudioBitrate,
       if (downloadPath != null) 'download_path': downloadPath,
+      if (directPlay != null) 'direct_play': directPlay,
     });
   }
 
@@ -719,7 +737,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       Value<String>? preferredTranscodeAudioCodec,
       Value<int>? maxVideoBitrate,
       Value<int>? maxAudioBitrate,
-      Value<String?>? downloadPath}) {
+      Value<String?>? downloadPath,
+      Value<bool>? directPlay}) {
     return SettingsCompanion(
       id: id ?? this.id,
       preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -728,6 +747,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
       maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
       downloadPath: downloadPath ?? this.downloadPath,
+      directPlay: directPlay ?? this.directPlay,
     );
   }
 
@@ -753,6 +773,9 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     if (downloadPath.present) {
       map['download_path'] = Variable<String?>(downloadPath.value);
     }
+    if (directPlay.present) {
+      map['direct_play'] = Variable<bool>(directPlay.value);
+    }
     return map;
   }
 
@@ -765,7 +788,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
-          ..write('downloadPath: $downloadPath')
+          ..write('downloadPath: $downloadPath, ')
+          ..write('directPlay: $directPlay')
           ..write(')'))
         .toString();
   }
@@ -822,6 +846,14 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>(
       'download_path', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _directPlayMeta = const VerificationMeta('directPlay');
+  @override
+  late final GeneratedColumn<bool?> directPlay = GeneratedColumn<bool?>(
+      'direct_play', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (direct_play IN (0, 1))',
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -829,7 +861,8 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
         preferredTranscodeAudioCodec,
         maxVideoBitrate,
         maxAudioBitrate,
-        downloadPath
+        downloadPath,
+        directPlay
       ];
   @override
   String get aliasedName => _alias ?? 'settings';
@@ -873,6 +906,12 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
           _downloadPathMeta,
           downloadPath.isAcceptableOrUnknown(
               data['download_path']!, _downloadPathMeta));
+    }
+    if (data.containsKey('direct_play')) {
+      context.handle(
+          _directPlayMeta,
+          directPlay.isAcceptableOrUnknown(
+              data['direct_play']!, _directPlayMeta));
     }
     return context;
   }

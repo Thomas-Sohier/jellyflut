@@ -155,6 +155,7 @@ class Theme {
                 indicator: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(color: theme.colorScheme.primary)))))
+        .copyWith(popupMenuTheme: PopupMenuThemeData(elevation: 2))
         .copyWith(
             drawerTheme:
                 DrawerThemeData(backgroundColor: theme.colorScheme.background))

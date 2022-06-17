@@ -1359,6 +1359,14 @@ class Item {
     //   await StreamingService.bitrateTest(size: 1000000);
     //   await StreamingService.bitrateTest(size: 3000000);
     // }
+    final settings = await db.AppDatabase()
+        .getDatabase
+        .settingsDao
+        .getSettingsById(userApp!.settingsId);
+    final directPlaySettingsOverride = settings.directPlay;
+
+    // If direct play if forced by parameters or settings we direct play
+    directPlay = directPlaySettingsOverride || directPlay;
 
     late final Item item;
 

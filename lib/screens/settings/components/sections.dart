@@ -10,6 +10,7 @@ import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
+import 'package:jellyflut/screens/settings/components/direct_play_switch.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:provider/provider.dart';

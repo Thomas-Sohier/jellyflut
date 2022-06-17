@@ -3,6 +3,7 @@
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:jellyflut/database/class/servers_with_users.dart';
+import 'package:jellyflut/database/migrations/from_2_to_3.dart';
 import 'package:jellyflut/database/tables/download.dart';
 import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
@@ -43,11 +44,15 @@ class Database extends _$Database {
 
   // you should bump this number whenever you change or add a table definition
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
+      }, onUpgrade: (m, before, now) async {
+        for (var target = before + 1; target <= now; target++) {
+          from2to3(this, m, target);
+        }
       });
 
   Future<Setting> settingsFromUserId(int userId) {

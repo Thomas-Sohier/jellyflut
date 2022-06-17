@@ -46,8 +46,6 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
         });
   }
 
-  void listenToTextChange() {}
-
   void editBitrateValue(BuildContext context) async {
     controller.value = TextEditingValue(text: _maxBitrateValue.toString());
     await showDialog(

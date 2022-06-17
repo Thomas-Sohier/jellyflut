@@ -33,6 +33,11 @@ class VideoPlayerSection extends StatelessWidget {
           trailing: VideoBitrateValueEditor(
               key: _bitrateEditorButton, database: database),
         ),
+        SettingsTile(
+          title: 'direct_play'.tr(),
+          subtitle: 'Force playing directly without transcoding',
+          trailing: DirectPlaySwitch(database: database),
+        ),
       ],
     );
   }
