@@ -41,16 +41,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return player();
-  }
-
-  Widget player() {
     var statusBarHeight =
         MediaQuery.of(context).padding.top == 0 ? 12.toDouble() : 12.toDouble();
     var size = MediaQuery.of(context).size;

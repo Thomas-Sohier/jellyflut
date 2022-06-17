@@ -98,8 +98,13 @@ class _SongInfosState extends State<SongInfos> {
                   style: Theme.of(context).textTheme.bodyText1,
                 )),
         Spacer(),
-        Text(printDuration(musicProvider.getDuration()),
-            style: Theme.of(context).textTheme.bodyText1)
+        StreamBuilder<Duration?>(
+            stream: musicProvider.getDurationStream(),
+            builder: (context, snapshot) => Text(
+                snapshot.data != null
+                    ? printDuration(musicProvider.getDuration())
+                    : '∞',
+                style: Theme.of(context).textTheme.bodyText1))
       ],
     );
   }

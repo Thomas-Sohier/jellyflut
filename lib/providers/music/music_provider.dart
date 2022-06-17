@@ -43,9 +43,19 @@ class MusicProvider extends ChangeNotifier {
 
     if (Platform.isLinux || Platform.isWindows) {
       final player = Player(id: audioPlayerId, registerTexture: false);
+      player.playbackStream.listen((event) {
+        if (event.isCompleted) {
+          next();
+        }
+      });
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
       final player = just_audio.AudioPlayer();
+      player.playbackEventStream.listen((just_audio.PlaybackEvent event) {
+        if (event.processingState == just_audio.ProcessingState.completed) {
+          next();
+        }
+      });
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else {
@@ -93,6 +103,10 @@ class MusicProvider extends ChangeNotifier {
 
   Duration getDuration() {
     return _commonPlayer?.getDuration ?? Duration.zero;
+  }
+
+  BehaviorSubject<Duration?> getDurationStream() {
+    return _commonPlayer?.getDurationStream ?? BehaviorSubject<Duration?>();
   }
 
   Stream<Duration?> getPositionStream() {
@@ -156,6 +170,7 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Future<void> playRemoteAudio(Item item) async {
+    initPlayer();
     final streamURL = await item.getItemURL();
     final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
     _audioPlaylist.clear();
@@ -164,6 +179,7 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Future<void> playPlaylist(Item item) async {
+    initPlayer();
     await ItemService.getItems(parentId: item.id).then((value) async {
       final indexToReturn = _audioPlaylist.getPlaylist.length;
       final items =

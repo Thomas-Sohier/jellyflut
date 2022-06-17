@@ -1224,7 +1224,6 @@ class Item {
         type == ItemType.VIDEO) {
       return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
-      musicProvider.initPlayer();
       return musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
       return musicProvider.playPlaylist(this);
