@@ -1,13 +1,13 @@
 class ResponseProfile {
-  ResponseProfile({
+  const ResponseProfile({
     required this.type,
     required this.container,
     required this.mimeType,
   });
 
-  String type;
-  String container;
-  String mimeType;
+  final String type;
+  final String container;
+  final String mimeType;
 
   factory ResponseProfile.fromMap(Map<String, dynamic> json) => ResponseProfile(
         type: json['Type'],

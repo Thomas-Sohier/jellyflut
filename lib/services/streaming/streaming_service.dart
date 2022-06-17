@@ -246,11 +246,11 @@ class StreamingService {
   }
 
   static Future<DeviceProfileParent?> isCodecSupported() async {
+    final profiles = PlayersProfile();
     // TODO make IOS
     if (kIsWeb) {
-      final playerProfile =
-          PlayersProfile().getByName(PlayerProfileName.WEB_OS);
-      return DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile);
+      final playerProfile = profiles.webOs;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     } else if (Platform.isAndroid) {
       final streamingSoftwareDB = await AppDatabase()
           .getDatabase
@@ -261,10 +261,9 @@ class StreamingService {
 
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:
-          final playerProfile =
-              PlayersProfile().getByName(PlayerProfileName.VLC_PHONE);
+          final playerProfile = profiles.vlcPhone;
           return DeviceProfileParent(
-              deviceProfile: playerProfile?.deviceProfile);
+              deviceProfile: playerProfile.deviceProfile);
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
@@ -272,9 +271,8 @@ class StreamingService {
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-      final playerProfile =
-          PlayersProfile().getByName(PlayerProfileName.VLC_COMPUTER);
-      return DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile);
+      final playerProfile = profiles.vlcComputer;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     }
     return null;
   }

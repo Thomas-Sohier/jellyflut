@@ -1,11 +1,11 @@
 class SubtitleProfile {
-  SubtitleProfile({
+  const SubtitleProfile({
     required this.format,
     required this.method,
   });
 
-  String format;
-  String method;
+  final String format;
+  final String method;
 
   factory SubtitleProfile.fromMap(Map<String, dynamic> json) => SubtitleProfile(
         format: json['Format'],

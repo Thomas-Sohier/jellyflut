@@ -1,5 +1,5 @@
 class TranscodingProfile {
-  TranscodingProfile({
+  const TranscodingProfile({
     this.container,
     this.type,
     this.audioCodec,
@@ -11,15 +11,15 @@ class TranscodingProfile {
     this.videoCodec,
   });
 
-  String? container;
-  String? type;
-  String? audioCodec;
-  String? context;
-  String? protocol;
-  String? maxAudioChannels;
-  int? minSegments;
-  bool? breakOnNonKeyFrames;
-  String? videoCodec;
+  final String? container;
+  final String? type;
+  final String? audioCodec;
+  final String? context;
+  final String? protocol;
+  final String? maxAudioChannels;
+  final int? minSegments;
+  final bool? breakOnNonKeyFrames;
+  final String? videoCodec;
 
   factory TranscodingProfile.fromMap(Map<String, dynamic> json) =>
       TranscodingProfile(

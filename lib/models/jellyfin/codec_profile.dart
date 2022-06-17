@@ -1,17 +1,17 @@
 import 'condition.dart';
 
 class CodecProfile {
-  CodecProfile({
+  const CodecProfile({
     this.codec,
     this.container,
     required this.type,
     required this.conditions,
   });
 
-  String type;
-  String? container;
-  String? codec;
-  List<Condition> conditions;
+  final String type;
+  final String? container;
+  final String? codec;
+  final List<Condition> conditions;
 
   factory CodecProfile.fromMap(Map<String, dynamic> json) => CodecProfile(
         type: json['Type'],
