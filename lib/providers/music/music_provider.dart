@@ -19,6 +19,7 @@ class MusicProvider extends ChangeNotifier {
   Item? _item;
   CommonPlayer? _commonPlayer;
   AudioSource? _currentMusic;
+  bool _isInit = false;
   final _currentMusicStream = BehaviorSubject<AudioSource>();
   final _currentlyPlayingIndex = BehaviorSubject<int>();
   final _audioPlaylist = AudioPlaylist(audioSources: <AudioSource>[]);
@@ -37,9 +38,14 @@ class MusicProvider extends ChangeNotifier {
   List<AudioSource> get getPlaylist => _audioPlaylist.getPlaylist;
   Item? get getItemPlayer => _item;
   Stream<AudioColors> get getColorcontroller => _colorController;
+  bool get isInit => _isInit;
 
   void initPlayer() async {
-    if (_commonPlayer != null) return;
+    if (_commonPlayer != null) {
+      _isInit = true;
+      notifyListeners();
+      return;
+    }
 
     if (Platform.isLinux || Platform.isWindows) {
       final player = Player(id: audioPlayerId, registerTexture: false);
@@ -58,6 +64,8 @@ class MusicProvider extends ChangeNotifier {
       });
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
+      _isInit = true;
+      notifyListeners();
     } else {
       final currentPlatform =
           Theme.of(customRouter.navigatorKey.currentContext!).platform;
@@ -165,6 +173,7 @@ class MusicProvider extends ChangeNotifier {
   }
 
   void reset() {
+    _isInit = false;
     _audioPlaylist.clear();
     _commonPlayer?.dispose();
   }

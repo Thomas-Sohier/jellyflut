@@ -38,7 +38,8 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MusicProvider>(
-        builder: (context, musicPlayer, child) => body(musicPlayer));
+        builder: (context, musicPlayer, child) =>
+            musicPlayer.isInit ? body(musicPlayer) : const SizedBox());
   }
 
   Widget body(MusicProvider musicPlayer) {
