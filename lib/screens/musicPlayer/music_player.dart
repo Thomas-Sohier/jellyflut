@@ -8,8 +8,8 @@ import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 
 import '../../shared/responsive_builder.dart';
 
@@ -22,23 +22,21 @@ class MusicPlayer extends StatefulWidget {
 
 class _MusicPlayerState extends State<MusicPlayer> {
   late MusicProvider musicProvider;
-  late Color backgroundColor1;
-  late Color backgroundColor2;
-  late Color foregroundColor;
   late int musicPlayerIndex;
+  late ThemeData theme;
+  late final ValueNotifier<ThemeData?> themeData;
 
   @override
   void initState() {
     super.initState();
+    themeData = ValueNotifier(null);
     musicProvider = MusicProvider();
     musicProvider.getCurrentMusicStream().listen((_) => setAlbumPrimaryColor());
   }
 
   @override
   void didChangeDependencies() {
-    backgroundColor1 = Theme.of(context).colorScheme.primary;
-    backgroundColor2 = Theme.of(context).colorScheme.secondary;
-    foregroundColor = Theme.of(context).colorScheme.onPrimary;
+    theme = Theme.of(context);
     super.didChangeDependencies();
   }
 
@@ -57,12 +55,19 @@ class _MusicPlayerState extends State<MusicPlayer> {
         MediaQuery.of(context).padding.top == 0 ? 12.toDouble() : 12.toDouble();
     var size = MediaQuery.of(context).size;
     var height = size.height - statusBarHeight;
-    return Scaffold(
-        extendBody: false,
-        body: ResponsiveBuilder.builder(
-            mobile: () => phoneTemplate(height, statusBarHeight),
-            tablet: () => largeScreenTemplate(height, statusBarHeight),
-            desktop: () => largeScreenTemplate(height, statusBarHeight)));
+    return ValueListenableBuilder<ThemeData?>(
+      valueListenable: themeData,
+      builder: (context, value, child) {
+        return Theme(
+            data: value ?? Theme.of(context), child: child ?? const SizedBox());
+      },
+      child: Scaffold(
+          extendBody: false,
+          body: ResponsiveBuilder.builder(
+              mobile: () => phoneTemplate(height, statusBarHeight),
+              tablet: () => largeScreenTemplate(height, statusBarHeight),
+              desktop: () => largeScreenTemplate(height, statusBarHeight))),
+    );
   }
 
   Widget largeScreenTemplate(double height, double statusBarHeight) {
@@ -75,24 +80,32 @@ class _MusicPlayerState extends State<MusicPlayer> {
             padding: const EdgeInsets.all(16), child: songDetails(singleSize))
       ])),
       Expanded(
-          child: Card(
-        margin: EdgeInsets.all(12),
-        color: ColorUtil.darken(Theme.of(context).cardTheme.color!, 0.05),
-        child: ClipRect(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('playlist'.tr(),
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headline5),
-            )),
-            Expanded(child: SongPlaylist())
-          ],
-        )),
+          child: Padding(
+        padding: EdgeInsets.fromLTRB(12, 18, 18, 18),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+              color: ColorUtil.darken(Theme.of(context).colorScheme.background),
+              borderRadius: const BorderRadius.all(Radius.circular(14)),
+              boxShadow: [
+                BoxShadow(
+                    color: Theme.of(context).shadowColor.withAlpha(150),
+                    blurRadius: 6,
+                    spreadRadius: 2)
+              ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('playlist'.tr(),
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headline5),
+              ),
+              Expanded(child: SongPlaylist())
+            ],
+          ),
+        ),
       )),
     ]);
   }
@@ -102,21 +115,14 @@ class _MusicPlayerState extends State<MusicPlayer> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(width: singleSize, child: SongInfos(color: Colors.white)),
+          SizedBox(width: singleSize, child: SongInfos()),
           SizedBox(
             height: singleSize + 40,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
-                SongImage(
-                    singleSize: singleSize,
-                    color: foregroundColor,
-                    albumColors: [backgroundColor1, backgroundColor2]),
-                Positioned.fill(
-                    top: singleSize - 40,
-                    child: SongControls(
-                        color: foregroundColor,
-                        backgroundColor: backgroundColor2)),
+                SongImage(singleSize: singleSize),
+                Positioned.fill(top: singleSize - 40, child: SongControls()),
               ],
             ),
           ),
@@ -143,23 +149,18 @@ class _MusicPlayerState extends State<MusicPlayer> {
   Widget playlistButton() {
     return IconButton(
         onPressed: () => customRouter.push(PlaylistRoute(body: SongPlaylist())),
-        icon: Icon(Icons.album, color: Theme.of(context).colorScheme.primary));
+        icon: Icon(Icons.album));
   }
 
   void setAlbumPrimaryColor() {
     final currentMusic = musicProvider.getCurrentMusic();
-    if (currentMusic != null) {
+    if (currentMusic != null && mounted) {
       final metadata = currentMusic.metadata;
       compute(ColorUtil.extractPixelsColors, metadata.artworkByte)
           .then((List<Color> colors) {
-        final backgroundColor1 = colors[0];
-        final backgroundColor2 = colors[1];
-        final foregroundColor = getForegroundColorFromColor(backgroundColor1);
-        final audioColors = AudioColors(
-            backgroundColor1: backgroundColor1,
-            backgroundColor2: backgroundColor2,
-            foregroundColor: foregroundColor);
-        musicProvider.setNewColors(audioColors);
+        final brightness = Theme.of(context).brightness;
+        themeData.value = personnal_theme.Theme.generateThemeDataFromSeedColor(
+            brightness, colors[0]);
       });
     }
   }

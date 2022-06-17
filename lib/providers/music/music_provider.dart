@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart' as audioplayers;
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -18,7 +18,10 @@ import '../../screens/musicPlayer/models/audio_source.dart';
 class MusicProvider extends ChangeNotifier {
   Item? _item;
   CommonPlayer? _commonPlayer;
-  final _audioPlaylist = AudioPlaylist(audioSources: []);
+  AudioSource? _currentMusic;
+  final _currentMusicStream = BehaviorSubject<AudioSource>();
+  final _currentlyPlayingIndex = BehaviorSubject<int>();
+  final _audioPlaylist = AudioPlaylist(audioSources: <AudioSource>[]);
   final _colorController = BehaviorSubject<AudioColors>();
 
   // Singleton
@@ -39,9 +42,8 @@ class MusicProvider extends ChangeNotifier {
     if (_commonPlayer != null) return;
 
     if (Platform.isLinux || Platform.isWindows) {
-      final player = audioplayers.AudioPlayer();
-      _commonPlayer =
-          CommonPlayer.parseAudioplayerController(audioPlayer: player);
+      final player = Player(id: audioPlayerId, registerTexture: false);
+      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
       final player = just_audio.AudioPlayer();
       _commonPlayer =
@@ -62,18 +64,16 @@ class MusicProvider extends ChangeNotifier {
     _colorController.add(audiocolors);
   }
 
-  Stream<int?> playingIndex() {
-    return Stream.value(0);
+  Stream<int> playingIndex() {
+    return _currentlyPlayingIndex;
   }
 
   AudioSource? getCurrentMusic() {
-    // return _commonPlayer?.sequenceState?.currentSource;
-    return null;
+    return _currentMusic;
   }
 
   Stream<AudioSource> getCurrentMusicStream() {
-    // return _commonPlayer!.sequenceStateStream;
-    return Stream.empty();
+    return _currentMusicStream;
   }
 
   void moveMusicItem(int oldIndex, int newIndex) {
@@ -92,15 +92,15 @@ class MusicProvider extends ChangeNotifier {
   }
 
   Duration getDuration() {
-    return _commonPlayer?.getDuration() ?? Duration.zero;
+    return _commonPlayer?.getDuration ?? Duration.zero;
   }
 
   Stream<Duration?> getPositionStream() {
-    return _commonPlayer!.getPositionStream();
+    return _commonPlayer?.getPositionStream ?? Stream.value(Duration.zero);
   }
 
-  Stream<bool> isPlaying() {
-    return _commonPlayer!.getPlayingStateStream();
+  Stream<bool?> isPlaying() {
+    return _commonPlayer?.getPlayingStateStream ?? Stream.value(false);
   }
 
   void seekTo(Duration duration) {
@@ -109,7 +109,9 @@ class MusicProvider extends ChangeNotifier {
   }
 
   void playAtIndex(int index) async {
-    // await _commonPlayer!.seekTo(Duration(seconds: 0), index: index);
+    final audioSource = _audioPlaylist.getPlaylist[index];
+    _commonPlayer?.playRemote(audioSource);
+    setCurrentlyPlayingMusic(audioSource);
     notifyListeners();
   }
 
@@ -134,28 +136,31 @@ class MusicProvider extends ChangeNotifier {
   }
 
   void next() {
-    _commonPlayer!.nextTrack();
-    notifyListeners();
+    if (_currentMusic == null) return;
+    final nextIndex = _audioPlaylist.getPlaylist.indexOf(_currentMusic!) + 1;
+    if (nextIndex == _audioPlaylist.getPlaylist.length) return;
+    playAtIndex(nextIndex);
   }
 
   void previous() {
-    _commonPlayer!.previousTrack();
-    notifyListeners();
+    if (_currentMusic == null) return;
+    final previousIndex =
+        _audioPlaylist.getPlaylist.indexOf(_currentMusic!) - 1;
+    if (previousIndex < 0) return;
+    playAtIndex(previousIndex);
   }
 
   void reset() {
     _audioPlaylist.clear();
-    // _commonPlayer?.stop();
+    _commonPlayer?.dispose();
   }
 
   Future<void> playRemoteAudio(Item item) async {
     final streamURL = await item.getItemURL();
     final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
+    _audioPlaylist.clear();
     _audioPlaylist.insert(audioSource);
-    // await _commonPlayer?.setAudioSource(_playlist);
-    _commonPlayer?.play();
-    notifyListeners();
-    return;
+    return playAtIndex(0);
   }
 
   Future<void> playPlaylist(Item item) async {
@@ -173,5 +178,11 @@ class MusicProvider extends ChangeNotifier {
       }
       return indexToReturn;
     }).then((int index) => playAtIndex(index));
+  }
+
+  void setCurrentlyPlayingMusic(AudioSource audioSource) {
+    _currentMusic = audioSource;
+    _currentMusicStream.add(audioSource);
+    _currentlyPlayingIndex.add(_audioPlaylist.getPlaylist.indexOf(audioSource));
   }
 }

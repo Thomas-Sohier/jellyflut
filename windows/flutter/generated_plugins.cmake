@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_windows
   dart_vlc
   flutter_native_view
   permission_handler_windows

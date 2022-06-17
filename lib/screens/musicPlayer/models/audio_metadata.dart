@@ -38,8 +38,7 @@ class AudioMetadata {
       artwork = download.primary ?? Uint8List(0);
     }
 
-    return RemoteAudioSource(
-        uri: Uri.parse(url),
+    return AudioSource.network(Uri.parse(url),
         metadata: AudioMetadata(
             item: item,
             album: item.album,

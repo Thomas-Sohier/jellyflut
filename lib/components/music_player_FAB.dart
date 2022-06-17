@@ -38,8 +38,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MusicProvider>(
-        builder: (context, musicPlayer, child) =>
-            isInit() ? body(musicPlayer) : const SizedBox());
+        builder: (context, musicPlayer, child) => body(musicPlayer));
   }
 
   Widget body(MusicProvider musicPlayer) {
@@ -82,7 +81,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   }
 
   Widget playPauseButton() {
-    return StreamBuilder<bool>(
+    return StreamBuilder<bool?>(
       stream: musicPlayer.isPlaying(),
       builder: (context, snapshot) => InkWell(
         onTap: () =>
@@ -117,12 +116,13 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
             child: StreamBuilder<Duration?>(
                 stream: musicPlayer.getPositionStream(),
                 builder: (context, snapshot) => Slider(
-                      activeColor: Theme.of(context).colorScheme.secondary,
+                      activeColor: Theme.of(context).colorScheme.onPrimary,
                       inactiveColor:
                           Theme.of(context).colorScheme.onPrimary.withAlpha(32),
                       value: getSliderSize(snapshot.data),
                       min: 0.0,
-                      max: getSliderMaxSize(snapshot.data),
+                      max: getSliderMaxSize(
+                          musicPlayer.getDuration(), snapshot.data),
                       onChanged: (value) {
                         musicPlayer
                             .seekTo(Duration(milliseconds: value.toInt()));
@@ -137,8 +137,11 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
     return currentPosition.inMilliseconds.toDouble();
   }
 
-  double getSliderMaxSize(Duration? duration) {
-    if (duration == null) return 0;
+  double getSliderMaxSize(Duration? duration, Duration? currentPosition) {
+    if (duration == null || currentPosition == null) return 0;
+    if (currentPosition > duration) {
+      return currentPosition.inMilliseconds.toDouble();
+    }
     return musicPlayer.getDuration().inMilliseconds.toDouble();
   }
 

@@ -1,5 +1,6 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:rxdart/subjects.dart';
 
 class CommonPlayerVLC {
@@ -31,5 +32,10 @@ class CommonPlayerVLC {
   Future<void> stopPlayer() async {
     audioPlayer.stop();
     return audioPlayer.dispose();
+  }
+
+  void playRemote(AudioSource audioSource) async {
+    final media = Media.network(audioSource.resource);
+    audioPlayer.open(media);
   }
 }

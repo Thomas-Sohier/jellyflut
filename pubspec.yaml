@@ -12,10 +12,10 @@ module:
   androidX: true
 
 dependencies:
+  animated_fractionally_sized_box: ^2.0.1
   animations: ^2.0.3
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0
-  audioplayers: ^1.0.0
   auto_route: ^4.0.1
   better_player: ^0.0.82
   bloc: ^8.0.3

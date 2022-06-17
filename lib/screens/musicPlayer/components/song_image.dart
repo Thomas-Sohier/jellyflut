@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_slider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
   final double singleSize;
-  final Color color;
-  final List<Color> albumColors;
 
-  SongImage(
-      {Key? key,
-      required this.singleSize,
-      required this.color,
-      required this.albumColors})
-      : super(key: key);
+  SongImage({Key? key, required this.singleSize}) : super(key: key);
 
   @override
   _SongImageState createState() => _SongImageState();
@@ -74,10 +68,7 @@ class _SongImageState extends State<SongImage> {
                 imageFromByte(singleSize),
                 Positioned.fill(
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: SongSlider(
-                          albumColors: widget.albumColors,
-                        ))),
+                        alignment: Alignment.centerLeft, child: SongSlider())),
               ],
             )),
       )
@@ -101,26 +92,18 @@ class _SongImageState extends State<SongImage> {
   }
 
   Widget placeholder(double size) {
+    final backgroundColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.background);
+    final iconColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
     return Container(
         height: size,
-        color: widget.albumColors[0],
+        color: backgroundColor,
         child: Center(
           child: Icon(
             Icons.album,
-            color: widget.color,
+            color: iconColor,
             size: 70,
-          ),
-        ));
-  }
-
-  Widget finalImage(ImageProvider<Object> imageProvider, double size) {
-    return Container(
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: imageProvider,
           ),
         ));
   }

@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_linux
   dart_vlc
   screen_retriever
   sqlite3_flutter_libs

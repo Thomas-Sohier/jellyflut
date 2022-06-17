@@ -10,8 +10,7 @@ import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
-  final Color color;
-  SongInfos({Key? key, required this.color}) : super(key: key);
+  SongInfos({Key? key}) : super(key: key);
 
   @override
   _SongInfosState createState() => _SongInfosState();
@@ -20,16 +19,6 @@ class SongInfos extends StatefulWidget {
 class _SongInfosState extends State<SongInfos> {
   late MusicProvider musicProvider;
   AudioMetadata? audioMetadata;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

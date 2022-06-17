@@ -1,26 +1,20 @@
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:moor/moor.dart';
+import 'dart:io';
 
-abstract class AudioSource {
+import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+
+class AudioSource {
+  final String resource;
   final AudioMetadata metadata;
 
-  const AudioSource({required this.metadata});
-}
+  const AudioSource._({required this.resource, required this.metadata});
 
-class RemoteAudioSource extends AudioSource {
-  final Uri uri;
+  /// Makes [AudioSource] object from a [File].
+  factory AudioSource.file(File file, {required AudioMetadata metadata}) {
+    return AudioSource._(resource: file.path, metadata: metadata);
+  }
 
-  const RemoteAudioSource({required this.uri, required super.metadata});
-}
-
-class ByteAudioSource extends AudioSource {
-  final Uint8List byte;
-
-  const ByteAudioSource({required this.byte, required super.metadata});
-}
-
-class FileAudioSource extends AudioSource {
-  final String path;
-
-  const FileAudioSource({required this.path, required super.metadata});
+  /// Makes [AudioSource] object from url.
+  factory AudioSource.network(Uri url, {required AudioMetadata metadata}) {
+    return AudioSource._(resource: url.toString(), metadata: metadata);
+  }
 }

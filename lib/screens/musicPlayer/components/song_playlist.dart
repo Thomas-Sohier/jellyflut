@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
@@ -29,14 +30,16 @@ class _SongPlaylistState extends State<SongPlaylist> {
     return Consumer<MusicProvider>(builder: (_, __, ___) {
       return ChangeNotifierProvider.value(
           value: musicProvider,
-          child: ReorderableListView.builder(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            itemCount: musicProvider.getPlayList().length,
-            itemBuilder: (context, index) =>
-                playlistListItem(index, musicProvider.getPlayList()[index]),
-            onReorder: (int oldIndex, int newIndex) =>
-                musicProvider.moveMusicItem(oldIndex, newIndex),
+          child: ClipRect(
+            child: ReorderableListView.builder(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              itemCount: musicProvider.getPlayList().length,
+              itemBuilder: (context, index) =>
+                  playlistListItem(index, musicProvider.getPlayList()[index]),
+              onReorder: (int oldIndex, int newIndex) =>
+                  musicProvider.moveMusicItem(oldIndex, newIndex),
+            ),
           ));
     });
   }
