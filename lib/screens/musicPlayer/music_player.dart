@@ -1,22 +1,21 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
+import 'package:jellyflut/screens/musicPlayer/components/song_duration_position.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:jellyflut/screens/musicPlayer/components/song_playlist_card.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:just_audio/just_audio.dart';
-
-import '../../shared/responsive_builder.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class MusicPlayer extends StatefulWidget {
-  MusicPlayer({super.key});
+  const MusicPlayer({super.key});
 
   @override
   State<MusicPlayer> createState() => _MusicPlayerState();
@@ -24,148 +23,101 @@ class MusicPlayer extends StatefulWidget {
 
 class _MusicPlayerState extends State<MusicPlayer> {
   late MusicProvider musicProvider;
-  late Color backgroundColor1;
-  late Color backgroundColor2;
-  late Color foregroundColor;
   late int musicPlayerIndex;
+  late ThemeData theme;
+  late final ValueNotifier<ThemeData?> themeData;
 
   @override
   void initState() {
     super.initState();
+    themeData = ValueNotifier(null);
     musicProvider = MusicProvider();
-    musicProvider
-        .getCurrentMusicStream()
-        .listen((SequenceState? sequenceState) {
-      setAlbumPrimaryColor();
-    });
+    musicProvider.getCurrentMusicStream().listen((_) => setAlbumPrimaryColor());
   }
 
   @override
   void didChangeDependencies() {
-    backgroundColor1 = Theme.of(context).colorScheme.primary;
-    backgroundColor2 = Theme.of(context).colorScheme.secondary;
-    foregroundColor = Theme.of(context).colorScheme.onPrimary;
+    theme = Theme.of(context);
     super.didChangeDependencies();
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return player();
+    return ValueListenableBuilder<ThemeData?>(
+        valueListenable: themeData,
+        builder: (context, value, child) {
+          return Scaffold(
+            body: Theme(
+                data: value ?? Theme.of(context),
+                child: child ?? const SizedBox()),
+          );
+        },
+        child: body());
   }
 
-  Widget player() {
-    var statusBarHeight =
-        MediaQuery.of(context).padding.top == 0 ? 12.toDouble() : 12.toDouble();
-    var size = MediaQuery.of(context).size;
-    var height = size.height - statusBarHeight;
-    return Scaffold(
-        extendBody: false,
-        body: ResponsiveBuilder.builder(
-            mobile: () => phoneTemplate(height, statusBarHeight),
-            tablet: () => largeScreenTemplate(height, statusBarHeight),
-            desktop: () => largeScreenTemplate(height, statusBarHeight)));
-  }
-
-  Widget largeScreenTemplate(double height, double statusBarHeight) {
-    var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Row(children: [
-      Expanded(
-          child: Column(children: [
-        AppBar(elevation: 0),
-        Padding(
-            padding: const EdgeInsets.all(16), child: songDetails(singleSize))
-      ])),
-      Expanded(
-          child: Card(
-        margin: EdgeInsets.all(12),
-        color: ColorUtil.darken(Theme.of(context).cardTheme.color!, 0.05),
-        child: ClipRect(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+  Widget body() {
+    return LayoutBuilder(builder: (context, constraints) {
+      return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Flexible(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('playlist'.tr(),
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headline5),
-            )),
-            Expanded(child: SongPlaylist())
-          ],
-        )),
-      )),
-    ]);
+            Expanded(child: songDetails(constraints)),
+            if (constraints.maxWidth > 960)
+              Expanded(child: SongPlaylistCard(child: SongPlaylist()))
+          ]);
+    });
   }
 
-  Widget songDetails(final double singleSize) {
+  Widget songDetails(BoxConstraints constraints) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(width: singleSize, child: SongInfos(color: Colors.white)),
-          SizedBox(
-            height: singleSize + 40,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                SongImage(
-                    singleSize: singleSize,
-                    color: foregroundColor,
-                    albumColors: [backgroundColor1, backgroundColor2]),
-                Positioned.fill(
-                    top: singleSize - 40,
-                    child: SongControls(
-                        color: foregroundColor,
-                        backgroundColor: backgroundColor2)),
-              ],
-            ),
-          ),
+          AppBar(actions: [if (constraints.maxWidth < 960) playlistButton()]),
+          const SizedBox(height: 10),
+          SongInfos(),
+          const SizedBox(height: 20),
+          Expanded(child: LayoutBuilder(builder: (context, constraints) {
+            final singleSize = calculateSingleSize(constraints);
+            return ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: singleSize),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SongDurationPosition(),
+                    Stack(
+                        alignment: Alignment.topCenter,
+                        clipBehavior: Clip.none,
+                        children: [
+                          SongImage(),
+                          Positioned(bottom: -30, child: SongControls())
+                        ]),
+                  ],
+                ));
+          })),
         ]);
   }
 
-  Widget phoneTemplate(double height, double statusBarHeight) {
-    var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        AppBar(
-          elevation: 0,
-          actions: [playlistButton()],
-        ),
-        Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: songDetails(singleSize))
-      ],
-    );
+  double calculateSingleSize(BoxConstraints constraints) {
+    final smallestSide = min(constraints.maxWidth, constraints.maxHeight);
+    return (smallestSide * 0.90 > 600 ? 600 : smallestSide * 0.90) * 0.9;
   }
 
   Widget playlistButton() {
     return IconButton(
         onPressed: () => customRouter.push(PlaylistRoute(body: SongPlaylist())),
-        icon: Icon(Icons.album, color: Theme.of(context).colorScheme.primary));
+        icon: Icon(Icons.album));
   }
 
   void setAlbumPrimaryColor() {
     final currentMusic = musicProvider.getCurrentMusic();
-    if (currentMusic != null) {
-      final metadata = currentMusic.tag as AudioMetadata;
+    if (currentMusic != null && mounted) {
+      final metadata = currentMusic.metadata;
       compute(ColorUtil.extractPixelsColors, metadata.artworkByte)
           .then((List<Color> colors) {
-        final backgroundColor1 = colors[0];
-        final backgroundColor2 = colors[1];
-        final foregroundColor = getForegroundColorFromColor(backgroundColor1);
-        final audioColors = AudioColors(
-            backgroundColor1: backgroundColor1,
-            backgroundColor2: backgroundColor2,
-            foregroundColor: foregroundColor);
-        musicProvider.setNewColors(audioColors);
+        final brightness = Theme.of(context).brightness;
+        themeData.value = personnal_theme.Theme.generateThemeDataFromSeedColor(
+            brightness, colors[0]);
       });
     }
   }

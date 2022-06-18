@@ -22,7 +22,6 @@ import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'album_artists.dart';
@@ -1335,16 +1334,8 @@ class Item {
         type == ItemType.VIDEO) {
       return customRouter.push(StreamRoute(item: this));
     } else if (type == ItemType.AUDIO) {
-      if (musicProvider.getAudioPlayer == null) {
-        final audioPlayer = AudioPlayer();
-        musicProvider.setAudioPlayer(audioPlayer);
-      }
       return musicProvider.playRemoteAudio(this);
     } else if (type == ItemType.MUSICALBUM) {
-      if (musicProvider.getAudioPlayer == null) {
-        final audioPlayer = AudioPlayer();
-        musicProvider.setAudioPlayer(audioPlayer);
-      }
       return musicProvider.playPlaylist(this);
     } else if (type == ItemType.BOOK) {
       return customRouter.push(EpubRoute(item: this));

@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:drift/drift.dart';
 
 class AudioMetadata {
@@ -38,8 +38,8 @@ class AudioMetadata {
       artwork = download.primary ?? Uint8List(0);
     }
 
-    return AudioSource.uri(Uri.parse(url),
-        tag: AudioMetadata(
+    return AudioSource.network(Uri.parse(url),
+        metadata: AudioMetadata(
             item: item,
             album: item.album,
             title: item.name,

@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/components/fav_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/shared/shared.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
-  final Color color;
-  SongInfos({super.key, required this.color});
+  const SongInfos({super.key});
 
   @override
   State<SongInfos> createState() => _SongInfosState();
@@ -20,16 +17,6 @@ class SongInfos extends StatefulWidget {
 class _SongInfosState extends State<SongInfos> {
   late MusicProvider musicProvider;
   AudioMetadata? audioMetadata;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +28,11 @@ class _SongInfosState extends State<SongInfos> {
   }
 
   Widget infos() {
-    return StreamBuilder<SequenceState?>(
+    return StreamBuilder<AudioSource>(
         stream: musicProvider.getCurrentMusicStream(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            // If we have no metadata we show enty box
-            if (snapshot.data!.currentSource?.tag == null) {
-              return const SizedBox();
-            }
-
-            final metadata = snapshot.data!.currentSource?.tag as AudioMetadata;
+            final metadata = snapshot.data!.metadata;
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,8 +45,7 @@ class _SongInfosState extends State<SongInfos> {
                     songTitleLabel(metadata)
                   ],
                 ),
-                songFavButton(metadata),
-                songDurationAndPosition()
+                songFavButton(metadata)
               ],
             );
           }
@@ -102,24 +83,6 @@ class _SongInfosState extends State<SongInfos> {
     return SizedBox();
   }
 
-  Widget songDurationAndPosition() {
-    return Row(
-      children: [
-        StreamBuilder<Duration?>(
-            stream: musicProvider.getPositionStream(),
-            builder: (context, snapshot) => Text(
-                  snapshot.data != null
-                      ? printDuration(snapshot.data!)
-                      : '0.00',
-                  style: Theme.of(context).textTheme.bodyText1,
-                )),
-        Spacer(),
-        Text(printDuration(musicProvider.getDuration()),
-            style: Theme.of(context).textTheme.bodyText1)
-      ],
-    );
-  }
-
   Widget songFavButton(AudioMetadata metadata) {
     return FittedBox(
       child: FavButton(
@@ -133,7 +96,7 @@ class _SongInfosState extends State<SongInfos> {
   void setAudioMetadata() {
     final currentMusic = musicProvider.getCurrentMusic();
     if (currentMusic != null) {
-      audioMetadata = currentMusic.tag as AudioMetadata;
+      audioMetadata = currentMusic.metadata;
     }
   }
 }

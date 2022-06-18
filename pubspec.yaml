@@ -12,6 +12,7 @@ module:
   androidX: true
 
 dependencies:
+  animated_fractionally_sized_box: ^2.0.1
   animations: ^2.0.3
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0

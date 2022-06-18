@@ -1,21 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_slider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
-  final double singleSize;
-  final Color color;
-  final List<Color> albumColors;
-
-  SongImage(
-      {super.key,
-      required this.singleSize,
-      required this.color,
-      required this.albumColors});
+  SongImage({super.key});
 
   @override
   State<SongImage> createState() => _SongImageState();
@@ -33,11 +24,6 @@ class _SongImageState extends State<SongImage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(width: double.maxFinite, child: imageSingleAsync());
   }
@@ -47,23 +33,20 @@ class _SongImageState extends State<SongImage> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          child: SizedBox(
-              width: widget.singleSize,
-              height: widget.singleSize,
-              child: StreamBuilder<SequenceState?>(
-                  stream: musicProvider.getCurrentMusicStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return albumImage(widget.singleSize);
-                    }
-                    return placeholder(widget.singleSize);
-                  })),
+          child: StreamBuilder<AudioSource>(
+              stream: musicProvider.getCurrentMusicStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  return albumImage();
+                }
+                return placeholder();
+              }),
         ),
       ],
     );
   }
 
-  Widget albumImage(double singleSize) {
+  Widget albumImage() {
     return Stack(children: [
       LayoutBuilder(
         builder: (singleContext, constraints) => GestureDetector(
@@ -72,58 +55,42 @@ class _SongImageState extends State<SongImage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                musicProvider.getCurrentMusic() != null
-                    ? imageFromByte(singleSize)
-                    : placeholder(singleSize),
+                imageFromByte(),
                 Positioned.fill(
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: SongSlider(
-                          albumColors: widget.albumColors,
-                        ))),
+                        alignment: Alignment.centerLeft, child: SongSlider())),
               ],
             )),
       )
     ]);
   }
 
-  OctoImage imageFromByte(double singleSize) {
+  OctoImage imageFromByte() {
     final currentMusic = musicProvider.getCurrentMusic();
-    final metadata = currentMusic!.tag as AudioMetadata;
+    final metadata = currentMusic!.metadata;
     return OctoImage(
       image: MemoryImage(metadata.artworkByte),
-      placeholderBuilder: (_) => placeholder(singleSize),
-      errorBuilder: (context, error, e) => placeholder(singleSize),
+      placeholderBuilder: (_) => placeholder(),
+      errorBuilder: (context, error, e) => placeholder(),
       fadeInDuration: Duration(milliseconds: 300),
       fit: BoxFit.cover,
       gaplessPlayback: true,
       alignment: Alignment.center,
-      width: singleSize,
-      height: singleSize,
     );
   }
 
-  Widget placeholder(double size) {
-    return Container(
-        height: size,
-        color: widget.albumColors[0],
+  Widget placeholder() {
+    final backgroundColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.background);
+    final iconColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
+    return ColoredBox(
+        color: backgroundColor,
         child: Center(
           child: Icon(
             Icons.album,
-            color: widget.color,
+            color: iconColor,
             size: 70,
-          ),
-        ));
-  }
-
-  Widget finalImage(ImageProvider<Object> imageProvider, double size) {
-    return Container(
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: imageProvider,
           ),
         ));
   }

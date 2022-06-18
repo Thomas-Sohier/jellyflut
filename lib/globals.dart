@@ -60,6 +60,10 @@ Future setUpAndroidTv() async {
   }
 }
 
+// Theming
+
+const BorderRadius borderRadiusButton = BorderRadius.all(Radius.circular(16));
+
 // Specific stuff
 
 jellyfin_user.User? userJellyfin;

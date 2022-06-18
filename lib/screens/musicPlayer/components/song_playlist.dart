@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
-  SongPlaylist({super.key});
+  const SongPlaylist({super.key});
 
   @override
   State<SongPlaylist> createState() => _SongPlaylistState();
@@ -31,19 +29,21 @@ class _SongPlaylistState extends State<SongPlaylist> {
     return Consumer<MusicProvider>(builder: (_, __, ___) {
       return ChangeNotifierProvider.value(
           value: musicProvider,
-          child: ReorderableListView.builder(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            itemCount: musicProvider.getPlayList().length,
-            itemBuilder: (context, index) =>
-                playlistListItem(index, musicProvider.getPlayList()[index]),
-            onReorder: (int oldIndex, int newIndex) =>
-                musicProvider.moveMusicItem(oldIndex, newIndex),
+          child: ClipRect(
+            child: ReorderableListView.builder(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              itemCount: musicProvider.getPlayList().length,
+              itemBuilder: (context, index) =>
+                  playlistListItem(index, musicProvider.getPlayList()[index]),
+              onReorder: (int oldIndex, int newIndex) =>
+                  musicProvider.moveMusicItem(oldIndex, newIndex),
+            ),
           ));
     });
   }
 
-  Widget playlistListItem(int index, IndexedAudioSource musicItem) {
+  Widget playlistListItem(int index, AudioSource musicItem) {
     return Dismissible(
       key: ValueKey(musicItem),
       onDismissed: (direction) {
@@ -91,8 +91,8 @@ class _SongPlaylistState extends State<SongPlaylist> {
     );
   }
 
-  Widget playlistItem(int index, IndexedAudioSource musicItem) {
-    final metadata = musicItem.tag as AudioMetadata;
+  Widget playlistItem(int index, AudioSource musicItem) {
+    final metadata = musicItem.metadata;
     return Row(
       children: [
         Padding(
