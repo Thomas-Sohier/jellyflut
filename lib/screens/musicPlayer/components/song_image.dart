@@ -47,22 +47,19 @@ class _SongImageState extends State<SongImage> {
   }
 
   Widget albumImage() {
-    return Stack(children: [
-      LayoutBuilder(
+    return LayoutBuilder(
         builder: (singleContext, constraints) => GestureDetector(
             onTapDown: (TapDownDetails details) =>
                 onTapDown(singleContext, details),
             child: Stack(
               alignment: Alignment.center,
               children: [
-                imageFromByte(),
+                AspectRatio(aspectRatio: 1, child: imageFromByte()),
                 Positioned.fill(
                     child: Align(
                         alignment: Alignment.centerLeft, child: SongSlider())),
               ],
-            )),
-      )
-    ]);
+            )));
   }
 
   OctoImage imageFromByte() {

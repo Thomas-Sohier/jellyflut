@@ -41,8 +41,8 @@ class _SongInfosState extends State<SongInfos> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    songArtistLabel(metadata),
-                    songTitleLabel(metadata)
+                    songTitleLabel(metadata),
+                    songArtistLabel(metadata)
                   ],
                 ),
                 songFavButton(metadata)

@@ -73,7 +73,9 @@ class _MusicPlayerState extends State<MusicPlayer> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          AppBar(actions: [if (constraints.maxWidth < 960) playlistButton()]),
+          AppBar(
+              backgroundColor: Colors.transparent,
+              actions: [if (constraints.maxWidth < 960) playlistButton()]),
           const SizedBox(height: 10),
           SongInfos(),
           const SizedBox(height: 20),

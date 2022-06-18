@@ -95,11 +95,9 @@ class AppRouter extends _i14.RootStackRouter {
           barrierDismissible: false);
     },
     MusicPlayerRoute.name: (routeData) {
-      final args = routeData.argsAs<MusicPlayerRouteArgs>(
-          orElse: () => const MusicPlayerRouteArgs());
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i7.MusicPlayer(key: args.key),
+          child: const _i7.MusicPlayer(),
           opaque: true,
           barrierDismissible: false);
     },
@@ -332,23 +330,10 @@ class SettingsRoute extends _i14.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.MusicPlayer]
-class MusicPlayerRoute extends _i14.PageRouteInfo<MusicPlayerRouteArgs> {
-  MusicPlayerRoute({_i15.Key? key})
-      : super(MusicPlayerRoute.name,
-            path: 'musicPlayer', args: MusicPlayerRouteArgs(key: key));
+class MusicPlayerRoute extends _i14.PageRouteInfo<void> {
+  const MusicPlayerRoute() : super(MusicPlayerRoute.name, path: 'musicPlayer');
 
   static const String name = 'MusicPlayerRoute';
-}
-
-class MusicPlayerRouteArgs {
-  const MusicPlayerRouteArgs({this.key});
-
-  final _i15.Key? key;
-
-  @override
-  String toString() {
-    return 'MusicPlayerRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
