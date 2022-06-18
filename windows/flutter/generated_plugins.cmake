@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   dart_vlc
   flutter_native_view
+  libwinmedia
   permission_handler_windows
   screen_retriever
   sqlite3_flutter_libs

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class SongDurationPosition extends StatelessWidget {
-  const SongDurationPosition({Key? key}) : super(key: key);
+  const SongDurationPosition({super.key});
 
   @override
   Widget build(BuildContext context) {

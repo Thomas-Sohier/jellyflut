@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {
-  SongPlaylist({super.key});
+  const SongPlaylist({super.key});
 
   @override
   State<SongPlaylist> createState() => _SongPlaylistState();

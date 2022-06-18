@@ -5,11 +5,10 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 class SongPlaylistCard extends StatefulWidget {
   final Widget child;
   final EdgeInsets margin;
-  SongPlaylistCard(
-      {Key? key,
+  const SongPlaylistCard(
+      {super.key,
       this.child = const SizedBox(),
-      this.margin = const EdgeInsets.fromLTRB(12, 18, 18, 18)})
-      : super(key: key);
+      this.margin = const EdgeInsets.fromLTRB(12, 18, 18, 18)});
 
   @override
   State<SongPlaylistCard> createState() => _SongPlaylistCardState();

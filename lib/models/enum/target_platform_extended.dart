@@ -24,6 +24,6 @@ enum TargetPlatformExtended {
 
   static TargetPlatformExtended? fromTargetPlatform(TargetPlatform target) {
     return TargetPlatformExtended.values
-        .firstWhere((e) => e.name == target.name, orElse: null);
+        .firstWhere((e) => e.name == target.name);
   }
 }
