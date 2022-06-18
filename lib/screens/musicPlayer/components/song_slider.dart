@@ -1,10 +1,6 @@
-import 'dart:ui';
-
 import 'package:animated_fractionally_sized_box/animated_fractionally_sized_box.dart';
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
 
 class SongSlider extends StatefulWidget {
   SongSlider({Key? key}) : super(key: key);
@@ -31,18 +27,13 @@ class _SongSliderState extends State<SongSlider> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
       stream: musicProvider.getPositionStream(),
       builder: (context, snapshotPosition) => AnimatedFractionallySizedBox(
           duration: Duration(seconds: 1),
           widthFactor: getSliderSize(snapshotPosition.data),
-          child: Container(color: theme.colorScheme.secondary.withAlpha(150))),
+          child: Container(color: theme.colorScheme.secondary.withAlpha(190))),
     );
   }
 

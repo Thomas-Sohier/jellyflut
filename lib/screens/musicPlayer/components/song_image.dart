@@ -6,9 +6,7 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
-  final double singleSize;
-
-  SongImage({Key? key, required this.singleSize}) : super(key: key);
+  SongImage({Key? key}) : super(key: key);
 
   @override
   _SongImageState createState() => _SongImageState();
@@ -26,11 +24,6 @@ class _SongImageState extends State<SongImage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(width: double.maxFinite, child: imageSingleAsync());
   }
@@ -40,23 +33,20 @@ class _SongImageState extends State<SongImage> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          child: SizedBox(
-              width: widget.singleSize,
-              height: widget.singleSize,
-              child: StreamBuilder<AudioSource>(
-                  stream: musicProvider.getCurrentMusicStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return albumImage(widget.singleSize);
-                    }
-                    return placeholder(widget.singleSize);
-                  })),
+          child: StreamBuilder<AudioSource>(
+              stream: musicProvider.getCurrentMusicStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  return albumImage();
+                }
+                return placeholder();
+              }),
         ),
       ],
     );
   }
 
-  Widget albumImage(double singleSize) {
+  Widget albumImage() {
     return Stack(children: [
       LayoutBuilder(
         builder: (singleContext, constraints) => GestureDetector(
@@ -65,7 +55,7 @@ class _SongImageState extends State<SongImage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                imageFromByte(singleSize),
+                imageFromByte(),
                 Positioned.fill(
                     child: Align(
                         alignment: Alignment.centerLeft, child: SongSlider())),
@@ -75,29 +65,26 @@ class _SongImageState extends State<SongImage> {
     ]);
   }
 
-  OctoImage imageFromByte(double singleSize) {
+  OctoImage imageFromByte() {
     final currentMusic = musicProvider.getCurrentMusic();
     final metadata = currentMusic!.metadata;
     return OctoImage(
       image: MemoryImage(metadata.artworkByte),
-      placeholderBuilder: (_) => placeholder(singleSize),
-      errorBuilder: (context, error, e) => placeholder(singleSize),
+      placeholderBuilder: (_) => placeholder(),
+      errorBuilder: (context, error, e) => placeholder(),
       fadeInDuration: Duration(milliseconds: 300),
       fit: BoxFit.cover,
       gaplessPlayback: true,
       alignment: Alignment.center,
-      width: singleSize,
-      height: singleSize,
     );
   }
 
-  Widget placeholder(double size) {
+  Widget placeholder() {
     final backgroundColor =
         ColorUtil.darken(Theme.of(context).colorScheme.background);
     final iconColor =
         ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
-    return Container(
-        height: size,
+    return ColoredBox(
         color: backgroundColor,
         child: Center(
           child: Icon(

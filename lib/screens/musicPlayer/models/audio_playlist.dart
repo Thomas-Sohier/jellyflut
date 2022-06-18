@@ -20,6 +20,11 @@ class AudioPlaylist {
   }
 
   void move(int currentIndex, int newIndex) {
+    // _audioSources.insert(newIndex, _audioSources.removeAt(currentIndex));
+    if (currentIndex < newIndex) {
+      newIndex -= 1;
+    }
+
     _audioSources.insert(newIndex, _audioSources.removeAt(currentIndex));
   }
 

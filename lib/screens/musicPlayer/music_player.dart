@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +7,13 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
+import 'package:jellyflut/screens/musicPlayer/components/song_duration_position.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
 import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
+import 'package:jellyflut/screens/musicPlayer/components/song_playlist_card.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
-
-import '../../shared/responsive_builder.dart';
 
 class MusicPlayer extends StatefulWidget {
   MusicPlayer({Key? key}) : super(key: key);
@@ -42,99 +44,64 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    var statusBarHeight =
-        MediaQuery.of(context).padding.top == 0 ? 12.toDouble() : 12.toDouble();
-    var size = MediaQuery.of(context).size;
-    var height = size.height - statusBarHeight;
     return ValueListenableBuilder<ThemeData?>(
-      valueListenable: themeData,
-      builder: (context, value, child) {
-        return Theme(
-            data: value ?? Theme.of(context), child: child ?? const SizedBox());
-      },
-      child: Scaffold(
-          extendBody: false,
-          body: ResponsiveBuilder.builder(
-              mobile: () => phoneTemplate(height, statusBarHeight),
-              tablet: () => largeScreenTemplate(height, statusBarHeight),
-              desktop: () => largeScreenTemplate(height, statusBarHeight))),
-    );
+        valueListenable: themeData,
+        builder: (context, value, child) {
+          return Scaffold(
+            body: Theme(
+                data: value ?? Theme.of(context),
+                child: child ?? const SizedBox()),
+          );
+        },
+        child: body());
   }
 
-  Widget largeScreenTemplate(double height, double statusBarHeight) {
-    var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Row(children: [
-      Expanded(
-          child: Column(children: [
-        AppBar(elevation: 0),
-        Padding(
-            padding: const EdgeInsets.all(16), child: songDetails(singleSize))
-      ])),
-      Expanded(
-          child: Padding(
-        padding: EdgeInsets.fromLTRB(12, 18, 18, 18),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-              color: ColorUtil.darken(Theme.of(context).colorScheme.background),
-              borderRadius: const BorderRadius.all(Radius.circular(14)),
-              boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context).shadowColor.withAlpha(150),
-                    blurRadius: 6,
-                    spreadRadius: 2)
-              ]),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('playlist'.tr(),
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline5),
-              ),
-              Expanded(child: SongPlaylist())
-            ],
-          ),
-        ),
-      )),
-    ]);
+  Widget body() {
+    return LayoutBuilder(builder: (context, constraints) {
+      return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(child: songDetails(constraints)),
+            if (constraints.maxWidth > 960)
+              Expanded(child: SongPlaylistCard(child: SongPlaylist()))
+          ]);
+    });
   }
 
-  Widget songDetails(final double singleSize) {
+  Widget songDetails(BoxConstraints constraints) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(width: singleSize, child: SongInfos()),
-          SizedBox(
-            height: singleSize + 40,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                SongImage(singleSize: singleSize),
-                Positioned.fill(top: singleSize - 40, child: SongControls()),
-              ],
-            ),
-          ),
+          AppBar(actions: [if (constraints.maxWidth < 960) playlistButton()]),
+          const SizedBox(height: 10),
+          SongInfos(),
+          const SizedBox(height: 20),
+          Expanded(child: LayoutBuilder(builder: (context, constraints) {
+            final singleSize = calculateSingleSize(constraints);
+            return ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: singleSize),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SongDurationPosition(),
+                    Stack(
+                        alignment: Alignment.topCenter,
+                        clipBehavior: Clip.none,
+                        children: [
+                          SongImage(),
+                          Positioned(bottom: -30, child: SongControls())
+                        ]),
+                  ],
+                ));
+          })),
         ]);
   }
 
-  Widget phoneTemplate(double height, double statusBarHeight) {
-    var singleSize = (height * 0.90 > 600 ? 600 : height * 0.90) * 0.6;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        AppBar(
-          elevation: 0,
-          actions: [playlistButton()],
-        ),
-        Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: songDetails(singleSize))
-      ],
-    );
+  double calculateSingleSize(BoxConstraints constraints) {
+    final smallestSide = min(constraints.maxWidth, constraints.maxHeight);
+    return (smallestSide * 0.90 > 600 ? 600 : smallestSide * 0.90) * 0.9;
   }
 
   Widget playlistButton() {

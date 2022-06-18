@@ -47,8 +47,7 @@ class _SongInfosState extends State<SongInfos> {
                     songTitleLabel(metadata)
                   ],
                 ),
-                songFavButton(metadata),
-                songDurationAndPosition()
+                songFavButton(metadata)
               ],
             );
           }
@@ -84,29 +83,6 @@ class _SongInfosState extends State<SongInfos> {
       );
     }
     return SizedBox();
-  }
-
-  Widget songDurationAndPosition() {
-    return Row(
-      children: [
-        StreamBuilder<Duration?>(
-            stream: musicProvider.getPositionStream(),
-            builder: (context, snapshot) => Text(
-                  snapshot.data != null
-                      ? printDuration(snapshot.data!)
-                      : '0.00',
-                  style: Theme.of(context).textTheme.bodyText1,
-                )),
-        Spacer(),
-        StreamBuilder<Duration?>(
-            stream: musicProvider.getDurationStream(),
-            builder: (context, snapshot) => Text(
-                snapshot.data != null
-                    ? printDuration(musicProvider.getDuration())
-                    : '∞',
-                style: Theme.of(context).textTheme.bodyText1))
-      ],
-    );
   }
 
   Widget songFavButton(AudioMetadata metadata) {

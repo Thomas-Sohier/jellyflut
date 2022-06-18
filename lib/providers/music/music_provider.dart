@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
@@ -42,20 +43,12 @@ class MusicProvider extends ChangeNotifier {
 
   void initPlayer() async {
     if (_commonPlayer != null) {
+      // Notify that player is init to be sure
       _isInit = true;
       notifyListeners();
       return;
     }
-
-    if (Platform.isLinux || Platform.isWindows) {
-      final player = Player(id: audioPlayerId, registerTexture: false);
-      player.playbackStream.listen((event) {
-        if (event.isCompleted) {
-          next();
-        }
-      });
-      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
-    } else if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) {
+    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || kIsWeb) {
       final player = just_audio.AudioPlayer();
       player.playbackEventStream.listen((just_audio.PlaybackEvent event) {
         if (event.processingState == just_audio.ProcessingState.completed) {
@@ -64,14 +57,22 @@ class MusicProvider extends ChangeNotifier {
       });
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
-      _isInit = true;
-      notifyListeners();
+    } else if (Platform.isLinux || Platform.isWindows) {
+      final player = Player(id: audioPlayerId, registerTexture: false);
+      player.playbackStream.listen((event) {
+        if (event.isCompleted) next();
+      });
+      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
       final currentPlatform =
           Theme.of(customRouter.navigatorKey.currentContext!).platform;
       throw UnimplementedError(
           'No audio player on this platform (platform : $currentPlatform');
     }
+
+    // Notify that player is init
+    _isInit = true;
+    notifyListeners();
   }
 
   void setNewColors(final AudioColors audioColors) {
@@ -96,6 +97,10 @@ class MusicProvider extends ChangeNotifier {
 
   void moveMusicItem(int oldIndex, int newIndex) {
     _audioPlaylist.move(oldIndex, newIndex);
+    if (_currentMusic != null) {
+      _currentlyPlayingIndex
+          .add(_audioPlaylist.getPlaylist.indexOf(_currentMusic!));
+    }
     notifyListeners();
   }
 
