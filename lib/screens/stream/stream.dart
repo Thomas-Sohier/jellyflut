@@ -95,8 +95,9 @@ class _StreamState extends State<Stream> {
       body: FutureBuilder<Widget>(
         future: videoFuture,
         builder: (context, snapshot) {
-          final isInit = streamingProvider.commonStream?.isInit() ?? false;
-          if (snapshot.hasData && isInit) {
+          // TODO add init stream/provider implementation that works
+          //final isInit = streamingProvider.commonStream?.isInit() ?? false;
+          if (snapshot.hasData) {
             return Center(child: snapshot.data);
           }
           return PlaceholderScreen(item: widget.item);
