@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
+import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
 
 class AudioSource {
   final String resource;

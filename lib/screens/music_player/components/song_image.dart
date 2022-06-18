@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_slider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/components/song_slider.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 

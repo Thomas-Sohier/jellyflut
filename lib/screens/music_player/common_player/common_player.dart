@@ -1,7 +1,7 @@
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_just_audio.dart';
-import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player_vlc.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/common_player/common_player_just_audio.dart';
+import 'package:jellyflut/screens/music_player/common_player/common_player_vlc.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
 
@@ -12,9 +12,10 @@ class CommonPlayer {
   final void Function(Duration) _seekTo;
   final Stream<Duration?> _bufferingDuration;
   final Duration? Function() _duration;
+  final void Function() _init;
   final void Function() _nextTrack;
   final void Function() _previousTrack;
-  final void Function(AudioSource) _playRemote;
+  final Future<void> Function(AudioSource) _playRemote;
   final Duration? Function() _currentPosition;
   final BehaviorSubject<Duration?> _positionStream;
   final BehaviorSubject<Duration?> _durationStream;
@@ -29,9 +30,10 @@ class CommonPlayer {
       required void Function(Duration) seekTo,
       required Stream<Duration?> bufferingDuration,
       required Duration? Function() duration,
+      required void Function() init,
       required void Function() nextTrack,
       required void Function() previousTrack,
-      required void Function(AudioSource) playRemote,
+      required Future<void> Function(AudioSource) playRemote,
       required Duration? Function() currentPosition,
       required BehaviorSubject<Duration?> positionStream,
       required BehaviorSubject<Duration?> durationStream,
@@ -44,6 +46,7 @@ class CommonPlayer {
         _seekTo = seekTo,
         _bufferingDuration = bufferingDuration,
         _duration = duration,
+        _init = init,
         _nextTrack = nextTrack,
         _previousTrack = previousTrack,
         _playRemote = playRemote,
@@ -59,9 +62,10 @@ class CommonPlayer {
   void seekTo(Duration duration) => _seekTo(duration);
   Stream<Duration?> getBufferingDuration() => _bufferingDuration;
   Duration? get getDuration => _duration();
+  void init() => _init();
   void nextTrack() => _nextTrack();
   void previousTrack() => _previousTrack();
-  void playRemote(AudioSource audioSource) => _playRemote(audioSource);
+  Future<void> playRemote(AudioSource audioSource) => _playRemote(audioSource);
   Duration? get getCurrentPosition => _currentPosition();
   BehaviorSubject<Duration?> get getPositionStream => _positionStream;
   BehaviorSubject<Duration?> get getDurationStream => _durationStream;
@@ -78,38 +82,18 @@ class CommonPlayer {
         isPlaying: () => audioPlayer.playerState.playing,
         seekTo: audioPlayer.seek,
         duration: () => audioPlayer.duration,
-        nextTrack: audioPlayer.seekToPrevious,
-        previousTrack: audioPlayer.seekToNext,
+        init: commonPlayerJustAudio.init,
+        nextTrack: audioPlayer.seekToNext,
+        previousTrack: audioPlayer.seekToPrevious,
         bufferingDuration: audioPlayer.durationStream,
         playRemote: commonPlayerJustAudio.playRemote,
         currentPosition: () => audioPlayer.position,
         positionStream: commonPlayerJustAudio.positionStream(),
         durationStream: commonPlayerJustAudio.durationStream(),
         isPlayingStream: commonPlayerJustAudio.playingStateStream(),
-        dispose: audioPlayer.dispose,
+        dispose: commonPlayerJustAudio.dispose,
         controller: audioPlayer);
   }
-
-  // static CommonPlayer parseAudioplayerController(
-  //     {required audioplayers.AudioPlayer audioPlayer}) {
-  //   final commonPlayerAudioplayers =
-  //       CommonPlayerAudioplayers(audioPlayer: audioPlayer);
-  //   return CommonPlayer._(
-  //       pause: audioPlayer.pause,
-  //       play: audioPlayer.play,
-  //       isPlaying: audioPlayer.state == audioplayers.PlayerState.playing,
-  //       seekTo: audioPlayer.seek,
-  //       duration: audioPlayer.getDuration,
-  //       nextTrack: () => {},
-  //       previousTrack: () => {},
-  //       bufferingDuration: () => {},
-  //       currentPosition: audioPlayer.getCurrentPosition(),
-  //       positionStream: audioPlayer.onPositionChanged,
-  //       durationStream: audioPlayer.onDurationChanged,
-  //       isPlayingStream: commonPlayerAudioplayers.playingStateStream,
-  //       dispose: audioPlayer.dispose,
-  //       controller: audioPlayer);
-  // }
 
   static CommonPlayer parseVLCController({required Player audioPlayer}) {
     final commonPlayerVLC = CommonPlayerVLC(audioPlayer: audioPlayer);
@@ -119,6 +103,7 @@ class CommonPlayer {
         isPlaying: () => audioPlayer.playback.isPlaying,
         seekTo: audioPlayer.seek,
         duration: () => audioPlayer.position.duration,
+        init: commonPlayerVLC.init,
         nextTrack: audioPlayer.previous,
         previousTrack: audioPlayer.next,
         bufferingDuration: Stream.value(Duration(seconds: 0)),
@@ -127,7 +112,7 @@ class CommonPlayer {
         positionStream: commonPlayerVLC.positionStream(),
         durationStream: commonPlayerVLC.durationStream(),
         isPlayingStream: commonPlayerVLC.playingStateStream(),
-        dispose: commonPlayerVLC.stopPlayer,
+        dispose: commonPlayerVLC.dispose,
         controller: audioPlayer);
   }
 }

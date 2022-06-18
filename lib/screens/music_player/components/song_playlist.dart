@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:provider/provider.dart';
 
 class SongPlaylist extends StatefulWidget {

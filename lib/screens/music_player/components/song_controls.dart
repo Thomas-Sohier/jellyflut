@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/components/next_button.dart';
-import 'package:jellyflut/screens/musicPlayer/components/prev_button.dart';
+import 'package:jellyflut/screens/music_player/components/next_button.dart';
+import 'package:jellyflut/screens/music_player/components/prev_button.dart';
 
 class SongControls extends StatefulWidget {
   const SongControls({super.key});

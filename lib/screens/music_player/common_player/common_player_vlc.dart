@@ -1,12 +1,18 @@
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:rxdart/subjects.dart';
 
 class CommonPlayerVLC {
   static final musicProvider = MusicProvider();
   final Player audioPlayer;
   const CommonPlayerVLC({required this.audioPlayer});
+
+  void init() {
+    audioPlayer.playbackStream.listen((event) {
+      if (event.isCompleted) musicProvider.next();
+    });
+  }
 
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
@@ -29,12 +35,12 @@ class CommonPlayerVLC {
     return streamController;
   }
 
-  Future<void> stopPlayer() async {
+  Future<void> dispose() async {
     audioPlayer.stop();
     return audioPlayer.dispose();
   }
 
-  void playRemote(AudioSource audioSource) async {
+  Future<void> playRemote(AudioSource audioSource) async {
     final media = Media.network(audioSource.resource);
     audioPlayer.open(media);
   }

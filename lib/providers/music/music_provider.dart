@@ -5,16 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/musicPlayer/CommonPlayer/common_player.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_colors.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_playlist.dart';
+import 'package:jellyflut/screens/music_player/common_player/common_player.dart';
+import 'package:jellyflut/screens/music_player/models/audio_colors.dart';
+import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
+import 'package:jellyflut/screens/music_player/models/audio_playlist.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
 
-import '../../screens/musicPlayer/models/audio_source.dart';
+import '../../screens/music_player/models/audio_source.dart';
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
@@ -50,18 +50,10 @@ class MusicProvider extends ChangeNotifier {
     }
     if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || kIsWeb) {
       final player = just_audio.AudioPlayer();
-      player.playbackEventStream.listen((just_audio.PlaybackEvent event) {
-        if (event.processingState == just_audio.ProcessingState.completed) {
-          next();
-        }
-      });
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else if (Platform.isLinux || Platform.isWindows) {
       final player = Player(id: audioPlayerId, registerTexture: false);
-      player.playbackStream.listen((event) {
-        if (event.isCompleted) next();
-      });
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
       final currentPlatform =
@@ -71,6 +63,7 @@ class MusicProvider extends ChangeNotifier {
     }
 
     // Notify that player is init
+    _commonPlayer?.init();
     _isInit = true;
     notifyListeners();
   }
@@ -135,11 +128,12 @@ class MusicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playAtIndex(int index) async {
+  Future<void> playAtIndex(int index) async {
     final audioSource = _audioPlaylist.getPlaylist[index];
-    _commonPlayer?.playRemote(audioSource);
-    setCurrentlyPlayingMusic(audioSource);
-    notifyListeners();
+    return _commonPlayer?.playRemote(audioSource).then((_) {
+      setCurrentlyPlayingMusic(audioSource);
+      notifyListeners();
+    });
   }
 
   List<AudioSource> getPlayList() {
@@ -162,11 +156,11 @@ class MusicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void next() {
-    if (_currentMusic == null) return;
+  Future<void> next() {
+    if (_currentMusic == null) return Future.value();
     final nextIndex = _audioPlaylist.getPlaylist.indexOf(_currentMusic!) + 1;
-    if (nextIndex == _audioPlaylist.getPlaylist.length) return;
-    playAtIndex(nextIndex);
+    if (nextIndex == _audioPlaylist.getPlaylist.length) return Future.value();
+    return playAtIndex(nextIndex);
   }
 
   void previous() {

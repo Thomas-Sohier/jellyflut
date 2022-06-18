@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/screens/musicPlayer/music_player.dart';
+import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
+import 'package:jellyflut/screens/music_player/music_player.dart';
 import 'package:provider/provider.dart';
 
 class MusicPlayerFAB extends StatefulWidget {

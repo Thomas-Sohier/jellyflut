@@ -3,8 +3,8 @@ import 'package:jellyflut/components/fav_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {

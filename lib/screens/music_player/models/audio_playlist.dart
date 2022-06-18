@@ -1,4 +1,4 @@
-import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
+import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 
 class AudioPlaylist {
   final List<AudioSource> _audioSources;

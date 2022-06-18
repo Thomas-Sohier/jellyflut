@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_controls.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_duration_position.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_image.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_infos.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_playlist.dart';
-import 'package:jellyflut/screens/musicPlayer/components/song_playlist_card.dart';
+import 'package:jellyflut/screens/music_player/components/song_controls.dart';
+import 'package:jellyflut/screens/music_player/components/song_duration_position.dart';
+import 'package:jellyflut/screens/music_player/components/song_image.dart';
+import 'package:jellyflut/screens/music_player/components/song_infos.dart';
+import 'package:jellyflut/screens/music_player/components/song_playlist.dart';
+import 'package:jellyflut/screens/music_player/components/song_playlist_card.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 
@@ -69,6 +69,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   }
 
   Widget songDetails(BoxConstraints constraints) {
+    const controlsOverflowSize = 30.0;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -87,13 +88,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SongDurationPosition(),
-                    Stack(
-                        alignment: Alignment.topCenter,
-                        clipBehavior: Clip.none,
+                    Stack(alignment: Alignment.topCenter, children: [
+                      Column(
                         children: [
                           SongImage(),
-                          Positioned(bottom: -30, child: SongControls())
-                        ]),
+                          const SizedBox(height: controlsOverflowSize)
+                        ],
+                      ),
+                      Positioned(bottom: 0, child: SongControls())
+                    ]),
                   ],
                 ));
           })),
