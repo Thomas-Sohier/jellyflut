@@ -4,8 +4,7 @@ class PlayButton extends StatelessWidget {
   final Item item;
   final double maxWidth;
 
-  const PlayButton({Key? key, required this.item, this.maxWidth = 150})
-      : super(key: key);
+  const PlayButton({super.key, required this.item, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {

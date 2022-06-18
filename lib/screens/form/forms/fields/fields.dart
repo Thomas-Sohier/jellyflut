@@ -4,7 +4,7 @@ import 'package:jellyflut/models/jellyfin/genre_item.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/screens/form/forms/fields/widget/person_item.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 

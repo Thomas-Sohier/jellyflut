@@ -9,11 +9,10 @@ class PersonItem extends StatelessWidget {
   final VoidCallback onPressed;
 
   const PersonItem(
-      {Key? key,
+      {super.key,
       required this.person,
       required this.height,
-      required this.onPressed})
-      : super(key: key);
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

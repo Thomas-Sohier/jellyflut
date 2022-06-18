@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/components/back_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/photo_item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:rxdart/subjects.dart';
-
-import 'components/photo_item.dart';
 
 class Details extends StatefulWidget {
   final Item item;
@@ -31,7 +29,7 @@ class _DetailsState extends State<Details> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    detailsBloc = DetailsBloc(getDetailsInfos());
+    detailsBloc = DetailsBloc(getDetailsInfos(), ScreenLayout.desktop);
     detailsBloc.getItemBackgroundColor(widget.item);
   }
 
@@ -50,13 +48,6 @@ class _DetailsState extends State<Details> {
               statusBarColor: Colors.transparent,
             ),
             child: Scaffold(
-                extendBody: true,
-                extendBodyBehindAppBar: true,
-                backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  backgroundColor: Colors.transparent,
-                  leading: BackButton(),
-                ),
                 body: widget.item.type != ItemType.PHOTO
                     ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
                     : PhotoItem(item: widget.item, heroTag: widget.heroTag))));

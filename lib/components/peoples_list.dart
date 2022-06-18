@@ -12,8 +12,10 @@ import 'package:jellyflut/shared/responsive_builder.dart';
 class PeoplesList extends StatefulWidget {
   final List<Person> persons;
   final Color fontColor;
+  final EdgeInsets padding;
 
-  const PeoplesList(this.persons, {this.fontColor = Colors.black});
+  const PeoplesList(this.persons,
+      {this.fontColor = Colors.black, this.padding = EdgeInsets.zero});
 
   @override
   State<StatefulWidget> createState() => _PeoplesListState();
@@ -41,7 +43,7 @@ class _PeoplesListState extends State<PeoplesList> {
       child: ListView.builder(
           itemCount: peoples.length,
           scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.zero,
+          padding: widget.padding,
           itemBuilder: (context, index) {
             final person = peoples[index];
             final item = Item(

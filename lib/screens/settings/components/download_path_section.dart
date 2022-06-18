@@ -5,11 +5,10 @@ class DownloadPathSection extends StatelessWidget {
   final String? downloadPath;
   final Database database;
   const DownloadPathSection(
-      {Key? key,
+      {super.key,
       required this.setting,
       required this.database,
-      required this.downloadPath})
-      : super(key: key);
+      required this.downloadPath});
 
   @override
   SettingsSection build(BuildContext context) {

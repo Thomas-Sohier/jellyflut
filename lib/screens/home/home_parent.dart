@@ -7,10 +7,10 @@ import 'package:jellyflut/screens/home/offline_screen.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 
 class HomeParent extends StatefulWidget {
-  HomeParent({Key? key}) : super(key: key);
+  HomeParent({super.key});
 
   @override
-  _HomeParentState createState() => _HomeParentState();
+  State<HomeParent> createState() => _HomeParentState();
 }
 
 class _HomeParentState extends State<HomeParent> {

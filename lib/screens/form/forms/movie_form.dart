@@ -8,7 +8,7 @@ import 'package:jellyflut/models/jellyfin/studio.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 class MovieForm extends StatefulWidget {
@@ -17,7 +17,7 @@ class MovieForm extends StatefulWidget {
   const MovieForm({required this.item});
 
   @override
-  _MovieFormState createState() => _MovieFormState();
+  State<MovieForm> createState() => _MovieFormState();
 }
 
 class _MovieFormState extends State<MovieForm> {
@@ -53,31 +53,27 @@ class _MovieFormState extends State<MovieForm> {
   }
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsEnum.NAME.getName(): FormControl<String>(
+        FieldsEnum.NAME.name: FormControl<String>(
           value: item.name,
           validators: [Validators.required],
         ),
-        FieldsEnum.ORIGINALTITLE.getName():
+        FieldsEnum.ORIGINALTITLE.name:
             FormControl<String>(value: item.originalTitle),
-        FieldsEnum.COMMUNITYRATING.getName():
+        FieldsEnum.COMMUNITYRATING.name:
             FormControl<double>(value: item.communityRating),
-        FieldsEnum.DATECREATED.getName():
+        FieldsEnum.DATECREATED.name:
             FormControl<DateTime>(value: item.dateCreated),
-        FieldsEnum.OVERVIEW.getName():
-            FormControl<String>(value: item.overview),
-        FieldsEnum.PREMIEREDATE.getName():
+        FieldsEnum.OVERVIEW.name: FormControl<String>(value: item.overview),
+        FieldsEnum.PREMIEREDATE.name:
             FormControl<DateTime>(value: item.premiereDate),
-        FieldsEnum.PRODUCTIONYEAR.getName():
+        FieldsEnum.PRODUCTIONYEAR.name:
             FormControl<int>(value: item.productionYear),
-        FieldsEnum.DATEADDED.getName():
+        FieldsEnum.DATEADDED.name:
             FormControl<DateTime>(value: item.dateCreated),
-        FieldsEnum.PEOPLE.getName():
-            FormControl<List<Person>>(value: item.people),
-        FieldsEnum.STUDIOS.getName():
-            FormControl<List<Studio>>(value: item.studios),
-        FieldsEnum.TAGS.getName(): FormControl<List<dynamic>>(value: item.tags),
-        FieldsEnum.GENRES.getName():
-            FormControl<List<String?>>(value: item.genres)
+        FieldsEnum.PEOPLE.name: FormControl<List<Person>>(value: item.people),
+        FieldsEnum.STUDIOS.name: FormControl<List<Studio>>(value: item.studios),
+        FieldsEnum.TAGS.name: FormControl<List<dynamic>>(value: item.tags),
+        FieldsEnum.GENRES.name: FormControl<List<String?>>(value: item.genres)
       });
 
   @override

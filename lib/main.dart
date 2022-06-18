@@ -1,9 +1,10 @@
-import 'package:dart_vlc/dart_vlc.dart';
+import './shared/app_init/app_init.dart' as impl;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
@@ -20,8 +21,9 @@ import 'package:provider/provider.dart';
 import 'shared/custom_scroll_behavior.dart';
 
 void main() async {
-  await DartVLC.initialize();
-  WidgetsFlutterBinding.ensureInitialized();
+  await impl.init();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();
   await setUpSharedPrefs();
@@ -67,7 +69,7 @@ class Jellyflut extends StatelessWidget {
         ignoreTextFields: false),
   };
 
-  Jellyflut({Key? key, required this.authenticated}) : super(key: key);
+  Jellyflut({super.key, required this.authenticated});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -99,19 +101,20 @@ class Jellyflut extends StatelessWidget {
                 // needed for AndroidTV to be able to select
                 shortcuts: shortcuts,
                 child: Consumer<ThemeProvider>(
-                    builder: (context, ThemeProvider themeNotifier, child) =>
-                        MaterialApp.router(
-                          title: 'JellyFlut',
-                          locale: context.locale,
-                          debugShowCheckedModeBanner: false,
-                          scrollBehavior: CustomScrollBehavior(),
-                          supportedLocales: context.supportedLocales,
-                          theme: themeNotifier.getThemeData,
-                          localizationsDelegates: context.localizationDelegates,
-                          routerDelegate: customRouter
-                              .delegate(initialRoutes: [HomeRouter()]),
-                          routeInformationParser:
-                              customRouter.defaultRouteParser(),
-                        )))));
+                    builder: (context, ThemeProvider themeNotifier, child) {
+                  FlutterNativeSplash.remove();
+                  return MaterialApp.router(
+                    title: 'JellyFlut',
+                    locale: context.locale,
+                    debugShowCheckedModeBanner: false,
+                    scrollBehavior: CustomScrollBehavior(),
+                    supportedLocales: context.supportedLocales,
+                    theme: themeNotifier.getThemeData,
+                    localizationsDelegates: context.localizationDelegates,
+                    routerDelegate:
+                        customRouter.delegate(initialRoutes: [HomeRouter()]),
+                    routeInformationParser: customRouter.defaultRouteParser(),
+                  );
+                }))));
   }
 }

@@ -7,15 +7,14 @@ class TranscodeCodecPopupButton extends StatefulWidget {
   final GlobalKey<PopupMenuButtonState<String>>? popupButtonKey;
 
   const TranscodeCodecPopupButton(
-      {Key? key,
+      {super.key,
       required this.setting,
       required this.database,
       this.popupButtonKey,
-      this.initialValue})
-      : super(key: key);
+      this.initialValue});
 
   @override
-  _TranscodeCodecPopupButtonState createState() =>
+  State<TranscodeCodecPopupButton> createState() =>
       _TranscodeCodecPopupButtonState();
 }
 
@@ -68,6 +67,6 @@ class _TranscodeCodecPopupButtonState extends State<TranscodeCodecPopupButton> {
   }
 
   List<String> getTranscodeAudioCodecOptions() {
-    return TranscodeAudioCodecName.values.map((e) => e.name).toList();
+    return TranscodeAudioCodec.values.map((e) => e.name).toList();
   }
 }

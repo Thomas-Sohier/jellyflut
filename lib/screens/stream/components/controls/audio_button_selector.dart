@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -8,10 +8,10 @@ import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class AudioButtonSelector extends StatefulWidget {
-  AudioButtonSelector({Key? key}) : super(key: key);
+  AudioButtonSelector({super.key});
 
   @override
-  _AudioButtonSelectorState createState() => _AudioButtonSelectorState();
+  State<AudioButtonSelector> createState() => _AudioButtonSelectorState();
 }
 
 class _AudioButtonSelectorState extends State<AudioButtonSelector> {

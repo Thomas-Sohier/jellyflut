@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
+import 'package:jellyflut/components/zoomable_image/zoomable_image.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
@@ -17,6 +19,8 @@ class AsyncImage extends StatefulWidget {
   final double? height;
   final bool showParent;
   final bool backup;
+  final bool showOverlay;
+  final ZoomableImageController? zoomableImageController;
 
   /// Class to construct a class which return widget with image associated to parameters
   ///
@@ -25,27 +29,36 @@ class AsyncImage extends StatefulWidget {
   /// * [placeholder] can be used to determine a placeholder while loading image
   const AsyncImage(
       {required this.item,
-      Key? key,
+      super.key,
       this.tag = ImageType.PRIMARY,
       this.boxFit = BoxFit.fitHeight,
       this.placeholder,
       this.errorWidget,
       this.width,
       this.height,
+      this.zoomableImageController,
+      this.showOverlay = false,
       this.backup = true,
-      this.showParent = false})
-      : super(key: key);
+      this.showParent = false});
 
   @override
-  _AsyncImageState createState() => _AsyncImageState();
+  State<AsyncImage> createState() => _AsyncImageState();
 }
 
-class _AsyncImageState extends State<AsyncImage> {
+class _AsyncImageState extends State<AsyncImage>
+    with AutomaticKeepAliveClientMixin<AsyncImage> {
   late final Widget child;
+  late final Color? overlay;
   late ImageType imageType;
   late String? imageTag;
   late String? hash;
   late String itemId;
+
+  @override
+  void initState() {
+    super.initState();
+    overlay = widget.showOverlay ? Colors.black.withAlpha(100) : null;
+  }
 
   @override
   void didChangeDependencies() {
@@ -67,6 +80,7 @@ class _AsyncImageState extends State<AsyncImage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5)), child: builder());
   }
@@ -74,23 +88,19 @@ class _AsyncImageState extends State<AsyncImage> {
   Widget builder() {
     final url =
         ItemImageService.getItemImageUrl(itemId, imageTag, type: imageType);
-    if (widget.width != null && widget.height != null) {
-      return OctoImage(
-          image: CachedNetworkImageProvider(url),
-          placeholderBuilder: imagePlaceholder(hash),
-          errorBuilder: imagePlaceholderError(hash),
-          fit: widget.boxFit,
-          width: widget.width,
-          height: widget.height,
-          fadeInDuration: Duration(milliseconds: 300));
-    } else {
-      return OctoImage(
-          image: CachedNetworkImageProvider(url),
-          placeholderBuilder: imagePlaceholder(hash),
-          errorBuilder: imagePlaceholderError(hash),
-          fit: widget.boxFit,
-          fadeInDuration: Duration(milliseconds: 300));
-    }
+    return OctoImage(
+        image: CachedNetworkImageProvider(url),
+        placeholderBuilder: imagePlaceholder(hash),
+        errorBuilder: imagePlaceholderError(hash),
+        imageBuilder: (_, image) => ZoomableImage(
+            key: UniqueKey(),
+            zoomableImageController: widget.zoomableImageController,
+            imageWidget: image,
+            overlay: overlay),
+        fit: widget.boxFit,
+        width: widget.width,
+        height: widget.height,
+        fadeInDuration: Duration(milliseconds: 200));
   }
 
   Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(
@@ -137,4 +147,7 @@ class _AsyncImageState extends State<AsyncImage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

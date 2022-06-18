@@ -9,11 +9,10 @@ class Tab extends StatefulWidget {
   final Future<Category> itemsFuture;
   final double? itemPosterHeight;
 
-  Tab({Key? key, required this.itemsFuture, this.itemPosterHeight})
-      : super(key: key);
+  Tab({super.key, required this.itemsFuture, this.itemPosterHeight});
 
   @override
-  _TabState createState() => _TabState();
+  State<Tab> createState() => _TabState();
 }
 
 class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {

@@ -13,11 +13,10 @@ class ComicView extends StatelessWidget {
   final Function(int currentPage, int nbPage) listener;
 
   ComicView(
-      {Key? key,
+      {super.key,
       required this.controller,
       required this.archive,
-      required this.listener})
-      : super(key: key);
+      required this.listener});
 
   @override
   Widget build(BuildContext context) {

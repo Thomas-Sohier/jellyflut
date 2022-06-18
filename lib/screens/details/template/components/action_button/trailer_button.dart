@@ -4,8 +4,7 @@ class TrailerButton extends StatelessWidget {
   final Item item;
   final double maxWidth;
 
-  const TrailerButton({Key? key, required this.item, this.maxWidth = 150})
-      : super(key: key);
+  const TrailerButton({super.key, required this.item, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {

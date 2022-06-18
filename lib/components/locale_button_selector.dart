@@ -1,12 +1,11 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LocaleButtonSelector extends StatelessWidget {
   final bool showCurrentValue;
   final GlobalKey<PopupMenuButtonState<Locale>>? localeKey;
   const LocaleButtonSelector(
-      {Key? key, this.localeKey, this.showCurrentValue = false})
-      : super(key: key);
+      {super.key, this.localeKey, this.showCurrentValue = false});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +25,13 @@ class LocaleButtonSelector extends StatelessWidget {
 
   List<PopupMenuEntry<Locale>> _localeListTile(BuildContext context) {
     final languageItems = <PopupMenuEntry<Locale>>[];
-    context.supportedLocales
-        .forEach((Locale locale) => languageItems.add(CheckedPopupMenuItem(
-              value: locale,
-              checked: context.locale == locale,
-              child: Text(locale.toLanguageTag()),
-            )));
+    for (var locale in context.supportedLocales) {
+      languageItems.add(CheckedPopupMenuItem(
+        value: locale,
+        checked: context.locale == locale,
+        child: Text(locale.toLanguageTag()),
+      ));
+    }
     return languageItems;
   }
 }

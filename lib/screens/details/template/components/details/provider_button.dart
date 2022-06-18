@@ -1,4 +1,4 @@
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -8,8 +8,7 @@ class ProviderButton extends StatelessWidget {
   final String providerUrl;
 
   const ProviderButton(
-      {Key? key, required this.providerUrl, required this.providerName})
-      : super(key: key);
+      {super.key, required this.providerUrl, required this.providerName});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +31,9 @@ class ProviderButton extends StatelessWidget {
     );
   }
 
-  void _launchURL(String _url) async => await canLaunchUrlString(_url)
-      ? await launchUrlString(_url)
-      : throw 'cannot_open.'.tr(args: [_url]);
+  void _launchURL(String url) async => await canLaunchUrlString(url)
+      ? await launchUrlString(url)
+      : throw 'cannot_open.'.tr(args: [url]);
 
   MaterialStateProperty<Color> buttonBackground(BuildContext context) {
     return MaterialStateProperty.resolveWith<Color>(

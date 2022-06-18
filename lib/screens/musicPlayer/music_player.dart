@@ -16,10 +16,10 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 
 class MusicPlayer extends StatefulWidget {
-  MusicPlayer({Key? key}) : super(key: key);
+  MusicPlayer({super.key});
 
   @override
-  _MusicPlayerState createState() => _MusicPlayerState();
+  State<MusicPlayer> createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {

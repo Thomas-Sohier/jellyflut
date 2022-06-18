@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
@@ -9,24 +9,26 @@ import 'components/search_button.dart';
 import 'components/settings_button.dart';
 
 class HeaderBar extends StatelessWidget {
-  const HeaderBar({Key? key}) : super(key: key);
+  const HeaderBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(width: 48),
-        Flexible(child: SearchButton()),
-        const SizedBox(width: 6),
-        SettingsButton(),
-        const SizedBox(width: 6),
-        DownloadButton(),
-        const SizedBox(width: 12),
-        UserIcon(),
-        const SizedBox(width: 18),
-      ],
+    return SafeArea(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(width: 48),
+          Flexible(child: SearchButton()),
+          const SizedBox(width: 6),
+          SettingsButton(),
+          const SizedBox(width: 6),
+          DownloadButton(),
+          const SizedBox(width: 12),
+          UserIcon(),
+          const SizedBox(width: 18),
+        ],
+      ),
     );
   }
 

@@ -2,7 +2,7 @@ part of '../details_widgets.dart';
 
 class RatingDetailsWidget extends StatelessWidget {
   final String? rating;
-  const RatingDetailsWidget({Key? key, required this.rating}) : super(key: key);
+  const RatingDetailsWidget({super.key, required this.rating});
 
   @override
   Widget build(BuildContext context) {

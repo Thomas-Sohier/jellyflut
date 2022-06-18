@@ -3,7 +3,7 @@ part of '../details_widgets.dart';
 class InfosDetailsWidget extends StatelessWidget {
   final Item item;
 
-  const InfosDetailsWidget({Key? key, required this.item}) : super(key: key);
+  const InfosDetailsWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

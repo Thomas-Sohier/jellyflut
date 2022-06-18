@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
@@ -16,7 +16,7 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -40,7 +40,7 @@ class AuthService {
         case 401:
           throw ('Authentication error, check your login, password and server\'s url');
         case 404:
-          throw ('Url error, check that your\e using the correct url and/or subpath');
+          throw ('Url error, check that youre using the correct url and/or subpath');
         case 500:
           throw ('Server error, check that you can connect to your server');
         default:

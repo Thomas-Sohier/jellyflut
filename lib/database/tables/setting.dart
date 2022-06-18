@@ -1,12 +1,16 @@
-import 'dart:io';
+import 'package:jellyflut/models/enum/streaming_software.dart';
+import 'package:universal_io/io.dart';
 
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 
 String getDefaultPlayer() {
-  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    return 'vlc';
+  if (kIsWeb) {
+    return StreamingSoftware.HTMLPlayer.name;
+  } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    return StreamingSoftware.VLC.name;
   }
-  return 'exoplayer';
+  return StreamingSoftware.EXOPLAYER.name;
 }
 
 class Settings extends Table {
@@ -20,4 +24,5 @@ class Settings extends Table {
   IntColumn get maxAudioBitrate =>
       integer().withDefault(const Constant(8000000))();
   TextColumn get downloadPath => text().nullable()();
+  BoolColumn get directPlay => boolean().withDefault(const Constant(false))();
 }

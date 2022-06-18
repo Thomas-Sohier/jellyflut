@@ -9,14 +9,13 @@ class ListItemsVerticalList extends StatelessWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const ListItemsVerticalList(
-      {Key? key,
+      {super.key,
       this.boxFit = BoxFit.cover,
       this.placeholder,
       required this.scrollPhysics,
       required this.items,
       required this.verticalListPosterHeight,
-      required this.scrollController})
-      : super(key: key);
+      required this.scrollController});
 
   @override
   Widget build(BuildContext context) {

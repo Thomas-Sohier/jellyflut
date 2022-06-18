@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +11,7 @@ import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:wakelock/wakelock.dart';
-
-import 'init_stream.dart';
+import './init_stream/init_stream.dart';
 
 class Stream extends StatefulWidget {
   final Item? item;
@@ -21,7 +20,7 @@ class Stream extends StatefulWidget {
   const Stream({this.item, this.url});
 
   @override
-  _StreamState createState() => _StreamState();
+  State<Stream> createState() => _StreamState();
 }
 
 class _StreamState extends State<Stream> {
@@ -92,11 +91,12 @@ class _StreamState extends State<Stream> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black,
       body: FutureBuilder<Widget>(
         future: videoFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          final isInit = streamingProvider.commonStream?.isInit() ?? false;
+          if (snapshot.hasData && isInit) {
             return Center(child: snapshot.data);
           }
           return PlaceholderScreen(item: widget.item);

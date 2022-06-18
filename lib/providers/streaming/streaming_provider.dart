@@ -7,8 +7,8 @@ import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
 import 'package:jellyflut/models/streaming/streaming_event.dart';
-import 'package:jellyflut/screens/stream/CommonStream/common_stream.dart';
-import 'package:jellyflut/screens/stream/init_stream.dart';
+import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
+import 'package:jellyflut/screens/stream/init_stream/init_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart'
@@ -120,6 +120,10 @@ class StreamingProvider extends ChangeNotifier {
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.AUDIO_TRACK_SELECTED);
     }
+  }
+
+  void notifyInit() {
+    notifyListeners();
   }
 
   Future<void> changeDataSource() async {

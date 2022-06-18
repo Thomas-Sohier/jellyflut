@@ -4,10 +4,10 @@ import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PrevButton extends StatefulWidget {
-  PrevButton({Key? key}) : super(key: key);
+  const PrevButton({super.key});
 
   @override
-  _PrevButtonState createState() => _PrevButtonState();
+  State<PrevButton> createState() => _PrevButtonState();
 }
 
 class _PrevButtonState extends State<PrevButton> {

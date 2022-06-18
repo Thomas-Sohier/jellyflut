@@ -1,7 +1,7 @@
 part of 'sections.dart';
 
 class AccountSection extends StatelessWidget {
-  const AccountSection({Key? key}) : super(key: key);
+  const AccountSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {

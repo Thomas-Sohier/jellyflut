@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/poster/progress_bar.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/components/logo.dart';
 import 'package:uuid/uuid.dart';
 
 class ItemPoster extends StatefulWidget {
@@ -42,11 +42,10 @@ class ItemPoster extends StatefulWidget {
   final BoxFit boxFit;
 
   @override
-  _ItemPosterState createState() => _ItemPosterState();
+  State<ItemPoster> createState() => _ItemPosterState();
 }
 
-class _ItemPosterState extends State<ItemPoster>
-    with SingleTickerProviderStateMixin {
+class _ItemPosterState extends State<ItemPoster> {
   // bool properties to show hide title accordingly
   bool hasTitle = true;
   bool hasSubTitle = false;
@@ -112,14 +111,9 @@ class _ItemPosterState extends State<ItemPoster>
                   placeholder: widget.placeholder,
                   width: widget.width,
                   backup: widget.backup,
+                  showOverlay: widget.imagefilter,
                   height: widget.height,
                   item: widget.item),
-              if (widget.imagefilter)
-                IgnorePointer(
-                    child: Container(
-                        constraints: BoxConstraints.expand(),
-                        decoration:
-                            BoxDecoration(color: Colors.black.withAlpha(100)))),
               if (widget.showOverlay)
                 IgnorePointer(
                     child: Stack(
@@ -134,7 +128,7 @@ class _ItemPosterState extends State<ItemPoster>
                 IgnorePointer(
                     child: Align(
                   alignment: Alignment.center,
-                  child: Logo(item: widget.item),
+                  child: Logo(item: widget.item, selectable: false),
                 )),
               if (widget.item.hasProgress() && widget.showOverlay) progress(),
             ]),

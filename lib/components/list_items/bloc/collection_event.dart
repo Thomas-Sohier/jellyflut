@@ -14,12 +14,10 @@ class ClearItem extends CollectionEvent {
   const ClearItem();
 }
 
-class SortByDate extends CollectionEvent {
-  const SortByDate();
-}
+class SortByField extends CollectionEvent {
+  final FieldsEnum fieldEnum;
 
-class SortByName extends CollectionEvent {
-  const SortByName();
+  const SortByField({required this.fieldEnum});
 }
 
 class LoadMoreItems extends CollectionEvent {

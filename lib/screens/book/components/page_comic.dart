@@ -1,12 +1,12 @@
 import 'package:archive/archive.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:octo_image/octo_image.dart';
 
 class PageComic extends StatelessWidget {
   final ArchiveFile archive;
-  const PageComic({Key? key, required this.archive}) : super(key: key);
+  const PageComic({super.key, required this.archive});
 
   @override
   Widget build(BuildContext context) {

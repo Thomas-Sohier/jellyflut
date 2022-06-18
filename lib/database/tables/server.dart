@@ -1,4 +1,4 @@
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 class Servers extends Table {
   IntColumn get id => integer().autoIncrement()();

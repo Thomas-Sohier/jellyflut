@@ -5,11 +5,10 @@ class PersonField extends StatefulWidget {
   final FormGroup form;
   final double ITEM_HEIGHT = 80;
 
-  const PersonField({Key? key, required this.form, required this.item})
-      : super(key: key);
+  const PersonField({super.key, required this.form, required this.item});
 
   @override
-  _PersonFieldState createState() => _PersonFieldState();
+  State<PersonField> createState() => _PersonFieldState();
 }
 
 class _PersonFieldState extends State<PersonField> {

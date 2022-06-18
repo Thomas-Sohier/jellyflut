@@ -4,26 +4,25 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/list_items/components/episode_item.dart';
+import 'package:jellyflut/components/list_items/components/list_items_sort_field_button.dart';
 import 'package:jellyflut/components/list_items/skeleton/list_items_skeleton.dart';
-
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/components/list_items/components/episode_item.dart';
-import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
-import 'package:jellyflut/shared/extensions/string_extensions.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'bloc/collection_bloc.dart';
 import 'components/music_item.dart';
 
-part 'components/list_title.dart';
-part 'components/list_items_sort.dart';
 part 'components/carousel_background.dart';
+part 'components/list_items_sort.dart';
+part 'components/list_title.dart';
 part 'list_types/list_items_grid.dart';
 part 'list_types/list_items_horizontal_list.dart';
 part 'list_types/list_items_vertical_list.dart';
@@ -46,7 +45,7 @@ class ListItems extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const ListItems.fromFuture(
-      {Key? key,
+      {super.key,
       required this.itemsFuture,
       this.loadMoreFunction = _defaultLoadMore,
       this.collectionBloc,
@@ -60,11 +59,10 @@ class ListItems extends StatefulWidget {
       this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
       this.listType = ListType.POSTER})
-      : category = null,
-        super(key: key);
+      : category = null;
 
   const ListItems.fromList(
-      {Key? key,
+      {super.key,
       required this.category,
       this.collectionBloc,
       this.placeholder,
@@ -78,8 +76,7 @@ class ListItems extends StatefulWidget {
       this.gridPosterHeight = double.infinity,
       this.physics = const ClampingScrollPhysics(),
       this.listType = ListType.POSTER})
-      : itemsFuture = null,
-        super(key: key);
+      : itemsFuture = null;
 
   static Future<Category> _defaultLoadMore(int i, int l) {
     return Future.value(
@@ -87,7 +84,7 @@ class ListItems extends StatefulWidget {
   }
 
   @override
-  _ListItemsState createState() => _ListItemsState();
+  State<ListItems> createState() => _ListItemsState();
 }
 
 class _ListItemsState extends State<ListItems>

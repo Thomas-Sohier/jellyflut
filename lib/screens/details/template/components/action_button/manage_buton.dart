@@ -4,11 +4,10 @@ class ManageButton extends StatefulWidget {
   final Item item;
   final double maxWidth;
 
-  const ManageButton({Key? key, required this.item, this.maxWidth = 150})
-      : super(key: key);
+  const ManageButton({super.key, required this.item, this.maxWidth = 150});
 
   @override
-  _ManageButtonState createState() => _ManageButtonState();
+  State<ManageButton> createState() => _ManageButtonState();
 }
 
 class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {

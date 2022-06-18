@@ -6,7 +6,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/server_item.dart';
 
 class ServerParent extends StatefulWidget {
-  ServerParent({Key? key}) : super(key: key);
+  ServerParent({super.key});
 
   @override
   State<ServerParent> createState() => _ServerParentState();

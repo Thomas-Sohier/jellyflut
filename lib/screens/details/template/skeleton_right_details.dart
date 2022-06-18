@@ -4,85 +4,100 @@ import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SkeletonRightDetails extends StatelessWidget {
-  const SkeletonRightDetails({Key? key}) : super(key: key);
+  const SkeletonRightDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: shimmerColor1,
       highlightColor: shimmerColor2,
-      child: ListView(
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
-        physics: NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        children: [
-          SizedBox(
-            height: 64,
-          ),
-          buttons(),
-          SizedBox(
-            height: 24,
-          ),
-          title(),
-          SizedBox(
-            height: 24,
-          ),
-          infos(),
-          SizedBox(
-            height: 24,
-          ),
-          overview(),
-          SizedBox(
-            height: 24,
-          ),
-          title(),
-          SizedBox(
-            height: 24,
-          ),
-          peoples()
-        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 64),
+            buttons(),
+            const SizedBox(height: 36),
+            Center(child: tagline()),
+            const SizedBox(height: 36),
+            title(),
+            const SizedBox(height: 24),
+            infos(),
+            const SizedBox(height: 24),
+            overview(),
+            const SizedBox(height: 24),
+            providers(),
+            const SizedBox(height: 36),
+            title(),
+            const SizedBox(height: 24),
+            peoples()
+          ],
+        ),
       ),
     );
   }
 
   Widget buttons() {
+    const height = 40.0;
+    const borderRadius = 5.0;
+    const width = 150.0;
     return SizedBox(
-        height: 40,
+        height: height,
         child: ListView.builder(
             itemCount: 4,
+            itemExtent: width,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(right: 20),
+            itemBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    child: Container(
-                      height: 40,
-                      width: 150,
-                      color: Colors.white30,
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    child: SizedBox(
+                      height: height,
+                      width: width,
+                      child: ColoredBox(color: Colors.white30),
                     )))));
   }
 
   Widget title() {
-    return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        child: Container(
-          height: 40,
-          width: 250,
-          color: Colors.white30,
+    const height = 40.0;
+    const borderRadius = 5.0;
+    const width = 250.0;
+    return const ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: ColoredBox(color: Colors.white30),
+        ));
+  }
+
+  Widget tagline() {
+    const height = 40.0;
+    const borderRadius = 5.0;
+    const width = 250.0;
+    return const ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        child: SizedBox(
+          height: height,
+          width: width,
+          child: ColoredBox(color: Colors.white30),
         ));
   }
 
   Widget infos() {
+    const height = 40.0;
     return SizedBox(
-      height: 40,
+      height: height,
       child: Row(
         children: [
           info(),
           info(),
           info(),
-          Spacer(),
+          const Spacer(),
           info(),
           info(),
         ],
@@ -90,48 +105,91 @@ class SkeletonRightDetails extends StatelessWidget {
     );
   }
 
-  Widget info() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
+  Padding info() {
+    const padding = 10.0;
+    const borderRadius = 5.0;
+    return const Padding(
+      padding: EdgeInsets.only(right: padding),
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          child: Container(width: 40, height: 40, color: Colors.white30)),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: ColoredBox(color: Colors.white30),
+          )),
     );
   }
 
   Widget overview() {
+    const paddingBottom = 10.0;
+    const height = 40.0;
+    const borderRadius = 5.0;
+    const itemCount = 6;
+    const skeletonHeight = (height + paddingBottom) * itemCount;
     return SizedBox(
-        height: (40 + 10) * 6,
+        height: skeletonHeight,
         child: ListView.builder(
-            itemCount: 6,
+            itemCount: itemCount,
+            itemExtent: skeletonHeight,
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    child: Container(
-                      height: 40,
+                padding: const EdgeInsets.only(bottom: paddingBottom),
+                child: const ClipRRect(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    child: SizedBox(
+                      height: height,
                       width: double.maxFinite,
-                      color: Colors.white30,
+                      child: ColoredBox(color: Colors.white30),
+                    )))));
+  }
+
+  Widget providers() {
+    const height = 40.0;
+    const borderRadius = 24.0;
+    const width = 150.0;
+    return SizedBox(
+        height: height,
+        child: ListView.builder(
+            itemCount: 3,
+            itemExtent: width,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    child: SizedBox(
+                      height: height,
+                      width: width,
+                      child: ColoredBox(color: Colors.white30),
                     )))));
   }
 
   Widget peoples() {
+    const paddingRight = 10.0;
+    const height = 180.0;
+    const width = 140.0;
+    const borderRadius = 5.0;
+    const itemCount = 15;
     return SizedBox(
-        height: 160,
+        height: height,
         child: ListView.builder(
             physics: NeverScrollableScrollPhysics(),
-            itemCount: 15,
+            itemCount: itemCount,
+            itemExtent: width,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(right: 10),
+            itemBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.only(right: paddingRight),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    child: Container(
-                      width: 120,
-                      height: 160,
-                      color: Colors.white30,
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
+                    child: SizedBox(
+                      height: height,
+                      width: width,
+                      child: ColoredBox(color: Colors.white30),
                     )))));
   }
 }

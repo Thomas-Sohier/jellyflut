@@ -1,10 +1,12 @@
+import 'dart:collection';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart' as model;
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'collection_event.dart';
@@ -14,36 +16,30 @@ part 'collection_state.dart';
 class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   late Item parentItem;
   final List<Item> carouselSliderItems = <Item>[];
-  final List<Item> items = <Item>[];
+  final List<Item> _items = <Item>[];
   final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
   late final Future<model.Category> Function(
       int startIndex, int numberOfItemsToLoad) loadMoreFunction;
 
-  // Sorting by name
-  bool _sortByNameASC = false;
-  bool _sortByNameDSC = true;
-
-  // Sorting by date
-  bool _sortByDateASC = false;
-  bool _sortByDateDSC = true;
-
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
+  SortBy _sortBy = SortBy.ASC;
+  final ValueNotifier<FieldsEnum?> _currentSortedValue =
+      ValueNotifier<FieldsEnum?>(null);
+
+  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  SortBy get getSortOrder => _sortBy;
+  ValueNotifier<FieldsEnum?> get getCurrentSortedValue => _currentSortedValue;
 
   CollectionBloc(
-      {final ListType listType = ListType.GRID,
-      required final Future<model.Category> Function(
-              int startIndex, int numberOfItemsToLoad)
-          loadMoreFunction})
+      {final ListType listType = ListType.GRID, required this.loadMoreFunction})
       : super(CollectionLoadingState()) {
     this.listType.add(listType);
-    this.loadMoreFunction = loadMoreFunction;
     on<AddItem>(addItems);
     on<ClearItem>(removeItems);
     on<LoadMoreItems>(showMoreItem);
-    on<SortByName>(sortByName);
-    on<SortByDate>(sortByDate);
+    on<SortByField>(sortByField);
   }
 
   void initialize(Item item) {
@@ -53,16 +49,16 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }
 
   void removeItems(ClearItem event, Emitter<CollectionState> emit) {
-    items.clear();
+    _items.clear();
     emit(CollectionLoadedState());
   }
 
   void addItems(AddItem event, Emitter<CollectionState> emit) {
     emit(CollectionLoadingState());
-    items.addAll(event.items);
+    _items.addAll(event.items);
     // Filter only unplayed items
     final unplayedItems =
-        items.where((element) => !element.isPlayed()).toList();
+        _items.where((element) => !element.isPlayed()).toList();
     unplayedItems.shuffle();
     carouselSliderItems.addAll(event.items);
     emit(CollectionLoadedState());
@@ -74,47 +70,25 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
       final category = await loadMoreFunction(items.length, 100);
       if (category.items.isNotEmpty) {
         _blockItemsLoading = false;
-        items.addAll(category.items);
+        _items.addAll(category.items);
         emit(CollectionLoadedState());
       }
     }
   }
 
-  void sortByName(SortByName event, Emitter<CollectionState> emit) async {
+  void sortByField(SortByField event, Emitter<CollectionState> emit) async {
     emit(CollectionLoadingState());
-    final _items = await _sortByName();
-    items.clear();
-    items.addAll(_items);
+    final items = await _sortByField(event.fieldEnum, _sortBy);
+    _items.clear();
+    _items.addAll(items);
     emit(CollectionLoadedState());
   }
 
-  void sortByDate(SortByDate event, Emitter<CollectionState> emit) async {
-    emit(CollectionLoadingState());
-    final _items = await _sortByDate();
-    items.clear();
-    items.addAll(_items);
-    emit(CollectionLoadedState());
-  }
-
-  Future<List<Item>> _sortByName() async {
-    final i = await compute(_sortItemByName, {
-      'items': items,
-      'sortByNameASC': _sortByNameASC,
-      'sortByNameDSC': _sortByNameDSC
-    });
-    _sortByNameASC = i['sortByNameASC'];
-    _sortByNameDSC = i['sortByNameDSC'];
-    return i['items'];
-  }
-
-  Future<List<Item>> _sortByDate() async {
-    var i = await compute(_sortItemByDate, {
-      'items': items,
-      'sortByDateASC': _sortByDateASC,
-      'sortByDateDSC': _sortByDateDSC
-    });
-    _sortByDateASC = i['sortByDateASC'];
-    _sortByDateDSC = i['sortByDateDSC'];
+  Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
+    final i = await compute(_sortItemByField,
+        {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
+    _sortBy = sortBy.reverse();
+    _currentSortedValue.value = fieldEnum;
     return i['items'];
   }
 
@@ -128,63 +102,62 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         imageTypeLimit: 1,
         recursive: false,
         startIndex: startIndex,
-        includeItemTypes: item
-            .getCollectionType()
-            .map((e) => e.getValue())
-            .toList()
-            .join(','),
+        includeItemTypes:
+            item.getCollectionType().map((e) => e.value).toList().join(','),
         limit: 100);
   }
 }
 
-Map<String, dynamic> _sortItemByName(Map<String, dynamic> arg) {
-  List<Item> items = arg['items'];
-  bool sortByNameASC = arg['sortByNameASC'];
-  bool sortByNameDSC = arg['sortByNameDSC'];
-  if (!sortByNameASC || (!sortByNameASC && !sortByNameDSC)) {
-    items.sort((a, b) => a.name.compareTo(b.name));
-    sortByNameASC = true;
-    sortByNameDSC = false;
-  } else if (sortByNameASC) {
-    items.sort((a, b) => b.name.compareTo(a.name));
-    sortByNameASC = false;
-    sortByNameDSC = true;
-  }
-  return {
-    'items': items,
-    'sortByNameASC': sortByNameASC,
-    'sortByNameDSC': sortByNameDSC
-  };
+enum SortBy {
+  ASC,
+  DESC;
+
+  const SortBy();
+
+  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
 }
 
-Map<String, dynamic> _sortItemByDate(Map<String, dynamic> arg) {
-  List<Item> items = arg['items'];
-  bool sortByDateASC = arg['sortByDateASC'];
-  bool sortByDateDSC = arg['sortByDateDSC'];
-  if (!sortByDateASC || (!sortByDateASC && !sortByDateDSC)) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return a.dateCreated!.compareTo(b.dateCreated!);
-      } else {
-        return -1;
-      }
-    });
-    sortByDateASC = true;
-    sortByDateDSC = false;
-  } else if (sortByDateASC) {
-    items.sort((a, b) {
-      if (a.dateCreated != null && b.dateCreated != null) {
-        return b.dateCreated!.compareTo(a.dateCreated!);
-      } else {
-        return -1;
-      }
-    });
-    sortByDateASC = false;
-    sortByDateDSC = true;
+Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
+  late final sortingFunction;
+  final List<Item> items = arg['items'];
+  final String fieldToSort = arg['field'];
+  final SortBy sortBy = arg['sortBy'];
+
+  if (sortBy == SortBy.ASC) {
+    sortingFunction = _sortByASC;
+  } else if (sortBy == SortBy.DESC) {
+    sortingFunction = _sortByDESC;
   }
-  return {
-    'items': items,
-    'sortByDateASC': sortByDateASC,
-    'sortByDateDSC': sortByDateDSC
-  };
+
+  items.sort((a, b) {
+    final aField = a[fieldToSort];
+    final bField = b[fieldToSort];
+    return sortingFunction(aField, bField);
+  });
+
+  return {'items': items};
+}
+
+int _sortByASC(dynamic a, dynamic b) {
+  if (a != null && b != null) {
+    return b.compareTo(a);
+  } else if (a != null && b == null) {
+    return -1;
+  }
+  if (a == null && b == null) {
+    return 1;
+  }
+  return 0;
+}
+
+int _sortByDESC(dynamic a, dynamic b) {
+  if (a != null && b != null) {
+    return a.compareTo(b);
+  } else if (a != null && b == null) {
+    return -1;
+  }
+  if (a == null && b == null) {
+    return 1;
+  }
+  return 0;
 }

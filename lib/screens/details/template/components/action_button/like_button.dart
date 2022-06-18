@@ -4,8 +4,7 @@ class LikeButton extends StatefulWidget {
   final Item item;
   final double maxWidth;
 
-  const LikeButton({Key? key, required this.item, this.maxWidth = 150})
-      : super(key: key);
+  const LikeButton({super.key, required this.item, this.maxWidth = 150});
 
   @override
   State<StatefulWidget> createState() {

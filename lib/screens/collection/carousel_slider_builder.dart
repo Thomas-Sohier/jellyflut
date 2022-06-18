@@ -7,10 +7,10 @@ import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CarouselSliderBuilder extends StatefulWidget {
-  CarouselSliderBuilder({Key? key}) : super(key: key);
+  CarouselSliderBuilder({super.key});
 
   @override
-  _CarouselSliderBuilderState createState() => _CarouselSliderBuilderState();
+  State<CarouselSliderBuilder> createState() => _CarouselSliderBuilderState();
 }
 
 class _CarouselSliderBuilderState extends State<CarouselSliderBuilder> {

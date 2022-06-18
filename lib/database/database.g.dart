@@ -12,8 +12,7 @@ class Server extends DataClass implements Insertable<Server> {
   final String url;
   final String name;
   Server({required this.id, required this.url, required this.name});
-  factory Server.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Server.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Server(
       id: const IntType()
@@ -43,7 +42,7 @@ class Server extends DataClass implements Insertable<Server> {
 
   factory Server.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Server(
       id: serializer.fromJson<int>(json['id']),
       url: serializer.fromJson<String>(json['url']),
@@ -52,7 +51,7 @@ class Server extends DataClass implements Insertable<Server> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'url': serializer.toJson<String>(url),
@@ -203,7 +202,7 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Server.fromData(data, attachedDatabase,
+    return Server.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -227,8 +226,7 @@ class User extends DataClass implements Insertable<User> {
       required this.apiKey,
       required this.settingsId,
       required this.serverId});
-  factory User.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory User.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return User(
       id: const IntType()
@@ -270,7 +268,7 @@ class User extends DataClass implements Insertable<User> {
 
   factory User.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return User(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
@@ -282,7 +280,7 @@ class User extends DataClass implements Insertable<User> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
@@ -525,7 +523,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data, attachedDatabase,
+    return User.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -542,15 +540,16 @@ class Setting extends DataClass implements Insertable<Setting> {
   final int maxVideoBitrate;
   final int maxAudioBitrate;
   final String? downloadPath;
+  final bool directPlay;
   Setting(
       {required this.id,
       required this.preferredPlayer,
       required this.preferredTranscodeAudioCodec,
       required this.maxVideoBitrate,
       required this.maxAudioBitrate,
-      this.downloadPath});
-  factory Setting.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+      this.downloadPath,
+      required this.directPlay});
+  factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Setting(
       id: const IntType()
@@ -565,6 +564,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           data['${effectivePrefix}max_audio_bitrate'])!,
       downloadPath: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}download_path']),
+      directPlay: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}direct_play'])!,
     );
   }
   @override
@@ -579,6 +580,7 @@ class Setting extends DataClass implements Insertable<Setting> {
     if (!nullToAbsent || downloadPath != null) {
       map['download_path'] = Variable<String?>(downloadPath);
     }
+    map['direct_play'] = Variable<bool>(directPlay);
     return map;
   }
 
@@ -592,12 +594,13 @@ class Setting extends DataClass implements Insertable<Setting> {
       downloadPath: downloadPath == null && nullToAbsent
           ? const Value.absent()
           : Value(downloadPath),
+      directPlay: Value(directPlay),
     );
   }
 
   factory Setting.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Setting(
       id: serializer.fromJson<int>(json['id']),
       preferredPlayer: serializer.fromJson<String>(json['preferredPlayer']),
@@ -606,11 +609,12 @@ class Setting extends DataClass implements Insertable<Setting> {
       maxVideoBitrate: serializer.fromJson<int>(json['maxVideoBitrate']),
       maxAudioBitrate: serializer.fromJson<int>(json['maxAudioBitrate']),
       downloadPath: serializer.fromJson<String?>(json['downloadPath']),
+      directPlay: serializer.fromJson<bool>(json['directPlay']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preferredPlayer': serializer.toJson<String>(preferredPlayer),
@@ -619,6 +623,7 @@ class Setting extends DataClass implements Insertable<Setting> {
       'maxVideoBitrate': serializer.toJson<int>(maxVideoBitrate),
       'maxAudioBitrate': serializer.toJson<int>(maxAudioBitrate),
       'downloadPath': serializer.toJson<String?>(downloadPath),
+      'directPlay': serializer.toJson<bool>(directPlay),
     };
   }
 
@@ -628,7 +633,8 @@ class Setting extends DataClass implements Insertable<Setting> {
           String? preferredTranscodeAudioCodec,
           int? maxVideoBitrate,
           int? maxAudioBitrate,
-          String? downloadPath}) =>
+          Value<String?> downloadPath = const Value.absent(),
+          bool? directPlay}) =>
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -636,7 +642,9 @@ class Setting extends DataClass implements Insertable<Setting> {
             preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
         maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
         maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
-        downloadPath: downloadPath ?? this.downloadPath,
+        downloadPath:
+            downloadPath.present ? downloadPath.value : this.downloadPath,
+        directPlay: directPlay ?? this.directPlay,
       );
   @override
   String toString() {
@@ -647,7 +655,8 @@ class Setting extends DataClass implements Insertable<Setting> {
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
-          ..write('downloadPath: $downloadPath')
+          ..write('downloadPath: $downloadPath, ')
+          ..write('directPlay: $directPlay')
           ..write(')'))
         .toString();
   }
@@ -659,7 +668,8 @@ class Setting extends DataClass implements Insertable<Setting> {
       preferredTranscodeAudioCodec,
       maxVideoBitrate,
       maxAudioBitrate,
-      downloadPath);
+      downloadPath,
+      directPlay);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -670,7 +680,8 @@ class Setting extends DataClass implements Insertable<Setting> {
               this.preferredTranscodeAudioCodec &&
           other.maxVideoBitrate == this.maxVideoBitrate &&
           other.maxAudioBitrate == this.maxAudioBitrate &&
-          other.downloadPath == this.downloadPath);
+          other.downloadPath == this.downloadPath &&
+          other.directPlay == this.directPlay);
 }
 
 class SettingsCompanion extends UpdateCompanion<Setting> {
@@ -680,6 +691,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   final Value<int> maxVideoBitrate;
   final Value<int> maxAudioBitrate;
   final Value<String?> downloadPath;
+  final Value<bool> directPlay;
   const SettingsCompanion({
     this.id = const Value.absent(),
     this.preferredPlayer = const Value.absent(),
@@ -687,6 +699,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
     this.downloadPath = const Value.absent(),
+    this.directPlay = const Value.absent(),
   });
   SettingsCompanion.insert({
     this.id = const Value.absent(),
@@ -695,6 +708,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     this.maxVideoBitrate = const Value.absent(),
     this.maxAudioBitrate = const Value.absent(),
     this.downloadPath = const Value.absent(),
+    this.directPlay = const Value.absent(),
   });
   static Insertable<Setting> custom({
     Expression<int>? id,
@@ -703,6 +717,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     Expression<int>? maxVideoBitrate,
     Expression<int>? maxAudioBitrate,
     Expression<String?>? downloadPath,
+    Expression<bool>? directPlay,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -712,6 +727,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       if (maxVideoBitrate != null) 'max_video_bitrate': maxVideoBitrate,
       if (maxAudioBitrate != null) 'max_audio_bitrate': maxAudioBitrate,
       if (downloadPath != null) 'download_path': downloadPath,
+      if (directPlay != null) 'direct_play': directPlay,
     });
   }
 
@@ -721,7 +737,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       Value<String>? preferredTranscodeAudioCodec,
       Value<int>? maxVideoBitrate,
       Value<int>? maxAudioBitrate,
-      Value<String?>? downloadPath}) {
+      Value<String?>? downloadPath,
+      Value<bool>? directPlay}) {
     return SettingsCompanion(
       id: id ?? this.id,
       preferredPlayer: preferredPlayer ?? this.preferredPlayer,
@@ -730,6 +747,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
       maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
       downloadPath: downloadPath ?? this.downloadPath,
+      directPlay: directPlay ?? this.directPlay,
     );
   }
 
@@ -755,6 +773,9 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     if (downloadPath.present) {
       map['download_path'] = Variable<String?>(downloadPath.value);
     }
+    if (directPlay.present) {
+      map['direct_play'] = Variable<bool>(directPlay.value);
+    }
     return map;
   }
 
@@ -767,7 +788,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
               'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
-          ..write('downloadPath: $downloadPath')
+          ..write('downloadPath: $downloadPath, ')
+          ..write('directPlay: $directPlay')
           ..write(')'))
         .toString();
   }
@@ -824,6 +846,14 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>(
       'download_path', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _directPlayMeta = const VerificationMeta('directPlay');
+  @override
+  late final GeneratedColumn<bool?> directPlay = GeneratedColumn<bool?>(
+      'direct_play', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (direct_play IN (0, 1))',
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -831,7 +861,8 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
         preferredTranscodeAudioCodec,
         maxVideoBitrate,
         maxAudioBitrate,
-        downloadPath
+        downloadPath,
+        directPlay
       ];
   @override
   String get aliasedName => _alias ?? 'settings';
@@ -876,6 +907,12 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
           downloadPath.isAcceptableOrUnknown(
               data['download_path']!, _downloadPathMeta));
     }
+    if (data.containsKey('direct_play')) {
+      context.handle(
+          _directPlayMeta,
+          directPlay.isAcceptableOrUnknown(
+              data['direct_play']!, _directPlayMeta));
+    }
     return context;
   }
 
@@ -883,7 +920,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data, attachedDatabase,
+    return Setting.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -907,8 +944,7 @@ class Download extends DataClass implements Insertable<Download> {
       this.primary,
       this.backdrop,
       this.item});
-  factory Download.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+  factory Download.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Download(
       id: const StringType()
@@ -963,7 +999,7 @@ class Download extends DataClass implements Insertable<Download> {
 
   factory Download.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return Download(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String?>(json['name']),
@@ -975,7 +1011,7 @@ class Download extends DataClass implements Insertable<Download> {
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String?>(name),
@@ -988,18 +1024,18 @@ class Download extends DataClass implements Insertable<Download> {
 
   Download copyWith(
           {String? id,
-          String? name,
+          Value<String?> name = const Value.absent(),
           String? path,
-          Uint8List? primary,
-          Uint8List? backdrop,
-          Map<String, dynamic>? item}) =>
+          Value<Uint8List?> primary = const Value.absent(),
+          Value<Uint8List?> backdrop = const Value.absent(),
+          Value<Map<String, dynamic>?> item = const Value.absent()}) =>
       Download(
         id: id ?? this.id,
-        name: name ?? this.name,
+        name: name.present ? name.value : this.name,
         path: path ?? this.path,
-        primary: primary ?? this.primary,
-        backdrop: backdrop ?? this.backdrop,
-        item: item ?? this.item,
+        primary: primary.present ? primary.value : this.primary,
+        backdrop: backdrop.present ? backdrop.value : this.backdrop,
+        item: item.present ? item.value : this.item,
       );
   @override
   String toString() {
@@ -1206,7 +1242,7 @@ class $DownloadsTable extends Downloads
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Download.fromData(data, attachedDatabase,
+    return Download.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
@@ -1221,6 +1257,7 @@ class $DownloadsTable extends Downloads
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$Database.connect(DatabaseConnection c) : super.connect(c);
   late final $ServersTable servers = $ServersTable(this);
   late final $UsersTable users = $UsersTable(this);
   late final $SettingsTable settings = $SettingsTable(this);

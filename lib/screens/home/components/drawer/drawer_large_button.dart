@@ -10,8 +10,7 @@ class DrawerLargeButton extends StatelessWidget {
   final String name;
 
   const DrawerLargeButton(
-      {Key? key, required this.index, required this.icon, required this.name})
-      : super(key: key);
+      {super.key, required this.index, required this.icon, required this.name});
 
   @override
   Widget build(BuildContext context) {

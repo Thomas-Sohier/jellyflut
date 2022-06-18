@@ -2,10 +2,10 @@ part of 'sections.dart';
 
 class AudioBitrateValueEditor extends StatefulWidget {
   final Database database;
-  AudioBitrateValueEditor({Key? key, required this.database}) : super(key: key);
+  AudioBitrateValueEditor({super.key, required this.database});
 
   @override
-  _AudioBitrateValueEditorState createState() =>
+  State<AudioBitrateValueEditor> createState() =>
       _AudioBitrateValueEditorState();
 }
 

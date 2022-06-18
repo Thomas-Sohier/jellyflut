@@ -5,8 +5,7 @@ class ListItemsSort extends StatelessWidget {
   final List<ListType> listTypes;
 
   const ListItemsSort(
-      {Key? key, this.child = const SizedBox(), required this.listTypes})
-      : super(key: key);
+      {super.key, this.child = const SizedBox(), required this.listTypes});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +46,7 @@ class ListItemsSort extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                       onPressed: () => sortByName(context)),
+                  ListItemsSortFieldButton()
                 ]),
           ),
           child
@@ -55,12 +55,12 @@ class ListItemsSort extends StatelessWidget {
 
   void sortByDate(final BuildContext context) {
     final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByDate());
+    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.DATECREATED));
   }
 
   void sortByName(final BuildContext context) {
     final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByName());
+    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.NAME));
   }
 
   void getNextListType(final BuildContext context) async {

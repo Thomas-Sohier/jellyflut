@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:jellyflut/components/fav_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_metadata.dart';
 import 'package:jellyflut/screens/musicPlayer/models/audio_source.dart';
-import 'package:jellyflut/shared/shared.dart';
 import 'package:provider/provider.dart';
 
 class SongInfos extends StatefulWidget {
-  SongInfos({Key? key}) : super(key: key);
+  const SongInfos({super.key});
 
   @override
-  _SongInfosState createState() => _SongInfosState();
+  State<SongInfos> createState() => _SongInfosState();
 }
 
 class _SongInfosState extends State<SongInfos> {

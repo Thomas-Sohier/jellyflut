@@ -12,7 +12,7 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 
 class Channels extends StatefulWidget {
   final SplayTreeMap<Item, List<Item>> channels;
-  Channels({Key? key, required this.channels}) : super(key: key);
+  Channels({super.key, required this.channels});
 
   @override
   State<Channels> createState() => _ChannelsState();
@@ -138,9 +138,7 @@ class _ChannelsState extends State<Channels> {
                     ),
                     Expanded(
                         child: Text(
-                      formatter.format(program.startDate!) +
-                          ' - ' +
-                          formatter.format(program.endDate!),
+                      '${formatter.format(program.startDate!)} - ${formatter.format(program.endDate!)}',
                       style: Theme.of(context).textTheme.caption,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

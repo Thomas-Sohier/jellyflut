@@ -1,5 +1,6 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
@@ -14,7 +15,7 @@ import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
 import 'package:path/path.dart' as p;
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:flutter/services.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -67,14 +68,14 @@ class StreamingService {
 
     final url = '${server.url}/Sessions/Playing/Progress';
 
-    final _mediaPlayedInfos = mediaPlayedInfos.toJson();
-    _mediaPlayedInfos.removeWhere((key, value) => value == null);
+    final mediaPlayedInfosJSON = mediaPlayedInfos.toJson();
+    mediaPlayedInfosJSON.removeWhere((key, value) => value == null);
 
-    final _json = json.encode(_mediaPlayedInfos);
+    final json = convert.json.encode(mediaPlayedInfos);
 
     dio.options.contentType = 'application/json';
     dio
-        .post(url, data: _json)
+        .post(url, data: json)
         .then((_) => print('progress ok'))
         .catchError((onError) => print(onError));
   }
@@ -154,9 +155,9 @@ class StreamingService {
           streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
     }
 
-    final _audioStreamIndex = audioStreamIndex ??
+    final finalAudioStreamIndex = audioStreamIndex ??
         streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
-    final _subtitleStreamIndex = subtitleStreamIndex ??
+    final finalSubtitleStreamIndex = subtitleStreamIndex ??
         streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
 
     profile ??= DeviceProfileParent();
@@ -168,11 +169,9 @@ class StreamingService {
     profile.enableDirectStream ??= true;
     profile.autoOpenLiveStream ??= true;
     profile.deviceProfile ??= DeviceProfile();
-    profile.audioStreamIndex ??= _audioStreamIndex;
-    profile.subtitleStreamIndex ??= _subtitleStreamIndex;
+    profile.audioStreamIndex ??= finalAudioStreamIndex;
+    profile.subtitleStreamIndex ??= finalSubtitleStreamIndex;
     profile.startTimeTicks ??= startTimeTick;
-    // profile.mediaSourceId ??= itemId;
-    // profile.liveStreamId ??= itemId;
     profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
     profile.maxAudioChannels ??= 5; // TODO make this configurable
 
@@ -247,30 +246,33 @@ class StreamingService {
   }
 
   static Future<DeviceProfileParent?> isCodecSupported() async {
+    final profiles = PlayersProfile();
     // TODO make IOS
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      final playerProfile = profiles.webOs;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
+    } else if (Platform.isAndroid) {
       final streamingSoftwareDB = await AppDatabase()
           .getDatabase
           .settingsDao
           .getSettingsById(userApp!.settingsId);
-      final streamingSoftware = StreamingSoftwareName.values.firstWhere((e) =>
-          e.toString() ==
-          'StreamingSoftwareName.' + streamingSoftwareDB.preferredPlayer);
+      final streamingSoftware =
+          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
       switch (streamingSoftware) {
-        case StreamingSoftwareName.vlc:
-          final playerProfile =
-              PlayersProfile().getByName(PlayerProfileName.VLC_PHONE);
+        case StreamingSoftware.VLC:
+          final playerProfile = profiles.vlcPhone;
           return DeviceProfileParent(
-              deviceProfile: playerProfile?.deviceProfile);
-        case StreamingSoftwareName.exoplayer:
+              deviceProfile: playerProfile.deviceProfile);
+        case StreamingSoftware.EXOPLAYER:
+        case StreamingSoftware.AVPLAYER:
+        default:
           final deviceProfile = await getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-      final playerProfile =
-          PlayersProfile().getByName(PlayerProfileName.VLC_COMPUTER);
-      return DeviceProfileParent(deviceProfile: playerProfile?.deviceProfile);
+      final playerProfile = profiles.vlcComputer;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     }
     return null;
   }
@@ -325,15 +327,7 @@ class StreamingService {
   }
 
   static String _generateItemIdWithHyphen(String id) {
-    return id.substring(0, 8) +
-        '-' +
-        id.substring(8, 12) +
-        '-' +
-        id.substring(12, 16) +
-        '-' +
-        id.substring(16, 20) +
-        '-' +
-        id.substring(20, id.length);
+    return '${id.substring(0, 8)}-${id.substring(8, 12)}-${id.substring(12, 16)}-${id.substring(16, 20)}-${id.substring(20, id.length)}';
   }
 
   static Future<dynamic> bitrateTest({required int size}) async {

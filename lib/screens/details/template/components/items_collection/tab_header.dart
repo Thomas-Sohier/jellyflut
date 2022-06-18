@@ -1,19 +1,30 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 class TabHeader extends SliverPersistentHeaderDelegate {
   final Future<Category> seasons;
   final TabController? tabController;
+  final EdgeInsets padding;
+  static const height = 80.0;
 
-  TabHeader({Key? key, required this.seasons, this.tabController});
+  TabHeader(
+      {Key? key,
+      required this.seasons,
+      this.tabController,
+      this.padding = const EdgeInsets.only(left: 12)});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BlocProvider.of<DetailsBloc>(context).shrinkOffsetChanged(shrinkOffset);
+
     return FutureBuilder<Category>(
         future: seasons,
         builder: (context, snapshot) {
@@ -21,13 +32,25 @@ class TabHeader extends SliverPersistentHeaderDelegate {
             return ClipRRect(
               child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children:
-                          getTabsHeader(snapshot.data?.items ?? <Item>[]))),
+                  child: SizedBox(
+                    height: height,
+                    child: StreamBuilder<bool>(
+                        initialData: false,
+                        stream: BlocProvider.of<DetailsBloc>(context)
+                            .pinnedHeaderStream,
+                        builder: (_, headerSnapsot) => AnimatedPadding(
+                            padding: headerSnapsot.data!
+                                ? padding.copyWith(left: padding.left + 40)
+                                : padding,
+                            duration: Duration(milliseconds: 200),
+                            child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: getTabsHeader(
+                                    snapshot.data?.items ?? <Item>[])))),
+                  )),
             );
           }
-          return const SizedBox(height: 50.0);
+          return const SizedBox(height: height);
         });
   }
 
@@ -44,8 +67,9 @@ class TabHeader extends SliverPersistentHeaderDelegate {
     items.sort((Item item1, Item item2) =>
         item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
         length + 1);
-    items.forEach(
-        (Item item) => headers.add(tabHeader(item, items.indexOf(item))));
+    for (var item in items) {
+      headers.add(tabHeader(item, items.indexOf(item)));
+    }
     return headers;
   }
 
@@ -64,10 +88,10 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 80.0;
+  double get maxExtent => height;
 
   @override
-  double get minExtent => 80.0;
+  double get minExtent => height;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

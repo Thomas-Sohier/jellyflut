@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 
 class SongSlider extends StatefulWidget {
-  SongSlider({Key? key}) : super(key: key);
+  const SongSlider({super.key});
 
   @override
-  _SongSliderState createState() => _SongSliderState();
+  State<SongSlider> createState() => _SongSliderState();
 }
 
 class _SongSliderState extends State<SongSlider> {

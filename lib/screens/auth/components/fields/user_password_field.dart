@@ -5,13 +5,12 @@ class UserPasswordField extends StatelessWidget {
   final VoidCallback onSubmitted;
 
   const UserPasswordField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsType.USER_PASSWORD.getValue(),
+        formControlName: FieldsType.USER_PASSWORD.value,
         onSubmitted: onSubmitted,
         keyboardType: TextInputType.text,
         obscureText: true,

@@ -2,7 +2,7 @@ part of '../details_widgets.dart';
 
 class TaglineDetailsWidget extends StatelessWidget {
   final Item item;
-  const TaglineDetailsWidget({Key? key, required this.item}) : super(key: key);
+  const TaglineDetailsWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

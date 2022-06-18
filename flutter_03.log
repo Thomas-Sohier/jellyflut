@@ -1,0 +1,71 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --start-paused -d chrome --devtools-server-address http://127.0.0.1:9100/ --target lib/main.dart
+
+## exception
+
+StateError: Bad state: No context with the running Dart application.
+
+```
+#0      RemoteDebuggerExecutionContext.id (package:dwds/src/debugging/execution_context.dart:55:7)
+<asynchronous suspension>
+#1      AppInspector._getExtensionRpcs (package:dwds/src/debugging/inspector.dart:538:20)
+<asynchronous suspension>
+#2      AppInspector._initialize (package:dwds/src/debugging/inspector.dart:97:34)
+<asynchronous suspension>
+#3      AppInspector.initialize (package:dwds/src/debugging/inspector.dart:160:5)
+<asynchronous suspension>
+#4      ChromeProxyService.createIsolate (package:dwds/src/services/chrome_proxy_service.dart:216:18)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 3.0.0, on Fedora Linux 36 (Workstation Edition) 5.17.13-300.fc36.x86_64, locale fr_FR.UTF-8)
+    • Flutter version 3.0.0 at /home/thomas/Software/flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision ee4e09cce0 (il y a 5 semaines), 2022-05-09 16:45:18 -0700
+    • Engine revision d1b9a6938a
+    • Dart version 2.17.0
+    • DevTools version 2.12.2
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 31.0.0)
+    • Android SDK at /home/thomas/Android/Sdk
+    • Platform android-31, build-tools 31.0.0
+    • Java binary at: /home/thomas/Documents/android-studio/jre/bin/java
+    • Java version OpenJDK Runtime Environment (build 11.0.8+0-b944-P17168821)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at google-chrome
+
+[✓] Linux toolchain - develop for Linux desktop
+    • clang version 14.0.0 (Fedora 14.0.0-1.fc36)
+    • cmake version 3.22.2
+    • ninja version 1.10.2
+    • pkg-config version 1.8.0
+
+[✓] Android Studio (version 4.2)
+    • Android Studio at /home/thomas/Documents/android-studio
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version OpenJDK Runtime Environment (build 11.0.8+0-b944-P17168821)
+
+[✓] VS Code (version 1.68.0)
+    • VS Code at /usr/share/code
+    • Flutter extension version 3.42.0
+
+[✓] Connected device (1 available)
+    • Chrome (web) • chrome • web-javascript • Google Chrome 102.0.5005.115
+
+[✓] HTTP Host Availability
+    • All required HTTP hosts are available
+
+• No issues found!
+```

@@ -2,15 +2,15 @@ part of '../fields.dart';
 
 class TitleField extends StatelessWidget {
   final FormGroup form;
-  const TitleField({Key? key, required this.form}) : super(key: key);
+  const TitleField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsEnum.NAME.getName(),
+        formControlName: FieldsEnum.NAME.name,
         validationMessages: (control) =>
             {ValidationMessage.required: 'The title must not be empty'},
-        onSubmitted: () => form.focus(FieldsEnum.ORIGINALTITLE.getName()),
+        onSubmitted: () => form.focus(FieldsEnum.ORIGINALTITLE.name),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(labelText: 'Title'));
   }

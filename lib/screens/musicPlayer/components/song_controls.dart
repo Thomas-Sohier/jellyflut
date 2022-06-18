@@ -6,10 +6,10 @@ import 'package:jellyflut/screens/musicPlayer/components/next_button.dart';
 import 'package:jellyflut/screens/musicPlayer/components/prev_button.dart';
 
 class SongControls extends StatefulWidget {
-  SongControls({Key? key}) : super(key: key);
+  const SongControls({super.key});
 
   @override
-  _SongControlsState createState() => _SongControlsState();
+  State<SongControls> createState() => _SongControlsState();
 }
 
 class _SongControlsState extends State<SongControls> {

@@ -1,15 +1,15 @@
 class Condition {
-  Condition({
+  const Condition({
     required this.condition,
     required this.property,
     required this.value,
     this.isRequired,
   });
 
-  String condition;
-  String property;
-  dynamic value;
-  bool? isRequired;
+  final String condition;
+  final String property;
+  final dynamic value;
+  final bool? isRequired;
 
   factory Condition.fromMap(Map<String, dynamic> json) => Condition(
         condition: json['Condition'],

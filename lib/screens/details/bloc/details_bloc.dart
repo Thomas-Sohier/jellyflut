@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -19,12 +20,15 @@ part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   late DetailsInfosFuture _d;
+  ScreenLayout _screenLayout;
+  final BehaviorSubject<bool> pinnedHeaderStream =
+      BehaviorSubject.seeded(false);
   final BehaviorSubject<List<Color>> gradientStream = BehaviorSubject();
   final BehaviorSubject<ThemeData> themeStream = BehaviorSubject();
 
   DetailsInfosFuture get detailsInfos => _d;
 
-  DetailsBloc(this._d) : super(DetailsLoadedState(_d)) {
+  DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState(_d)) {
     on<DetailsEvent>(_onEvent);
   }
 
@@ -35,12 +39,32 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     } else if (event is DetailsUpdateItem) {
       _d.item = Future.value(event.item);
       emit(DetailsLoadedState(_d));
+    } else if (event is DetailsScreenSizeChanged) {
+      _screenLayoutChanged(event.screenLayout);
+      emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateColor) {
       await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
       themeStream.add(event.theme);
       _d.theme = event.theme;
       emit(DetailsLoadedState(_d));
+    }
+  }
+
+  void shrinkOffsetChanged(double shrinkOffset) {
+    if (_screenLayout == ScreenLayout.mobile) {
+      if (shrinkOffset > 0) {
+        pinnedHeaderStream.add(true);
+      } else {
+        pinnedHeaderStream.add(false);
+      }
+    }
+  }
+
+  void _screenLayoutChanged(ScreenLayout screenLayout) {
+    _screenLayout = screenLayout;
+    if (screenLayout == ScreenLayout.desktop) {
+      pinnedHeaderStream.add(false);
     }
   }
 

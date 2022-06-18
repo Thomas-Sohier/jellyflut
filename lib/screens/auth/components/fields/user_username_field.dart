@@ -5,13 +5,12 @@ class UserUsernameField extends StatelessWidget {
   final VoidCallback onSubmitted;
 
   const UserUsernameField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsType.USER_USERNAME.getValue(),
+        formControlName: FieldsType.USER_USERNAME.value,
         onSubmitted: onSubmitted,
         autofocus: true,
         keyboardType: TextInputType.name,

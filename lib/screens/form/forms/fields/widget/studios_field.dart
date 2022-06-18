@@ -5,11 +5,10 @@ class StudiosField extends StatefulWidget {
   final FormGroup form;
   final double ITEM_HEIGHT = 40;
 
-  const StudiosField({Key? key, required this.form, required this.item})
-      : super(key: key);
+  const StudiosField({super.key, required this.form, required this.item});
 
   @override
-  _StudiosFieldState createState() => _StudiosFieldState();
+  State<StudiosField> createState() => _StudiosFieldState();
 }
 
 class _StudiosFieldState extends State<StudiosField> {

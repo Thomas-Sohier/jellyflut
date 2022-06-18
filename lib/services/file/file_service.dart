@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/database/database.dart';
@@ -7,7 +7,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
@@ -78,7 +78,7 @@ class FileService {
   }
 
   static String getItemStorageName(Item item) {
-    return '${item.id}';
+    return item.id;
   }
 
   static Future<bool> requestStorage() async {

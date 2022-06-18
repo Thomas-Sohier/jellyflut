@@ -37,7 +37,7 @@ class ProgressBar extends StatelessWidget {
 
   Widget progressBarDurationPercent() {
     return Text(
-      (item.getPercentPlayed() * 100).round().toString() + ' %',
+      '${(item.getPercentPlayed() * 100).round()} %',
       textAlign: TextAlign.left,
       style: TextStyle(color: Colors.white, shadows: [
         Shadow(offset: Offset(0, -2), blurRadius: 4, color: Colors.black),

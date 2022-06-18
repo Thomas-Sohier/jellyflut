@@ -1,5 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:universal_io/io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -49,6 +50,12 @@ class DeviceInfo {
       final host = macOsInfo.hostName;
       final id = 'Unknown';
       final model = macOsInfo.model;
+      return DeviceInfo(host: host, model: model, id: id);
+    } else if (kIsWeb) {
+      final webBrowserInfo = await deviceInfoPlugin.webBrowserInfo;
+      final host = webBrowserInfo.appName ?? 'Unknown';
+      final id = 'Unknown';
+      final model = webBrowserInfo.platform ?? 'Unknown';
       return DeviceInfo(host: host, model: model, id: id);
     } else {
       return DeviceInfo(host: 'Unknown', model: 'Unknown', id: 'Unkonwn');

@@ -17,8 +17,8 @@ Future<String> authHeader({bool embedToken = true}) async {
   final token = apiKey;
 
   var auth =
-      'MediaBrowser Client=\"$name\", Device=\"$host\", DeviceId=\"$id\", Version=\"$version\"';
-  if (embedToken && apiKey != null) auth = auth + ', Token="$token"';
+      'MediaBrowser Client="$name", Device="$host", DeviceId="$id", Version="$version"';
+  if (embedToken && apiKey != null) auth = '$auth, Token="$token"';
   return auth;
 }
 

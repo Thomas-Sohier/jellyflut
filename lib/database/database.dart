@@ -1,17 +1,14 @@
 // this annotation tells moor to prepare a database class that uses the tables we just defined. (Modes in our case)
 
-import 'dart:io';
-
+import 'package:collection/collection.dart';
+import 'package:drift/drift.dart';
 import 'package:jellyflut/database/class/servers_with_users.dart';
+import 'package:jellyflut/database/migrations/from_2_to_3.dart';
 import 'package:jellyflut/database/tables/download.dart';
 import 'package:jellyflut/database/tables/server.dart';
 import 'package:jellyflut/database/tables/setting.dart';
 import 'package:jellyflut/database/tables/user.dart';
-import 'package:collection/collection.dart';
-import 'package:moor/ffi.dart';
-import 'package:moor/moor.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
+import 'connection/connection.dart' as impl;
 
 part 'database.g.dart';
 
@@ -35,31 +32,27 @@ class AppDatabase {
   Database get getDatabase => _database;
 }
 
-LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
-  return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-    final dbFolder = await getApplicationSupportDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return VmDatabase(file, logStatements: false);
-  });
-}
-
-@UseMoor(
-    tables: [Servers, Users, Settings, Downloads],
-    daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao])
+@DriftDatabase(
+  tables: [Servers, Users, Settings, Downloads],
+  daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao],
+)
 class Database extends _$Database {
   // we tell the database where to store the data with this constructor
-  Database() : super(_openConnection());
+  Database() : super.connect(impl.connect());
+
+  Database.forTesting(super.connection) : super.connect();
 
   // you should bump this number whenever you change or add a table definition
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         return m.createAll();
+      }, onUpgrade: (m, before, now) async {
+        for (var target = before + 1; target <= now; target++) {
+          from2to3(this, m, target);
+        }
       });
 
   Future<Setting> settingsFromUserId(int userId) {
@@ -93,9 +86,9 @@ class Database extends _$Database {
   }
 }
 
-@UseDao(tables: [Users])
+@DriftAccessor(tables: [Users])
 class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
-  UsersDao(Database db) : super(db);
+  UsersDao(super.db);
   Future<List<User>> get allWatchingUsers => select(users).get();
   Stream<List<User>> get watchAllUsers => select(users).watch();
   Future<User> getUserById(int userId) =>
@@ -116,9 +109,9 @@ class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
   Future<int> deleteUser(UsersCompanion user) => delete(users).delete(user);
 }
 
-@UseDao(tables: [Settings])
+@DriftAccessor(tables: [Settings])
 class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
-  SettingsDao(Database db) : super(db);
+  SettingsDao(super.db);
   Future<List<Setting>> get allWatchingSettings => select(settings).get();
   Stream<List<Setting>> get watchAllSettings => select(settings).watch();
   Future<Setting> getSettingsById(int settingsId) =>
@@ -136,9 +129,9 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
       delete(settings).delete(setting);
 }
 
-@UseDao(tables: [Servers])
+@DriftAccessor(tables: [Servers])
 class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
-  ServersDao(Database db) : super(db);
+  ServersDao(super.db);
   Future<List<Server>> get allWatchingServers => select(servers).get();
   Stream<List<Server>> get watchAllServers => select(servers).watch();
   Stream<List<ServersWithUsers>> get watchAllServersWithUsers =>
@@ -157,9 +150,9 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
       delete(servers).delete(server);
 }
 
-@UseDao(tables: [Downloads])
+@DriftAccessor(tables: [Downloads])
 class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
-  DownloadsDao(Database db) : super(db);
+  DownloadsDao(super.db);
   Future<List<Download>> get allWatchingDownloads => select(downloads).get();
   Stream<List<Download>> get watchAllDownloads => select(downloads).watch();
   Future<Download> getDownloadById(String downloadId) =>

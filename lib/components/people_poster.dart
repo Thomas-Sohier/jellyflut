@@ -12,19 +12,17 @@ class PeoplePoster extends StatefulWidget {
   final Function(String)? onPressed;
 
   PeoplePoster(
-      {Key? key,
+      {super.key,
       required this.person,
       this.onPressed,
       this.bigPoster = false,
-      this.clickable = true})
-      : super(key: key);
+      this.clickable = true});
 
   @override
-  _PeoplePosterState createState() => _PeoplePosterState();
+  State<PeoplePoster> createState() => _PeoplePosterState();
 }
 
-class _PeoplePosterState extends State<PeoplePoster>
-    with SingleTickerProviderStateMixin, AbsordAction {
+class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;

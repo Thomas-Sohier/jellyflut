@@ -1,15 +1,15 @@
 class DirectPlayProfile {
-  DirectPlayProfile({
+  const DirectPlayProfile({
     this.container,
     this.type,
     this.videoCodec,
     this.audioCodec,
   });
 
-  String? container;
-  String? type;
-  String? videoCodec;
-  String? audioCodec;
+  final String? container;
+  final String? type;
+  final String? videoCodec;
+  final String? audioCodec;
 
   factory DirectPlayProfile.fromMap(Map<String, dynamic> json) =>
       DirectPlayProfile(

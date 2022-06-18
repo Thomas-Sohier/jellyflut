@@ -4,10 +4,10 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 
 class NextButton extends StatefulWidget {
-  NextButton({Key? key}) : super(key: key);
+  const NextButton({super.key});
 
   @override
-  _NextButtonState createState() => _NextButtonState();
+  State<NextButton> createState() => _NextButtonState();
 }
 
 class _NextButtonState extends State<NextButton> {

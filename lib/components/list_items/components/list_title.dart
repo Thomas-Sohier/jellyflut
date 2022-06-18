@@ -6,11 +6,10 @@ class ListTitle extends StatelessWidget {
   final bool showTitle;
 
   const ListTitle(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.item,
-      this.showTitle = false})
-      : super(key: key);
+      this.showTitle = false});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class ListTitle extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
-                item.type.getValue().toLowerCase().capitalize(),
+                item.type.value,
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),

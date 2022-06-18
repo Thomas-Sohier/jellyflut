@@ -3,7 +3,7 @@ import 'package:jellyflut/components/gradient_mask.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 
 class TranscodeState extends StatelessWidget {
-  const TranscodeState({Key? key}) : super(key: key);
+  const TranscodeState({super.key});
 
   @override
   Widget build(BuildContext context) {

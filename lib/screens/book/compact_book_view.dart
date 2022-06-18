@@ -14,16 +14,15 @@ class CompactBookView extends StatefulWidget {
   final Stream<Map<int, int>> streamPosition;
   final PageController pageController;
   const CompactBookView(
-      {Key? key,
+      {super.key,
       required this.item,
       required this.bookBloc,
       required this.pageController,
       required this.streamPosition,
-      required this.listener})
-      : super(key: key);
+      required this.listener});
 
   @override
-  _CompactBookViewState createState() => _CompactBookViewState();
+  State<CompactBookView> createState() => _CompactBookViewState();
 }
 
 class _CompactBookViewState extends State<CompactBookView> {

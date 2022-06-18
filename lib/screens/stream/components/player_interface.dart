@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/screens/stream/components/controller_builder.dart';
+import 'controller_builder/controller_builder.dart';
 
 import 'common_controls.dart';
 
 class PlayerInterface extends StatefulWidget {
   final dynamic controller;
-  PlayerInterface({Key? key, this.controller}) : super(key: key);
+  PlayerInterface({super.key, this.controller});
 
   @override
-  _PlayerInterfaceState createState() => _PlayerInterfaceState();
+  State<PlayerInterface> createState() => _PlayerInterfaceState();
 }
 
 class _PlayerInterfaceState extends State<PlayerInterface> {

@@ -4,13 +4,12 @@ class ServerUrlField extends StatelessWidget {
   final FormGroup form;
   final VoidCallback onSubmitted;
   const ServerUrlField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsType.SERVER_URL.getValue(),
+        formControlName: FieldsType.SERVER_URL.value,
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.url,

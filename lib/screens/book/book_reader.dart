@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:logging/logging.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/models/enum/book_extensions.dart';
@@ -24,10 +24,10 @@ import 'package:shu_epub/shu_epub.dart';
 class BookReaderPage extends StatefulWidget {
   final Item item;
 
-  const BookReaderPage({Key? key, required this.item}) : super(key: key);
+  const BookReaderPage({super.key, required this.item});
 
   @override
-  _BookReaderPageState createState() => _BookReaderPageState();
+  State<BookReaderPage> createState() => _BookReaderPageState();
 }
 
 class _BookReaderPageState extends State<BookReaderPage> {

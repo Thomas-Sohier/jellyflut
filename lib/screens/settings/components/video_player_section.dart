@@ -7,8 +7,8 @@ class VideoPlayerSection extends StatelessWidget {
   final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton =
       GlobalKey();
 
-  VideoPlayerSection({Key? key, required this.setting, required this.database})
-      : super(key: key);
+  VideoPlayerSection(
+      {super.key, required this.setting, required this.database});
 
   @override
   SettingsSection build(BuildContext context) {
@@ -32,6 +32,11 @@ class VideoPlayerSection extends StatelessWidget {
               _bitrateEditorButton.currentState?.editBitrateValue(c),
           trailing: VideoBitrateValueEditor(
               key: _bitrateEditorButton, database: database),
+        ),
+        SettingsTile(
+          title: 'direct_play'.tr(),
+          subtitle: 'Force playing directly without transcoding',
+          trailing: DirectPlaySwitch(database: database),
         ),
       ],
     );

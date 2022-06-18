@@ -6,10 +6,10 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:octo_image/octo_image.dart';
 
 class SongImage extends StatefulWidget {
-  SongImage({Key? key}) : super(key: key);
+  SongImage({super.key});
 
   @override
-  _SongImageState createState() => _SongImageState();
+  State<SongImage> createState() => _SongImageState();
 }
 
 class _SongImageState extends State<SongImage> {

@@ -8,11 +8,10 @@ class ErrorUserActions extends StatefulWidget {
   final void Function() reloadFunction;
   final String errorMessage;
   ErrorUserActions(
-      {Key? key, required this.reloadFunction, required this.errorMessage})
-      : super(key: key);
+      {super.key, required this.reloadFunction, required this.errorMessage});
 
   @override
-  _ErrorUserActionsState createState() => _ErrorUserActionsState();
+  State<ErrorUserActions> createState() => _ErrorUserActionsState();
 }
 
 class _ErrorUserActionsState extends State<ErrorUserActions> {

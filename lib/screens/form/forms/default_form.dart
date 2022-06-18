@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 import 'fields/fields.dart';
@@ -16,7 +16,7 @@ class DefaultForm extends StatefulWidget {
   const DefaultForm({required this.item});
 
   @override
-  _DefaultFormState createState() => _DefaultFormState();
+  State<DefaultForm> createState() => _DefaultFormState();
 }
 
 class _DefaultFormState extends State<DefaultForm> {
@@ -52,17 +52,16 @@ class _DefaultFormState extends State<DefaultForm> {
   }
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsEnum.NAME.getName(): FormControl<String>(
+        FieldsEnum.NAME.name: FormControl<String>(
           value: item.name,
           validators: [Validators.required],
         ),
-        FieldsEnum.ORIGINALTITLE.getName():
+        FieldsEnum.ORIGINALTITLE.name:
             FormControl<String>(value: item.originalTitle),
-        FieldsEnum.PRODUCTIONYEAR.getName():
+        FieldsEnum.PRODUCTIONYEAR.name:
             FormControl<int>(value: item.productionYear),
-        FieldsEnum.OVERVIEW.getName():
-            FormControl<String>(value: item.overview),
-        FieldsEnum.DATECREATED.getName():
+        FieldsEnum.OVERVIEW.name: FormControl<String>(value: item.overview),
+        FieldsEnum.DATECREATED.name:
             FormControl<DateTime>(value: item.dateCreated)
       });
 

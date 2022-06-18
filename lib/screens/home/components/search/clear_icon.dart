@@ -5,10 +5,10 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class ClearIcon extends StatefulWidget {
   final TextEditingController searchController;
-  ClearIcon({Key? key, required this.searchController}) : super(key: key);
+  ClearIcon({super.key, required this.searchController});
 
   @override
-  _ClearIconState createState() => _ClearIconState();
+  State<ClearIcon> createState() => _ClearIconState();
 }
 
 class _ClearIconState extends State<ClearIcon> {

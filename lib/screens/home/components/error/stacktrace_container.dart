@@ -6,8 +6,7 @@ class StacktraceContainer extends StatelessWidget {
   final BehaviorSubject<bool> togglestream;
   final String message;
   StacktraceContainer(
-      {Key? key, required this.togglestream, required this.message})
-      : super(key: key);
+      {super.key, required this.togglestream, required this.message});
 
   @override
   Widget build(BuildContext context) {

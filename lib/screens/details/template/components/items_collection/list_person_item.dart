@@ -5,15 +5,14 @@ import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/shared/extensions/enum_extensions.dart';
 
 class ListPersonItem extends StatefulWidget {
   final Item item;
 
-  const ListPersonItem({Key? key, required this.item}) : super(key: key);
+  const ListPersonItem({super.key, required this.item});
 
   @override
-  _ListPersonItemState createState() => _ListPersonItemState();
+  State<ListPersonItem> createState() => _ListPersonItemState();
 }
 
 class _ListPersonItemState extends State<ListPersonItem> {
@@ -27,17 +26,17 @@ class _ListPersonItemState extends State<ListPersonItem> {
   void initState() {
     super.initState();
     seriesFuture = ItemService.getItems(
-        includeItemTypes: ItemType.SERIES.getValue(),
+        includeItemTypes: ItemType.SERIES.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
     moviesFuture = ItemService.getItems(
-        includeItemTypes: ItemType.MOVIE.getValue(),
+        includeItemTypes: ItemType.MOVIE.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
     audiosFuture = ItemService.getItems(
-        includeItemTypes: ItemType.AUDIO.getValue(),
+        includeItemTypes: ItemType.AUDIO.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);

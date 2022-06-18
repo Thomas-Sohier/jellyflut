@@ -5,13 +5,12 @@ class ServerNameField extends StatelessWidget {
   final VoidCallback onSubmitted;
 
   const ServerNameField(
-      {Key? key, required this.form, required this.onSubmitted})
-      : super(key: key);
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsType.SERVER_NAME.getValue(),
+        formControlName: FieldsType.SERVER_NAME.value,
         onSubmitted: onSubmitted,
         textInputAction: TextInputAction.next,
         autofocus: true,

@@ -1,6 +1,6 @@
 // ignore: unused_import
 import 'package:carousel_slider/carousel_controller.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/book/components/page_counter.dart';
@@ -10,11 +10,10 @@ class PageCounterParent extends StatelessWidget {
   final PageController controller;
   final bool clickable;
   const PageCounterParent(
-      {Key? key,
+      {super.key,
       required this.streamPage,
       required this.controller,
-      this.clickable = true})
-      : super(key: key);
+      this.clickable = true});
 
   @override
   Widget build(BuildContext context) {

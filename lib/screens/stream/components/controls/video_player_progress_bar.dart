@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 
 class VideoPlayerProgressBar extends StatefulWidget {
-  VideoPlayerProgressBar({Key? key}) : super(key: key);
+  VideoPlayerProgressBar({super.key});
 
   @override
-  _VideoPlayerProgressBarState createState() => _VideoPlayerProgressBarState();
+  State<VideoPlayerProgressBar> createState() => _VideoPlayerProgressBarState();
 }
 
 class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {

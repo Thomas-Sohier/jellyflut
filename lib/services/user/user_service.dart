@@ -81,7 +81,7 @@ class UserService {
       final response = await dio.get<Map<String, dynamic>>(url,
           queryParameters: queryParams);
       return foundation.compute(parseCategory, response.data!);
-    } on DioError catch (dioError, _) {
+    } on DioError catch (dioError) {
       log(dioError.message);
       rethrow;
     } catch (e, stacktrace) {
@@ -96,7 +96,7 @@ class UserService {
     try {
       final response = await dio.get<Map<String, dynamic>>(url);
       return foundation.compute(parseCategory, response.data!);
-    } on DioError catch (dioError, _) {
+    } on DioError catch (dioError) {
       log(dioError.message);
       rethrow;
     } catch (e, stacktrace) {

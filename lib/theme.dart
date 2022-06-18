@@ -76,15 +76,15 @@ class Theme {
   /// You need to provide a [colorScheme]
   static ThemeData generateThemeDataFromColorScheme(ColorScheme colorScheme,
       [Brightness? brightness]) {
-    final _brightness = brightness ?? colorScheme.brightness;
-    final _background =
-        _brightness == Brightness.light ? null : Colors.grey.shade900;
-    final _colorScheme = ColorScheme.fromSeed(
+    final newBrightness = brightness ?? colorScheme.brightness;
+    final background =
+        newBrightness == Brightness.light ? null : Colors.grey.shade900;
+    final newColorScheme = ColorScheme.fromSeed(
         seedColor: colorScheme.primary,
-        brightness: _brightness,
-        background: _background);
+        brightness: newBrightness,
+        background: background);
     final theme = ThemeData(
-        colorScheme: _colorScheme,
+        colorScheme: newColorScheme,
         visualDensity: VisualDensity.standard,
         useMaterial3: true);
     return _generateTheme(theme);
@@ -112,6 +112,9 @@ class Theme {
   static ThemeData _generateTheme(ThemeData theme) {
     final textTheme =
         _generateTextThemeFromColor(theme.colorScheme.onBackground);
+    final reveredBrightness = theme.brightness == Brightness.dark
+        ? Brightness.light
+        : Brightness.dark;
     return theme
         .copyWith(textTheme: textTheme)
         .copyWith(scaffoldBackgroundColor: theme.colorScheme.background)
@@ -129,8 +132,8 @@ class Theme {
                 scrolledUnderElevation: 0,
                 elevation: 0,
                 systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarBrightness: theme.brightness,
-                  statusBarIconBrightness: theme.brightness,
+                  statusBarBrightness: reveredBrightness,
+                  statusBarIconBrightness: reveredBrightness,
                   statusBarColor: theme.colorScheme.background,
                   systemNavigationBarColor: theme.colorScheme.background,
                   systemNavigationBarContrastEnforced: false,
@@ -152,6 +155,7 @@ class Theme {
                 indicator: BoxDecoration(
                     border: Border(
                         bottom: BorderSide(color: theme.colorScheme.primary)))))
+        .copyWith(popupMenuTheme: PopupMenuThemeData(elevation: 2))
         .copyWith(
             drawerTheme:
                 DrawerThemeData(backgroundColor: theme.colorScheme.background))
@@ -187,9 +191,9 @@ class Theme {
   /// Generate a text theme specific to this app
   /// You can provide a [color] to specify font color
   static TextTheme _generateTextThemeFromColor([Color? color]) {
-    final poppinsFont = (TextStyle? textStyle) =>
+    TextStyle? poppinsFont(TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'Poppins', color: color);
-    final hindMaduraiFont = (TextStyle? textStyle) =>
+    TextStyle? hindMaduraiFont(TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'HindMadurai', color: color);
     final typography = Typography.englishLike2021;
 

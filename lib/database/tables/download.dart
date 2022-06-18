@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:jellyflut/shared/json_deserializer.dart';
 import 'package:jellyflut/shared/json_serializer.dart';
-import 'package:moor/moor.dart';
+import 'package:drift/drift.dart';
 
 class JsonConverter extends TypeConverter<Map<String, dynamic>, String> {
   const JsonConverter();
@@ -12,8 +12,8 @@ class JsonConverter extends TypeConverter<Map<String, dynamic>, String> {
       : json.decode(fromDb, reviver: JsonDeserializer.jellyfinDeserializer);
 
   @override
-  String? mapToSql(Map<String, dynamic>? dart) =>
-      jsonEncode(dart, toEncodable: JsonSerializer.jellyfinSerializer);
+  String? mapToSql(Map<String, dynamic>? value) =>
+      jsonEncode(value, toEncodable: JsonSerializer.jellyfinSerializer);
 }
 
 class Downloads extends Table {

@@ -11,7 +11,7 @@ import 'forms/default_form.dart';
 class FormBuilder<T extends Object> extends StatefulWidget {
   final form.FormBloc<T> formBloc;
 
-  FormBuilder({Key? key, required this.formBloc}) : super(key: key);
+  FormBuilder({super.key, required this.formBloc});
 
   @override
   FormBuilderState<T> createState() => FormBuilderState<T>();

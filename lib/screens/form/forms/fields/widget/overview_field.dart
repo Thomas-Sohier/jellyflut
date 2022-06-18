@@ -2,12 +2,12 @@ part of '../fields.dart';
 
 class OverviewField extends StatelessWidget {
   final FormGroup form;
-  const OverviewField({Key? key, required this.form}) : super(key: key);
+  const OverviewField({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
-        formControlName: FieldsEnum.OVERVIEW.getName(),
+        formControlName: FieldsEnum.OVERVIEW.name,
         onSubmitted: () => {},
         textInputAction: TextInputAction.next,
         minLines: 3,
