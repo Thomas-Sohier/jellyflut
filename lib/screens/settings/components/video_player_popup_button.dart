@@ -20,6 +20,9 @@ class VideoPlayerPopupButton extends StatefulWidget {
 class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
   String? currentValue;
 
+  Future<Setting> get getCurrentSettings =>
+      widget.database.settingsDao.getSettingsById(userApp!.settingsId);
+
   @override
   void initState() {
     super.initState();
@@ -54,10 +57,11 @@ class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
   void setValue(String? value) async {
     if (value != null) {
       final selectedValue = value.toLowerCase();
-      final newSetting = widget.setting
+      final setting = await getCurrentSettings;
+      final s = setting
           .toCompanion(true)
           .copyWith(preferredPlayer: Value(selectedValue));
-      await widget.database.settingsDao.updateSettings(newSetting);
+      await widget.database.settingsDao.updateSettings(s);
       setState(() {
         currentValue = value;
       });

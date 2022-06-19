@@ -18,6 +18,9 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
   late final BehaviorSubject<String> textControllerStreamValue =
       BehaviorSubject<String>();
 
+  Future<Setting> get getCurrentSettings =>
+      widget.database.settingsDao.getSettingsById(userApp!.settingsId);
+
   @override
   void initState() {
     settingFuture =
@@ -62,16 +65,7 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
                     onPressed: () => customRouter.pop(),
                     child: Text('cancel'.tr())),
                 TextButton(
-                    onPressed: () {
-                      maxBitrate = controller.text;
-                      _maxBitrateValue = int.parse(maxBitrate);
-                      final s = setting
-                          .toCompanion(true)
-                          .copyWith(maxVideoBitrate: Value(_maxBitrateValue));
-                      AppDatabase().getDatabase.settingsDao.updateSettings(s);
-                      setState(() {});
-                      customRouter.pop();
-                    },
+                    onPressed: () => videoBitrateNewValue(controller.text),
                     child: Text('save'.tr()))
               ],
               content: Column(
@@ -103,5 +97,16 @@ class _VideoBitrateValueEditorState extends State<VideoBitrateValueEditor> {
                         })
                   ]));
         });
+  }
+
+  Future<void> videoBitrateNewValue(String maxBitrate) async {
+    _maxBitrateValue = int.parse(maxBitrate);
+    final setting = await getCurrentSettings;
+    final s = setting
+        .toCompanion(true)
+        .copyWith(maxVideoBitrate: Value(_maxBitrateValue));
+    await widget.database.settingsDao.updateSettings(s);
+    setState(() {});
+    await customRouter.pop();
   }
 }

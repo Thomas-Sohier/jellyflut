@@ -10,6 +10,9 @@ class DownloadPathSection extends StatelessWidget {
       required this.database,
       required this.downloadPath});
 
+  Future<Setting> get getCurrentSettings =>
+      database.settingsDao.getSettingsById(userApp!.settingsId);
+
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
@@ -39,6 +42,7 @@ class DownloadPathSection extends StatelessWidget {
   void selectFolder() async {
     final path =
         await FilePicker.platform.getDirectoryPath(lockParentWindow: true);
+    final setting = await getCurrentSettings;
     final s = setting.toCompanion(true).copyWith(downloadPath: Value(path));
     await database.settingsDao.updateSettings(s);
   }

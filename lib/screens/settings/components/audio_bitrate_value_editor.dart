@@ -18,6 +18,9 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
   late final BehaviorSubject<String> textControllerStreamValue =
       BehaviorSubject<String>();
 
+  Future<Setting> get getCurrentSettings =>
+      widget.database.settingsDao.getSettingsById(userApp!.settingsId);
+
   @override
   void initState() {
     settingFuture =
@@ -62,16 +65,7 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                     onPressed: () => customRouter.pop(),
                     child: Text('cancel'.tr())),
                 TextButton(
-                    onPressed: () {
-                      maxBitrate = controller.text;
-                      _maxBitrateValue = int.parse(maxBitrate);
-                      final s = setting
-                          .toCompanion(true)
-                          .copyWith(maxAudioBitrate: Value(_maxBitrateValue));
-                      AppDatabase().getDatabase.settingsDao.updateSettings(s);
-                      setState(() {});
-                      customRouter.pop();
-                    },
+                    onPressed: () => audioBitrateNewValue(controller.text),
                     child: Text('save'.tr()))
               ],
               content: Column(
@@ -100,5 +94,16 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                         })
                   ]));
         });
+  }
+
+  Future<void> audioBitrateNewValue(String maxBitrate) async {
+    _maxBitrateValue = int.parse(maxBitrate);
+    final setting = await getCurrentSettings;
+    final s = setting
+        .toCompanion(true)
+        .copyWith(maxAudioBitrate: Value(_maxBitrateValue));
+    await widget.database.settingsDao.updateSettings(s);
+    setState(() {});
+    await customRouter.pop();
   }
 }
