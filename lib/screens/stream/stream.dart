@@ -33,8 +33,6 @@ class _StreamState extends State<Stream> {
 
     // if we have an item but no url then we strem from item
     // else we use the url if there is one to stream from it
-    // TODO add a placeholder while loading IPTV, maybe let pass placeholder
-    // instead of trying to have a default ugly one
     if (widget.item != null && widget.url == null) {
       videoFuture = InitStreamingItemUtil.initFromItem(item: widget.item!);
     } else if (widget.url != null) {
