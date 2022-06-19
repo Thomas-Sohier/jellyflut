@@ -26,6 +26,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       BehaviorSubject.seeded(false);
   final BehaviorSubject<ThemeData> themeStream = BehaviorSubject();
 
+  /// Helper cache method
+  /// generate cache colorkey from item and current user
+  String spKey(Item item) => 'colors-${item.id}-${userApp!.id}';
+
   DetailsInfosFuture get detailsInfos => _d;
 
   DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState(_d)) {
@@ -42,7 +46,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     } else if (event is DetailsScreenSizeChanged) {
       _screenLayoutChanged(event.screenLayout);
       emit(DetailsLoadedState(_d));
-    } else if (event is DetailsUpdateColor) {
+    } else if (event is DetailsUpdateSeedColor) {
       await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
       themeStream.add(event.theme);
@@ -69,31 +73,38 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<void> _updateTheme(
-      DetailsUpdateColor event, Emitter<DetailsState> emit) async {
-    final colors = event.colors;
-    _d.dominantColor.add(colors);
+      DetailsUpdateSeedColor event, Emitter<DetailsState> emit) async {
+    final theme = Luminance.computeLuminance(event.seedColor);
+    _d.theme = theme;
+    themeStream.add(theme);
+    emit(DetailsLoadedState(_d));
+  }
 
-    return await event.colors.then((List<Color> c) {
-      if (c.isNotEmpty) {
-        final middleColor = Color.lerp(c[0], c[1], 0.5) ?? c[0];
-        final theme = Luminance.computeLuminance(middleColor);
-        _d.theme = theme;
-        themeStream.add(theme);
-        emit(DetailsLoadedState(_d));
-      }
-    });
+  Future<bool> cacheSeedColor(final Color color) async {
+    final sp = await SharedPreferences.getInstance();
+    final item = await _d.item;
+    return sp.setString(spKey(item), color.value.toString());
+  }
+
+  Future<bool> isSeedColorCached() async {
+    final sp = await SharedPreferences.getInstance();
+    final item = await _d.item;
+    return sp.containsKey(spKey(item));
+  }
+
+  Future<Color> getCachedSeedColor() async {
+    final sp = await SharedPreferences.getInstance();
+    final item = await _d.item;
+    final colorsAsString = sp.getString(spKey(item))!;
+    return Color(int.parse(colorsAsString));
   }
 
   void getItemBackgroundColor(final Item item,
       {final bool cache = true}) async {
-    final sp = await SharedPreferences.getInstance();
-    final spKey = 'colors-${item.id}-${userApp!.id}';
-
-    // save binary in sharedpref to load faster and prevent future API call
-    if (cache && sp.containsKey(spKey)) {
-      final colorsAsString = sp.getStringList(spKey)!;
-      final colors = colorsAsString.map((c) => Color(int.parse(c))).toList();
-      return add(DetailsUpdateColor(colors: Future.value(colors)));
+    // get seed color from sharedPref to prevent computation on remote image
+    // to load faster and prevent future API call
+    if (cache && await isSeedColorCached()) {
+      return add(DetailsUpdateSeedColor(seedColor: await getCachedSeedColor()));
     }
 
     final url = ItemImageService.getItemImageUrl(
@@ -109,12 +120,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
       // save binary in sharedpref to load faster and prevent future API call
       if (cache) {
-        unawaited(colorsFuture.then((colors) async {
-          final colorsInt = colors.map((c) => c.value.toString()).toList();
-          await sp.setStringList(spKey, colorsInt);
+        unawaited(colorsFuture.then((c) async {
+          final middleColor = Color.lerp(c[0], c[1], 0.5) ?? c[0];
+          await cacheSeedColor(middleColor);
+          add(DetailsUpdateSeedColor(seedColor: middleColor));
         }));
       }
-      add(DetailsUpdateColor(colors: colorsFuture));
     });
   }
 }

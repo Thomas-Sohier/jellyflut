@@ -59,9 +59,8 @@ class _DetailsState extends State<Details> {
         : ItemService.getItem(widget.item.id);
 
     return DetailsInfosFuture(
-        item: item,
-        theme: Theme.of(context),
-        dominantColor:
-            BehaviorSubject<Future<List<Color>>>.seeded(Future.value([])));
+      item: item,
+      theme: Theme.of(context),
+    );
   }
 }
