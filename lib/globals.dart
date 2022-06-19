@@ -1,16 +1,14 @@
 library globals;
 
-import 'package:universal_io/io.dart';
 import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_io/io.dart';
 
 import 'database/database.dart';
 
@@ -30,18 +28,6 @@ double get itemPosterLabelHeight => 39;
 // Used for some player to prevent from creating a new player
 int get audioPlayerId => 132;
 int get videoPlayerId => 213;
-
-// Init sharedPref to know if is already logged
-late SharedPreferences _sharedPrefs;
-
-SharedPreferences get sharedPrefs => _sharedPrefs;
-
-Future setUpSharedPrefs() async {
-  _sharedPrefs = await SharedPreferences.getInstance();
-  if (_sharedPrefs.getBool('isLoggedIn') ?? false) {
-    await sharedPrefs.setBool('isLoggedIn', true);
-  }
-}
 
 // Init android tv detection to know if platform is a TV
 

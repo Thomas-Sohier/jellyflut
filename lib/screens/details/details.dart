@@ -9,7 +9,6 @@ import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/photo_item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
 import 'package:jellyflut/services/item/item_service.dart';
-import 'package:rxdart/subjects.dart';
 
 class Details extends StatefulWidget {
   final Item item;

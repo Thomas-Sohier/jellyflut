@@ -21,6 +21,7 @@ loading_dots: Loading...
 servers: Servers
 playlist: Playlist
 theme: Theme
+primary_color: Primary color
 save: Save
 overview: Overview
 ok: Ok
@@ -74,6 +75,7 @@ interface: Interface
 language: Language
 change_server: Change server
 download_path: 'Download path'
+edit_primary_color: Edit primary color
 
 # details
 add_to_playlist: Add to playlist

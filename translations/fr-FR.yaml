@@ -20,6 +20,7 @@ loading: Chargement
 loading_dots: Chargement...
 servers: Serveurs
 theme: Thème
+primary_color: Couleur primaire
 playlist: Playlist
 save: Enregistrer
 overview: Synopsis
@@ -74,6 +75,7 @@ interface: Interface
 language: Langage
 change_server: Changer de serveur
 download_path: 'Dossier de téléchargement'
+edit_primary_color: Changer la couleur primaire
 
 # details
 add_to_playlist: Ajouter à la playlist

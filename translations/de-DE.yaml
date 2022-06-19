@@ -21,6 +21,7 @@ loading_dots: Wird geladen...
 servers: Server
 playlist: Playlist
 theme: Aussehen
+primary_color: primary_color
 save: Speichern
 overview: Übersicht
 ok: Ok
@@ -74,6 +75,7 @@ interface: Oberfläche
 language: Sprache
 change_server: Server wechseln
 download_path: 'Downloadordner'
+edit_primary_color: edit_primary_color
 
 # details
 add_to_playlist: Zu Playlist hinzufügen

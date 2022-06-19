@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  final String THEME_KEY = 'theme_brightness';
+  static const String THEME_KEY = 'theme_brightness';
+  static const String THEME_SEED_COLOR_KEY = 'theme_seed_color';
   late ThemeMode _themeMode;
   late ThemeData _themeData;
 
@@ -22,27 +23,10 @@ class ThemeProvider extends ChangeNotifier {
   ThemeProvider._internal() {
     // save colors preferences, even if this is async,
     // it's fast enough so end user do not see change
-    SharedPreferences.getInstance().then((sharedPreferences) {
-      if (sharedPreferences.containsKey(THEME_KEY)) {
-        final brightnessName = sharedPreferences.getString(THEME_KEY);
-        final brightness =
-            Brightness.values.firstWhere((e) => e.name == brightnessName);
-        _themeData =
-            personnal_theme.Theme.generateThemeDataFromSeedColor(brightness);
-      } else {
-        // Set default
-        _themeData = personnal_theme.Theme.generateThemeDataFromSeedColor(
-            Brightness.light);
-      }
-      _themeMode = _themeData.colorScheme.brightness == Brightness.dark
-          ? ThemeMode.dark
-          : ThemeMode.light;
-
-      notifyListeners();
-    });
-
-    _themeData =
-        personnal_theme.Theme.generateThemeDataFromSeedColor(Brightness.light);
+    final brightness = getBrightness();
+    final primaryColor = getPrimaryColor();
+    _themeData = personnal_theme.Theme.generateThemeDataFromSeedColor(
+        brightness, primaryColor);
     _themeMode = _themeData.colorScheme.brightness == Brightness.dark
         ? ThemeMode.dark
         : ThemeMode.light;
@@ -50,16 +34,57 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTheme() async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    _themeMode =
-        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    final brightness = _themeData.colorScheme.brightness == Brightness.dark
+  Color getPrimaryColor() {
+    final primaryColor =
+        SharedPrefs().sharedPrefs.getString(THEME_SEED_COLOR_KEY);
+    if (primaryColor == null) {
+      return personnal_theme.jellyPurpleMap[500]!;
+    }
+
+    return Color(int.parse(primaryColor));
+  }
+
+  Brightness getBrightness() {
+    final brightnessName = SharedPrefs().sharedPrefs.getString(THEME_KEY);
+    if (brightnessName == null) {
+      return Brightness.dark;
+    }
+
+    return Brightness.values.firstWhere((e) => e.name == brightnessName);
+  }
+
+  void editSeedColorTheme(Color color) async {
+    final brightnessName = SharedPrefs().sharedPrefs.getString(THEME_KEY);
+    final brightness =
+        Brightness.values.firstWhere((e) => e.name == brightnessName);
+    _themeData =
+        personnal_theme.Theme.generateThemeDataFromSeedColor(brightness, color);
+    await SharedPrefs()
+        .sharedPrefs
+        .setString(THEME_SEED_COLOR_KEY, color.value.toString());
+    notifyListeners();
+  }
+
+  ThemeMode switchThemeMode() {
+    _themeMode = _themeData.colorScheme.brightness == Brightness.dark
+        ? ThemeMode.light
+        : ThemeMode.dark;
+    return _themeMode;
+  }
+
+  Brightness switchBrightness() {
+    return _themeData.colorScheme.brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
-    _themeData =
-        personnal_theme.Theme.generateThemeDataFromSeedColor(brightness);
-    await sharedPreferences.setString(THEME_KEY, brightness.name);
+  }
+
+  void toggleTheme() async {
+    final brightness = switchBrightness();
+    final seedColor = getPrimaryColor();
+    switchThemeMode();
+    _themeData = personnal_theme.Theme.generateThemeDataFromSeedColor(
+        brightness, seedColor);
+    await SharedPrefs().sharedPrefs.setString(THEME_KEY, brightness.name);
     notifyListeners();
   }
 }

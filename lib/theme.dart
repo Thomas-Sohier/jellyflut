@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_color_utilities/material_color_utilities.dart' as m;
 
 // Shimmering color
 final Color shimmerColor1 = Colors.grey.shade500.withAlpha(150);

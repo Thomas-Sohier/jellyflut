@@ -1,6 +1,8 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/database/database.dart';
@@ -12,7 +14,6 @@ import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/screens/settings/components/direct_play_switch.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:drift/drift.dart' hide Column;
 import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 

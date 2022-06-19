@@ -19,14 +19,15 @@ import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:provider/provider.dart';
 
 import 'shared/custom_scroll_behavior.dart';
+import 'shared/shared_prefs.dart';
 
 void main() async {
   await impl.init();
+  await SharedPrefs().init();
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final auth = await AuthService.isAuth();
   await EasyLocalization.ensureInitialized();
-  await setUpSharedPrefs();
   await setUpAndroidTv();
 
   runApp(EasyLocalization(
