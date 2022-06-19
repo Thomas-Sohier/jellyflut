@@ -11,6 +11,7 @@ import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
+import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -80,19 +81,19 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<bool> cacheSeedColor(final Color color) async {
-    final sp = await SharedPreferences.getInstance();
+    final sp = SharedPrefs().sharedPrefs;
     final item = await _d.item;
     return sp.setString(spKey(item), color.value.toString());
   }
 
   Future<bool> isSeedColorCached() async {
-    final sp = await SharedPreferences.getInstance();
+    final sp = SharedPrefs().sharedPrefs;
     final item = await _d.item;
     return sp.containsKey(spKey(item));
   }
 
   Future<Color> getCachedSeedColor() async {
-    final sp = await SharedPreferences.getInstance();
+    final sp = SharedPrefs().sharedPrefs;
     final item = await _d.item;
     final colorsAsString = sp.getString(spKey(item))!;
     return Color(int.parse(colorsAsString));
