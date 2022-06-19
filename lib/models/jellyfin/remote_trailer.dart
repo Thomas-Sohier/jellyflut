@@ -8,7 +8,7 @@ class RemoteTrailer {
   String url;
 
   factory RemoteTrailer.fromMap(Map<String, dynamic> json) => RemoteTrailer(
-        name: json['Name'],
+        name: json['Name'] ?? 'Trailer',
         url: json['Url'],
       );
 

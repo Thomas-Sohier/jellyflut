@@ -28,26 +28,26 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   DetailsInfosFuture get detailsInfos => _d;
 
-  DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState()) {
+  DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState(_d)) {
     on<DetailsEvent>(_onEvent);
   }
 
   void _onEvent(DetailsEvent event, Emitter<DetailsState> emit) async {
     if (event is DetailsUpdateDetailsInfos) {
       _d = event.detailsInfos;
-      emit(DetailsLoadedState());
+      emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateItem) {
       _d.item = Future.value(event.item);
-      emit(DetailsLoadedState());
+      emit(DetailsLoadedState(_d));
     } else if (event is DetailsScreenSizeChanged) {
       _screenLayoutChanged(event.screenLayout);
-      emit(DetailsLoadedState());
+      emit(DetailsLoadedState(_d));
     } else if (event is DetailsUpdateColor) {
       await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
       themeStream.add(event.theme);
       _d.theme = event.theme;
-      emit(DetailsLoadedState());
+      emit(DetailsLoadedState(_d));
     }
   }
 
@@ -79,7 +79,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         final theme = Luminance.computeLuminance(middleColor);
         _d.theme = theme;
         themeStream.add(theme);
-        emit(DetailsLoadedState());
+        emit(DetailsLoadedState(_d));
       }
     });
   }

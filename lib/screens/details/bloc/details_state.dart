@@ -2,9 +2,12 @@ part of 'details_bloc.dart';
 
 @immutable
 abstract class DetailsState {
-  const DetailsState();
+  const DetailsState({required this.detailsInfosFuture});
+
+  final DetailsInfosFuture detailsInfosFuture;
 }
 
 class DetailsLoadedState extends DetailsState {
-  DetailsLoadedState();
+  DetailsLoadedState(DetailsInfosFuture detailsInfosFuture)
+      : super(detailsInfosFuture: detailsInfosFuture);
 }
