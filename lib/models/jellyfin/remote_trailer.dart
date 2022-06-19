@@ -8,8 +8,8 @@ class RemoteTrailer {
   String url;
 
   factory RemoteTrailer.fromMap(Map<String, dynamic> json) => RemoteTrailer(
-        name: json.keys.first,
-        url: json[json.keys.first],
+        name: json['Name'],
+        url: json['Url'],
       );
 
   Map<String, dynamic> toMap() => {

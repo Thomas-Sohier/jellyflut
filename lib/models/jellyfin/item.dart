@@ -997,7 +997,7 @@ class Item {
 
   /// Method to get trailer
   /// WIP
-  /// Return only he first of item of collection for nom
+  /// Return only he first of item of collection for now
   String getTrailer() {
     // TODO add a possibility to choose remote trailer
     return remoteTrailers.elementAt(0).url;
@@ -1486,8 +1486,8 @@ class Item {
     return mediaStreams.where((element) => element.type == type).toList();
   }
 
-  Future<Uri> getYoutubeTrailerUrl() async {
-    final youtubeUrl = getTrailer();
+  Future<Uri> getYoutubeTrailerUrl(RemoteTrailer trailer) async {
+    final youtubeUrl = trailer.url;
     final itemURi = Uri.parse(youtubeUrl);
     final videoId = itemURi.queryParameters['v'];
     final yt = YoutubeExplode();

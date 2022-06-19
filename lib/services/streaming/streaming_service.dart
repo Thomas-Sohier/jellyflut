@@ -173,7 +173,6 @@ class StreamingService {
     profile.subtitleStreamIndex ??= finalSubtitleStreamIndex;
     profile.startTimeTicks ??= startTimeTick;
     profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
-    profile.maxAudioChannels ??= 5; // TODO make this configurable
 
     final url = '${server.url}/Items/$itemId/PlaybackInfo';
 
@@ -231,7 +230,6 @@ class StreamingService {
 
     queryParam.removeWhere((key, value) => value == null || value == 'null');
 
-    // TODO rework that shit to be more readable and clear
     late final path;
     switch (item.type) {
       case ItemType.TVCHANNEL:
