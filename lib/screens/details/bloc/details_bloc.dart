@@ -12,6 +12,7 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/shared/luminance.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,31 +24,30 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   ScreenLayout _screenLayout;
   final BehaviorSubject<bool> pinnedHeaderStream =
       BehaviorSubject.seeded(false);
-  final BehaviorSubject<List<Color>> gradientStream = BehaviorSubject();
   final BehaviorSubject<ThemeData> themeStream = BehaviorSubject();
 
   DetailsInfosFuture get detailsInfos => _d;
 
-  DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState(_d)) {
+  DetailsBloc(this._d, this._screenLayout) : super(DetailsLoadedState()) {
     on<DetailsEvent>(_onEvent);
   }
 
   void _onEvent(DetailsEvent event, Emitter<DetailsState> emit) async {
     if (event is DetailsUpdateDetailsInfos) {
       _d = event.detailsInfos;
-      emit(DetailsLoadedState(_d));
+      emit(DetailsLoadedState());
     } else if (event is DetailsUpdateItem) {
       _d.item = Future.value(event.item);
-      emit(DetailsLoadedState(_d));
+      emit(DetailsLoadedState());
     } else if (event is DetailsScreenSizeChanged) {
       _screenLayoutChanged(event.screenLayout);
-      emit(DetailsLoadedState(_d));
+      emit(DetailsLoadedState());
     } else if (event is DetailsUpdateColor) {
       await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
       themeStream.add(event.theme);
       _d.theme = event.theme;
-      emit(DetailsLoadedState(_d));
+      emit(DetailsLoadedState());
     }
   }
 
@@ -74,18 +74,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     _d.dominantColor.add(colors);
 
     return await event.colors.then((List<Color> c) {
-      gradientStream.add(c);
       if (c.isNotEmpty) {
-        final paletteColor1 =
-            ColorUtil.changeColorSaturation(c[1], 0.5).withOpacity(0.60);
-        final paletteColor2 =
-            ColorUtil.changeColorSaturation(c[2], 0.5).withOpacity(0.60);
-        final middleColor =
-            Color.lerp(paletteColor1, paletteColor2, 0.5) ?? paletteColor2;
+        final middleColor = Color.lerp(c[0], c[1], 0.5) ?? c[0];
         final theme = Luminance.computeLuminance(middleColor);
         _d.theme = theme;
         themeStream.add(theme);
-        emit(DetailsLoadedState(_d));
+        emit(DetailsLoadedState());
       }
     });
   }

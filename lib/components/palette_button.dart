@@ -2,15 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
-
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 
 class PaletteButton extends StatefulWidget {
   PaletteButton(
     this.text, {
     required this.onPressed,
-    this.dominantColorFuture,
+    this.gradient = const <Color>[],
+    this.useTheme = false,
     this.enabled = true,
     this.borderRadius = 80.0,
     this.minHeight = 40.0,
@@ -33,7 +32,8 @@ class PaletteButton extends StatefulWidget {
   final double maxWidth;
   final Icon? icon;
   final Widget? trailing;
-  final Future<List<Color>>? dominantColorFuture;
+  final bool useTheme;
+  final List<Color> gradient;
 
   @override
   State<StatefulWidget> createState() => _PaletteButtonState();
@@ -41,16 +41,22 @@ class PaletteButton extends StatefulWidget {
 
 class _PaletteButtonState extends State<PaletteButton>
     with AutomaticKeepAliveClientMixin, AbsordAction {
-  // variable for both button
-  // size
-  late double minWidth;
-  late double minHeight;
-  late double maxWidth;
-  late double maxHeight;
+  // variable for both button size
+  double get minWidth => widget.minWidth;
+  double get minHeight => widget.minHeight;
+  double get maxWidth => widget.maxWidth;
+  double get maxHeight => widget.maxHeight;
+
   // padding of icon if one
   final EdgeInsets padding = EdgeInsets.fromLTRB(5, 0, 5, 0);
-
   late FocusNode _node;
+  late ThemeData _theme;
+
+  List<Color> get gradient => widget.gradient;
+  ThemeData get theme => _theme;
+  bool get useTheme => widget.useTheme;
+  BorderRadius get borderRadius =>
+      BorderRadius.all(Radius.circular(widget.borderRadius));
 
   @override
   bool get wantKeepAlive => true;
@@ -62,115 +68,108 @@ class _PaletteButtonState extends State<PaletteButton>
   }
 
   @override
+  void didChangeDependencies() {
+    _theme = Theme.of(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
-    minWidth = widget.minWidth;
-    minHeight = widget.minHeight;
-    maxWidth = widget.maxWidth;
-    maxHeight = widget.maxHeight;
 
-    var borderRadius = BorderRadius.all(Radius.circular(widget.borderRadius));
+    late final child;
+    if (useTheme) {
+      child = buttonFromTheme();
+    } else if (gradient.isNotEmpty) {
+      child = buttonFromColors();
+    } else {
+      child = buttonDefault();
+    }
+
     return ConstrainedBox(
-      constraints: BoxConstraints(
-          minHeight: minHeight,
-          minWidth: minWidth,
-          maxWidth: maxWidth,
-          maxHeight: maxHeight),
-      child: IgnorePointer(
-        ignoring: !widget.enabled,
-        child: Center(
-          child: TextButton(
+        constraints: BoxConstraints(
+            minHeight: minHeight,
+            minWidth: minWidth,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight),
+        child: IgnorePointer(
+          ignoring: !widget.enabled,
+          child: Center(
+            child: TextButton(
               autofocus: false,
               focusNode: _node,
               onPressed: () => action(widget.onPressed),
               style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: borderRadius, // <-- Radius
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: borderRadius),
                       backgroundColor: Colors.transparent,
                       textStyle: TextStyle(color: Colors.black))
                   .copyWith(side: buttonBorderSide())
                   .copyWith(elevation: buttonElevation()),
-              child: widget.dominantColorFuture == null
-                  ? buttonDefault(borderRadius)
-                  : generatedPalette(borderRadius)),
-        ),
+              child: child,
+            ),
+          ),
+        ));
+  }
+
+  Widget buttonFromTheme() {
+    final palette = [
+      theme.colorScheme.primary,
+      theme.colorScheme.secondary,
+      theme.colorScheme.tertiary
+    ];
+    final onBackground = theme.colorScheme.onSecondary;
+    return buttonFromPalette(palette, onBackground);
+  }
+
+  Widget buttonFromColors() {
+    final middleElement = (gradient.length / 2).round();
+    final onBackground = gradient[middleElement].computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
+    return buttonFromPalette(gradient, onBackground);
+  }
+
+  Widget buttonFromPalette(List<Color> palette, Color onBackground) {
+    return Ink(
+      key: ValueKey<int>(0),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: palette,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
+          borderRadius: borderRadius),
+      child: Container(
+        constraints: BoxConstraints(
+            minHeight: minHeight,
+            minWidth: minWidth,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight),
+        alignment: Alignment.center,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: onBackground, fontSize: 18),
+              ),
+              if (widget.icon != null)
+                Padding(
+                  padding: padding,
+                  child: Icon(
+                    widget.icon!.icon,
+                    color: onBackground,
+                  ),
+                ),
+              if (widget.trailing != null) widget.trailing!
+            ]),
       ),
     );
   }
 
-  Widget generatedPalette(BorderRadius borderRadius) {
-    return FutureBuilder<List<Color>>(
-      future: widget.dominantColorFuture,
-      builder: (context, snapshot) {
-        Widget child;
-        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          final paletteColor1 =
-              ColorUtil.changeColorSaturation(snapshot.data![1], 0.5)
-                  .withOpacity(0.55);
-          final paletteColor2 =
-              ColorUtil.changeColorSaturation(snapshot.data![2], 0.5)
-                  .withOpacity(0.55);
-          final middleColor =
-              Color.lerp(paletteColor1, paletteColor2, 0.5) ?? paletteColor2;
-
-          final foregroundColor = middleColor.computeLuminance() > 0.5
-              ? Colors.black
-              : Colors.white;
-          child = Ink(
-            key: ValueKey<int>(0),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [paletteColor1, paletteColor2],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight),
-                borderRadius: borderRadius),
-            child: Container(
-              constraints: BoxConstraints(
-                  minHeight: minHeight,
-                  minWidth: minWidth,
-                  maxWidth: maxWidth,
-                  maxHeight: maxHeight),
-              alignment: Alignment.center,
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.text,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: foregroundColor, fontSize: 18),
-                    ),
-                    if (widget.icon != null)
-                      Padding(
-                        padding: padding,
-                        child: Icon(
-                          widget.icon!.icon,
-                          color: foregroundColor,
-                        ),
-                      ),
-                    if (widget.trailing != null) widget.trailing!
-                  ]),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return buttonDefault(borderRadius);
-        } else {
-          child = buttonDefault(borderRadius);
-        }
-        return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            switchInCurve: Curves.easeInOutBack,
-            child: child);
-      },
-    );
-  }
-
-  Widget buttonDefault(BorderRadius borderRadius) {
+  Widget buttonDefault() {
     final color = widget.enabled
         ? Colors.grey.shade200.withOpacity(0.5)
         : Colors.grey.shade400.withOpacity(0.5);

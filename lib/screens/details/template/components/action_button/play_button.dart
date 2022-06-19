@@ -8,27 +8,14 @@ class PlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Future<List<Color>>>(
-        stream:
-            BlocProvider.of<DetailsBloc>(context).detailsInfos.dominantColor,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return PaletteButton(
-              'play'.tr(),
-              onPressed: item.playItem,
-              borderRadius: 4,
-              minWidth: 40,
-              maxWidth: maxWidth,
-              icon: Icon(Icons.play_arrow, color: Colors.black87),
-              dominantColorFuture: snapshot.data,
-            );
-          }
-          return PaletteButton('play'.tr(),
-              onPressed: item.playItem,
-              borderRadius: 4,
-              minWidth: 40,
-              maxWidth: maxWidth,
-              icon: Icon(Icons.play_arrow, color: Colors.black87));
-        });
+    return PaletteButton(
+      'play'.tr(),
+      onPressed: item.playItem,
+      borderRadius: 4,
+      minWidth: 40,
+      maxWidth: maxWidth,
+      icon: Icon(Icons.play_arrow, color: Colors.black87),
+      useTheme: true,
+    );
   }
 }
