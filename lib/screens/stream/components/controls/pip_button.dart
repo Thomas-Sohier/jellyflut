@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PipButton extends StatefulWidget {
   PipButton({super.key});
@@ -12,7 +10,7 @@ class PipButton extends StatefulWidget {
   State<PipButton> createState() => _PipButtonState();
 }
 
-class _PipButtonState extends State<PipButton> with AbsordAction {
+class _PipButtonState extends State<PipButton> {
   late final StreamingProvider streamingProvider;
   late final Future<bool> _hasPip;
 
@@ -29,7 +27,7 @@ class _PipButtonState extends State<PipButton> with AbsordAction {
         future: _hasPip,
         builder: (context, snapshotPip) {
           if (snapshotPip.data ?? false) {
-            return Pip(onPressed: () => action(onPressed));
+            return Pip(onPressed: onPressed);
           }
           return const SizedBox();
         });
