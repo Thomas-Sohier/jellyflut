@@ -7,13 +7,15 @@ class ItemParentTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      streamingProvider.item!.parentName(),
-      textAlign: TextAlign.left,
-      style: TextStyle(
-          fontWeight: FontWeight.w600,
-          foreground: Paint()..shader = CustomGradient(context).linearGradient,
-          fontSize: 14),
-    );
+    return Text(streamingProvider.item!.parentName(),
+        textAlign: TextAlign.left,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            ?.copyWith(
+                foreground: Paint()
+                  ..shader = CustomGradient(context).linearGradient)
+            .copyWith(fontWeight: FontWeight.w600));
   }
 }

@@ -5,7 +5,9 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class ForwardButton extends StatefulWidget {
   final Duration duration;
-  ForwardButton({super.key, this.duration = const Duration(seconds: 10)});
+  final double? size;
+  ForwardButton(
+      {super.key, this.duration = const Duration(seconds: 10), this.size});
 
   @override
   State<ForwardButton> createState() => _ForwardButtonState();
@@ -14,6 +16,8 @@ class ForwardButton extends StatefulWidget {
 class _ForwardButtonState extends State<ForwardButton> {
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
+
+  double? get size => widget.size;
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _ForwardButtonState extends State<ForwardButton> {
         child: Icon(
           Icons.fast_forward,
           color: Colors.white,
+          size: size,
         ),
       ),
     );

@@ -5,7 +5,9 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class BackwardButton extends StatefulWidget {
   final Duration duration;
-  BackwardButton({super.key, this.duration = const Duration(seconds: 10)});
+  final double? size;
+  BackwardButton(
+      {super.key, this.duration = const Duration(seconds: 10), this.size});
 
   @override
   State<BackwardButton> createState() => _BackwardButtonState();
@@ -14,6 +16,8 @@ class BackwardButton extends StatefulWidget {
 class _BackwardButtonState extends State<BackwardButton> {
   late final FocusNode _node;
   late final StreamingProvider streamingProvider;
+
+  double? get size => widget.size;
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _BackwardButtonState extends State<BackwardButton> {
         child: Icon(
           Icons.fast_rewind,
           color: Colors.white,
+          size: size,
         ),
       ),
     );

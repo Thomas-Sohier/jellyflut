@@ -5,6 +5,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/photo_item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
@@ -24,6 +25,12 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   late final DetailsBloc detailsBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -71,7 +78,7 @@ class _DetailsState extends State<Details> {
 
     return DetailsInfosFuture(
       item: item,
-      theme: Theme.of(context),
+      theme: ThemeProvider().getThemeData,
     );
   }
 }

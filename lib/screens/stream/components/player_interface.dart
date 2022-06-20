@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'common_controls/common_controls.dart';
 import 'controller_builder/controller_builder.dart';
-
-import 'common_controls.dart';
 
 class PlayerInterface extends StatefulWidget {
   final dynamic controller;

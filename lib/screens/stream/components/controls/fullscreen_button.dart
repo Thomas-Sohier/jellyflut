@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class FullscreenButton extends StatefulWidget {
   final Duration duration;
-  FullscreenButton({super.key, this.duration = const Duration(seconds: 10)});
+  const FullscreenButton(
+      {super.key, this.duration = const Duration(seconds: 10)});
 
   @override
   State<FullscreenButton> createState() => _FullscreenButtonState();

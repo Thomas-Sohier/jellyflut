@@ -3,7 +3,8 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PlayPauseButton extends StatefulWidget {
-  PlayPauseButton({super.key});
+  final double? size;
+  PlayPauseButton({super.key, this.size});
 
   @override
   State<PlayPauseButton> createState() => _PlayPauseButtonState();
@@ -13,6 +14,8 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
   late final StreamingProvider streamingProvider;
   late final VoidCallback listener;
   late final FocusNode _node;
+
+  double? get size => widget.size;
 
   @override
   void initState() {
@@ -41,6 +44,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
             child: Icon(
               isPlayingSnapshot.data ?? false ? Icons.pause : Icons.play_arrow,
               color: Colors.white,
+              size: size,
             ),
           )),
     );

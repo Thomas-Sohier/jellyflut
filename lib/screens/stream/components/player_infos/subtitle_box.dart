@@ -18,7 +18,7 @@ class _SubtitleBoxState extends State<SubtitleBox> {
   late final StreamingProvider streamingProvider;
   late final StreamSubscription<Duration>? _subPosition;
   late final StreamSubscription<StreamingEvent> _subEvent;
-  late final TextStyle? subtitleStyle;
+  late TextStyle? subtitleStyle;
 
   @override
   void initState() {

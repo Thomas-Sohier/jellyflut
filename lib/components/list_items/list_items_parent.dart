@@ -173,7 +173,11 @@ class _ListItemsState extends State<ListItems>
     return Column(
       children: [
         if (widget.showSorting) ListItemsSort(listTypes: listTypes),
-        Expanded(child: buildList()),
+        Row(
+          children: [
+            Expanded(child: buildList()),
+          ],
+        ),
       ],
     );
   }

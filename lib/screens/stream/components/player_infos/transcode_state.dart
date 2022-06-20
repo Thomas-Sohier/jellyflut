@@ -9,23 +9,55 @@ class TranscodeState extends StatelessWidget {
   Widget build(BuildContext context) {
     final streamingProvider = StreamingProvider();
     final isDirectPlay = streamingProvider.isDirectPlay ?? true;
-    return isDirectPlay ? directPlayIcon() : transcodeIcon(streamingProvider);
+    return DecoratedBox(
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.all(Radius.circular(4))),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: isDirectPlay
+              ? directPlayIcon(context)
+              : transcodeIcon(streamingProvider, context),
+        ));
   }
 
-  Widget directPlayIcon() {
-    return const GradientMask(
-        child: Icon(Icons.play_for_work, color: Colors.white));
+  Widget directPlayIcon(BuildContext context) {
+    final color = Theme.of(context).colorScheme.onSecondary;
+    return Row(
+      children: [
+        GradientMask(
+            child: Icon(
+          Icons.play_for_work,
+          color: color,
+        )),
+        const SizedBox(width: 8),
+        Text(
+          'Direct play',
+          style: TextStyle(fontFamily: 'Poppins', color: color),
+        )
+      ],
+    );
   }
 
-  Widget transcodeIcon(streamingProvider) {
+  Widget transcodeIcon(streamingProvider, BuildContext context) {
+    final color = Theme.of(context).colorScheme.onSecondary;
     return Tooltip(
         enableFeedback: false,
         richMessage: generateTranscodeReasons(streamingProvider).textSpan,
-        child: const GradientMask(
-            child: Icon(
-          Icons.cloud_outlined,
-          color: Colors.white,
-        )));
+        child: Row(
+          children: [
+            GradientMask(
+                child: Icon(
+              Icons.cloud_outlined,
+              color: color,
+            )),
+            const SizedBox(width: 8),
+            Text(
+              'Transcoding',
+              style: TextStyle(fontFamily: 'Poppins', color: color),
+            )
+          ],
+        ));
   }
 
   Text generateTranscodeReasons(streamingProvider) {
