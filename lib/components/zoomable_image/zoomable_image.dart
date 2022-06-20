@@ -17,7 +17,9 @@ class ZoomableImage extends StatefulWidget {
 }
 
 class _ZoomableImageState extends State<ZoomableImage>
-    with SingleTickerProviderStateMixin {
+    with
+        SingleTickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<ZoomableImage> {
   late AnimationController _animationController;
   double scale = 1.0;
 
@@ -54,6 +56,7 @@ class _ZoomableImageState extends State<ZoomableImage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Stack(children: [
       scaleImage(),
       if (widget.overlay != null)
@@ -70,4 +73,7 @@ class _ZoomableImageState extends State<ZoomableImage>
       return widget.imageWidget;
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

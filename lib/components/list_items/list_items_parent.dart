@@ -170,11 +170,12 @@ class _ListItemsState extends State<ListItems>
   }
 
   Widget sortingThenbuildSelection() {
-    if (widget.showSorting) {
-      return ListItemsSort(
-          listTypes: listTypes, child: Expanded(child: buildList()));
-    }
-    return buildList();
+    return Column(
+      children: [
+        if (widget.showSorting) ListItemsSort(listTypes: listTypes),
+        Expanded(child: buildList()),
+      ],
+    );
   }
 
   Widget buildList() {
