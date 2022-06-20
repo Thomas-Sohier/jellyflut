@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/mixins/absorb_action.dart';
 
-class OutlinedButtonSelector extends StatelessWidget {
+class OutlinedButtonSelector extends StatefulWidget {
   final Widget child;
   final VoidCallback onPressed;
   final OutlinedBorder shape;
@@ -20,10 +21,23 @@ class OutlinedButtonSelector extends StatelessWidget {
       )});
 
   @override
+  State<OutlinedButtonSelector> createState() => _OutlinedButtonSelectorState();
+}
+
+class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
+    with AbsordAction {
+  Widget get child => widget.child;
+  VoidCallback get onPressed => widget.onPressed;
+  OutlinedBorder get shape => widget.shape;
+  Alignment? get alignment => widget.alignment;
+  EdgeInsets get padding => widget.padding;
+  Color? get primary => widget.primary;
+
+  @override
   Widget build(BuildContext context) {
     return OutlinedButton(
         autofocus: false,
-        onPressed: onPressed,
+        onPressed: () => action(onPressed),
         style: TextButton.styleFrom(
                 minimumSize: Size(24, 24),
                 primary: primary ??
@@ -35,11 +49,11 @@ class OutlinedButtonSelector extends StatelessWidget {
                 padding: padding,
                 shape: shape,
                 backgroundColor: Colors.transparent)
-            .copyWith(side: buttonBorderSide(context)),
+            .copyWith(side: _buttonBorderSide(context)),
         child: child);
   }
 
-  MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
+  MaterialStateProperty<BorderSide> _buttonBorderSide(BuildContext context) {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.focused)) {
@@ -54,7 +68,7 @@ class OutlinedButtonSelector extends StatelessWidget {
     );
   }
 
-  MaterialStateProperty<double> buttonElevation() {
+  MaterialStateProperty<double> _buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
         if (states.contains(MaterialState.hovered) ||

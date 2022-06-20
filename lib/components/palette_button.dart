@@ -227,7 +227,7 @@ class _PaletteButtonState extends State<PaletteButton>
             states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onBackground,
           );
         }
         return BorderSide(
