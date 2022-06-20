@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/mixins/details_mixin.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
@@ -25,10 +26,13 @@ class LargeDetails extends StatefulWidget {
 class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
   bool isHeaderPinned = false;
 
+  Item get item => widget.item;
+  String? get heroTag => widget.heroTag;
+
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.topCenter, children: [
-      BackgroundImage(item: widget.item, imageType: ImageType.BACKDROP),
+      BackgroundImage(item: item, imageType: ImageType.BACKDROP),
       DetailsBackgroundBuilder(),
       LayoutBuilder(builder: ((_, constraints) {
         // Constraint emitter
@@ -56,7 +60,18 @@ class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
                   duration: Duration(milliseconds: 200),
                   left: 0,
                   top: snapshot.data! ? 15 : 0,
-                  child: SelectableBackButton()))
+                  child: SizedBox(
+                    height: 48,
+                    child: Row(
+                      children: [
+                        SelectableBackButton(),
+                        if (!snapshot.data! && constraints.maxWidth < 960)
+                          Logo(
+                              item: item,
+                              padding: EdgeInsets.symmetric(vertical: 8))
+                      ],
+                    ),
+                  )))
         ]));
       }))
     ]);
@@ -67,14 +82,12 @@ class _LargeDetailsState extends State<LargeDetails> with DetailsMixin {
     return Expanded(
         flex: 4,
         child: LeftDetails(
-            item: widget.item,
-            heroTag: widget.heroTag,
-            constraints: constraints));
+            item: item, heroTag: heroTag, constraints: constraints));
   }
 
   Widget rightDetailsPart(BoxConstraints constraints) {
     return Expanded(
         flex: 6,
-        child: AsyncRightDetails(item: widget.item, constraints: constraints));
+        child: AsyncRightDetails(item: item, constraints: constraints));
   }
 }

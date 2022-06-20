@@ -8,48 +8,54 @@ import 'package:jellyflut/models/jellyfin/item.dart';
 class Logo extends StatelessWidget {
   final Item item;
   final bool selectable;
+  final EdgeInsets padding;
+  final BoxConstraints constraints;
   final actions = <Type, Action<Intent>>{
     ActivateIntent: CallbackAction<Intent>(
       onInvoke: (Intent intent) => customRouter.pop(),
     ),
   };
 
-  Logo({super.key, required this.item, this.selectable = true});
+  Logo({
+    super.key,
+    required this.item,
+    this.selectable = true,
+    this.padding = const EdgeInsets.all(0),
+    this.constraints = const BoxConstraints(maxHeight: 100),
+  });
 
   @override
   Widget build(BuildContext context) {
     if (selectable) {
       return OutlinedButtonSelector(
-          onPressed: (() => showDialog(
-              context: context,
-              barrierColor: Colors.black.withOpacity(0.64),
-              builder: (_) {
-                return GestureDetector(
-                  onTap: () => customRouter.pop(),
-                  child: FocusableActionDetector(
-                    autofocus: true,
-                    descendantsAreFocusable: false,
-                    mouseCursor: SystemMouseCursors.click,
-                    actions: actions,
-                    child: Center(
-                        child: logo(
-                            context,
-                            BoxConstraints(
-                                maxWidth: MediaQuery.of(context).size.width / 2,
-                                maxHeight:
-                                    MediaQuery.of(context).size.height / 2))),
-                  ),
-                );
-              })),
-          child: logo(context, BoxConstraints(maxHeight: 100)));
+          padding: padding,
+          onPressed: () => logoDialog(context),
+          child: logo(context));
     }
-    return logo(context, BoxConstraints(maxHeight: 100));
+    return logo(context);
   }
 
-  Widget logo(BuildContext context, BoxConstraints constraints) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        constraints: constraints,
+  void logoDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierColor: Colors.black.withOpacity(0.64),
+        builder: (_) {
+          return GestureDetector(
+            onTap: () => customRouter.pop(),
+            child: FocusableActionDetector(
+                autofocus: true,
+                descendantsAreFocusable: false,
+                mouseCursor: SystemMouseCursors.click,
+                actions: actions,
+                child: Center(
+                    child: logo(context, BoxConstraints(maxWidth: 960)))),
+          );
+        });
+  }
+
+  Widget logo(BuildContext context, [BoxConstraints? overridedConstraints]) {
+    return ConstrainedBox(
+        constraints: overridedConstraints ?? constraints,
         child: AsyncImage(
           item: item,
           showParent: true,

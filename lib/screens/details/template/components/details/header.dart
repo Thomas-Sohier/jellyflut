@@ -12,18 +12,15 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverflowBar(
-        alignment: MainAxisAlignment.spaceEvenly,
-        overflowAlignment: OverflowBarAlignment.center,
-        overflowDirection: VerticalDirection.down,
-        overflowSpacing: 10,
-        spacing: 20,
-        children: [
-          if (constraints.maxWidth < 960)
-            ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: itemPosterHeight),
-                child: Poster(item: item)),
-          if (item.hasLogo()) Logo(item: item),
-        ]);
+    if (constraints.maxWidth < 960) {
+      return Center(
+        child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: itemPosterHeight),
+            child: Poster(item: item)),
+      );
+    } else {
+      if (item.hasLogo()) return Logo(item: item);
+    }
+    return const SizedBox();
   }
 }
