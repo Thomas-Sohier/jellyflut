@@ -1,6 +1,5 @@
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -23,8 +22,7 @@ CommonStream parse(dynamic controller) {
 }
 
 CommonStream _parseVLCController(
-    {required VlcPlayerController vlcPlayerController,
-    VoidCallback? listener}) {
+    {required VlcPlayerController vlcPlayerController}) {
   final commonStreamVLC =
       CommonStreamVLC(vlcPlayerController: vlcPlayerController);
   return CommonStream(
@@ -35,7 +33,7 @@ CommonStream _parseVLCController(
       duration: () => vlcPlayerController.value.duration,
       bufferingDuration: commonStreamVLC.getBufferingDurationVLC,
       currentPosition: () => vlcPlayerController.value.position,
-      isInit: vlcPlayerController.value.isInitialized,
+      isInit: () => vlcPlayerController.value.isInitialized,
       hasPip: Future.value(false),
       pip: () => throw ('Not supported on VLC player'),
       getSubtitles: commonStreamVLC.getSubtitles,
@@ -50,15 +48,12 @@ CommonStream _parseVLCController(
       enterFullscreen: () => {},
       exitFullscreen: () => {},
       toggleFullscreen: () => {},
-      initListener: () =>
-          listener != null ? vlcPlayerController.addListener(listener) : {},
       dispose: commonStreamVLC.stopPlayer,
       controller: vlcPlayerController);
 }
 
 CommonStream _parseBetterPlayerController(
-    {required BetterPlayerController betterPlayerController,
-    VoidCallback? listener}) {
+    {required BetterPlayerController betterPlayerController}) {
   final commonStreamBP =
       CommonStreamBP(betterPlayerController: betterPlayerController);
   return CommonStream(
@@ -87,9 +82,6 @@ CommonStream _parseBetterPlayerController(
       enterFullscreen: () => {},
       exitFullscreen: () => {},
       toggleFullscreen: () => {},
-      initListener: () => listener != null
-          ? betterPlayerController.videoPlayerController!.addListener(listener)
-          : {},
       dispose: commonStreamBP.stopPlayer,
       controller: betterPlayerController);
 }
@@ -104,7 +96,7 @@ CommonStream _parseVlcComputerController({required Player player}) {
       duration: () => player.position.duration,
       bufferingDuration: () => Duration(seconds: 0),
       currentPosition: () => player.position.position,
-      isInit: true,
+      isInit: () => true,
       hasPip: Future.value(false),
       pip: () => {},
       getSubtitles: () {
@@ -127,7 +119,6 @@ CommonStream _parseVlcComputerController({required Player player}) {
       positionStream: commonStreamVLCComputer.positionStream(),
       durationStream: commonStreamVLCComputer.durationStream(),
       isPlayingStream: commonStreamVLCComputer.playingStateStream(),
-      initListener: () => {},
       dispose: commonStreamVLCComputer.stopPlayer,
       controller: player);
 }

@@ -38,7 +38,6 @@ class _CommonControlsState extends State<CommonControls> {
     super.initState();
     _visibleStreamController = BehaviorSubject<bool>();
     streamingProvider = StreamingProvider();
-    streamingProvider.commonStream?.initListener();
     hasPip = streamingProvider.commonStream!.hasPip();
     listener = (value) => _onKey(value);
     _timer = Timer(Duration(seconds: 5), () {

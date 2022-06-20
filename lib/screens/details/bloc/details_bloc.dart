@@ -86,13 +86,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     }
   }
 
+  /// Update the theme of current details
+  /// Do not fire an Event, any theme change is linked to [theme] ValueNotifier
   Future<void> _updateTheme(
       DetailsUpdateSeedColor event, Emitter<DetailsState> emit) async {
     final detailsTheme =
         t.Theme.generateThemeFromColors(event.colors[0], event.colors[1]);
     _d.theme = detailsTheme;
     theme.value = detailsTheme;
-    emit(DetailsLoadedState(_d));
   }
 
   Future<bool> cacheSeedColor(final List<Color> colors) async {

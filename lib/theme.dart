@@ -1,76 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:material_color_utilities/material_color_utilities.dart' as m;
 
 // Shimmering color
 final Color shimmerColor1 = Colors.grey.shade500.withAlpha(150);
 final Color shimmerColor2 = Colors.grey.shade200.withAlpha(150);
 
-Map<int, Color> jellyPurpleMap = {
-  50: Color.fromRGBO(130, 81, 145, .1),
-  100: Color.fromRGBO(130, 81, 145, .2),
-  200: Color.fromRGBO(130, 81, 145, .3),
-  300: Color.fromRGBO(130, 81, 145, .4),
-  400: Color.fromRGBO(130, 81, 145, .5),
-  500: Color.fromRGBO(130, 81, 145, .6),
-  600: Color.fromRGBO(130, 81, 145, .7),
-  700: Color.fromRGBO(130, 81, 145, .8),
-  800: Color.fromRGBO(130, 81, 145, .9),
-  900: Color.fromRGBO(130, 81, 145, 1),
-};
-
-Map<int, Color> jellyDarkPurpleMap = {
-  50: Color.fromRGBO(62, 34, 71, .1),
-  100: Color.fromRGBO(62, 34, 71, .2),
-  200: Color.fromRGBO(62, 34, 71, .3),
-  300: Color.fromRGBO(62, 34, 71, .4),
-  400: Color.fromRGBO(62, 34, 71, .5),
-  500: Color.fromRGBO(62, 34, 71, .6),
-  600: Color.fromRGBO(62, 34, 71, .7),
-  700: Color.fromRGBO(62, 34, 71, .8),
-  800: Color.fromRGBO(62, 34, 71, .9),
-  900: Color.fromRGBO(62, 34, 71, 1),
-};
-
-Map<int, Color> jellyDarkBlueMap = {
-  50: Color.fromRGBO(0, 60, 80, .1),
-  100: Color.fromRGBO(0, 60, 80, .2),
-  200: Color.fromRGBO(0, 60, 80, .3),
-  300: Color.fromRGBO(0, 60, 80, .4),
-  400: Color.fromRGBO(0, 60, 80, .5),
-  500: Color.fromRGBO(0, 60, 80, .6),
-  600: Color.fromRGBO(0, 60, 80, .7),
-  700: Color.fromRGBO(0, 60, 80, .8),
-  800: Color.fromRGBO(0, 60, 80, .9),
-  900: Color.fromRGBO(0, 60, 80, 1),
-};
-
-Map<int, Color> jellyLightPurpleMap = {
-  50: Color.fromRGBO(169, 93, 195, .1),
-  100: Color.fromRGBO(169, 93, 195, .2),
-  200: Color.fromRGBO(169, 93, 195, .3),
-  300: Color.fromRGBO(169, 93, 195, .4),
-  400: Color.fromRGBO(169, 93, 195, .5),
-  500: Color.fromRGBO(169, 93, 195, .6),
-  600: Color.fromRGBO(169, 93, 195, .7),
-  700: Color.fromRGBO(169, 93, 195, .8),
-  800: Color.fromRGBO(169, 93, 195, .9),
-  900: Color.fromRGBO(169, 93, 195, 1),
-};
-
-Map<int, Color> jellyLightBlueMap = {
-  50: Color.fromRGBO(4, 162, 219, .1),
-  100: Color.fromRGBO(4, 162, 219, .2),
-  200: Color.fromRGBO(4, 162, 219, .3),
-  300: Color.fromRGBO(4, 162, 219, .4),
-  400: Color.fromRGBO(4, 162, 219, .5),
-  500: Color.fromRGBO(4, 162, 219, .6),
-  600: Color.fromRGBO(4, 162, 219, .7),
-  700: Color.fromRGBO(4, 162, 219, .8),
-  800: Color.fromRGBO(4, 162, 219, .9),
-  900: Color.fromRGBO(4, 162, 219, 1),
-};
+Map<int, Color> jellyPurpleMap =
+    ColorUtil.generateColorSwatch(Color.fromARGB(255, 130, 81, 145));
+Map<int, Color> jellyBlueMap =
+    ColorUtil.generateColorSwatch(Color.fromARGB(255, 4, 162, 219));
 
 class Theme {
   static ThemeData generateThemeFromSeedColor(Color dominantColor) {
@@ -116,7 +55,7 @@ class Theme {
         brightness == Brightness.light ? null : Colors.grey.shade900;
     final theme = ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: seedColor ?? jellyLightPurpleMap[500]!,
+            seedColor: seedColor ?? jellyPurpleMap[500]!,
             brightness: brightness,
             background: background),
         visualDensity: VisualDensity.standard,
@@ -133,8 +72,8 @@ class Theme {
       Color? secondary]) {
     final background =
         brightness == Brightness.light ? null : Colors.grey.shade900;
-    primary ??= jellyLightPurpleMap[500]!;
-    secondary ??= jellyLightBlueMap[500]!;
+    primary ??= jellyPurpleMap[500]!;
+    secondary ??= jellyBlueMap[500]!;
     final primarySwatch = ColorUtil.colorToMaterialColor(primary);
     final colorScheme = ColorScheme.fromSwatch(
         primarySwatch: primarySwatch,

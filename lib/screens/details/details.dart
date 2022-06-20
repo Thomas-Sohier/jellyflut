@@ -42,21 +42,26 @@ class _DetailsState extends State<Details> {
   Widget build(BuildContext context) {
     return BlocProvider<DetailsBloc>(
         create: (context) => detailsBloc,
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-            ),
-            child: ValueListenableBuilder<ThemeData>(
-                valueListenable: detailsBloc.theme,
-                builder: (context, value, child) {
-                  return Theme(data: value, child: child ?? const SizedBox());
-                },
-                child: Scaffold(
-                    body: widget.item.type != ItemType.PHOTO
-                        ? LargeDetails(
-                            item: widget.item, heroTag: widget.heroTag)
-                        : PhotoItem(
-                            item: widget.item, heroTag: widget.heroTag)))));
+        child: ValueListenableBuilder<ThemeData>(
+            valueListenable: detailsBloc.theme,
+            builder: (context, value, child) {
+              return Theme(
+                  data: value,
+                  child: AnnotatedRegion<SystemUiOverlayStyle>(
+                      value: SystemUiOverlayStyle(
+                          statusBarColor: Colors.transparent,
+                          statusBarIconBrightness: value
+                                      .colorScheme.onBackground
+                                      .computeLuminance() >
+                                  0.5
+                              ? Brightness.light
+                              : Brightness.dark),
+                      child: child ?? const SizedBox()));
+            },
+            child: Scaffold(
+                body: widget.item.type != ItemType.PHOTO
+                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
+                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
   }
 
   DetailsInfosFuture getDetailsInfos() {

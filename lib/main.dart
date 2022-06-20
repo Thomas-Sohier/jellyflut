@@ -22,13 +22,13 @@ import 'shared/custom_scroll_behavior.dart';
 import 'shared/shared_prefs.dart';
 
 void main() async {
-  await impl.init();
-  await SharedPrefs().init();
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  final auth = await AuthService.isAuth();
+  await impl.init();
+  await SharedPrefs().init();
   await EasyLocalization.ensureInitialized();
   await setUpAndroidTv();
+  final auth = await AuthService.isAuth();
 
   runApp(EasyLocalization(
       supportedLocales: [

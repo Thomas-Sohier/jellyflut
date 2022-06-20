@@ -12,7 +12,7 @@ class CommonStream {
   final Function _bufferingDuration;
   final Function _duration;
   final Function _currentPosition;
-  final bool _isInit;
+  final bool Function() _isInit;
   final Function _pip;
   final Future<bool> _hasPip;
   final Function _getSubtitles;
@@ -26,34 +26,32 @@ class CommonStream {
   final BehaviorSubject<Duration> _positionStream;
   final BehaviorSubject<Duration> _durationStream;
   final BehaviorSubject<bool> _isPlayingStream;
-  final VoidCallback _initListener;
   final Future<void> Function() _dispose;
   dynamic controller;
 
   CommonStream(
-      {required pause,
-      required play,
-      required isPlaying,
-      required seekTo,
-      required bufferingDuration,
-      required duration,
-      required currentPosition,
-      required isInit,
-      required pip,
-      required hasPip,
-      required getSubtitles,
-      required enterFullscreen,
-      required exitFullscreen,
-      required toggleFullscreen,
-      required setSubtitle,
-      required disableSubtitles,
-      required getAudioTracks,
-      required setAudioTrack,
-      required positionStream,
-      required durationStream,
-      required isPlayingStream,
-      required initListener,
-      required dispose,
+      {required Function pause,
+      required Function play,
+      required Function isPlaying,
+      required Function(Duration) seekTo,
+      required Function bufferingDuration,
+      required Function duration,
+      required Function currentPosition,
+      required bool Function() isInit,
+      required Function pip,
+      required Future<bool> hasPip,
+      required Function getSubtitles,
+      required Function(Subtitle) setSubtitle,
+      required VoidCallback disableSubtitles,
+      required VoidCallback enterFullscreen,
+      required VoidCallback exitFullscreen,
+      required VoidCallback toggleFullscreen,
+      required Function getAudioTracks,
+      required Function(AudioTrack) setAudioTrack,
+      required BehaviorSubject<Duration> positionStream,
+      required BehaviorSubject<Duration> durationStream,
+      required BehaviorSubject<bool> isPlayingStream,
+      required Future<void> Function() dispose,
       required this.controller})
       : _play = play,
         _pause = pause,
@@ -76,7 +74,6 @@ class CommonStream {
         _positionStream = positionStream,
         _durationStream = durationStream,
         _isPlayingStream = isPlayingStream,
-        _initListener = initListener,
         _dispose = dispose;
 
   void play() => _play();
@@ -86,7 +83,7 @@ class CommonStream {
   Duration getBufferingDuration() => _bufferingDuration();
   Duration? getDuration() => _duration();
   Duration getCurrentPosition() => _currentPosition();
-  bool isInit() => _isInit;
+  bool isInit() => _isInit();
   Future<bool> hasPip() => _hasPip;
   void pip() => _pip();
   void enterFullscreen() => _enterFullscreen();
@@ -100,7 +97,6 @@ class CommonStream {
   BehaviorSubject<Duration> getPositionStream() => _positionStream;
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
   BehaviorSubject<bool> getPlayingStateStream() => _isPlayingStream;
-  void initListener() => _initListener();
   Future<void> disposeStream() => _dispose();
 
   static CommonStream parse(dynamic controller) {

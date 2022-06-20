@@ -67,16 +67,4 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
       },
     );
   }
-
-  MaterialStateProperty<double> _buttonElevation() {
-    return MaterialStateProperty.resolveWith<double>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
-          return 6;
-        }
-        return 0; // defer to the default
-      },
-    );
-  }
 }

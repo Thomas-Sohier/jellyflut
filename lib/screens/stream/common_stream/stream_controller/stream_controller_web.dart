@@ -23,7 +23,7 @@ CommonStream _parseVideoPlayerController(
       duration: () => videoPlayerController.value.duration,
       bufferingDuration: commonStreamVideoPlayer.getBufferingDurationVLC,
       currentPosition: () => videoPlayerController.value.position,
-      isInit: videoPlayerController.value.isInitialized,
+      isInit: () => videoPlayerController.value.isInitialized,
       hasPip: Future.value(false),
       pip: () => throw ('Not supported on VLC player'),
       getSubtitles: commonStreamVideoPlayer.getSubtitles,
@@ -39,7 +39,6 @@ CommonStream _parseVideoPlayerController(
       enterFullscreen: () => {},
       exitFullscreen: () => {},
       toggleFullscreen: () => {},
-      initListener: () => {},
       dispose: commonStreamVideoPlayer.stopPlayer,
       controller: videoPlayerController);
 }

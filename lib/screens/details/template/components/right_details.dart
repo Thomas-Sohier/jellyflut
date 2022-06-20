@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
 import 'package:jellyflut/screens/details/template/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
