@@ -18,9 +18,9 @@ class DetailsUpdateItem extends DetailsEvent {
 }
 
 class DetailsUpdateSeedColor extends DetailsEvent {
-  final Color seedColor;
+  final List<Color> colors;
 
-  DetailsUpdateSeedColor({required this.seedColor});
+  DetailsUpdateSeedColor({required this.colors});
 }
 
 class DetailsUpdateTheme extends DetailsEvent {

@@ -9,12 +9,12 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/details/details_infos.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/shared/luminance.dart';
+import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut/theme.dart' as t;
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
@@ -24,7 +24,21 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   ScreenLayout _screenLayout;
   final BehaviorSubject<bool> pinnedHeaderStream =
       BehaviorSubject.seeded(false);
-  final BehaviorSubject<ThemeData> themeStream = BehaviorSubject();
+  final ValueNotifier<ThemeData> theme = ValueNotifier(ThemeProvider()
+      .getThemeData
+      .copyWith(colorScheme: _generateDefaultColorScheme)
+      .copyWith(textTheme: _generateDefaultTextTheme));
+
+  // Useful only for default theme
+  // Default app theme isn't really contrast friendly on details page with gradient background
+  // These two getters allow to modify the current theme with correct contrasted theme
+  // on gradient
+  static ColorScheme get _generateDefaultColorScheme =>
+      ThemeProvider().getThemeData.colorScheme.copyWith(
+          onBackground: ThemeProvider().getThemeData.colorScheme.onSecondary);
+  static TextTheme get _generateDefaultTextTheme =>
+      t.Theme.generateTextThemeFromColor(
+          ThemeProvider().getThemeData.colorScheme.onSecondary);
 
   /// Helper cache method
   /// generate cache colorkey from item and current user
@@ -49,7 +63,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     } else if (event is DetailsUpdateSeedColor) {
       await _updateTheme(event, emit);
     } else if (event is DetailsUpdateTheme) {
-      themeStream.add(event.theme);
+      theme.value = event.theme;
       _d.theme = event.theme;
       emit(DetailsLoadedState(_d));
     }
@@ -74,16 +88,18 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   Future<void> _updateTheme(
       DetailsUpdateSeedColor event, Emitter<DetailsState> emit) async {
-    final theme = Luminance.computeLuminance(event.seedColor);
-    _d.theme = theme;
-    themeStream.add(theme);
+    final detailsTheme =
+        t.Theme.generateThemeFromColors(event.colors[0], event.colors[1]);
+    _d.theme = detailsTheme;
+    theme.value = detailsTheme;
     emit(DetailsLoadedState(_d));
   }
 
-  Future<bool> cacheSeedColor(final Color color) async {
+  Future<bool> cacheSeedColor(final List<Color> colors) async {
     final sp = SharedPrefs().sharedPrefs;
     final item = await _d.item;
-    return sp.setString(spKey(item), color.value.toString());
+    final colorsAsInt = colors.map((c) => c.value.toString());
+    return sp.setStringList(spKey(item), colorsAsInt.toList());
   }
 
   Future<bool> isSeedColorCached() async {
@@ -92,11 +108,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     return sp.containsKey(spKey(item));
   }
 
-  Future<Color> getCachedSeedColor() async {
+  Future<List<Color>> getCachedSeedColor() async {
     final sp = SharedPrefs().sharedPrefs;
     final item = await _d.item;
-    final colorsAsString = sp.getString(spKey(item))!;
-    return Color(int.parse(colorsAsString));
+    final colorsAsString = sp.getStringList(spKey(item))!;
+    return colorsAsString.map((c) => Color(int.parse(c))).toList();
   }
 
   void getItemBackgroundColor(final Item item,
@@ -104,7 +120,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     // get seed color from sharedPref to prevent computation on remote image
     // to load faster and prevent future API call
     if (cache && await isSeedColorCached()) {
-      return add(DetailsUpdateSeedColor(seedColor: await getCachedSeedColor()));
+      return add(DetailsUpdateSeedColor(colors: await getCachedSeedColor()));
     }
 
     final url = ItemImageService.getItemImageUrl(
@@ -121,9 +137,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       // save binary in sharedpref to load faster and prevent future API call
       if (cache) {
         unawaited(colorsFuture.then((c) async {
-          final middleColor = Color.lerp(c[0], c[1], 0.5) ?? c[0];
-          await cacheSeedColor(middleColor);
-          add(DetailsUpdateSeedColor(seedColor: middleColor));
+          await cacheSeedColor(c);
+          add(DetailsUpdateSeedColor(colors: c));
         }));
       }
     });

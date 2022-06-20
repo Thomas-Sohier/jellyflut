@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:material_color_utilities/material_color_utilities.dart' as m;
 
 // Shimmering color
@@ -72,6 +73,21 @@ Map<int, Color> jellyLightBlueMap = {
 };
 
 class Theme {
+  static ThemeData generateThemeFromSeedColor(Color dominantColor) {
+    final brightness = dominantColor.computeLuminance() > 0.5
+        ? Brightness.light
+        : Brightness.dark;
+    return generateThemeDataFromSeedColor(brightness, dominantColor);
+  }
+
+  static ThemeData generateThemeFromColors(Color primary, Color secondary) {
+    final middleColor = Color.lerp(primary, secondary, 0.5)!;
+    final brightness = middleColor.computeLuminance() > 0.5
+        ? Brightness.light
+        : Brightness.dark;
+    return generateThemeDataFromSwatchColor(brightness, primary, secondary);
+  }
+
   /// Generate a theme from a colorScheme
   /// You can provide a [brightness] if needed (by default -> Brightness.light), it will override colorscheme's one
   /// You need to provide a [colorScheme]
@@ -108,11 +124,36 @@ class Theme {
     return _generateTheme(theme);
   }
 
+  /// Generate a theme from a colorScheme
+  /// You can provide a [brightness] if needed (by default -> Brightness.light)
+  /// You can provide a [seedColor] if needed (by default -> jellyfin purple color)
+  static ThemeData generateThemeDataFromSwatchColor(
+      [Brightness brightness = Brightness.light,
+      Color? primary,
+      Color? secondary]) {
+    final background =
+        brightness == Brightness.light ? null : Colors.grey.shade900;
+    primary ??= jellyLightPurpleMap[500]!;
+    secondary ??= jellyLightBlueMap[500]!;
+    final primarySwatch = ColorUtil.colorToMaterialColor(primary);
+    final colorScheme = ColorScheme.fromSwatch(
+        primarySwatch: primarySwatch,
+        accentColor: secondary,
+        brightness: brightness,
+        backgroundColor: background);
+    final theme = ThemeData(
+        colorScheme:
+            colorScheme.copyWith(onBackground: colorScheme.onSecondary),
+        visualDensity: VisualDensity.standard,
+        useMaterial3: true);
+    return _generateTheme(theme);
+  }
+
   /// Generate a custom theme
   /// You need to provide a [theme]
   static ThemeData _generateTheme(ThemeData theme) {
     final textTheme =
-        _generateTextThemeFromColor(theme.colorScheme.onBackground);
+        generateTextThemeFromColor(theme.colorScheme.onBackground);
     final reveredBrightness = theme.brightness == Brightness.dark
         ? Brightness.light
         : Brightness.dark;
@@ -191,7 +232,7 @@ class Theme {
 
   /// Generate a text theme specific to this app
   /// You can provide a [color] to specify font color
-  static TextTheme _generateTextThemeFromColor([Color? color]) {
+  static TextTheme generateTextThemeFromColor([Color? color]) {
     TextStyle? poppinsFont(TextStyle? textStyle) =>
         textStyle?.copyWith(fontFamily: 'Poppins', color: color);
     TextStyle? hindMaduraiFont(TextStyle? textStyle) =>

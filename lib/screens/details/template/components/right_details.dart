@@ -25,9 +25,7 @@ class _RightDetailsState extends State<RightDetails>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   bool isHeaderPinned = false;
-  late ThemeData _theme;
   late Item item;
-  late final DetailsBloc _detailsBloc;
   late final BehaviorSubject<int> _indexStream;
   late final ScrollController _scrollController;
   late final Future<Category> seasons;
@@ -38,7 +36,6 @@ class _RightDetailsState extends State<RightDetails>
   void initState() {
     super.initState();
     item = widget.item;
-    _detailsBloc = BlocProvider.of<DetailsBloc>(context);
     _scrollController = ScrollController();
     _indexStream = BehaviorSubject.seeded(0);
     seasons = ItemService.getItems(
@@ -50,12 +47,6 @@ class _RightDetailsState extends State<RightDetails>
     _tabController!.addListener(() {
       _indexStream.add(_tabController!.index);
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _theme = Theme.of(context);
   }
 
   @override
@@ -72,15 +63,6 @@ class _RightDetailsState extends State<RightDetails>
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ThemeData>(
-      stream: _detailsBloc.themeStream,
-      builder: (context, snapshot) {
-        return Theme(data: snapshot.data ?? _theme, child: body(item));
-      },
-    );
-  }
-
-  Widget body(final Item item) {
     SliverPadding boxAdapter(Widget? child) {
       return SliverPadding(
           padding: contentPadding,

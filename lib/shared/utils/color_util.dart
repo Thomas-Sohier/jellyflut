@@ -1,9 +1,22 @@
 import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image_lib;
 
-import 'package:flutter/painting.dart';
-
 class ColorUtil {
+  static Map<int, Color> generateColorSwatch(Color color) => <int, Color>{
+        50: ColorUtil.lighten(color, 0.45),
+        100: ColorUtil.lighten(color, 0.4),
+        200: ColorUtil.lighten(color, 0.3),
+        300: ColorUtil.lighten(color, 0.2),
+        400: ColorUtil.lighten(color, 0.1),
+        500: color,
+        600: ColorUtil.darken(color, 0.1),
+        700: ColorUtil.darken(color, 0.2),
+        800: ColorUtil.darken(color, 0.3),
+        900: ColorUtil.darken(color, 0.4)
+      };
+
   /// darken gibvn color
   /// ranges from 0.0 to 1.0
   static Color darken(Color color, [double amount = .05]) {
@@ -102,5 +115,10 @@ class ColorUtil {
     b = b ~/ colors.length;
 
     return Color.fromRGBO(r, g, b, 1);
+  }
+
+  static MaterialColor colorToMaterialColor(Color color) {
+    final swatch = generateColorSwatch(color);
+    return MaterialColor(color.value, swatch);
   }
 }

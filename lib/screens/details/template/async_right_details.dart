@@ -4,7 +4,7 @@ import 'package:jellyflut/mixins/details_mixin.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/details/header.dart';
-import 'package:jellyflut/screens/details/template/right_details.dart';
+import 'package:jellyflut/screens/details/template/components/right_details.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
 class AsyncRightDetails extends StatefulWidget {

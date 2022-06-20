@@ -47,6 +47,7 @@ class ThemeProvider extends ChangeNotifier {
   Brightness getBrightness() {
     final brightnessName = SharedPrefs().sharedPrefs.getString(THEME_KEY);
     if (brightnessName == null) {
+      SharedPrefs().sharedPrefs.setString(THEME_KEY, Brightness.dark.name);
       return Brightness.dark;
     }
 

@@ -4,11 +4,13 @@ import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/mixins/details_mixin.dart';
 import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/background_image.dart';
+import 'package:jellyflut/screens/details/template/components/background_image.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
-import 'package:jellyflut/screens/details/template/components/async_right_details.dart';
+import 'package:jellyflut/screens/details/template/async_right_details.dart';
 import 'package:jellyflut/screens/details/template/details_background_builder.dart';
-import 'package:jellyflut/screens/details/template/left_details.dart';
+import 'package:jellyflut/screens/details/template/components/left_details.dart';
+
+import 'components/background_image.dart';
 
 class LargeDetails extends StatefulWidget {
   final Item item;

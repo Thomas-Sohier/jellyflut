@@ -46,10 +46,17 @@ class _DetailsState extends State<Details> {
             value: SystemUiOverlayStyle(
               statusBarColor: Colors.transparent,
             ),
-            child: Scaffold(
-                body: widget.item.type != ItemType.PHOTO
-                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
-                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
+            child: ValueListenableBuilder<ThemeData>(
+                valueListenable: detailsBloc.theme,
+                builder: (context, value, child) {
+                  return Theme(data: value, child: child ?? const SizedBox());
+                },
+                child: Scaffold(
+                    body: widget.item.type != ItemType.PHOTO
+                        ? LargeDetails(
+                            item: widget.item, heroTag: widget.heroTag)
+                        : PhotoItem(
+                            item: widget.item, heroTag: widget.heroTag)))));
   }
 
   DetailsInfosFuture getDetailsInfos() {

@@ -118,7 +118,7 @@ class _PaletteButtonState extends State<PaletteButton>
       theme.colorScheme.secondary,
       theme.colorScheme.tertiary
     ];
-    final onBackground = theme.colorScheme.onSecondary;
+    final onBackground = theme.colorScheme.onBackground;
     return buttonFromPalette(palette, onBackground);
   }
 
