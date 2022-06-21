@@ -51,33 +51,19 @@ class _CommonControlsPhoneState extends State<CommonControlsPhone> {
     return Column(
       children: [
         const SizedBox(height: 12),
-        Expanded(
+        const Expanded(
             child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: EdgeInsets.symmetric(horizontal: 24),
                 child: TopRow())),
-        Expanded(child: Controls()),
-        Expanded(
+        const Expanded(child: Controls()),
+        const Expanded(
             child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: BottomRow(),
         ))
       ],
     );
   }
-}
-
-Widget controls() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      BackwardButton(size: 42),
-      const SizedBox(width: 12),
-      PlayPauseButton(size: 42),
-      const SizedBox(width: 12),
-      ForwardButton(size: 42),
-    ],
-  );
 }
 
 class TopRow extends StatelessWidget {
@@ -94,17 +80,17 @@ class TopRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [ItemTitle(), ItemParentTitle()],
+              children: [const ItemTitle(), const ItemParentTitle()],
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              PipButton(),
-              ChapterButton(),
-              SubtitleButtonSelector(),
-              AudioButtonSelector(),
-              TranscodeState()
+              const PipButton(),
+              const ChapterButton(),
+              const SubtitleButtonSelector(),
+              const AudioButtonSelector(),
+              const TranscodeState()
             ],
           )
         ]);
@@ -113,7 +99,7 @@ class TopRow extends StatelessWidget {
   Widget backButton() {
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
       return Row(children: [
-        SelectableBackButton(shadow: true),
+        const SelectableBackButton(shadow: true),
         const SizedBox(width: 12)
       ]);
     }
@@ -130,11 +116,11 @@ class Controls extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        BackwardButton(size: 42),
+        const BackwardButton(size: 42),
         const SizedBox(width: 12),
-        PlayPauseButton(size: 42),
+        const PlayPauseButton(size: 42),
         const SizedBox(width: 12),
-        ForwardButton(size: 42),
+        const ForwardButton(size: 42),
       ],
     );
   }

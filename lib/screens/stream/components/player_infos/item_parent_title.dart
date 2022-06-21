@@ -1,9 +1,9 @@
 part of 'player_infos.dart';
 
 class ItemParentTitle extends StatelessWidget {
-  final StreamingProvider streamingProvider = StreamingProvider();
+  const ItemParentTitle({super.key});
 
-  ItemParentTitle({super.key});
+  StreamingProvider get streamingProvider => StreamingProvider();
 
   @override
   Widget build(BuildContext context) {
