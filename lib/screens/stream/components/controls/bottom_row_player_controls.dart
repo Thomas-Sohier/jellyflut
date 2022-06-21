@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/screens/stream/components/controls/backward_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/curren_duration_player.dart';
+import 'package:jellyflut/screens/stream/components/controls/current_position_player.dart';
 import 'package:jellyflut/screens/stream/components/controls/forward_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
@@ -23,36 +25,61 @@ class BottomRowPlayerControls extends StatelessWidget {
       children: [
         ClipRect(
             child: ColoredBox(
-          color: Colors.black12,
-          child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 24),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                color: Colors.black12,
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
                         children: [
-                          TranscodeState(),
-                          const Spacer(),
-                          BackwardButton(),
-                          PlayPauseButton(),
-                          ForwardButton(),
-                          const Spacer(),
-                          PipButton(),
-                          ChapterButton(),
-                          SubtitleButtonSelector(),
-                          AudioButtonSelector(),
-                          FullscreenButton()
-                        ]),
-                  ),
-                  const SizedBox(height: 24)
-                ],
-              )),
-        )),
-        VideoPlayerProgressBar(),
+                          const SizedBox(height: 16),
+                          Row(children: [
+                            const CurrentPositionPlayer(),
+                            const Spacer(),
+                            const CurrentDurationPlayer()
+                          ]),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Row(children: [const TranscodeState()]),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const BackwardButton(),
+                                      const PlayPauseButton(),
+                                      const ForwardButton(),
+                                    ]),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const PipButton(),
+                                      const ChapterButton(),
+                                      const SubtitleButtonSelector(),
+                                      const AudioButtonSelector(),
+                                      const FullscreenButton()
+                                    ]),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16)
+                        ],
+                      )),
+                ))),
+        VideoPlayerProgressBar(barCapShape: BarCapShape.square),
       ],
     );
   }

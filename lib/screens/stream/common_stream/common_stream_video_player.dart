@@ -4,7 +4,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/models/enum/play_method.dart';
+import 'package:jellyflut/models/enum/reapeat_mode.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/playback_progress.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -84,17 +87,38 @@ class CommonStreamVideoPlayer {
     return Future.value(videoPlayerController);
   }
 
-  static Timer _startProgressTimer(
-      Item item, VideoPlayerController vlcPlayerController) {
+  static PlaybackProgress getPlaybackProgress(
+      VideoPlayerController controller) {
+    PlayMethod _playMethod() {
+      final isDirectPlay = streamingProvider.isDirectPlay ?? true;
+      if (isDirectPlay) return PlayMethod.directPlay;
+      return PlayMethod.transcode;
+    }
+
+    return PlaybackProgress(
+        itemId: streamingProvider.item!.id,
+        audioStreamIndex:
+            streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
+        subtitleStreamIndex:
+            streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
+        canSeek: true,
+        isMuted: controller.value.volume == 0 ? true : false,
+        isPaused: controller.value.isPlaying,
+        playSessionId: streamingProvider.playBackInfos?.playSessionId,
+        mediaSourceId: streamingProvider.playBackInfos?.mediaSources.first.id,
+        nowPlayingQueue: [],
+        playbackStartTimeTicks: null,
+        playMethod: _playMethod(),
+        positionTicks: controller.value.position.inMicroseconds,
+        repeatMode: RepeatMode.repeatNone,
+        volumeLevel: (controller.value.volume * 100).round());
+  }
+
+  static Timer _startProgressTimer(Item item, VideoPlayerController c) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => StreamingService.streamingProgress(item,
-            canSeek: true,
-            isMuted: vlcPlayerController.value.volume > 0 ? true : false,
-            isPaused: !vlcPlayerController.value.isPlaying,
-            positionTicks: vlcPlayerController.value.position.inMicroseconds,
-            volumeLevel: vlcPlayerController.value.volume.round(),
-            subtitlesIndex: 0));
+        (Timer t) =>
+            StreamingService.streamingProgress(getPlaybackProgress(c)));
   }
 
   Future<List<Subtitle>> getSubtitles() async {

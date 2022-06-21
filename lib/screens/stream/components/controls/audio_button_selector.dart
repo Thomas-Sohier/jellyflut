@@ -8,7 +8,7 @@ import 'package:jellyflut/screens/stream/model/media_type.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class AudioButtonSelector extends StatefulWidget {
-  AudioButtonSelector({super.key});
+  const AudioButtonSelector({super.key});
 
   @override
   State<AudioButtonSelector> createState() => _AudioButtonSelectorState();

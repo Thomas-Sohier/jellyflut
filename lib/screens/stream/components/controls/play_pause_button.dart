@@ -4,7 +4,7 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class PlayPauseButton extends StatefulWidget {
   final double? size;
-  PlayPauseButton({super.key, this.size});
+  const PlayPauseButton({super.key, this.size});
 
   @override
   State<PlayPauseButton> createState() => _PlayPauseButtonState();
@@ -33,6 +33,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
+      initialData: streamingProvider.commonStream?.isPlaying(),
       stream: streamingProvider.commonStream!.getPlayingStateStream(),
       builder: (context, isPlayingSnapshot) => OutlinedButtonSelector(
           onPressed: () => isPlayingSnapshot.data ?? false

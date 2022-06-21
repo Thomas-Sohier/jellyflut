@@ -7,7 +7,7 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 
 class ChapterButton extends StatefulWidget {
-  ChapterButton({super.key});
+  const ChapterButton({super.key});
 
   @override
   State<ChapterButton> createState() => _ChapterButtonState();

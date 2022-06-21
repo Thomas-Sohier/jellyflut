@@ -5,8 +5,12 @@ import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 class VideoPlayerProgressBar extends StatefulWidget {
   final double barHeight;
   final double thumbRadius;
+  final BarCapShape barCapShape;
   const VideoPlayerProgressBar(
-      {super.key, this.barHeight = 6.0, this.thumbRadius = 4.5});
+      {super.key,
+      this.barHeight = 6.0,
+      this.thumbRadius = 4.5,
+      this.barCapShape = BarCapShape.round});
 
   @override
   State<VideoPlayerProgressBar> createState() => _VideoPlayerProgressBarState();
@@ -17,6 +21,7 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
 
   double get barHeight => widget.barHeight;
   double get thumbRadius => widget.thumbRadius;
+  BarCapShape get barCapShape => widget.barCapShape;
 
   @override
   void initState() {
@@ -46,7 +51,7 @@ class _VideoPlayerProgressBarState extends State<VideoPlayerProgressBar> {
           timeLabelTextStyle: TextStyle(color: Colors.white),
           barHeight: barHeight,
           thumbRadius: thumbRadius,
-          barCapShape: BarCapShape.round,
+          barCapShape: barCapShape,
           thumbCanPaintOutsideBar: true,
           onSeek: (duration) {
             streamingProvider.commonStream!.seekTo(duration);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/curren_duration_player.dart';
+import 'package:jellyflut/screens/stream/components/controls/current_position_player.dart';
 import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/play_pause_button.dart';
@@ -143,11 +145,17 @@ class BottomRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(children: [
-          const Text('00:00 / 24:36'),
-          const Spacer(),
-          if (Platform.isIOS || Platform.isAndroid) const FullscreenButton()
-        ]),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CurrentPositionPlayer(),
+              const Text('/'),
+              const CurrentDurationPlayer(),
+              const Spacer(),
+              if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
+                const FullscreenButton()
+            ]),
         const VideoPlayerProgressBar(barHeight: 4, thumbRadius: 8),
         const SizedBox(height: 24),
       ],

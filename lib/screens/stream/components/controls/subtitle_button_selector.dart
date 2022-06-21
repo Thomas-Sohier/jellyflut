@@ -7,7 +7,7 @@ import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 
 class SubtitleButtonSelector extends StatefulWidget {
-  SubtitleButtonSelector({super.key});
+  const SubtitleButtonSelector({super.key});
 
   @override
   State<SubtitleButtonSelector> createState() => _SubtitleButtonSelectorState();

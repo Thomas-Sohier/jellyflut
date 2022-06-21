@@ -6,7 +6,10 @@ import 'package:flutter/widgets.dart';
 
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
+import 'package:jellyflut/models/enum/play_method.dart';
+import 'package:jellyflut/models/enum/reapeat_mode.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut/models/jellyfin/playback_progress.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -122,24 +125,42 @@ class CommonStreamBP {
         controlsConfiguration: customConfiguration);
   }
 
-  static Timer _startProgressTimer(
-      Item item, BetterPlayerController betterPlayerController) {
+  static PlaybackProgress getPlaybackProgress(
+      BetterPlayerController controller) {
+    PlayMethod _playMethod() {
+      final isDirectPlay = streamingProvider.isDirectPlay ?? true;
+      if (isDirectPlay) return PlayMethod.directPlay;
+      return PlayMethod.transcode;
+    }
+
+    return PlaybackProgress(
+        itemId: streamingProvider.item!.id,
+        audioStreamIndex:
+            streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex,
+        subtitleStreamIndex:
+            streamingProvider.selectedSubtitleTrack?.jellyfinSubtitleIndex,
+        canSeek: true,
+        isMuted:
+            controller.videoPlayerController!.value.volume == 0 ? true : false,
+        isPaused: controller.videoPlayerController!.value.isPlaying,
+        playSessionId: streamingProvider.playBackInfos?.playSessionId,
+        mediaSourceId: streamingProvider.playBackInfos?.mediaSources.first.id,
+        nowPlayingQueue: [],
+        playbackStartTimeTicks: null,
+        playMethod: _playMethod(),
+        positionTicks:
+            controller.videoPlayerController?.value.position.inMicroseconds ??
+                0,
+        repeatMode: RepeatMode.repeatNone,
+        volumeLevel:
+            (controller.videoPlayerController!.value.volume * 100).round());
+  }
+
+  static Timer _startProgressTimer(Item item, BetterPlayerController c) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => StreamingService.streamingProgress(item,
-            canSeek: true,
-            isMuted:
-                betterPlayerController.videoPlayerController!.value.volume > 0
-                    ? true
-                    : false,
-            isPaused:
-                betterPlayerController.videoPlayerController!.value.isPlaying,
-            positionTicks: betterPlayerController
-                .videoPlayerController!.value.position.inMicroseconds,
-            volumeLevel: betterPlayerController
-                .videoPlayerController!.value.volume
-                .round(),
-            subtitlesIndex: 0));
+        (Timer t) =>
+            StreamingService.streamingProgress(getPlaybackProgress(c)));
   }
 
   static BetterPlayerControlsConfiguration _configuration() {

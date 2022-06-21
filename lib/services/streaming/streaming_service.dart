@@ -1,25 +1,25 @@
 import 'dart:convert' as convert;
 import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/item_type.dart';
 import 'package:jellyflut/models/enum/streaming_software.dart';
-import 'package:jellyflut/models/jellyfin/device_profile.dart';
-import 'package:jellyflut/models/jellyfin/media_played_infos.dart';
 import 'package:jellyflut/models/jellyfin/device.dart';
+import 'package:jellyflut/models/jellyfin/device_profile.dart';
 import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
+import 'package:jellyflut/models/jellyfin/playback_progress.dart';
 import 'package:jellyflut/models/players/player_profile.dart';
+import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
-
-import 'package:flutter/services.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:uuid/uuid.dart';
 
 class StreamingService {
@@ -49,29 +49,12 @@ class StreamingService {
     });
   }
 
-  static void streamingProgress(Item item,
-      {bool isMuted = false,
-      bool isPaused = false,
-      bool canSeek = true,
-      int positionTicks = 0,
-      int volumeLevel = 100,
-      int? subtitlesIndex}) {
-    final mediaPlayedInfos = MediaPlayedInfos();
-    mediaPlayedInfos.isMuted = isMuted;
-    mediaPlayedInfos.isPaused = isPaused;
-    mediaPlayedInfos.canSeek = true;
-    mediaPlayedInfos.itemId = item.id;
-    mediaPlayedInfos.mediaSourceId = item.id;
-    mediaPlayedInfos.positionTicks = positionTicks * 10;
-    mediaPlayedInfos.volumeLevel = volumeLevel;
-    mediaPlayedInfos.subtitleStreamIndex = subtitlesIndex ?? -1;
-
+  static void streamingProgress(PlaybackProgress playbackProgress) {
     final url = '${server.url}/Sessions/Playing/Progress';
+    final playbackProgressJSON = playbackProgress.toMap();
+    playbackProgressJSON.removeWhere((key, value) => value == null);
 
-    final mediaPlayedInfosJSON = mediaPlayedInfos.toJson();
-    mediaPlayedInfosJSON.removeWhere((key, value) => value == null);
-
-    final json = convert.json.encode(mediaPlayedInfos);
+    final json = convert.json.encode(playbackProgressJSON);
 
     dio.options.contentType = 'application/json';
     dio

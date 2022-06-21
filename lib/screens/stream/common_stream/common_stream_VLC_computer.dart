@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:jellyflut/models/enum/play_method.dart';
+import 'package:jellyflut/models/enum/reapeat_mode.dart';
+import 'package:jellyflut/models/jellyfin/playback_progress.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dart_vlc/dart_vlc.dart';
@@ -72,16 +75,37 @@ class CommonStreamVLCComputer {
     }
   }
 
+  static PlaybackProgress getPlaybackProgress(Player controller) {
+    PlayMethod _playMethod() {
+      final isDirectPlay = streamingProvider.isDirectPlay ?? true;
+      if (isDirectPlay) return PlayMethod.directPlay;
+      return PlayMethod.transcode;
+    }
+
+    return PlaybackProgress(
+        itemId: streamingProvider.item!.id,
+        audioStreamIndex:
+            streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
+        subtitleStreamIndex:
+            streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
+        canSeek: true,
+        isMuted: controller.general.volume == 0 ? true : false,
+        isPaused: controller.playback.isPlaying,
+        playSessionId: streamingProvider.playBackInfos?.playSessionId,
+        mediaSourceId: streamingProvider.playBackInfos?.mediaSources.first.id,
+        nowPlayingQueue: [],
+        playbackStartTimeTicks: null,
+        playMethod: _playMethod(),
+        positionTicks: controller.position.position?.inMicroseconds,
+        repeatMode: RepeatMode.repeatNone,
+        volumeLevel: (controller.general.volume * 100).round());
+  }
+
   static Timer _startProgressTimer(Item item, Player player) {
     return Timer.periodic(
         Duration(seconds: 15),
-        (Timer t) => StreamingService.streamingProgress(item,
-            canSeek: player.playback.isSeekable,
-            isMuted: player.general.volume > 0 ? true : false,
-            isPaused: !player.playback.isPlaying,
-            positionTicks: player.position.position?.inMicroseconds ?? 0,
-            volumeLevel: player.general.volume.round(),
-            subtitlesIndex: 0));
+        (Timer t) =>
+            StreamingService.streamingProgress(getPlaybackProgress(player)));
   }
 
   void enterFullscreen() async {

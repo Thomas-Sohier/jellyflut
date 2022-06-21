@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 
 class PipButton extends StatefulWidget {
-  PipButton({super.key});
+  const PipButton({super.key});
 
   @override
   State<PipButton> createState() => _PipButtonState();
@@ -51,7 +50,7 @@ class _PipButtonState extends State<PipButton> {
 }
 
 class Pip extends StatelessWidget {
-  final void Function()? onPressed;
+  final void Function() onPressed;
   const Pip({super.key, this.onPressed = _defaultAction});
 
   static void _defaultAction() {}
@@ -59,7 +58,7 @@ class Pip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      onPressed: () {},
+      onPressed: onPressed,
       shape: CircleBorder(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
