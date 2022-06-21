@@ -121,19 +121,37 @@ class CommonStreamVideoPlayer {
             StreamingService.streamingProgress(getPlaybackProgress(c)));
   }
 
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
   Future<List<Subtitle>> getSubtitles() async {
     final parsedSubtitiles = <Subtitle>[];
     return parsedSubtitiles;
   }
 
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
   Future<List<AudioTrack>> getAudioTracks() async {
     final parsedAudioTracks = <AudioTrack>[];
     return parsedAudioTracks;
   }
 
-  void setSpuTrack(Subtitle subtitle) {}
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> setAudioTrack(AudioTrack trackIndex) {
+    return Future.value();
+  }
 
-  void setAudioTrack(AudioTrack trackIndex) {}
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> setSubtitle(Subtitle subtitle) {
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> disableSubtitles() {
+    return Future.value();
+  }
 
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();

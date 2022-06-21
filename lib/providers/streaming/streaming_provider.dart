@@ -114,7 +114,7 @@ class StreamingProvider extends ChangeNotifier {
     if (audioTrack.mediaType == MediaType.REMOTE && item != null) {
       await changeDataSource();
     } else if (audioTrack.mediaType == MediaType.LOCAL) {
-      commonStream?.setAudioTrack(audioTrack);
+      await commonStream?.setAudioTrack(audioTrack);
     }
 
     if (streamingEvent.hasListener) {
@@ -128,7 +128,7 @@ class StreamingProvider extends ChangeNotifier {
 
   Future<void> changeDataSource() async {
     return StreamingService.deleteActiveEncoding()
-        .then((_) async => await commonStream?.disposeStream())
+        .then((_) async => await commonStream?.dispose())
         .then((_) => InitStreamingItemUtil.initControllerFromItem(item: item!))
         .then((controller) {
       _commonStream?.controller = controller;

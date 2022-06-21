@@ -1,28 +1,28 @@
-import 'package:flutter/foundation.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:rxdart/rxdart.dart';
+
 import './stream_controller/stream_controller.dart.dart' as impl;
 
 class CommonStream {
-  final Function _pause;
-  final Function _play;
-  final Function _isPlaying;
-  final Function(Duration) _seekTo;
-  final Function _bufferingDuration;
-  final Function _duration;
-  final Function _currentPosition;
+  final Future<void> Function() _pause;
+  final Future<void> Function() _play;
+  final bool Function() _isPlaying;
+  final Future<void> Function(Duration) _seekTo;
+  final Duration? Function() _bufferingDuration;
+  final Duration? Function() _duration;
+  final Duration? Function() _currentPosition;
   final bool Function() _isInit;
-  final Function _pip;
+  final Future<void>? Function() _pip;
   final Future<bool> _hasPip;
-  final Function _getSubtitles;
-  final Function(Subtitle) _setSubtitle;
-  final VoidCallback _disableSubtitles;
-  final Function _getAudioTracks;
-  final VoidCallback _enterFullscreen;
-  final VoidCallback _exitFullscreen;
-  final VoidCallback _toggleFullscreen;
-  final Function(AudioTrack) _setAudioTrack;
+  final Future<List<Subtitle>> Function() _getSubtitles;
+  final Future<void> Function(Subtitle) _setSubtitle;
+  final Future<void> Function() _disableSubtitles;
+  final Future<List<AudioTrack>> Function() _getAudioTracks;
+  final void Function() _enterFullscreen;
+  final void Function() _exitFullscreen;
+  final void Function() _toggleFullscreen;
+  final Future<void> Function(AudioTrack) _setAudioTrack;
   final BehaviorSubject<Duration> _positionStream;
   final BehaviorSubject<Duration> _durationStream;
   final BehaviorSubject<bool> _isPlayingStream;
@@ -30,24 +30,24 @@ class CommonStream {
   dynamic controller;
 
   CommonStream(
-      {required Function pause,
-      required Function play,
-      required Function isPlaying,
-      required Function(Duration) seekTo,
-      required Function bufferingDuration,
-      required Function duration,
-      required Function currentPosition,
+      {required Future<void> Function() pause,
+      required Future<void> Function() play,
+      required bool Function() isPlaying,
+      required Future<void> Function(Duration) seekTo,
+      required Duration? Function() bufferingDuration,
+      required Duration? Function() duration,
+      required Duration? Function() currentPosition,
       required bool Function() isInit,
-      required Function pip,
+      required Future<void>? Function() pip,
       required Future<bool> hasPip,
-      required Function getSubtitles,
-      required Function(Subtitle) setSubtitle,
-      required VoidCallback disableSubtitles,
-      required VoidCallback enterFullscreen,
-      required VoidCallback exitFullscreen,
-      required VoidCallback toggleFullscreen,
-      required Function getAudioTracks,
-      required Function(AudioTrack) setAudioTrack,
+      required Future<List<Subtitle>> Function() getSubtitles,
+      required Future<void> Function(Subtitle) setSubtitle,
+      required Future<void> Function() disableSubtitles,
+      required void Function() enterFullscreen,
+      required void Function() exitFullscreen,
+      required void Function() toggleFullscreen,
+      required Future<List<AudioTrack>> Function() getAudioTracks,
+      required Future<void> Function(AudioTrack) setAudioTrack,
       required BehaviorSubject<Duration> positionStream,
       required BehaviorSubject<Duration> durationStream,
       required BehaviorSubject<bool> isPlayingStream,
@@ -76,28 +76,29 @@ class CommonStream {
         _isPlayingStream = isPlayingStream,
         _dispose = dispose;
 
-  void play() => _play();
-  void pause() => _pause();
+  Future<void> play() => _play();
+  Future<void> pause() => _pause();
   bool isPlaying() => _isPlaying();
-  void seekTo(Duration duration) => _seekTo(duration);
-  Duration getBufferingDuration() => _bufferingDuration();
+  Future<void> seekTo(Duration duration) => _seekTo(duration);
+  Duration? getBufferingDuration() => _bufferingDuration() ?? Duration.zero;
   Duration? getDuration() => _duration();
-  Duration getCurrentPosition() => _currentPosition();
+  Duration? getCurrentPosition() => _currentPosition() ?? Duration.zero;
   bool isInit() => _isInit();
   Future<bool> hasPip() => _hasPip;
-  void pip() => _pip();
+  Future<void>? pip() => _pip();
   void enterFullscreen() => _enterFullscreen();
   void exitFullscreen() => _exitFullscreen();
   void toggleFullscreen() => _toggleFullscreen();
   Future<List<Subtitle>> getSubtitles() => _getSubtitles();
-  void setSubtitle(Subtitle subtitle) => _setSubtitle(subtitle);
-  void disableSubtitles() => _disableSubtitles();
+  Future<void> setSubtitle(Subtitle subtitle) => _setSubtitle(subtitle);
+  Future<void> disableSubtitles() => _disableSubtitles();
   Future<List<AudioTrack>> getAudioTracks() => _getAudioTracks();
-  void setAudioTrack(AudioTrack audioTrack) => _setAudioTrack(audioTrack);
+  Future<void> setAudioTrack(AudioTrack audioTrack) =>
+      _setAudioTrack(audioTrack);
   BehaviorSubject<Duration> getPositionStream() => _positionStream;
   BehaviorSubject<Duration> getDurationStream() => _durationStream;
   BehaviorSubject<bool> getPlayingStateStream() => _isPlayingStream;
-  Future<void> disposeStream() => _dispose();
+  Future<void> dispose() => _dispose();
 
   static CommonStream parse(dynamic controller) {
     return impl.parse(controller);

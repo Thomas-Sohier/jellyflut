@@ -14,7 +14,6 @@ class SubtitleButtonSelector extends StatefulWidget {
 }
 
 class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
-  late final FocusNode _node;
   late final StreamingProvider streamingProvider;
   late final GlobalKey<PopupMenuButtonState<Subtitle>> _popupMenuButtonKey;
   late int subtitleSelectedIndex;
@@ -22,20 +21,10 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   @override
   void initState() {
     super.initState();
-    _node = FocusNode(
-        canRequestFocus: false,
-        descendantsAreFocusable: false,
-        skipTraversal: true);
     streamingProvider = StreamingProvider();
     subtitleSelectedIndex =
         streamingProvider.selectedSubtitleTrack?.index ?? -1;
     _popupMenuButtonKey = GlobalKey();
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
   }
 
   @override
@@ -185,7 +174,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     // We tell the player to show subtitles only if it's local
     // Via remote we use our own code for compatitbility
     if (subtitle.mediaType == MediaType.LOCAL) {
-      streamingProvider.commonStream!.setSubtitle(subtitle);
+      await streamingProvider.commonStream?.setSubtitle(subtitle);
     }
   }
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:jellyflut/models/enum/play_method.dart';
 import 'package:jellyflut/models/enum/reapeat_mode.dart';
 import 'package:jellyflut/models/jellyfin/playback_progress.dart';
+import 'package:jellyflut/screens/stream/model/audio_track.dart';
+import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dart_vlc/dart_vlc.dart';
@@ -106,6 +108,57 @@ class CommonStreamVLCComputer {
         Duration(seconds: 15),
         (Timer t) =>
             StreamingService.streamingProgress(getPlaybackProgress(player)));
+  }
+
+  Future<void> play() {
+    player.play();
+    return Future.value();
+  }
+
+  Future<void> pause() {
+    player.pause();
+    return Future.value();
+  }
+
+  Future<void> seek(Duration duration) {
+    player.seek(duration);
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> pip() {
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<List<Subtitle>> getSubtitles() {
+    return Future.value(<Subtitle>[]);
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> setSubtitle(Subtitle subtitle) {
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> disableSubtitles() {
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<List<AudioTrack>> getAudioTracks() {
+    return Future.value(<AudioTrack>[]);
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  Future<void> setAudioTrack(AudioTrack audioTrack) {
+    return Future.value();
   }
 
   void enterFullscreen() async {

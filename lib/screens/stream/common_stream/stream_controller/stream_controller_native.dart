@@ -2,7 +2,6 @@ import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
-import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 
 import '../common_stream_BP.dart';
@@ -63,19 +62,19 @@ CommonStream _parseBetterPlayerController(
           betterPlayerController.videoPlayerController!.value.isPlaying,
       seekTo: betterPlayerController.seekTo,
       duration: () =>
-          betterPlayerController.videoPlayerController!.value.duration,
+          betterPlayerController.videoPlayerController?.value.duration,
       bufferingDuration: commonStreamBP.getBufferingDurationBP,
       currentPosition: () =>
-          betterPlayerController.videoPlayerController!.value.position,
+          betterPlayerController.videoPlayerController?.value.position,
       isInit: () => betterPlayerController.isVideoInitialized() ?? false,
       hasPip: betterPlayerController.isPictureInPictureSupported(),
       pip: () => betterPlayerController.enablePictureInPicture(
           betterPlayerController.betterPlayerGlobalKey!),
       getSubtitles: commonStreamBP.getSubtitles,
-      setSubtitle: (subtitle) => commonStreamBP.setSubtitle(subtitle),
-      disableSubtitles: betterPlayerController.subtitlesLines.clear,
+      setSubtitle: commonStreamBP.setSubtitle,
+      disableSubtitles: commonStreamBP.disableSubtitles,
       getAudioTracks: commonStreamBP.getAudioTracks,
-      setAudioTrack: (audioTrack) => commonStreamBP.setAudioTrack(audioTrack),
+      setAudioTrack: commonStreamBP.setAudioTrack,
       positionStream: commonStreamBP.positionStream(),
       durationStream: commonStreamBP.durationStream(),
       isPlayingStream: commonStreamBP.playingStateStream(),
@@ -89,33 +88,24 @@ CommonStream _parseBetterPlayerController(
 CommonStream _parseVlcComputerController({required Player player}) {
   final commonStreamVLCComputer = CommonStreamVLCComputer(player: player);
   return CommonStream(
-      pause: player.pause,
-      play: player.play,
+      pause: commonStreamVLCComputer.pause,
+      play: commonStreamVLCComputer.play,
       isPlaying: () => player.playback.isPlaying,
-      seekTo: player.seek,
+      seekTo: commonStreamVLCComputer.seek,
       duration: () => player.position.duration,
       bufferingDuration: () => Duration(seconds: 0),
       currentPosition: () => player.position.position,
       isInit: () => true,
       hasPip: Future.value(false),
-      pip: () => {},
-      getSubtitles: () {
-        // ignore: omit_local_variable_types
-        final List<Subtitle> subtitles = [];
-        return Future.value(subtitles);
-      },
-      setSubtitle: (_) => {},
-      disableSubtitles: () => {},
-      getAudioTracks: () {
-        // ignore: omit_local_variable_types
-
-        final audioTracks = <AudioTrack>[];
-        return Future.value(audioTracks);
-      },
+      pip: commonStreamVLCComputer.pip,
+      getSubtitles: commonStreamVLCComputer.getSubtitles,
+      setSubtitle: commonStreamVLCComputer.setSubtitle,
+      disableSubtitles: commonStreamVLCComputer.disableSubtitles,
+      getAudioTracks: commonStreamVLCComputer.getAudioTracks,
+      setAudioTrack: commonStreamVLCComputer.setAudioTrack,
       enterFullscreen: commonStreamVLCComputer.enterFullscreen,
       exitFullscreen: commonStreamVLCComputer.exitFullscreen,
       toggleFullscreen: commonStreamVLCComputer.toggleFullscreen,
-      setAudioTrack: (_) => {},
       positionStream: commonStreamVLCComputer.positionStream(),
       durationStream: commonStreamVLCComputer.durationStream(),
       isPlayingStream: commonStreamVLCComputer.playingStateStream(),

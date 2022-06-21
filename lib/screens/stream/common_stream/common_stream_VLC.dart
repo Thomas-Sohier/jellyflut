@@ -159,10 +159,8 @@ class CommonStreamVLC {
     return parsedAudioTracks;
   }
 
-  void setAudioTrack(
-    AudioTrack trackIndex,
-  ) {
-    vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
+  Future<void> setAudioTrack(AudioTrack trackIndex) {
+    return vlcPlayerController.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
   }
 
   BehaviorSubject<Duration> positionStream() {

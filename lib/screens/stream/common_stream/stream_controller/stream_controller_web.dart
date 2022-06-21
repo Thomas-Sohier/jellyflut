@@ -1,6 +1,5 @@
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_video_player.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:video_player/video_player.dart';
 
 CommonStream parse(dynamic controller) {
@@ -27,12 +26,10 @@ CommonStream _parseVideoPlayerController(
       hasPip: Future.value(false),
       pip: () => throw ('Not supported on VLC player'),
       getSubtitles: commonStreamVideoPlayer.getSubtitles,
-      setSubtitle: (Subtitle subtitle) =>
-          commonStreamVideoPlayer.setSpuTrack(subtitle),
-      disableSubtitles: () => {},
+      setSubtitle: commonStreamVideoPlayer.setSubtitle,
+      disableSubtitles: commonStreamVideoPlayer.disableSubtitles,
       getAudioTracks: commonStreamVideoPlayer.getAudioTracks,
-      setAudioTrack: (audioTrack) =>
-          commonStreamVideoPlayer.setAudioTrack(audioTrack),
+      setAudioTrack: commonStreamVideoPlayer.setAudioTrack,
       positionStream: commonStreamVideoPlayer.positionStream(),
       durationStream: commonStreamVideoPlayer.durationStream(),
       isPlayingStream: commonStreamVideoPlayer.playingStateStream(),

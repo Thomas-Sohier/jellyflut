@@ -15,20 +15,12 @@ class FullscreenButton extends StatefulWidget {
 
 class _FullscreenButtonState extends State<FullscreenButton> {
   late bool isFullscreen;
-  late final FocusNode _node;
   late final StreamingProvider streamingProvider;
 
   @override
   void initState() {
-    _node = FocusNode();
     streamingProvider = StreamingProvider();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
   }
 
   @override

@@ -70,7 +70,7 @@ class _StreamState extends State<Stream> {
     }
     // Disable and stop every service
     StreamingService.deleteActiveEncoding();
-    streamingProvider.commonStream?.disposeStream();
+    streamingProvider.commonStream?.dispose();
     streamingProvider.timer?.cancel();
 
     // Show device overlays

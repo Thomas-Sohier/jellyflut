@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_desktop.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_phone.dart';
-import 'package:rxdart/rxdart.dart';
 
 class CommonControls extends StatefulWidget {
   final bool isComputer;
@@ -18,30 +17,23 @@ class CommonControls extends StatefulWidget {
 }
 
 class _CommonControlsState extends State<CommonControls> {
-  late final StreamingProvider streamingProvider;
-  late final BehaviorSubject<bool> _visibleStreamController;
-  late final Function(RawKeyEvent) listener;
-  late Timer _timer;
   final ValueNotifier<bool> _visible = ValueNotifier(false);
+  late final StreamingProvider streamingProvider;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _visibleStreamController = BehaviorSubject<bool>();
     streamingProvider = StreamingProvider();
-    listener = (value) => _onKey(value);
-    _timer = Timer(Duration(seconds: 5), () {
-      _visible.value = false;
-    });
-    RawKeyboard.instance.addListener(listener);
+    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
+    RawKeyboard.instance.addListener(_onKey);
   }
 
   @override
   void dispose() {
     _timer.cancel();
     streamingProvider.timer?.cancel();
-    RawKeyboard.instance.removeListener(listener);
-    _visibleStreamController.close();
+    RawKeyboard.instance.removeListener(_onKey);
     super.dispose();
   }
 
@@ -62,10 +54,6 @@ class _CommonControlsState extends State<CommonControls> {
 
   @override
   Widget build(BuildContext context) {
-    return platformBuilder();
-  }
-
-  Widget platformBuilder() {
     return LayoutBuilder(builder: (context, constraints) {
       return SizedBox.expand(
         child: GestureDetector(
@@ -83,7 +71,7 @@ class _CommonControlsState extends State<CommonControls> {
                           visible: value, child: child ?? const SizedBox());
                     },
                     valueListenable: _visible,
-                    child: Controls()))),
+                    child: const Controls()))),
       );
     });
   }
@@ -91,10 +79,7 @@ class _CommonControlsState extends State<CommonControls> {
   Future<void> autoHideControl() async {
     _timer.cancel();
     _visible.value = !_visible.value;
-    _timer = Timer(Duration(seconds: 5), () {
-      _visible.value = false;
-      _visibleStreamController.add(false);
-    });
+    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
   }
 
   Future<void> autoHideControlHover() async {
@@ -102,9 +87,7 @@ class _CommonControlsState extends State<CommonControls> {
     if (_visible.value == false) {
       _visible.value = true;
     }
-    _timer = Timer(Duration(seconds: 5), () {
-      _visible.value = false;
-    });
+    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
   }
 }
 

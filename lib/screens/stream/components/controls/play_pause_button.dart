@@ -13,21 +13,13 @@ class PlayPauseButton extends StatefulWidget {
 class _PlayPauseButtonState extends State<PlayPauseButton> {
   late final StreamingProvider streamingProvider;
   late final VoidCallback listener;
-  late final FocusNode _node;
 
   double? get size => widget.size;
 
   @override
   void initState() {
     streamingProvider = StreamingProvider();
-    _node = FocusNode();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
   }
 
   @override

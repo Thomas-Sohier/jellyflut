@@ -179,7 +179,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     // We tell the player to show subtitles only if it's local
     // Via remote we use our own code for compatitbility
     if (audioTrack.mediaType == MediaType.LOCAL) {
-      streamingProvider.commonStream!.setAudioTrack(audioTrack);
+      await streamingProvider.commonStream!.setAudioTrack(audioTrack);
     }
   }
 }
