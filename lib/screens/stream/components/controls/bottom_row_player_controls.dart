@@ -79,7 +79,7 @@ class BottomRowPlayerControls extends StatelessWidget {
                         ],
                       )),
                 ))),
-        VideoPlayerProgressBar(barCapShape: BarCapShape.square),
+        const VideoPlayerProgressBar(barCapShape: BarCapShape.square),
       ],
     );
   }

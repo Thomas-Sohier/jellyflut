@@ -10,6 +10,12 @@ import 'package:jellyflut/services/item/item_service.dart';
 
 import 'package:rxdart/rxdart.dart';
 
+// TODO rework this to return Sliver
+// Sliver will have better performance while scrolling
+// Espacially on details page where some seasons can have a huge number
+// of epsiodes
+// If this too much work then we should replicate it to sliver and have both options
+
 class Collection extends StatefulWidget {
   final Item item;
   final List<Item> seasons;
