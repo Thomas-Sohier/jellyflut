@@ -29,18 +29,22 @@ class CommonControlsPhone extends StatefulWidget {
 class _CommonControlsPhoneState extends State<CommonControlsPhone> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (c, cc) => Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned.fill(child: body()),
-                Positioned.fill(
-                  top: cc.maxHeight * 0.6,
-                  child: Align(
-                      alignment: Alignment.bottomCenter, child: SubtitleBox()),
-                ),
-              ],
-            ));
+    return ColoredBox(
+      color: Colors.black38,
+      child: LayoutBuilder(
+          builder: (c, cc) => Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned.fill(child: body()),
+                  Positioned.fill(
+                    top: cc.maxHeight * 0.6,
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SubtitleBox()),
+                  ),
+                ],
+              )),
+    );
   }
 
   Widget body() {

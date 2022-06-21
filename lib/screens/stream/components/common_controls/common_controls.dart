@@ -80,10 +80,7 @@ class _CommonControlsState extends State<CommonControls> {
                 child: ValueListenableBuilder<bool>(
                     builder: (context, value, child) {
                       return Visibility(
-                          visible: value,
-                          child: ColoredBox(
-                              color: Colors.black38,
-                              child: child ?? const SizedBox()));
+                          visible: value, child: child ?? const SizedBox());
                     },
                     valueListenable: _visible,
                     child: Controls()))),
