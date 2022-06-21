@@ -995,14 +995,6 @@ class Item {
     return playableItems.contains(type);
   }
 
-  /// Method to get trailer
-  /// WIP
-  /// Return only he first of item of collection for now
-  String getTrailer() {
-    // TODO add a possibility to choose remote trailer
-    return remoteTrailers.elementAt(0).url;
-  }
-
   ///Check if original title is different from Localized title
   ///
   /// Return [true] if is different

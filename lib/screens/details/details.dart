@@ -27,12 +27,6 @@ class _DetailsState extends State<Details> {
   late final DetailsBloc detailsBloc;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     detailsBloc = DetailsBloc(getDetailsInfos(), ScreenLayout.desktop);

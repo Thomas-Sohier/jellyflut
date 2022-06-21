@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jellyflut/models/enum/media_stream_type.dart';
 import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/models/jellyfin/playback_infos.dart';
@@ -18,7 +17,7 @@ import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:subtitle/subtitle.dart' hide Subtitle;
 
-class StreamingProvider extends ChangeNotifier {
+class StreamingProvider {
   Item? _item;
   PlayBackInfos? _playBackInfos;
   String? _url;
@@ -68,7 +67,7 @@ class StreamingProvider extends ChangeNotifier {
     }
   }
 
-  void toggleFullscreen() {
+  bool toggleFullscreen() {
     if (isFullscreen) {
       commonStream?.exitFullscreen();
       _isFullScreen = false;
@@ -76,6 +75,7 @@ class StreamingProvider extends ChangeNotifier {
       commonStream?.enterFullscreen();
       _isFullScreen = true;
     }
+    return _isFullScreen;
   }
 
   void enterFullscreen() {
@@ -120,10 +120,6 @@ class StreamingProvider extends ChangeNotifier {
     if (streamingEvent.hasListener) {
       streamingEvent.add(StreamingEvent.AUDIO_TRACK_SELECTED);
     }
-  }
-
-  void notifyInit() {
-    notifyListeners();
   }
 
   Future<void> changeDataSource() async {

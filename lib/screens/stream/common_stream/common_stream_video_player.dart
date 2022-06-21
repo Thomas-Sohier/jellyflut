@@ -45,7 +45,6 @@ class CommonStreamVideoPlayer {
       // ignore: unawaited_futures
       videoPlayerController.initialize().then((value) async {
         await videoPlayerController.play();
-        streamingProvider.notifyInit();
       }).catchError((error) {
         String errorMessage;
         if (error is PlatformException) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:provider/provider.dart';
+import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 
 class FullscreenButton extends StatefulWidget {
   final Duration duration;
@@ -16,6 +14,8 @@ class FullscreenButton extends StatefulWidget {
 class _FullscreenButtonState extends State<FullscreenButton> {
   late bool isFullscreen;
   late final StreamingProvider streamingProvider;
+  late final ValueNotifier<bool> _isFullscreen =
+      ValueNotifier<bool>(streamingProvider.isFullscreen);
 
   @override
   void initState() {
@@ -26,22 +26,21 @@ class _FullscreenButtonState extends State<FullscreenButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      onPressed: toggleFullscreen,
-      shape: CircleBorder(),
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ChangeNotifierProvider.value(
-              value: streamingProvider,
-              child: Icon(
-                streamingProvider.isFullscreen
-                    ? Icons.fullscreen_exit
-                    : Icons.fullscreen,
-                color: Colors.white,
-              ))),
-    );
+        onPressed: toggleFullscreen,
+        shape: CircleBorder(),
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ValueListenableBuilder<bool>(
+                valueListenable: _isFullscreen,
+                builder: (_, isFullScreen, child) {
+                  return Icon(
+                    isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                    color: Colors.white,
+                  );
+                })));
   }
 
   void toggleFullscreen() {
-    streamingProvider.toggleFullscreen();
+    _isFullscreen.value = streamingProvider.toggleFullscreen();
   }
 }
