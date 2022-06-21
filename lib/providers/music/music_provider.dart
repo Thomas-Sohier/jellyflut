@@ -48,11 +48,15 @@ class MusicProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || kIsWeb) {
+    if (Platform.isAndroid ||
+        Platform.isIOS ||
+        Platform.isMacOS ||
+        Platform.isWindows ||
+        kIsWeb) {
       final player = just_audio.AudioPlayer();
       _commonPlayer =
           CommonPlayer.parseJustAudioController(audioPlayer: player);
-    } else if (Platform.isLinux || Platform.isWindows) {
+    } else if (Platform.isLinux) {
       final player = Player(id: audioPlayerId, registerTexture: false);
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
