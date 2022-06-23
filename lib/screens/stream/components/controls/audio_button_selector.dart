@@ -47,8 +47,9 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   }
 
   Widget changeAudioTrack(BuildContext context) {
-    return IgnorePointer(
-        child: FutureBuilder<List<AudioTrack>>(
+    return ExcludeFocus(
+        child: IgnorePointer(
+            child: FutureBuilder<List<AudioTrack>>(
       future: streamingProvider.getAudioTracks(),
       builder: (context, snapshot) => PopupMenuButton<AudioTrack>(
           key: _popupMenuButtonKey,
@@ -64,7 +65,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
             }
             return <PopupMenuEntry<AudioTrack>>[];
           }),
-    ));
+    )));
   }
 
   List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(

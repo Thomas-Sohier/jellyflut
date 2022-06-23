@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/selectable_back_button.dart' as bb;
+import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/bottom_row_player_controls.dart';
 import 'package:jellyflut/screens/stream/components/player_infos/player_infos.dart';
 
@@ -49,14 +49,14 @@ class TopRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          bb.SelectableBackButton(shadow: true),
+          SelectableBackButton(shadow: true),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [ItemTitle(), ItemParentTitle()],
+                children: [const ItemTitle(), const ItemParentTitle()],
               ),
             ),
           ),

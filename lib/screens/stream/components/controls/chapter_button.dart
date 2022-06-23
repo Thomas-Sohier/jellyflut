@@ -42,17 +42,19 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   Widget changeChapter(BuildContext context) {
-    return IgnorePointer(
-      child: PopupMenuButton<Chapter>(
-          key: _popupMenuButtonKey,
-          icon: Icon(
-            Icons.list,
-            color: Colors.white,
-          ),
-          tooltip: 'select_chapter'.tr(),
-          onSelected: (Chapter value) => goToChapter(value),
-          itemBuilder: (context) =>
-              chapterList(streamingProvider.item?.chapters)),
+    return ExcludeFocus(
+      child: IgnorePointer(
+        child: PopupMenuButton<Chapter>(
+            key: _popupMenuButtonKey,
+            icon: Icon(
+              Icons.list,
+              color: Colors.white,
+            ),
+            tooltip: 'select_chapter'.tr(),
+            onSelected: (Chapter value) => goToChapter(value),
+            itemBuilder: (context) =>
+                chapterList(streamingProvider.item?.chapters)),
+      ),
     );
   }
 

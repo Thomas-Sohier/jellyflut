@@ -36,24 +36,26 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
   }
 
   Widget changeSubtitle(BuildContext context) {
-    return IgnorePointer(
-        child: FutureBuilder<List<Subtitle>>(
-      future: streamingProvider.getSubtitles(),
-      builder: (context, snapshot) => PopupMenuButton<Subtitle>(
-          key: _popupMenuButtonKey,
-          icon: Icon(
-            Icons.subtitles,
-            color: Colors.white,
-          ),
-          tooltip: 'select_subtitle'.tr(),
-          onSelected: (Subtitle subtitle) => setSubtitle(subtitle),
-          itemBuilder: (context) {
-            if (snapshot.hasData) {
-              return _audioTracksListTile(snapshot.data!);
-            }
-            return <PopupMenuEntry<Subtitle>>[];
-          }),
-    ));
+    return ExcludeFocus(
+      child: IgnorePointer(
+          child: FutureBuilder<List<Subtitle>>(
+        future: streamingProvider.getSubtitles(),
+        builder: (context, snapshot) => PopupMenuButton<Subtitle>(
+            key: _popupMenuButtonKey,
+            icon: Icon(
+              Icons.subtitles,
+              color: Colors.white,
+            ),
+            tooltip: 'select_subtitle'.tr(),
+            onSelected: (Subtitle subtitle) => setSubtitle(subtitle),
+            itemBuilder: (context) {
+              if (snapshot.hasData) {
+                return _audioTracksListTile(snapshot.data!);
+              }
+              return <PopupMenuEntry<Subtitle>>[];
+            }),
+      )),
+    );
   }
 
   List<PopupMenuEntry<Subtitle>> _audioTracksListTile(

@@ -11,12 +11,10 @@ class SelectableBackButton extends StatefulWidget {
 }
 
 class _SelectableBackButtonState extends State<SelectableBackButton> {
-  late final FocusNode _node;
-  late List<BoxShadow> shadows;
+  late final List<BoxShadow> shadows;
 
   @override
   void initState() {
-    _node = FocusNode(descendantsAreFocusable: false, skipTraversal: false);
     shadows = widget.shadow
         ? [
             BoxShadow(
@@ -31,17 +29,11 @@ class _SelectableBackButtonState extends State<SelectableBackButton> {
   }
 
   @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         shape: const CircleBorder(),
         onPressed: customRouter.pop,
         primary: Colors.white,
-        child: IgnorePointer(child: const BackButton()));
+        child: ExcludeFocus(child: IgnorePointer(child: const BackButton())));
   }
 }

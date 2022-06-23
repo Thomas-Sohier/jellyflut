@@ -13,19 +13,13 @@ class ViewedButton extends StatefulWidget {
 }
 
 class _ViewedButtonState extends State<ViewedButton> {
-  late var fToast;
+  late FToast fToast;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     fToast = FToast();
-    // ignore: unnecessary_this
-    fToast.init(this.context);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    fToast.init(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -38,7 +32,7 @@ class _ViewedButtonState extends State<ViewedButton> {
       minWidth: 40,
       maxWidth: widget.maxWidth,
       icon: widget.item.isPlayed()
-          ? Icon(Icons.check_box, color: Colors.green.shade900)
+          ? Icon(Icons.check_box, color: Colors.green.shade600)
           : Icon(Icons.check_box_outline_blank, color: Colors.black87),
     );
   }
