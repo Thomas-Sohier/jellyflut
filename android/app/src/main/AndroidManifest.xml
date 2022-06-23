@@ -17,7 +17,8 @@
         android:name="${applicationName}"
         android:label="${applicationLabel}"
         android:banner="@drawable/banner"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
 
         <activity
             android:name=".MainActivity"
