@@ -1,11 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'json_map.dart';
-
-part 'download.g.dart';
 
 /// {@template download}
 /// A single download item.
@@ -19,7 +14,6 @@ part 'download.g.dart';
 /// respectively.
 /// {@endtemplate}
 @immutable
-@JsonSerializable()
 class Download extends Equatable {
   /// The unique identifier of the item.
   ///
@@ -52,12 +46,6 @@ class Download extends Equatable {
         downloadValueWatcher:
             downloadValueWatcher ?? this.downloadValueWatcher);
   }
-
-  /// Deserializes the given [JsonMap] into a [Deserializes].
-  static Download fromJson(JsonMap json) => _$DownloadFromJson(json);
-
-  /// Converts this [Deserializes] into a [JsonMap].
-  JsonMap toJson() => _$DownloadToJson(this);
 
   @override
   List<Object> get props => [itemId, cancel, downloadValueWatcher];
