@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_colorpicker: ^1.0.3
   flutter_native_splash: ^2.2.3+1
+  json_serializable: ^6.2.0
   flutter_settings_ui: ^2.0.1
   flutter_svg: ^1.1.0
   flutter_vlc_player: ^7.1.5
