@@ -1,4 +1,4 @@
-import 'package:jellyflut/models/enum/item_type.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 double aspectRatio({ItemType? type}) {
   if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {

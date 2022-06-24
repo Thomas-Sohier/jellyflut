@@ -212,23 +212,23 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   }
 }
 
-class User extends DataClass implements Insertable<User> {
+class UserAppData extends DataClass implements Insertable<UserAppData> {
   final int id;
   final String name;
   final String password;
   final String apiKey;
   final int settingsId;
   final int serverId;
-  User(
+  UserAppData(
       {required this.id,
       required this.name,
       required this.password,
       required this.apiKey,
       required this.settingsId,
       required this.serverId});
-  factory User.fromData(Map<String, dynamic> data, {String? prefix}) {
+  factory UserAppData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return User(
+    return UserAppData(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
@@ -255,8 +255,8 @@ class User extends DataClass implements Insertable<User> {
     return map;
   }
 
-  UsersCompanion toCompanion(bool nullToAbsent) {
-    return UsersCompanion(
+  UserAppCompanion toCompanion(bool nullToAbsent) {
+    return UserAppCompanion(
       id: Value(id),
       name: Value(name),
       password: Value(password),
@@ -266,10 +266,10 @@ class User extends DataClass implements Insertable<User> {
     );
   }
 
-  factory User.fromJson(Map<String, dynamic> json,
+  factory UserAppData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return User(
+    return UserAppData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       password: serializer.fromJson<String>(json['password']),
@@ -291,14 +291,14 @@ class User extends DataClass implements Insertable<User> {
     };
   }
 
-  User copyWith(
+  UserAppData copyWith(
           {int? id,
           String? name,
           String? password,
           String? apiKey,
           int? settingsId,
           int? serverId}) =>
-      User(
+      UserAppData(
         id: id ?? this.id,
         name: name ?? this.name,
         password: password ?? this.password,
@@ -308,7 +308,7 @@ class User extends DataClass implements Insertable<User> {
       );
   @override
   String toString() {
-    return (StringBuffer('User(')
+    return (StringBuffer('UserAppData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('password: $password, ')
@@ -325,7 +325,7 @@ class User extends DataClass implements Insertable<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is User &&
+      (other is UserAppData &&
           other.id == this.id &&
           other.name == this.name &&
           other.password == this.password &&
@@ -334,14 +334,14 @@ class User extends DataClass implements Insertable<User> {
           other.serverId == this.serverId);
 }
 
-class UsersCompanion extends UpdateCompanion<User> {
+class UserAppCompanion extends UpdateCompanion<UserAppData> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> password;
   final Value<String> apiKey;
   final Value<int> settingsId;
   final Value<int> serverId;
-  const UsersCompanion({
+  const UserAppCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.password = const Value.absent(),
@@ -349,7 +349,7 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.settingsId = const Value.absent(),
     this.serverId = const Value.absent(),
   });
-  UsersCompanion.insert({
+  UserAppCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String password,
@@ -359,7 +359,7 @@ class UsersCompanion extends UpdateCompanion<User> {
   })  : name = Value(name),
         password = Value(password),
         apiKey = Value(apiKey);
-  static Insertable<User> custom({
+  static Insertable<UserAppData> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? password,
@@ -377,14 +377,14 @@ class UsersCompanion extends UpdateCompanion<User> {
     });
   }
 
-  UsersCompanion copyWith(
+  UserAppCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
       Value<String>? password,
       Value<String>? apiKey,
       Value<int>? settingsId,
       Value<int>? serverId}) {
-    return UsersCompanion(
+    return UserAppCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       password: password ?? this.password,
@@ -420,7 +420,7 @@ class UsersCompanion extends UpdateCompanion<User> {
 
   @override
   String toString() {
-    return (StringBuffer('UsersCompanion(')
+    return (StringBuffer('UserAppCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('password: $password, ')
@@ -432,11 +432,11 @@ class UsersCompanion extends UpdateCompanion<User> {
   }
 }
 
-class $UsersTable extends Users with TableInfo<$UsersTable, User> {
+class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UsersTable(this.attachedDatabase, [this._alias]);
+  $UserAppTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -477,11 +477,11 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   List<GeneratedColumn> get $columns =>
       [id, name, password, apiKey, settingsId, serverId];
   @override
-  String get aliasedName => _alias ?? 'users';
+  String get aliasedName => _alias ?? 'user_app';
   @override
-  String get actualTableName => 'users';
+  String get actualTableName => 'user_app';
   @override
-  VerificationContext validateIntegrity(Insertable<User> instance,
+  VerificationContext validateIntegrity(Insertable<UserAppData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -522,14 +522,14 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  User map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return User.fromData(data,
+  UserAppData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return UserAppData.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $UsersTable createAlias(String alias) {
-    return $UsersTable(attachedDatabase, alias);
+  $UserAppTable createAlias(String alias) {
+    return $UserAppTable(attachedDatabase, alias);
   }
 }
 
@@ -1259,26 +1259,26 @@ abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   _$Database.connect(DatabaseConnection c) : super.connect(c);
   late final $ServersTable servers = $ServersTable(this);
-  late final $UsersTable users = $UsersTable(this);
+  late final $UserAppTable userApp = $UserAppTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
   late final $DownloadsTable downloads = $DownloadsTable(this);
   late final ServersDao serversDao = ServersDao(this as Database);
-  late final UsersDao usersDao = UsersDao(this as Database);
+  late final UserAppDao usersAppDao = UserAppDao(this as Database);
   late final SettingsDao settingsDao = SettingsDao(this as Database);
   late final DownloadsDao downloadsDao = DownloadsDao(this as Database);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [servers, users, settings, downloads];
+      [servers, userApp, settings, downloads];
 }
 
 // **************************************************************************
 // DaoGenerator
 // **************************************************************************
 
-mixin _$UsersDaoMixin on DatabaseAccessor<Database> {
-  $UsersTable get users => attachedDatabase.users;
+mixin _$UserAppDaoMixin on DatabaseAccessor<Database> {
+  $UserAppTable get userApp => attachedDatabase.userApp;
 }
 mixin _$SettingsDaoMixin on DatabaseAccessor<Database> {
   $SettingsTable get settings => attachedDatabase.settings;

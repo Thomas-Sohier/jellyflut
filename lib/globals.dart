@@ -4,13 +4,11 @@ import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/jellyfin/device_profile.dart';
-import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
-
-import 'database/database.dart';
 
 final AppRouter _customRouter = AppRouter(authGuard: AuthGuard());
 AppRouter get customRouter => _customRouter;
@@ -51,9 +49,9 @@ Future setUpAndroidTv() async {
 const BorderRadius borderRadiusButton = BorderRadius.all(Radius.circular(16));
 
 // Specific stuff
-
-jellyfin_user.User? userJellyfin;
-User? userApp;
+// TODO rework this as a provider later
+User? userJellyfin;
+UserAppData? userApp;
 Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');
 String? apiKey;
 DeviceProfile? savedDeviceProfile;

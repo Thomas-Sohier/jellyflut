@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/downloads/item_download.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/downloads/download_event.dart';
 import 'package:jellyflut/providers/downloads/download_event_type.dart';
 import 'package:jellyflut/providers/downloads/download_service.dart';

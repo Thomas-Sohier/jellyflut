@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class ItemsProvider extends ChangeNotifier {
   final List<Item> _items = <Item>[];

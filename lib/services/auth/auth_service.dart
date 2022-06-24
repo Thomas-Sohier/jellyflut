@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/authentication_response.dart';
-import 'package:jellyflut/models/jellyfin/user.dart' as jellyfin_user;
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/items/items_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
@@ -95,7 +94,7 @@ class AuthService {
     final serverId = await createOrGetServer(server);
     final userId =
         await createOrGetUser(name, authenticationResponse, password, serverId);
-    final user = await db.usersDao.getUserById(userId);
+    final user = await db.usersAppDao.getUserById(userId);
     await _saveToSharedPreferences(
         user.serverId, user.settingsId, user.id, authenticationResponse);
     return await _saveToGlobals();
@@ -121,7 +120,7 @@ class AuthService {
       String password,
       int serverId) async {
     final db = AppDatabase().getDatabase;
-    return db.usersDao
+    return db.usersAppDao
         .getUserByNameAndServerId(name, serverId)
         .then((value) => value.id)
         .catchError((e) async {
@@ -130,13 +129,13 @@ class AuthService {
       final settingsId = await db.settingsDao.createSettings(settingsCompanion);
 
       // Create default user if not present
-      final userCompanion = UsersCompanion.insert(
+      final userCompanion = UserAppCompanion.insert(
           name: name,
           password: password,
           apiKey: authenticationResponse.accessToken,
           settingsId: Value(settingsId),
           serverId: Value(serverId));
-      return db.usersDao.createUser(userCompanion);
+      return db.usersAppDao.createUser(userCompanion);
     });
   }
 
@@ -159,10 +158,10 @@ class AuthService {
     final serverId = sharedPreferences.getInt('serverId');
     server = await db.serversDao.getServerById(serverId!);
     final userAppId = sharedPreferences.getInt('userAppId');
-    userApp = await db.usersDao.getUserById(userAppId!);
+    userApp = await db.usersAppDao.getUserById(userAppId!);
     apiKey = sharedPreferences.getString('apiKey');
-    final user = jellyfin_user.User.fromMap(
-        json.decode(sharedPreferences.getString('user')!));
+    final user =
+        User.fromMap(json.decode(sharedPreferences.getString('user')!));
     userJellyfin = user;
     return;
   }

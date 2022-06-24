@@ -8,7 +8,7 @@ class ServersWithUsersDao {
   ServersWithUsersDao({required this.server, required this.user});
 
   final Server server;
-  final User user;
+  final UserAppData user;
 }
 
 class ServersWithUsers {
@@ -18,11 +18,11 @@ class ServersWithUsers {
   });
 
   final Server server;
-  final List<User> users;
+  final List<UserAppData> users;
 
   ServersWithUsers copyWith({
     Server? server,
-    List<User>? users,
+    List<UserAppData>? users,
   }) {
     return ServersWithUsers(
       server: server ?? this.server,
@@ -40,7 +40,8 @@ class ServersWithUsers {
   factory ServersWithUsers.fromMap(Map<String, dynamic> map) {
     return ServersWithUsers(
       server: Server.fromJson(map['server']),
-      users: List<User>.from(map['users']?.map((x) => User.fromJson(x))),
+      users: List<UserAppData>.from(
+          map['users']?.map((x) => UserAppData.fromJson(x))),
     );
   }
 

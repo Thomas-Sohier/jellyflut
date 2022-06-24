@@ -1,7 +1,6 @@
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-
 // Useful for compute function only
+
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 Item parseItem(Map<String, dynamic> data) {
   return Item.fromMap(data);

@@ -2,10 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:jellyflut/models/enum/media_stream_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/models/jellyfin/playback_infos.dart';
-import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/init_stream/init_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -14,6 +10,7 @@ import 'package:jellyflut/screens/stream/model/subtitle.dart'
     as streaming_subtitle;
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:subtitle/subtitle.dart' hide Subtitle;
 

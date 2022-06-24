@@ -4,13 +4,13 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/music_player/common_player/common_player.dart';
 import 'package:jellyflut/screens/music_player/models/audio_colors.dart';
 import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
 import 'package:jellyflut/screens/music_player/models/audio_playlist.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
 

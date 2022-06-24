@@ -1,10 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/image_blur_hashes.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/shared/palette.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class BlurHashUtil {
   static Future<Color> getDominantColor(Item item, ImageType tag) async {

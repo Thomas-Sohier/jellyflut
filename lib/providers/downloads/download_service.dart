@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/downloads/item_download.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/subjects.dart';
 
 class DownloadService {

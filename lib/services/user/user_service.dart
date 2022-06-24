@@ -3,10 +3,8 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/models/jellyfin/user.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class UserService {
   static Category parseCategory(Map<String, dynamic> data) {

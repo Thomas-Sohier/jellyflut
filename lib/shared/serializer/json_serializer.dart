@@ -1,7 +1,4 @@
-import 'package:jellyflut/models/jellyfin/genre_item.dart';
-import 'package:jellyflut/models/jellyfin/image_tag.dart';
-import 'package:jellyflut/models/jellyfin/person.dart';
-import 'package:jellyflut/models/jellyfin/studio.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class JsonSerializer {
   static dynamic jellyfinSerializer(dynamic object) {

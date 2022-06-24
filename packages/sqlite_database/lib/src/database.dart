@@ -2,7 +2,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
-import 'class/servers_with_users.dart';
+import 'package:sqlite_database/src/class/servers_with_users.dart';
 import 'migrations/from_2_to_3.dart';
 import 'tables/download.dart';
 import 'tables/server.dart';
@@ -33,8 +33,8 @@ class AppDatabase {
 }
 
 @DriftDatabase(
-  tables: [Servers, Users, Settings, Downloads],
-  daos: [ServersDao, UsersDao, SettingsDao, DownloadsDao],
+  tables: [Servers, UserApp, Settings, Downloads],
+  daos: [ServersDao, UserAppDao, SettingsDao, DownloadsDao],
 )
 class Database extends _$Database {
   // we tell the database where to store the data with this constructor
@@ -57,20 +57,21 @@ class Database extends _$Database {
 
   Future<Setting> settingsFromUserId(int userId) {
     return (select(settings)
-          ..join([innerJoin(users, settings.id.equalsExp(users.settingsId))])
-              .where(users.id.equals(userId)))
+          ..join([
+            innerJoin(userApp, settings.id.equalsExp(userApp.settingsId))
+          ]).where(userApp.id.equals(userId)))
         .getSingle();
   }
 
   Stream<List<ServersWithUsers>> serversWithUsers() {
     final query = (select(servers)
-        .join([innerJoin(users, servers.id.equalsExp(users.serverId))]));
+        .join([innerJoin(userApp, servers.id.equalsExp(userApp.serverId))]));
 
     return query.watch().map((rows) {
       // read both the entry and the associated category for each row
       final results = rows.map((row) {
         return ServersWithUsersDao(
-            server: row.readTable(servers), user: row.readTable(users));
+            server: row.readTable(servers), user: row.readTable(userApp));
       }).toList();
 
       final listResult = <ServersWithUsers>[];
@@ -86,27 +87,28 @@ class Database extends _$Database {
   }
 }
 
-@DriftAccessor(tables: [Users])
-class UsersDao extends DatabaseAccessor<Database> with _$UsersDaoMixin {
-  UsersDao(super.db);
-  Future<List<User>> get allWatchingUsers => select(users).get();
-  Stream<List<User>> get watchAllUsers => select(users).watch();
-  Future<User> getUserById(int userId) =>
-      (select(users)..where((tbl) => tbl.id.equals(userId))).getSingle();
-  Future<User> getUserByNameAndServerId(String username, int serverId) =>
-      (select(users)
+@DriftAccessor(tables: [UserApp])
+class UserAppDao extends DatabaseAccessor<Database> with _$UserAppDaoMixin {
+  UserAppDao(super.db);
+  Future<List<UserAppData>> get allWatchingUserApp => select(userApp).get();
+  Stream<List<UserAppData>> get watchAllUserApp => select(userApp).watch();
+  Future<UserAppData> getUserById(int userId) =>
+      (select(userApp)..where((tbl) => tbl.id.equals(userId))).getSingle();
+  Future<UserAppData> getUserByNameAndServerId(String username, int serverId) =>
+      (select(userApp)
             ..where((tbl) => tbl.name.equals(username))
             ..where((tbl) => tbl.serverId.equals(serverId)))
           .getSingle();
-  Future<List<User>> getUsersByserverId(int serverId) =>
-      (select(users)..where((tbl) => tbl.serverId.equals(serverId))).get();
-  Stream<List<User>> watchUsersByserverId(int serverId) =>
-      (select(users)..where((tbl) => tbl.serverId.equals(serverId))).watch();
-  Stream<User> watchUserById(int userId) =>
-      (select(users)..where((tbl) => tbl.id.equals(userId))).watchSingle();
-  Future<int> createUser(UsersCompanion user) => into(users).insert(user);
-  Future<bool> updateUser(UsersCompanion user) => update(users).replace(user);
-  Future<int> deleteUser(UsersCompanion user) => delete(users).delete(user);
+  Future<List<UserAppData>> getUserAppByserverId(int serverId) =>
+      (select(userApp)..where((tbl) => tbl.serverId.equals(serverId))).get();
+  Stream<List<UserAppData>> watchUserAppByserverId(int serverId) =>
+      (select(userApp)..where((tbl) => tbl.serverId.equals(serverId))).watch();
+  Stream<UserAppData> watchUserById(int userId) =>
+      (select(userApp)..where((tbl) => tbl.id.equals(userId))).watchSingle();
+  Future<int> createUser(UserAppCompanion user) => into(userApp).insert(user);
+  Future<bool> updateUser(UserAppCompanion user) =>
+      update(userApp).replace(user);
+  Future<int> deleteUser(UserAppCompanion user) => delete(userApp).delete(user);
 }
 
 @DriftAccessor(tables: [Settings])
@@ -134,7 +136,7 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
   ServersDao(super.db);
   Future<List<Server>> get allWatchingServers => select(servers).get();
   Stream<List<Server>> get watchAllServers => select(servers).watch();
-  Stream<List<ServersWithUsers>> get watchAllServersWithUsers =>
+  Stream<List<ServersWithUsers>> get watchAllServersWithUserApp =>
       db.serversWithUsers();
   Future<Server> getServerById(int serverId) =>
       (select(servers)..where((tbl) => tbl.id.equals(serverId))).getSingle();

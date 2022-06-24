@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
-import 'package:jellyflut/shared/json_serializer.dart';
+import 'package:jellyflut/shared/serializer/json_serializer.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'parser.dart';
 

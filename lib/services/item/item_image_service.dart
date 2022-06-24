@@ -1,5 +1,5 @@
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class ItemImageService {
   static String getItemImageUrl(String itemId, String? imageTag,

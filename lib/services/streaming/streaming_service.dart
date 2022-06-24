@@ -3,22 +3,14 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/enum/streaming_software.dart';
-import 'package:jellyflut/models/jellyfin/device.dart';
-import 'package:jellyflut/models/jellyfin/device_profile.dart';
-import 'package:jellyflut/models/jellyfin/device_profile_parent.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/models/jellyfin/playback_infos.dart';
-import 'package:jellyflut/models/jellyfin/playback_progress.dart';
-import 'package:jellyflut/models/players/player_profile.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:path/path.dart' as p;
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 import 'package:uuid/uuid.dart';
 

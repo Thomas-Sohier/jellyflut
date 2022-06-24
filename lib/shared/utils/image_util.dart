@@ -1,5 +1,4 @@
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/image_tag.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class ImageUtil {
   static ImageType fallbackImageType(List<ImageTag> imageTags, ImageType tag) {

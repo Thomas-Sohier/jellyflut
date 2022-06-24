@@ -1,15 +1,9 @@
-import 'dart:convert';
+import 'dart:convert' hide Codec;
 import 'dart:math';
 
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/jellyfin/codec_profile.dart';
-import 'package:jellyflut/models/jellyfin/condition.dart';
-import 'package:jellyflut/models/jellyfin/device_codecs.dart';
-import 'package:jellyflut/models/jellyfin/device_profile.dart';
-import 'package:jellyflut/models/jellyfin/direct_play_profile.dart';
-import 'package:jellyflut/models/jellyfin/subtitle_profile.dart';
-import 'package:jellyflut/models/jellyfin/transcoding_profile.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 import '../globals.dart';
 

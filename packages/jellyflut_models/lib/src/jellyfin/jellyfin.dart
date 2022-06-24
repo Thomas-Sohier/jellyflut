@@ -15,6 +15,7 @@ export 'capabilities.dart';
 export 'category.dart';
 export 'chapter.dart';
 export 'codec_profile.dart';
+export 'codec.dart';
 export 'condition.dart';
 export 'configuration.dart';
 export 'device.dart';

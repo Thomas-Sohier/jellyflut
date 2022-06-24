@@ -686,6 +686,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  jellyflut_models:
+    dependency: "direct main"
+    description:
+      path: "packages/jellyflut_models"
+      relative: true
+    source: path
+    version: "1.0.0"
   js:
     dependency: transitive
     description:
@@ -1225,6 +1232,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.7"
+  sqlite_database:
+    dependency: "direct main"
+    description:
+      path: "packages/sqlite_database"
+      relative: true
+    source: path
+    version: "1.0.0"
   sqlparser:
     dependency: transitive
     description:

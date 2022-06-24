@@ -1,8 +1,8 @@
 import 'dart:developer';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:logging/logging.dart';
 
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/device.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 Future<String> authHeader({bool embedToken = true}) async {

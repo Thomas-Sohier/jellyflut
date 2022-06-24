@@ -1,11 +1,10 @@
 import 'dart:convert';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';

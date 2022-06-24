@@ -1,12 +1,9 @@
 import 'dart:developer';
 
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/iptv/channels_request_body.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:jellyflut/services/item/parser.dart';
-
-import '../../models/iptv/programs_request_body.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class IptvService {
   static Future<Category> getChannels({ChannelsRequestBody? body}) async {

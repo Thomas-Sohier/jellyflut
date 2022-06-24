@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import '../../models/jellyfin/category.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class SearchProvider extends ChangeNotifier {
   final Map<String, Future<Category>> _searchResult =
