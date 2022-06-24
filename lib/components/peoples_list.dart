@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/people_poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/image_tag.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/models/jellyfin/person.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/responsive_builder.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class PeoplesList extends StatefulWidget {
   final List<Person> persons;

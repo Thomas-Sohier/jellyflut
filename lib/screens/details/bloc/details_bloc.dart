@@ -6,14 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/details/details_infos.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as t;
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'details_event.dart';

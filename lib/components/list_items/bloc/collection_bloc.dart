@@ -1,12 +1,10 @@
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart' as model;
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:flutter/foundation.dart' hide Category;
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'collection_event.dart';
@@ -18,8 +16,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final List<Item> carouselSliderItems = <Item>[];
   final List<Item> _items = <Item>[];
   final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
-  late final Future<model.Category> Function(
-      int startIndex, int numberOfItemsToLoad) loadMoreFunction;
+  late final Future<Category> Function(int startIndex, int numberOfItemsToLoad)
+      loadMoreFunction;
 
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
@@ -45,7 +43,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   void initialize(Item item) {
     parentItem = item;
     getItems(item: item)
-        .then((model.Category category) => add(AddItem(items: category.items)));
+        .then((Category category) => add(AddItem(items: category.items)));
   }
 
   void removeItems(ClearItem event, Emitter<CollectionState> emit) {
@@ -92,8 +90,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     return i['items'];
   }
 
-  Future<model.Category> getItems(
-      {required Item item, int startIndex = 0}) async {
+  Future<Category> getItems({required Item item, int startIndex = 0}) async {
     return ItemService.getItems(
         parentId: item.id,
         sortBy: 'SortName',

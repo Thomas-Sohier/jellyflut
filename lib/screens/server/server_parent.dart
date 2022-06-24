@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/class/servers_with_users.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/server_item.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class ServerParent extends StatefulWidget {
   ServerParent({super.key});
@@ -22,7 +21,7 @@ class _ServerParentState extends State<ServerParent> {
     super.initState();
     _database = AppDatabase().getDatabase;
     _scrollController = ScrollController();
-    _serversWithUsers = _database.serversDao.watchAllServersWithUsers;
+    _serversWithUsers = _database.serversDao.watchAllServersWithUserApp;
   }
 
   @override

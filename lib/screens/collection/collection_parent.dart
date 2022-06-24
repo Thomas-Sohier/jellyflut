@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/models/enum/collection_type.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'package:provider/provider.dart';
 

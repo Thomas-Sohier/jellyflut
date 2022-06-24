@@ -2,11 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
 import 'package:jellyflut/components/zoomable_image/zoomable_image.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/utils/blurhash_util.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:octo_image/octo_image.dart';
 
 class AsyncImage extends StatefulWidget {

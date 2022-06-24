@@ -1,11 +1,10 @@
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 class TabHeader extends SliverPersistentHeaderDelegate {

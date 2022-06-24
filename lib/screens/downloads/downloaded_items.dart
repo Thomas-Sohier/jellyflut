@@ -1,10 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class DownloadedItems extends StatefulWidget {
   const DownloadedItems({super.key});

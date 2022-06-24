@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart' hide BackButton;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/details/details_infos.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/photo_item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Details extends StatefulWidget {
   final Item item;

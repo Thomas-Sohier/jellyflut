@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   void removeDownload(final ItemDownload download) {
-    download.cancelToken.cancel();
+    download.cancel();
     getDownloads.remove(download);
     addedDownloadsStream
         .add(DownloadEvent(DownloadEventType.DELETED, download));

@@ -4,12 +4,10 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/list_items/skeleton/list_items_skeleton.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/iptv/programs_request_body.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/iptv/channels.dart';
 import 'package:jellyflut/services/livetv/livetv_service.dart';
 import 'package:jellyflut/theme.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Guide extends StatefulWidget {

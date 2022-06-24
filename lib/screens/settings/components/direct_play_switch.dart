@@ -1,8 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-
-import '../../../database/database.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class DirectPlaySwitch extends StatefulWidget {
   final Database database;

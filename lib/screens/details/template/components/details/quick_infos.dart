@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class QuickInfos extends StatelessWidget {
   final Item item;

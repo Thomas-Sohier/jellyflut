@@ -1,6 +1,10 @@
-import 'package:jellyflut/models/enum/enum_values.dart';
+enum MediaType {
+  LOCAL('Local'),
+  REMOTE('Remote');
 
-enum MediaType { LOCAL, REMOTE }
+  final String _value;
 
-final mediaTypeValues =
-    EnumValues({'Local': MediaType.LOCAL, 'Remote': MediaType.REMOTE});
+  String get value => _value;
+
+  const MediaType(this._value);
+}

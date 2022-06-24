@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/models/enum/collection_type.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 IconData getRightIconForCollectionType(CollectionType? collectionType) {
   switch (collectionType) {

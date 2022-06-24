@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:jellyflut/database/database.dart' as db;
+import 'package:jellyflut/services/auth/auth_service.dart' as db;
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/models/enum/collection_type.dart';
 import 'package:jellyflut/models/enum/dart' as image_type;

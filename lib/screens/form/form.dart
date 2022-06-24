@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart' as form;
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'forms/movie_form.dart';
 import 'forms/default_form.dart';

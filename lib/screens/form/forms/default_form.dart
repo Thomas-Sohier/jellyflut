@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'package:reactive_forms/reactive_forms.dart';
 

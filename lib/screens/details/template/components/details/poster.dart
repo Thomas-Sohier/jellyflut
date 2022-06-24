@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/poster.dart' as root_poster;
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Poster extends StatelessWidget {
   final Item item;

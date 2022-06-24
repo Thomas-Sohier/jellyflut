@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class LeftDetails extends StatelessWidget {
   final Item item;

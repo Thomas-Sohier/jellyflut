@@ -1,10 +1,9 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/class/servers_with_users.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/server/user_selection.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class ServerItem extends StatelessWidget {
   final bool isInUse;

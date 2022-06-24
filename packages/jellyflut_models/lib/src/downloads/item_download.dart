@@ -4,12 +4,12 @@ import '../jellyfin/jellyfin.dart';
 
 class ItemDownload {
   final Item item;
-  final void Function() cancelToken;
+  final void Function() cancel;
   final BehaviorSubject<int> downloadValueWatcher;
 
   const ItemDownload({
     required this.item,
-    required this.cancelToken,
+    required this.cancel,
     required this.downloadValueWatcher,
   });
 }

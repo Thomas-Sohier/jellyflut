@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'form_event.dart';

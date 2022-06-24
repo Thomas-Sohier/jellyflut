@@ -4,9 +4,9 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/mixins/details_theme_grabber.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
 import 'package:jellyflut/screens/details/template/components/details/provider_button.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import '../../../../shared/shared.dart';
 

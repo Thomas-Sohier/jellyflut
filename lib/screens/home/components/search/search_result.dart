@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/home/components/search/search_no_results_placeholder.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
 
 class SearchResult extends StatefulWidget {

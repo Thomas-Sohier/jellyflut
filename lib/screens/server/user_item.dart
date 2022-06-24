@@ -1,15 +1,15 @@
+import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
-import 'package:drift/drift.dart' hide Column;
+import 'package:sqlite_database/sqlite_database.dart';
 
 import '../../shared/utils/color_util.dart';
 
 class UserItem extends StatelessWidget {
-  final User user;
-  final void Function(User user) onUserSelection;
+  final UserAppData user;
+  final void Function(UserAppData user) onUserSelection;
   const UserItem(
       {super.key, required this.user, required this.onUserSelection});
 
@@ -64,8 +64,8 @@ class UserItem extends StatelessWidget {
         ),
         IconButton(
             onPressed: () async {
-              final u = UsersCompanion(id: Value(user.id));
-              await AppDatabase().getDatabase.usersDao.deleteUser(u);
+              final u = UserAppCompanion(id: Value(userApp!.id));
+              await AppDatabase().getDatabase.usersAppDao.deleteUser(u);
               if (inUse) await AuthService.logout();
             },
             icon: Icon(Icons.delete,

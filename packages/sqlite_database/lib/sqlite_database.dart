@@ -2,3 +2,4 @@
 library sqlite_database;
 
 export 'src/database.dart';
+export 'src/models/models.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class InitStreamingItemUtil {
   static Future<Widget> initFromItem({required Item item}) async {

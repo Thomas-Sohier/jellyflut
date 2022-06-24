@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/downloads/item_download.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class CurrentDownloadItem extends StatefulWidget {

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
 import 'package:jellyflut/screens/details/template/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
 class RightDetails extends StatefulWidget {

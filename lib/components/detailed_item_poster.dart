@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/async_image.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'critics.dart';
 

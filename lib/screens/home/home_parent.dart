@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/home_drawer_tabs_builder.dart';
 import 'package:jellyflut/screens/home/offline_screen.dart';
 import 'package:jellyflut/services/user/user_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class HomeParent extends StatefulWidget {
   HomeParent({super.key});

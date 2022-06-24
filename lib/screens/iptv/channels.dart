@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Channels extends StatefulWidget {
   final SplayTreeMap<Item, List<Item>> channels;

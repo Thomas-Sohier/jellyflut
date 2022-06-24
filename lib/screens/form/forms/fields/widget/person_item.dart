@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/people_poster.dart';
-import 'package:jellyflut/models/jellyfin/person.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class PersonItem extends StatelessWidget {
   final Person? person;

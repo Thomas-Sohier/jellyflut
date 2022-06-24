@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/gradient_button.dart';
 import 'package:jellyflut/components/locale_button_selector.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/auth/components/fields.dart';
 import 'package:jellyflut/screens/auth/enum/fields_enum.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class ServerForm extends StatefulWidget {
   const ServerForm();

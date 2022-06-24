@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/logo.dart';
 
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/components/loading_text.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class BookPlaceholder extends StatelessWidget {

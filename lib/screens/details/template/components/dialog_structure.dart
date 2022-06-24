@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/screens/form/form.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class DialogStructure extends StatelessWidget {
   final void Function() onClose;

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart' as g;
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/screens/home/home_category_title.dart';
 import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Latest extends StatefulWidget {

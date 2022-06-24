@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class ItemDuration extends StatelessWidget {
   static final DateFormat formatter = DateFormat('HH:mm');

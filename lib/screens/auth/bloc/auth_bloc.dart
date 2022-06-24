@@ -4,10 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:jellyflut/globals.dart' as globals;
+import 'package:sqlite_database/sqlite_database.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

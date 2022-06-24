@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart'
     as tab;
 import 'package:jellyflut/services/item/item_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TabsItems extends StatefulWidget {

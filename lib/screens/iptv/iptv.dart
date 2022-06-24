@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/iptv/channels_request_body.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/screens/iptv/guide.dart';
 import 'package:jellyflut/services/livetv/livetv_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Iptv extends StatefulWidget {
   Iptv({super.key});

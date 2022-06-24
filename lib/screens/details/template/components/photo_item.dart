@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 

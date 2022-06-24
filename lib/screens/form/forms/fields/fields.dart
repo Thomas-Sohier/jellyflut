@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:jellyflut/models/jellyfin/genre_item.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut/screens/form/forms/fields/widget/person_item.dart';
 
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'widget/color_picker_field.dart';

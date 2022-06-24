@@ -45,7 +45,7 @@ class _VideoPlayerPopupButtonState extends State<VideoPlayerPopupButton> {
 
   List<PopupMenuEntry<String>> _playerListTile(BuildContext context) {
     final languageItems = <PopupMenuEntry<String>>[];
-    StreamingSoftware.getVideoPlayerOptions()
+    StreamingSoftware.getVideoPlayerOptions(context)
         .forEach((player) => languageItems.add(CheckedPopupMenuItem(
               value: player.name,
               checked: currentValue == player.name,

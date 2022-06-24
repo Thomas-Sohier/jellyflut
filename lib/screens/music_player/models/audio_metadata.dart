@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:drift/drift.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class AudioMetadata {
   final String? album;

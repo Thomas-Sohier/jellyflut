@@ -1,8 +1,8 @@
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/home/home_category.dart';
 import 'package:jellyflut/screens/home/latest.dart';

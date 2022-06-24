@@ -2,8 +2,8 @@
 
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
-import 'package:sqlite_database/src/class/servers_with_users.dart';
 import 'migrations/from_2_to_3.dart';
+import 'models/models.dart';
 import 'tables/download.dart';
 import 'tables/server.dart';
 import 'tables/setting.dart';

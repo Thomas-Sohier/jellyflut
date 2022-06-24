@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/exception/unsupported_player_exception.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:video_player/video_player.dart';
 
 /// Automatically create widget depending of controller provided

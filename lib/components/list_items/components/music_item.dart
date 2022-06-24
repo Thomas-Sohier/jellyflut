@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/fav_button.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class MusicItem extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/mixins/details_mixin.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/details/header.dart';
 import 'package:jellyflut/screens/details/template/components/right_details.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class AsyncRightDetails extends StatefulWidget {
   final Item item;

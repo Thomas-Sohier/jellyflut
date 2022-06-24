@@ -10,11 +10,8 @@ import 'package:jellyflut/components/list_items/skeleton/list_items_skeleton.dar
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'bloc/collection_bloc.dart';

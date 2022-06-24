@@ -85,7 +85,7 @@ class DownloadService {
     final itemDownload = ItemDownload(
         item: item,
         downloadValueWatcher: percentDownload,
-        cancelToken: cancelToken);
+        cancel: cancelToken.cancel);
     downloads.add(itemDownload);
 
     // Download the file and store it to the given path

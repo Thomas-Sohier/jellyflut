@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
 
-import 'package:jellyflut/models/jellyfin/item.dart';
-
 class GradienButton extends StatefulWidget {
   GradienButton(this.text, this.onPressed,
       {this.borderRadius = 25.0,
       this.child,
       this.enabled = true,
-      this.item,
       this.icon,
       this.foregroundColor = const Color(0xFFFFFFFF),
       this.color1 = const Color(0xFFa95dc3),
       this.color2 = const Color(0xFF04a2db)});
 
   final Widget? child;
-  final Item? item;
   final bool enabled;
   final VoidCallback onPressed;
   final String text;

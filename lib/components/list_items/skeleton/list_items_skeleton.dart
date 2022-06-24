@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/theme.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 
 part 'list_items_grid_skeleton.dart';

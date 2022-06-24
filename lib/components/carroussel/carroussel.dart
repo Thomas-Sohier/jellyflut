@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 import '../critics.dart';
 

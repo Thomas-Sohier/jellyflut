@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/async_image.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
 
 class CarrousselBackGroundImage extends StatefulWidget {

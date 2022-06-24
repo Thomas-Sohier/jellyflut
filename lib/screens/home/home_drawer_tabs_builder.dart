@@ -1,11 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Drawer;
-import 'package:jellyflut/models/enum/collection_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/components/drawer/custom_drawer.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
 
 import 'header_bar.dart';

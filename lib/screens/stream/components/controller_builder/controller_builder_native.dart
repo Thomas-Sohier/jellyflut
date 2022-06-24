@@ -4,9 +4,9 @@ import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:jellyflut/models/streaming/streaming_event.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/exception/unsupported_player_exception.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 /// Automatically create widget depending of controller provided
 /// Can throw [UnsupportedPlayerException] if controller is not recognized

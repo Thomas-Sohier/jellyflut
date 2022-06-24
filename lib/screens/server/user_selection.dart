@@ -3,8 +3,8 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/user_item.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
-
-import '../../database/database.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class UserSelection extends StatelessWidget {
   final Server server;
@@ -13,8 +13,8 @@ class UserSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final users =
-        AppDatabase().getDatabase.usersDao.watchUsersByserverId(server.id);
-    return StreamBuilder<List<User>>(
+        AppDatabase().getDatabase.usersAppDao.watchUserAppByserverId(server.id);
+    return StreamBuilder<List<UserAppData>>(
         stream: users,
         builder: (_, a) {
           if (a.hasData) {
@@ -24,7 +24,7 @@ class UserSelection extends StatelessWidget {
         });
   }
 
-  Widget listUser(List<User>? users, BuildContext context) {
+  Widget listUser(List<UserAppData>? users, BuildContext context) {
     if (users != null && users.isNotEmpty) {
       return Padding(
           padding: const EdgeInsets.all(8.0),

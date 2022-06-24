@@ -1,11 +1,11 @@
 import 'dart:developer';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';

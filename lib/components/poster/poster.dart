@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 import '../async_image.dart';
 

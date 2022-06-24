@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart' as io;
 import 'package:universal_io/io.dart';
 import 'dart:typed_data';
@@ -7,7 +8,6 @@ import 'package:archive/archive.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/services/item/ebook_service.dart';
 

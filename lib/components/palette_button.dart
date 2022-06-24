@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 
 class PaletteButton extends StatefulWidget {
   PaletteButton(
@@ -16,12 +15,10 @@ class PaletteButton extends StatefulWidget {
     this.maxHeight = double.infinity,
     this.minWidth = 88.0,
     this.maxWidth = 200.0,
-    this.item,
     this.trailing,
     this.icon,
   });
 
-  final Item? item;
   final VoidCallback onPressed;
   final String text;
   final bool enabled;

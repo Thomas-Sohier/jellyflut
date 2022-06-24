@@ -1,15 +1,13 @@
 import 'dart:async';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:better_player/better_player.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/enum/streaming_software.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_BP.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_VLC.dart';
