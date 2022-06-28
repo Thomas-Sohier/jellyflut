@@ -31,13 +31,19 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   ValueNotifier<FieldsEnum?> get getCurrentSortedValue => _currentSortedValue;
 
   CollectionBloc(
-      {final ListType listType = ListType.GRID, required this.loadMoreFunction})
+      {final ListType listType = ListType.GRID,
+      this.loadMoreFunction = _defaultLoadMore})
       : super(CollectionLoadingState()) {
     this.listType.add(listType);
     on<AddItem>(addItems);
     on<ClearItem>(removeItems);
     on<LoadMoreItems>(showMoreItem);
     on<SortByField>(sortByField);
+  }
+
+  static Future<Category> _defaultLoadMore(int i, int l) {
+    return Future.value(
+        Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
   }
 
   void initialize(Item item) {

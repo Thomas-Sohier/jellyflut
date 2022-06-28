@@ -1,112 +1,61 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:database_downloads_api/src/parse_database_downloads.dart';
 import 'package:downloads_api/downloads_api.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:sqlite_database/sqlite_database.dart' hide Download;
 
-/// {@template local_storage_todos_api}
-/// A Flutter implementation of the [TodosApi] that uses local storage.
+/// {@template database_downloads_api}
+/// A Flutter implementation of the [DownloadsApi] that uses database.
 /// {@endtemplate}
 class DatabaseDownloadsApi extends DownloadsApi {
-  /// {@macro local_storage_todos_api}
-  DatabaseDownloadsApi() {
+  /// {@macro database_downloads_api}
+  DatabaseDownloadsApi({required Database database}) {
+    _databaseController = database;
     _init();
   }
 
-  final _todoStreamController = BehaviorSubject<List<Todo>>.seeded(const []);
-
-  /// The key used for storing the todos locally.
-  ///
-  /// This is only exposed for testing and shouldn't be used by consumers of
-  /// this library.
-  @visibleForTesting
-  static const kTodosCollectionKey = '__todos_collection_key__';
-
-  String? _getValue(String key) => _plugin.getString(key);
-  Future<void> _setValue(String key, String value) =>
-      _plugin.setString(key, value);
+  late final Database _databaseController;
+  final _downloadStreamController =
+      BehaviorSubject<List<Download>>.seeded(const []);
 
   void _init() {
-    final todosJson = _getValue(kTodosCollectionKey);
-    if (todosJson != null) {
-      final todos = List<Map>.from(json.decode(todosJson) as List)
-          .map((jsonMap) => Todo.fromJson(Map<String, dynamic>.from(jsonMap)))
-          .toList();
-      _todoStreamController.add(todos);
-    } else {
-      _todoStreamController.add(const []);
-    }
+    // Add downloads from database to the current stream
+    _databaseController.downloadsDao.watchAllDownloads.listen((datas) async {
+      final downloads = await compute(parseDatabaseDownloads, datas);
+      _downloadStreamController.add(downloads);
+    });
+    _downloadStreamController.add([]);
   }
 
   @override
-  Stream<List<Todo>> getTodos() => _todoStreamController.asBroadcastStream();
+  Stream<List<Download>> getDownloads() =>
+      _downloadStreamController.asBroadcastStream();
 
   @override
-  Future<void> saveTodo(Todo todo) {
-    final todos = [..._todoStreamController.value];
-    final todoIndex = todos.indexWhere((t) => t.id == todo.id);
+  Future<void> saveDownload(Download download) {
+    final downloads = [..._downloadStreamController.value];
+    final todoIndex = downloads.indexWhere((t) => t.id == download.id);
     if (todoIndex >= 0) {
-      todos[todoIndex] = todo;
+      downloads[todoIndex] = download;
     } else {
-      todos.add(todo);
+      downloads.add(download);
     }
 
-    _todoStreamController.add(todos);
-    return _setValue(kTodosCollectionKey, json.encode(todos));
+    _downloadStreamController.add(downloads);
+    return Future.value();
   }
 
   @override
-  Future<void> deleteTodo(String id) async {
-    final todos = [..._todoStreamController.value];
-    final todoIndex = todos.indexWhere((t) => t.id == id);
-    if (todoIndex == -1) {
-      throw TodoNotFoundException();
+  Future<void> deleteDownload(String id) async {
+    final downloads = [..._downloadStreamController.value];
+    final downloadIndex = downloads.indexWhere((t) => t.id == id);
+    if (downloadIndex == -1) {
+      throw DownloadNotFoundException();
     } else {
-      todos.removeAt(todoIndex);
-      _todoStreamController.add(todos);
-      return _setValue(kTodosCollectionKey, json.encode(todos));
+      downloads.removeAt(downloadIndex);
+      return _downloadStreamController.add(downloads);
     }
-  }
-
-  @override
-  Future<int> clearCompleted() async {
-    final todos = [..._todoStreamController.value];
-    final completedTodosAmount = todos.where((t) => t.isCompleted).length;
-    todos.removeWhere((t) => t.isCompleted);
-    _todoStreamController.add(todos);
-    await _setValue(kTodosCollectionKey, json.encode(todos));
-    return completedTodosAmount;
-  }
-
-  @override
-  Future<int> completeAll({required bool isCompleted}) async {
-    final todos = [..._todoStreamController.value];
-    final changedTodosAmount =
-        todos.where((t) => t.isCompleted != isCompleted).length;
-    final newTodos = [
-      for (final todo in todos) todo.copyWith(isCompleted: isCompleted)
-    ];
-    _todoStreamController.add(newTodos);
-    await _setValue(kTodosCollectionKey, json.encode(newTodos));
-    return changedTodosAmount;
-  }
-
-  @override
-  Future<void> cancelDownload(String id) {
-    // TODO: implement cancelDownload
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List> getDownloads() {
-    // TODO: implement getDownloads
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> saveDownload(download) {
-    // TODO: implement saveDownload
-    throw UnimplementedError();
   }
 }

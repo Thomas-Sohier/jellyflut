@@ -21,7 +21,7 @@ class _DownloadsParentState extends State<DownloadsParent> {
               tabs: [Tab(text: 'Saved items'), Tab(text: 'Active downloads')],
             )),
             body: TabBarView(
-              children: [DownloadedItems(), CurrentDownloadList()],
+              children: [DownloadedItemsPage(), CurrentDownloadList()],
             )));
   }
 }

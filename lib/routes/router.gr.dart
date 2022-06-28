@@ -12,6 +12,7 @@
 
 import 'package:auto_route/auto_route.dart' as _i14;
 import 'package:flutter/material.dart' as _i15;
+import 'package:jellyflut_models/jellyflut_models.dart' as _i17;
 
 import '../screens/auth/auth_parent.dart' as _i1;
 import '../screens/book/book_reader.dart' as _i11;
@@ -253,7 +254,7 @@ class HomeRouterArgs {
 /// [_i3.CollectionParent]
 class CollectionParentRoute
     extends _i14.PageRouteInfo<CollectionParentRouteArgs> {
-  CollectionParentRoute({_i15.Key? key, required dynamic item})
+  CollectionParentRoute({_i15.Key? key, required _i17.Item item})
       : super(CollectionParentRoute.name,
             path: 'collection',
             args: CollectionParentRouteArgs(key: key, item: item));
@@ -266,7 +267,7 @@ class CollectionParentRouteArgs {
 
   final _i15.Key? key;
 
-  final dynamic item;
+  final _i17.Item item;
 
   @override
   String toString() {
@@ -277,7 +278,7 @@ class CollectionParentRouteArgs {
 /// generated route for
 /// [_i4.Details]
 class DetailsRoute extends _i14.PageRouteInfo<DetailsRouteArgs> {
-  DetailsRoute({required dynamic item, required String? heroTag})
+  DetailsRoute({required _i17.Item item, required String? heroTag})
       : super(DetailsRoute.name,
             path: 'details',
             args: DetailsRouteArgs(item: item, heroTag: heroTag));
@@ -288,7 +289,7 @@ class DetailsRoute extends _i14.PageRouteInfo<DetailsRouteArgs> {
 class DetailsRouteArgs {
   const DetailsRouteArgs({required this.item, required this.heroTag});
 
-  final dynamic item;
+  final _i17.Item item;
 
   final String? heroTag;
 
@@ -382,7 +383,7 @@ class PlaylistRouteArgs {
 /// generated route for
 /// [_i10.Stream]
 class StreamRoute extends _i14.PageRouteInfo<StreamRouteArgs> {
-  StreamRoute({dynamic item, String? url})
+  StreamRoute({_i17.Item? item, String? url})
       : super(StreamRoute.name,
             path: 'stream', args: StreamRouteArgs(item: item, url: url));
 
@@ -392,7 +393,7 @@ class StreamRoute extends _i14.PageRouteInfo<StreamRouteArgs> {
 class StreamRouteArgs {
   const StreamRouteArgs({this.item, this.url});
 
-  final dynamic item;
+  final _i17.Item? item;
 
   final String? url;
 
@@ -405,7 +406,7 @@ class StreamRouteArgs {
 /// generated route for
 /// [_i11.BookReaderPage]
 class EpubRoute extends _i14.PageRouteInfo<EpubRouteArgs> {
-  EpubRoute({_i15.Key? key, required dynamic item})
+  EpubRoute({_i15.Key? key, required _i17.Item item})
       : super(EpubRoute.name,
             path: 'epub', args: EpubRouteArgs(key: key, item: item));
 
@@ -417,7 +418,7 @@ class EpubRouteArgs {
 
   final _i15.Key? key;
 
-  final dynamic item;
+  final _i17.Item item;
 
   @override
   String toString() {
@@ -448,7 +449,7 @@ class HomeRouteArgs {
 /// generated route for
 /// [_i3.CollectionParent]
 class CollectionRoute extends _i14.PageRouteInfo<CollectionRouteArgs> {
-  CollectionRoute({_i15.Key? key, required dynamic item})
+  CollectionRoute({_i15.Key? key, required _i17.Item item})
       : super(CollectionRoute.name,
             path: 'collection',
             args: CollectionRouteArgs(key: key, item: item));
@@ -461,7 +462,7 @@ class CollectionRouteArgs {
 
   final _i15.Key? key;
 
-  final dynamic item;
+  final _i17.Item item;
 
   @override
   String toString() {

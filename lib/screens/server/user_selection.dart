@@ -3,7 +3,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/user_item.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
 class UserSelection extends StatelessWidget {

@@ -1,0 +1,19 @@
+name: downloads_provider
+description: A repository that handles downloads related requests.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  downloads_api:
+    path: ../downloads_api
+  jellyflut_models:
+    path: ../../jellyflut_models
+  json_annotation: ^4.5.0
+
+dev_dependencies:
+  test: ^1.21.0
+  mocktail: ^0.3.0
+  very_good_analysis: ^3.0.1

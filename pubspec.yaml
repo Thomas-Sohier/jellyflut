@@ -38,6 +38,12 @@ dependencies:
   flutter_bloc: ^8.0.1
   jellyflut_models:
     path: packages/jellyflut_models
+  downloads_api:
+    path: packages/downloads/downloads_api
+  database_downloads_api:
+    path: packages/downloads/database_downloads_api
+  downloads_provider:
+    path: packages/downloads/downloads_provider
   sqlite_database:
     path: packages/sqlite_database
   flutter_colorpicker: ^1.0.3

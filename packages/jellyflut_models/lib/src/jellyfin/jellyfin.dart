@@ -29,6 +29,7 @@ export 'identification.dart';
 export 'image_blur_hashes.dart';
 export 'image_tag.dart';
 export 'item.dart';
+export 'item_download.dart';
 export 'media_played_infos.dart';
 export 'media_source.dart';
 export 'media_stream.dart';

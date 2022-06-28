@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../enum/enum.dart';
 import 'jellyfin.dart';
-import 'media_source.dart';
 
 PlayBackInfos playBackInfosFromMap(String str) =>
     PlayBackInfos.fromMap(json.decode(str));

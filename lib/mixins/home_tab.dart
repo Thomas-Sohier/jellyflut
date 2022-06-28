@@ -30,7 +30,7 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
 
   void _excludeWatcher() {
     final index = _tabsRouter.activeIndex;
-    final activeChild = _tabsRouter.stack[index].child;
+    final activeChild = _tabsRouter.stack[index].routeData;
     if (activeChild.key == widget.key) {
       setState(() => excluding = false);
       _homeTabsProvider.setTabs(tabs, tabController);

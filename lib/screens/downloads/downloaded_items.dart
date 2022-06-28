@@ -1,51 +1,75 @@
+import 'package:downloads_provider/downloads_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
+import 'package:jellyflut/screens/downloads/bloc/downloads_bloc.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
-class DownloadedItems extends StatefulWidget {
-  const DownloadedItems({super.key});
-
-  @override
-  State<DownloadedItems> createState() => _DownloadedItemsState();
-}
-
-class _DownloadedItemsState extends State<DownloadedItems> {
-  late final List<Download> downloadedItems;
-  late final Database db;
-  late final CollectionBloc collectionBloc;
-
-  @override
-  void initState() {
-    db = AppDatabase().getDatabase;
-    collectionBloc = CollectionBloc(
-        listType: ListType.GRID, loadMoreFunction: _defaultLoadMore);
-    super.initState();
-  }
-
-  static Future<Category> _defaultLoadMore(int i, int l) {
-    return Future.value(
-        Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
-  }
+class DownloadedItemsPage extends StatelessWidget {
+  const DownloadedItemsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Download>>(
-        stream: db.downloadsDao.watchAllDownloads,
-        builder: (c, a) {
-          final items = a.data != null
-              ? a.data!.map((element) => Item.fromMap(element.item!)).toList()
-              : <Item>[];
-          collectionBloc.add(ClearItem());
-          collectionBloc.add(AddItem(items: items));
-          final category = Category(
-              items: items, totalRecordCount: items.length, startIndex: 0);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DownloadsBloc>(
+          create: (BuildContext context) => DownloadsBloc(
+            downloadsRepository: context.read<DownloadsRepository>(),
+          )..add(const DownloadsSubscriptionRequested()),
+        ),
+        BlocProvider<CollectionBloc>(
+            create: (BuildContext context) => CollectionBloc()),
+      ],
+      child: const DownloadedItemsView(),
+    );
+  }
+}
+
+class DownloadedItemsView extends StatelessWidget {
+  const DownloadedItemsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+        listeners: [
+          BlocListener<DownloadsBloc, DownloadsState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
+            listener: (context, state) {
+              if (state.status == DownloadsStatus.failure) {
+                SnackbarUtil.message('Error while loading downloads',
+                    Icons.download, Colors.red);
+              }
+            },
+          ),
+          BlocListener<DownloadsBloc, DownloadsState>(
+            listenWhen: (previous, current) =>
+                previous.lastDeletedDownload != current.lastDeletedDownload &&
+                current.lastDeletedDownload != null,
+            listener: (context, state) {
+              final deletedDownload = state.lastDeletedDownload!;
+              SnackbarUtil.message(
+                  '${deletedDownload.item.name} has been deleted',
+                  Icons.delete,
+                  Colors.green);
+            },
+          ),
+        ],
+        child: BlocBuilder<DownloadsBloc, DownloadsState>(
+            builder: (context, state) {
+          final downloads = state.downloads.map((e) => e.item).toList();
           return ListItems.fromList(
-              collectionBloc: collectionBloc,
-              category: category,
+              collectionBloc: context.read<CollectionBloc>(),
+              category: Category(
+                  items: downloads,
+                  startIndex: 0,
+                  totalRecordCount: downloads.length),
               verticalListPosterHeight: 250,
               listType: ListType.GRID);
-        });
+        }));
   }
 }

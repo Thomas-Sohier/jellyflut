@@ -5,24 +5,6 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:jellyflut/services/auth/auth_service.dart' as db;
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/collection_type.dart';
-import 'package:jellyflut/models/enum/dart' as image_type;
-import 'package:jellyflut/models/enum/dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/enum/media_stream_type.dart';
-import 'package:jellyflut/models/enum/transcode_audio_codec.dart';
-import 'package:jellyflut/models/jellyfin/remote_trailer.dart';
-import 'package:jellyflut/models/jellyfin/studio.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/services/file/file_service.dart';
-import 'package:jellyflut/services/item/item_service.dart';
-import 'package:jellyflut/services/streaming/streaming_service.dart';
-import 'package:jellyflut/shared/shared.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../enum/enum.dart';
 import 'jellyfin.dart';
@@ -1075,6 +1057,32 @@ class Item {
     return aspectRatio(type: type);
   }
 
+  double parentAspectRatio({ItemType? type}) {
+    if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
+      return 1 / 1;
+    } else if (type == ItemType.PHOTO) {
+      return 4 / 3;
+    } else if (type == ItemType.EPISODE) {
+      return 2 / 3;
+    } else if (type == ItemType.TVCHANNEL || type == ItemType.TVPROGRAM) {
+      return 16 / 9;
+    }
+    return 2 / 3;
+  }
+
+  double aspectRatio({ItemType? type}) {
+    if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
+      return 1 / 1;
+    } else if (type == ItemType.PHOTO) {
+      return 4 / 3;
+    } else if (type == ItemType.EPISODE) {
+      return 16 / 9;
+    } else if (type == ItemType.TVCHANNEL || type == ItemType.TVPROGRAM) {
+      return 16 / 9;
+    }
+    return 2 / 3;
+  }
+
   /// Get id or parentid if primary image is not defined
   ///
   /// Return [String]
@@ -1303,23 +1311,24 @@ class Item {
   /// If Video open video player
   /// If music play it and show music button
   Future<void> playItem() {
-    var musicProvider = MusicProvider();
-    if (type == ItemType.EPISODE ||
-        type == ItemType.SEASON ||
-        type == ItemType.SERIES ||
-        type == ItemType.MOVIE ||
-        type == ItemType.TVCHANNEL ||
-        type == ItemType.VIDEO) {
-      return customRouter.push(StreamRoute(item: this));
-    } else if (type == ItemType.AUDIO) {
-      return musicProvider.playRemoteAudio(this);
-    } else if (type == ItemType.MUSICALBUM) {
-      return musicProvider.playPlaylist(this);
-    } else if (type == ItemType.BOOK) {
-      return customRouter.push(EpubRoute(item: this));
-    } else {
-      throw UnimplementedError('Item is not playable (type : $type');
-    }
+    // var musicProvider = MusicProvider();
+    // if (type == ItemType.EPISODE ||
+    //     type == ItemType.SEASON ||
+    //     type == ItemType.SERIES ||
+    //     type == ItemType.MOVIE ||
+    //     type == ItemType.TVCHANNEL ||
+    //     type == ItemType.VIDEO) {
+    //   return customRouter.push(StreamRoute(item: this));
+    // } else if (type == ItemType.AUDIO) {
+    //   return musicProvider.playRemoteAudio(this);
+    // } else if (type == ItemType.MUSICALBUM) {
+    //   return musicProvider.playPlaylist(this);
+    // } else if (type == ItemType.BOOK) {
+    //   return customRouter.push(EpubRoute(item: this));
+    // } else {
+    //   throw UnimplementedError('Item is not playable (type : $type');
+    // }
+    throw UnimplementedError('Item is not playable (type : $type');
   }
 
   Future<String> getItemURL({bool directPlay = false}) async {
@@ -1328,33 +1337,35 @@ class Item {
     //   await StreamingService.bitrateTest(size: 1000000);
     //   await StreamingService.bitrateTest(size: 3000000);
     // }
-    final settings = await db.AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
-    final directPlaySettingsOverride = settings.directPlay;
+    // final settings = await db.AppDatabase()
+    //     .getDatabase
+    //     .settingsDao
+    //     .getSettingsById(userApp!.settingsId);
+    // final directPlaySettingsOverride = settings.directPlay;
 
-    // If direct play if forced by parameters or settings we direct play
-    directPlay = directPlaySettingsOverride || directPlay;
+    // // If direct play if forced by parameters or settings we direct play
+    // directPlay = directPlaySettingsOverride || directPlay;
 
-    late final Item item;
+    // late final Item item;
 
-    if (type == ItemType.EPISODE ||
-        type == ItemType.MOVIE ||
-        type == ItemType.TVCHANNEL ||
-        type == ItemType.VIDEO ||
-        type == ItemType.MUSICVIDEO ||
-        type == ItemType.AUDIO) {
-      item = this;
-    } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
-      item = await getFirstUnplayedItem();
-    } else if (type == ItemType.AUDIO) {
-      return createMusicURL();
-    } else {
-      throw ('Cannot find the type of file');
-    }
+    // if (type == ItemType.EPISODE ||
+    //     type == ItemType.MOVIE ||
+    //     type == ItemType.TVCHANNEL ||
+    //     type == ItemType.VIDEO ||
+    //     type == ItemType.MUSICVIDEO ||
+    //     type == ItemType.AUDIO) {
+    //   item = this;
+    // } else if (type == ItemType.SEASON || type == ItemType.SERIES) {
+    //   item = await getFirstUnplayedItem();
+    // } else if (type == ItemType.AUDIO) {
+    //   return createMusicURL();
+    // } else {
+    //   throw ('Cannot find the type of file');
+    // }
 
-    return getStreamURL(item, directPlay);
+    // return getStreamURL(item, directPlay);
+
+    throw UnimplementedError('GetItemURL is not defined right now, TODO');
   }
 
   Future<Item> getPlayableItemOrLastUnplayed() async {
@@ -1376,44 +1387,49 @@ class Item {
   }
 
   Future<Item> getFirstUnplayedItem() async {
-    var category = await ItemService.getItems(
-        parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
-    // remove all item without an index to avoid sort error
-    category.items.removeWhere((element) => element.indexNumber == null);
-    // sort by index to get the next item to stream
-    category.items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
-    return category.items.firstWhere((element) => !element.userData!.played,
-        orElse: () => category.items.first);
+    // var category = await ItemService.getItems(
+    //     parentId: id, filter: 'IsNotFolder', fields: 'MediaStreams');
+    // // remove all item without an index to avoid sort error
+    // category.items.removeWhere((element) => element.indexNumber == null);
+    // // sort by index to get the next item to stream
+    // category.items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
+    // return category.items.firstWhere((element) => !element.userData!.played,
+    //     orElse: () => category.items.first);
+
+    throw UnimplementedError(
+        'getFirstUnplayedItem is not defined right now, TODO');
   }
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
     // First we try to fetch item locally to play it
-    final database = db.AppDatabase().getDatabase;
-    final itemExist = await database.downloadsDao.doesExist(item.id);
-    if (itemExist) return await FileService.getStoragePathItem(item);
+    // final database = db.AppDatabase().getDatabase;
+    // final itemExist = await database.downloadsDao.doesExist(item.id);
+    // if (itemExist) return await FileService.getStoragePathItem(item);
 
-    // If item do not exist locally the we fetch it from remote server
-    final streamingProvider = StreamingProvider();
-    final data = await StreamingService.isCodecSupported();
-    final backInfos = await StreamingService.playbackInfos(data, item.id,
-        startTimeTick: item.userData!.playbackPositionTicks);
-    var completeTranscodeUrl;
+    // // If item do not exist locally the we fetch it from remote server
+    // final streamingProvider = StreamingProvider();
+    // final data = await StreamingService.isCodecSupported();
+    // final backInfos = await StreamingService.playbackInfos(data, item.id,
+    //     startTimeTick: item.userData!.playbackPositionTicks);
+    // var completeTranscodeUrl;
 
-    // Check if we have a transcide url or we create it
-    if (backInfos.isTranscoding() && !directPlay) {
-      completeTranscodeUrl =
-          '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
-    }
-    final finalUrl = completeTranscodeUrl ??
-        await StreamingService.createURL(item, backInfos,
-            startTick: item.userData!.playbackPositionTicks);
+    // // Check if we have a transcide url or we create it
+    // if (backInfos.isTranscoding() && !directPlay) {
+    //   completeTranscodeUrl =
+    //       '${server.url}${backInfos.mediaSources.first.transcodingUrl}';
+    // }
+    // final finalUrl = completeTranscodeUrl ??
+    //     await StreamingService.createURL(item, backInfos,
+    //         startTick: item.userData!.playbackPositionTicks);
 
-    // Current item, playbackinfos, stream url and direct play bool
-    streamingProvider
-        .setIsDirectPlay(completeTranscodeUrl != null ? false : true);
-    streamingProvider.setPlaybackInfos(backInfos);
-    streamingProvider.setURL(finalUrl);
-    return finalUrl;
+    // // Current item, playbackinfos, stream url and direct play bool
+    // streamingProvider
+    //     .setIsDirectPlay(completeTranscodeUrl != null ? false : true);
+    // streamingProvider.setPlaybackInfos(backInfos);
+    // streamingProvider.setURL(finalUrl);
+    // return finalUrl;
+
+    throw UnimplementedError('getStreamURL is not defined right now, TODO');
   }
 
   String concatenateGenre({int? maxGenre}) {
@@ -1445,19 +1461,21 @@ class Item {
   }
 
   Future<String> createMusicURL() async {
-    final streamingSoftwareDB = await db.AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
-    final streamingSoftware = TranscodeAudioCodec.fromString(
-        streamingSoftwareDB.preferredTranscodeAudioCodec);
+    // final streamingSoftwareDB = await db.AppDatabase()
+    //     .getDatabase
+    //     .settingsDao
+    //     .getSettingsById(userApp!.settingsId);
+    // final streamingSoftware = TranscodeAudioCodec.fromString(
+    //     streamingSoftwareDB.preferredTranscodeAudioCodec);
 
-    // First we try to fetch item locally to play it
-    final database = db.AppDatabase().getDatabase;
-    final itemExist = await database.downloadsDao.doesExist(id);
-    if (itemExist) return await FileService.getStoragePathItem(this);
+    // // First we try to fetch item locally to play it
+    // final database = db.AppDatabase().getDatabase;
+    // final itemExist = await database.downloadsDao.doesExist(id);
+    // if (itemExist) return await FileService.getStoragePathItem(this);
 
-    return '${server.url}/Audio/$id/stream.$streamingSoftware';
+    // return '${server.url}/Audio/$id/stream.$streamingSoftware';
+
+    throw UnimplementedError('createMusicURL is not defined right now, TODO');
   }
 
   List<MediaStream> getMediaStreamFromType({required MediaStreamType type}) {
@@ -1465,13 +1483,15 @@ class Item {
   }
 
   Future<Uri> getYoutubeTrailerUrl(RemoteTrailer trailer) async {
-    final youtubeUrl = trailer.url;
-    final itemURi = Uri.parse(youtubeUrl);
-    final videoId = itemURi.queryParameters['v'];
-    final yt = YoutubeExplode();
-    final manifest = await yt.videos.streamsClient.getManifest(videoId);
-    final streamInfo = manifest.muxed.withHighestBitrate();
-    yt.close();
-    return streamInfo.url;
+    // final youtubeUrl = trailer.url;
+    // final itemURi = Uri.parse(youtubeUrl);
+    // final videoId = itemURi.queryParameters['v'];
+    // final yt = YoutubeExplode();
+    // final manifest = await yt.videos.streamsClient.getManifest(videoId);
+    // final streamInfo = manifest.muxed.withHighestBitrate();
+    // yt.close();
+    // return streamInfo.url;
+    throw UnimplementedError(
+        'getYoutubeTrailerUrl is not defined right now, TODO');
   }
 }
