@@ -318,7 +318,7 @@ packages:
     source: hosted
     version: "1.0.3"
   jellyflut_models:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../jellyflut_models"
       relative: true

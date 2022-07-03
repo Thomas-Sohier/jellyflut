@@ -9,7 +9,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/providers/items/items_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
@@ -19,8 +18,7 @@ import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static Future<AuthenticationResponse> login(String username, String password,
-      [String? serverUrl]) async {
+  static Future<AuthenticationResponse> login(String username, String password, [String? serverUrl]) async {
     final login = '/Users/authenticatebyname';
     final data = jsonEncode({'Username': username, 'Pw': password});
     final authEmby = await authHeader(embedToken: false);
@@ -87,43 +85,31 @@ class AuthService {
     return false;
   }
 
-  static Future<void> storeAccountData(String name, Server server,
-      AuthenticationResponse authenticationResponse, String password) async {
+  static Future<void> storeAccountData(
+      String name, Server server, AuthenticationResponse authenticationResponse, String password) async {
     final db = AppDatabase().getDatabase;
 
     final serverId = await createOrGetServer(server);
-    final userId =
-        await createOrGetUser(name, authenticationResponse, password, serverId);
+    final userId = await createOrGetUser(name, authenticationResponse, password, serverId);
     final user = await db.usersAppDao.getUserById(userId);
-    await _saveToSharedPreferences(
-        user.serverId, user.settingsId, user.id, authenticationResponse);
+    await _saveToSharedPreferences(user.serverId, user.settingsId, user.id, authenticationResponse);
     return await _saveToGlobals();
   }
 
   static Future<int> createOrGetServer(final Server server) async {
     final db = AppDatabase().getDatabase;
 
-    return db.serversDao
-        .getServerByUrl(server.url)
-        .then((value) => value.id)
-        .catchError((e) {
+    return db.serversDao.getServerByUrl(server.url).then((value) => value.id).catchError((e) {
       // Create server if not present
-      final serverCompanion =
-          ServersCompanion.insert(url: server.url, name: server.name);
+      final serverCompanion = ServersCompanion.insert(url: server.url, name: server.name);
       return db.serversDao.createServer(serverCompanion);
     });
   }
 
   static Future<int> createOrGetUser(
-      String name,
-      AuthenticationResponse authenticationResponse,
-      String password,
-      int serverId) async {
+      String name, AuthenticationResponse authenticationResponse, String password, int serverId) async {
     final db = AppDatabase().getDatabase;
-    return db.usersAppDao
-        .getUserByNameAndServerId(name, serverId)
-        .then((value) => value.id)
-        .catchError((e) async {
+    return db.usersAppDao.getUserByNameAndServerId(name, serverId).then((value) => value.id).catchError((e) async {
       // Create default settings if not present
       final settingsCompanion = SettingsCompanion.insert();
       final settingsId = await db.settingsDao.createSettings(settingsCompanion);
@@ -139,16 +125,14 @@ class AuthService {
     });
   }
 
-  static Future<void> _saveToSharedPreferences(int serverId, int settingId,
-      int userAppId, AuthenticationResponse authenticationResponse) async {
+  static Future<void> _saveToSharedPreferences(
+      int serverId, int settingId, int userAppId, AuthenticationResponse authenticationResponse) async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString(
-        'apiKey', authenticationResponse.accessToken);
+    await sharedPreferences.setString('apiKey', authenticationResponse.accessToken);
     await sharedPreferences.setBool('isLoggedIn', true);
     await sharedPreferences.setInt('serverId', serverId);
     await sharedPreferences.setInt('settingId', settingId);
-    await sharedPreferences.setString(
-        'user', json.encode(authenticationResponse.user.toMap()));
+    await sharedPreferences.setString('user', json.encode(authenticationResponse.user.toMap()));
     await sharedPreferences.setInt('userAppId', userAppId);
   }
 
@@ -160,8 +144,7 @@ class AuthService {
     final userAppId = sharedPreferences.getInt('userAppId');
     userApp = await db.usersAppDao.getUserById(userAppId!);
     apiKey = sharedPreferences.getString('apiKey');
-    final user =
-        User.fromMap(json.decode(sharedPreferences.getString('user')!));
+    final user = User.fromMap(json.decode(sharedPreferences.getString('user')!));
     userJellyfin = user;
     return;
   }
@@ -194,12 +177,9 @@ class AuthService {
     await _removeGlobals();
     await _removeSharedPreferences();
     HomeCategoryProvider().clear();
-    ItemsProvider().reset();
     MusicProvider().reset();
-    BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!)
-        .add(ResetStates());
-    await AutoRouter.of(customRouter.navigatorKey.currentContext!)
-        .replace(AuthParentRoute());
+    BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!).add(ResetStates());
+    await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(AuthParentRoute());
   }
 
   static Future<void> changeUser(
@@ -219,9 +199,7 @@ class AuthService {
     await _saveToSharedPreferences(serverId, settingsId, userId, response);
     await _saveToGlobals();
     HomeCategoryProvider().clear();
-    ItemsProvider().reset();
     MusicProvider().reset();
-    await AutoRouter.of(customRouter.navigatorKey.currentContext!)
-        .replace(HomeRouter());
+    await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(HomeRouter());
   }
 }

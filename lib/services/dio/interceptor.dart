@@ -8,16 +8,12 @@ import 'package:jellyflut/globals.dart';
 
 import 'auth_header.dart';
 
-BaseOptions options = BaseOptions(
-    connectTimeout: 30000,
-    receiveTimeout: 30000,
-    contentType: 'application/json');
+BaseOptions options = BaseOptions(connectTimeout: 30000, receiveTimeout: 30000, contentType: 'application/json');
 
 Dio dio = Dio(options)
   ..interceptors.addAll(
     [
-      QueuedInterceptorsWrapper(onRequest: (RequestOptions requestOptions,
-          RequestInterceptorHandler handler) async {
+      QueuedInterceptorsWrapper(onRequest: (RequestOptions requestOptions, RequestInterceptorHandler handler) async {
         var token = apiKey;
         var authEmby = await authHeader();
         if (token != null) {

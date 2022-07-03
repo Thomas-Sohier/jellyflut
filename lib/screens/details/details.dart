@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/photo_item.dart';
 import 'package:jellyflut/screens/details/template/large_details.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Details extends StatefulWidget {
@@ -49,10 +49,7 @@ class _DetailsState extends State<Details> {
                   child: AnnotatedRegion<SystemUiOverlayStyle>(
                       value: SystemUiOverlayStyle(
                           statusBarColor: Colors.transparent,
-                          statusBarIconBrightness: value
-                                      .colorScheme.onBackground
-                                      .computeLuminance() >
-                                  0.5
+                          statusBarIconBrightness: value.colorScheme.onBackground.computeLuminance() > 0.5
                               ? Brightness.light
                               : Brightness.dark),
                       child: child ?? const SizedBox()));
@@ -64,9 +61,7 @@ class _DetailsState extends State<Details> {
   }
 
   DetailsInfosFuture getDetailsInfos() {
-    final item = offlineMode
-        ? Future.value(widget.item)
-        : ItemService.getItem(widget.item.id);
+    final item = offlineMode ? Future.value(widget.item) : context.read<ItemsRepository>().getItem(widget.item.id);
 
     return DetailsInfosFuture(
       item: item,

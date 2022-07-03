@@ -13,19 +13,13 @@ class LikeButton extends StatefulWidget {
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  late var fToast;
+  late FToast fToast;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     fToast = FToast();
-    // ignore: unnecessary_this
-    fToast.init(this.context);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    fToast.init(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -43,22 +37,20 @@ class _LikeButtonState extends State<LikeButton> {
   }
 
   void setItemFav() {
-    ItemService.favItem(widget.item.id).then((Map<String, dynamic> json) => {
+    context.read<ItemsRepository>().favItem(widget.item.id).then((UserData userData) => {
           setState(() {
-            widget.item.userData!.isFavorite = json['IsFavorite'];
+            widget.item.userData!.isFavorite = userData.isFavorite;
           }),
-          showToast('add_item_favorite'.tr(args: [widget.item.name]), fToast,
-              duration: Duration(seconds: 3))
+          showToast('add_item_favorite'.tr(args: [widget.item.name]), fToast, duration: Duration(seconds: 3))
         });
   }
 
   void unsetItemFav() {
-    ItemService.unfavItem(widget.item.id).then((Map<String, dynamic> json) => {
+    context.read<ItemsRepository>().unfavItem(widget.item.id).then((UserData userData) => {
           setState(() {
-            widget.item.userData!.isFavorite = json['IsFavorite'];
+            widget.item.userData!.isFavorite = userData.isFavorite;
           }),
-          showToast('remove_item_favorite'.tr(args: [widget.item.name]), fToast,
-              duration: Duration(seconds: 3))
+          showToast('remove_item_favorite'.tr(args: [widget.item.name]), fToast, duration: Duration(seconds: 3))
         });
   }
 }

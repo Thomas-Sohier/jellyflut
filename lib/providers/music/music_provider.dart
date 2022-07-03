@@ -3,18 +3,20 @@ import 'dart:io';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/music_player/common_player/common_player.dart';
 import 'package:jellyflut/screens/music_player/models/audio_colors.dart';
 import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
 import 'package:jellyflut/screens/music_player/models/audio_playlist.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:just_audio/just_audio.dart' as just_audio;
 import 'package:rxdart/rxdart.dart';
 
 import '../../screens/music_player/models/audio_source.dart';
+
+class MusicProviderInitializationFailure implements Exception {}
 
 class MusicProvider extends ChangeNotifier {
   Item? _item;
@@ -25,15 +27,22 @@ class MusicProvider extends ChangeNotifier {
   final _currentlyPlayingIndex = BehaviorSubject<int>();
   final _audioPlaylist = AudioPlaylist(audioSources: <AudioSource>[]);
   final _colorController = BehaviorSubject<AudioColors>();
+  late final _itemsRepository;
 
   // Singleton
-  static final MusicProvider _MusicProvider = MusicProvider._internal();
+  static MusicProvider? _musicProvider;
 
-  factory MusicProvider() {
-    return _MusicProvider;
+  factory MusicProvider({ItemsRepository? itemsRepository}) {
+    if (itemsRepository == null) {
+      if (_musicProvider == null) {
+        throw MusicProviderInitializationFailure();
+      }
+      return _musicProvider!;
+    }
+    return _musicProvider ??= MusicProvider._internal(itemsRepository: itemsRepository);
   }
 
-  MusicProvider._internal();
+  MusicProvider._internal({required ItemsRepository itemsRepository}) : _itemsRepository = itemsRepository;
 
   CommonPlayer? get getAudioPlayer => _commonPlayer;
   List<AudioSource> get getPlaylist => _audioPlaylist.getPlaylist;
@@ -48,22 +57,15 @@ class MusicProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    if (Platform.isAndroid ||
-        Platform.isIOS ||
-        Platform.isMacOS ||
-        Platform.isWindows ||
-        kIsWeb) {
+    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows || kIsWeb) {
       final player = just_audio.AudioPlayer();
-      _commonPlayer =
-          CommonPlayer.parseJustAudioController(audioPlayer: player);
+      _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else if (Platform.isLinux) {
       final player = Player(id: audioPlayerId, registerTexture: false);
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
-      final currentPlatform =
-          Theme.of(customRouter.navigatorKey.currentContext!).platform;
-      throw UnimplementedError(
-          'No audio player on this platform (platform : $currentPlatform');
+      final currentPlatform = Theme.of(customRouter.navigatorKey.currentContext!).platform;
+      throw UnimplementedError('No audio player on this platform (platform : $currentPlatform');
     }
 
     // Notify that player is init
@@ -95,8 +97,7 @@ class MusicProvider extends ChangeNotifier {
   void moveMusicItem(int oldIndex, int newIndex) {
     _audioPlaylist.move(oldIndex, newIndex);
     if (_currentMusic != null) {
-      _currentlyPlayingIndex
-          .add(_audioPlaylist.getPlaylist.indexOf(_currentMusic!));
+      _currentlyPlayingIndex.add(_audioPlaylist.getPlaylist.indexOf(_currentMusic!));
     }
     notifyListeners();
   }
@@ -169,8 +170,7 @@ class MusicProvider extends ChangeNotifier {
 
   void previous() {
     if (_currentMusic == null) return;
-    final previousIndex =
-        _audioPlaylist.getPlaylist.indexOf(_currentMusic!) - 1;
+    final previousIndex = _audioPlaylist.getPlaylist.indexOf(_currentMusic!) - 1;
     if (previousIndex < 0) return;
     playAtIndex(previousIndex);
   }
@@ -192,15 +192,13 @@ class MusicProvider extends ChangeNotifier {
 
   Future<void> playPlaylist(Item item) async {
     initPlayer();
-    await ItemService.getItems(parentId: item.id).then((value) async {
+    await _itemsRepository.getItems(parentId: item.id).then((value) async {
       final indexToReturn = _audioPlaylist.getPlaylist.length;
-      final items =
-          value.items.where((item) => item.isFolder == false).toList();
+      final items = value.items.where((item) => item.isFolder == false).toList();
       //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
       for (var index = 0; index < items.length; index++) {
         final item = items.elementAt(index);
-        final streamURL =
-            await StreamingService.contructAudioURL(itemId: item.id);
+        final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
         final musicItem = await AudioMetadata.parseFromItem(streamURL, item);
         insertIntoPlaylist(musicItem);
       }

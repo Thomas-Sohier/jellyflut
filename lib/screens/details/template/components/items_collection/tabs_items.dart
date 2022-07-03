@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart'
-    as tab;
-import 'package:jellyflut/services/item/item_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart' as tab;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -25,11 +25,10 @@ class _TabsItemsState extends State<TabsItems> {
     itemsFutures = <Future<Category>>[];
 
     final length = widget.items.length;
-    widget.items.sort((Item item1, Item item2) =>
-        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
-        length + 1);
+    widget.items
+        .sort((Item item1, Item item2) => item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ?? length + 1);
     for (var i in widget.items) {
-      itemsFutures.add(ItemService.getItems(parentId: i.id));
+      itemsFutures.add(context.read<ItemsRepository>().getCategory(parentId: i.id));
     }
     _widgets = getTabsChilds(widget.items);
   }

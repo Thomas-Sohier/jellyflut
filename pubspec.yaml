@@ -18,15 +18,20 @@ dependencies:
   audio_video_progress_bar: ^0.10.0
   auto_route: ^4.0.1
   better_player: ^0.0.83
-  bloc: ^8.0.3
   blurhash_dart: ^1.1.0
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.5
   dart_vlc: ^0.3.0
+  database_downloads_api:
+    path: packages/downloads/database_downloads_api
   device_info_plus: ^4.0.0
   dio: ^4.0.6
+  downloads_api:
+    path: packages/downloads/downloads_api
+  downloads_repository:
+    path: packages/downloads/downloads_repository
   drift: ^1.7.0
   drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.1
@@ -36,24 +41,21 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
-  jellyflut_models:
-    path: packages/jellyflut_models
-  downloads_api:
-    path: packages/downloads/downloads_api
-  database_downloads_api:
-    path: packages/downloads/database_downloads_api
-  downloads_provider:
-    path: packages/downloads/downloads_provider
-  sqlite_database:
-    path: packages/sqlite_database
   flutter_colorpicker: ^1.0.3
   flutter_native_splash: ^2.2.3+1
-  json_serializable: ^6.2.0
   flutter_settings_ui: ^2.0.1
   flutter_svg: ^1.1.0
   flutter_vlc_player: ^7.1.5
   fluttertoast: ^8.0.9
+  hydrated_bloc: ^8.1.0
   intl: ^0.17.0
+  items_api:
+    path: packages/items/items_api
+  items_repository:
+    path: packages/items/items_repository
+  jellyflut_models:
+    path: packages/jellyflut_models
+  json_serializable: ^6.2.0
   just_audio: ^0.9.25
   just_audio_libwinmedia: ^0.0.4
   octo_image: ^1.0.2
@@ -73,6 +75,8 @@ dependencies:
       url: https://github.com/getBoolean/shu_epub.git
       ref: main
   sqlite3_flutter_libs: ^0.5.7
+  sqlite_database:
+    path: packages/sqlite_database
   subtitle: ^0.1.0-beta.3
   universal_io: ^2.0.4
   url_launcher: ^6.1.4

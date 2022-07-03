@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'package:rxdart/rxdart.dart';
@@ -18,8 +19,7 @@ class Collection extends StatefulWidget {
   final List<Item> seasons;
   final BehaviorSubject<int>? indexStream;
 
-  const Collection(this.item,
-      {this.indexStream, this.seasons = const <Item>[]});
+  const Collection(this.item, {this.indexStream, this.seasons = const <Item>[]});
 
   @override
   State<StatefulWidget> createState() {
@@ -39,14 +39,13 @@ class _CollectionState extends State<Collection> {
     super.initState();
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
-        musicFuture = ItemService.getItems(parentId: widget.item.id);
+        musicFuture = context.read<ItemsRepository>().getCategory(parentId: widget.item.id);
         break;
       case ItemType.SEASON:
-        episodesFuture =
-            ItemService.getEpsiode(widget.item.seriesId!, widget.item.id);
+        episodesFuture = context.read<ItemsRepository>().getEpsiode(widget.item.seriesId!, widget.item.id);
         break;
       case ItemType.MUSICARTIST:
-        musicAlbumFuture = ItemService.getItems(
+        musicAlbumFuture = context.read<ItemsRepository>().getCategory(
             includeItemTypes: ItemType.MUSICALBUM.value,
             sortBy: 'ProductionYear,Sortname',
             albumArtistIds: widget.item.id,
@@ -76,13 +75,9 @@ class _CollectionState extends State<Collection> {
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
-        return TabsItems(
-            items: widget.seasons, indexStream: widget.indexStream);
+        return TabsItems(items: widget.seasons, indexStream: widget.indexStream);
       case ItemType.MUSICARTIST:
-        return ListItems.fromFuture(
-            itemsFuture: musicAlbumFuture,
-            showSorting: false,
-            listType: ListType.POSTER);
+        return ListItems.fromFuture(itemsFuture: musicAlbumFuture, showSorting: false, listType: ListType.POSTER);
       case ItemType.PERSON:
         return ListPersonItem(item: widget.item);
       default:

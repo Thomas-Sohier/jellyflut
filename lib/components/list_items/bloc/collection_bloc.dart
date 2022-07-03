@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,23 +15,19 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   final List<Item> carouselSliderItems = <Item>[];
   final List<Item> _items = <Item>[];
   final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
-  late final Future<Category> Function(int startIndex, int numberOfItemsToLoad)
-      loadMoreFunction;
+  late final Future<Category> Function(int startIndex, int numberOfItemsToLoad) loadMoreFunction;
 
   // Used to know if we should load another async method to fetch items
   // prevent from calling 1000 times API
   bool _blockItemsLoading = false;
   SortBy _sortBy = SortBy.ASC;
-  final ValueNotifier<FieldsEnum?> _currentSortedValue =
-      ValueNotifier<FieldsEnum?>(null);
+  final ValueNotifier<FieldsEnum?> _currentSortedValue = ValueNotifier<FieldsEnum?>(null);
 
   UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
   SortBy get getSortOrder => _sortBy;
   ValueNotifier<FieldsEnum?> get getCurrentSortedValue => _currentSortedValue;
 
-  CollectionBloc(
-      {final ListType listType = ListType.GRID,
-      this.loadMoreFunction = _defaultLoadMore})
+  CollectionBloc({final ListType listType = ListType.GRID, this.loadMoreFunction = _defaultLoadMore})
       : super(CollectionLoadingState()) {
     this.listType.add(listType);
     on<AddItem>(addItems);
@@ -42,14 +37,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }
 
   static Future<Category> _defaultLoadMore(int i, int l) {
-    return Future.value(
-        Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
-  }
-
-  void initialize(Item item) {
-    parentItem = item;
-    getItems(item: item)
-        .then((Category category) => add(AddItem(items: category.items)));
+    return Future.value(Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
   }
 
   void removeItems(ClearItem event, Emitter<CollectionState> emit) {
@@ -61,8 +49,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     emit(CollectionLoadingState());
     _items.addAll(event.items);
     // Filter only unplayed items
-    final unplayedItems =
-        _items.where((element) => !element.isPlayed()).toList();
+    final unplayedItems = _items.where((element) => !element.isPlayed()).toList();
     unplayedItems.shuffle();
     carouselSliderItems.addAll(event.items);
     emit(CollectionLoadedState());
@@ -89,25 +76,10 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }
 
   Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
-    final i = await compute(_sortItemByField,
-        {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
+    final i = await compute(_sortItemByField, {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
     _sortBy = sortBy.reverse();
     _currentSortedValue.value = fieldEnum;
     return i['items'];
-  }
-
-  Future<Category> getItems({required Item item, int startIndex = 0}) async {
-    return ItemService.getItems(
-        parentId: item.id,
-        sortBy: 'SortName',
-        fields:
-            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview',
-        imageTypeLimit: 1,
-        recursive: false,
-        startIndex: startIndex,
-        includeItemTypes:
-            item.getCollectionType().map((e) => e.value).toList().join(','),
-        limit: 100);
   }
 }
 

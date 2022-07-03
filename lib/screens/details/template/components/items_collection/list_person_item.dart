@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class ListPersonItem extends StatefulWidget {
@@ -23,17 +24,17 @@ class _ListPersonItemState extends State<ListPersonItem> {
   @override
   void initState() {
     super.initState();
-    seriesFuture = ItemService.getItems(
+    seriesFuture = context.read<ItemsRepository>().getCategory(
         includeItemTypes: ItemType.SERIES.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
-    moviesFuture = ItemService.getItems(
+    moviesFuture = context.read<ItemsRepository>().getCategory(
         includeItemTypes: ItemType.MOVIE.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
-    audiosFuture = ItemService.getItems(
+    audiosFuture = context.read<ItemsRepository>().getCategory(
         includeItemTypes: ItemType.AUDIO.value,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
@@ -42,33 +43,30 @@ class _ListPersonItemState extends State<ListPersonItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListItems.fromFuture(
-              itemsFuture: moviesFuture,
-              listType: ListType.POSTER,
-              horizontalListPosterHeight: 250,
-              showTitle: true,
-              showIfEmpty: false,
-              showSorting: false),
-          const SizedBox(height: 24),
-          ListItems.fromFuture(
-              itemsFuture: seriesFuture,
-              listType: ListType.POSTER,
-              horizontalListPosterHeight: 250,
-              showTitle: true,
-              showIfEmpty: false,
-              showSorting: false),
-          const SizedBox(height: 24),
-          ListItems.fromFuture(
-              itemsFuture: audiosFuture,
-              listType: ListType.POSTER,
-              horizontalListPosterHeight: 250,
-              showTitle: true,
-              showIfEmpty: false,
-              showSorting: false)
-        ]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+      ListItems.fromFuture(
+          itemsFuture: moviesFuture,
+          listType: ListType.POSTER,
+          horizontalListPosterHeight: 250,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false),
+      const SizedBox(height: 24),
+      ListItems.fromFuture(
+          itemsFuture: seriesFuture,
+          listType: ListType.POSTER,
+          horizontalListPosterHeight: 250,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false),
+      const SizedBox(height: 24),
+      ListItems.fromFuture(
+          itemsFuture: audiosFuture,
+          listType: ListType.POSTER,
+          horizontalListPosterHeight: 250,
+          showTitle: true,
+          showIfEmpty: false,
+          showSorting: false)
+    ]);
   }
 }

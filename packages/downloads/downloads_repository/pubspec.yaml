@@ -1,4 +1,4 @@
-name: downloads_provider
+name: downloads_repository
 description: A repository that handles downloads related requests.
 version: 1.0.0
 publish_to: none

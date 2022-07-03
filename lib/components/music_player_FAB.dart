@@ -20,26 +20,15 @@ class MusicPlayerFAB extends StatefulWidget {
 
 class _MusicPlayerFABState extends State<MusicPlayerFAB> {
   late final Duration musicDuration;
-  late final MusicProvider musicPlayer;
+  late MusicProvider musicPlayer;
   AudioMetadata? audioMetadata;
 
   @override
-  void initState() {
-    super.initState();
-    musicPlayer = MusicProvider();
-    musicDuration = musicPlayer.getDuration();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<MusicProvider>(
-        builder: (context, musicPlayer, child) =>
-            musicPlayer.isInit ? body(musicPlayer) : const SizedBox());
+    return Consumer<MusicProvider>(builder: (context, musicProvider, child) {
+      musicPlayer = musicProvider;
+      return musicPlayer.isInit ? body(musicPlayer) : const SizedBox();
+    });
   }
 
   Widget body(MusicProvider musicPlayer) {
@@ -55,10 +44,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
               height: 60,
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 4, color: Colors.black38, spreadRadius: 2)
-                  ],
+                  boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black38, spreadRadius: 2)],
                   borderRadius: BorderRadius.circular(8),
                   color: Theme.of(context).colorScheme.primary),
               child: Row(
@@ -72,9 +58,7 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
                       size: 28,
                     ),
                   ),
-                  ExcludeFocus(
-                      excluding: true,
-                      child: Expanded(flex: 4, child: centerPart())),
+                  ExcludeFocus(excluding: true, child: Expanded(flex: 4, child: centerPart())),
                   Flexible(child: Center(child: playPauseButton()))
                 ],
               ),
@@ -85,12 +69,9 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
     return StreamBuilder<bool?>(
       stream: musicPlayer.isPlaying(),
       builder: (context, snapshot) => InkWell(
-        onTap: () =>
-            isPlaying(snapshot.data) ? musicPlayer.pause() : musicPlayer.play(),
+        onTap: () => isPlaying(snapshot.data) ? musicPlayer.pause() : musicPlayer.play(),
         child: Icon(
-          isPlaying(snapshot.data)
-              ? Icons.pause_circle_filled_outlined
-              : Icons.play_circle_fill_outlined,
+          isPlaying(snapshot.data) ? Icons.pause_circle_filled_outlined : Icons.play_circle_fill_outlined,
           color: Theme.of(context).colorScheme.onPrimary,
           size: 28,
         ),
@@ -108,25 +89,19 @@ class _MusicPlayerFABState extends State<MusicPlayerFAB> {
           audioMetadata?.title ?? '',
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+          style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
         )),
         Expanded(
             child: StreamBuilder<Duration?>(
                 stream: musicPlayer.getPositionStream(),
                 builder: (context, snapshot) => Slider(
                       activeColor: Theme.of(context).colorScheme.onPrimary,
-                      inactiveColor:
-                          Theme.of(context).colorScheme.onPrimary.withAlpha(32),
+                      inactiveColor: Theme.of(context).colorScheme.onPrimary.withAlpha(32),
                       value: getSliderSize(snapshot.data),
                       min: 0.0,
-                      max: getSliderMaxSize(
-                          musicPlayer.getDuration(), snapshot.data),
+                      max: getSliderMaxSize(musicPlayer.getDuration(), snapshot.data),
                       onChanged: (value) {
-                        musicPlayer
-                            .seekTo(Duration(milliseconds: value.toInt()));
+                        musicPlayer.seekTo(Duration(milliseconds: value.toInt()));
                       },
                     )))
       ],

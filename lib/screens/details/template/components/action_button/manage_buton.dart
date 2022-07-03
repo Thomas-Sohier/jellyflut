@@ -19,7 +19,7 @@ class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
 
   @override
   void initState() {
-    formBloc = FormBloc<Item>();
+    formBloc = FormBloc<Item>(context.read<ItemsRepository>());
     detailsBloc = BlocProvider.of<DetailsBloc>(context);
     final i = widget.item.copyWithItem(item: widget.item);
     formBloc.add(CurrentForm<Item>(formGroup: FormGroup({}), value: i));
@@ -69,10 +69,7 @@ class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
 
   Widget dialogBody(BuildContext context, [bool expanded = false]) {
     return DialogStructure(
-        formBloc: formBloc,
-        expanded: expanded,
-        onClose: closeDialogAndResetForm,
-        onSubmit: submitFormAndUpdateView);
+        formBloc: formBloc, expanded: expanded, onClose: closeDialogAndResetForm, onSubmit: submitFormAndUpdateView);
   }
 
   Widget dialogBuilder(BuildContext context) {
@@ -82,9 +79,7 @@ class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
             padding: const EdgeInsets.all(8.0),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  child: dialogBody(context)),
+              child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody(context)),
             ));
       }
       return dialogBody(context, true);

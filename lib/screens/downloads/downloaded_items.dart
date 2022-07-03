@@ -1,13 +1,11 @@
-import 'package:downloads_provider/downloads_repository.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/screens/downloads/bloc/downloads_bloc.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:sqlite_database/sqlite_database.dart';
 
 class DownloadedItemsPage extends StatelessWidget {
   const DownloadedItemsPage({super.key});

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
@@ -13,7 +15,6 @@ import 'package:jellyflut/screens/stream/common_stream/common_stream_BP.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_VLC.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_VLC_computer.dart';
 import 'package:jellyflut/screens/stream/components/player_interface.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 
 //----------------//
 // ---- ITEM ---- //
@@ -30,8 +31,7 @@ class InitStreamingItemUtil {
   static Future<dynamic> initControllerFromItem({required Item item}) async {
     final db = AppDatabase().getDatabase;
     final setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    final streamingSoftware =
-        StreamingSoftware.fromString(setting.preferredPlayer);
+    final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
     final itemExist = await db.downloadsDao.doesExist(item.id);
@@ -41,7 +41,7 @@ class InitStreamingItemUtil {
       item = Item.fromMap(download.item!);
     } else {
       final tempItem = await item.getPlayableItemOrLastUnplayed();
-      item = await ItemService.getItem(tempItem.id);
+      item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
     }
 
     // Depending the platform and soft => init video player
@@ -77,8 +77,7 @@ class InitStreamingItemUtil {
     return vlcPlayerController;
   }
 
-  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(
-      Item item) async {
+  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(Item item) async {
     // Setup data with Better Player
     return CommonStreamBP.setupData(item: item);
   }
@@ -89,10 +88,8 @@ class InitStreamingItemUtil {
 //----------------//
 
 class InitStreamingUrlUtil {
-  static Future<Widget> initFromUrl(
-      {required String url, required String streamName}) async {
-    final controller =
-        await initControllerFromUrl(url: url, streamName: streamName);
+  static Future<Widget> initFromUrl({required String url, required String streamName}) async {
+    final controller = await initControllerFromUrl(url: url, streamName: streamName);
     final item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
@@ -100,14 +97,9 @@ class InitStreamingUrlUtil {
     return PlayerInterface(controller: controller);
   }
 
-  static Future<dynamic> initControllerFromUrl(
-      {required String url, required String streamName}) async {
-    final streamingSoftwareDB = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
-    final streamingSoftware =
-        StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+  static Future<dynamic> initControllerFromUrl({required String url, required String streamName}) async {
+    final streamingSoftwareDB = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
+    final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
@@ -133,8 +125,7 @@ class InitStreamingUrlUtil {
   }
 
   static Future<VlcPlayerController> _initVlcPhonePlayer(String url) async {
-    final vlcPlayerController =
-        await CommonStreamVLC.setupDataFromUrl(url: url);
+    final vlcPlayerController = await CommonStreamVLC.setupDataFromUrl(url: url);
 
     vlcPlayerController.addOnInitListener(() async {
       await vlcPlayerController.startRendererScanning();
@@ -143,8 +134,7 @@ class InitStreamingUrlUtil {
     return vlcPlayerController;
   }
 
-  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(
-      String url) async {
+  static Future<BetterPlayerController> _initExoPlayerMediaPlayer(String url) async {
     // Setup data with Better Player
     return CommonStreamBP.setupDataFromURl(url: url);
   }

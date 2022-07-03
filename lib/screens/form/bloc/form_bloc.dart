@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -10,10 +10,11 @@ part 'form_event.dart';
 part 'form_state.dart';
 
 class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
+  late final ItemsRepository _itemsRepository;
   late FormGroup formGroup;
   late T value;
 
-  FormBloc() : super(RefreshedState(form: FormGroup({}))) {
+  FormBloc(this._itemsRepository) : super(RefreshedState(form: FormGroup({}))) {
     on<FormEvent<T>>(_onEvent);
   }
 
@@ -39,11 +40,10 @@ class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
       _defaultRequiredValue(form, item);
 
       // Update item
-      await ItemService.updateItemFromForm(id: item.id, form: form)
-          .then((_) => emit(FormSubmittedState<T>(
-              message: 'Item updated', value: value, form: formGroup)))
-          .onError((e, s) =>
-              emit(FormErrorState(form: formGroup, error: e.toString())));
+      await _itemsRepository
+          .updateItemFromForm(itemId: item.id, form: form)
+          .then((_) => emit(FormSubmittedState<T>(message: 'Item updated', value: value, form: formGroup)))
+          .onError((e, s) => emit(FormErrorState(form: formGroup, error: e.toString())));
     }
   }
 

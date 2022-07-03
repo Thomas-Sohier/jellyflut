@@ -1,10 +1,11 @@
-import 'package:downloads_provider/downloads_repository.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
@@ -19,13 +20,11 @@ import 'package:provider/provider.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
 class App extends StatelessWidget {
-  const App(
-      {super.key,
-      required this.authenticated,
-      required this.downloadsRepository});
+  const App({super.key, required this.authenticated, required this.downloadsRepository, required this.itemsRepository});
 
   final bool authenticated;
   final DownloadsRepository downloadsRepository;
+  final ItemsRepository itemsRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +34,12 @@ class App extends StatelessWidget {
             create: (context) => Database(),
             dispose: (context, db) => db.close(),
           ),
-          ChangeNotifierProvider<SearchProvider>(
-              create: (_) => SearchProvider()),
-          ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider()),
-          ChangeNotifierProvider<HomeTabsProvider>(
-              create: (_) => HomeTabsProvider()),
+          ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
+          ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider(itemsRepository: itemsRepository)),
+          ChangeNotifierProvider<HomeTabsProvider>(create: (_) => HomeTabsProvider()),
           ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-          ChangeNotifierProvider<DownloadProvider>(
-              create: (_) => DownloadProvider()),
-          ChangeNotifierProvider<HomeCategoryProvider>(
-              create: (_) => HomeCategoryProvider()),
+          ChangeNotifierProvider<DownloadProvider>(create: (_) => DownloadProvider()),
+          ChangeNotifierProvider<HomeCategoryProvider>(create: (_) => HomeCategoryProvider()),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -55,14 +50,11 @@ class App extends StatelessWidget {
             ],
             child: MultiRepositoryProvider(
                 providers: [
-                  RepositoryProvider.value(value: downloadsRepository)
+                  RepositoryProvider.value(value: downloadsRepository),
+                  RepositoryProvider.value(value: itemsRepository)
                 ],
                 child: EasyLocalization(
-                    supportedLocales: [
-                      Locale('en', 'US'),
-                      Locale('fr', 'FR'),
-                      Locale('de', 'DE')
-                    ],
+                    supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
                     path: 'translations',
                     assetLoader: YamlAssetLoader(),
                     fallbackLocale: Locale('en', 'US'),
@@ -88,8 +80,7 @@ class AppView extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-        builder: (context, ThemeProvider themeNotifier, child) {
+    return Consumer<ThemeProvider>(builder: (context, ThemeProvider themeNotifier, child) {
       FlutterNativeSplash.remove();
       return MaterialApp.router(
         title: 'JellyFlut',
@@ -118,16 +109,12 @@ final shortcuts = <LogicalKeySet, Intent>{
     LogicalKeyboardKey.mediaPlayPause,
     LogicalKeyboardKey.mediaPlay,
   }): const ActivateIntent(),
-  LogicalKeySet(LogicalKeyboardKey.arrowDown): const DirectionalFocusIntent(
-      TraversalDirection.down,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowUp): const DirectionalFocusIntent(
-      TraversalDirection.up,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowLeft): const DirectionalFocusIntent(
-      TraversalDirection.left,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowRight): const DirectionalFocusIntent(
-      TraversalDirection.right,
-      ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowDown):
+      const DirectionalFocusIntent(TraversalDirection.down, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowUp):
+      const DirectionalFocusIntent(TraversalDirection.up, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+      const DirectionalFocusIntent(TraversalDirection.left, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowRight):
+      const DirectionalFocusIntent(TraversalDirection.right, ignoreTextFields: false),
 };

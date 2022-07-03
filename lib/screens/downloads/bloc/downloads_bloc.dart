@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:downloads_api/downloads_api.dart';
-import 'package:downloads_provider/downloads_repository.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 
 part 'downloads_event.dart';

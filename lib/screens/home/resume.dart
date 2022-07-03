@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
@@ -27,7 +28,7 @@ class _ResumeState extends State<Resume> {
 
   @override
   void initState() {
-    categoryFuture = ItemService.getResumeItems();
+    categoryFuture = context.read<ItemsRepository>().getResumeItems();
     homeCategoryprovider = HomeCategoryProvider();
     checkIfCategoryInitialized();
     super.initState();
@@ -73,8 +74,7 @@ class _ResumeState extends State<Resume> {
       children: [
         HomeCategoryTitle('resume'.tr(), onTap: () => {}),
         SizedBox(
-            height: (itemPosterHeight + itemPosterLabelHeight) *
-                scalePosterSizeValue,
+            height: (itemPosterHeight + itemPosterLabelHeight) * scalePosterSizeValue,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: 8),
@@ -102,59 +102,52 @@ class _ResumeState extends State<Resume> {
         enabled: shimmerAnimation,
         baseColor: personnal_theme.shimmerColor1,
         highlightColor: personnal_theme.shimmerColor2,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                    height: 30,
-                    width: 70,
-                    color: Colors.white30,
-                  )),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: SizedBox(
-                              height: 200,
-                              child: ListView.builder(
-                                  itemCount: 3,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5)),
-                                          child: Container(
-                                            height: 200,
-                                            width: 200 * (2 / 3),
-                                            color: Colors.white30,
-                                          )))))),
-                    ],
-                  ))
-            ]));
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                height: 30,
+                width: 70,
+                color: Colors.white30,
+              )),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                              itemCount: 3,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      child: Container(
+                                        height: 200,
+                                        width: 200 * (2 / 3),
+                                        color: Colors.white30,
+                                      )))))),
+                ],
+              ))
+        ]));
   }
 
   void checkIfCategoryInitialized() {
     // If category is not present then we load datas from API endpoint
     if (!homeCategoryprovider.isCategoryPresent(categoryTitle)) {
       // get datas
-      categoryFuture = ItemService.getResumeItems();
+      categoryFuture = context.read<ItemsRepository>().getResumeItems();
 
       // Add category to BLoC
-      categoryFuture.then((value) => homeCategoryprovider
-          .addCategory(MapEntry(categoryTitle, value.items)));
+      categoryFuture.then((value) => homeCategoryprovider.addCategory(MapEntry(categoryTitle, value.items)));
     } else {
-      categoryFuture = Future.value(Category(
-          items: homeCategoryprovider.getCategoryItem(categoryTitle),
-          totalRecordCount: 0,
-          startIndex: 0));
+      categoryFuture = Future.value(
+          Category(items: homeCategoryprovider.getCategoryItem(categoryTitle), totalRecordCount: 0, startIndex: 0));
     }
   }
 }

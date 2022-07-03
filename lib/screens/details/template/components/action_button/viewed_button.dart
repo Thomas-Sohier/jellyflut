@@ -26,8 +26,7 @@ class _ViewedButtonState extends State<ViewedButton> {
   Widget build(BuildContext context) {
     return PaletteButton(
       'viewed'.tr(),
-      onPressed: () =>
-          widget.item.isPlayed() ? unsetItemViewed() : setItemViewed(),
+      onPressed: () => widget.item.isPlayed() ? unsetItemViewed() : setItemViewed(),
       borderRadius: 4,
       minWidth: 40,
       maxWidth: widget.maxWidth,
@@ -38,18 +37,18 @@ class _ViewedButtonState extends State<ViewedButton> {
   }
 
   void setItemViewed() {
-    ItemService.viewItem(widget.item.id).then((Map<String, dynamic> json) => {
+    context.read<ItemsRepository>().viewItem(widget.item.id).then((UserData userData) => {
           setState(() {
-            widget.item.userData?.played = json['Played'];
+            widget.item.userData?.played = userData.played;
           }),
           showToast('mark_item_viewed'.tr(args: [widget.item.name]), fToast)
         });
   }
 
   void unsetItemViewed() {
-    ItemService.unviewItem(widget.item.id).then((Map<String, dynamic> json) => {
+    context.read<ItemsRepository>().unviewItem(widget.item.id).then((UserData userData) => {
           setState(() {
-            widget.item.userData?.played = json['Played'];
+            widget.item.userData?.played = userData.played;
           }),
           showToast('mark_item_unviewed'.tr(args: [widget.item.name]), fToast)
         });

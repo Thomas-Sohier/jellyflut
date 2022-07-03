@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_video_player.dart';
 import 'package:jellyflut/screens/stream/components/player_interface.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
@@ -24,20 +25,18 @@ class InitStreamingItemUtil {
   static Future<dynamic> initControllerFromItem({required Item item}) async {
     final db = AppDatabase().getDatabase;
     final setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    final streamingSoftware =
-        StreamingSoftware.fromString(setting.preferredPlayer);
+    final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
     final tempItem = await item.getPlayableItemOrLastUnplayed();
-    item = await ItemService.getItem(tempItem.id);
+    item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
       case StreamingSoftware.HTMLPlayer:
         return _initVideoPlayer(item);
       default:
-        throw UnsupportedError(
-            'No suitable player controller implementation was found.');
+        throw UnsupportedError('No suitable player controller implementation was found.');
     }
   }
 
@@ -51,10 +50,8 @@ class InitStreamingItemUtil {
 //----------------//
 
 class InitStreamingUrlUtil {
-  static Future<Widget> initFromUrl(
-      {required String url, required String streamName}) async {
-    final controller =
-        await initControllerFromUrl(url: url, streamName: streamName);
+  static Future<Widget> initFromUrl({required String url, required String streamName}) async {
+    final controller = await initControllerFromUrl(url: url, streamName: streamName);
     final item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
@@ -62,22 +59,16 @@ class InitStreamingUrlUtil {
     return PlayerInterface(controller: controller);
   }
 
-  static Future<dynamic> initControllerFromUrl(
-      {required String url, required String streamName}) async {
-    final streamingSoftwareDB = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
-    final streamingSoftware =
-        StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+  static Future<dynamic> initControllerFromUrl({required String url, required String streamName}) async {
+    final streamingSoftwareDB = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
+    final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
       case StreamingSoftware.HTMLPlayer:
         return _initVideoPlayer(url);
       default:
-        throw UnsupportedError(
-            'No suitable player controller implementation was found.');
+        throw UnsupportedError('No suitable player controller implementation was found.');
     }
   }
 

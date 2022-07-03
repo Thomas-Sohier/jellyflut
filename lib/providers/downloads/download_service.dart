@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/file/file_service.dart';
-import 'package:jellyflut/services/item/item_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/subjects.dart';
@@ -10,19 +9,14 @@ import 'package:rxdart/subjects.dart';
 class DownloadService {
   final Set<ItemDownload> downloads = <ItemDownload>{};
 
-  Future<List<Future<int>>> downloadItem(
-      final Item item,
-      BehaviorSubject<int> percentDownload,
+  Future<List<Future<int>>> downloadItem(final Item item, BehaviorSubject<int> percentDownload,
       Future<bool?> Function() ifFileExistShouldOverwrite) async {
     final canDownload = await FileService.requestStorage();
     if (canDownload) {
       final files = await _itemsToDownload(item);
-      final isFilesAlreadyDownloadedFuture =
-          files.map((e) => FileService.isItemDownloaded(item.id));
-      final isFilesAlreadyDownloaded =
-          await Future.wait(isFilesAlreadyDownloadedFuture);
-      final atleastOneFileExist =
-          isFilesAlreadyDownloaded.any((element) => element == true);
+      final isFilesAlreadyDownloadedFuture = files.map((e) => FileService.isItemDownloaded(item.id));
+      final isFilesAlreadyDownloaded = await Future.wait(isFilesAlreadyDownloadedFuture);
+      final atleastOneFileExist = isFilesAlreadyDownloaded.any((element) => element == true);
 
       // If file seems to already exist we show a dialog to warn user about possible overwriting of current file
       if (atleastOneFileExist) {
@@ -43,22 +37,21 @@ class DownloadService {
   /// deepest level
   /// If there is no child then we return current [item]
   Future<List<Item>> _itemsToDownload(Item item) async {
-    Future<List<Item>> getChildrens(String itemId) async {
-      final category = await ItemService.getItems(parentId: item.id);
-      return category.items;
-    }
+    // Future<List<Item>> getChildrens(String itemId) async {
+    //   final category = await ItemService.getItems(parentId: item.id);
+    //   return category.items;
+    // }
 
-    final childrens = await getChildrens(item.id);
-    if (childrens.isEmpty) return [item];
-    return childrens.where((e) => e.isPlayable()).toList();
+    // final childrens = await getChildrens(item.id);
+    return [item];
+    // return childrens.where((e) => e.isPlayable()).toList();
   }
 
   Future<String> getDownloadPath(Item item) async {
     return FileService.getStoragePathItem(item);
   }
 
-  Future<List<Future<int>>> addDownloads(
-      {required final List<Item> items, BuildContext? context}) async {
+  Future<List<Future<int>>> addDownloads({required final List<Item> items, BuildContext? context}) async {
     final downloads = <Future<int>>[];
     for (final item in items) {
       final downloadUrl = FileService.getDownloadFileUrl(item.id);
@@ -82,10 +75,7 @@ class DownloadService {
     // Add download to provider to keep track of it
     final cancelToken = CancelToken();
     final percentDownload = BehaviorSubject<int>();
-    final itemDownload = ItemDownload(
-        item: item,
-        downloadValueWatcher: percentDownload,
-        cancel: cancelToken.cancel);
+    final itemDownload = ItemDownload(item: item, downloadValueWatcher: percentDownload, cancel: cancelToken.cancel);
     downloads.add(itemDownload);
 
     // Download the file and store it to the given path

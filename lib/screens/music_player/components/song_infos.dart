@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/fav_button.dart';
+import 'package:jellyflut/components/fav_button/fav_button.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -40,10 +40,7 @@ class _SongInfosState extends State<SongInfos> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    songTitleLabel(metadata),
-                    songArtistLabel(metadata)
-                  ],
+                  children: [songTitleLabel(metadata), songArtistLabel(metadata)],
                 ),
                 songFavButton(metadata)
               ],
@@ -58,10 +55,7 @@ class _SongInfosState extends State<SongInfos> {
       padding: const EdgeInsets.only(top: 12),
       child: Text(metadata.title,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontWeight: FontWeight.bold)),
+          style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
     );
   }
 
@@ -70,8 +64,7 @@ class _SongInfosState extends State<SongInfos> {
       return GestureDetector(
         onTap: () async {
           if (metadata.artist.isNotEmpty) {
-            await customRouter
-                .push(DetailsRoute(item: audioMetadata!.item, heroTag: ''));
+            await customRouter.push(DetailsRoute(item: audioMetadata!.item, heroTag: ''));
           }
         },
         child: Text(
@@ -86,7 +79,7 @@ class _SongInfosState extends State<SongInfos> {
   Widget songFavButton(AudioMetadata metadata) {
     return FittedBox(
       child: FavButton(
-        metadata.item,
+        item: metadata.item,
         size: 36,
         padding: EdgeInsets.all(10),
       ),
