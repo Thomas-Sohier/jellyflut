@@ -35,6 +35,7 @@ cannot_download_item: 'Cannot download {}'
 cannot_access_storage: Cannot access storage
 cannot_load_page: Cannot load page
 functionnality_not_implemented: 'Functionnality not implemented'
+reload: reload
 
 # Category titles
 latest: Latest

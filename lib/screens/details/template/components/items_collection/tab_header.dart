@@ -1,5 +1,6 @@
 import 'package:jellyflut/screens/details/template/components/items_collection/cubit/collection_cubit.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:universal_io/io.dart';
 import 'dart:ui';
 
@@ -24,11 +25,11 @@ class TabHeader extends SliverPersistentHeaderDelegate {
         switch (state.status) {
           case CollectionStatus.initial:
           case CollectionStatus.loading:
-          case CollectionStatus.failure:
+            return ShimmerHeaderBar(padding: padding);
           case CollectionStatus.success:
             return HeaderBar(padding: padding);
           default:
-            return const SizedBox();
+            return const SizedBox(height: _height);
         }
       },
     );
@@ -50,6 +51,57 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return false;
+  }
+}
+
+class ShimmerHeaderBar extends StatelessWidget {
+  static const EdgeInsets buttonPadding = EdgeInsets.only(right: 12);
+  static const double height = 50;
+  static const double width = 150;
+  static const int count = 4;
+  final EdgeInsets padding;
+
+  const ShimmerHeaderBar({super.key, required this.padding});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRect(
+        child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: SizedBox(
+          height: _height,
+          child: Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
+            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+            child: StreamBuilder<bool>(
+                initialData: false,
+                stream: context.read<DetailsBloc>().pinnedHeaderStream,
+                builder: (_, headerSnapsot) => AnimatedPadding(
+                      padding: headerSnapsot.data! ? padding.copyWith(left: padding.left + 40) : padding,
+                      duration: Duration(milliseconds: 200),
+                      child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: count,
+                          itemExtent: (width + buttonPadding.right),
+                          itemBuilder: (context, index) {
+                            return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: buttonPadding,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                                      child: SizedBox(
+                                          height: height,
+                                          width: double.infinity,
+                                          child: ColoredBox(
+                                            color: Theme.of(context).colorScheme.background.withAlpha(150),
+                                          ))),
+                                ));
+                          }),
+                    )),
+          )),
+    ));
   }
 }
 

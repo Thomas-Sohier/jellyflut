@@ -35,6 +35,7 @@ cannot_download_item: "Impossible de télécharger {}"
 cannot_access_storage: "Impossible d'accéder au stockage"
 cannot_load_page: "Impossible de charger la page"
 functionnality_not_implemented: 'Fonctionnalité non implémentée'
+reload: Recharger
 
 # Category titles
 latest: Derniers ajouts

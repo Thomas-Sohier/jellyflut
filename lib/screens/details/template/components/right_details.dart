@@ -1,16 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
-import 'package:jellyflut/screens/details/template/components/collection.dart';
 import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'items_collection/cubit/collection_cubit.dart';
+import 'items_collection/season_episode.dart';
 
 class RightDetails extends StatefulWidget {
   final Item item;
@@ -93,87 +91,5 @@ class RightDetailsView extends StatelessWidget {
       if (item.type == ItemType.SERIES) boxAdapter(SeasonEpisode()),
       boxAdapter(const SizedBox(height: 24)),
     ]);
-  }
-}
-
-class SeasonEpisode extends StatelessWidget {
-  const SeasonEpisode({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final collectionCubit = context.read<CollectionCubit>();
-    return BlocConsumer<CollectionCubit, CollectionState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        switch (state.status) {
-          case CollectionStatus.failure:
-            return const SeasonEpisodeError();
-          case CollectionStatus.loading:
-            return const EpisodesShimmer();
-          case CollectionStatus.initial:
-          case CollectionStatus.success:
-            if (collectionCubit.seasons.isNotEmpty) {
-              return Collection(collectionCubit.item, seasons: collectionCubit.seasons);
-            }
-            return const SizedBox();
-          default:
-            return const SizedBox();
-        }
-      },
-    );
-  }
-}
-
-class SeasonEpisodeError extends StatelessWidget {
-  const SeasonEpisodeError({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          Icon(Icons.error_outline),
-          const SizedBox(height: 4),
-          Text('error_loading_item'.tr(args: ['episodes'])),
-        ],
-      ),
-    ));
-  }
-}
-
-class EpisodesShimmer extends StatelessWidget {
-  static const double padding = 12;
-  static const double height = 150;
-  final int count;
-  const EpisodesShimmer({this.count = 10});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: (height + padding) * count,
-        child: Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemExtent: height + padding,
-                  itemCount: count,
-                  itemBuilder: (_, __) => Padding(
-                        padding: const EdgeInsets.only(top: padding),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            child: Container(
-                              height: height,
-                              width: double.infinity,
-                              color: Theme.of(context).colorScheme.background.withAlpha(150),
-                            )),
-                      )),
-            )));
   }
 }

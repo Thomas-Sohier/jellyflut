@@ -25,6 +25,8 @@ class CollectionCubit extends Cubit<CollectionState> {
   UnmodifiableListView<Item> get seasons => UnmodifiableListView(_seasons);
   Item get item => _item;
 
+  /// First method to be called
+  /// Init seasons and episode from given item
   Future<void> _initFromItem(Item item) async {
     emit(state.copyWith(status: CollectionStatus.loading));
 
@@ -36,7 +38,7 @@ class CollectionCubit extends Cubit<CollectionState> {
         _episodes.putIfAbsent(season.id, () => _getEpisodes(season));
       }
 
-      final currentSeason = _seasons.first;
+      final currentSeason = state.season ?? _seasons.first;
 
       emit(
         state.copyWith(
@@ -48,6 +50,12 @@ class CollectionCubit extends Cubit<CollectionState> {
     } on Exception {
       emit(state.copyWith(status: CollectionStatus.failure));
     }
+  }
+
+  /// Try to reload item seasons and episodes
+  /// Useful on failure to allow user to reload data or when pull to refresh
+  Future<void> retry() async {
+    return _initFromItem(_item);
   }
 
   void changeSeason(String seasonId) async {

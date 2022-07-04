@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/globals.dart' as globals;
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-class Tab extends StatefulWidget {
-  final List<Item> items;
-  final double? itemPosterHeight;
+import 'cubit/collection_cubit.dart';
 
-  const Tab({super.key, required this.items, this.itemPosterHeight});
-
-  @override
-  State<Tab> createState() => _TabState();
-}
-
-class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
-  double get itemPosterHeight => widget.itemPosterHeight ?? globals.itemPosterHeight;
-  List<Item> get items => widget.items;
-
-  @override
-  bool get wantKeepAlive => true;
+class Tab extends StatelessWidget {
+  const Tab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    final episodes = context.read<CollectionCubit>().state.episodes;
     return ListItems.fromList(
-        category: Category(items: items, totalRecordCount: items.length, startIndex: 0),
+        category: Category(items: episodes, totalRecordCount: episodes.length, startIndex: 0),
         listType: ListType.LIST,
-        verticalListPosterHeight: itemPosterHeight,
+        verticalListPosterHeight: globals.itemPosterHeight,
         physics: NeverScrollableScrollPhysics(),
         showIfEmpty: false,
         showTitle: false,

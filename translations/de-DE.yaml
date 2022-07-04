@@ -35,6 +35,7 @@ cannot_download_item: 'Herunterladen von {} gescheitert'
 cannot_access_storage: 'Zugriff auf Speicher nicht möglich'
 cannot_load_page: 'Laden der Seite gescheitert'
 functionnality_not_implemented: 'Funktion noch nicht verfügbar'
+reload: Reload
 
 # Category titles
 latest: Zuletzt hinzugefügt

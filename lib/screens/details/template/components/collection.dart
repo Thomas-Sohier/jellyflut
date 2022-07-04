@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Tab;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/list_person_item.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/tab.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 // TODO rework this to return Sliver
@@ -69,7 +69,7 @@ class _CollectionState extends State<Collection> {
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
-        return TabsItems();
+        return const Tab();
       case ItemType.MUSICARTIST:
         return ListItems.fromFuture(itemsFuture: musicAlbumFuture, showSorting: false, listType: ListType.POSTER);
       case ItemType.PERSON:
