@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
@@ -7,7 +8,9 @@ import 'package:jellyflut/screens/details/template/components/details/quick_info
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:shimmer/shimmer.dart';
+
+import 'items_collection/cubit/collection_cubit.dart';
 
 class RightDetails extends StatefulWidget {
   final Item item;
@@ -18,42 +21,35 @@ class RightDetails extends StatefulWidget {
   State<RightDetails> createState() => _RightDetailsState();
 }
 
-class _RightDetailsState extends State<RightDetails> with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+class _RightDetailsState extends State<RightDetails> with TickerProviderStateMixin {
   bool isHeaderPinned = false;
-  late Item item;
-  late final BehaviorSubject<int> _indexStream;
-  late final ScrollController _scrollController;
-  late final Future<Category> seasons;
+
+  Item get item => widget.item;
+  Widget? get posterAndLogoWidget => widget.posterAndLogoWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CollectionCubit(
+          itemsRepository: context.read<ItemsRepository>(),
+          item: item,
+          tabController: TabController(length: 0, vsync: this)),
+      child: BlocListener<CollectionCubit, CollectionState>(
+          listener: (context, state) {
+            context.read<CollectionCubit>().tabController = TabController(length: state.episodes.length, vsync: this);
+          },
+          child: RightDetailsView(item: item, posterAndLogoWidget: posterAndLogoWidget)),
+    );
+  }
+}
+
+class RightDetailsView extends StatelessWidget {
+  final Item item;
+  final Widget? posterAndLogoWidget;
   static const contentPadding = EdgeInsets.symmetric(horizontal: 12);
   static const horizotalScrollbaleWidgetPadding = EdgeInsets.only(left: 12);
 
-  @override
-  void initState() {
-    super.initState();
-    item = widget.item;
-    _scrollController = ScrollController();
-    _indexStream = BehaviorSubject.seeded(0);
-    seasons = context
-        .read<ItemsRepository>()
-        .getCategory(parentId: item.id, limit: 100, fields: 'ImageTags, RecursiveItemCount', filter: 'IsFolder');
-    _tabController = TabController(length: item.childCount ?? 0, vsync: this);
-    _tabController!.addListener(() {
-      _indexStream.add(_tabController!.index);
-    });
-  }
-
-  @override
-  void didUpdateWidget(RightDetails oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    item = widget.item;
-  }
-
-  @override
-  void dispose() {
-    _tabController?.dispose();
-    super.dispose();
-  }
+  const RightDetailsView({super.key, required this.item, this.posterAndLogoWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +57,9 @@ class _RightDetailsState extends State<RightDetails> with SingleTickerProviderSt
       return SliverPadding(padding: contentPadding, sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
     }
 
-    return CustomScrollView(controller: _scrollController, scrollDirection: Axis.vertical, slivers: [
+    return CustomScrollView(scrollDirection: Axis.vertical, slivers: [
       boxAdapter(const SizedBox(height: 48)),
-      boxAdapter(widget.posterAndLogoWidget),
+      boxAdapter(posterAndLogoWidget),
       boxAdapter(const SizedBox(height: 24)),
       boxAdapter(Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder(item: item))),
       boxAdapter(const SizedBox(height: 36)),
@@ -92,22 +88,92 @@ class _RightDetailsState extends State<RightDetails> with SingleTickerProviderSt
         SliverPersistentHeader(
           pinned: true,
           floating: false,
-          delegate:
-              TabHeader(seasons: seasons, tabController: _tabController, padding: horizotalScrollbaleWidgetPadding),
+          delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
         ),
-      boxAdapter(SeasonEpisode()),
+      if (item.type == ItemType.SERIES) boxAdapter(SeasonEpisode()),
       boxAdapter(const SizedBox(height: 24)),
     ]);
   }
+}
 
-  Widget SeasonEpisode() {
-    return FutureBuilder<Category>(
-        future: seasons,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Collection(item, indexStream: _indexStream, seasons: snapshot.data?.items ?? <Item>[]);
-          }
-          return const SizedBox();
-        });
+class SeasonEpisode extends StatelessWidget {
+  const SeasonEpisode({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final collectionCubit = context.read<CollectionCubit>();
+    return BlocConsumer<CollectionCubit, CollectionState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        switch (state.status) {
+          case CollectionStatus.failure:
+            return const SeasonEpisodeError();
+          case CollectionStatus.loading:
+            return const EpisodesShimmer();
+          case CollectionStatus.initial:
+          case CollectionStatus.success:
+            if (collectionCubit.seasons.isNotEmpty) {
+              return Collection(collectionCubit.item, seasons: collectionCubit.seasons);
+            }
+            return const SizedBox();
+          default:
+            return const SizedBox();
+        }
+      },
+    );
+  }
+}
+
+class SeasonEpisodeError extends StatelessWidget {
+  const SeasonEpisodeError({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          Icon(Icons.error_outline),
+          const SizedBox(height: 4),
+          Text('error_loading_item'.tr(args: ['episodes'])),
+        ],
+      ),
+    ));
+  }
+}
+
+class EpisodesShimmer extends StatelessWidget {
+  static const double padding = 12;
+  static const double height = 150;
+  final int count;
+  const EpisodesShimmer({this.count = 10});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: (height + padding) * count,
+        child: Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
+            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemExtent: height + padding,
+                  itemCount: count,
+                  itemBuilder: (_, __) => Padding(
+                        padding: const EdgeInsets.only(top: padding),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            child: Container(
+                              height: height,
+                              width: double.infinity,
+                              color: Theme.of(context).colorScheme.background.withAlpha(150),
+                            )),
+                      )),
+            )));
   }
 }

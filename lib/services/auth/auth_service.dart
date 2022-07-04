@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
@@ -12,43 +11,12 @@ import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/services/dio/auth_header.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:users_repository/users_repository.dart';
 
 class AuthService {
-  static Future<AuthenticationResponse> login(String username, String password, [String? serverUrl]) async {
-    final login = '/Users/authenticatebyname';
-    final data = jsonEncode({'Username': username, 'Pw': password});
-    final authEmby = await authHeader(embedToken: false);
-    serverUrl ??= server.url;
-
-    try {
-      final response = await dio.post('$serverUrl$login',
-          data: data,
-          // X-Emby-Authorization needs to be set manually here
-          // I don't know why...
-          options: Options(headers: {'X-Emby-Authorization': authEmby}));
-      return AuthenticationResponse.fromMap(response.data);
-    } on DioError catch (dioError, stacktrace) {
-      log(dioError.message, stackTrace: stacktrace, level: 5);
-      switch (dioError.response?.statusCode ?? 500) {
-        case 401:
-          throw ('Authentication error, check your login, password and server\'s url');
-        case 404:
-          throw ('Url error, check that youre using the correct url and/or subpath');
-        case 500:
-          throw ('Server error, check that you can connect to your server');
-        default:
-          throw ('Cannot access to the server, check your url and/or your server');
-      }
-    } catch (e, stacktrace) {
-      log(e.toString(), stackTrace: stacktrace, level: 5);
-      rethrow;
-    }
-  }
-
   static Future<bool> isAuth() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('isLoggedIn') ?? false) {
@@ -193,7 +161,9 @@ class AuthService {
     // Try to connect first
     // If there is an error then an exception is thrown
     // or we juste flush all data on connect with second account
-    final response = await AuthService.login(username, password, serverUrl);
+    final response = await customRouter.navigatorKey.currentContext!
+        .read<UsersRepository>()
+        .login(username: username, password: password, serverUrl: serverUrl);
     await _removeGlobals();
     await _removeSharedPreferences();
     await _saveToSharedPreferences(serverId, settingsId, userId, response);

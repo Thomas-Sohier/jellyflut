@@ -17,8 +17,7 @@ class AsyncRightDetails extends StatefulWidget {
   State<AsyncRightDetails> createState() => _AsyncRightDetailsState();
 }
 
-class _AsyncRightDetailsState extends State<AsyncRightDetails>
-    with DetailsMixin {
+class _AsyncRightDetailsState extends State<AsyncRightDetails> with DetailsMixin {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DetailsBloc, DetailsState>(
@@ -31,16 +30,14 @@ class _AsyncRightDetailsState extends State<AsyncRightDetails>
                 if (snapshot.hasData) {
                   return RightDetails(
                       item: snapshot.data!,
-                      posterAndLogoWidget: Header(
-                          item: widget.item, constraints: widget.constraints));
+                      posterAndLogoWidget: Header(item: widget.item, constraints: widget.constraints));
                 }
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: ListView(
                     children: [
                       const SizedBox(height: 48),
-                      Header(
-                          item: widget.item, constraints: widget.constraints),
+                      Header(item: widget.item, constraints: widget.constraints),
                       const SkeletonRightDetails(),
                     ],
                   ),

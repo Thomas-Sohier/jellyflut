@@ -8,6 +8,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:users_api/users_api.dart';
 
 import './shared/app_init/app_init.dart' as impl;
 import 'shared/shared_prefs.dart';
@@ -26,6 +27,7 @@ void main() async {
     database: AppDatabase().getDatabase,
   );
   final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin!.id, dioClient: dio);
+  final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin!.id, dioClient: dio);
 
-  bootstrap(authenticated: authenticated, downloadsApi: databaseDownloadsApi, itemsApi: itemsApi);
+  bootstrap(authenticated: authenticated, downloadsApi: databaseDownloadsApi, itemsApi: itemsApi, usersApi: usersApi);
 }

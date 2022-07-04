@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
@@ -7,7 +9,6 @@ import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/home/home_category.dart';
 import 'package:jellyflut/screens/home/latest.dart';
 import 'package:jellyflut/screens/home/resume.dart';
-import 'package:jellyflut/services/user/user_service.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
   void initState() {
     searchProvider = SearchProvider();
     _scrollController = ScrollController(initialScrollOffset: 0);
-    categoryFuture = UserService.getLibraryCategory();
+    categoryFuture = context.read<ItemsRepository>().getLibraryViews();
     _pageController = PageController();
     tabController = TabController(length: 0, vsync: this);
     super.initState();
@@ -50,15 +51,12 @@ class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
     final statusBarHeight = MediaQuery.of(context).padding.top;
     return ExcludeFocus(
       excluding: excluding,
-      child: CustomScrollView(
-          scrollDirection: Axis.vertical,
-          controller: _scrollController,
-          slivers: [
-            SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-            SliverToBoxAdapter(child: Resume()),
-            SliverToBoxAdapter(child: Latest()),
-            categoryBuilder()
-          ]),
+      child: CustomScrollView(scrollDirection: Axis.vertical, controller: _scrollController, slivers: [
+        SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
+        SliverToBoxAdapter(child: Resume()),
+        SliverToBoxAdapter(child: Latest()),
+        categoryBuilder()
+      ]),
     );
   }
 

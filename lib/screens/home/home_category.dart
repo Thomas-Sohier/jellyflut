@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/home/home_category_title.dart';
-import 'package:jellyflut/services/user/user_service.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
@@ -19,8 +20,7 @@ class HomeCategory extends StatefulWidget {
   }
 }
 
-class _HomeCategoryState extends State<HomeCategory>
-    with AutomaticKeepAliveClientMixin {
+class _HomeCategoryState extends State<HomeCategory> with AutomaticKeepAliveClientMixin {
   final double height = 220;
   final double gapSize = 20;
   late final String categoryTitle;
@@ -78,9 +78,7 @@ class _HomeCategoryState extends State<HomeCategory>
         mainAxisSize: MainAxisSize.min,
         children: [
           HomeCategoryTitle(categoryTitle, onTap: slideToPageDetail),
-          SizedBox(
-              height: itemPosterHeight + itemPosterLabelHeight,
-              child: displayItems()),
+          SizedBox(height: itemPosterHeight + itemPosterLabelHeight, child: displayItems()),
         ]);
   }
 
@@ -108,57 +106,53 @@ class _HomeCategoryState extends State<HomeCategory>
         enabled: shimmerAnimation,
         baseColor: shimmerColor1,
         highlightColor: shimmerColor2,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                        height: 30,
-                        width: 70,
-                        color: Colors.white30,
-                      )),
-                  Spacer(),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            color: Colors.white30,
-                          ))),
-                ],
-              ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: SizedBox(
-                              height: itemPosterHeight,
-                              child: ListView.builder(
-                                  itemCount: 3,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5)),
-                                          child: Container(
-                                            height: height,
-                                            width: height * (2 / 3),
-                                            color: Colors.white30,
-                                          )))))),
-                    ],
-                  ))
-            ]));
+                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                    height: 30,
+                    width: 70,
+                    color: Colors.white30,
+                  )),
+              Spacer(),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        color: Colors.white30,
+                      ))),
+            ],
+          ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SizedBox(
+                          height: itemPosterHeight,
+                          child: ListView.builder(
+                              itemCount: 3,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      child: Container(
+                                        height: height,
+                                        width: height * (2 / 3),
+                                        color: Colors.white30,
+                                      )))))),
+                ],
+              ))
+        ]));
   }
 
   /// Check if items are already initn and if not then we do load datas from API
@@ -166,16 +160,14 @@ class _HomeCategoryState extends State<HomeCategory>
     // If category is not present then we load datas from API endpoint
     if (!homeCategoryprovider.isCategoryPresent(categoryTitle)) {
       // get datas
-      itemsFuture = UserService.getLatestMedia(
-          parentId: widget.item.id,
-          fields: 'DateCreated, DateAdded, ImageTags');
+      itemsFuture = context
+          .read<ItemsRepository>()
+          .getLatestMedia(parentId: widget.item.id, fields: 'DateCreated, DateAdded, ImageTags');
 
       // Add category to BLoC
-      itemsFuture.then((value) =>
-          homeCategoryprovider.addCategory(MapEntry(categoryTitle, value)));
+      itemsFuture.then((value) => homeCategoryprovider.addCategory(MapEntry(categoryTitle, value)));
     } else {
-      itemsFuture =
-          Future.value(homeCategoryprovider.getCategoryItem(categoryTitle));
+      itemsFuture = Future.value(homeCategoryprovider.getCategoryItem(categoryTitle));
     }
   }
 

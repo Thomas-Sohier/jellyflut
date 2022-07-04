@@ -25,26 +25,36 @@ class ItemUpdateFailure implements Exception {}
 /// Exception thrown when item search has failed.
 class ItemSearchFailure implements Exception {}
 
+/// Exception thrown when views request has failed.
+class ViewRequestFailure implements Exception {}
+
 /// {@template items_api}
 /// A dart API client for the Jellyfin Item API
 /// {@endtemplate}
 class ItemsApi {
-  /// {@macro items_api}
+  /// {@macro items_api}S
   ItemsApi({required String serverUrl, required String userId, Dio? dioClient})
       : _dioClient = dioClient ?? Dio(),
-        _baseUrl = serverUrl,
+        _serverUrl = serverUrl,
         _userId = userId;
 
-  final String _baseUrl;
-  final String _userId;
   final Dio _dioClient;
+  String _userId;
+  String _serverUrl;
+
+  /// Update API properties
+  /// UseFul when endpoint Server or user change
+  void updateProperties({String? serverUrl, String? userId}) {
+    _serverUrl = serverUrl ?? _serverUrl;
+    _userId = userId ?? _userId;
+  }
 
   /// Get an item from jellyfin API from it's id
   ///
   /// Can throw [ItemNotFoundFailure]
   Future<Item> getItem(String itemId) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_baseUrl/Users/$_userId/Items/$itemId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$_userId/Items/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemNotFoundFailure();
@@ -102,7 +112,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/Items',
+        '$_serverUrl/Users/$_userId/Items',
         queryParameters: queryParams,
       );
 
@@ -120,7 +130,7 @@ class ItemsApi {
   ///
   /// Can throw [ItemNotFoundFailure]
   Future<int> deleteItem(String itemId) async {
-    final url = '$_baseUrl/Items/$itemId';
+    final url = '$_serverUrl/Items/$itemId';
 
     try {
       final response = await _dioClient.delete<void>(url);
@@ -169,7 +179,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/Items/Resume',
+        '$_serverUrl/Users/$_userId/Items/Resume',
         queryParameters: queryParams,
       );
 
@@ -183,19 +193,45 @@ class ItemsApi {
     }
   }
 
-  /// Get epsiodes from seasonId
+  /// Get epsiodes from series ID, can filter by season id if needed
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getEpsiode(String parentId, String seasonId) async {
+  Future<Category> getEpsiodes(String seriesId, {String? seasonId}) async {
     final queryParams = <String, dynamic>{};
-    queryParams['seasonId'] = seasonId;
+    if (seasonId != null) queryParams['seasonId'] = seasonId;
     queryParams['userId'] = _userId;
     queryParams['Fields'] =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_baseUrl/Shows/$parentId/Episodes',
+        '$_serverUrl/Shows/$seriesId/Episodes',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != 200) {
+        throw ItemRequestFailure();
+      }
+
+      return compute(Category.fromMap, response.data!);
+    } catch (_) {
+      throw ItemRequestFailure();
+    }
+  }
+
+  /// Get seasons from series ID
+  ///
+  /// Can throw [ItemRequestFailure]
+  Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) async {
+    final queryParams = <String, dynamic>{};
+    if (isSpecialSeason != null) queryParams['isSpecialSeason'] = isSpecialSeason;
+    queryParams['userId'] = _userId;
+    queryParams['fields'] =
+        'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
+
+    try {
+      final response = await _dioClient.get<Map<String, dynamic>>(
+        '$_serverUrl/Shows/$seriesId/Seasons',
         queryParameters: queryParams,
       );
 
@@ -246,7 +282,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/Items',
+        '$_serverUrl/Users/$_userId/Items',
         queryParameters: queryParams,
       );
 
@@ -267,7 +303,7 @@ class ItemsApi {
     try {
       final payload = json.encode(form, toEncodable: JsonSerializer.jellyfinSerializer);
       final response = await _dioClient.post<Map<String, dynamic>>(
-        '$_baseUrl/Items/$itemId',
+        '$_serverUrl/Items/$itemId',
         data: payload,
       );
 
@@ -287,7 +323,7 @@ class ItemsApi {
   Future<UserData> viewItem(String itemId) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/PlayedItems/$itemId',
+        '$_serverUrl/Users/$_userId/PlayedItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -306,7 +342,7 @@ class ItemsApi {
   Future<UserData> unviewItem(String itemId) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/PlayedItems/$itemId',
+        '$_serverUrl/Users/$_userId/PlayedItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -325,7 +361,7 @@ class ItemsApi {
   Future<UserData> favItem(String itemId) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/FavoriteItems/$itemId',
+        '$_serverUrl/Users/$_userId/FavoriteItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -344,7 +380,7 @@ class ItemsApi {
   Future<UserData> unfavItem(String itemId) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$_baseUrl/Users/$_userId/FavoriteItems/$itemId',
+        '$_serverUrl/Users/$_userId/FavoriteItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -354,6 +390,59 @@ class ItemsApi {
       return compute(UserData.fromMap, response.data!);
     } catch (_) {
       throw ItemFavoriteRequestFailure();
+    }
+  }
+
+  /// Get latest medias added from Jellyfin
+  /// Can add other parameter (already good defaults for most queries)
+  ///
+  /// can throw [ItemRequestFailure]
+  Future<List<Item>> getLatestMedia({
+    String? parentId,
+    int limit = 16,
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
+    String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
+    int imageTypeLimit = 1,
+  }) async {
+    var queryParams = <String, dynamic>{};
+    parentId != null ? queryParams['ParentId'] = parentId : null;
+    queryParams['Limit'] = limit;
+    queryParams['Fields'] = fields;
+    queryParams['ImageTypeLimit'] = imageTypeLimit;
+    queryParams['EnableImageTypes'] = enableImageTypes;
+
+    try {
+      final response = await _dioClient.get<List<dynamic>>(
+        '$_serverUrl/Users/$_userId/Items/Latest',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != 200) {
+        throw ItemRequestFailure();
+      }
+
+      List<Item> parseItems(List<dynamic> list) => list.map((item) => Item.fromMap(item)).toList();
+
+      return compute(parseItems, response.data!);
+    } catch (_) {
+      throw ItemRequestFailure();
+    }
+  }
+
+  /// Return a Category with all Views
+  ///
+  /// Can throw [ViewRequestFailure]
+  Future<Category> getLibraryViews() async {
+    try {
+      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$_userId/Views');
+
+      if (response.statusCode != 200) {
+        throw ViewRequestFailure();
+      }
+
+      return compute(Category.fromMap, response.data!);
+    } catch (_) {
+      throw ViewRequestFailure();
     }
   }
 }

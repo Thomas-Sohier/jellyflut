@@ -32,10 +32,7 @@ class _AuthParentState extends State<AuthParent> {
     authBloc.errors.listen((String error) => ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
-          content: Row(children: [
-            Expanded(child: Text(error, maxLines: 3)),
-            Icon(Icons.error, color: Colors.red)
-          ]),
+          content: Row(children: [Expanded(child: Text(error, maxLines: 3)), Icon(Icons.error, color: Colors.red)]),
           width: 600)));
     super.initState();
   }
@@ -68,10 +65,7 @@ class _AuthParentState extends State<AuthParent> {
                     tag: 'logo_text',
                     child: Text(
                       'Jellyfin',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline2
-                          ?.copyWith(color: Colors.white),
+                      style: Theme.of(context).textTheme.headline2?.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -97,6 +91,7 @@ class _AuthParentState extends State<AuthParent> {
                       return secondForm(context);
                     } else if (state is AuthenticationUserAdded ||
                         state is AuthenticationInProgress ||
+                        state is AuthenticationSuccessful ||
                         state is AuthenticationError) {
                       return secondForm(context);
                     }
@@ -128,9 +123,7 @@ class _AuthParentState extends State<AuthParent> {
               child: LoginForm())),
       Positioned.fill(
         top: 0,
-        child: Align(
-            alignment: Alignment.topCenter,
-            child: AuthBubbleIndicator(value: authBloc.server?.name ?? '')),
+        child: Align(alignment: Alignment.topCenter, child: AuthBubbleIndicator(value: authBloc.server?.name ?? '')),
       ),
     ]);
   }

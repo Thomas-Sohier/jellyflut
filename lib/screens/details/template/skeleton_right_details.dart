@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SkeletonRightDetails extends StatelessWidget {
@@ -9,8 +8,8 @@ class SkeletonRightDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: shimmerColor1,
-      highlightColor: shimmerColor2,
+      baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
+      highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -53,8 +52,7 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
@@ -136,8 +134,7 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.only(bottom: paddingBottom),
                 child: const ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: double.maxFinite,
@@ -159,8 +156,7 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
@@ -184,8 +180,7 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: paddingRight),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,

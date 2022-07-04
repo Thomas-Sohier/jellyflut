@@ -1,3 +1,4 @@
+import 'package:jellyflut/screens/details/template/components/items_collection/cubit/collection_cubit.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 import 'dart:ui';
@@ -7,50 +8,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
-class TabHeader extends SliverPersistentHeaderDelegate {
-  final Future<Category> seasons;
-  final TabController? tabController;
-  final EdgeInsets padding;
-  static const height = 80.0;
+const _height = 80.0;
 
-  TabHeader(
-      {Key? key,
-      required this.seasons,
-      this.tabController,
-      this.padding = const EdgeInsets.only(left: 12)});
+class TabHeader extends SliverPersistentHeaderDelegate {
+  final EdgeInsets padding;
+
+  const TabHeader({Key? key, this.padding = const EdgeInsets.only(left: 12)});
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    BlocProvider.of<DetailsBloc>(context).shrinkOffsetChanged(shrinkOffset);
-
-    return FutureBuilder<Category>(
-        future: seasons,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ClipRRect(
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: SizedBox(
-                    height: height,
-                    child: StreamBuilder<bool>(
-                        initialData: false,
-                        stream: BlocProvider.of<DetailsBloc>(context)
-                            .pinnedHeaderStream,
-                        builder: (_, headerSnapsot) => AnimatedPadding(
-                            padding: headerSnapsot.data!
-                                ? padding.copyWith(left: padding.left + 40)
-                                : padding,
-                            duration: Duration(milliseconds: 200),
-                            child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: getTabsHeader(
-                                    snapshot.data?.items ?? <Item>[])))),
-                  )),
-            );
-          }
-          return const SizedBox(height: height);
-        });
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    context.read<DetailsBloc>().shrinkOffsetChanged(shrinkOffset);
+    return BlocConsumer<CollectionCubit, CollectionState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        switch (state.status) {
+          case CollectionStatus.initial:
+          case CollectionStatus.loading:
+          case CollectionStatus.failure:
+          case CollectionStatus.success:
+            return HeaderBar(padding: padding);
+          default:
+            return const SizedBox();
+        }
+      },
+    );
   }
 
   Widget safeAreaBuilder(Widget child) {
@@ -60,40 +41,64 @@ class TabHeader extends SliverPersistentHeaderDelegate {
     return child;
   }
 
-  List<Widget> getTabsHeader(List<Item> items) {
-    final headers = <Widget>[];
-    final length = items.length;
-    items.sort((Item item1, Item item2) =>
-        item1.indexNumber?.compareTo(item2.indexNumber ?? length + 1) ??
-        length + 1);
-    for (var item in items) {
-      headers.add(tabHeader(item, items.indexOf(item)));
-    }
-    return headers;
-  }
+  @override
+  double get maxExtent => _height;
 
-  Widget tabHeader(Item item, int index) {
+  @override
+  double get minExtent => _height;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class HeaderBar extends StatelessWidget {
+  final EdgeInsets padding;
+
+  const HeaderBar({super.key, required this.padding});
+
+  @override
+  Widget build(BuildContext context) {
+    final seasons = context.read<CollectionCubit>().seasons;
+    return ClipRRect(
+        child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: SizedBox(
+          height: _height,
+          child: StreamBuilder<bool>(
+            initialData: false,
+            stream: context.read<DetailsBloc>().pinnedHeaderStream,
+            builder: (_, headerSnapsot) => AnimatedPadding(
+                padding: headerSnapsot.data! ? padding.copyWith(left: padding.left + 40) : padding,
+                duration: Duration(milliseconds: 200),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: seasons.length,
+                    itemBuilder: (context, index) {
+                      return HeaderButton(item: seasons[index]);
+                    })),
+          )),
+    ));
+  }
+}
+
+class HeaderButton extends StatelessWidget {
+  final Item item;
+  const HeaderButton({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: PaletteButton(
         item.name,
-        onPressed: () => tabController?.animateTo(index),
+        onPressed: () => context.read<CollectionCubit>().goToSeason(item),
         borderRadius: 4,
         maxHeight: 50,
         minWidth: 40,
         maxWidth: 150,
       ),
     );
-  }
-
-  @override
-  double get maxExtent => height;
-
-  @override
-  double get minExtent => height;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
   }
 }

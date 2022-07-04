@@ -18,13 +18,20 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
 import 'package:provider/provider.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:users_repository/users_repository.dart';
 
 class App extends StatelessWidget {
-  const App({super.key, required this.authenticated, required this.downloadsRepository, required this.itemsRepository});
+  const App(
+      {super.key,
+      required this.authenticated,
+      required this.downloadsRepository,
+      required this.itemsRepository,
+      required this.usersRepository});
 
   final bool authenticated;
   final DownloadsRepository downloadsRepository;
   final ItemsRepository itemsRepository;
+  final UsersRepository usersRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +51,15 @@ class App extends StatelessWidget {
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => AuthBloc(authenticated: authenticated),
+                create: (_) => AuthBloc(usersRepository, authenticated: authenticated),
                 lazy: false,
               ),
             ],
             child: MultiRepositoryProvider(
                 providers: [
                   RepositoryProvider.value(value: downloadsRepository),
-                  RepositoryProvider.value(value: itemsRepository)
+                  RepositoryProvider.value(value: itemsRepository),
+                  RepositoryProvider.value(value: usersRepository)
                 ],
                 child: EasyLocalization(
                     supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],

@@ -6,8 +6,6 @@ import 'package:jellyflut/screens/details/template/components/items_collection/l
 import 'package:jellyflut/screens/details/template/components/items_collection/tabs_items.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'package:rxdart/rxdart.dart';
-
 // TODO rework this to return Sliver
 // Sliver will have better performance while scrolling
 // Espacially on details page where some seasons can have a huge number
@@ -17,9 +15,8 @@ import 'package:rxdart/rxdart.dart';
 class Collection extends StatefulWidget {
   final Item item;
   final List<Item> seasons;
-  final BehaviorSubject<int>? indexStream;
 
-  const Collection(this.item, {this.indexStream, this.seasons = const <Item>[]});
+  const Collection(this.item, {this.seasons = const <Item>[]});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,9 +37,6 @@ class _CollectionState extends State<Collection> {
     switch (widget.item.type) {
       case ItemType.MUSICALBUM:
         musicFuture = context.read<ItemsRepository>().getCategory(parentId: widget.item.id);
-        break;
-      case ItemType.SEASON:
-        episodesFuture = context.read<ItemsRepository>().getEpsiode(widget.item.seriesId!, widget.item.id);
         break;
       case ItemType.MUSICARTIST:
         musicAlbumFuture = context.read<ItemsRepository>().getCategory(
@@ -75,7 +69,7 @@ class _CollectionState extends State<Collection> {
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
       case ItemType.SERIES:
-        return TabsItems(items: widget.seasons, indexStream: widget.indexStream);
+        return TabsItems();
       case ItemType.MUSICARTIST:
         return ListItems.fromFuture(itemsFuture: musicAlbumFuture, showSorting: false, listType: ListType.POSTER);
       case ItemType.PERSON:

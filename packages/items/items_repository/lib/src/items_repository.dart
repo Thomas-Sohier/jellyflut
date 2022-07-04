@@ -10,6 +10,11 @@ class ItemsRepository {
 
   final ItemsApi _itemsApi;
 
+  /// Update API properties
+  /// UseFul when endpoint Server or user change
+  void updateProperties({String? serverUrl, String? userId}) =>
+      _itemsApi.updateProperties(serverUrl: serverUrl, userId: userId);
+
   /// Get an item from jellyfin API with an ID
   /// Can add other parameter (already good defaults for most queries)
   ///
@@ -100,10 +105,17 @@ class ItemsRepository {
         collapseBoxSetItems: collapseBoxSetItems,
       );
 
-  /// Get epsiodes from seasonId
+  /// Get epsiodes from series ID, can filter by season id if needed
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getEpsiode(String parentId, String seasonId) => _itemsApi.getEpsiode(parentId, seasonId);
+  Future<Category> getEpsiodes(String seriesId, {String? seasonId}) =>
+      _itemsApi.getEpsiodes(seriesId, seasonId: seasonId);
+
+  /// Get seasons from series ID
+  ///
+  /// Can throw [ItemRequestFailure]
+  Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) =>
+      _itemsApi.getSeasons(seriesId, isSpecialSeason: isSpecialSeason);
 
   /// Search an item based on search terms
   /// Can add other parameter (already good defaults for most queries)
@@ -173,4 +185,28 @@ class ItemsRepository {
   ///
   /// Can throw [ItemFavoriteRequestFailure]
   Future<UserData> unfavItem(String itemId) => _itemsApi.unfavItem(itemId);
+
+  /// Get latest medias added from Jellyfin
+  /// Can add other parameter (already good defaults for most queries)
+  ///
+  /// can throw [ItemRequestFailure]
+  Future<List<Item>> getLatestMedia({
+    String? parentId,
+    int limit = 16,
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
+    String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
+    int imageTypeLimit = 1,
+  }) =>
+      _itemsApi.getLatestMedia(
+        parentId: parentId,
+        limit: limit,
+        fields: fields,
+        enableImageTypes: enableImageTypes,
+        imageTypeLimit: imageTypeLimit,
+      );
+
+  /// Return a Category with all Views
+  ///
+  /// Can throw [ViewRequestFailure]
+  Future<Category> getLibraryViews() => _itemsApi.getLibraryViews();
 }

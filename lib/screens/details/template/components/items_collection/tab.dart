@@ -5,33 +5,29 @@ import 'package:jellyflut/globals.dart' as globals;
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Tab extends StatefulWidget {
-  final Future<Category> itemsFuture;
+  final List<Item> items;
   final double? itemPosterHeight;
 
-  Tab({super.key, required this.itemsFuture, this.itemPosterHeight});
+  const Tab({super.key, required this.items, this.itemPosterHeight});
 
   @override
   State<Tab> createState() => _TabState();
 }
 
 class _TabState extends State<Tab> with AutomaticKeepAliveClientMixin {
-  late double itemPosterHeight;
+  double get itemPosterHeight => widget.itemPosterHeight ?? globals.itemPosterHeight;
+  List<Item> get items => widget.items;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    itemPosterHeight = widget.itemPosterHeight ?? globals.itemPosterHeight;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListItems.fromFuture(
-        itemsFuture: widget.itemsFuture,
+    return ListItems.fromList(
+        category: Category(items: items, totalRecordCount: items.length, startIndex: 0),
         listType: ListType.LIST,
-        verticalListPosterHeight: 150,
+        verticalListPosterHeight: itemPosterHeight,
         physics: NeverScrollableScrollPhysics(),
         showIfEmpty: false,
         showTitle: false,
