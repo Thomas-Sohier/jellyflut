@@ -1,49 +1,23 @@
 part of '../action_button.dart';
 
-class ManageButton extends StatefulWidget {
-  final Item item;
-  final double maxWidth;
-
-  const ManageButton({super.key, required this.item, this.maxWidth = 150});
+class ManageButton extends StatelessWidget {
+  const ManageButton({super.key});
 
   @override
-  State<ManageButton> createState() => _ManageButtonState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (context) => FormBloc<Item>(context.read<ItemsRepository>()), child: const ManageButtonView());
+  }
 }
 
-class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
-  late final DetailsBloc detailsBloc;
-  late final FormBloc<Item> formBloc;
-
-  @override
-  bool get useColorScheme => true;
-
-  @override
-  void initState() {
-    formBloc = FormBloc<Item>(context.read<ItemsRepository>());
-    detailsBloc = BlocProvider.of<DetailsBloc>(context);
-    final i = widget.item.copyWithItem(item: widget.item);
-    formBloc.add(CurrentForm<Item>(formGroup: FormGroup({}), value: i));
-    formBloc.stream.listen((state) {
-      if (state is FormSubmittedState) {
-        closeDialogAndResetForm();
-      } else if (state is RefreshedState) {}
-    });
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    formBloc.close();
-    super.dispose();
-  }
+class ManageButtonView extends StatelessWidget {
+  const ManageButtonView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return PaletteButton('manage'.tr(),
         onPressed: () => dialog(context),
         minWidth: 40,
-        maxWidth: widget.maxWidth,
         borderRadius: 4,
         icon: Icon(Icons.settings, color: Colors.black87));
   }
@@ -52,44 +26,54 @@ class _ManageButtonState extends State<ManageButton> with AppThemeGrabber {
     showDialog(
       barrierDismissible: false,
       barrierLabel: 'Dialog',
-      builder: (c) => dialogParent(c),
+      builder: (c) => dialogParent(c, context),
       context: context,
     );
   }
 
-  Widget dialogParent(BuildContext context) {
+  Widget dialogParent(BuildContext currentContext, BuildContext parentContext) {
     return Theme(
-      data: getThemeData,
+      data: currentContext.read<ThemeProvider>().getThemeData,
       child: Material(
         color: Colors.transparent,
-        child: Center(child: dialogBuilder(context)),
+        child: Center(child: dialogBuilder(parentContext)),
       ),
     );
   }
 
-  Widget dialogBody(BuildContext context, [bool expanded = false]) {
-    return DialogStructure(
-        formBloc: formBloc, expanded: expanded, onClose: closeDialogAndResetForm, onSubmit: submitFormAndUpdateView);
+  Widget dialogBuilder(BuildContext parentContext) {
+    return BlocBuilder<DetailsBloc, DetailsState>(
+        bloc: parentContext.read<DetailsBloc>(),
+        buildWhen: (previous, current) => previous.screenLayout != current.screenLayout,
+        builder: (context, state) {
+          if (state.screenLayout == ScreenLayout.desktop) {
+            return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
+                  child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody(context)),
+                ));
+          }
+          return dialogBody(parentContext, true);
+        });
   }
 
-  Widget dialogBuilder(BuildContext context) {
-    return LayoutBuilder(builder: (_, constraints) {
-      if (constraints.maxWidth > 960) {
-        return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
-              child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody(context)),
-            ));
-      }
-      return dialogBody(context, true);
-    });
+  Widget dialogBody(BuildContext parentContext, [bool expanded = false]) {
+    return BlocConsumer<FormBloc<Item>, FormState>(
+      bloc: parentContext.read<FormBloc<Item>>(),
+      listener: (context, state) => {},
+      builder: (context, state) => DialogStructure(
+          formBloc: parentContext.read<FormBloc<Item>>(),
+          expanded: expanded,
+          onClose: closeDialogAndResetForm,
+          onSubmit: () => submitFormAndUpdateView(parentContext)),
+    );
   }
 
-  void submitFormAndUpdateView() {
-    formBloc.add(FormSubmitted());
-    detailsBloc.add(DetailsUpdateItem(item: formBloc.value));
-    formBloc.add(RefreshForm());
+  void submitFormAndUpdateView(BuildContext parentContext) {
+    parentContext.read<FormBloc<Item>>().add(FormSubmitted());
+    parentContext.read<DetailsBloc>().add(DetailsItemUpdate(item: parentContext.read<FormBloc<Item>>().value));
+    parentContext.read<FormBloc<Item>>().add(RefreshForm());
   }
 
   void closeDialogAndResetForm() {

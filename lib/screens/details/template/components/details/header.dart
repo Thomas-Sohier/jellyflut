@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/screens/details/template/components/details/poster.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/logo.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/details/poster.dart';
 
 class Header extends StatelessWidget {
-  final Item item;
-  final BoxConstraints constraints;
-
-  const Header({super.key, required this.item, required this.constraints});
+  const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (constraints.maxWidth < 960) {
-      return Center(
-        child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: itemPosterHeight),
-            child: Poster(item: item)),
-      );
-    } else {
-      if (item.hasLogo()) return Logo(item: item);
-    }
-    return const SizedBox();
+    return BlocBuilder<DetailsBloc, DetailsState>(
+        buildWhen: ((previous, current) => previous.screenLayout != current.screenLayout),
+        builder: ((context, state) {
+          if (state.screenLayout == ScreenLayout.mobile) {
+            return Center(
+              child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: itemPosterHeight), child: Poster(item: state.item)),
+            );
+          } else {
+            if (state.item.hasLogo()) return Logo(item: state.item);
+          }
+          return const SizedBox();
+        }));
   }
 }

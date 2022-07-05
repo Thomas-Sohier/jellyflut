@@ -30,15 +30,12 @@ class DetailsButtonRowBuilder extends StatelessWidget {
           children: [
             if (item.isPlayableOrCanHavePlayableChilren() && buttonExpanded)
               PlayButton(item: item, maxWidth: double.infinity),
-            if (item.isPlayableOrCanHavePlayableChilren() && !buttonExpanded)
-              PlayButton(item: item),
-            if (item.hasTrailer())
-              TrailerButton(item: item, maxWidth: maxWidth),
+            if (item.isPlayableOrCanHavePlayableChilren() && !buttonExpanded) PlayButton(item: item),
+            if (item.hasTrailer()) TrailerButton(item: item, maxWidth: maxWidth),
             if (item.isViewable()) ViewedButton(item: item, maxWidth: maxWidth),
-            if (item.isDownloable())
-              DownloadButton(item: item, maxWidth: maxWidth),
+            if (item.isDownloable()) DownloadButton(item: item, maxWidth: maxWidth),
             LikeButton(item: item, maxWidth: maxWidth),
-            ManageButton(item: item, maxWidth: maxWidth)
+            const ManageButton()
           ],
         );
       },

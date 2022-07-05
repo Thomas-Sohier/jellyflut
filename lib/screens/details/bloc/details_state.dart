@@ -1,13 +1,37 @@
 part of 'details_bloc.dart';
 
-@immutable
-abstract class DetailsState {
-  const DetailsState({required this.detailsInfosFuture});
-
-  final DetailsInfosFuture detailsInfosFuture;
+enum ScreenLayout {
+  mobile,
+  desktop;
 }
 
-class DetailsLoadedState extends DetailsState {
-  DetailsLoadedState(DetailsInfosFuture detailsInfosFuture)
-      : super(detailsInfosFuture: detailsInfosFuture);
+enum DetailsStatus { initial, loading, success, failure }
+
+@immutable
+class DetailsState extends Equatable {
+  final Item item;
+  final String? heroTag;
+  final ThemeData theme;
+  final ScreenLayout screenLayout;
+  final DetailsStatus detailsStatus;
+
+  const DetailsState(
+      {required this.theme,
+      required this.item,
+      required this.screenLayout,
+      this.heroTag,
+      this.detailsStatus = DetailsStatus.initial});
+
+  DetailsState copyWith(
+      {ThemeData? theme, Item? item, ScreenLayout? screenLayout, String? heroTag, DetailsStatus? detailsStatus}) {
+    return DetailsState(
+        item: item ?? this.item,
+        theme: theme ?? this.theme,
+        heroTag: heroTag ?? this.heroTag,
+        screenLayout: screenLayout ?? this.screenLayout,
+        detailsStatus: detailsStatus ?? this.detailsStatus);
+  }
+
+  @override
+  List<Object?> get props => [theme, item, heroTag, detailsStatus, screenLayout];
 }

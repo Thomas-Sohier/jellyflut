@@ -2,70 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
-import 'package:jellyflut/screens/details/template/components/photo_item.dart';
-import 'package:jellyflut/screens/details/template/large_details.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-class Details extends StatefulWidget {
+import 'template/components/photo_item.dart';
+import 'template/large_details.dart';
+
+class Details extends StatelessWidget {
   final Item item;
   final String? heroTag;
 
   const Details({required this.item, required this.heroTag});
 
   @override
-  State<StatefulWidget> createState() {
-    return _DetailsState();
+  Widget build(BuildContext context) {
+    return BlocProvider<DetailsBloc>(
+        create: (context) => DetailsBloc(
+            item: item,
+            heroTag: heroTag,
+            itemsRepository: context.read<ItemsRepository>(),
+            theme: context.read<ThemeProvider>().getThemeData)
+          ..add(DetailsInitRequested(item: item)),
+        child: const DetailsView());
   }
 }
 
-class _DetailsState extends State<Details> {
-  late final DetailsBloc detailsBloc;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    detailsBloc = DetailsBloc(getDetailsInfos(), ScreenLayout.desktop);
-    detailsBloc.getItemBackgroundColor(widget.item);
-  }
-
-  @override
-  void dispose() {
-    detailsBloc.close();
-    super.dispose();
-  }
+class DetailsView extends StatelessWidget {
+  const DetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DetailsBloc>(
-        create: (context) => detailsBloc,
-        child: ValueListenableBuilder<ThemeData>(
-            valueListenable: detailsBloc.theme,
-            builder: (context, value, child) {
-              return Theme(
-                  data: value,
-                  child: AnnotatedRegion<SystemUiOverlayStyle>(
-                      value: SystemUiOverlayStyle(
-                          statusBarColor: Colors.transparent,
-                          statusBarIconBrightness: value.colorScheme.onBackground.computeLuminance() > 0.5
-                              ? Brightness.light
-                              : Brightness.dark),
-                      child: child ?? const SizedBox()));
-            },
-            child: Scaffold(
-                body: widget.item.type != ItemType.PHOTO
-                    ? LargeDetails(item: widget.item, heroTag: widget.heroTag)
-                    : PhotoItem(item: widget.item, heroTag: widget.heroTag))));
-  }
-
-  DetailsInfosFuture getDetailsInfos() {
-    final item = offlineMode ? Future.value(widget.item) : context.read<ItemsRepository>().getItem(widget.item.id);
-
-    return DetailsInfosFuture(
-      item: item,
-      theme: ThemeProvider().getThemeData,
-    );
+    return BlocBuilder<DetailsBloc, DetailsState>(
+        buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
+        builder: (_, state) => Theme(
+            data: state.theme,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+                value: SystemUiOverlayStyle(
+                    statusBarColor: Colors.transparent,
+                    statusBarIconBrightness: state.theme.colorScheme.onBackground.computeLuminance() > 0.5
+                        ? Brightness.light
+                        : Brightness.dark),
+                child: Scaffold(
+                    body: context.read<DetailsBloc>().state.item.type != ItemType.PHOTO
+                        ? const LargeDetails()
+                        : const PhotoItem()))));
   }
 }
