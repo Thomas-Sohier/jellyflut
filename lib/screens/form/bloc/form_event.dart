@@ -30,16 +30,14 @@ class PasswordChanged extends FormEvent {
 
 class PasswordUnfocused<T> extends FormEvent<T> {}
 
-class CurrentForm<T extends Object> extends FormEvent<T> {
+class UpdateForm<T extends Object> extends FormEvent<T> {
   final FormGroup formGroup;
-  final T value;
-
-  const CurrentForm({required this.formGroup, required this.value});
+  const UpdateForm({required this.formGroup});
 
   @override
-  List<Object> get props => [formGroup, value];
+  List<Object> get props => [formGroup];
 }
 
 class FormSubmitted<T> extends FormEvent<T> {}
 
-class RefreshForm<T> extends FormEvent<T> {}
+class ResetForm<T> extends FormEvent<T> {}

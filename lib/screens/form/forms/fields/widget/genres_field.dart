@@ -1,31 +1,12 @@
 part of '../fields.dart';
 
-class GenresField extends StatefulWidget {
-  final Item item;
-  final FormGroup form;
-  final double ITEM_HEIGHT = 40;
+class GenresField extends StatelessWidget {
+  static const double ITEM_HEIGHT = 40;
 
-  const GenresField({super.key, required this.form, required this.item});
-
-  @override
-  State<GenresField> createState() => _GenresFieldState();
-}
-
-class _GenresFieldState extends State<GenresField> {
-  late final Item item;
-  late final FormGroup form;
-  late final double ITEM_HEIGHT;
-
-  @override
-  void initState() {
-    item = widget.item;
-    form = widget.form;
-    ITEM_HEIGHT = widget.ITEM_HEIGHT;
-    super.initState();
-  }
-
+  const GenresField({super.key});
   @override
   Widget build(BuildContext context) {
+    final item = context.watch<FormBloc<Item>>().state.value;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,41 +21,33 @@ class _GenresFieldState extends State<GenresField> {
             scrollDirection: Axis.vertical,
             itemCount: item.genreItems.length,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) =>
-                genreItem(item.genreItems.elementAt(index), index, context),
+            itemBuilder: (context, index) => genreItem(item.genreItems.elementAt(index), index, context),
           ),
         ),
       ],
     );
   }
 
-  Widget genreItem(GenreItem? genreItem, int index, BuildContext context) {
+  Widget genreItem(NamedGuidPair? genreItem, int index, BuildContext context) {
     if (genreItem == null) return SizedBox();
     final headlineColor = Theme.of(context).textTheme.headline6!.color;
     return SizedBox(
       height: ITEM_HEIGHT,
       child: Padding(
         padding: const EdgeInsets.only(top: 4, bottom: 4),
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(genreItem.name!,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(color: headlineColor!.withAlpha(210))),
-              ),
-              Spacer(),
-              IconButton(
-                  onPressed: () => setState(() {
-                        item.genreItems.removeAt(index);
-                      }),
-                  hoverColor: Colors.red.withOpacity(0.1),
-                  icon: Icon(Icons.delete_outline, color: Colors.red))
-            ]),
+        child:
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+          Expanded(
+            child: Text(genreItem.name!,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: headlineColor!.withAlpha(210))),
+          ),
+          Spacer(),
+          IconButton(
+              onPressed: () => context.read<FormBloc<Item>>().state.value.genreItems.removeAt(index),
+              hoverColor: Colors.red.withOpacity(0.1),
+              icon: Icon(Icons.delete_outline, color: Colors.red))
+        ]),
       ),
     );
   }

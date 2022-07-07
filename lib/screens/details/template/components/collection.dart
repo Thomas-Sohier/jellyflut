@@ -35,12 +35,12 @@ class _CollectionState extends State<Collection> {
   void initState() {
     super.initState();
     switch (widget.item.type) {
-      case ItemType.MUSICALBUM:
+      case ItemType.MusicAlbum:
         musicFuture = context.read<ItemsRepository>().getCategory(parentId: widget.item.id);
         break;
-      case ItemType.MUSICARTIST:
+      case ItemType.MusicArtist:
         musicAlbumFuture = context.read<ItemsRepository>().getCategory(
-            includeItemTypes: ItemType.MUSICALBUM.value,
+            includeItemTypes: ItemType.MusicAlbum.name,
             sortBy: 'ProductionYear,Sortname',
             albumArtistIds: widget.item.id,
             fields:
@@ -54,25 +54,25 @@ class _CollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     switch (widget.item.type) {
-      case ItemType.MUSICALBUM:
+      case ItemType.MusicAlbum:
         return ListItems.fromFuture(
             itemsFuture: musicFuture,
             showSorting: false,
             verticalListPosterHeight: 150,
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
-      case ItemType.SEASON:
+      case ItemType.Season:
         return ListItems.fromFuture(
             itemsFuture: episodesFuture,
             showSorting: false,
             verticalListPosterHeight: 150,
             listType: ListType.LIST,
             physics: NeverScrollableScrollPhysics());
-      case ItemType.SERIES:
+      case ItemType.Series:
         return const Tab();
-      case ItemType.MUSICARTIST:
+      case ItemType.MusicArtist:
         return ListItems.fromFuture(itemsFuture: musicAlbumFuture, showSorting: false, listType: ListType.POSTER);
-      case ItemType.PERSON:
+      case ItemType.Person:
         return ListPersonItem(item: widget.item);
       default:
         return const SizedBox();

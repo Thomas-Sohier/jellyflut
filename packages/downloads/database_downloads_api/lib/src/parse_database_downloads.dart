@@ -11,7 +11,7 @@ Download parseDatabaseDownload(db.Download databaseDownload) {
       id: databaseDownload.id,
       name: databaseDownload.name,
       path: databaseDownload.path,
-      item: Item.fromMap(databaseDownload.item ?? {}),
+      item: Item.fromJson(databaseDownload.item ?? {}),
       backdrop: databaseDownload.backdrop,
       primary: databaseDownload.primary);
 }

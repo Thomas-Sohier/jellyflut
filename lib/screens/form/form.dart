@@ -1,69 +1,43 @@
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart' hide FormState;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/screens/form/bloc/form_bloc.dart' as form;
+import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'forms/movie_form.dart';
 import 'forms/default_form.dart';
 
-class FormBuilder<T extends Object> extends StatefulWidget {
-  final form.FormBloc<T> formBloc;
-
-  FormBuilder({super.key, required this.formBloc});
-
-  @override
-  FormBuilderState<T> createState() => FormBuilderState<T>();
-}
-
-class FormBuilderState<T extends Object> extends State<FormBuilder> {
-  late final form.FormBloc<T> formBloc;
-
-  @override
-  void initState() {
-    formBloc = widget.formBloc as form.FormBloc<T>;
-    super.initState();
-  }
+class FormBuilder<T extends Object> extends StatelessWidget {
+  const FormBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<form.FormBloc<T>>.value(
-        value: formBloc,
-        child: BlocListener<form.FormBloc<T>, form.FormState<T>>(
-            bloc: formBloc,
-            listener: (context, state) {
-              if (state is form.FormSubmittedState<T>) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(SnackBar(
-                      content: Row(children: [
-                        Flexible(child: Text(state.message)),
-                        Icon(Icons.check, color: Colors.green)
-                      ]),
-                      width: 600));
-              } else if (state is form.FormErrorState<T>) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(SnackBar(
-                      content: Row(children: [
-                        Flexible(child: Text(state.error)),
-                        Icon(Icons.error, color: Colors.red)
-                      ]),
-                      width: 600));
-              }
-            },
-            child: formSelector(formBloc.value)));
+    return BlocListener<FormBloc<T>, FormState<T>>(
+        listener: (context, state) {
+          switch (state.formStatus) {
+            case FormStatus.submitted:
+              SnackbarUtil.message('form_submit_success'.tr(), Icons.check, Colors.green, context: context);
+              break;
+            case FormStatus.failure:
+              SnackbarUtil.message('form_submit_error'.tr(), Icons.error, Colors.red, context: context);
+              break;
+            default:
+          }
+        },
+        child: formSelector(context.read<FormBloc<T>>().state.value));
   }
 
   Widget formSelector(T value) {
     if (value is Item) {
       switch (value.type) {
-        case ItemType.MOVIE:
-          return MovieForm(item: value);
+        case ItemType.Movie:
+          return const MovieForm();
         default:
-          return DefaultForm(item: value);
+          return const DefaultForm();
       }
     }
-    return SizedBox();
+    return const SizedBox();
   }
 }

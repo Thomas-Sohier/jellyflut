@@ -22,12 +22,10 @@ class StreamingService {
     final queryParam = <String, String>{};
     final streamingProvider = StreamingProvider();
 
-    if (streamingProvider.playBackInfos == null ||
-        streamingProvider.playBackInfos!.playSessionId == null) return 200;
+    if (streamingProvider.playBackInfos == null || streamingProvider.playBackInfos!.playSessionId == null) return 200;
 
     queryParam['deviceId'] = info.id;
-    queryParam['PlaySessionId'] =
-        streamingProvider.playBackInfos!.playSessionId!;
+    queryParam['PlaySessionId'] = streamingProvider.playBackInfos!.playSessionId!;
 
     final url = '${server.url}/Videos/ActiveEncodings';
 
@@ -49,10 +47,7 @@ class StreamingService {
     final json = convert.json.encode(playbackProgressJSON);
 
     dio.options.contentType = 'application/json';
-    dio
-        .post(url, data: json)
-        .then((_) => print('progress ok'))
-        .catchError((onError) => print(onError));
+    dio.post(url, data: json).then((_) => print('progress ok')).catchError((onError) => print(onError));
   }
 
   static Future<String> contructAudioURL(
@@ -66,10 +61,7 @@ class StreamingService {
       bool enableRedirection = true,
       bool enableRemoteMedia = false}) async {
     // Get users settings
-    final settings = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
+    final settings = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
 
     maxStreamingBitrate ??= settings.maxVideoBitrate;
     final audioCodecDB = settings.preferredTranscodeAudioCodec;
@@ -81,8 +73,7 @@ class StreamingService {
     queryParams['Container'] = container;
     queryParams['TranscodingContainer'] = transcodingContainer;
     queryParams['TranscodingProtocol'] = transcodingProtocol;
-    queryParams['AudioCodec'] =
-        audioCodecDB != 'auto' ? audioCodecDB : audioCodec;
+    queryParams['AudioCodec'] = audioCodecDB != 'auto' ? audioCodecDB : audioCodec;
     queryParams['PlaySessionId'] = Uuid().v1();
     queryParams['StartTimeTicks'] = startTimeTicks.toString();
     queryParams['EnableRedirection'] = enableRedirection.toString();
@@ -94,16 +85,9 @@ class StreamingService {
     return UriUtils.contructUrl(url, queryParams);
   }
 
-  static Future<PlayBackInfos> playbackInfos(
-      DeviceProfileParent? profile, String itemId,
-      {startTimeTick = 0,
-      int? subtitleStreamIndex,
-      int? audioStreamIndex,
-      int? maxStreamingBitrate}) async {
-    final settings = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
+  static Future<PlayBackInfos> playbackInfos(DeviceProfileParent? profile, String itemId,
+      {startTimeTick = 0, int? subtitleStreamIndex, int? audioStreamIndex, int? maxStreamingBitrate}) async {
+    final settings = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
     final streamingProvider = StreamingProvider();
 
     // Query params are deprecated but still used for older version of jellyfin server
@@ -119,21 +103,17 @@ class StreamingService {
     if (subtitleStreamIndex != null) {
       queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     } else if (streamingProvider.selectedSubtitleTrack != null) {
-      queryParams['SubtitleStreamIndex'] =
-          streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex;
+      queryParams['SubtitleStreamIndex'] = streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex;
     }
 
     if (audioStreamIndex != null) {
       queryParams['AudioStreamIndex'] = audioStreamIndex;
     } else if (streamingProvider.selectedAudioTrack != null) {
-      queryParams['AudioStreamIndex'] =
-          streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
+      queryParams['AudioStreamIndex'] = streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex;
     }
 
-    final finalAudioStreamIndex = audioStreamIndex ??
-        streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
-    final finalSubtitleStreamIndex = subtitleStreamIndex ??
-        streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
+    final finalAudioStreamIndex = audioStreamIndex ?? streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
+    final finalSubtitleStreamIndex = subtitleStreamIndex ?? streamingProvider.selectedAudioTrack?.jellyfinSubtitleIndex;
 
     profile ??= DeviceProfileParent();
     profile.userId ??= userJellyfin!.id;
@@ -152,8 +132,7 @@ class StreamingService {
     final url = '${server.url}/Items/$itemId/PlaybackInfo';
 
     try {
-      final response = await dio.post(url,
-          queryParameters: queryParams, data: profile.toJson());
+      final response = await dio.post(url, queryParameters: queryParams, data: profile.toJson());
       final playbackInfos = PlayBackInfos.fromMap(response.data);
 
       // If there is an error response from API then we throw an error
@@ -169,14 +148,9 @@ class StreamingService {
   }
 
   static Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-      {int startTick = 0,
-      int? audioStreamIndex,
-      int? subtitleStreamIndex}) async {
+      {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) async {
     final streamModel = StreamingProvider();
-    final settings = await AppDatabase()
-        .getDatabase
-        .settingsDao
-        .getSettingsById(userApp!.settingsId);
+    final settings = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParam = <String, String?>{};
     queryParam['StartTimeTicks'] = startTick.toString();
@@ -185,21 +159,18 @@ class StreamingService {
     queryParam['DeviceId'] = info.id;
     queryParam['VideoBitrate'] = settings.maxVideoBitrate.toString();
     queryParam['AudioBitrate'] = settings.maxAudioBitrate.toString();
-    if (playBackInfos.mediaSources.isNotEmpty &&
-        playBackInfos.mediaSources.first.eTag != null) {
+    if (playBackInfos.mediaSources.isNotEmpty && playBackInfos.mediaSources.first.eTag != null) {
       queryParam['Tag'] = playBackInfos.mediaSources.first.eTag!;
     }
     if (subtitleStreamIndex != null) {
       queryParam['SubtitleStreamIndex'] = subtitleStreamIndex.toString();
     } else if (streamModel.selectedSubtitleTrack != null) {
-      queryParam['SubtitleStreamIndex'] =
-          streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex.toString();
+      queryParam['SubtitleStreamIndex'] = streamModel.selectedSubtitleTrack!.jellyfinSubtitleIndex.toString();
     }
     if (audioStreamIndex != null) {
       queryParam['AudioStreamIndex'] = audioStreamIndex.toString();
     } else if (streamModel.selectedAudioTrack != null) {
-      queryParam['AudioStreamIndex'] =
-          streamModel.selectedAudioTrack!.jellyfinSubtitleIndex.toString();
+      queryParam['AudioStreamIndex'] = streamModel.selectedAudioTrack!.jellyfinSubtitleIndex.toString();
     }
     queryParam['api_key'] = apiKey!;
 
@@ -207,7 +178,7 @@ class StreamingService {
 
     late final path;
     switch (item.type) {
-      case ItemType.TVCHANNEL:
+      case ItemType.TvChannel:
         final playbackPath = Uri.parse(playBackInfos.mediaSources[0].path!);
         path = playbackPath.path;
         break;
@@ -225,18 +196,13 @@ class StreamingService {
       final playerProfile = profiles.webOs;
       return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     } else if (Platform.isAndroid) {
-      final streamingSoftwareDB = await AppDatabase()
-          .getDatabase
-          .settingsDao
-          .getSettingsById(userApp!.settingsId);
-      final streamingSoftware =
-          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+      final streamingSoftwareDB = await AppDatabase().getDatabase.settingsDao.getSettingsById(userApp!.settingsId);
+      final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:
           final playerProfile = profiles.vlcPhone;
-          return DeviceProfileParent(
-              deviceProfile: playerProfile.deviceProfile);
+          return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
@@ -250,8 +216,7 @@ class StreamingService {
     return null;
   }
 
-  static Future<String> getNewAudioSource(int audioIndex,
-      {Duration? playbackTick}) async {
+  static Future<String> getNewAudioSource(int audioIndex, {Duration? playbackTick}) async {
     var streamModel = StreamingProvider();
     var item = streamModel.item;
     var backInfos = streamModel.playBackInfos;
@@ -264,12 +229,10 @@ class StreamingService {
       queryParams['AudioStreamIndex'] = audioIndex.toString();
       return UriUtils.contructUrl(url, queryParams);
     }
-    return createURL(item!, backInfos,
-        startTick: startTick, audioStreamIndex: audioIndex);
+    return createURL(item!, backInfos, startTick: startTick, audioStreamIndex: audioIndex);
   }
 
-  static Future<String> getNewSubtitleSource(int subtitleIndex,
-      {Duration? playbackTick}) async {
+  static Future<String> getNewSubtitleSource(int subtitleIndex, {Duration? playbackTick}) async {
     var streamModel = StreamingProvider();
     var item = streamModel.item;
     var backInfos = streamModel.playBackInfos;
@@ -282,16 +245,14 @@ class StreamingService {
       queryParams['SubtitleStreamIndex'] = subtitleIndex.toString();
       UriUtils.contructUrl(url, queryParams);
     }
-    return createURL(item!, backInfos,
-        startTick: startTick, subtitleStreamIndex: subtitleIndex);
+    return createURL(item!, backInfos, startTick: startTick, subtitleStreamIndex: subtitleIndex);
   }
 
   static String getSubtitleURL(String itemId, String codec, int subtitleId) {
     var mediaSourceId = _generateItemIdWithHyphen(itemId);
 
     final parsedCodec = codec.substring(codec.indexOf('.') + 1);
-    final path =
-        '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec';
+    final path = '/Videos/$mediaSourceId/$itemId/Subtitles/$subtitleId/0/Stream.$parsedCodec';
 
     final queryParams = <String, String>{};
     queryParams['api_key'] = apiKey!;

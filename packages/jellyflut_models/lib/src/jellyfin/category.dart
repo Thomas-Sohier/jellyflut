@@ -22,13 +22,13 @@ class Category {
   int startIndex;
 
   factory Category.fromMap(Map<String, dynamic> json) => Category(
-        items: List<Item>.from(json['Items'].map((x) => Item.fromMap(x))),
+        items: List<Item>.from(json['Items'].map((x) => Item.fromJson(x))),
         totalRecordCount: json['TotalRecordCount'],
         startIndex: json['StartIndex'],
       );
 
   Map<String, dynamic> toMap() => {
-        'Items': List<dynamic>.from(items.map((x) => x.toMap())),
+        'Items': List<dynamic>.from(items.map((x) => x.toJson())),
         'TotalRecordCount': totalRecordCount,
         'StartIndex': startIndex,
       };

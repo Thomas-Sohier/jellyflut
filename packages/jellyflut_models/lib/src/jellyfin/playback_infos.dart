@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import '../enum/enum.dart';
-import 'jellyfin.dart';
+import '../enum/index.dart';
+import 'index.dart';
 
-PlayBackInfos playBackInfosFromMap(String str) =>
-    PlayBackInfos.fromMap(json.decode(str));
+PlayBackInfos playBackInfosFromMap(String str) => PlayBackInfos.fromMap(json.decode(str));
 
 String playBackInfosToMap(PlayBackInfos data) => json.encode(data.toMap());
 
@@ -20,23 +19,20 @@ class PlayBackInfos {
   String? errorCode;
 
   factory PlayBackInfos.fromMap(Map<String, dynamic> json) => PlayBackInfos(
-        mediaSources: List<MediaSource>.from(
-            json['MediaSources'].map((x) => MediaSource.fromMap(x))),
+        mediaSources: List<MediaSource>.from(json['MediaSources'].map((x) => MediaSource.fromJson(x))),
         playSessionId: json['PlaySessionId'],
         errorCode: json['ErrorCode'],
       );
 
   Map<String, dynamic> toMap() => {
-        'MediaSources': List<dynamic>.from(mediaSources.map((x) => x.toMap())),
+        'MediaSources': List<dynamic>.from(mediaSources.map((x) => x.toJson())),
         'PlaySessionId': playSessionId,
         'ErrorCode': errorCode,
       };
 
   List<MediaStream> getSubtitles() {
     return mediaSources.first.mediaStreams != null
-        ? mediaSources.first.mediaStreams!
-            .where((element) => element.type == MediaStreamType.SUBTITLE)
-            .toList()
+        ? mediaSources.first.mediaStreams.where((element) => element.type == MediaStreamType.SUBTITLE).toList()
         : [];
   }
 

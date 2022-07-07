@@ -9,11 +9,10 @@ class ItemTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     if (streamingProvider.item == null) return SizedBox();
     return Text(
-      streamingProvider.item!.name,
+      streamingProvider.item?.name ?? '',
       textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
-      style:
-          Theme.of(context).textTheme.headline3?.copyWith(color: Colors.white),
+      style: Theme.of(context).textTheme.headline3?.copyWith(color: Colors.white),
     );
   }
 }

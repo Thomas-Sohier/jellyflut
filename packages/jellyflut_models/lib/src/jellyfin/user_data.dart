@@ -15,18 +15,16 @@ class UserData {
   bool played;
   String key;
 
-  factory UserData.fromMap(Map<String, dynamic> json) => UserData(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         playbackPositionTicks: json['PlaybackPositionTicks'],
         playCount: json['PlayCount'],
         isFavorite: json['IsFavorite'],
-        lastPlayedDate: json['LastPlayedDate'] == null
-            ? null
-            : DateTime.parse(json['LastPlayedDate']),
+        lastPlayedDate: json['LastPlayedDate'] == null ? null : DateTime.parse(json['LastPlayedDate']),
         played: json['Played'],
         key: json['Key'],
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         'PlaybackPositionTicks': playbackPositionTicks,
         'PlayCount': playCount,
         'IsFavorite': isFavorite,

@@ -60,7 +60,7 @@ class ItemsApi {
         throw ItemNotFoundFailure();
       }
 
-      return compute(Item.fromMap, response.data!);
+      return compute(Item.fromJson, response.data!);
     } on DioError catch (e) {
       log(e.error.message);
       throw ItemNotFoundFailure();
@@ -299,19 +299,36 @@ class ItemsApi {
   /// Update item an return updated object
   ///
   /// Can throw [ItemUpdateFailure]
+  Future<void> updateItem({required Item itemDTO}) async {
+    try {
+      final payload = itemDTO.toJson();
+      final response = await _dioClient.post<void>(
+        '$_serverUrl/Items/${itemDTO.id}',
+        data: payload,
+      );
+
+      if (response.statusCode != 204) {
+        throw ItemUpdateFailure();
+      }
+    } catch (_) {
+      throw ItemUpdateFailure();
+    }
+  }
+
+  /// Update item an return updated object
+  ///
+  /// Can throw [ItemUpdateFailure]
   Future<void> updateItemFromForm({required String itemId, required Map<String, Object?> form}) async {
     try {
       final payload = json.encode(form, toEncodable: JsonSerializer.jellyfinSerializer);
-      final response = await _dioClient.post<Map<String, dynamic>>(
+      final response = await _dioClient.post<void>(
         '$_serverUrl/Items/$itemId',
         data: payload,
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 204) {
         throw ItemUpdateFailure();
       }
-
-      return compute(Item.fromMap, response.data!);
     } catch (_) {
       throw ItemUpdateFailure();
     }
@@ -330,7 +347,7 @@ class ItemsApi {
         throw ItemViewRequestFailure();
       }
 
-      return compute(UserData.fromMap, response.data!);
+      return compute(UserData.fromJson, response.data!);
     } catch (_) {
       throw ItemViewRequestFailure();
     }
@@ -349,7 +366,7 @@ class ItemsApi {
         throw ItemViewRequestFailure();
       }
 
-      return compute(UserData.fromMap, response.data!);
+      return compute(UserData.fromJson, response.data!);
     } catch (_) {
       throw ItemViewRequestFailure();
     }
@@ -368,7 +385,7 @@ class ItemsApi {
         throw ItemFavoriteRequestFailure();
       }
 
-      return compute(UserData.fromMap, response.data!);
+      return compute(UserData.fromJson, response.data!);
     } catch (_) {
       throw ItemFavoriteRequestFailure();
     }
@@ -387,7 +404,7 @@ class ItemsApi {
         throw ItemFavoriteRequestFailure();
       }
 
-      return compute(UserData.fromMap, response.data!);
+      return compute(UserData.fromJson, response.data!);
     } catch (_) {
       throw ItemFavoriteRequestFailure();
     }
@@ -421,7 +438,7 @@ class ItemsApi {
         throw ItemRequestFailure();
       }
 
-      List<Item> parseItems(List<dynamic> list) => list.map((item) => Item.fromMap(item)).toList();
+      List<Item> parseItems(List<dynamic> list) => list.map((item) => Item.fromJson(item)).toList();
 
       return compute(parseItems, response.data!);
     } catch (_) {

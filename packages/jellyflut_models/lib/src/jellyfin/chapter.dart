@@ -9,13 +9,13 @@ class Chapter {
   String name;
   DateTime imageDateModified;
 
-  factory Chapter.fromMap(Map<String, dynamic> json) => Chapter(
+  factory Chapter.fromJson(Map<String, dynamic> json) => Chapter(
         startPositionTicks: json['StartPositionTicks'],
         name: json['Name'],
         imageDateModified: DateTime.parse(json['ImageDateModified']),
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         'StartPositionTicks': startPositionTicks,
         'Name': name,
         'ImageDateModified': imageDateModified.toIso8601String(),

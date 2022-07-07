@@ -24,6 +24,6 @@ class PlaceholderScreen extends StatelessWidget {
         boxFit: BoxFit.fitHeight,
         tag: ImageType.BACKDROP,
         showParent: true,
-        backup: item.type == ItemType.TVCHANNEL ? true : false);
+        backup: item.type == ItemType.TvChannel ? true : false);
   }
 }

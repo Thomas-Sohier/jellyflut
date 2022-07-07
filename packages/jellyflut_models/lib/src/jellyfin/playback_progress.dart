@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-import '../enum/enum.dart';
-import 'jellyfin.dart';
+import '../enum/index.dart';
+import 'index.dart';
 
 class PlaybackProgress {
   final bool canSeek;
@@ -81,8 +81,7 @@ class PlaybackProgress {
       isPaused: isPaused ?? this.isPaused,
       isMuted: isMuted ?? this.isMuted,
       positionTicks: positionTicks ?? this.positionTicks,
-      playbackStartTimeTicks:
-          playbackStartTimeTicks ?? this.playbackStartTimeTicks,
+      playbackStartTimeTicks: playbackStartTimeTicks ?? this.playbackStartTimeTicks,
       volumeLevel: volumeLevel ?? this.volumeLevel,
       brightness: brightness ?? this.brightness,
       aspectRatio: aspectRatio ?? this.aspectRatio,
@@ -98,7 +97,7 @@ class PlaybackProgress {
   Map<String, dynamic> toMap() {
     return {
       'CanSeek': canSeek,
-      'Item': item?.toMap(),
+      'Item': item?.toJson(),
       'ItemId': itemId,
       'SessionId': sessionId,
       'MediaSourceId': mediaSourceId,
@@ -123,7 +122,7 @@ class PlaybackProgress {
   factory PlaybackProgress.fromMap(Map<String, dynamic> map) {
     return PlaybackProgress(
       canSeek: map['CanSeek'] ?? false,
-      item: Item.fromMap(map['Item']),
+      item: Item.fromJson(map['Item']),
       itemId: map['ItemId'] ?? '',
       sessionId: map['SessionId'] ?? '',
       mediaSourceId: map['MediaSourceId'] ?? '',
@@ -140,16 +139,14 @@ class PlaybackProgress {
       liveStreamId: map['LiveStreamId'] ?? '',
       playSessionId: map['PlaySessionId'] ?? '',
       repeatMode: RepeatMode.fromString(map['RepeatMode']),
-      nowPlayingQueue: List<NowPlayingQueue>.from(
-          map['NowPlayingQueue']?.map((x) => NowPlayingQueue.fromMap(x))),
+      nowPlayingQueue: List<NowPlayingQueue>.from(map['NowPlayingQueue']?.map((x) => NowPlayingQueue.fromMap(x))),
       playlistItemId: map['PlaylistItemId'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PlaybackProgress.fromJson(String source) =>
-      PlaybackProgress.fromMap(json.decode(source));
+  factory PlaybackProgress.fromJson(String source) => PlaybackProgress.fromMap(json.decode(source));
 
   @override
   String toString() {

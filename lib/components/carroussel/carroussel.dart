@@ -9,8 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../critics.dart';
 
 class CarousselItem extends StatefulWidget {
-  CarousselItem(this.items,
-      {this.textColor = Colors.white, this.detailMode = false});
+  CarousselItem(this.items, {this.textColor = Colors.white, this.detailMode = false});
 
   final List<Item> items;
   final Color textColor;
@@ -61,8 +60,7 @@ class _CarousselItemState extends State<CarousselItem> {
     );
   }
 
-  Widget _buildCarouselItem(
-      BuildContext context, int itemIndex, List<Item> items) {
+  Widget _buildCarouselItem(BuildContext context, int itemIndex, List<Item> items) {
     var i = items[itemIndex];
     return Transform.scale(
         scale: itemIndex == _index ? 0.9 : 0.7,
@@ -77,15 +75,12 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
   return Column(children: [
     Padding(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-      child: Text(item.name,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: textColor, fontWeight: FontWeight.w600, fontSize: 28)),
+      child: Text(item.name ?? '',
+          textAlign: TextAlign.center, style: TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: 28)),
     ),
     Expanded(
         child: GestureDetector(
-            onTap: () =>
-                customRouter.push(DetailsRoute(item: item, heroTag: heroTag)),
+            onTap: () => customRouter.push(DetailsRoute(item: item, heroTag: heroTag)),
             child: Row(children: [
               Expanded(
                   flex: 2,
@@ -94,9 +89,8 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                          child: Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: ItemPoster(item, showName: false))),
+                          child:
+                              Padding(padding: EdgeInsets.only(right: 10), child: ItemPoster(item, showName: false))),
                     ],
                   )),
               Expanded(
@@ -111,8 +105,7 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
                             Spacer(),
                             if (item.runTimeTicks != null)
                               Text(
-                                printDuration(
-                                    Duration(microseconds: item.getDuration())),
+                                printDuration(Duration(microseconds: item.getDuration())),
                                 style: TextStyle(color: Colors.black),
                               )
                           ]),
@@ -125,8 +118,7 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
                                     child: Text(
                                       removeAllHtmlTags(item.overview!),
                                       overflow: TextOverflow.clip,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 17),
+                                      style: TextStyle(color: Colors.black, fontSize: 17),
                                     )))
                         ]))),
               )

@@ -38,7 +38,7 @@ class InitStreamingItemUtil {
 
     if (itemExist) {
       final download = await db.downloadsDao.getDownloadById(item.id);
-      item = Item.fromMap(download.item!);
+      item = Item.fromJson(download.item!);
     } else {
       final tempItem = await item.getPlayableItemOrLastUnplayed();
       item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
@@ -90,7 +90,7 @@ class InitStreamingItemUtil {
 class InitStreamingUrlUtil {
   static Future<Widget> initFromUrl({required String url, required String streamName}) async {
     final controller = await initControllerFromUrl(url: url, streamName: streamName);
-    final item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
+    final item = Item(id: '0', name: streamName, type: ItemType.Video);
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
     streamingProvider.commonStream?.controller = controller;

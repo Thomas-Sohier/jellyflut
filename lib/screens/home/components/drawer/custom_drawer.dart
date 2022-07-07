@@ -29,21 +29,18 @@ class _CutsomDrawerState extends State<CutsomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-          controller: _scrollController,
-          children: createButtonRouteDesktop(widget.items)),
+      child: ListView(controller: _scrollController, children: createButtonRouteDesktop(widget.items)),
     );
   }
 
   List<Widget> createButtonRouteDesktop(List<Item> items) {
     final navBarItems = <Widget>[];
     //initial route
-    navBarItems.add(
-        DrawerLargeButton(name: 'Home', index: 0, icon: Icons.home_outlined));
+    navBarItems.add(DrawerLargeButton(name: 'Home', index: 0, icon: Icons.home_outlined));
     for (var item in items) {
       navBarItems.add(DrawerLargeButton(
           index: items.indexOf(item) + 1,
-          name: item.name,
+          name: item.name ?? '',
           icon: getRightIconForCollectionType(item.collectionType)));
     }
     return navBarItems;

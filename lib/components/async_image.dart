@@ -61,46 +61,34 @@ class _AsyncImageState extends State<AsyncImage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    itemId = widget.showParent
-        ? widget.item.getParentId()
-        : widget.item.correctImageId();
-    hash =
-        BlurHashUtil.fallBackBlurHash(widget.item.imageBlurHashes, widget.tag);
-    imageType = widget.backup
-        ? widget.item.correctImageType(searchType: widget.tag)
-        : widget.tag;
+    itemId = widget.showParent ? widget.item.getParentId() : widget.item.correctImageId();
+    hash = BlurHashUtil.fallBackBlurHash(widget.item.imageBlurHashes, widget.tag);
+    imageType = widget.backup ? widget.item.correctImageType(searchType: widget.tag) : widget.tag;
     imageTag = widget.backup
         ? widget.item.correctImageTags(searchType: widget.tag)
-        : widget.item
-            .getImageTagBySearchTypeOrNull(searchType: widget.tag)
-            ?.value;
+        : widget.item.getImageTagBySearchType(searchType: widget.tag);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5)), child: builder());
+    return ClipRRect(borderRadius: BorderRadius.all(Radius.circular(5)), child: builder());
   }
 
   Widget builder() {
-    final url =
-        ItemImageService.getItemImageUrl(itemId, imageTag, type: imageType);
+    final url = ItemImageService.getItemImageUrl(itemId, imageTag, type: imageType);
     return OctoImage(
         image: CachedNetworkImageProvider(url),
         placeholderBuilder: imagePlaceholder(hash),
         errorBuilder: imagePlaceholderError(hash),
         imageBuilder: (_, image) => ZoomableImage(
-            zoomableImageController: widget.zoomableImageController,
-            imageWidget: image,
-            overlay: overlay),
+            zoomableImageController: widget.zoomableImageController, imageWidget: image, overlay: overlay),
         fit: widget.boxFit,
         width: widget.width,
         height: widget.height,
         fadeInDuration: Duration(milliseconds: 200));
   }
 
-  Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(
-      String? hash) {
+  Widget Function(BuildContext, Object, StackTrace?) imagePlaceholderError(String? hash) {
     if (widget.errorWidget != null) {
       return widget.errorWidget!;
     }
@@ -111,9 +99,7 @@ class _AsyncImageState extends State<AsyncImage> {
       }
       return (_, __, ___) => const SizedBox();
     }
-    return widget.errorWidget != null
-        ? widget.errorWidget!
-        : (_, __, ___) => noPhotoActor();
+    return widget.errorWidget != null ? widget.errorWidget! : (_, __, ___) => noPhotoActor();
   }
 
   Widget Function(BuildContext) imagePlaceholder(String? hash) {
@@ -129,17 +115,14 @@ class _AsyncImageState extends State<AsyncImage> {
       }
       return (_) => const SizedBox();
     }
-    return widget.placeholder != null
-        ? widget.placeholder!
-        : (_) => noPhotoActor();
+    return widget.placeholder != null ? widget.placeholder! : (_) => noPhotoActor();
   }
 
   Widget noPhotoActor() {
     return Container(
       color: ColorUtil.darken(Theme.of(context).colorScheme.background),
       child: Center(
-        child: Icon(Icons.no_photography,
-            color: Theme.of(context).colorScheme.onBackground),
+        child: Icon(Icons.no_photography, color: Theme.of(context).colorScheme.onBackground),
       ),
     );
   }

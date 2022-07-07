@@ -1,31 +1,13 @@
 part of '../fields.dart';
 
-class PersonField extends StatefulWidget {
-  final Item item;
-  final FormGroup form;
-  final double ITEM_HEIGHT = 80;
+class PersonField extends StatelessWidget {
+  static const double ITEM_HEIGHT = 80;
 
-  const PersonField({super.key, required this.form, required this.item});
-
-  @override
-  State<PersonField> createState() => _PersonFieldState();
-}
-
-class _PersonFieldState extends State<PersonField> {
-  late final Item item;
-  late final FormGroup form;
-  late final double ITEM_HEIGHT;
-
-  @override
-  void initState() {
-    item = widget.item;
-    form = widget.form;
-    ITEM_HEIGHT = widget.ITEM_HEIGHT;
-    super.initState();
-  }
+  const PersonField({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final item = context.read<FormBloc<Item>>().state.value;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,9 +16,7 @@ class _PersonFieldState extends State<PersonField> {
         Text('Persons', style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 24),
         SizedBox(
-          height:
-              (ITEM_HEIGHT * (item.people.isNotEmpty ? item.people.length : 0))
-                  .toDouble(),
+          height: (ITEM_HEIGHT * (item.people.isNotEmpty ? item.people.length : 0)).toDouble(),
           width: double.maxFinite,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -45,9 +25,7 @@ class _PersonFieldState extends State<PersonField> {
               itemBuilder: (context, index) => PersonItem(
                   person: item.people.elementAt(index),
                   height: ITEM_HEIGHT,
-                  onPressed: () => setState(() {
-                        item.people.removeAt(index);
-                      }))),
+                  onPressed: () => item.people.removeAt(index))),
         ),
       ],
     );

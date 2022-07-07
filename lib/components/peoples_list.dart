@@ -6,12 +6,11 @@ import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class PeoplesList extends StatefulWidget {
-  final List<Person> persons;
+  final List<People> persons;
   final Color fontColor;
   final EdgeInsets padding;
 
-  const PeoplesList(this.persons,
-      {this.fontColor = Colors.black, this.padding = EdgeInsets.zero});
+  const PeoplesList(this.persons, {this.fontColor = Colors.black, this.padding = EdgeInsets.zero});
 
   @override
   State<StatefulWidget> createState() => _PeoplesListState();
@@ -28,12 +27,10 @@ class _PeoplesListState extends State<PeoplesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [Expanded(child: listPeoples(widget.persons))]);
+    return Column(mainAxisSize: MainAxisSize.max, children: [Expanded(child: listPeoples(widget.persons))]);
   }
 
-  Widget listPeoples(List<Person> peoples) {
+  Widget listPeoples(List<People> peoples) {
     return Align(
       alignment: Alignment.centerLeft,
       child: ListView.builder(
@@ -46,12 +43,8 @@ class _PeoplesListState extends State<PeoplesList> {
                 name: person.name,
                 id: person.id,
                 imageBlurHashes: person.imageBlurHashes,
-                imageTags: List<ImageTag>.from([
-                  ImageTag(
-                      imageType: ImageType.PRIMARY,
-                      value: person.primaryImageTag ?? '')
-                ]),
-                type: ItemType.PERSON);
+                imageTags: Map<String, String>.from({ImageType.PRIMARY: person.primaryImageTag ?? ''}),
+                type: ItemType.Person);
             return ResponsiveBuilder.builder(
                 mobile: () => largeScreenTemplate(item, person, index),
                 tablet: () => largeScreenTemplate(item, person, index),
@@ -60,7 +53,7 @@ class _PeoplesListState extends State<PeoplesList> {
     );
   }
 
-  Widget phonePoster(Item item, Person person, int index) {
+  Widget phonePoster(Item item, People person, int index) {
     return Padding(
         padding: EdgeInsets.only(left: 5, right: 5),
         child: Column(
@@ -69,18 +62,14 @@ class _PeoplesListState extends State<PeoplesList> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-                flex: 5,
-                child: PeoplePoster(
-                    person: person,
-                    onPressed: (heroTag) => onTap(item, person, heroTag))),
+                flex: 5, child: PeoplePoster(person: person, onPressed: (heroTag) => onTap(item, person, heroTag))),
             Flexible(
                 fit: FlexFit.loose,
                 child: Text(
-                  person.name,
+                  person.name ?? '',
                   overflow: TextOverflow.clip,
                   softWrap: false,
-                  style:
-                      TextStyle(color: fontColor.withAlpha(240), fontSize: 16),
+                  style: TextStyle(color: fontColor.withAlpha(240), fontSize: 16),
                 )),
             if (person.role != null)
               Flexible(
@@ -89,25 +78,21 @@ class _PeoplesListState extends State<PeoplesList> {
                     person.role!,
                     overflow: TextOverflow.clip,
                     softWrap: false,
-                    style: TextStyle(
-                        color: fontColor.withAlpha(200), fontSize: 12),
+                    style: TextStyle(color: fontColor.withAlpha(200), fontSize: 12),
                   ))
           ],
         ));
   }
 
-  Widget largeScreenTemplate(Item item, Person person, int index) {
+  Widget largeScreenTemplate(Item item, People person, int index) {
     return Padding(
       padding: EdgeInsets.only(right: 10),
       child: PeoplePoster(
-          person: person,
-          bigPoster: true,
-          clickable: true,
-          onPressed: (heroTag) => onTap(item, person, heroTag)),
+          person: person, bigPoster: true, clickable: true, onPressed: (heroTag) => onTap(item, person, heroTag)),
     );
   }
 
-  Future<void> onTap(Item item, Person person, String heroTag) {
+  Future<void> onTap(Item item, People person, String heroTag) {
     return customRouter.push(DetailsRoute(item: item, heroTag: heroTag));
   }
 }

@@ -1,4 +1,4 @@
-import 'jellyfin.dart';
+import 'index.dart';
 
 class SessionInfo {
   SessionInfo({
@@ -49,12 +49,10 @@ class SessionInfo {
 
   factory SessionInfo.fromMap(Map<String, dynamic> json) => SessionInfo(
         playState: PlayState.fromMap(json['PlayState']),
-        additionalUsers:
-            List<dynamic>.from(json['AdditionalUsers'].map((x) => x)),
+        additionalUsers: List<dynamic>.from(json['AdditionalUsers'].map((x) => x)),
         capabilities: Capabilities.fromMap(json['Capabilities']),
         remoteEndPoint: json['RemoteEndPoint'],
-        playableMediaTypes:
-            List<dynamic>.from(json['PlayableMediaTypes'].map((x) => x)),
+        playableMediaTypes: List<dynamic>.from(json['PlayableMediaTypes'].map((x) => x)),
         id: json['Id'],
         userId: json['UserId'],
         userName: json['UserName'],
@@ -70,8 +68,7 @@ class SessionInfo {
         hasCustomDeviceName: json['HasCustomDeviceName'],
         serverId: json['ServerId'],
         userPrimaryImageTag: json['UserPrimaryImageTag'],
-        supportedCommands:
-            List<dynamic>.from(json['SupportedCommands'].map((x) => x)),
+        supportedCommands: List<dynamic>.from(json['SupportedCommands'].map((x) => x)),
       );
 
   Map<String, dynamic> toMap() => {
@@ -79,8 +76,7 @@ class SessionInfo {
         'AdditionalUsers': List<dynamic>.from(additionalUsers.map((x) => x)),
         'Capabilities': capabilities.toMap(),
         'RemoteEndPoint': remoteEndPoint,
-        'PlayableMediaTypes':
-            List<dynamic>.from(playableMediaTypes.map((x) => x)),
+        'PlayableMediaTypes': List<dynamic>.from(playableMediaTypes.map((x) => x)),
         'Id': id,
         'UserId': userId,
         'UserName': userName,
@@ -96,7 +92,6 @@ class SessionInfo {
         'HasCustomDeviceName': hasCustomDeviceName,
         'ServerId': serverId,
         'UserPrimaryImageTag': userPrimaryImageTag,
-        'SupportedCommands':
-            List<dynamic>.from(supportedCommands.map((x) => x)),
+        'SupportedCommands': List<dynamic>.from(supportedCommands.map((x) => x)),
       };
 }

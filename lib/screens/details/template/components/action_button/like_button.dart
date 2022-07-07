@@ -41,7 +41,7 @@ class _LikeButtonState extends State<LikeButton> {
           setState(() {
             widget.item.userData!.isFavorite = userData.isFavorite;
           }),
-          showToast('add_item_favorite'.tr(args: [widget.item.name]), fToast, duration: Duration(seconds: 3))
+          showToast('add_item_favorite'.tr(args: [widget.item.name ?? '']), fToast, duration: Duration(seconds: 3))
         });
   }
 
@@ -50,7 +50,7 @@ class _LikeButtonState extends State<LikeButton> {
           setState(() {
             widget.item.userData!.isFavorite = userData.isFavorite;
           }),
-          showToast('remove_item_favorite'.tr(args: [widget.item.name]), fToast, duration: Duration(seconds: 3))
+          showToast('remove_item_favorite'.tr(args: [widget.item.name ?? '']), fToast, duration: Duration(seconds: 3))
         });
   }
 }

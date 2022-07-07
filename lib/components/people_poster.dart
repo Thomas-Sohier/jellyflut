@@ -6,17 +6,12 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class PeoplePoster extends StatefulWidget {
-  final Person person;
+  final People person;
   final bool clickable;
   final bool bigPoster;
   final Function(String)? onPressed;
 
-  PeoplePoster(
-      {super.key,
-      required this.person,
-      this.onPressed,
-      this.bigPoster = false,
-      this.clickable = true});
+  PeoplePoster({super.key, required this.person, this.onPressed, this.bigPoster = false, this.clickable = true});
 
   @override
   State<PeoplePoster> createState() => _PeoplePosterState();
@@ -58,8 +53,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
           focusNode: _node,
           style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
                   backgroundColor: Colors.transparent)
               .copyWith(side: buttonBorderSide())
               .copyWith(elevation: buttonElevation()),
@@ -77,9 +71,8 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
               item: widget.person.asItem(),
               boxFit: BoxFit.contain,
               placeholder: (_) => Container(
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                decoration:
+                    BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: Center(
                   child: Icon(Icons.person),
                 ),
@@ -102,8 +95,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                     boxFit: BoxFit.contain,
                     placeholder: (_) => Container(
                       decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                          color: Colors.grey.shade200, borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: Center(
                         child: Icon(Icons.person),
                       ),
@@ -132,7 +124,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            widget.person.name,
+                            widget.person.name ?? '',
                             overflow: TextOverflow.clip,
                             softWrap: false,
                             style: TextStyle(color: Colors.white, fontSize: 16),
@@ -142,8 +134,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                               widget.person.role!,
                               overflow: TextOverflow.clip,
                               softWrap: false,
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 12),
+                              style: TextStyle(color: Colors.white70, fontSize: 12),
                             )
                         ],
                       ),
@@ -157,8 +148,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
   MaterialStateProperty<double> buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return 2;
         }
         return 0; // defer to the default
@@ -175,8 +165,7 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
             color: Colors.white,
           );
         }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

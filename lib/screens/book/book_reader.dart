@@ -44,8 +44,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
     bookBloc.add(BookLoading());
     final book = BookUtils.loadItemBook(widget.item);
     constructView(book).catchError((error) {
-      log('cannot_open_file'.tr(args: [widget.item.name]),
-          level: 3, error: 'error_unzip_file'.tr());
+      log('cannot_open_file'.tr(args: [widget.item.name ?? '']), level: 3, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
     });
     super.initState();
@@ -74,8 +73,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
         break;
       case BookExtensions.EPUB:
       default:
-        final epubController =
-            EpubArchiveController(await book, enableCache: true);
+        final epubController = EpubArchiveController(await book, enableCache: true);
         final bookView = await constructEpubView(epubController);
         bookBloc.add(BookLoaded(bookView: bookView));
         RawKeyboard.instance.addListener(_onKey);
@@ -86,14 +84,10 @@ class _BookReaderPageState extends State<BookReaderPage> {
     if (e.runtimeType.toString() == 'RawKeyDownEvent') {
       switch (e.logicalKey.debugName) {
         case 'Arrow Right':
-          await _controller.nextPage(
-              duration: Duration(milliseconds: 400),
-              curve: Curves.fastLinearToSlowEaseIn);
+          await _controller.nextPage(duration: Duration(milliseconds: 400), curve: Curves.fastLinearToSlowEaseIn);
           break;
         case 'Arrow Left':
-          await _controller.previousPage(
-              duration: Duration(milliseconds: 400),
-              curve: Curves.fastLinearToSlowEaseIn);
+          await _controller.previousPage(duration: Duration(milliseconds: 400), curve: Curves.fastLinearToSlowEaseIn);
           break;
       }
     }
@@ -103,13 +97,12 @@ class _BookReaderPageState extends State<BookReaderPage> {
     try {
       final comicView = ComicView(
           archive: archive,
-          listener: (currentPage, nbPage) =>
-              _pageListener.add({currentPage: nbPage}),
+          listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}),
           controller: _controller);
       bookBloc.add(BookLoaded(bookView: comicView));
       _pageListener.add({0: archive.length});
     } catch (error) {
-      log('cannot_open_file'.tr(args: [widget.item.name]),
+      log('cannot_open_file'.tr(args: [widget.item.name ?? '']),
           level: Level.SEVERE.value, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
     }
@@ -121,8 +114,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
     return EpubView(
         controller: _controller,
         epubDetails: epubDetails!,
-        listener: (currentPage, nbPage) =>
-            _pageListener.add({currentPage: nbPage}));
+        listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}));
   }
 
   @override
@@ -133,21 +125,18 @@ class _BookReaderPageState extends State<BookReaderPage> {
             bookBloc: bookBloc,
             pageController: _controller,
             streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})),
+            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})),
         tablet: () => CompactBookView(
             item: item,
             bookBloc: bookBloc,
             pageController: _controller,
             streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})),
+            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})),
         desktop: () => LargeBookView(
             item: item,
             bookBloc: bookBloc,
             pageController: _controller,
             streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})));
+            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})));
   }
 }

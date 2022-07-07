@@ -23,7 +23,7 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
         icon: Icon(Icons.movie, color: Colors.black87));
   }
 
-  void playTrailer(RemoteTrailer trailer) async {
+  void playTrailer(MediaUrl trailer) async {
     try {
       final url = await item.getYoutubeTrailerUrl(trailer);
       await customRouter.push(StreamRoute(url: url.toString(), item: item));
@@ -31,10 +31,8 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
-            content: Row(children: [
-              Flexible(child: Text(exception.toString())),
-              Icon(Icons.play_disabled, color: Colors.red)
-            ]),
+            content: Row(
+                children: [Flexible(child: Text(exception.toString())), Icon(Icons.play_disabled, color: Colors.red)]),
             width: 600));
     }
   }
@@ -52,33 +50,23 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
                   // the Theme with Theme.of().
                   builder: (BuildContext dialogContext) => AlertDialog(
                         title: Text('trailer'.tr()),
-                        titlePadding:
-                            const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                        titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
                         contentPadding: const EdgeInsets.all(0),
-                        actions: [
-                          TextButton(
-                              onPressed: customRouter.pop,
-                              child: Text('cancel'.tr()))
-                        ],
+                        actions: [TextButton(onPressed: customRouter.pop, child: Text('cancel'.tr()))],
                         content: Container(
                           decoration: BoxDecoration(
-                            border: Border.symmetric(
-                                horizontal: BorderSide(width: 1)),
+                            border: Border.symmetric(horizontal: BorderSide(width: 1)),
                           ),
                           width: 600,
                           height: 200,
                           child: ListView.builder(
                               itemCount: trailers.length,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                               itemBuilder: (_, index) {
                                 return Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
                                     child: TrailerDialogButton(
-                                        playTrailer: playTrailer,
-                                        theme: getThemeData,
-                                        trailer: trailers[index]));
+                                        playTrailer: playTrailer, theme: getThemeData, trailer: trailers[index]));
                               }),
                         ),
                       )));
@@ -87,15 +75,11 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
 }
 
 class TrailerDialogButton extends StatelessWidget {
-  final void Function(RemoteTrailer) playTrailer;
+  final void Function(MediaUrl) playTrailer;
   final ThemeData theme;
-  final RemoteTrailer trailer;
+  final MediaUrl trailer;
 
-  const TrailerDialogButton(
-      {super.key,
-      required this.playTrailer,
-      required this.theme,
-      required this.trailer});
+  const TrailerDialogButton({super.key, required this.playTrailer, required this.theme, required this.trailer});
 
   @override
   Widget build(BuildContext context) {
@@ -112,13 +96,10 @@ class TrailerDialogButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(trailer.name,
-                    maxLines: 2,
-                    style: theme.textTheme.bodyText1,
-                    overflow: TextOverflow.ellipsis),
-                Text(trailer.url,
-                    style: TextStyle(color: theme.colorScheme.secondary),
-                    overflow: TextOverflow.ellipsis),
+                Text(trailer.name ?? '',
+                    maxLines: 2, style: theme.textTheme.bodyText1, overflow: TextOverflow.ellipsis),
+                Text(trailer.url ?? '',
+                    style: TextStyle(color: theme.colorScheme.secondary), overflow: TextOverflow.ellipsis),
               ],
             ),
           ),

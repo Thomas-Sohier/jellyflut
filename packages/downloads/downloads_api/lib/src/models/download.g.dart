@@ -14,8 +14,7 @@ Download _$DownloadFromJson(Map<String, dynamic> json) => Download(
           const Uint8ListConverter().fromJson(json['primary'] as List<int>?),
       backdrop:
           const Uint8ListConverter().fromJson(json['backdrop'] as List<int>?),
-      item:
-          const ItemConverter().fromJson(json['item'] as Map<String, dynamic>),
+      item: Item.fromJson(json['item'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DownloadToJson(Download instance) => <String, dynamic>{
@@ -24,5 +23,5 @@ Map<String, dynamic> _$DownloadToJson(Download instance) => <String, dynamic>{
       'path': instance.path,
       'primary': const Uint8ListConverter().toJson(instance.primary),
       'backdrop': const Uint8ListConverter().toJson(instance.backdrop),
-      'item': const ItemConverter().toJson(instance.item),
+      'item': instance.item,
     };

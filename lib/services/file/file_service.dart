@@ -17,24 +17,19 @@ class FileService {
   }
 
   /// Return the rowId of the download inserted
-  static Future<int> saveDownloadToDatabase(
-      final String path, final Item item) async {
+  static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
     final i = item;
 
-    final primaryUrl = ItemImageService.getItemImageUrl(
-        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
+    final primaryUrl = ItemImageService.getItemImageUrl(item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
         type: item.correctImageType(searchType: ImageType.PRIMARY));
 
-    final backdropUrl = ItemImageService.getItemImageUrl(
-        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
+    final backdropUrl = ItemImageService.getItemImageUrl(item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
         type: item.correctImageType(searchType: ImageType.PRIMARY));
 
     final primaryImage = await Dio().get<String>(primaryUrl);
-    final primaryImageByte =
-        Uint8List.fromList(utf8.encode(primaryImage.data!));
+    final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));
     final backdropImage = await Dio().get<String>(backdropUrl);
-    final backdropImageByte =
-        Uint8List.fromList(utf8.encode(backdropImage.data!));
+    final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
 
     final db = AppDatabase().getDatabase;
     final dc = DownloadsCompanion(
@@ -42,7 +37,7 @@ class FileService {
         primary: Value(primaryImageByte),
         backdrop: Value(backdropImageByte),
         name: Value.ofNullable(i.name),
-        item: Value.ofNullable(i.toMap()),
+        item: Value.ofNullable(i.toJson()),
         path: Value.ofNullable(path));
     return db.downloadsDao.createDownload(dc);
   }
@@ -97,8 +92,7 @@ class FileService {
   }
 
   /// Download a file and save it to filesystem
-  static Future<Response<dynamic>> downloadFileAndSaveToPath(
-      String url, String? path,
+  static Future<Response<dynamic>> downloadFileAndSaveToPath(String url, String? path,
       {BehaviorSubject<int>? stateOfDownload, CancelToken? cancelToken}) async {
     if (stateOfDownload != null) {
       return Dio().download(
@@ -125,8 +119,7 @@ class FileService {
     Response<List<int>> rs;
     rs = await Dio().get<List<int>>(
       url,
-      options: Options(
-          responseType: ResponseType.bytes), // set responseType to `bytes`
+      options: Options(responseType: ResponseType.bytes), // set responseType to `bytes`
     );
     return rs.data;
   }

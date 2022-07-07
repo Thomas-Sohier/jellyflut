@@ -1,0 +1,4 @@
+enum PlayAccess {
+  Full,
+  None;
+}

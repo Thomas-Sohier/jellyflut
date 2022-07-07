@@ -1,35 +1,24 @@
-class ImageBlurHashes {
-  ImageBlurHashes({
-    this.backdrop,
-    this.primary,
-    this.art,
-    this.banner,
-    this.logo,
-    this.thumb,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Map<String, dynamic>? backdrop;
-  Map<String, dynamic>? primary;
-  Map<String, dynamic>? art;
-  Map<String, dynamic>? banner;
-  Map<String, dynamic>? logo;
-  Map<String, dynamic>? thumb;
+part 'image_blur_hashes.freezed.dart';
+part 'image_blur_hashes.g.dart';
 
-  factory ImageBlurHashes.fromMap(Map<String, dynamic> json) => ImageBlurHashes(
-        backdrop: json['Backdrop'],
-        primary: json['Primary'],
-        art: json['Art'],
-        banner: json['Banner'],
-        logo: json['Logo'],
-        thumb: json['Thumb'],
-      );
+@Freezed()
+class ImageBlurHashes with _$ImageBlurHashes {
+  factory ImageBlurHashes(
+      {Map<String, String>? primary,
+      Map<String, String>? art,
+      Map<String, String>? backdrop,
+      Map<String, String>? banner,
+      Map<String, String>? logo,
+      Map<String, String>? thumb,
+      Map<String, String>? disc,
+      Map<String, String>? box,
+      Map<String, String>? screenshot,
+      Map<String, String>? menu,
+      Map<String, String>? chapter,
+      Map<String, String>? boxrear,
+      Map<String, String>? profile}) = _ImageBlurHashes;
 
-  Map<String, dynamic> toMap() => {
-        'Backdrop': backdrop,
-        'Primary': primary,
-        'Art': art,
-        'Banner': banner,
-        'Logo': logo,
-        'Thumb': thumb
-      };
+  factory ImageBlurHashes.fromJson(Map<String, Object?> json) => _$ImageBlurHashesFromJson(json);
 }

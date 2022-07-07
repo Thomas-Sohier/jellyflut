@@ -41,7 +41,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData?.played = userData.played;
           }),
-          showToast('mark_item_viewed'.tr(args: [widget.item.name]), fToast)
+          showToast('mark_item_viewed'.tr(args: [widget.item.name ?? '']), fToast)
         });
   }
 
@@ -50,7 +50,7 @@ class _ViewedButtonState extends State<ViewedButton> {
           setState(() {
             widget.item.userData?.played = userData.played;
           }),
-          showToast('mark_item_unviewed'.tr(args: [widget.item.name]), fToast)
+          showToast('mark_item_unviewed'.tr(args: [widget.item.name ?? '']), fToast)
         });
   }
 }

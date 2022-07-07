@@ -1,4 +1,4 @@
-import '../enum/enum.dart';
+import '../enum/index.dart';
 
 class MediaStream {
   MediaStream({
@@ -81,7 +81,7 @@ class MediaStream {
   String? localizedDefault;
   String? localizedForced;
 
-  factory MediaStream.fromMap(Map<String, dynamic> json) => MediaStream(
+  factory MediaStream.fromJson(Map<String, dynamic> json) => MediaStream(
         codec: json['Codec'],
         language: languageValues.map[json['Language']],
         colorTransfer: json['ColorTransfer'],
@@ -122,7 +122,7 @@ class MediaStream {
         localizedForced: json['localizedForced'],
       );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
         'Codec': codec,
         'Language': languageValues.reverse[language],
         'ColorTransfer': colorTransfer,

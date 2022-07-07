@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:downloads_api/src/models/uint8list_converter.dart';
-import 'package:downloads_api/src/models/item_converter.dart';
 import 'package:equatable/equatable.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -55,7 +54,6 @@ class Download extends Equatable {
   /// The complete item infos, useful to show data while offline
   ///
   /// Cannot be empty
-  @ItemConverter()
   final Item item;
 
   /// {@macro download}
@@ -71,13 +69,7 @@ class Download extends Equatable {
   /// Returns a copy of this todo with the given values updated.
   ///
   /// {@macro download}
-  Download copyWith(
-      {String? id,
-      String? name,
-      String? path,
-      Uint8List? primary,
-      Uint8List? backdrop,
-      Item? item}) {
+  Download copyWith({String? id, String? name, String? path, Uint8List? primary, Uint8List? backdrop, Item? item}) {
     return Download(
         id: id ?? this.id,
         name: name ?? this.name,

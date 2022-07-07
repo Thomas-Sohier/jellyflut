@@ -158,7 +158,7 @@ class ItemsRepository {
   ///
   /// Can throw [ItemUpdateFailure]
   Future<void> updateItemFromItem({required Item item}) =>
-      _itemsApi.updateItemFromForm(form: item.toMap(), itemId: item.id);
+      _itemsApi.updateItemFromForm(form: item.toJson(), itemId: item.id);
 
   /// Update item an return updated object
   ///

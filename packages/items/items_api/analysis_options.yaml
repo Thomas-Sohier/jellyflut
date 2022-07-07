@@ -1,5 +1,11 @@
 include: package:pedantic/analysis_options.yaml
 
+analyzer:
+  exclude:
+    - lib/src/models/*.freezed.dart
+  errors:
+    invalid_annotation_target: ignore
+
 linter:
   rules:
     - always_require_non_null_named_parameters

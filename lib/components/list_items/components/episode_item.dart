@@ -17,11 +17,7 @@ class EpisodeItem extends StatefulWidget {
   final Widget Function(BuildContext)? placeholder;
 
   const EpisodeItem(
-      {super.key,
-      required this.item,
-      this.placeholder,
-      this.clickable = true,
-      this.boxFit = BoxFit.cover});
+      {super.key, required this.item, this.placeholder, this.clickable = true, this.boxFit = BoxFit.cover});
 
   @override
   State<EpisodeItem> createState() => _EpisodeItemState();
@@ -46,22 +42,18 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
   }
 
   Future<void> _onTap() {
-    return customRouter
-        .push(DetailsRoute(item: widget.item, heroTag: posterHeroTag));
+    return customRouter.push(DetailsRoute(item: widget.item, heroTag: posterHeroTag));
   }
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonSelector(
-        onPressed: () => action(_onTap), child: epsiodeItem());
+    return OutlinedButtonSelector(onPressed: () => action(_onTap), child: epsiodeItem());
   }
 
   Widget epsiodeItem() {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      final rightPartPadding = constraints.maxWidth < 350
-          ? const EdgeInsets.only(left: 0)
-          : const EdgeInsets.only(left: 8);
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final rightPartPadding =
+          constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -70,9 +62,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
           children: [
             if (constraints.maxWidth > 350)
               ConstrainedBox(
-                  constraints: BoxConstraints(
-                      minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
-                  child: poster()),
+                  constraints: BoxConstraints(minWidth: 20, maxWidth: constraints.maxWidth * 0.4), child: poster()),
             Expanded(
               child: Padding(
                   padding: rightPartPadding,
@@ -86,8 +76,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
                         padding: const EdgeInsets.only(top: 4, bottom: 4),
                         child: Row(
                           children: [
-                            if (widget.item.hasRatings())
-                              Critics(item: widget.item),
+                            if (widget.item.hasRatings()) Critics(item: widget.item),
                             if (widget.item.getDuration() != 0) duration()
                           ],
                         ),
@@ -119,29 +108,18 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
   }
 
   Widget title() {
-    final title = widget.item.indexNumber != null
-        ? '${widget.item.indexNumber} - ${widget.item.name}'
-        : widget.item.name;
-    final style = Theme.of(context)
-        .textTheme
-        .bodyText1!
-        .copyWith(fontWeight: FontWeight.bold)
-        .apply(fontSizeFactor: 1.2);
+    final title =
+        widget.item.indexNumber != null ? '${widget.item.indexNumber} - ${widget.item.name}' : widget.item.name;
+    final style =
+        Theme.of(context).textTheme.bodyText1!.copyWith(fontWeight: FontWeight.bold).apply(fontSizeFactor: 1.2);
 
-    return Text(title,
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.left,
-        maxLines: 2,
-        style: style);
+    return Text(title ?? '', overflow: TextOverflow.ellipsis, textAlign: TextAlign.left, maxLines: 2, style: style);
   }
 
   Widget duration() {
     return Flexible(
-        child: Text(
-            printDuration(Duration(microseconds: widget.item.getDuration())),
-            maxLines: 1,
-            style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
+        child: Text(printDuration(Duration(microseconds: widget.item.getDuration())),
+            maxLines: 1, style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
   }
 
   Widget overview() {

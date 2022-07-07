@@ -144,7 +144,7 @@ class HeaderButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: PaletteButton(
-        item.name,
+        item.name ?? '',
         onPressed: () => context.read<CollectionCubit>().goToSeason(item),
         borderRadius: 4,
         maxHeight: 50,

@@ -1,26 +1,26 @@
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 double aspectRatio({ItemType? type}) {
-  if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
+  if (type == ItemType.MusicAlbum || type == ItemType.Audio) {
     return 1 / 1;
-  } else if (type == ItemType.PHOTO) {
+  } else if (type == ItemType.Photo) {
     return 4 / 3;
-  } else if (type == ItemType.EPISODE) {
+  } else if (type == ItemType.Episode) {
     return 16 / 9;
-  } else if (type == ItemType.TVCHANNEL || type == ItemType.TVPROGRAM) {
+  } else if (type == ItemType.TvChannel || type == ItemType.TvProgram) {
     return 16 / 9;
   }
   return 2 / 3;
 }
 
 double parentAspectRatio({ItemType? type}) {
-  if (type == ItemType.MUSICALBUM || type == ItemType.AUDIO) {
+  if (type == ItemType.MusicAlbum || type == ItemType.Audio) {
     return 1 / 1;
-  } else if (type == ItemType.PHOTO) {
+  } else if (type == ItemType.Photo) {
     return 4 / 3;
-  } else if (type == ItemType.EPISODE) {
+  } else if (type == ItemType.Episode) {
     return 2 / 3;
-  } else if (type == ItemType.TVCHANNEL || type == ItemType.TVPROGRAM) {
+  } else if (type == ItemType.TvChannel || type == ItemType.TvProgram) {
     return 16 / 9;
   }
   return 2 / 3;

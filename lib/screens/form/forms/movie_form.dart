@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart' hide ProgressIndicator;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
@@ -9,73 +7,32 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'package:reactive_forms/reactive_forms.dart';
 
-class MovieForm extends StatefulWidget {
-  final Item item;
+class MovieForm extends StatelessWidget {
+  const MovieForm({super.key});
 
-  const MovieForm({required this.item});
-
-  @override
-  State<MovieForm> createState() => _MovieFormState();
-}
-
-class _MovieFormState extends State<MovieForm> {
-  late final FormGroup form;
-  late final Item item;
-  late final FormBloc<Item> _formBloc;
-  late final StreamSubscription<ControlStatus> _subFormChange;
-
-  @override
-  void initState() {
-    super.initState();
-    item = widget.item;
-    form = buildForm();
-    _subFormChange = form.statusChanged.listen((event) {});
-    _subFormChange.onData((status) {
-      if (status == ControlStatus.valid) {
-        _formBloc.add(CurrentForm<Item>(formGroup: form, value: item));
-      }
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _formBloc = BlocProvider.of<FormBloc<Item>>(context);
-  }
-
-  @override
-  void dispose() {
-    _subFormChange.cancel();
-    form.dispose();
-    super.dispose();
-  }
-
-  FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsEnum.NAME.name: FormControl<String>(
+  FormGroup buildForm(Item item) => fb.group(<String, Object>{
+        FieldsEnum.NAME.fieldName: FormControl<String>(
           value: item.name,
           validators: [Validators.required],
         ),
-        FieldsEnum.ORIGINALTITLE.name:
-            FormControl<String>(value: item.originalTitle),
-        FieldsEnum.COMMUNITYRATING.name:
-            FormControl<double>(value: item.communityRating),
-        FieldsEnum.DATECREATED.name:
-            FormControl<DateTime>(value: item.dateCreated),
-        FieldsEnum.OVERVIEW.name: FormControl<String>(value: item.overview),
-        FieldsEnum.PREMIEREDATE.name:
-            FormControl<DateTime>(value: item.premiereDate),
-        FieldsEnum.PRODUCTIONYEAR.name:
-            FormControl<int>(value: item.productionYear),
-        FieldsEnum.DATEADDED.name:
-            FormControl<DateTime>(value: item.dateCreated),
-        FieldsEnum.PEOPLE.name: FormControl<List<Person>>(value: item.people),
-        FieldsEnum.STUDIOS.name: FormControl<List<Studio>>(value: item.studios),
-        FieldsEnum.TAGS.name: FormControl<List<dynamic>>(value: item.tags),
-        FieldsEnum.GENRES.name: FormControl<List<String?>>(value: item.genres)
+        FieldsEnum.ORIGINALTITLE.fieldName: FormControl<String>(value: item.originalTitle),
+        FieldsEnum.COMMUNITYRATING.fieldName: FormControl<double>(value: item.communityRating),
+        FieldsEnum.DATECREATED.fieldName: FormControl<DateTime>(value: item.dateCreated),
+        FieldsEnum.OVERVIEW.fieldName: FormControl<String>(value: item.overview),
+        FieldsEnum.PREMIEREDATE.fieldName: FormControl<DateTime>(value: item.premiereDate),
+        FieldsEnum.PRODUCTIONYEAR.fieldName: FormControl<int>(value: item.productionYear),
+        FieldsEnum.DATEADDED.fieldName: FormControl<DateTime>(value: item.dateCreated),
+        FieldsEnum.PEOPLE.fieldName: FormControl<List<People>>(value: item.people),
+        FieldsEnum.STUDIOS.fieldName: FormControl<List<NamedGuidPair>>(value: item.studios),
+        FieldsEnum.TAGS.fieldName: FormControl<List<dynamic>>(value: item.tags),
+        FieldsEnum.GENRES.fieldName: FormControl<List<String?>>(value: item.genres)
       });
 
   @override
   Widget build(BuildContext context) {
+    final form = buildForm(context.read<FormBloc<Item>>().state.value);
+    context.read<FormBloc<Item>>().add(UpdateForm(formGroup: form));
+
     return ReactiveForm(
         formGroup: form,
         child: SingleChildScrollView(
@@ -84,27 +41,27 @@ class _MovieFormState extends State<MovieForm> {
               child: Column(
                 children: [
                   const SizedBox(height: 12.0),
-                  TitleField(form: form),
+                  const TitleField(),
                   const SizedBox(height: 24.0),
-                  OriginalTitleField(form: form),
+                  const OriginalTitleField(),
                   const SizedBox(height: 24.0),
-                  CommunityRatingField(form: form),
+                  const CommunityRatingField(),
                   const SizedBox(height: 24.0),
-                  DateCreatedField(form: form),
+                  const DateCreatedField(),
                   const SizedBox(height: 24.0),
-                  PremiereDateField(form: form),
+                  const PremiereDateField(),
                   const SizedBox(height: 24.0),
-                  ProductionYearField(form: form),
+                  const ProductionYearField(),
                   const SizedBox(height: 24.0),
-                  OverviewField(form: form),
+                  const OverviewField(),
                   const SizedBox(height: 24.0),
-                  PersonField(form: form, item: item),
+                  const PersonField(),
                   const SizedBox(height: 24.0),
-                  StudiosField(form: form, item: item),
+                  const StudiosField(),
                   const SizedBox(height: 24.0),
-                  GenresField(form: form, item: item),
+                  const GenresField(),
                   const SizedBox(height: 24.0),
-                  TagsField(form: form, item: item),
+                  const TagsField(),
                 ],
               )),
         ));

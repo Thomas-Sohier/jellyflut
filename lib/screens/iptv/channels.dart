@@ -42,48 +42,38 @@ class _ChannelsState extends State<Channels> {
                 child: Row(
                   children: [
                     OutlinedButtonSelector(
-                      onPressed: () => customRouter.push(
-                          DetailsRoute(item: channel, heroTag: channel.id)),
+                      onPressed: () => customRouter.push(DetailsRoute(item: channel, heroTag: channel.id)),
                       child: SizedBox(
                         width: 80,
-                        child: Stack(
-                            alignment: Alignment.center,
-                            clipBehavior: Clip.none,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 4, right: 4),
-                                child: Poster(
-                                    tag: ImageType.PRIMARY,
-                                    heroTag: channel.id,
-                                    clickable: false,
-                                    boxFit: BoxFit.contain,
-                                    item: channel),
-                              ),
-                              Positioned(
-                                  top: 0,
-                                  right: 0,
-                                  child: Card(
-                                      elevation: 2,
-                                      margin: EdgeInsets.zero,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 2, 4, 2),
-                                        child: Text(
-                                          channel.channelNumber ?? '',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2
-                                              ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimary)
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ))),
-                            ]),
+                        child: Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4, right: 4),
+                            child: Poster(
+                                tag: ImageType.PRIMARY,
+                                heroTag: channel.id,
+                                clickable: false,
+                                boxFit: BoxFit.contain,
+                                item: channel),
+                          ),
+                          Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Card(
+                                  elevation: 2,
+                                  margin: EdgeInsets.zero,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                                    child: Text(
+                                      channel.channelNumber ?? '',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2
+                                          ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)
+                                          .copyWith(fontSize: 12),
+                                    ),
+                                  ))),
+                        ]),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -106,12 +96,9 @@ class _ChannelsState extends State<Channels> {
   }
 
   Widget programBuilder(Item program) {
-    final width =
-        (program.endDate!.difference(program.startDate!).inMinutes * 10)
-            .toDouble();
+    final width = (program.endDate!.difference(program.startDate!).inMinutes * 10).toDouble();
     return OutlinedButtonSelector(
-      onPressed: () =>
-          customRouter.push(DetailsRoute(item: program, heroTag: program.id)),
+      onPressed: () => customRouter.push(DetailsRoute(item: program, heroTag: program.id)),
       child: Card(
           elevation: 0,
           margin: EdgeInsets.symmetric(horizontal: 4),
@@ -126,13 +113,10 @@ class _ChannelsState extends State<Channels> {
                   children: [
                     Expanded(
                       child: Text(
-                        program.name,
+                        program.name ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Expanded(

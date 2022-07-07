@@ -1,4 +1,4 @@
-import 'jellyfin.dart';
+import 'index.dart';
 
 class User {
   User({

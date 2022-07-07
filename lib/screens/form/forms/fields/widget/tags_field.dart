@@ -1,28 +1,9 @@
 part of '../fields.dart';
 
-class TagsField extends StatefulWidget {
-  final Item item;
-  final FormGroup form;
-  final double ITEM_HEIGHT = 35;
+class TagsField extends StatelessWidget {
+  static const double ITEM_HEIGHT = 35;
 
-  const TagsField({super.key, required this.form, required this.item});
-
-  @override
-  State<TagsField> createState() => _TagsFieldState();
-}
-
-class _TagsFieldState extends State<TagsField> {
-  late final Item item;
-  late final FormGroup form;
-  late final double ITEM_HEIGHT;
-
-  @override
-  void initState() {
-    item = widget.item;
-    form = widget.form;
-    ITEM_HEIGHT = widget.ITEM_HEIGHT;
-    super.initState();
-  }
+  const TagsField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +26,14 @@ class _TagsFieldState extends State<TagsField> {
   }
 
   List<Widget> generateAllTags(BuildContext context) {
+    final item = context.watch<FormBloc<Item>>().state.value;
+
     if (item.tags.isEmpty) return [];
     return item.tags.map((dynamic tag) => tagItem(tag, context)).toList();
   }
 
   Widget tagItem(String? tag, BuildContext context) {
+    final item = context.watch<FormBloc<Item>>().state.value;
     if (tag == null) return SizedBox();
     return Container(
         height: ITEM_HEIGHT,
@@ -66,13 +50,11 @@ class _TagsFieldState extends State<TagsField> {
                 Flexible(
                     child: Text(
                   tag.capitalize(),
-                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                      color: Theme.of(context).colorScheme.onSecondary),
+                  style:
+                      Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                 )),
                 IconButton(
-                    onPressed: () => setState(() {
-                          item.tags.removeAt(item.tags.indexOf(tag));
-                        }),
+                    onPressed: () => item.tags.removeAt(item.tags.indexOf(tag)),
                     padding: EdgeInsets.zero,
                     icon: Icon(
                       Icons.remove_circle_outline,

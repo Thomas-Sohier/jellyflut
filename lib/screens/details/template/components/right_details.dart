@@ -60,7 +60,7 @@ class RightDetailsView extends StatelessWidget {
       _boxAdapter(TaglineDetailsWidget(item: item)),
       _boxAdapter(const SizedBox(height: 24)),
       _boxAdapter(Row(children: [
-        TitleDetailsWidget(title: item.name),
+        TitleDetailsWidget(title: item.name ?? ''),
         const SizedBox(width: 8),
         RatingDetailsWidget(rating: item.officialRating),
       ])),
@@ -78,13 +78,13 @@ class RightDetailsView extends StatelessWidget {
         padding: horizotalScrollbaleWidgetPadding,
       )),
       // Shown only if current item is a series (because it contains seasons)
-      if (item.type == ItemType.SERIES)
+      if (item.type == ItemType.Series)
         SliverPersistentHeader(
           pinned: true,
           floating: false,
           delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
         ),
-      if (item.type == ItemType.SERIES) _boxAdapter(SeasonEpisode()),
+      if (item.type == ItemType.Series) _boxAdapter(SeasonEpisode()),
       _boxAdapter(const SizedBox(height: 24)),
     ]);
   }

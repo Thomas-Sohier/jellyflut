@@ -1,4 +1,4 @@
-import '../enum/enum.dart';
+import '../enum/index.dart';
 
 class ImageTag {
   final ImageType imageType;
@@ -8,11 +8,9 @@ class ImageTag {
 
   static List<ImageTag> fromMap(Map<String, dynamic> json) {
     final imageTags = <ImageTag>[];
-    json.forEach((key, value) => imageTags
-        .add(ImageTag(imageType: ImageType.fromString(key), value: value)));
+    json.forEach((key, value) => imageTags.add(ImageTag(imageType: ImageType.fromString(key), value: value)));
     return imageTags;
   }
 
-  Map<String, dynamic> toMap() =>
-      {'ImageType': imageType.value, 'value': value};
+  Map<String, dynamic> toMap() => {'ImageType': imageType.value, 'value': value};
 }

@@ -44,7 +44,7 @@ class DetailsView extends StatelessWidget {
                         ? Brightness.light
                         : Brightness.dark),
                 child: Scaffold(
-                    body: context.read<DetailsBloc>().state.item.type != ItemType.PHOTO
+                    body: context.read<DetailsBloc>().state.item.type != ItemType.Photo
                         ? const LargeDetails()
                         : const PhotoItem()))));
   }

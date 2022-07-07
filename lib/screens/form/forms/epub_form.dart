@@ -15,13 +15,12 @@ class EpubForm extends StatelessWidget {
       this.backgroundColor = Colors.black});
 
   FormGroup buildForm() => fb.group(<String, Object>{
-        FieldsEnum.FONTSIZE.name: FormControl<double>(
+        FieldsEnum.FONTSIZE.fieldName: FormControl<double>(
           value: fontSize,
           validators: [Validators.required],
         ),
-        FieldsEnum.FONTCOLOR.name: FormControl<Color>(value: fontColor),
-        FieldsEnum.BACKGROUNDCOLOR.name:
-            FormControl<Color>(value: backgroundColor),
+        FieldsEnum.FONTCOLOR.fieldName: FormControl<Color>(value: fontColor),
+        FieldsEnum.BACKGROUNDCOLOR.fieldName: FormControl<Color>(value: backgroundColor),
       });
 
   @override
@@ -36,19 +35,19 @@ class EpubForm extends StatelessWidget {
               FontSizeField(
                 form: form,
                 fieldName: 'Font size',
-                formKey: FieldsEnum.FONTSIZE.name,
+                formKey: FieldsEnum.FONTSIZE.fieldName,
               ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Font color',
-                formKey: FieldsEnum.FONTCOLOR.name,
+                formKey: FieldsEnum.FONTCOLOR.fieldName,
               ),
               const SizedBox(height: 24.0),
               ColorPickerField(
                 form: form,
                 fieldName: 'Background color',
-                formKey: FieldsEnum.BACKGROUNDCOLOR.name,
+                formKey: FieldsEnum.BACKGROUNDCOLOR.fieldName,
               )
             ],
           ),

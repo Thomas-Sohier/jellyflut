@@ -39,9 +39,9 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
     return ExcludeFocus(
       excluding: excluding,
       child: Stack(children: [
-        if (widget.item.collectionType == CollectionType.MOVIES ||
-            widget.item.collectionType == CollectionType.BOOKS ||
-            widget.item.collectionType == CollectionType.TVSHOWS)
+        if (widget.item.collectionType == CollectionType.Movies ||
+            widget.item.collectionType == CollectionType.Books ||
+            widget.item.collectionType == CollectionType.TvShows)
           ChangeNotifierProvider.value(value: carrousselProvider, child: CarrousselBackGroundImage()),
         ListItems.fromFuture(
             itemsFuture: getItems(item: widget.item),
@@ -61,7 +61,7 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
         imageTypeLimit: 1,
         recursive: false,
         startIndex: startIndex,
-        includeItemTypes: item.getCollectionType().map((ItemType e) => e.value).toList().join(','),
+        includeItemTypes: item.getCollectionType().map((ItemType e) => e.name).toList().join(','),
         limit: limit);
   }
 }

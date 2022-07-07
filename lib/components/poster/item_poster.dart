@@ -64,8 +64,7 @@ class _ItemPosterState extends State<ItemPoster> {
     _node = FocusNode();
     // hero tag setter
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
-    aspectRatio = widget.widgetAspectRatio ??
-        widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
+    aspectRatio = widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
     super.initState();
   }
 
@@ -117,10 +116,8 @@ class _ItemPosterState extends State<ItemPoster> {
                 IgnorePointer(
                     child: Stack(
                   children: [
-                    if (widget.item.isNew())
-                      Positioned(top: 8, left: 8, child: newBanner()),
-                    if (widget.item.isPlayed())
-                      Positioned(top: 8, right: 8, child: playedBanner()),
+                    if (widget.item.isNew()) Positioned(top: 8, left: 8, child: newBanner()),
+                    if (widget.item.isPlayed()) Positioned(top: 8, right: 8, child: playedBanner()),
                   ],
                 )),
               if (widget.showLogo && widget.showOverlay)
@@ -137,10 +134,7 @@ class _ItemPosterState extends State<ItemPoster> {
   }
 
   Widget progress() {
-    return Positioned.fill(
-        child: Align(
-            alignment: Alignment.bottomCenter,
-            child: IgnorePointer(child: progressBar())));
+    return Positioned.fill(child: Align(alignment: Alignment.bottomCenter, child: IgnorePointer(child: progressBar())));
   }
 
   Widget name() {
@@ -149,15 +143,12 @@ class _ItemPosterState extends State<ItemPoster> {
         Align(
           alignment: Alignment.topCenter,
           child: Text(
-            widget.showParent ? widget.item.parentName() : widget.item.name,
+            widget.showParent ? widget.item.parentName() : widget.item.name ?? '',
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             softWrap: false,
             maxLines: 1,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(fontSize: 16, color: textColor),
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16, color: textColor),
           ),
         ),
         if (hasSubTitle)
@@ -165,10 +156,7 @@ class _ItemPosterState extends State<ItemPoster> {
             'Season ${widget.item.parentIndexNumber}, Episode ${widget.item.indexNumber}',
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(fontSize: 12, color: textColor),
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 12, color: textColor),
             textAlign: TextAlign.center,
           ),
       ],
@@ -181,9 +169,7 @@ class _ItemPosterState extends State<ItemPoster> {
       decoration: BoxDecoration(
           color: Colors.blue.shade700,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
-          ]),
+          boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)]),
       child: Icon(
         Icons.new_releases,
         size: 20,
@@ -198,9 +184,7 @@ class _ItemPosterState extends State<ItemPoster> {
       decoration: BoxDecoration(
           color: Colors.green.shade700,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
-          ]),
+          boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)]),
       child: Icon(
         Icons.check,
         size: 20,
@@ -213,15 +197,12 @@ class _ItemPosterState extends State<ItemPoster> {
     return FractionallySizedBox(
         widthFactor: 0.9,
         heightFactor: 0.2,
-        child: Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: ProgressBar(item: widget.item)));
+        child: Padding(padding: const EdgeInsets.only(bottom: 8.0), child: ProgressBar(item: widget.item)));
   }
 
   void updatePosterProperties() {
     hasTitle = widget.showName;
-    hasSubTitle =
-        widget.item.isFolder != null && widget.item.parentIndexNumber != null;
+    hasSubTitle = widget.item.isFolder != null && widget.item.parentIndexNumber != null;
 
     if (hasTitle && hasSubTitle) {
       posterFlexSize = 8;

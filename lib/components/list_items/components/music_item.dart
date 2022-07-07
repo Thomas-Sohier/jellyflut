@@ -92,7 +92,7 @@ class _MusicItemState extends State<MusicItem> {
   }
 
   Widget titlesInAlbum() {
-    if (widget.item.type == ItemType.MUSICALBUM) {
+    if (widget.item.type == ItemType.MusicAlbum) {
       final numberOfTitle = widget.item.childCount ?? 0;
       return Row(
         children: [
@@ -117,7 +117,7 @@ class _MusicItemState extends State<MusicItem> {
 
   Widget title() {
     return Flexible(
-      child: Text(widget.item.name,
+      child: Text(widget.item.name ?? '',
           textAlign: TextAlign.left,
           maxLines: 2,
           style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18, fontWeight: FontWeight.bold)),

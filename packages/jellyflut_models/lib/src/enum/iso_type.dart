@@ -1,0 +1,4 @@
+enum IsoType {
+  Dvd,
+  BluRay;
+}

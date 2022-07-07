@@ -1,19 +1,14 @@
-class ExternalUrl {
-  ExternalUrl({
-    required this.name,
-    required this.url,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  String name;
-  String url;
+part 'external_url.freezed.dart';
+part 'external_url.g.dart';
 
-  factory ExternalUrl.fromMap(Map<String, dynamic> json) => ExternalUrl(
-        name: json['Name'],
-        url: json['Url'],
-      );
+@Freezed()
+class ExternalUrl with _$ExternalUrl {
+  factory ExternalUrl({
+    String? name,
+    String? url,
+  }) = _ExternalUrl;
 
-  Map<String, dynamic> toMap() => {
-        'Name': name,
-        'Url': url,
-      };
+  factory ExternalUrl.fromJson(Map<String, Object?> json) => _$ExternalUrlFromJson(json);
 }

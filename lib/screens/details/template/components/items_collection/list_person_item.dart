@@ -25,17 +25,17 @@ class _ListPersonItemState extends State<ListPersonItem> {
   void initState() {
     super.initState();
     seriesFuture = context.read<ItemsRepository>().getCategory(
-        includeItemTypes: ItemType.SERIES.value,
+        includeItemTypes: ItemType.Series.name,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
     moviesFuture = context.read<ItemsRepository>().getCategory(
-        includeItemTypes: ItemType.MOVIE.value,
+        includeItemTypes: ItemType.Movie.name,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);
     audiosFuture = context.read<ItemsRepository>().getCategory(
-        includeItemTypes: ItemType.AUDIO.value,
+        includeItemTypes: ItemType.Audio.name,
         sortBy: 'ProductionYear,Sortname',
         personIds: widget.item.id,
         fields: FIELDS);

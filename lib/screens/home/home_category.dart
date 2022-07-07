@@ -31,7 +31,7 @@ class _HomeCategoryState extends State<HomeCategory> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    categoryTitle = widget.item.name;
+    categoryTitle = widget.item.name ?? '';
     scrollController = ScrollController(initialScrollOffset: 0);
     homeCategoryprovider = HomeCategoryProvider();
     checkIfCategoryInitialized();

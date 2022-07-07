@@ -41,9 +41,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
         drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
         routes: routes,
         appBarBuilder: (_, __) => AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            flexibleSpace: HeaderBar(),
-            bottom: tabbar()),
+            backgroundColor: Theme.of(context).colorScheme.background, flexibleSpace: HeaderBar(), bottom: tabbar()),
         builder: (context, child, animation) {
           return PageTransitionSwitcher(
             transitionBuilder: (
@@ -72,7 +70,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
     routes.add(HomeRoute(key: UniqueKey()));
     for (var item in i) {
       switch (item.collectionType) {
-        case CollectionType.LIVETV:
+        case CollectionType.TvShows:
           routes.add(IptvRoute(key: UniqueKey()));
           break;
         default:
@@ -87,9 +85,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
       return PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: Consumer<HomeTabsProvider>(
-              builder: (_, provider, ___) => TabBar(
-                  controller: provider.getTabController,
-                  tabs: provider.getTabs)));
+              builder: (_, provider, ___) => TabBar(controller: provider.getTabController, tabs: provider.getTabs)));
     }
     return null;
   }

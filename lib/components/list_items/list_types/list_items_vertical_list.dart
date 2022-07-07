@@ -42,10 +42,7 @@ class ListItemsVerticalList extends StatelessWidget {
     if (deviceType == DeviceScreenType.mobile && index + 1 < items.length) {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 4, bottom: 4),
-        child: Divider(
-            height: 2,
-            thickness: 2,
-            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
+        child: Divider(height: 2, thickness: 2, color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
       );
     }
     return const SizedBox();
@@ -53,28 +50,23 @@ class ListItemsVerticalList extends StatelessWidget {
 
   Widget itemSelector(final Item item) {
     switch (item.type) {
-      case ItemType.AUDIO:
-      case ItemType.MUSICALBUM:
+      case ItemType.Audio:
+      case ItemType.MusicAlbum:
         // Music items will fit automatically
         return ConstrainedBox(
-            constraints: BoxConstraints(
-                maxHeight: verticalListPosterHeight, minHeight: 50),
+            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
             child: MusicItem(item: item));
-      case ItemType.MOVIE:
-      case ItemType.EPISODE:
+      case ItemType.Movie:
+      case ItemType.Episode:
         // Episode items need height to avoid unbounded height
         return ConstrainedBox(
-            constraints: BoxConstraints(
-                maxHeight: verticalListPosterHeight, minHeight: 50),
-            child: EpisodeItem(
-                item: item, boxFit: boxFit, placeholder: placeholder));
+            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
+            child: EpisodeItem(item: item, boxFit: boxFit, placeholder: placeholder));
       default:
         // Episode items need height to avoid unbounded height
         return ConstrainedBox(
-            constraints: BoxConstraints(
-                maxHeight: verticalListPosterHeight, minHeight: 50),
-            child: EpisodeItem(
-                item: item, boxFit: boxFit, placeholder: placeholder));
+            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
+            child: EpisodeItem(item: item, boxFit: boxFit, placeholder: placeholder));
     }
   }
 }

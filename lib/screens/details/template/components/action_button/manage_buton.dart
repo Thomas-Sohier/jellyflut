@@ -5,16 +5,6 @@ class ManageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => FormBloc<Item>(context.read<ItemsRepository>()), child: const ManageButtonView());
-  }
-}
-
-class ManageButtonView extends StatelessWidget {
-  const ManageButtonView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return PaletteButton('manage'.tr(),
         onPressed: () => dialog(context),
         minWidth: 40,
@@ -22,61 +12,65 @@ class ManageButtonView extends StatelessWidget {
         icon: Icon(Icons.settings, color: Colors.black87));
   }
 
-  void dialog(BuildContext context) {
+  void dialog(BuildContext superContext) {
     showDialog(
       barrierDismissible: false,
       barrierLabel: 'Dialog',
-      builder: (c) => dialogParent(c, context),
-      context: context,
+      builder: (context) => MultiBlocProvider(providers: [
+        BlocProvider.value(value: superContext.read<DetailsBloc>()),
+        BlocProvider(
+            create: (_) => FormBloc<Item>(
+                itemsRepository: context.read<ItemsRepository>(), value: superContext.read<DetailsBloc>().state.item)),
+      ], child: const Dialog()),
+      context: superContext,
     );
   }
+}
 
-  Widget dialogParent(BuildContext currentContext, BuildContext parentContext) {
+class Dialog extends StatelessWidget {
+  const Dialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Theme(
-      data: currentContext.read<ThemeProvider>().getThemeData,
+      data: context.read<ThemeProvider>().getThemeData,
       child: Material(
         color: Colors.transparent,
-        child: Center(child: dialogBuilder(parentContext)),
+        child: Center(child: dialogBuilder(context)),
       ),
     );
   }
 
-  Widget dialogBuilder(BuildContext parentContext) {
+  Widget dialogBuilder(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
-        bloc: parentContext.read<DetailsBloc>(),
+        bloc: context.read<DetailsBloc>(),
         buildWhen: (previous, current) => previous.screenLayout != current.screenLayout,
-        builder: (context, state) {
+        builder: (_, state) {
           if (state.screenLayout == ScreenLayout.desktop) {
             return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
-                  child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody(context)),
+                  child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody()),
                 ));
           }
-          return dialogBody(parentContext, true);
+          return dialogBody(expanded: true);
         });
   }
 
-  Widget dialogBody(BuildContext parentContext, [bool expanded = false]) {
-    return BlocConsumer<FormBloc<Item>, FormState>(
-      bloc: parentContext.read<FormBloc<Item>>(),
-      listener: (context, state) => {},
+  Widget dialogBody({bool expanded = false}) {
+    return BlocConsumer<FormBloc<Item>, FormState<Item>>(
+      listener: (context, state) {
+        if (state.formStatus == FormStatus.submitted) {
+          context.read<DetailsBloc>().add(DetailsItemUpdate(item: state.value));
+          context.read<FormBloc<Item>>().add(ResetForm());
+          customRouter.pop();
+        }
+      },
       builder: (context, state) => DialogStructure(
-          formBloc: parentContext.read<FormBloc<Item>>(),
           expanded: expanded,
-          onClose: closeDialogAndResetForm,
-          onSubmit: () => submitFormAndUpdateView(parentContext)),
+          onClose: customRouter.pop,
+          onSubmit: () => context.read<FormBloc<Item>>().add(FormSubmitted())),
     );
-  }
-
-  void submitFormAndUpdateView(BuildContext parentContext) {
-    parentContext.read<FormBloc<Item>>().add(FormSubmitted());
-    parentContext.read<DetailsBloc>().add(DetailsItemUpdate(item: parentContext.read<FormBloc<Item>>().value));
-    parentContext.read<FormBloc<Item>>().add(RefreshForm());
-  }
-
-  void closeDialogAndResetForm() {
-    customRouter.pop();
   }
 }

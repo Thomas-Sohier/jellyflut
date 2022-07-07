@@ -52,7 +52,7 @@ class InitStreamingItemUtil {
 class InitStreamingUrlUtil {
   static Future<Widget> initFromUrl({required String url, required String streamName}) async {
     final controller = await initControllerFromUrl(url: url, streamName: streamName);
-    final item = Item(id: '0', name: streamName, type: ItemType.VIDEO);
+    final item = Item(id: '0', name: streamName, type: ItemType.Video);
     final streamingProvider = StreamingProvider();
     streamingProvider.setItem(item);
     streamingProvider.commonStream?.controller = controller;

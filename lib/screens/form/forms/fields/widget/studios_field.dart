@@ -1,31 +1,13 @@
 part of '../fields.dart';
 
-class StudiosField extends StatefulWidget {
-  final Item item;
-  final FormGroup form;
-  final double ITEM_HEIGHT = 40;
+class StudiosField extends StatelessWidget {
+  static const double ITEM_HEIGHT = 40;
 
-  const StudiosField({super.key, required this.form, required this.item});
-
-  @override
-  State<StudiosField> createState() => _StudiosFieldState();
-}
-
-class _StudiosFieldState extends State<StudiosField> {
-  late final Item item;
-  late final FormGroup form;
-  late final double ITEM_HEIGHT;
-
-  @override
-  void initState() {
-    item = widget.item;
-    form = widget.form;
-    ITEM_HEIGHT = widget.ITEM_HEIGHT;
-    super.initState();
-  }
+  const StudiosField({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final item = context.watch<FormBloc<Item>>().state.value;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,8 +22,7 @@ class _StudiosFieldState extends State<StudiosField> {
             scrollDirection: Axis.vertical,
             itemCount: item.studios.length,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) =>
-                studioItem(item.studios.elementAt(index).name, index, context),
+            itemBuilder: (context, index) => studioItem(item.studios.elementAt(index).name, index, context),
           ),
         ),
       ],
@@ -55,26 +36,19 @@ class _StudiosFieldState extends State<StudiosField> {
       height: ITEM_HEIGHT,
       child: Padding(
         padding: const EdgeInsets.only(top: 4, bottom: 4),
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(name,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1!
-                        .copyWith(color: headlineColor!.withAlpha(210))),
-              ),
-              Spacer(),
-              IconButton(
-                  onPressed: () => setState(() {
-                        item.studios.removeAt(index);
-                      }),
-                  hoverColor: Colors.red.withOpacity(0.1),
-                  icon: Icon(Icons.delete_outline, color: Colors.red))
-            ]),
+        child:
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+          Expanded(
+            child: Text(name,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: headlineColor!.withAlpha(210))),
+          ),
+          Spacer(),
+          IconButton(
+              onPressed: () => context.read<FormBloc<Item>>().state.value.studios.removeAt(index),
+              hoverColor: Colors.red.withOpacity(0.1),
+              icon: Icon(Icons.delete_outline, color: Colors.red))
+        ]),
       ),
     );
   }

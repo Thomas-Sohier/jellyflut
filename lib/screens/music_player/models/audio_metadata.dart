@@ -23,18 +23,14 @@ class AudioMetadata {
   });
 
   static Future<AudioSource> parseFromItem(String url, Item item) async {
-    final urlImage = ItemImageService.getItemImageUrl(
-        item.correctImageId(), item.correctImageTags());
+    final urlImage = ItemImageService.getItemImageUrl(item.correctImageId(), item.correctImageTags());
 
     // Detect if media is available locally or only remotely
     late final Uint8List artwork;
     if (url.startsWith(RegExp('^(http|https)://'))) {
-      artwork = (await NetworkAssetBundle(Uri.parse(urlImage)).load(urlImage))
-          .buffer
-          .asUint8List();
+      artwork = (await NetworkAssetBundle(Uri.parse(urlImage)).load(urlImage)).buffer.asUint8List();
     } else {
-      final download =
-          await AppDatabase().getDatabase.downloadsDao.getDownloadById(item.id);
+      final download = await AppDatabase().getDatabase.downloadsDao.getDownloadById(item.id);
       artwork = download.primary ?? Uint8List(0);
     }
 
@@ -42,10 +38,8 @@ class AudioMetadata {
         metadata: AudioMetadata(
             item: item,
             album: item.album,
-            title: item.name,
-            artist: item.artists.isNotEmpty
-                ? item.artists.map((e) => e.name.trim()).join(', ').toString()
-                : '',
+            title: item.name ?? '',
+            artist: item.artists.isNotEmpty ? item.artists.join(', ').toString() : '',
             artworkUrl: null,
             artworkByte: artwork));
   }

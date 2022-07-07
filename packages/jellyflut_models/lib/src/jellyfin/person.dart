@@ -1,4 +1,4 @@
-import '../enum/enum.dart';
+import '../enum/index.dart';
 import 'image_blur_hashes.dart';
 import 'item.dart';
 
@@ -26,7 +26,7 @@ class Person {
         type: PersonType.fromString(json['Type']),
         primaryImageTag: json['PrimaryImageTag'],
         imageBlurHashes: json['ImageBlurHashes'] != null
-            ? ImageBlurHashes.fromMap(json['ImageBlurHashes'])
+            ? ImageBlurHashes.fromJson(json['ImageBlurHashes'])
             : json['ImageBlurHashes'],
       );
 
@@ -36,14 +36,10 @@ class Person {
         'Role': role,
         'Type': type,
         'PrimaryImageTag': primaryImageTag,
-        'ImageBlurHashes': imageBlurHashes?.toMap(),
+        'ImageBlurHashes': imageBlurHashes?.toJson(),
       };
 
   Item asItem() {
-    return Item(
-        id: id,
-        name: name,
-        type: ItemType.PERSON,
-        imageBlurHashes: imageBlurHashes);
+    return Item(id: id, name: name, type: ItemType.Person, imageBlurHashes: imageBlurHashes);
   }
 }
