@@ -1,19 +1,15 @@
 import 'dart:convert';
-import '../serializer/json_deserializer.dart';
-import '../serializer/json_serializer.dart';
 import 'package:drift/drift.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
-class JsonConverter extends TypeConverter<Map<String, dynamic>, String> {
+class JsonConverter extends TypeConverter<Item, String> {
   const JsonConverter();
 
   @override
-  Map<String, dynamic>? mapToDart(String? fromDb) => fromDb == null
-      ? null
-      : json.decode(fromDb, reviver: JsonDeserializer.jellyfinDeserializer);
+  Item? mapToDart(String? fromDb) => fromDb == null ? null : Item.fromJson(json.decode(fromDb));
 
   @override
-  String? mapToSql(Map<String, dynamic>? value) =>
-      jsonEncode(value, toEncodable: JsonSerializer.jellyfinSerializer);
+  String? mapToSql(Item? value) => value?.toJson().toString();
 }
 
 class Downloads extends Table {

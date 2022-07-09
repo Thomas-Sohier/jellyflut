@@ -7,10 +7,9 @@ import 'package:jellyflut/screens/home/components/error/error_user_actions.dart'
 import 'package:jellyflut/screens/home/header_bar.dart';
 
 class OffLineScreen extends StatelessWidget {
-  final Error? error;
+  final Object? error;
   final void Function() reloadFunction;
-  const OffLineScreen(
-      {super.key, required this.error, required this.reloadFunction});
+  const OffLineScreen({super.key, required this.error, required this.reloadFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +39,15 @@ class OffLineScreen extends StatelessWidget {
                   children: [
                     Icon(iconError, size: 24),
                     const SizedBox(height: 18),
-                    Text(
-                        'You seems to not be able to access your server or to have internet',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1),
+                    Text('You seems to not be able to access your server or to have internet',
+                        textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
                     const SizedBox(height: 12),
                     PaletteButton('Go to my offline library',
-                        borderRadius: 4,
-                        minHeight: 40,
-                        onPressed: () => customRouter.push(DownloadsRoute())),
+                        borderRadius: 4, minHeight: 40, onPressed: () => customRouter.push(DownloadsRoute())),
                     Divider(height: 32),
                     ErrorUserActions(
                         reloadFunction: reloadFunction,
-                        errorMessage:
-                            '${error.toString()}\n${error?.stackTrace.toString()})')
+                        errorMessage: '${error.toString()}\n${Error.safeToString(error).toString()})')
                   ],
                 ),
               ),

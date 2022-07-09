@@ -70,7 +70,7 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
     routes.add(HomeRoute(key: UniqueKey()));
     for (var item in i) {
       switch (item.collectionType) {
-        case CollectionType.TvShows:
+        case CollectionType.tvshows:
           routes.add(IptvRoute(key: UniqueKey()));
           break;
         default:

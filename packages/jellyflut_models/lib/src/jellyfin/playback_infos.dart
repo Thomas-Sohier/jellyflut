@@ -31,9 +31,7 @@ class PlayBackInfos {
       };
 
   List<MediaStream> getSubtitles() {
-    return mediaSources.first.mediaStreams != null
-        ? mediaSources.first.mediaStreams.where((element) => element.type == MediaStreamType.SUBTITLE).toList()
-        : [];
+    return mediaSources.first.mediaStreams.where((element) => element.type == MediaStreamType.Subtitle).toList();
   }
 
   bool hasError() {

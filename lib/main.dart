@@ -26,8 +26,8 @@ void main() async {
   final databaseDownloadsApi = DatabaseDownloadsApi(
     database: AppDatabase().getDatabase,
   );
-  final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin!.id, dioClient: dio);
-  final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin!.id, dioClient: dio);
+  final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
+  final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
 
   bootstrap(authenticated: authenticated, downloadsApi: databaseDownloadsApi, itemsApi: itemsApi, usersApi: usersApi);
 }

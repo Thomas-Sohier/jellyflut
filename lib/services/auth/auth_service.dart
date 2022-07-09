@@ -59,7 +59,7 @@ class AuthService {
 
     final serverId = await createOrGetServer(server);
     final userId = await createOrGetUser(name, authenticationResponse, password, serverId);
-    final user = await db.usersAppDao.getUserById(userId);
+    final user = await db.userAppDao.getUserById(userId);
     await _saveToSharedPreferences(user.serverId, user.settingsId, user.id, authenticationResponse);
     return await _saveToGlobals();
   }
@@ -77,7 +77,7 @@ class AuthService {
   static Future<int> createOrGetUser(
       String name, AuthenticationResponse authenticationResponse, String password, int serverId) async {
     final db = AppDatabase().getDatabase;
-    return db.usersAppDao.getUserByNameAndServerId(name, serverId).then((value) => value.id).catchError((e) async {
+    return db.userAppDao.getUserByNameAndServerId(name, serverId).then((value) => value.id).catchError((e) async {
       // Create default settings if not present
       final settingsCompanion = SettingsCompanion.insert();
       final settingsId = await db.settingsDao.createSettings(settingsCompanion);
@@ -89,7 +89,7 @@ class AuthService {
           apiKey: authenticationResponse.accessToken,
           settingsId: Value(settingsId),
           serverId: Value(serverId));
-      return db.usersAppDao.createUser(userCompanion);
+      return db.userAppDao.createUser(userCompanion);
     });
   }
 
@@ -110,7 +110,7 @@ class AuthService {
     final serverId = sharedPreferences.getInt('serverId');
     server = await db.serversDao.getServerById(serverId!);
     final userAppId = sharedPreferences.getInt('userAppId');
-    userApp = await db.usersAppDao.getUserById(userAppId!);
+    userApp = await db.userAppDao.getUserById(userAppId!);
     apiKey = sharedPreferences.getString('apiKey');
     final user = User.fromMap(json.decode(sharedPreferences.getString('user')!));
     userJellyfin = user;

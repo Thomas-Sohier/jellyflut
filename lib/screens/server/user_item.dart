@@ -10,8 +10,7 @@ import '../../shared/utils/color_util.dart';
 class UserItem extends StatelessWidget {
   final UserAppData user;
   final void Function(UserAppData user) onUserSelection;
-  const UserItem(
-      {super.key, required this.user, required this.onUserSelection});
+  const UserItem({super.key, required this.user, required this.onUserSelection});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +19,7 @@ class UserItem extends StatelessWidget {
       children: [
         Expanded(
           child: Card(
-              color: ColorUtil.darken(
-                  Theme.of(context).colorScheme.background, 0.05),
+              color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05),
               child: Ink(
                   child: InkWell(
                       onTap: () => onUserSelection(user),
@@ -43,19 +41,14 @@ class UserItem extends StatelessWidget {
                                       user.name.capitalize(),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
+                                      style: Theme.of(context).textTheme.titleMedium,
                                     ),
                                     if (inUse)
                                       Text('in use',
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall
-                                              ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .tertiary)),
+                                              ?.copyWith(color: Theme.of(context).colorScheme.tertiary)),
                                   ]),
                             ),
                           ],
@@ -65,11 +58,10 @@ class UserItem extends StatelessWidget {
         IconButton(
             onPressed: () async {
               final u = UserAppCompanion(id: Value(userApp!.id));
-              await AppDatabase().getDatabase.usersAppDao.deleteUser(u);
+              await AppDatabase().getDatabase.userAppDao.deleteUser(u);
               if (inUse) await AuthService.logout();
             },
-            icon: Icon(Icons.delete,
-                color: Theme.of(context).colorScheme.secondary))
+            icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary))
       ],
     );
   }

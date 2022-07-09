@@ -16,8 +16,8 @@ class Item with _$Item {
 
   const factory Item(
       {required String id,
-      String? name,
       String? originalTitle,
+      String? name,
       String? serverId,
       String? etag,
       String? sourceType,
@@ -293,12 +293,12 @@ class Item with _$Item {
 
   bool isCollectionPlayable() {
     final playableItems = [
-      CollectionType.Books,
-      CollectionType.HomeVideos,
-      CollectionType.Movies,
-      CollectionType.TvShows,
-      CollectionType.MusicVideos,
-      CollectionType.Music,
+      CollectionType.books,
+      CollectionType.homevideos,
+      CollectionType.movies,
+      CollectionType.tvshows,
+      CollectionType.musicvideos,
+      CollectionType.music,
     ];
     return playableItems.contains(collectionType);
   }
@@ -355,7 +355,7 @@ class Item with _$Item {
   double getAspectRatio() {
     MediaStream mediaStream;
     if (mediaStreams.isNotEmpty && mediaStreams.isNotEmpty) {
-      mediaStream = mediaStreams.firstWhere((element) => element.type == MediaStreamType.VIDEO);
+      mediaStream = mediaStreams.firstWhere((element) => element.type == MediaStreamType.Video);
 
       // If aspect ratio is specified then we use it
       // else we calculate it
@@ -513,19 +513,19 @@ class Item with _$Item {
   /// Return correct collection type based on item one
   /// If nothing found then return current one
   List<ItemType> getCollectionType() {
-    if (collectionType == CollectionType.Movies) {
+    if (collectionType == CollectionType.movies) {
       return [ItemType.Movie];
-    } else if (collectionType == CollectionType.TvShows) {
+    } else if (collectionType == CollectionType.tvshows) {
       return [ItemType.Series];
-    } else if (collectionType == CollectionType.Music) {
+    } else if (collectionType == CollectionType.music) {
       return [ItemType.MusicAlbum, ItemType.Audio];
-    } else if (collectionType == CollectionType.Books) {
+    } else if (collectionType == CollectionType.books) {
       return [ItemType.Book];
-    } else if (collectionType == CollectionType.HomeVideos) {
+    } else if (collectionType == CollectionType.homevideos) {
       return [ItemType.Video];
-    } else if (collectionType == CollectionType.BoxSets) {
+    } else if (collectionType == CollectionType.boxsets) {
       return [ItemType.BoxSet];
-    } else if (collectionType == CollectionType.Mixed) {
+    } else if (collectionType == CollectionType.mixed) {
       return [
         ItemType.Folder,
         ItemType.Audio,
@@ -535,7 +535,7 @@ class Item with _$Item {
         ItemType.Series,
         ItemType.Movie
       ];
-    } else if (collectionType == CollectionType.MusicVideos) {
+    } else if (collectionType == CollectionType.musicvideos) {
       return [ItemType.MusicVideo];
     } else {
       return [];

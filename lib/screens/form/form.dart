@@ -3,41 +3,64 @@ import 'package:flutter/material.dart' hide FormState;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
+import 'package:jellyflut/screens/form/forms/default_form.dart';
+import 'package:jellyflut/screens/form/forms/movie_form.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-
-import 'forms/movie_form.dart';
-import 'forms/default_form.dart';
 
 class FormBuilder<T extends Object> extends StatelessWidget {
   const FormBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FormBloc<T>, FormState<T>>(
-        listener: (context, state) {
-          switch (state.formStatus) {
-            case FormStatus.submitted:
-              SnackbarUtil.message('form_submit_success'.tr(), Icons.check, Colors.green, context: context);
-              break;
-            case FormStatus.failure:
-              SnackbarUtil.message('form_submit_error'.tr(), Icons.error, Colors.red, context: context);
-              break;
-            default:
-          }
-        },
-        child: formSelector(context.read<FormBloc<T>>().state.value));
-  }
-
-  Widget formSelector(T value) {
-    if (value is Item) {
-      switch (value.type) {
-        case ItemType.Movie:
-          return const MovieForm();
+    return BlocConsumer<FormBloc, FormState>(listener: (context, state) {
+      switch (state.formStatus) {
+        case FormStatus.submitted:
+          SnackbarUtil.message('form_submit_success'.tr(), Icons.check, Colors.green, context: context);
+          break;
+        case FormStatus.failure:
+          SnackbarUtil.message('form_submit_error'.tr(), Icons.error, Colors.red, context: context);
+          break;
         default:
-          return const DefaultForm();
       }
+    }, builder: (_, state) {
+      switch (state.formStatus) {
+        case FormStatus.loading:
+          return const Center(
+            child: Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+          );
+        case FormStatus.failure:
+        case FormStatus.loaded:
+          return const FormLoader();
+        default:
+          return const NoForm();
+      }
+    });
+  }
+}
+
+class FormLoader extends StatelessWidget {
+  const FormLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final item = context.read<FormBloc>().state.item;
+    switch (item.type) {
+      case ItemType.Movie:
+        return const MovieForm();
+      default:
+        return const DefaultForm();
     }
-    return const SizedBox();
+  }
+}
+
+class NoForm extends StatelessWidget {
+  const NoForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('No form found to edit this'),
+    );
   }
 }

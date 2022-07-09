@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:jellyflut_models/jellyflut_models.dart';
-
-import 'json_serializer.dart';
 
 /// Exception thrown when item request fails.
 class ItemViewRequestFailure implements Exception {}
@@ -32,12 +29,13 @@ class ViewRequestFailure implements Exception {}
 /// A dart API client for the Jellyfin Item API
 /// {@endtemplate}
 class ItemsApi {
-  /// {@macro items_api}S
-  ItemsApi({required String serverUrl, required String userId, Dio? dioClient})
+  /// {@macro items_api}
+  ItemsApi({required String serverUrl, String? userId, Dio? dioClient})
       : _dioClient = dioClient ?? Dio(),
         _serverUrl = serverUrl,
-        _userId = userId;
+        _userId = userId ?? _notLoggedUserId;
 
+  static const _notLoggedUserId = '-1';
   final Dio _dioClient;
   String _userId;
   String _serverUrl;
@@ -299,31 +297,12 @@ class ItemsApi {
   /// Update item an return updated object
   ///
   /// Can throw [ItemUpdateFailure]
-  Future<void> updateItem({required Item itemDTO}) async {
+  Future<void> updateItem({required Item item}) async {
     try {
-      final payload = itemDTO.toJson();
+      // final payload = item.toJson();
       final response = await _dioClient.post<void>(
-        '$_serverUrl/Items/${itemDTO.id}',
-        data: payload,
-      );
-
-      if (response.statusCode != 204) {
-        throw ItemUpdateFailure();
-      }
-    } catch (_) {
-      throw ItemUpdateFailure();
-    }
-  }
-
-  /// Update item an return updated object
-  ///
-  /// Can throw [ItemUpdateFailure]
-  Future<void> updateItemFromForm({required String itemId, required Map<String, Object?> form}) async {
-    try {
-      final payload = json.encode(form, toEncodable: JsonSerializer.jellyfinSerializer);
-      final response = await _dioClient.post<void>(
-        '$_serverUrl/Items/$itemId',
-        data: payload,
+        '$_serverUrl/Items/${item.id}',
+        data: item,
       );
 
       if (response.statusCode != 204) {

@@ -1,19 +1,22 @@
 part of 'form_bloc.dart';
 
-enum FormStatus { initial, submitted, failure }
+enum FormStatus { loading, loaded, submitted, failure }
 
 @immutable
-class FormState<T> extends Equatable {
-  final FormGroup form;
-  final T value;
+class FormState extends Equatable {
+  final FormBuilder formBuilder;
   final FormStatus formStatus;
+  final Item item;
 
-  const FormState({required this.form, required this.value, this.formStatus = FormStatus.initial});
+  const FormState({required this.formBuilder, required this.item, this.formStatus = FormStatus.loading});
 
-  FormState<T> copyWith({FormGroup? form, T? value, FormStatus? formStatus}) {
-    return FormState(value: value ?? this.value, form: form ?? this.form, formStatus: formStatus ?? this.formStatus);
+  FormState copyWith({FormBuilder? formBuilder, Item? item, FormStatus? formStatus}) {
+    return FormState(
+        item: item ?? this.item,
+        formBuilder: formBuilder ?? this.formBuilder,
+        formStatus: formStatus ?? this.formStatus);
   }
 
   @override
-  List<Object> get props => [form, formStatus];
+  List<Object> get props => [formBuilder, item, formStatus];
 }

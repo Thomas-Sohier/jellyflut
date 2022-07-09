@@ -4,21 +4,21 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 
 IconData getRightIconForCollectionType(CollectionType? collectionType) {
   switch (collectionType) {
-    case CollectionType.Books:
+    case CollectionType.books:
       return Icons.book_outlined;
-    case CollectionType.TvShows:
+    case CollectionType.tvshows:
       return Icons.tv_outlined;
-    case CollectionType.BoxSets:
+    case CollectionType.boxsets:
       return Icons.account_box_outlined;
-    case CollectionType.Movies:
+    case CollectionType.movies:
       return Icons.movie_outlined;
-    case CollectionType.Music:
+    case CollectionType.music:
       return Icons.music_note_outlined;
-    case CollectionType.HomeVideos:
+    case CollectionType.homevideos:
       return Icons.video_camera_back_outlined;
-    case CollectionType.MusicVideos:
+    case CollectionType.musicvideos:
       return Icons.music_video_outlined;
-    case CollectionType.Mixed:
+    case CollectionType.mixed:
       return Icons.blender_outlined;
     default:
       return Icons.tv;

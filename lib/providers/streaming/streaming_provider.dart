@@ -6,8 +6,7 @@ import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/init_stream/init_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/media_type.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart'
-    as streaming_subtitle;
+import 'package:jellyflut/screens/stream/model/subtitle.dart' as streaming_subtitle;
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -27,8 +26,7 @@ class StreamingProvider {
   late BehaviorSubject<StreamingEvent> streamingEvent;
 
   // Singleton
-  static final StreamingProvider _streamProvider =
-      StreamingProvider._internal();
+  static final StreamingProvider _streamProvider = StreamingProvider._internal();
 
   Item? get item => _item;
   PlayBackInfos? get playBackInfos => _playBackInfos;
@@ -144,12 +142,9 @@ class StreamingProvider {
 
     if (isDirectPlay ?? false) return audioTracks;
 
-    final remoteAudioTracksMediaStream = item?.mediaStreams
-        .where((e) => e.type == MediaStreamType.AUDIO)
-        .toList();
+    final remoteAudioTracksMediaStream = item?.mediaStreams.where((e) => e.type == MediaStreamType.Audio).toList();
 
-    if (remoteAudioTracksMediaStream != null &&
-        remoteAudioTracksMediaStream.isNotEmpty) {
+    if (remoteAudioTracksMediaStream != null && remoteAudioTracksMediaStream.isNotEmpty) {
       for (var i = 0; i < remoteAudioTracksMediaStream.length; i++) {
         final at = remoteAudioTracksMediaStream[i];
         final remoteAudioTrack = AudioTrack(
@@ -173,15 +168,11 @@ class StreamingProvider {
     return subtitles;
   }
 
-  List<streaming_subtitle.Subtitle> _getRemoteSubtitles(
-      [final int startIndex = 0]) {
+  List<streaming_subtitle.Subtitle> _getRemoteSubtitles([final int startIndex = 0]) {
     final subtitles = <streaming_subtitle.Subtitle>[];
-    final remoteSubtitlesMediaStream = item?.mediaStreams
-        .where((e) => e.type == MediaStreamType.SUBTITLE)
-        .toList();
+    final remoteSubtitlesMediaStream = item?.mediaStreams.where((e) => e.type == MediaStreamType.Subtitle).toList();
 
-    if (remoteSubtitlesMediaStream != null &&
-        remoteSubtitlesMediaStream.isNotEmpty) {
+    if (remoteSubtitlesMediaStream != null && remoteSubtitlesMediaStream.isNotEmpty) {
       for (var i = 0; i < remoteSubtitlesMediaStream.length; i++) {
         final ls = remoteSubtitlesMediaStream[i];
         final remoteSubtitle = streaming_subtitle.Subtitle(
@@ -195,16 +186,12 @@ class StreamingProvider {
     return subtitles;
   }
 
-  Future<SubtitleController?> getSub(
-      streaming_subtitle.Subtitle? subtitle) async {
+  Future<SubtitleController?> getSub(streaming_subtitle.Subtitle? subtitle) async {
     if (subtitle == null || subtitle.index == -1) return null;
 
-    final subUrl = StreamingService.getSubtitleURL(
-        item!.id, 'vtt', subtitle.jellyfinSubtitleIndex!);
+    final subUrl = StreamingService.getSubtitleURL(item!.id, 'vtt', subtitle.jellyfinSubtitleIndex!);
 
-    return await Dio()
-        .get<dynamic>(subUrl)
-        .then<SubtitleController>((subFile) async {
+    return await Dio().get<dynamic>(subUrl).then<SubtitleController>((subFile) async {
       final controller = SubtitleController(
           provider: SubtitleProvider.fromString(
         data: subFile.data ?? '',

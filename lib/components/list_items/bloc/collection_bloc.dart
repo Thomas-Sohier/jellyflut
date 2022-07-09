@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart' hide Category;
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
+import 'package:jellyflut/screens/form/fields/fields_enum.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -105,8 +105,8 @@ Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
   }
 
   items.sort((a, b) {
-    final aField = a[fieldToSort];
-    final bField = b[fieldToSort];
+    final aField = a.toJson()[fieldToSort];
+    final bField = b.toJson()[fieldToSort];
     return sortingFunction(aField, bField);
   });
 

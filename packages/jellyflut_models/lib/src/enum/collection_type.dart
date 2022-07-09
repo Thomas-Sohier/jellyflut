@@ -1,10 +1,11 @@
 enum CollectionType {
-  Movies,
-  TvShows,
-  Music,
-  MusicVideos,
-  HomeVideos,
-  BoxSets,
-  Books,
-  Mixed;
+  movies,
+  tvshows,
+  music,
+  musicvideos,
+  livetv,
+  homevideos,
+  boxsets,
+  books,
+  mixed;
 }

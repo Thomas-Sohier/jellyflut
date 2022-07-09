@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
+import 'package:jellyflut/screens/form/fields/fields_enum.dart';
 
 class ListItemsSortFieldButton extends StatefulWidget {
   const ListItemsSortFieldButton({super.key});
 
   @override
-  State<ListItemsSortFieldButton> createState() =>
-      _ListItemsSortFieldButtonState();
+  State<ListItemsSortFieldButton> createState() => _ListItemsSortFieldButtonState();
 }
 
 class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
@@ -63,8 +62,7 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
     FieldsEnum.getSortable().forEach((field) => fieldItems.add(PopupMenuItem(
           value: field,
           child: ListTile(
-            leading:
-                currentValue == field ? _leadingListTile() : const SizedBox(),
+            leading: currentValue == field ? _leadingListTile() : const SizedBox(),
             title: Text(field.fullName),
           ),
         )));

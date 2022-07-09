@@ -37,7 +37,7 @@ class FileService {
         primary: Value(primaryImageByte),
         backdrop: Value(backdropImageByte),
         name: Value.ofNullable(i.name),
-        item: Value.ofNullable(i.toJson()),
+        item: Value.ofNullable(i),
         path: Value.ofNullable(path));
     return db.downloadsDao.createDownload(dc);
   }

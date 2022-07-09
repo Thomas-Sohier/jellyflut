@@ -19,11 +19,12 @@ class AuthenticationFailure implements Exception {
 /// {@endtemplate}
 class UsersApi {
   /// {@macro users_api}
-  UsersApi({required String serverUrl, required String userId, Dio? dioClient})
+  UsersApi({required String serverUrl, String? userId, Dio? dioClient})
       : _dioClient = dioClient ?? Dio(),
         _serverUrl = serverUrl,
-        _userId = userId;
+        _userId = userId ?? _notLoggedUserId;
 
+  static const _notLoggedUserId = '-1';
   final Dio _dioClient;
   String _serverUrl;
   String _userId;

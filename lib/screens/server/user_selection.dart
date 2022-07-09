@@ -11,8 +11,7 @@ class UserSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final users =
-        AppDatabase().getDatabase.usersAppDao.watchUserAppByserverId(server.id);
+    final users = AppDatabase().getDatabase.userAppDao.watchUserAppByserverId(server.id);
     return StreamBuilder<List<UserAppData>>(
         stream: users,
         builder: (_, a) {
@@ -49,16 +48,10 @@ class UserSelection extends StatelessWidget {
                         user: u,
                         onUserSelection: (user) {
                           AuthService.changeUser(
-                                  user.name,
-                                  user.password,
-                                  server.url,
-                                  server.id,
-                                  user.settingsId,
-                                  user.id)
+                                  user.name, user.password, server.url, server.id, user.settingsId, user.id)
                               .catchError((error) {
                             customRouter.pop();
-                            SnackbarUtil.message(
-                                error.toString(), Icons.error, Colors.red);
+                            SnackbarUtil.message(error.toString(), Icons.error, Colors.red);
                           });
                         },
                       );

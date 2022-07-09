@@ -10,10 +10,10 @@ import 'package:jellyflut/components/list_items/skeleton/list_items_skeleton.dar
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import '../../screens/form/fields/fields_enum.dart';
 import 'bloc/collection_bloc.dart';
 import 'components/music_item.dart';
 
@@ -26,8 +26,7 @@ part 'list_types/list_items_vertical_list.dart';
 
 class ListItems extends StatefulWidget {
   final Future<Category>? itemsFuture;
-  final Future<Category> Function(int startIndex, int numberOfItemsToLoad)
-      loadMoreFunction;
+  final Future<Category> Function(int startIndex, int numberOfItemsToLoad) loadMoreFunction;
   final Category? category;
   final CollectionBloc? collectionBloc;
   final ListType listType;
@@ -76,16 +75,14 @@ class ListItems extends StatefulWidget {
       : itemsFuture = null;
 
   static Future<Category> _defaultLoadMore(int i, int l) {
-    return Future.value(
-        Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
+    return Future.value(Category(items: <Item>[], startIndex: 0, totalRecordCount: 0));
   }
 
   @override
   State<ListItems> createState() => _ListItemsState();
 }
 
-class _ListItemsState extends State<ListItems>
-    with AutomaticKeepAliveClientMixin {
+class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixin {
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
@@ -110,10 +107,8 @@ class _ListItemsState extends State<ListItems>
     listTypes = ListType.values;
 
     // BLoC init part
-    collectionBloc = widget.collectionBloc ??
-        CollectionBloc(
-            listType: widget.listType,
-            loadMoreFunction: widget.loadMoreFunction);
+    collectionBloc =
+        widget.collectionBloc ?? CollectionBloc(listType: widget.listType, loadMoreFunction: widget.loadMoreFunction);
     collectionBloc.listType.add(widget.listType);
 
     // scroll listener to add items on scroll only if loadmore function as been defined
@@ -168,8 +163,7 @@ class _ListItemsState extends State<ListItems>
 
   Widget sortingThenbuildSelection() {
     if (widget.showSorting) {
-      return ListItemsSort(
-          listTypes: listTypes, child: Expanded(child: buildList()));
+      return ListItemsSort(listTypes: listTypes, child: Expanded(child: buildList()));
     }
     return buildList();
   }
@@ -206,10 +200,8 @@ class _ListItemsState extends State<ListItems>
   Widget dataBuilder(List<Item> items) {
     return StreamBuilder<ListType>(
         stream: collectionBloc.listType.stream,
-        initialData:
-            collectionBloc.listType.stream.valueOrNull ?? widget.listType,
-        builder:
-            (BuildContext context, AsyncSnapshot<ListType> snapshotListType) {
+        initialData: collectionBloc.listType.stream.valueOrNull ?? widget.listType,
+        builder: (BuildContext context, AsyncSnapshot<ListType> snapshotListType) {
           switch (snapshotListType.data) {
             case ListType.LIST:
               return ConstrainedBox(

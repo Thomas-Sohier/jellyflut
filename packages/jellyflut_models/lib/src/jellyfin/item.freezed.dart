@@ -21,8 +21,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Item {
   String get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
   String? get originalTitle => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get serverId => throw _privateConstructorUsedError;
   String? get etag => throw _privateConstructorUsedError;
   String? get sourceType => throw _privateConstructorUsedError;
@@ -185,8 +185,8 @@ abstract class $ItemCopyWith<$Res> {
       _$ItemCopyWithImpl<$Res>;
   $Res call(
       {String id,
-      String? name,
       String? originalTitle,
+      String? name,
       String? serverId,
       String? etag,
       String? sourceType,
@@ -350,8 +350,8 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
     Object? originalTitle = freezed,
+    Object? name = freezed,
     Object? serverId = freezed,
     Object? etag = freezed,
     Object? sourceType = freezed,
@@ -506,13 +506,13 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
       originalTitle: originalTitle == freezed
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       serverId: serverId == freezed
           ? _value.serverId
@@ -1128,8 +1128,8 @@ abstract class _$$_ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
   @override
   $Res call(
       {String id,
-      String? name,
       String? originalTitle,
+      String? name,
       String? serverId,
       String? etag,
       String? sourceType,
@@ -1295,8 +1295,8 @@ class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
     Object? originalTitle = freezed,
+    Object? name = freezed,
     Object? serverId = freezed,
     Object? etag = freezed,
     Object? sourceType = freezed,
@@ -1451,13 +1451,13 @@ class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
       originalTitle: originalTitle == freezed
           ? _value.originalTitle
           : originalTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       serverId: serverId == freezed
           ? _value.serverId
@@ -2060,8 +2060,8 @@ class __$$_ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
 class _$_Item extends _Item {
   const _$_Item(
       {required this.id,
-      this.name,
       this.originalTitle,
+      this.name,
       this.serverId,
       this.etag,
       this.sourceType,
@@ -2239,9 +2239,9 @@ class _$_Item extends _Item {
   @override
   final String id;
   @override
-  final String? name;
-  @override
   final String? originalTitle;
+  @override
+  final String? name;
   @override
   final String? serverId;
   @override
@@ -2673,7 +2673,7 @@ class _$_Item extends _Item {
 
   @override
   String toString() {
-    return 'Item(id: $id, name: $name, originalTitle: $originalTitle, serverId: $serverId, etag: $etag, sourceType: $sourceType, playlistItemId: $playlistItemId, dateCreated: $dateCreated, dateLastMediaAdded: $dateLastMediaAdded, extraType: $extraType, airsBeforeSeasonNumber: $airsBeforeSeasonNumber, airsAfterSeasonNumber: $airsAfterSeasonNumber, airsBeforeEpisodeNumber: $airsBeforeEpisodeNumber, canDelete: $canDelete, canDownload: $canDownload, hasSubtitles: $hasSubtitles, preferredMetadataLanguage: $preferredMetadataLanguage, preferredMetadataCountryCode: $preferredMetadataCountryCode, supportsSync: $supportsSync, container: $container, sortName: $sortName, forcedSortName: $forcedSortName, video3DFormat: $video3DFormat, premiereDate: $premiereDate, externalUrls: $externalUrls, mediaSources: $mediaSources, criticRating: $criticRating, productionLocations: $productionLocations, path: $path, enableMediaSourceDisplay: $enableMediaSourceDisplay, officialRating: $officialRating, customRating: $customRating, channelId: $channelId, channelName: $channelName, overview: $overview, taglines: $taglines, genres: $genres, communityRating: $communityRating, cumulativeRunTimeTicks: $cumulativeRunTimeTicks, runTimeTicks: $runTimeTicks, playAccess: $playAccess, aspectRatio: $aspectRatio, productionYear: $productionYear, isPlaceHolder: $isPlaceHolder, number: $number, channelNumber: $channelNumber, indexNumber: $indexNumber, indexNumberEnd: $indexNumberEnd, parentIndexNumber: $parentIndexNumber, remoteTrailers: $remoteTrailers, providerIds: $providerIds, isHD: $isHD, isFolder: $isFolder, parentId: $parentId, type: $type, people: $people, studios: $studios, genreItems: $genreItems, parentLogoItemId: $parentLogoItemId, parentBackdropItemId: $parentBackdropItemId, parentBackdropImageTags: $parentBackdropImageTags, localTrailerCount: $localTrailerCount, userData: $userData, recursiveItemCount: $recursiveItemCount, childCount: $childCount, seriesName: $seriesName, seriesId: $seriesId, seasonId: $seasonId, specialFeatureCount: $specialFeatureCount, displayPreferencesId: $displayPreferencesId, status: $status, airTime: $airTime, airDays: $airDays, tags: $tags, primaryImageAspectRatio: $primaryImageAspectRatio, artists: $artists, artistItems: $artistItems, album: $album, collectionType: $collectionType, displayOrder: $displayOrder, albumId: $albumId, albumPrimaryImageTag: $albumPrimaryImageTag, seriesPrimaryImageTag: $seriesPrimaryImageTag, albumArtist: $albumArtist, albumArtists: $albumArtists, seasonName: $seasonName, mediaStreams: $mediaStreams, videoType: $videoType, partCount: $partCount, mediaSourceCount: $mediaSourceCount, imageTags: $imageTags, backdropImageTags: $backdropImageTags, screenshotImageTags: $screenshotImageTags, parentLogoImageTag: $parentLogoImageTag, parentArtItemId: $parentArtItemId, parentArtImageTag: $parentArtImageTag, seriesThumbImageTag: $seriesThumbImageTag, imageBlurHashes: $imageBlurHashes, seriesStudio: $seriesStudio, parentThumbItemId: $parentThumbItemId, parentThumbImageTag: $parentThumbImageTag, parentPrimaryImageItemId: $parentPrimaryImageItemId, parentPrimaryImageTag: $parentPrimaryImageTag, chapters: $chapters, locationType: $locationType, isoType: $isoType, mediaType: $mediaType, endDate: $endDate, lockedFields: $lockedFields, trailerCount: $trailerCount, movieCount: $movieCount, seriesCount: $seriesCount, programCount: $programCount, episodeCount: $episodeCount, songCount: $songCount, albumCount: $albumCount, artistCount: $artistCount, musicVideoCount: $musicVideoCount, lockData: $lockData, width: $width, height: $height, cameraMake: $cameraMake, cameraModel: $cameraModel, software: $software, exposureTime: $exposureTime, focalLength: $focalLength, imageOrientation: $imageOrientation, aperture: $aperture, shutterSpeed: $shutterSpeed, latitude: $latitude, longitude: $longitude, altitude: $altitude, isoSpeedRating: $isoSpeedRating, seriesTimerId: $seriesTimerId, programId: $programId, channelPrimaryImageTag: $channelPrimaryImageTag, startDate: $startDate, completionPercentage: $completionPercentage, isRepeat: $isRepeat, episodeTitle: $episodeTitle, channelType: $channelType, audio: $audio, isMovie: $isMovie, isSports: $isSports, isSeries: $isSeries, isLive: $isLive, isNews: $isNews, isKids: $isKids, isPremiere: $isPremiere, timerId: $timerId, currentProgram: $currentProgram)';
+    return 'Item(id: $id, originalTitle: $originalTitle, name: $name, serverId: $serverId, etag: $etag, sourceType: $sourceType, playlistItemId: $playlistItemId, dateCreated: $dateCreated, dateLastMediaAdded: $dateLastMediaAdded, extraType: $extraType, airsBeforeSeasonNumber: $airsBeforeSeasonNumber, airsAfterSeasonNumber: $airsAfterSeasonNumber, airsBeforeEpisodeNumber: $airsBeforeEpisodeNumber, canDelete: $canDelete, canDownload: $canDownload, hasSubtitles: $hasSubtitles, preferredMetadataLanguage: $preferredMetadataLanguage, preferredMetadataCountryCode: $preferredMetadataCountryCode, supportsSync: $supportsSync, container: $container, sortName: $sortName, forcedSortName: $forcedSortName, video3DFormat: $video3DFormat, premiereDate: $premiereDate, externalUrls: $externalUrls, mediaSources: $mediaSources, criticRating: $criticRating, productionLocations: $productionLocations, path: $path, enableMediaSourceDisplay: $enableMediaSourceDisplay, officialRating: $officialRating, customRating: $customRating, channelId: $channelId, channelName: $channelName, overview: $overview, taglines: $taglines, genres: $genres, communityRating: $communityRating, cumulativeRunTimeTicks: $cumulativeRunTimeTicks, runTimeTicks: $runTimeTicks, playAccess: $playAccess, aspectRatio: $aspectRatio, productionYear: $productionYear, isPlaceHolder: $isPlaceHolder, number: $number, channelNumber: $channelNumber, indexNumber: $indexNumber, indexNumberEnd: $indexNumberEnd, parentIndexNumber: $parentIndexNumber, remoteTrailers: $remoteTrailers, providerIds: $providerIds, isHD: $isHD, isFolder: $isFolder, parentId: $parentId, type: $type, people: $people, studios: $studios, genreItems: $genreItems, parentLogoItemId: $parentLogoItemId, parentBackdropItemId: $parentBackdropItemId, parentBackdropImageTags: $parentBackdropImageTags, localTrailerCount: $localTrailerCount, userData: $userData, recursiveItemCount: $recursiveItemCount, childCount: $childCount, seriesName: $seriesName, seriesId: $seriesId, seasonId: $seasonId, specialFeatureCount: $specialFeatureCount, displayPreferencesId: $displayPreferencesId, status: $status, airTime: $airTime, airDays: $airDays, tags: $tags, primaryImageAspectRatio: $primaryImageAspectRatio, artists: $artists, artistItems: $artistItems, album: $album, collectionType: $collectionType, displayOrder: $displayOrder, albumId: $albumId, albumPrimaryImageTag: $albumPrimaryImageTag, seriesPrimaryImageTag: $seriesPrimaryImageTag, albumArtist: $albumArtist, albumArtists: $albumArtists, seasonName: $seasonName, mediaStreams: $mediaStreams, videoType: $videoType, partCount: $partCount, mediaSourceCount: $mediaSourceCount, imageTags: $imageTags, backdropImageTags: $backdropImageTags, screenshotImageTags: $screenshotImageTags, parentLogoImageTag: $parentLogoImageTag, parentArtItemId: $parentArtItemId, parentArtImageTag: $parentArtImageTag, seriesThumbImageTag: $seriesThumbImageTag, imageBlurHashes: $imageBlurHashes, seriesStudio: $seriesStudio, parentThumbItemId: $parentThumbItemId, parentThumbImageTag: $parentThumbImageTag, parentPrimaryImageItemId: $parentPrimaryImageItemId, parentPrimaryImageTag: $parentPrimaryImageTag, chapters: $chapters, locationType: $locationType, isoType: $isoType, mediaType: $mediaType, endDate: $endDate, lockedFields: $lockedFields, trailerCount: $trailerCount, movieCount: $movieCount, seriesCount: $seriesCount, programCount: $programCount, episodeCount: $episodeCount, songCount: $songCount, albumCount: $albumCount, artistCount: $artistCount, musicVideoCount: $musicVideoCount, lockData: $lockData, width: $width, height: $height, cameraMake: $cameraMake, cameraModel: $cameraModel, software: $software, exposureTime: $exposureTime, focalLength: $focalLength, imageOrientation: $imageOrientation, aperture: $aperture, shutterSpeed: $shutterSpeed, latitude: $latitude, longitude: $longitude, altitude: $altitude, isoSpeedRating: $isoSpeedRating, seriesTimerId: $seriesTimerId, programId: $programId, channelPrimaryImageTag: $channelPrimaryImageTag, startDate: $startDate, completionPercentage: $completionPercentage, isRepeat: $isRepeat, episodeTitle: $episodeTitle, channelType: $channelType, audio: $audio, isMovie: $isMovie, isSports: $isSports, isSeries: $isSeries, isLive: $isLive, isNews: $isNews, isKids: $isKids, isPremiere: $isPremiere, timerId: $timerId, currentProgram: $currentProgram)';
   }
 
   @override
@@ -2682,9 +2682,9 @@ class _$_Item extends _Item {
         (other.runtimeType == runtimeType &&
             other is _$_Item &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.originalTitle, originalTitle) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.serverId, serverId) &&
             const DeepCollectionEquality().equals(other.etag, etag) &&
             const DeepCollectionEquality()
@@ -2882,8 +2882,8 @@ class _$_Item extends _Item {
   int get hashCode => Object.hashAll([
         runtimeType,
         const DeepCollectionEquality().hash(id),
-        const DeepCollectionEquality().hash(name),
         const DeepCollectionEquality().hash(originalTitle),
+        const DeepCollectionEquality().hash(name),
         const DeepCollectionEquality().hash(serverId),
         const DeepCollectionEquality().hash(etag),
         const DeepCollectionEquality().hash(sourceType),
@@ -3048,8 +3048,8 @@ class _$_Item extends _Item {
 abstract class _Item extends Item {
   const factory _Item(
       {required final String id,
-      final String? name,
       final String? originalTitle,
+      final String? name,
       final String? serverId,
       final String? etag,
       final String? sourceType,
@@ -3205,9 +3205,9 @@ abstract class _Item extends Item {
   @override
   String get id;
   @override
-  String? get name;
-  @override
   String? get originalTitle;
+  @override
+  String? get name;
   @override
   String? get serverId;
   @override

@@ -8,22 +8,30 @@ part of 'media_attachment.dart';
 
 _$_MediaAttachment _$$_MediaAttachmentFromJson(Map<String, dynamic> json) =>
     _$_MediaAttachment(
-      codec: json['codec'] as String?,
-      codecTag: json['codecTag'] as String?,
-      comment: json['comment'] as String?,
-      index: json['index'] as String?,
-      fileName: json['fileName'] as String?,
-      mimeType: json['mimeType'] as String?,
-      deliveryUrl: json['deliveryUrl'] as String?,
+      codec: json['Codec'] as String?,
+      codecTag: json['CodecTag'] as String?,
+      comment: json['Comment'] as String?,
+      index: json['Index'] as String?,
+      fileName: json['FileName'] as String?,
+      mimeType: json['MimeType'] as String?,
+      deliveryUrl: json['DeliveryUrl'] as String?,
     );
 
-Map<String, dynamic> _$$_MediaAttachmentToJson(_$_MediaAttachment instance) =>
-    <String, dynamic>{
-      'codec': instance.codec,
-      'codecTag': instance.codecTag,
-      'comment': instance.comment,
-      'index': instance.index,
-      'fileName': instance.fileName,
-      'mimeType': instance.mimeType,
-      'deliveryUrl': instance.deliveryUrl,
-    };
+Map<String, dynamic> _$$_MediaAttachmentToJson(_$_MediaAttachment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('Codec', instance.codec);
+  writeNotNull('CodecTag', instance.codecTag);
+  writeNotNull('Comment', instance.comment);
+  writeNotNull('Index', instance.index);
+  writeNotNull('FileName', instance.fileName);
+  writeNotNull('MimeType', instance.mimeType);
+  writeNotNull('DeliveryUrl', instance.deliveryUrl);
+  return val;
+}

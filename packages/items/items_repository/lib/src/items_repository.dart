@@ -154,17 +154,10 @@ class ItemsRepository {
         mediaTypes: mediaTypes,
       );
 
-  /// Update item from current Item object
+  /// Update item from Item object
   ///
   /// Can throw [ItemUpdateFailure]
-  Future<void> updateItemFromItem({required Item item}) =>
-      _itemsApi.updateItemFromForm(form: item.toJson(), itemId: item.id);
-
-  /// Update item an return updated object
-  ///
-  /// Can throw [ItemUpdateFailure]
-  Future<void> updateItemFromForm({required String itemId, required Map<String, Object?> form}) =>
-      _itemsApi.updateItemFromForm(form: form, itemId: itemId);
+  Future<void> updateItem({required Item item}) => _itemsApi.updateItem(item: item);
 
   /// Mark item as viewed
   ///

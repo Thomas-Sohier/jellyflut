@@ -19,8 +19,9 @@ class ManageButton extends StatelessWidget {
       builder: (context) => MultiBlocProvider(providers: [
         BlocProvider.value(value: superContext.read<DetailsBloc>()),
         BlocProvider(
-            create: (_) => FormBloc<Item>(
-                itemsRepository: context.read<ItemsRepository>(), value: superContext.read<DetailsBloc>().state.item)),
+            create: (_) => FormBloc(
+                itemsRepository: context.read<ItemsRepository>(), item: superContext.read<DetailsBloc>().state.item)
+              ..add(InitForm())),
       ], child: const Dialog()),
       context: superContext,
     );
@@ -59,18 +60,16 @@ class Dialog extends StatelessWidget {
   }
 
   Widget dialogBody({bool expanded = false}) {
-    return BlocConsumer<FormBloc<Item>, FormState<Item>>(
+    return BlocConsumer<FormBloc, FormState>(
       listener: (context, state) {
         if (state.formStatus == FormStatus.submitted) {
-          context.read<DetailsBloc>().add(DetailsItemUpdate(item: state.value));
-          context.read<FormBloc<Item>>().add(ResetForm());
+          context.read<DetailsBloc>().add(DetailsItemUpdate(item: state.item));
+          context.read<FormBloc>().add(ResetForm());
           customRouter.pop();
         }
       },
       builder: (context, state) => DialogStructure(
-          expanded: expanded,
-          onClose: customRouter.pop,
-          onSubmit: () => context.read<FormBloc<Item>>().add(FormSubmitted())),
+          expanded: expanded, onClose: customRouter.pop, onSubmit: () => context.read<FormBloc>().add(FormSubmitted())),
     );
   }
 }

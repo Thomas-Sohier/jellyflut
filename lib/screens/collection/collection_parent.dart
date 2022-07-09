@@ -39,9 +39,9 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
     return ExcludeFocus(
       excluding: excluding,
       child: Stack(children: [
-        if (widget.item.collectionType == CollectionType.Movies ||
-            widget.item.collectionType == CollectionType.Books ||
-            widget.item.collectionType == CollectionType.TvShows)
+        if (widget.item.collectionType == CollectionType.movies ||
+            widget.item.collectionType == CollectionType.books ||
+            widget.item.collectionType == CollectionType.tvshows)
           ChangeNotifierProvider.value(value: carrousselProvider, child: CarrousselBackGroundImage()),
         ListItems.fromFuture(
             itemsFuture: getItems(item: widget.item),

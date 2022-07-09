@@ -38,7 +38,7 @@ class InitStreamingItemUtil {
 
     if (itemExist) {
       final download = await db.downloadsDao.getDownloadById(item.id);
-      item = Item.fromJson(download.item!);
+      item = download.item!;
     } else {
       final tempItem = await item.getPlayableItemOrLastUnplayed();
       item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
