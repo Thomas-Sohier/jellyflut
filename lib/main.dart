@@ -30,7 +30,7 @@ void main() async {
   final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
   final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
   final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
-  final musicPlayerApi = MusicPlayerApi(database: database);
+  final musicPlayerApi = MusicPlayerApi();
 
   bootstrap(
       authenticated: authenticated,

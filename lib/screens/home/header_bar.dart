@@ -17,16 +17,16 @@ class HeaderBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(width: 48),
+        children: const [
+          SizedBox(width: 48),
           Flexible(child: SearchButton()),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           SettingsButton(),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           DownloadButton(),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           UserIcon(),
-          const SizedBox(width: 18),
+          SizedBox(width: 18),
         ],
       ),
     );
@@ -40,8 +40,7 @@ class HeaderBar extends StatelessWidget {
         const Padding(padding: EdgeInsets.fromLTRB(6, 0, 0, 0)),
         Hero(
           tag: 'logo_text',
-          child: Text('Jellyfin',
-              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand')),
+          child: Text('Jellyfin', style: TextStyle(fontSize: 22, fontFamily: 'Quicksand')),
         )
       ];
     }

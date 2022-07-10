@@ -35,32 +35,86 @@ class MusicPlayerFABView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
         tag: 'musicPlayerFAB',
-        child: Material(
-            color: Colors.transparent,
-            child: Container(
-              width: 200,
-              height: 60,
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black38, spreadRadius: 2)],
+        child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+            buildWhen: (previous, current) => previous.theme != current.theme,
+            builder: (context, state) => Theme(data: state.theme, child: FabButtonBody())));
+  }
+}
+
+class FabButtonBody extends StatelessWidget {
+  static const double maxWidth = 250;
+  static const double maxHeight = 60;
+
+  const FabButtonBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          boxShadow: [BoxShadow(blurRadius: 8, color: Theme.of(context).colorScheme.primary, spreadRadius: 2)]),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxWidth),
+          child: Stack(
+            children: [
+              BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+                  buildWhen: (previous, current) => previous.playingState != current.playingState,
+                  builder: (context, state) {
+                    if (state.currentlyPlaying != null) {
+                      return Align(
+                          alignment: Alignment.centerRight,
+                          child: Image.memory(
+                            state.currentlyPlaying!.metadata.artworkByte,
+                            alignment: Alignment.center,
+                            width: maxWidth * 0.3, // 30% of width to prevent blank space with gradient
+                            height: maxHeight,
+                            fit: BoxFit.cover,
+                          ));
+                    }
+                    return const SizedBox();
+                  }),
+              SizedBox.expand(
+                child: DecoratedBox(
+                    decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.primary),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () => customRouter.push(MusicPlayerRoute()),
-                    child: Icon(
-                      Icons.more_vert,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 28,
-                    ),
-                  ),
-                  ExcludeFocus(excluding: true, child: Expanded(flex: 4, child: const CenterPart())),
-                  Flexible(child: Center(child: const PlayPausebutton()))
-                ],
+                  color: Theme.of(context).colorScheme.primary,
+                  gradient: LinearGradient(colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.primary.withAlpha(160),
+                    Theme.of(context).colorScheme.primary.withAlpha(80)
+                  ], stops: [
+                    0.7,
+                    0.8,
+                    1
+                  ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                )),
               ),
-            )));
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () => customRouter.push(MusicPlayerRoute()),
+                      iconSize: 28,
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                    const ExcludeFocus(excluding: true, child: Expanded(child: CenterPart())),
+                    const SizedBox(width: 8),
+                    const PlayPausebutton(),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -71,14 +125,14 @@ class PlayPausebutton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
         buildWhen: (previous, current) => previous.playingState != current.playingState,
-        builder: (context, state) => InkWell(
-              onTap: () => context.read<MusicPlayerBloc>().add(TogglePlayPauseRequested()),
-              child: Icon(
+        builder: (context, state) => IconButton(
+              onPressed: () => context.read<MusicPlayerBloc>().add(TogglePlayPauseRequested()),
+              iconSize: 28,
+              icon: Icon(
                 state.playingState == PlayingState.pause
-                    ? Icons.pause_circle_filled_outlined
-                    : Icons.play_circle_fill_outlined,
+                    ? Icons.play_circle_fill_outlined
+                    : Icons.pause_circle_filled_outlined,
                 color: Theme.of(context).colorScheme.onPrimary,
-                size: 28,
               ),
             ));
   }

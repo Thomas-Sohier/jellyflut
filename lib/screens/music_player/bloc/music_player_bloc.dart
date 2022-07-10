@@ -2,9 +2,12 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';
@@ -49,17 +52,18 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
         currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
         playlist: _musicPlayerRepository.getPlayList,
         playingState: PlayingState.fromBool(_musicPlayerRepository.isPlaying()),
-        duration: _musicPlayerRepository.getDuration(),
-        // postionStream: _musicPlayerRepository.getPositionStream()),
+        duration: _musicPlayerRepository.getDuration,
+        postionStream: _musicPlayerRepository.getPositionStream,
         status: MusicPlayerStatus.playing));
+    await _setAlbumPrimaryColor(emit);
   }
 
   Future<void> _onPlayPlaylist(PlayPlaylistRequested event, Emitter<MusicPlayerState> emit) async {
     final audioSources = <AudioSource>[];
     final category = await _itemsRepository.getCategory(parentId: event.item.id);
     final items = category.items.where((item) => item.isFolder == false).toList();
+    items.sort(sortMusic);
 
-    items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
     for (var index = 0; index < items.length; index++) {
       final item = items.elementAt(index);
       final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
@@ -67,13 +71,29 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
       audioSources.add(musicItem);
     }
     _musicPlayerRepository.addAllToPlaylist(audioSources);
+    await _musicPlayerRepository.playAtIndex(0);
     emit(state.copyWith(
         currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
         playlist: _musicPlayerRepository.getPlayList,
         playingState: PlayingState.fromBool(_musicPlayerRepository.isPlaying()),
-        duration: _musicPlayerRepository.getDuration(),
-        // postionStream: _musicPlayerRepository.getPositionStream()),
+        duration: _musicPlayerRepository.getDuration,
+        postionStream: _musicPlayerRepository.getPositionStream,
         status: MusicPlayerStatus.playing));
+    await _setAlbumPrimaryColor(emit);
+  }
+
+  int sortMusic(Item? a, Item? b) {
+    final aIndex = a?.indexNumber;
+    final bIndex = b?.indexNumber;
+    if (aIndex != null && bIndex != null) {
+      return bIndex.compareTo(aIndex);
+    } else if (aIndex != null && bIndex == null) {
+      return -1;
+    }
+    if (aIndex == null && bIndex == null) {
+      return 1;
+    }
+    return 0;
   }
 
   Future<void> _onStop(StopRequested event, Emitter<MusicPlayerState> emit) async {
@@ -87,7 +107,13 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
 
   Future<void> _onNextSong(NextSongRequested event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.next();
-    emit(state.copyWith(currentlyPlaying: _musicPlayerRepository.getCurrentMusic(), status: MusicPlayerStatus.playing));
+    emit(state.copyWith(
+        currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
+        playingState: PlayingState.fromBool(_musicPlayerRepository.isPlaying()),
+        duration: _musicPlayerRepository.getDuration,
+        postionStream: _musicPlayerRepository.getPositionStream,
+        status: MusicPlayerStatus.playing));
+    await _setAlbumPrimaryColor(emit);
   }
 
   Future<void> _onReoder(ReoderList event, Emitter<MusicPlayerState> emit) async {
@@ -97,7 +123,13 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
 
   Future<void> _onPlayAtIndex(PlayAtIndex event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.playAtIndex(event.index);
-    emit(state.copyWith(currentlyPlaying: _musicPlayerRepository.getCurrentMusic(), status: MusicPlayerStatus.playing));
+    emit(state.copyWith(
+        currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
+        playingState: PlayingState.fromBool(_musicPlayerRepository.isPlaying()),
+        duration: _musicPlayerRepository.getDuration,
+        postionStream: _musicPlayerRepository.getPositionStream,
+        status: MusicPlayerStatus.playing));
+    await _setAlbumPrimaryColor(emit);
   }
 
   Future<void> _onDeleteFromPlaylist(DeleteAudioFromPlaylist event, Emitter<MusicPlayerState> emit) async {
@@ -117,7 +149,13 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
 
   Future<void> _onPreviousSong(PreviousSongRequested event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.previous();
-    emit(state.copyWith(currentlyPlaying: _musicPlayerRepository.getCurrentMusic(), status: MusicPlayerStatus.playing));
+    emit(state.copyWith(
+        currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
+        playingState: PlayingState.fromBool(_musicPlayerRepository.isPlaying()),
+        duration: _musicPlayerRepository.getDuration,
+        postionStream: _musicPlayerRepository.getPositionStream,
+        status: MusicPlayerStatus.playing));
+    await _setAlbumPrimaryColor(emit);
   }
 
   // Yield screen layout change
@@ -145,18 +183,13 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
             artworkByte: artwork));
   }
 
-  void setAlbumPrimaryColor() {
-    // final currentMusic = musicProvider.getCurrentMusic();
-    // if (currentMusic != null && mounted) {
-    //   final metadata = currentMusic.metadata;
-    //   compute(ColorUtil.extractPixelsColors, metadata.artworkByte).then((List<Color> colors) {
-    //     final brightness = Theme.of(context).brightness;
-    //     themeData.value = personnal_theme.Theme.generateThemeDataFromSeedColor(brightness, colors[0]);
-    //   });
-    // }
-  }
-
-  Color getForegroundColorFromColor(Color color) {
-    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+  Future<void> _setAlbumPrimaryColor(Emitter<MusicPlayerState> emit) async {
+    if (state.currentlyPlaying != null) {
+      final metadata = state.currentlyPlaying!.metadata;
+      final colors = await compute(ColorUtil.extractPixelsColors, metadata.artworkByte);
+      final brightness = state.theme.brightness;
+      final newTheme = personnal_theme.Theme.generateThemeDataFromSeedColor(brightness, colors[0]);
+      emit(state.copyWith(theme: newTheme));
+    }
   }
 }

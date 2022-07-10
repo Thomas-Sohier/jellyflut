@@ -30,7 +30,7 @@ mixin _$MediaAttachment {
   String? get comment => throw _privateConstructorUsedError;
 
   /// Gets or sets the index
-  String? get index => throw _privateConstructorUsedError;
+  int? get index => throw _privateConstructorUsedError;
 
   /// Gets or sets the filename
   String? get fileName => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $MediaAttachmentCopyWith<$Res> {
       {String? codec,
       String? codecTag,
       String? comment,
-      String? index,
+      int? index,
       String? fileName,
       String? mimeType,
       String? deliveryUrl});
@@ -97,7 +97,7 @@ class _$MediaAttachmentCopyWithImpl<$Res>
       index: index == freezed
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       fileName: fileName == freezed
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$_MediaAttachmentCopyWith<$Res>
       {String? codec,
       String? codecTag,
       String? comment,
-      String? index,
+      int? index,
       String? fileName,
       String? mimeType,
       String? deliveryUrl});
@@ -168,7 +168,7 @@ class __$$_MediaAttachmentCopyWithImpl<$Res>
       index: index == freezed
           ? _value.index
           : index // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       fileName: fileName == freezed
           ? _value.fileName
           : fileName // ignore: cast_nullable_to_non_nullable
@@ -214,7 +214,7 @@ class _$_MediaAttachment implements _MediaAttachment {
 
   /// Gets or sets the index
   @override
-  final String? index;
+  final int? index;
 
   /// Gets or sets the filename
   @override
@@ -276,7 +276,7 @@ abstract class _MediaAttachment implements MediaAttachment {
       {final String? codec,
       final String? codecTag,
       final String? comment,
-      final String? index,
+      final int? index,
       final String? fileName,
       final String? mimeType,
       final String? deliveryUrl}) = _$_MediaAttachment;
@@ -299,7 +299,7 @@ abstract class _MediaAttachment implements MediaAttachment {
   @override
 
   /// Gets or sets the index
-  String? get index;
+  int? get index;
   @override
 
   /// Gets or sets the filename

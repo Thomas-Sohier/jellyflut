@@ -4,7 +4,6 @@ import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:rxdart/rxdart.dart';
-import 'package:sqlite_database/sqlite_database.dart';
 
 import 'models/audio_playlist.dart';
 import 'models/audio_source.dart';
@@ -18,14 +17,13 @@ class InitFailure implements Exception {}
 /// {@endtemplate}
 class MusicPlayerApi {
   /// {@macro music_player_api}
-  MusicPlayerApi({required Database database}) : _database = database;
+  MusicPlayerApi();
 
   AudioSource? _currentMusic;
   CommonPlayer? _commonPlayer;
   final _currentMusicStream = BehaviorSubject<AudioSource>();
   final _currentlyPlayingIndex = BehaviorSubject<int>();
   final _audioPlaylist = AudioPlaylist(playlist: <AudioSource>[]);
-  final Database _database;
 
   Future<CommonPlayer> initPlayer() async {
     // If player already instanciated, return current instance
@@ -82,8 +80,8 @@ class MusicPlayerApi {
     return _commonPlayer?.getDurationStream ?? BehaviorSubject<Duration?>();
   }
 
-  Stream<Duration?> getPositionStream() {
-    return _commonPlayer?.getPositionStream ?? Stream.value(Duration.zero);
+  BehaviorSubject<Duration?> getPositionStream() {
+    return _commonPlayer?.getPositionStream ?? BehaviorSubject.seeded(Duration.zero);
   }
 
   bool isPlaying() {

@@ -56,9 +56,7 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
   Future<Category> getItems({required Item item, int startIndex = 0, int limit = 100}) async {
     return context.read<ItemsRepository>().getCategory(
         parentId: item.id,
-        sortBy: 'SortName',
         fields: 'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview,ChildCount',
-        imageTypeLimit: 1,
         recursive: false,
         startIndex: startIndex,
         includeItemTypes: item.getCollectionType().map((ItemType e) => e.name).toList().join(','),

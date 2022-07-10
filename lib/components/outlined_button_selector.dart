@@ -8,6 +8,7 @@ class OutlinedButtonSelector extends StatefulWidget {
   final Alignment? alignment;
   final EdgeInsets padding;
   final Color? primary;
+  final Color background;
 
   const OutlinedButtonSelector(
       {super.key,
@@ -16,6 +17,7 @@ class OutlinedButtonSelector extends StatefulWidget {
       this.padding = EdgeInsets.zero,
       this.alignment,
       this.primary,
+      this.background = Colors.transparent,
       this.shape = const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
       )});
@@ -24,14 +26,14 @@ class OutlinedButtonSelector extends StatefulWidget {
   State<OutlinedButtonSelector> createState() => _OutlinedButtonSelectorState();
 }
 
-class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
-    with AbsordAction {
+class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector> with AbsordAction {
   Widget get child => widget.child;
   VoidCallback get onPressed => widget.onPressed;
   OutlinedBorder get shape => widget.shape;
   Alignment? get alignment => widget.alignment;
   EdgeInsets get padding => widget.padding;
   Color? get primary => widget.primary;
+  Color get background => widget.background;
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +42,11 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
         onPressed: () => action(onPressed),
         style: TextButton.styleFrom(
                 minimumSize: Size(24, 24),
-                primary: primary ??
-                    Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.05),
+                primary: primary ?? Theme.of(context).colorScheme.onBackground.withOpacity(0.05),
                 alignment: alignment,
                 padding: padding,
                 shape: shape,
-                backgroundColor: Colors.transparent)
+                backgroundColor: background)
             .copyWith(side: _buttonBorderSide(context)),
         child: child);
   }
@@ -62,8 +60,7 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
             color: primary ?? Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

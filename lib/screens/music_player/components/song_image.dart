@@ -69,15 +69,17 @@ class ImageFromByte extends StatelessWidget {
     final musicPlayerBloc = context.read<MusicPlayerBloc>();
     if (musicPlayerBloc.state.currentlyPlaying == null) return const SizedBox();
 
-    return OctoImage(
-      image: MemoryImage(musicPlayerBloc.state.currentlyPlaying!.metadata.artworkByte),
-      placeholderBuilder: (_) => const SongImagePlaceholder(),
-      errorBuilder: (context, error, e) => const SongImagePlaceholder(),
-      fadeInDuration: const Duration(milliseconds: 300),
-      fit: BoxFit.cover,
-      gaplessPlayback: true,
-      alignment: Alignment.center,
-    );
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+        buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+        builder: (context, state) => OctoImage(
+              image: MemoryImage(state.currentlyPlaying!.metadata.artworkByte),
+              placeholderBuilder: (_) => const SongImagePlaceholder(),
+              errorBuilder: (context, error, e) => const SongImagePlaceholder(),
+              fadeInDuration: const Duration(milliseconds: 300),
+              fit: BoxFit.cover,
+              gaplessPlayback: true,
+              alignment: Alignment.center,
+            ));
   }
 }
 

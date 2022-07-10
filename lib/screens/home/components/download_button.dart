@@ -4,12 +4,9 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class DownloadButton extends StatefulWidget {
-  @override
-  State<DownloadButton> createState() => _DownloadButtonState();
-}
+class DownloadButton extends StatelessWidget {
+  const DownloadButton({super.key});
 
-class _DownloadButtonState extends State<DownloadButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(

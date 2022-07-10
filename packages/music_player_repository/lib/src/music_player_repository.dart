@@ -26,10 +26,11 @@ class MusicPlayerRepository {
 
   void pause() => _musicPlayerApi.pause();
 
-  Duration getDuration() => _musicPlayerApi.getDuration();
+  Duration get getDuration => _musicPlayerApi.getDuration();
 
   BehaviorSubject<Duration?> getDurationStream() => _musicPlayerApi.getDurationStream();
-  Stream<Duration?> getPositionStream() => _musicPlayerApi.getPositionStream();
+
+  BehaviorSubject<Duration?> get getPositionStream => _musicPlayerApi.getPositionStream();
 
   bool isPlaying() => _musicPlayerApi.isPlaying();
 

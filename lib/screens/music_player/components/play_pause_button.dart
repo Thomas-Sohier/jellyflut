@@ -6,34 +6,37 @@ import 'package:jellyflut/globals.dart';
 import '../bloc/music_player_bloc.dart';
 
 class PlayPauseButton extends StatelessWidget {
+  static const List<BoxShadow> shadows = [BoxShadow(color: Colors.black45, blurRadius: 4, spreadRadius: 2)];
+
   const PlayPauseButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final musicPlayerBloc = context.read<MusicPlayerBloc>();
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24),
-      child: Container(
-          height: 72,
-          width: 72,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            boxShadow: [],
-            borderRadius: borderRadiusButton,
+    return OutlinedButtonSelector(
+        onPressed: () => context.read<MusicPlayerBloc>().add(TogglePlayPauseRequested()),
+        background: Theme.of(context).colorScheme.primary,
+        shape: const RoundedRectangleBorder(
+          borderRadius: borderRadiusButton,
+        ),
+        child: SizedBox(
+          height: 68,
+          width: 68,
+          child: IgnorePointer(
+            child: IconButton(
+              iconSize: 42,
+              icon: getIcon(),
+              onPressed: () {},
+            ),
           ),
-          child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-            buildWhen: (previous, current) => previous.playingState != current.playingState,
-            builder: (context, state) => OutlinedButtonSelector(
-                onPressed: () => musicPlayerBloc.add(TogglePlayPauseRequested()),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: borderRadiusButton,
-                ),
-                child: Icon(
-                  state.playingState == PlayingState.pause ? Icons.pause : Icons.play_arrow,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 42,
-                )),
-          )),
-    );
+        ));
+  }
+
+  Widget getIcon() {
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+        buildWhen: (previous, current) => previous.playingState != current.playingState,
+        builder: (context, state) => Icon(
+              state.playingState == PlayingState.pause ? Icons.play_arrow : Icons.pause,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ));
   }
 }

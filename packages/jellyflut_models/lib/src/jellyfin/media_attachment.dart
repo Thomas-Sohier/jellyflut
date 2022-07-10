@@ -18,7 +18,7 @@ class MediaAttachment with _$MediaAttachment {
       String? comment,
 
       /// Gets or sets the index
-      String? index,
+      int? index,
 
       /// Gets or sets the filename
       String? fileName,

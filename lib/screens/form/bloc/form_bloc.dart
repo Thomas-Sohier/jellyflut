@@ -39,11 +39,11 @@ class FormBloc extends Bloc<FormEvent, FormState> {
   Future<void> _submitForm(FormSubmitted event, Emitter<FormState> emit) async {
     state.formBuilder.formGroup.markAllAsTouched();
     if (state.formBuilder.formGroup.valid) {
-      return _submitItemForm();
+      return _submitItemForm(emit);
     }
   }
 
-  Future<void> _submitItemForm() {
+  Future<void> _submitItemForm(Emitter<FormState> emit) {
     return _itemsRepository
         .updateItem(item: state.formBuilder.formToItem())
         .then((_) => emit(state.copyWith(formStatus: FormStatus.submitted)))

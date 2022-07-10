@@ -77,45 +77,45 @@ class ItemsApi {
       {String? parentId,
       String? albumArtistIds,
       String? personIds,
-      String filter = 'IsNotFolder, IsUnplayed',
-      bool recursive = true,
-      String sortBy = 'PremiereDate',
-      String sortOrder = 'Ascending',
-      String mediaType = 'Audio%2CVideo',
-      String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
+      String? filter = 'IsNotFolder',
+      bool? recursive = true,
+      List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
+      String? sortOrder = 'Descending',
+      String? mediaTypes,
+      String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
       String? includeItemTypes,
-      int limit = 300,
-      int startIndex = 0,
-      int imageTypeLimit = 1,
-      String fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
-      String excludeLocationTypes = 'Virtual',
-      bool enableTotalRecordCount = false,
-      bool collapseBoxSetItems = false}) async {
-    final queryParams = <String, String>{};
-    parentId != null ? queryParams['ParentId'] = parentId : null;
-    albumArtistIds != null ? queryParams['AlbumArtistIds'] = albumArtistIds : null;
-    personIds != null ? queryParams['PersonIds'] = personIds : null;
-    queryParams['Filters'] = filter;
-    queryParams['Recursive'] = recursive.toString();
-    queryParams['SortBy'] = sortBy;
-    queryParams['SortOrder'] = sortOrder;
-    if (includeItemTypes != null) {
-      queryParams['IncludeItemTypes'] = includeItemTypes;
-    }
-    queryParams['ImageTypeLimit'] = imageTypeLimit.toString();
-    queryParams['EnableImageTypes'] = enableImageTypes;
-    queryParams['StartIndex'] = startIndex.toString();
-    queryParams['MediaTypes'] = mediaType;
-    queryParams['Limit'] = limit.toString();
-    queryParams['Fields'] = fields;
-    queryParams['ExcludeLocationTypes'] = excludeLocationTypes;
-    queryParams['EnableTotalRecordCount'] = enableTotalRecordCount.toString();
-    queryParams['CollapseBoxSetItems'] = collapseBoxSetItems.toString();
+      int? limit = 300,
+      int? startIndex = 0,
+      int? imageTypeLimit = 1,
+      String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
+      String? excludeLocationTypes = 'Virtual',
+      bool? enableTotalRecordCount = false,
+      bool? collapseBoxSetItems = false}) async {
+    final queryParams = <String, dynamic>{};
+    queryParams.putIfAbsent('parentId', () => parentId);
+    queryParams.putIfAbsent('albumArtistIds', () => albumArtistIds);
+    queryParams.putIfAbsent('personIds', () => personIds);
+    queryParams.putIfAbsent('filters', () => filter);
+    queryParams.putIfAbsent('recursive', () => recursive);
+    queryParams.putIfAbsent('sortBy', () => sortBy?.map((e) => e.name).join(','));
+    queryParams.putIfAbsent('sortOrder', () => sortOrder);
+    queryParams.putIfAbsent('includeItemTypes', () => includeItemTypes);
+    queryParams.putIfAbsent('imageTypeLimit', () => imageTypeLimit);
+    queryParams.putIfAbsent('enableImageTypes', () => enableImageTypes);
+    queryParams.putIfAbsent('startIndex', () => startIndex);
+    queryParams.putIfAbsent('mediaTypes', () => mediaTypes);
+    queryParams.putIfAbsent('limit', () => limit);
+    queryParams.putIfAbsent('fields', () => fields);
+    queryParams.putIfAbsent('excludeLocationTypes', () => excludeLocationTypes);
+    queryParams.putIfAbsent('enableTotalRecordCount', () => enableTotalRecordCount);
+    queryParams.putIfAbsent('collapseBoxSetItems', () => collapseBoxSetItems);
+    queryParams.removeWhere((_, value) => value == null);
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
         '$_serverUrl/Users/$_userId/Items',
-        queryParameters: queryParams,
+        queryParameters: finalQueryParams,
       );
 
       if (response.statusCode != 200) {

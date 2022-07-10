@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +13,6 @@ class SongPlaylist extends StatelessWidget {
     final musicPlayerbloc = context.read<MusicPlayerBloc>();
     return ClipRect(
       child: ReorderableListView.builder(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.vertical,
         itemCount: musicPlayerbloc.state.playlist.length,
         itemBuilder: (context, index) => PlaylistListItem(
             key: ValueKey(musicPlayerbloc.state.playlist[index]),
@@ -64,8 +63,8 @@ class PlaylistListItem extends StatelessWidget {
               height: 0.5,
               thickness: 0.5,
             ),
-          InkWell(
-              onTap: () => musicPlayerbloc.add(PlayAtIndex(index: index)),
+          OutlinedButtonSelector(
+              onPressed: () => musicPlayerbloc.add(PlayAtIndex(index: index)),
               child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                   child: PlaylistItem(index: index, audioSource: audioSource)))

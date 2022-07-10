@@ -5,7 +5,6 @@ import 'package:jellyflut/globals.dart';
 
 class UserIcon extends StatelessWidget {
   final double size;
-
   const UserIcon({super.key, this.size = 28});
 
   @override
@@ -13,8 +12,7 @@ class UserIcon extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(24)),
       child: CachedNetworkImage(
-        imageUrl:
-            '${server.url}/Users/${userJellyfin?.id}/Images/Primary?quality=90',
+        imageUrl: '${server.url}/Users/${userJellyfin?.id}/Images/Primary?quality=90',
         width: size,
         errorWidget: (context, url, error) => Container(
           padding: EdgeInsets.all(2),

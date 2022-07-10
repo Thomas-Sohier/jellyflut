@@ -25,25 +25,24 @@ class ItemsRepository {
   /// Can add other parameter (already good defaults for most queries)
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getCategory({
-    String? parentId,
-    String? albumArtistIds,
-    String? personIds,
-    String filter = 'IsNotFolder, IsUnplayed',
-    bool recursive = true,
-    String sortBy = 'PremiereDate',
-    String sortOrder = 'Ascending',
-    String mediaType = 'Audio%2CVideo',
-    String enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
-    String? includeItemTypes,
-    int limit = 300,
-    int startIndex = 0,
-    int imageTypeLimit = 1,
-    String fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
-    String excludeLocationTypes = 'Virtual',
-    bool enableTotalRecordCount = false,
-    bool collapseBoxSetItems = false,
-  }) =>
+  Future<Category> getCategory(
+          {String? parentId,
+          String? albumArtistIds,
+          String? personIds,
+          String? filter = 'IsNotFolder',
+          bool? recursive = true,
+          List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
+          String? sortOrder = 'Descending',
+          String? mediaTypes,
+          String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
+          String? includeItemTypes,
+          int? limit = 300,
+          int? startIndex = 0,
+          int? imageTypeLimit = 1,
+          String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
+          String? excludeLocationTypes = 'Virtual',
+          bool? enableTotalRecordCount = false,
+          bool? collapseBoxSetItems = false}) =>
       _itemsApi.getCategory(
         parentId: parentId,
         albumArtistIds: albumArtistIds,
@@ -51,7 +50,7 @@ class ItemsRepository {
         recursive: recursive,
         sortBy: sortBy,
         sortOrder: sortOrder,
-        mediaType: mediaType,
+        mediaTypes: mediaTypes,
         enableImageTypes: enableImageTypes,
         includeItemTypes: includeItemTypes,
         limit: limit,

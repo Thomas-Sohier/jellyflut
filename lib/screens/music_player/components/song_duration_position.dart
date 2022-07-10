@@ -8,21 +8,21 @@ class SongDurationPosition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final musicPlayerBloc = context.read<MusicPlayerBloc>();
     return Row(
       children: [
-        StreamBuilder<Duration?>(
-            stream: musicPlayerBloc.state.postionStream,
-            builder: (context, snapshot) => Text(
-                  snapshot.data != null ? printDuration(snapshot.data!) : '0.00',
-                  style: Theme.of(context).textTheme.bodyText1,
-                )),
+        BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+            buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+            builder: (context, state) => StreamBuilder<Duration?>(
+                stream: state.postionStream,
+                builder: (context, snapshot) => Text(
+                      snapshot.data != null ? printDuration(snapshot.data!) : '0.00',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ))),
         Spacer(),
-        StreamBuilder<Duration?>(
-            stream: musicPlayerBloc.state.postionStream,
-            builder: (context, snapshot) => Text(
-                snapshot.data != null ? printDuration(musicPlayerBloc.state.duration) : '∞',
-                style: Theme.of(context).textTheme.bodyText1))
+        BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+            buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+            builder: (context, state) =>
+                Text(printDuration(state.duration), style: Theme.of(context).textTheme.bodyText1))
       ],
     );
   }

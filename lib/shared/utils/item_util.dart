@@ -20,7 +20,7 @@ class ItemUtil {
         type == ItemType.TvChannel ||
         type == ItemType.Video) {
       return customRouter.push(StreamRoute(item: item));
-    } else if (type == ItemType.Audio || type == ItemType.MusicAlbum) {
+    } else if (type == ItemType.Audio) {
       context.read<MusicPlayerBloc>().add(PlaySongRequested(item: item));
       return Future.value();
     } else if (type == ItemType.MusicAlbum) {

@@ -19,23 +19,27 @@ class MusicPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final musicPlayerBloc = context.read<MusicPlayerBloc>();
-    return Scaffold(
-        body: Theme(
-            data: musicPlayerBloc.state.theme,
-            child: LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth > 960) {
-                musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.desktop));
-              } else {
-                musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.mobile));
-              }
-              return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(child: const SongDetails()),
-                    if (constraints.maxWidth > 960) Expanded(child: const SongPlaylistCard(child: SongPlaylist()))
-                  ]);
-            })));
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+      buildWhen: (previous, current) => previous.theme != current.theme,
+      builder: (context, state) => Scaffold(
+          body: Theme(
+              data: state.theme,
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth > 960 && musicPlayerBloc.state.screenLayout == ScreenLayout.mobile) {
+                  musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.desktop));
+                } else if (constraints.maxWidth < 960 && musicPlayerBloc.state.screenLayout == ScreenLayout.desktop) {
+                  musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.mobile));
+                }
+
+                return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Expanded(child: SongDetails()),
+                      if (constraints.maxWidth > 960) const Expanded(child: SongPlaylistCard(child: SongPlaylist()))
+                    ]);
+              }))),
+    );
   }
 }
 
@@ -46,11 +50,13 @@ class SongDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     const controlsOverflowSize = 30.0;
     return Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-      AppBar(
-          backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          actions: [if (context.read<MusicPlayerBloc>().state.screenLayout == ScreenLayout.mobile) playlistButton()]),
+      BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+          buildWhen: (previous, current) => previous.screenLayout != current.screenLayout,
+          builder: (context, state) => AppBar(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              actions: [if (state.screenLayout == ScreenLayout.mobile) playlistButton()])),
       const SizedBox(height: 10),
       const SongInfos(),
       const SizedBox(height: 20),

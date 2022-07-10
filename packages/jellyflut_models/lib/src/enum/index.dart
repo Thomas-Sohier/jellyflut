@@ -16,6 +16,7 @@ export 'meta_data_fields.dart';
 export 'person_type.dart';
 export 'play_access.dart';
 export 'play_method.dart';
+export 'http_request_sort_by.dart';
 export 'protocol.dart';
 export 'reapeat_mode.dart';
 export 'streaming_software.dart';

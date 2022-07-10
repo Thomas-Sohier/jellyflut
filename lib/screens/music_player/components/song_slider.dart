@@ -9,13 +9,14 @@ class SongSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final musicPlayerbloc = context.read<MusicPlayerBloc>();
-    return StreamBuilder<Duration?>(
-      stream: musicPlayerbloc.state.postionStream,
-      builder: (context, snapshotPosition) => AnimatedFractionallySizedBox(
-          duration: Duration(seconds: 1),
-          widthFactor: getSliderSize(snapshotPosition.data, musicPlayerbloc.state.duration),
-          child: Container(color: Theme.of(context).colorScheme.secondary.withAlpha(190))),
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+      buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+      builder: (context, state) => StreamBuilder<Duration?>(
+          stream: state.postionStream,
+          builder: (context, snapshotPosition) => AnimatedFractionallySizedBox(
+              duration: Duration(seconds: 1),
+              widthFactor: getSliderSize(snapshotPosition.data, state.duration),
+              child: Container(color: Theme.of(context).colorScheme.secondary.withAlpha(190)))),
     );
   }
 

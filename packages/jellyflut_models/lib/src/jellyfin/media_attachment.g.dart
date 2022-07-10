@@ -11,7 +11,7 @@ _$_MediaAttachment _$$_MediaAttachmentFromJson(Map<String, dynamic> json) =>
       codec: json['Codec'] as String?,
       codecTag: json['CodecTag'] as String?,
       comment: json['Comment'] as String?,
-      index: json['Index'] as String?,
+      index: json['Index'] as int?,
       fileName: json['FileName'] as String?,
       mimeType: json['MimeType'] as String?,
       deliveryUrl: json['DeliveryUrl'] as String?,

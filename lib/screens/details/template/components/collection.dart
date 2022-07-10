@@ -41,7 +41,7 @@ class _CollectionState extends State<Collection> {
       case ItemType.MusicArtist:
         musicAlbumFuture = context.read<ItemsRepository>().getCategory(
             includeItemTypes: ItemType.MusicAlbum.name,
-            sortBy: 'ProductionYear,Sortname',
+            sortBy: const [HttpRequestSortBy.ProductionYear, HttpRequestSortBy.SortName],
             albumArtistIds: widget.item.id,
             fields:
                 'AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo,AudioInfo,SeriesInfo,ParentId,PrimaryImageAspectRatio,BasicSyncInfo');

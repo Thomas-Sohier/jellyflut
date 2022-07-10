@@ -4,12 +4,9 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class SettingsButton extends StatefulWidget {
-  @override
-  State<SettingsButton> createState() => _SettingsButtonState();
-}
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({super.key});
 
-class _SettingsButtonState extends State<SettingsButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(

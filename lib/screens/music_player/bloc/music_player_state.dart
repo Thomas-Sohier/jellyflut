@@ -17,7 +17,7 @@ class MusicPlayerState extends Equatable {
   final AudioSource? currentlyPlaying;
   final PlayingState playingState;
   final Duration duration;
-  final BehaviorSubject<Duration> postionStream;
+  final BehaviorSubject<Duration?> postionStream;
   final MusicPlayerStatus status;
 
   const MusicPlayerState(
@@ -34,7 +34,7 @@ class MusicPlayerState extends Equatable {
       {ThemeData? theme,
       ScreenLayout? screenLayout,
       Duration? duration,
-      BehaviorSubject<Duration>? postionStream,
+      BehaviorSubject<Duration?>? postionStream,
       List<AudioSource>? playlist,
       AudioSource? currentlyPlaying,
       PlayingState? playingState,
@@ -52,5 +52,6 @@ class MusicPlayerState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [theme, screenLayout, playlist, currentlyPlaying, playingState, status];
+  List<Object?> get props =>
+      [theme, postionStream, duration, currentlyPlaying, screenLayout, playlist, playingState, status];
 }
