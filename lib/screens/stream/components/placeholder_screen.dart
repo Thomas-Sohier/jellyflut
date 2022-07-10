@@ -22,7 +22,7 @@ class PlaceholderScreen extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         boxFit: BoxFit.fitHeight,
-        tag: ImageType.BACKDROP,
+        tag: ImageType.Backdrop,
         showParent: true,
         backup: item.type == ItemType.TvChannel ? true : false);
   }

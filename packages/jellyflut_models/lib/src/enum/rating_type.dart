@@ -1,0 +1,4 @@
+enum RatingType {
+  Score,
+  Likes;
+}

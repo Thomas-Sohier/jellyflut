@@ -548,9 +548,9 @@ class Item with _$Item {
   ///
   /// Return id as [String] if found
   /// Else return item's id as [String]
-  String correctImageId({ImageType searchType = ImageType.PRIMARY}) {
+  String correctImageId({ImageType searchType = ImageType.Primary}) {
     // If of type logo we return only parent logo
-    if (searchType == ImageType.LOGO) {
+    if (searchType == ImageType.Logo) {
       switch (type) {
         case ItemType.Season:
         case ItemType.Episode:
@@ -580,9 +580,9 @@ class Item with _$Item {
   ///
   /// Return imageTag as [String] if found
   /// Else return [null]
-  String? correctImageTags({ImageType searchType = ImageType.PRIMARY}) {
+  String? correctImageTags({ImageType searchType = ImageType.Primary}) {
     // If of type logo we return only parent logo
-    if (searchType == ImageType.LOGO) {
+    if (searchType == ImageType.Logo) {
       switch (type) {
         case ItemType.Season:
         case ItemType.Episode:
@@ -607,7 +607,7 @@ class Item with _$Item {
     return null;
   }
 
-  String? getImageTagBySearchType({ImageType searchType = ImageType.PRIMARY}) {
+  String? getImageTagBySearchType({ImageType searchType = ImageType.Primary}) {
     return imageTags.isNotEmpty ? imageTags[searchType] : null;
   }
 
@@ -617,18 +617,18 @@ class Item with _$Item {
   ///
   /// Return imageTag as [String] if found
   /// Else return [null]
-  ImageType correctImageType({ImageType searchType = ImageType.PRIMARY}) {
+  ImageType correctImageType({ImageType searchType = ImageType.Primary}) {
     // If we search correct image type for a logo that do not exist we still
     //return a logo tag and not a primary one as backup (or it will be ugly)
     late final backupSearchType;
-    if (searchType == ImageType.LOGO) {
-      backupSearchType = ImageType.LOGO;
+    if (searchType == ImageType.Logo) {
+      backupSearchType = ImageType.Logo;
     } else {
-      backupSearchType = ImageType.PRIMARY;
+      backupSearchType = ImageType.Primary;
     }
 
     // If of type logo we return only parent logo
-    if (searchType == ImageType.BACKDROP && backdropImageTags.isNotEmpty) {
+    if (searchType == ImageType.Backdrop && backdropImageTags.isNotEmpty) {
       return searchType;
     } else if (imageTags.isNotEmpty) {
       return getImageTypeBySearchTypeOrBackup(searchType: searchType, backupSearchType: backupSearchType);
@@ -637,37 +637,11 @@ class Item with _$Item {
   }
 
   ImageType getImageTypeBySearchTypeOrBackup(
-      {ImageType searchType = ImageType.PRIMARY, required ImageType backupSearchType}) {
+      {ImageType searchType = ImageType.Primary, required ImageType backupSearchType}) {
     if (imageTags.containsKey(searchType)) {
-      return ImageType.fromString(searchType.name);
+      return searchType;
     }
     return backupSearchType;
-  }
-
-  /// Play current item given context
-  ///
-  /// If Book open Epub reader
-  /// If Video open video player
-  /// If music play it and show music button
-  Future<void> playItem() {
-    // var musicProvider = MusicProvider();
-    // if (type == ItemType.EPISODE ||
-    //     type == ItemType.SEASON ||
-    //     type == ItemType.SERIES ||
-    //     type == ItemType.MOVIE ||
-    //     type == ItemType.TVCHANNEL ||
-    //     type == ItemType.VIDEO) {
-    //   return customRouter.push(StreamRoute(item: this));
-    // } else if (type == ItemType.AUDIO) {
-    //   return musicProvider.playRemoteAudio(this);
-    // } else if (type == ItemType.MUSICALBUM) {
-    //   return musicProvider.playPlaylist(this);
-    // } else if (type == ItemType.BOOK) {
-    //   return customRouter.push(EpubRoute(item: this));
-    // } else {
-    //   throw UnimplementedError('Item is not playable (type : $type');
-    // }
-    throw UnimplementedError('Item is not playable (type : $type');
   }
 
   Future<String> getItemURL({bool directPlay = false}) async {

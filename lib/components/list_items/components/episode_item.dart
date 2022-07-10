@@ -96,7 +96,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
       aspectRatio: widget.item.getPrimaryAspectRatio(),
       child: Poster(
           key: ValueKey(widget.item),
-          tag: ImageType.PRIMARY,
+          tag: ImageType.Primary,
           heroTag: posterHeroTag,
           clickable: false,
           placeholder: widget.placeholder,

@@ -43,6 +43,8 @@ export 'playback_progress.dart';
 export 'policy.dart';
 export 'provider_ids.dart';
 export 'remote_trailer.dart';
+export 'remote_image.dart';
+export 'remote_image_info.dart';
 export 'required_http_headers.dart';
 export 'response_profile.dart';
 export 'season_blur_bash.dart';

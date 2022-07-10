@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' hide Category;
@@ -24,6 +25,9 @@ class ItemSearchFailure implements Exception {}
 
 /// Exception thrown when views request has failed.
 class ViewRequestFailure implements Exception {}
+
+/// Exception thrown when images request has failed.
+class IamgeRequestFailure implements Exception {}
 
 /// {@template items_api}
 /// A dart API client for the Jellyfin Item API
@@ -440,5 +444,125 @@ class ItemsApi {
     } catch (_) {
       throw ViewRequestFailure();
     }
+  }
+
+  /// Helper method to generate an URL to get Item image
+  ///
+  /// * [maxWidth]            => The maximum image width to return.
+  /// * [maxHeight]           => The maximum image height to return.
+  /// * [width]               => The fixed image width to return.
+  /// * [height]              => The fixed image height to return.
+  /// * [quality]             => Quality setting, from 0-100. Defaults to 90 and should suffice in most cases.
+  /// * [fillWidth]           => Width of box to fill.
+  /// * [fillHeight]          => Height of box to fill.
+  /// * [tag]                 => Supply the cache tag from the item object to receive strong caching headers.
+  /// * [format]              => The MediaBrowser.Model.Drawing.ImageFormat of the returned image.
+  /// * [addPlayedIndicator]  => Add a played indicator.
+  /// * [percentPlayed]       =>  Percent to render for the percent played overlay.
+  /// * [unplayedCount]       => Unplayed count overlay to render.
+  /// * [blur]                => Blur image.
+  /// * [backgroundColor]     => Apply a background color for transparent images.
+  /// * [foregroundLayer]     =>  Apply a foreground layer on top of the image.
+  /// * [imageIndex]          => Image index.
+  String getItemImageUrl({
+    required String itemId,
+    ImageType type = ImageType.Primary,
+    int? maxWidth,
+    int? maxHeight,
+    int? width,
+    int? height,
+    int quality = 60,
+    int? fillWidth,
+    int? fillHeight,
+    String? tag,
+    String? format,
+    bool? addPlayedIndicator,
+    double? percentPlayed,
+    int? unplayedCount,
+    int? blur,
+    String? backgroundColor,
+    String? foregroundLayer,
+    int? imageIndex,
+  }) {
+    final uri = Uri.parse('$_serverUrl/Items/$itemId/Images/${type.name}');
+    final queryParams = <String, dynamic>{};
+    queryParams.putIfAbsent('maxWidth', () => maxWidth);
+    queryParams.putIfAbsent('maxHeight', () => maxHeight);
+    queryParams.putIfAbsent('width', () => width);
+    queryParams.putIfAbsent('height', () => height);
+    queryParams.putIfAbsent('quality', () => quality);
+    queryParams.putIfAbsent('fillWidth', () => fillWidth);
+    queryParams.putIfAbsent('fillHeight', () => fillHeight);
+    queryParams.putIfAbsent('tag', () => tag);
+    queryParams.putIfAbsent('format', () => format);
+    queryParams.putIfAbsent('addPlayedIndicator', () => addPlayedIndicator);
+    queryParams.putIfAbsent('percentPlayed', () => percentPlayed);
+    queryParams.putIfAbsent('unplayedCount', () => unplayedCount);
+    queryParams.putIfAbsent('blur', () => blur);
+    queryParams.putIfAbsent('backgroundColor', () => backgroundColor);
+    queryParams.putIfAbsent('foregroundLayer', () => foregroundLayer);
+    queryParams.putIfAbsent('foregroundLayer', () => foregroundLayer);
+    queryParams.putIfAbsent('imageIndex', () => imageIndex);
+    queryParams.removeWhere((_, value) => value == null);
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+
+    return uri.replace(queryParameters: finalQueryParams).toString();
+  }
+
+  /// Get all availables images for an item
+  Future<RemoteImage> getRemoteImages(
+    String itemId, {
+    String? type,
+    int? startIndex,
+    int? limit,
+    String? providerName,
+    bool? includeAllLanguages = false,
+  }) async {
+    final queryParams = <String, dynamic>{};
+    queryParams.putIfAbsent('type', () => type);
+    queryParams.putIfAbsent('startIndex', () => startIndex);
+    queryParams.putIfAbsent('limit', () => limit);
+    queryParams.putIfAbsent('providerName', () => providerName);
+    queryParams.putIfAbsent('includeAllLanguages', () => includeAllLanguages);
+
+    try {
+      final response = await _dioClient.get<Map<String, dynamic>>(
+        '$_serverUrl/Items/$itemId/RemoteImages',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode != 200) {
+        throw IamgeRequestFailure();
+      }
+
+      return compute(RemoteImage.fromJson, response.data!);
+    } catch (_) {
+      throw IamgeRequestFailure();
+    }
+  }
+
+  /// Download an image for a given itemId
+  Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) async {
+    try {
+      final response = await _dioClient.get<Uint8List>(getItemImageUrl(itemId: itemId, type: type, quality: 100),
+          options: Options(responseType: ResponseType.bytes));
+      if (response.statusCode != 200) {
+        throw IamgeRequestFailure();
+      }
+      return response.data!;
+    } catch (_) {
+      throw IamgeRequestFailure();
+    }
+  }
+
+  Future<String> createMusicURL(String itemId) async {
+    // final streamingSoftwareDB = await _database.settingsDao.getSettingsById(0);
+    // final streamingSoftware = TranscodeAudioCodec.fromString(streamingSoftwareDB.preferredTranscodeAudioCodec);
+    // // First we try to fetch item locally to play it
+    // final itemExist = await _database.downloadsDao.doesExist(itemId);
+    // if (itemExist) return await FileService.getStoragePathItem(this);
+    return '$_serverUrl/Audio/$itemId/stream.aac';
+
+    // throw UnimplementedError('createMusicURL is not defined right now, TODO');
   }
 }

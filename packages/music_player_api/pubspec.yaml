@@ -7,12 +7,25 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  dart_vlc: ^0.3.0
   flutter:
     sdk: flutter
+  freezed_annotation: ^2.0.3
+  items_repository:
+    path: ../items/items_repository
   jellyflut_models:
     path: ../jellyflut_models
+  sqlite_database:
+    path: ../sqlite_database
+  json_annotation: ^4.6.0
+  just_audio: ^0.9.27
+  rxdart: ^0.27.4
 
 dev_dependencies:
+  build_runner: ^2.1.11
   flutter_test:
     sdk: flutter
+  freezed: ^2.0.4
+  json_serializable: ^6.2.0
   pedantic: ^1.11.1
+  test: ^1.21.0

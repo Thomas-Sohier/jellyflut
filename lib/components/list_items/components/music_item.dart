@@ -4,6 +4,7 @@ import 'package:jellyflut/components/fav_button/fav_button.dart';
 import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut/shared/utils/item_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,7 +18,7 @@ class MusicItem extends StatefulWidget {
 
 class _MusicItemState extends State<MusicItem> {
   void _onTap() {
-    widget.item.playItem();
+    ItemUtil.playItem(widget.item);
   }
 
   @override
@@ -71,7 +72,7 @@ class _MusicItemState extends State<MusicItem> {
       aspectRatio: widget.item.primaryImageAspectRatio ?? 1,
       child: Poster(
           key: ValueKey(widget.item),
-          tag: ImageType.PRIMARY,
+          tag: ImageType.Primary,
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
           dropShadow: false,

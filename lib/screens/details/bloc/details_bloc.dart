@@ -132,8 +132,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       return add(DetailsUpdateSeedColor(colors: getCachedSeedColor()));
     }
 
-    final url = ItemImageService.getItemImageUrl(item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
-        type: item.correctImageType(searchType: ImageType.PRIMARY), quality: 40);
+    final url = ItemImageService.getItemImageUrl(
+        itemId: item.id,
+        tag: item.correctImageTags(searchType: ImageType.Primary),
+        type: item.correctImageType(searchType: ImageType.Primary),
+        quality: 40);
 
     await NetworkAssetBundle(Uri.parse(url)).load(url).then((ByteData byteData) async {
       final imageBytes = byteData.buffer.asUint8List();

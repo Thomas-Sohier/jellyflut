@@ -26,10 +26,7 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (selectable) {
-      return OutlinedButtonSelector(
-          padding: padding,
-          onPressed: () => logoDialog(context),
-          child: logo(context));
+      return OutlinedButtonSelector(padding: padding, onPressed: () => logoDialog(context), child: logo(context));
     }
     return logo(context);
   }
@@ -46,8 +43,7 @@ class Logo extends StatelessWidget {
                 descendantsAreFocusable: false,
                 mouseCursor: SystemMouseCursors.click,
                 actions: actions,
-                child: Center(
-                    child: logo(context, BoxConstraints(maxWidth: 960)))),
+                child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });
   }
@@ -61,7 +57,7 @@ class Logo extends StatelessWidget {
           boxFit: BoxFit.contain,
           errorWidget: (_, __, ___) => const SizedBox(),
           placeholder: (_) => const SizedBox(),
-          tag: ImageType.LOGO,
+          tag: ImageType.Logo,
         ));
   }
 }

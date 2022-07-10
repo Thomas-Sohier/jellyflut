@@ -9,14 +9,22 @@ import 'package:items_api/items_api.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/app/app.dart';
 import 'package:jellyflut/app/app_bloc_observer.dart';
+import 'package:music_player_api/music_player_api.dart';
+import 'package:music_player_repository/music_player_repository.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_api/users_api.dart';
 import 'package:users_repository/users_repository.dart';
 
+import 'providers/theme/theme_provider.dart';
+
 void bootstrap(
     {required bool authenticated,
+    required Database database,
+    required ThemeProvider themeProvider,
     required DownloadsApi downloadsApi,
     required ItemsApi itemsApi,
-    required UsersApi usersApi}) {
+    required UsersApi usersApi,
+    required MusicPlayerApi musicPlayerApi}) {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -24,6 +32,7 @@ void bootstrap(
   final downloadsRepository = DownloadsRepository(downloadsApi: downloadsApi);
   final itemsRepository = ItemsRepository(itemsApi: itemsApi);
   final usersRepository = UsersRepository(usersApi: usersApi);
+  final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
 
   runZonedGuarded(
     () async {
@@ -31,9 +40,12 @@ void bootstrap(
         () async => runApp(
           App(
               authenticated: authenticated,
+              database: database,
+              themeProvider: themeProvider,
               downloadsRepository: downloadsRepository,
               itemsRepository: itemsRepository,
-              usersRepository: usersRepository),
+              usersRepository: usersRepository,
+              musicPlayerRepository: musicPlayerRepository),
         ),
         blocObserver: AppBlocObserver(),
       );

@@ -43,7 +43,7 @@ class _PeoplesListState extends State<PeoplesList> {
                 name: person.name,
                 id: person.id,
                 imageBlurHashes: person.imageBlurHashes,
-                imageTags: Map<String, String>.from({ImageType.PRIMARY.value: person.primaryImageTag ?? ''}),
+                imageTags: Map<String, String>.from({ImageType.Primary.name: person.primaryImageTag ?? ''}),
                 type: ItemType.Person);
             return ResponsiveBuilder.builder(
                 mobile: () => largeScreenTemplate(item, person, index),

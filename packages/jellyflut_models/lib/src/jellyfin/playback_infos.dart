@@ -1,34 +1,19 @@
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../enum/index.dart';
 import 'index.dart';
 
-PlayBackInfos playBackInfosFromMap(String str) => PlayBackInfos.fromMap(json.decode(str));
+part 'playback_infos.freezed.dart';
+part 'playback_infos.g.dart';
 
-String playBackInfosToMap(PlayBackInfos data) => json.encode(data.toMap());
+@Freezed()
+class PlayBackInfos with _$PlayBackInfos {
+  PlayBackInfos._();
 
-class PlayBackInfos {
-  PlayBackInfos({
-    required this.mediaSources,
-    this.playSessionId,
-    this.errorCode,
-  });
+  factory PlayBackInfos({required List<MediaSource> mediaSources, String? playSessionId, String? errorCode}) =
+      _PlayBackInfos;
 
-  List<MediaSource> mediaSources;
-  String? playSessionId;
-  String? errorCode;
-
-  factory PlayBackInfos.fromMap(Map<String, dynamic> json) => PlayBackInfos(
-        mediaSources: List<MediaSource>.from(json['MediaSources'].map((x) => MediaSource.fromJson(x))),
-        playSessionId: json['PlaySessionId'],
-        errorCode: json['ErrorCode'],
-      );
-
-  Map<String, dynamic> toMap() => {
-        'MediaSources': List<dynamic>.from(mediaSources.map((x) => x.toJson())),
-        'PlaySessionId': playSessionId,
-        'ErrorCode': errorCode,
-      };
+  factory PlayBackInfos.fromJson(Map<String, Object?> json) => _$PlayBackInfosFromJson(json);
 
   List<MediaStream> getSubtitles() {
     return mediaSources.first.mediaStreams.where((element) => element.type == MediaStreamType.Subtitle).toList();

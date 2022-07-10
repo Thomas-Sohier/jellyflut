@@ -17,7 +17,7 @@ class LargeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.topCenter, children: [
-      const BackgroundImage(imageType: ImageType.BACKDROP),
+      const BackgroundImage(imageType: ImageType.Backdrop),
       const DetailsBackground(),
       LayoutBuilder(builder: ((_, constraints) {
         // Constraint emitter

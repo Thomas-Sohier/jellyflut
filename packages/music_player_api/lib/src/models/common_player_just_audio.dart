@@ -1,10 +1,9 @@
-import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/screens/music_player/models/audio_source.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:rxdart/rxdart.dart';
 
+import 'audio_source.dart';
+
 class CommonPlayerJustAudio {
-  static final _musicProvider = MusicProvider();
   final AudioPlayer audioPlayer;
   BehaviorSubject<void>? _audioEndBehaviorSubject;
 
@@ -22,7 +21,7 @@ class CommonPlayerJustAudio {
       }
     });
     _audioEndBehaviorSubject?.listen((_) {
-      _musicProvider.next();
+      audioPlayer.seekToNext();
     });
   }
 

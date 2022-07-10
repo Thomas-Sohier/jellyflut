@@ -13,7 +13,7 @@ ViewState _$ViewStateFromJson(Map<String, dynamic> json) => ViewState(
     );
 
 Map<String, dynamic> _$ViewStateToJson(ViewState instance) => <String, dynamic>{
-      'status': _$ViewStatusEnumMap[instance.status],
+      'status': _$ViewStatusEnumMap[instance.status]!,
       'isViewed': instance.isViewed,
     };
 

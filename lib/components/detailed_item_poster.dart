@@ -42,7 +42,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                                   errorWidget: (_, __, ___) => const SizedBox(),
                                   width: double.infinity,
                                   height: double.infinity,
-                                  tag: ImageType.BACKDROP),
+                                  tag: ImageType.Backdrop),
                               Container(color: Colors.black87),
                               Padding(
                                   padding: EdgeInsets.all(8),

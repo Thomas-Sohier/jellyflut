@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:music_player_repository/music_player_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
@@ -8,7 +9,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
@@ -142,12 +142,13 @@ class AuthService {
 
   /// Reset every fields
   static Future<void> logout() async {
+    final context = customRouter.navigatorKey.currentContext!;
     await _removeGlobals();
     await _removeSharedPreferences();
     HomeCategoryProvider().clear();
-    MusicProvider().reset();
-    BlocProvider.of<AuthBloc>(customRouter.navigatorKey.currentContext!).add(ResetStates());
-    await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(AuthParentRoute());
+    await context.read<MusicPlayerRepository>().reset();
+    BlocProvider.of<AuthBloc>(context).add(ResetStates());
+    await AutoRouter.of(context).replace(AuthParentRoute());
   }
 
   static Future<void> changeUser(
@@ -161,15 +162,15 @@ class AuthService {
     // Try to connect first
     // If there is an error then an exception is thrown
     // or we juste flush all data on connect with second account
-    final response = await customRouter.navigatorKey.currentContext!
-        .read<UsersRepository>()
-        .login(username: username, password: password, serverUrl: serverUrl);
+    final context = customRouter.navigatorKey.currentContext!;
+    final response =
+        await context.read<UsersRepository>().login(username: username, password: password, serverUrl: serverUrl);
     await _removeGlobals();
     await _removeSharedPreferences();
     await _saveToSharedPreferences(serverId, settingsId, userId, response);
     await _saveToGlobals();
     HomeCategoryProvider().clear();
-    MusicProvider().reset();
+    await context.read<MusicPlayerRepository>().reset();
     await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(HomeRouter());
   }
 }

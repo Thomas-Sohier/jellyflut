@@ -1,5 +1,8 @@
 import 'dart:collection';
 
+import 'package:music_player_api/music_player_api.dart';
+import 'package:rxdart/rxdart.dart';
+
 /// {@template music_player_repository}
 /// A repository that handle music player
 /// {@endtemplate}
@@ -13,44 +16,46 @@ class MusicPlayerRepository {
 
   Stream<int> playingIndex() => _musicPlayerApi.playingIndex();
 
-  AudioSource? getCurrentMusic()  => _musicPlayerApi.getCurrentMusic();
+  AudioSource? getCurrentMusic() => _musicPlayerApi.getCurrentMusic();
 
   Stream<AudioSource> getCurrentMusicStream() => _musicPlayerApi.getCurrentMusicStream();
 
-  void moveMusicItem(int oldIndex, int newIndex)  => _musicPlayerApi.moveMusicItem(int oldIndex, int newIndex);
+  void moveMusicItem(int oldIndex, int newIndex) => _musicPlayerApi.moveMusicItem(oldIndex, newIndex);
 
-  void play()  => _musicPlayerApi.play();
+  void play() => _musicPlayerApi.play();
 
-  void pause()  => _musicPlayerApi.pause();
+  void pause() => _musicPlayerApi.pause();
 
-  Duration getDuration()  => _musicPlayerApi.getDuration();
+  Duration getDuration() => _musicPlayerApi.getDuration();
 
-  BehaviorSubject<Duration?> getDurationStream()  => _musicPlayerApi.getDurationStream();
-  Stream<Duration?> getPositionStream()  => _musicPlayerApi.getPositionStream();
+  BehaviorSubject<Duration?> getDurationStream() => _musicPlayerApi.getDurationStream();
+  Stream<Duration?> getPositionStream() => _musicPlayerApi.getPositionStream();
 
-  Stream<bool?> isPlaying()  => _musicPlayerApi.isPlaying();
+  bool isPlaying() => _musicPlayerApi.isPlaying();
 
-  void seekTo(Duration duration)  => _musicPlayerApi.seekTo(Duration duration);
+  Stream<bool?> isPlayingStream() => _musicPlayerApi.isPlayingStream();
 
-  Future<void> playAtIndex(int index) => _musicPlayerApi.playAtIndex(int index);
+  void seekTo(Duration duration) => _musicPlayerApi.seekTo(duration);
 
-  UnmodifiableListView<AudioSource> getPlayList()  => _musicPlayerApi.getPlayList();
+  Future<void> playAtIndex(int index) => _musicPlayerApi.playAtIndex(index);
 
-  AudioSource getItemFromPlaylist(int index) => _musicPlayerApi.getItemFromPlaylist(int index);
-  
-  /// insert item at end of playlist
-  /// return index as int
-  void insertIntoPlaylist(AudioSource audioSource)  => _musicPlayerApi.insertIntoPlaylist(AudioSource audioSource);
-  
-  void deleteFromPlaylist(int index)  => _musicPlayerApi.deleteFromPlaylist(int index);
+  UnmodifiableListView<AudioSource> get getPlayList => UnmodifiableListView(_musicPlayerApi.getPlayList());
 
-  Future<void> next()  => _musicPlayerApi.next();
+  AudioSource getItemFromPlaylist(int index) => _musicPlayerApi.getItemFromPlaylist(index);
 
-  void previous() => _musicPlayerApi.previous();
+  void addToPlaylist(AudioSource audioSource) => _musicPlayerApi.addToPlaylist(audioSource);
 
-  void reset()  => _musicPlayerApi.reset();
+  void addAllToPlaylist(List<AudioSource> audioSources) => _musicPlayerApi.addAllToPlaylist(audioSources);
 
-  Future<void> playRemoteAudio(Item item) => _musicPlayerApi.playRemoteAudio(Item item);
+  void deleteFromPlaylist(int index) => _musicPlayerApi.deleteFromPlaylist(index);
 
-  Future<void> playPlaylist(Item item)  => _musicPlayerApi.playPlaylist(Item item);
+  Future<void> next() => _musicPlayerApi.next();
+
+  Future<void> previous() => _musicPlayerApi.previous();
+
+  Future<void> reset() => _musicPlayerApi.reset();
+
+  Future<void> playRemoteAudio(AudioSource audioSource) => _musicPlayerApi.playRemoteAudio(audioSource);
+
+  Future<void> playPlaylist(List<AudioSource> audioSources) => _musicPlayerApi.playPlaylist(audioSources);
 }

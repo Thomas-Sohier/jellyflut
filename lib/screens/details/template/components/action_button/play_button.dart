@@ -10,7 +10,7 @@ class PlayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaletteButton(
       'play'.tr(),
-      onPressed: item.playItem,
+      onPressed: () => ItemUtil.playItem(item),
       borderRadius: 4,
       minWidth: 40,
       maxWidth: maxWidth,

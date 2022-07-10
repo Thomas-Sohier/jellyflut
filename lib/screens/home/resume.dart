@@ -88,7 +88,7 @@ class _ResumeState extends State<Resume> {
                   showLogo: true,
                   imagefilter: true,
                   backup: false,
-                  tag: ImageType.BACKDROP,
+                  tag: ImageType.Backdrop,
                   widgetAspectRatio: 16 / 9,
                 );
               },

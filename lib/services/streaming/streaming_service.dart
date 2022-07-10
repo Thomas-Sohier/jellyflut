@@ -133,7 +133,7 @@ class StreamingService {
 
     try {
       final response = await dio.post(url, queryParameters: queryParams, data: profile.toJson());
-      final playbackInfos = PlayBackInfos.fromMap(response.data);
+      final playbackInfos = PlayBackInfos.fromJson(response.data);
 
       // If there is an error response from API then we throw an error
       if (playbackInfos.hasError()) {

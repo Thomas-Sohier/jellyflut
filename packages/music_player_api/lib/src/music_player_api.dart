@@ -1,52 +1,56 @@
 import 'dart:io';
 
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:just_audio/just_audio.dart' hide AudioSource;
+import 'package:rxdart/rxdart.dart';
+import 'package:sqlite_database/sqlite_database.dart';
+
+import 'models/audio_playlist.dart';
+import 'models/audio_source.dart';
+import 'models/common_player.dart';
+
+/// Exception thrown when item request fails.
+class InitFailure implements Exception {}
 
 /// {@template music_player_api}
 /// A dart API client for the music player API
 /// {@endtemplate}
 class MusicPlayerApi {
   /// {@macro music_player_api}
-  const MusicPlayerApi({required ItemsRepository? itemsRepository}) : _itemsRepository = itemsRepository;
+  MusicPlayerApi({required Database database}) : _database = database;
 
   AudioSource? _currentMusic;
   CommonPlayer? _commonPlayer;
   final _currentMusicStream = BehaviorSubject<AudioSource>();
   final _currentlyPlayingIndex = BehaviorSubject<int>();
-  final _audioPlaylist = AudioPlaylist(audioSources: <AudioSource>[]);
-  final _colorController = BehaviorSubject<AudioColors>(); // TODO move to music player BLoC
-  final _itemsRepository;
+  final _audioPlaylist = AudioPlaylist(playlist: <AudioSource>[]);
+  final Database _database;
 
-  CommonPlayer initPlayer() async {
+  Future<CommonPlayer> initPlayer() async {
     // If player already instanciated, return current instance
     if (_commonPlayer != null) {
-      return _commonPlayer;
+      return Future.value(_commonPlayer);
     }
 
     // Use audio player depending of current platform
     if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows || kIsWeb) {
-      final player = just_audio.AudioPlayer();
+      final player = AudioPlayer();
       _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else if (Platform.isLinux) {
-      final player = Player(id: audioPlayerId, registerTexture: false);
+      final player = Player(id: 0, registerTexture: false);
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
-      final currentPlatform = Theme.of(customRouter.navigatorKey.currentContext!).platform;
-      throw UnimplementedError('No audio player on this platform (platform : $currentPlatform');
+      throw UnimplementedError('No audio player on this platform');
+    }
+
+    if (_commonPlayer == null) {
+      throw InitFailure();
     }
 
     // Notify that player is init
-    _commonPlayer?.init();
-    return _commonPlayer;
-  }
-
-  // TODO move to music player BLoC
-  void setNewColors(final AudioColors audioColors) {
-    final audiocolors = AudioColors(
-        backgroundColor1: audioColors.backgroundColor1,
-        backgroundColor2: audioColors.backgroundColor2,
-        foregroundColor: audioColors.foregroundColor);
-    _colorController.add(audiocolors);
+    _commonPlayer!.init();
+    return _commonPlayer!;
   }
 
   Stream<int> playingIndex() {
@@ -64,21 +68,15 @@ class MusicPlayerApi {
   void moveMusicItem(int oldIndex, int newIndex) {
     _audioPlaylist.move(oldIndex, newIndex);
     if (_currentMusic != null) {
-      _currentlyPlayingIndex.add(_audioPlaylist.getPlaylist.indexOf(_currentMusic!));
+      _currentlyPlayingIndex.add(_audioPlaylist.playlist.indexOf(_currentMusic!));
     }
   }
 
-  void play() {
-    _commonPlayer?.play();
-  }
+  void play() => _commonPlayer?.play();
 
-  void pause() {
-    _commonPlayer?.pause();
-  }
+  void pause() => _commonPlayer?.pause();
 
-  Duration getDuration() {
-    return _commonPlayer?.getDuration ?? Duration.zero;
-  }
+  Duration getDuration() => _commonPlayer?.getDuration ?? Duration.zero;
 
   BehaviorSubject<Duration?> getDurationStream() {
     return _commonPlayer?.getDurationStream ?? BehaviorSubject<Duration?>();
@@ -88,7 +86,11 @@ class MusicPlayerApi {
     return _commonPlayer?.getPositionStream ?? Stream.value(Duration.zero);
   }
 
-  Stream<bool?> isPlaying() {
+  bool isPlaying() {
+    return _commonPlayer?.isPlaying() ?? false;
+  }
+
+  Stream<bool?> isPlayingStream() {
     return _commonPlayer?.getPlayingStateStream ?? Stream.value(false);
   }
 
@@ -97,24 +99,30 @@ class MusicPlayerApi {
   }
 
   Future<void> playAtIndex(int index) async {
-    final audioSource = _audioPlaylist.getPlaylist[index];
+    final audioSource = _audioPlaylist.playlist[index];
     return _commonPlayer?.playRemote(audioSource).then((_) {
       setCurrentlyPlayingMusic(audioSource);
     });
   }
 
   List<AudioSource> getPlayList() {
-    return _audioPlaylist.getPlaylist;
+    return _audioPlaylist.playlist;
   }
 
   AudioSource getItemFromPlaylist(int index) {
-    return _audioPlaylist.getPlaylist.elementAt(index);
+    return _audioPlaylist.playlist.elementAt(index);
   }
 
-  /// insert item at end of playlist
+  /// insert audio source at end of playlist
   /// return index as int
-  void insertIntoPlaylist(AudioSource audioSource) {
-    _audioPlaylist.insert(audioSource);
+  void addToPlaylist(AudioSource audioSource) {
+    _audioPlaylist.add(audioSource);
+  }
+
+  /// insert all audio sources at end of playlist
+  /// return index as int
+  void addAllToPlaylist(List<AudioSource> audioSources) {
+    _audioPlaylist.addAll(audioSources);
   }
 
   void deleteFromPlaylist(int index) {
@@ -123,52 +131,40 @@ class MusicPlayerApi {
 
   Future<void> next() {
     if (_currentMusic == null) return Future.value();
-    final nextIndex = _audioPlaylist.getPlaylist.indexOf(_currentMusic!) + 1;
-    if (nextIndex == _audioPlaylist.getPlaylist.length) return Future.value();
+    final nextIndex = _audioPlaylist.playlist.indexOf(_currentMusic!) + 1;
+    if (nextIndex == _audioPlaylist.playlist.length) return Future.value();
     return playAtIndex(nextIndex);
   }
 
-  void previous() {
-    if (_currentMusic == null) return;
-    final previousIndex = _audioPlaylist.getPlaylist.indexOf(_currentMusic!) - 1;
-    if (previousIndex < 0) return;
-    playAtIndex(previousIndex);
+  Future<void> previous() {
+    if (_currentMusic == null) return Future.value();
+    final previousIndex = _audioPlaylist.playlist.indexOf(_currentMusic!) - 1;
+    if (previousIndex < 0) return Future.value();
+    return playAtIndex(previousIndex);
   }
 
-  void reset() {
-    _isInit = false;
+  Future<void> reset() {
     _audioPlaylist.clear();
-    _commonPlayer?.dispose();
+    // Prevent null handling
+    return _commonPlayer?.dispose() ?? Future.value();
   }
 
-  Future<void> playRemoteAudio(Item item) async {
-    initPlayer();
-    final streamURL = await item.getItemURL();
-    final audioSource = await AudioMetadata.parseFromItem(streamURL, item);
+  Future<void> playRemoteAudio(AudioSource audioSource) async {
+    await initPlayer();
     _audioPlaylist.clear();
-    _audioPlaylist.insert(audioSource);
+    _audioPlaylist.add(audioSource);
     return playAtIndex(0);
   }
 
-  Future<void> playPlaylist(Item item) async {
-    initPlayer();
-    await _itemsRepository.getItems(parentId: item.id).then((value) async {
-      final indexToReturn = _audioPlaylist.getPlaylist.length;
-      final items = value.items.where((item) => item.isFolder == false).toList();
-      //items.sort((a, b) => a.indexNumber!.compareTo(b.indexNumber!));
-      for (var index = 0; index < items.length; index++) {
-        final item = items.elementAt(index);
-        final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
-        final musicItem = await AudioMetadata.parseFromItem(streamURL, item);
-        insertIntoPlaylist(musicItem);
-      }
-      return indexToReturn;
-    }).then((int index) => playAtIndex(index));
+  Future<void> playPlaylist(List<AudioSource> playlist) async {
+    await initPlayer();
+    _audioPlaylist.addAll(playlist);
+    return playAtIndex(0);
   }
 
   void setCurrentlyPlayingMusic(AudioSource audioSource) {
     _currentMusic = audioSource;
     _currentMusicStream.add(audioSource);
-    _currentlyPlayingIndex.add(_audioPlaylist.getPlaylist.indexOf(audioSource));
+    _currentlyPlayingIndex.add(_audioPlaylist.playlist.indexOf(audioSource));
   }
 }

@@ -1,106 +1,77 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/music_player/components/song_controls.dart';
-import 'package:jellyflut/screens/music_player/components/song_duration_position.dart';
-import 'package:jellyflut/screens/music_player/components/song_image.dart';
+import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/music_player/components/song_infos.dart';
 import 'package:jellyflut/screens/music_player/components/song_playlist.dart';
-import 'package:jellyflut/screens/music_player/components/song_playlist_card.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
 
-class MusicPlayer extends StatefulWidget {
+import 'components/song_controls.dart';
+import 'components/song_duration_position.dart';
+import 'components/song_image.dart';
+import 'components/song_playlist_card.dart';
+
+class MusicPlayer extends StatelessWidget {
   const MusicPlayer({super.key});
 
   @override
-  State<MusicPlayer> createState() => _MusicPlayerState();
+  Widget build(BuildContext context) {
+    final musicPlayerBloc = context.read<MusicPlayerBloc>();
+    return Scaffold(
+        body: Theme(
+            data: musicPlayerBloc.state.theme,
+            child: LayoutBuilder(builder: (context, constraints) {
+              if (constraints.maxWidth > 960) {
+                musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.desktop));
+              } else {
+                musicPlayerBloc.add(LayoutChanged(screenLayout: ScreenLayout.mobile));
+              }
+              return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(child: const SongDetails()),
+                    if (constraints.maxWidth > 960) Expanded(child: const SongPlaylistCard(child: SongPlaylist()))
+                  ]);
+            })));
+  }
 }
 
-class _MusicPlayerState extends State<MusicPlayer> {
-  late MusicProvider musicProvider;
-  late int musicPlayerIndex;
-  late ThemeData theme;
-  late final ValueNotifier<ThemeData?> themeData;
-
-  @override
-  void initState() {
-    super.initState();
-    themeData = ValueNotifier(null);
-    musicProvider = MusicProvider();
-    musicProvider.getCurrentMusicStream().listen((_) => setAlbumPrimaryColor());
-  }
-
-  @override
-  void didChangeDependencies() {
-    theme = Theme.of(context);
-    super.didChangeDependencies();
-  }
+class SongDetails extends StatelessWidget {
+  const SongDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeData?>(
-        valueListenable: themeData,
-        builder: (context, value, child) {
-          return Scaffold(
-            body: Theme(
-                data: value ?? Theme.of(context),
-                child: child ?? const SizedBox()),
-          );
-        },
-        child: body());
-  }
-
-  Widget body() {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(child: songDetails(constraints)),
-            if (constraints.maxWidth > 960)
-              Expanded(child: SongPlaylistCard(child: SongPlaylist()))
-          ]);
-    });
-  }
-
-  Widget songDetails(BoxConstraints constraints) {
     const controlsOverflowSize = 30.0;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          AppBar(
-              backgroundColor: Colors.transparent,
-              actions: [if (constraints.maxWidth < 960) playlistButton()]),
-          const SizedBox(height: 10),
-          SongInfos(),
-          const SizedBox(height: 20),
-          Expanded(child: LayoutBuilder(builder: (context, constraints) {
-            final singleSize = calculateSingleSize(constraints);
-            return ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: singleSize),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SongDurationPosition(),
-                    Stack(alignment: Alignment.topCenter, children: [
-                      Column(
-                        children: [
-                          SongImage(),
-                          const SizedBox(height: controlsOverflowSize)
-                        ],
-                      ),
-                      Positioned(bottom: 0, child: SongControls())
-                    ]),
-                  ],
-                ));
-          })),
-        ]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
+      AppBar(
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          actions: [if (context.read<MusicPlayerBloc>().state.screenLayout == ScreenLayout.mobile) playlistButton()]),
+      const SizedBox(height: 10),
+      const SongInfos(),
+      const SizedBox(height: 20),
+      Expanded(child: LayoutBuilder(builder: (context, constraints) {
+        final singleSize = calculateSingleSize(constraints);
+        return ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: singleSize),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SongDurationPosition(),
+                Stack(alignment: Alignment.topCenter, children: [
+                  Column(
+                    children: const [SongImage(), SizedBox(height: controlsOverflowSize)],
+                  ),
+                  const Positioned(bottom: 0, child: SongControls())
+                ]),
+              ],
+            ));
+      })),
+    ]);
   }
 
   double calculateSingleSize(BoxConstraints constraints) {
@@ -110,24 +81,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   Widget playlistButton() {
     return IconButton(
-        onPressed: () => customRouter.push(PlaylistRoute(body: SongPlaylist())),
-        icon: Icon(Icons.album));
-  }
-
-  void setAlbumPrimaryColor() {
-    final currentMusic = musicProvider.getCurrentMusic();
-    if (currentMusic != null && mounted) {
-      final metadata = currentMusic.metadata;
-      compute(ColorUtil.extractPixelsColors, metadata.artworkByte)
-          .then((List<Color> colors) {
-        final brightness = Theme.of(context).brightness;
-        themeData.value = personnal_theme.Theme.generateThemeDataFromSeedColor(
-            brightness, colors[0]);
-      });
-    }
-  }
-
-  Color getForegroundColorFromColor(Color color) {
-    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+        onPressed: () => customRouter.push(PlaylistRoute(body: const SongPlaylist())), icon: const Icon(Icons.album));
   }
 }

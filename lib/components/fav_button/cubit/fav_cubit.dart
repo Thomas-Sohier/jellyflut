@@ -4,10 +4,9 @@ import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'fav_cubit.g.dart';
 part 'fav_state.dart';
 
-class FavCubit extends HydratedCubit<FavState> {
+class FavCubit extends Cubit<FavState> {
   FavCubit(this._itemsRepository, {required Item item})
       : _item = item,
         super(FavState()) {
@@ -52,10 +51,4 @@ class FavCubit extends HydratedCubit<FavState> {
       emit(state.copyWith(status: FavStatus.failure));
     }
   }
-
-  @override
-  FavState fromJson(Map<String, dynamic> json) => FavState.fromJson(json);
-
-  @override
-  Map<String, dynamic> toJson(FavState state) => state.toJson();
 }

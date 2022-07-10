@@ -345,13 +345,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  http:
-    dependency: "direct main"
-    description:
-      name: http
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.4"
   http_multi_server:
     dependency: transitive
     description:
@@ -507,7 +500,7 @@ packages:
     source: hosted
     version: "2.0.7"
   pedantic:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: pedantic
       url: "https://pub.dartlang.org"

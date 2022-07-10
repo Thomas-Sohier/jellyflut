@@ -202,4 +202,83 @@ class ItemsRepository {
   ///
   /// Can throw [ViewRequestFailure]
   Future<Category> getLibraryViews() => _itemsApi.getLibraryViews();
+
+  /// Helper method to generate an URL to get Item image
+  ///
+  /// * [maxWidth]            => The maximum image width to return.
+  /// * [maxHeight]           => The maximum image height to return.
+  /// * [width]               => The fixed image width to return.
+  /// * [height]              => The fixed image height to return.
+  /// * [quality]             => Quality setting, from 0-100. Defaults to 90 and should suffice in most cases.
+  /// * [fillWidth]           => Width of box to fill.
+  /// * [fillHeight]          => Height of box to fill.
+  /// * [tag]                 => Supply the cache tag from the item object to receive strong caching headers.
+  /// * [format]              => The MediaBrowser.Model.Drawing.ImageFormat of the returned image.
+  /// * [addPlayedIndicator]  => Add a played indicator.
+  /// * [percentPlayed]       =>  Percent to render for the percent played overlay.
+  /// * [unplayedCount]       => Unplayed count overlay to render.
+  /// * [blur]                => Blur image.
+  /// * [backgroundColor]     => Apply a background color for transparent images.
+  /// * [foregroundLayer]     =>  Apply a foreground layer on top of the image.
+  /// * [imageIndex]          => Image index.
+  String getItemImageUrl({
+    required String itemId,
+    ImageType type = ImageType.Primary,
+    int? maxWidth,
+    int? maxHeight,
+    int? width,
+    int? height,
+    int quality = 60,
+    int? fillWidth,
+    int? fillHeight,
+    String? tag,
+    String? format,
+    bool? addPlayedIndicator,
+    double? percentPlayed,
+    int? unplayedCount,
+    int? blur,
+    String? backgroundColor,
+    String? foregroundLayer,
+    int? imageIndex,
+  }) =>
+      _itemsApi.getItemImageUrl(
+          itemId: itemId,
+          maxWidth: maxWidth,
+          maxHeight: maxHeight,
+          width: width,
+          height: height,
+          quality: quality,
+          fillWidth: fillWidth,
+          fillHeight: fillHeight,
+          tag: tag,
+          format: format,
+          addPlayedIndicator: addPlayedIndicator,
+          percentPlayed: percentPlayed,
+          unplayedCount: unplayedCount,
+          blur: blur,
+          backgroundColor: backgroundColor,
+          foregroundLayer: foregroundLayer,
+          imageIndex: imageIndex);
+
+  /// Get all availables images for an item
+  Future<RemoteImage> getRemoteImages(
+    String itemId, {
+    String? type,
+    int? startIndex,
+    int? limit,
+    String? providerName,
+    bool? includeAllLanguages = false,
+  }) =>
+      _itemsApi.getRemoteImages(itemId,
+          type: type,
+          startIndex: startIndex,
+          limit: limit,
+          providerName: providerName,
+          includeAllLanguages: includeAllLanguages);
+
+  /// Get all availables images for an item
+  Future<dynamic> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
+      _itemsApi.downloadRemoteImage(itemId, type: type);
+
+  Future<String> createMusicURL(String itemId) => _itemsApi.createMusicURL(itemId);
 }

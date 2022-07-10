@@ -20,11 +20,15 @@ class FileService {
   static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
     final i = item;
 
-    final primaryUrl = ItemImageService.getItemImageUrl(item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
-        type: item.correctImageType(searchType: ImageType.PRIMARY));
+    final primaryUrl = ItemImageService.getItemImageUrl(
+        itemId: item.id,
+        tag: item.correctImageTags(searchType: ImageType.Primary),
+        type: item.correctImageType(searchType: ImageType.Primary));
 
-    final backdropUrl = ItemImageService.getItemImageUrl(item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
-        type: item.correctImageType(searchType: ImageType.PRIMARY));
+    final backdropUrl = ItemImageService.getItemImageUrl(
+        itemId: item.id,
+        tag: item.correctImageTags(searchType: ImageType.Primary),
+        type: item.correctImageType(searchType: ImageType.Primary));
 
     final primaryImage = await Dio().get<String>(primaryUrl);
     final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));

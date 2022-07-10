@@ -8,7 +8,7 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 class BackgroundImage extends StatelessWidget {
   final ImageType imageType;
 
-  const BackgroundImage({super.key, this.imageType = ImageType.PRIMARY});
+  const BackgroundImage({super.key, this.imageType = ImageType.Primary});
 
   @override
   Widget build(BuildContext context) {

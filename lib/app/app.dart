@@ -10,12 +10,13 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
+import 'package:music_player_repository/music_player_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_repository/users_repository.dart';
@@ -23,43 +24,51 @@ import 'package:users_repository/users_repository.dart';
 class App extends StatelessWidget {
   const App(
       {super.key,
+      required this.database,
+      required this.themeProvider,
       required this.authenticated,
       required this.downloadsRepository,
       required this.itemsRepository,
-      required this.usersRepository});
+      required this.usersRepository,
+      required this.musicPlayerRepository});
 
   final bool authenticated;
+  final Database database;
   final DownloadsRepository downloadsRepository;
   final ItemsRepository itemsRepository;
   final UsersRepository usersRepository;
+  final MusicPlayerRepository musicPlayerRepository;
+  final ThemeProvider themeProvider;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          Provider<Database>(
-            create: (context) => Database(),
-            dispose: (context, db) => db.close(),
-          ),
+          Provider<Database>.value(value: database),
+          ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
           ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
-          ChangeNotifierProvider<MusicProvider>(create: (_) => MusicProvider(itemsRepository: itemsRepository)),
           ChangeNotifierProvider<HomeTabsProvider>(create: (_) => HomeTabsProvider()),
-          ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
           ChangeNotifierProvider<DownloadProvider>(create: (_) => DownloadProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(create: (_) => HomeCategoryProvider()),
         ],
         child: MultiBlocProvider(
             providers: [
+              BlocProvider(create: (_) => AuthBloc(usersRepository, authenticated: authenticated), lazy: false),
               BlocProvider(
-                create: (_) => AuthBloc(usersRepository, authenticated: authenticated),
-                lazy: false,
-              ),
+                  create: (c) => MusicPlayerBloc(
+                        database: database,
+                        itemsRepository: itemsRepository,
+                        musicPlayerRepository: musicPlayerRepository,
+                        theme: themeProvider.getThemeData,
+                      ),
+                  lazy: false),
             ],
             child: MultiRepositoryProvider(
                 providers: [
                   RepositoryProvider.value(value: downloadsRepository),
                   RepositoryProvider.value(value: itemsRepository),
-                  RepositoryProvider.value(value: usersRepository)
+                  RepositoryProvider.value(value: usersRepository),
+                  RepositoryProvider.value(value: musicPlayerRepository)
                 ],
                 child: EasyLocalization(
                     supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],

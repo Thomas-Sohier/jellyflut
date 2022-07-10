@@ -29,7 +29,7 @@ class AsyncImage extends StatefulWidget {
   const AsyncImage(
       {required this.item,
       super.key,
-      this.tag = ImageType.PRIMARY,
+      this.tag = ImageType.Primary,
       this.boxFit = BoxFit.fitHeight,
       this.placeholder,
       this.errorWidget,
@@ -75,7 +75,7 @@ class _AsyncImageState extends State<AsyncImage> {
   }
 
   Widget builder() {
-    final url = ItemImageService.getItemImageUrl(itemId, imageTag, type: imageType);
+    final url = ItemImageService.getItemImageUrl(itemId: itemId, tag: imageTag, type: imageType);
     return OctoImage(
         image: CachedNetworkImageProvider(url),
         placeholderBuilder: imagePlaceholder(hash),
@@ -94,7 +94,7 @@ class _AsyncImageState extends State<AsyncImage> {
     }
 
     if (hash != null) {
-      if (widget.tag != ImageType.LOGO) {
+      if (widget.tag != ImageType.Logo) {
         return OctoError.blurHash(hash, icon: Icons.warning_amber_rounded);
       }
       return (_, __, ___) => const SizedBox();
@@ -110,7 +110,7 @@ class _AsyncImageState extends State<AsyncImage> {
     // If we don't have any hash then we don't have image so --> placeholder
     if (hash != null) {
       // If we show a Logo we don't load blurhash as it's a bit ugly
-      if (widget.tag != ImageType.LOGO) {
+      if (widget.tag != ImageType.Logo) {
         return OctoPlaceholder.blurHash(hash);
       }
       return (_) => const SizedBox();

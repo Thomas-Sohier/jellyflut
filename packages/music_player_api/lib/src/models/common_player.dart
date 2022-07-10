@@ -1,9 +1,10 @@
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:jellyflut/screens/music_player/common_player/common_player_just_audio.dart';
-import 'package:jellyflut/screens/music_player/common_player/common_player_vlc.dart';
-import 'package:jellyflut/screens/music_player/models/audio_source.dart';
-import 'package:just_audio/just_audio.dart' as just_audio;
+import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:rxdart/rxdart.dart';
+
+import 'audio_source.dart';
+import 'common_player_just_audio.dart';
+import 'common_player_vlc.dart';
 
 class CommonPlayer {
   final void Function() _pause;
@@ -72,10 +73,8 @@ class CommonPlayer {
   BehaviorSubject<bool?> get getPlayingStateStream => _isPlayingStream;
   Future<void> dispose() => _dispose();
 
-  static CommonPlayer parseJustAudioController(
-      {required just_audio.AudioPlayer audioPlayer}) {
-    final commonPlayerJustAudio =
-        CommonPlayerJustAudio(audioPlayer: audioPlayer);
+  static CommonPlayer parseJustAudioController({required AudioPlayer audioPlayer}) {
+    final commonPlayerJustAudio = CommonPlayerJustAudio(audioPlayer: audioPlayer);
     return CommonPlayer._(
         pause: audioPlayer.pause,
         play: audioPlayer.play,
@@ -104,8 +103,8 @@ class CommonPlayer {
         seekTo: audioPlayer.seek,
         duration: () => audioPlayer.position.duration,
         init: commonPlayerVLC.init,
-        nextTrack: audioPlayer.previous,
-        previousTrack: audioPlayer.next,
+        nextTrack: audioPlayer.next,
+        previousTrack: audioPlayer.previous,
         bufferingDuration: Stream.value(Duration(seconds: 0)),
         playRemote: commonPlayerVLC.playRemote,
         currentPosition: () => audioPlayer.position.position,

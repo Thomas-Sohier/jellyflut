@@ -7,10 +7,12 @@ import 'package:jellyflut/bootstrap.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:music_player_api/music_player_api.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_api/users_api.dart';
 
 import './shared/app_init/app_init.dart' as impl;
+import 'providers/theme/theme_provider.dart';
 import 'shared/shared_prefs.dart';
 
 void main() async {
@@ -21,13 +23,21 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await setUpAndroidTv();
   final authenticated = await AuthService.isAuth();
+  final database = AppDatabase().getDatabase;
+  final themeProvider = ThemeProvider();
 
   // Providerss
-  final databaseDownloadsApi = DatabaseDownloadsApi(
-    database: AppDatabase().getDatabase,
-  );
+  final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
   final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
   final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
+  final musicPlayerApi = MusicPlayerApi(database: database);
 
-  bootstrap(authenticated: authenticated, downloadsApi: databaseDownloadsApi, itemsApi: itemsApi, usersApi: usersApi);
+  bootstrap(
+      authenticated: authenticated,
+      database: database,
+      themeProvider: themeProvider,
+      downloadsApi: databaseDownloadsApi,
+      itemsApi: itemsApi,
+      usersApi: usersApi,
+      musicPlayerApi: musicPlayerApi);
 }

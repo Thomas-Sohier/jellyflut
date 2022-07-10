@@ -156,6 +156,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   http:
     dependency: transitive
     description:
@@ -190,7 +197,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.0"
+    version: "4.6.0"
   matcher:
     dependency: transitive
     description:

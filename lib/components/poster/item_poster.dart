@@ -20,7 +20,7 @@ class ItemPoster extends StatefulWidget {
       this.showOverlay = true,
       this.showLogo = false,
       this.clickable = true,
-      this.tag = ImageType.PRIMARY,
+      this.tag = ImageType.Primary,
       this.boxFit = BoxFit.cover});
 
   final Item item;

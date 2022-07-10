@@ -847,6 +847,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  music_player_api:
+    dependency: "direct main"
+    description:
+      path: "packages/music_player_api"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  music_player_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/music_player_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   nested:
     dependency: transitive
     description:
@@ -1106,13 +1120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  reflectable:
-    dependency: transitive
-    description:
-      name: reflectable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.9"
   responsive_builder:
     dependency: "direct main"
     description:

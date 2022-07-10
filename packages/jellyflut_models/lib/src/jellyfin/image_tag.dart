@@ -1,16 +1,13 @@
 import '../enum/index.dart';
 
-class ImageTag {
-  final ImageType imageType;
-  final String value;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const ImageTag({required this.imageType, required this.value});
+part 'image_tag.freezed.dart';
+part 'image_tag.g.dart';
 
-  static List<ImageTag> fromMap(Map<String, dynamic> json) {
-    final imageTags = <ImageTag>[];
-    json.forEach((key, value) => imageTags.add(ImageTag(imageType: ImageType.fromString(key), value: value)));
-    return imageTags;
-  }
+@Freezed()
+class ImageTag with _$ImageTag {
+  factory ImageTag({required ImageType imageType, required String value}) = _ImageTag;
 
-  Map<String, dynamic> toMap() => {'ImageType': imageType.value, 'value': value};
+  factory ImageTag.fromJson(Map<String, Object?> json) => _$ImageTagFromJson(json);
 }
