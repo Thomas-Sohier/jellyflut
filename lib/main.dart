@@ -28,7 +28,7 @@ void main() async {
 
   // Providerss
   final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
-  final itemsApi = ItemsApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
+  final itemsApi = ItemsApi(serverUrl: server.url, database: database, userId: userJellyfin?.id, dioClient: dio);
   final usersApi = UsersApi(serverUrl: server.url, userId: userJellyfin?.id, dioClient: dio);
   final musicPlayerApi = MusicPlayerApi();
 

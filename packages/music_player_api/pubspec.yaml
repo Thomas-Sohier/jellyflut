@@ -7,7 +7,10 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
-  dart_vlc: ^0.3.0
+  dart_vlc:
+      git:
+        url: https://github.com/erikas-taroza/dart_vlc.git # Url to the repository
+        ref: e661980
   flutter:
     sdk: flutter
   freezed_annotation: ^2.0.3

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:items_api/items_api.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -222,7 +224,7 @@ class ItemsRepository {
   /// * [imageIndex]          => Image index.
   String getItemImageUrl({
     required String itemId,
-    ImageType type = ImageType.Primary,
+    required ImageType type,
     int? maxWidth,
     int? maxHeight,
     int? width,
@@ -242,6 +244,7 @@ class ItemsRepository {
   }) =>
       _itemsApi.getItemImageUrl(
           itemId: itemId,
+          type: type,
           maxWidth: maxWidth,
           maxHeight: maxHeight,
           width: width,
@@ -276,8 +279,23 @@ class ItemsRepository {
           includeAllLanguages: includeAllLanguages);
 
   /// Get all availables images for an item
-  Future<dynamic> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
+  Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
       _itemsApi.downloadRemoteImage(itemId, type: type);
+
+  Future<String> getItemURL({required Item item, bool directPlay = false}) =>
+      _itemsApi.getItemURL(item: item, directPlay: directPlay);
+
+  Future<Item> getPlayableItemOrLastUnplayed({required Item item}) =>
+      _itemsApi.getPlayableItemOrLastUnplayed(item: item);
+
+  Future<Item> getFirstUnplayedItem({required String itemId}) => _itemsApi.getFirstUnplayedItem(itemId: itemId);
+
+  Future<String> getStreamURL(Item item, bool directPlay) => _itemsApi.getStreamURL(item, directPlay);
+
+  Future<String> createURL(Item item, PlayBackInfos playBackInfos,
+          {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) =>
+      _itemsApi.createURL(item, playBackInfos,
+          startTick: startTick, audioStreamIndex: audioStreamIndex, subtitleStreamIndex: subtitleStreamIndex);
 
   Future<String> createMusicURL(String itemId) => _itemsApi.createMusicURL(itemId);
 }

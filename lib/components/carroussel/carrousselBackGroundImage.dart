@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +23,7 @@ class _CarrousselBackGroundImageState extends State<CarrousselBackGroundImage> {
       if (carrousselProvider.item != null) {
         return AsyncImage(
           item: carrousselProvider.item!,
-          tag: ImageType.Primary,
+          imageType: ImageType.Primary,
           boxFit: BoxFit.cover,
           width: double.infinity,
           height: double.infinity,

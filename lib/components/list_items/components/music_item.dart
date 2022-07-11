@@ -72,7 +72,7 @@ class _MusicItemState extends State<MusicItem> {
       aspectRatio: widget.item.primaryImageAspectRatio ?? 1,
       child: Poster(
           key: ValueKey(widget.item),
-          tag: ImageType.Primary,
+          imageType: ImageType.Primary,
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
           dropShadow: false,

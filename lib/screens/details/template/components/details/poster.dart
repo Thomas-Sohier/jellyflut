@@ -18,7 +18,7 @@ class Poster extends StatelessWidget {
           boxFit: BoxFit.cover,
           clickable: false,
           showParent: true,
-          tag: ImageType.Primary,
+          imageType: ImageType.Primary,
           heroTag: heroTag,
         ));
   }

@@ -3,6 +3,7 @@
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/src/migrations/from_3_to_4.dart';
 import 'migrations/from_2_to_3.dart';
 import 'models/models.dart';
 import 'tables/download.dart';
@@ -45,7 +46,7 @@ class Database extends _$Database {
 
   // you should bump this number whenever you change or add a table definition
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -53,6 +54,7 @@ class Database extends _$Database {
       }, onUpgrade: (m, before, now) async {
         for (var target = before + 1; target <= now; target++) {
           from2to3(this, m, target);
+          from3to4(this, m, target);
         }
       });
 
@@ -89,6 +91,8 @@ class UserAppDao extends DatabaseAccessor<Database> with _$UserAppDaoMixin {
   Future<List<UserAppData>> get allWatchingUserApp => select(userApp).get();
   Stream<List<UserAppData>> get watchAllUserApp => select(userApp).watch();
   Future<UserAppData> getUserById(int userId) => (select(userApp)..where((tbl) => tbl.id.equals(userId))).getSingle();
+  Future<UserAppData> getUserByJellyfinUserId(String userId) =>
+      (select(userApp)..where((tbl) => tbl.jellyfinUserId.equals(userId))).getSingle();
   Future<UserAppData> getUserByNameAndServerId(String username, int serverId) => (select(userApp)
         ..where((tbl) => tbl.name.equals(username))
         ..where((tbl) => tbl.serverId.equals(serverId)))

@@ -102,7 +102,7 @@ class _ItemPosterState extends State<ItemPoster> {
               Poster(
                   key: ValueKey(widget.item),
                   showParent: widget.showParent,
-                  tag: widget.tag,
+                  imageType: widget.tag,
                   clickable: widget.clickable,
                   heroTag: posterHeroTag,
                   boxFit: widget.boxFit,

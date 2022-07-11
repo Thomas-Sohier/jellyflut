@@ -40,8 +40,8 @@ class InitStreamingItemUtil {
       final download = await db.downloadsDao.getDownloadById(item.id);
       item = download.item!;
     } else {
-      final tempItem = await item.getPlayableItemOrLastUnplayed();
-      item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
+      final context = customRouter.navigatorKey.currentContext!;
+      item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
     }
 
     // Depending the platform and soft => init video player

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class PlaceholderScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class PlaceholderScreen extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         boxFit: BoxFit.fitHeight,
-        tag: ImageType.Backdrop,
+        imageType: ImageType.Backdrop,
         showParent: true,
         backup: item.type == ItemType.TvChannel ? true : false);
   }

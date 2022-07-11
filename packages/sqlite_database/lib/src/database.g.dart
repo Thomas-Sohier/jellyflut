@@ -15,9 +15,12 @@ class Server extends DataClass implements Insertable<Server> {
   factory Server.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Server(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      url: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
-      name: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      url: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
     );
   }
   @override
@@ -37,7 +40,8 @@ class Server extends DataClass implements Insertable<Server> {
     );
   }
 
-  factory Server.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Server.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Server(
       id: serializer.fromJson<int>(json['id']),
@@ -75,7 +79,10 @@ class Server extends DataClass implements Insertable<Server> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Server && other.id == this.id && other.url == this.url && other.name == this.name);
+      (other is Server &&
+          other.id == this.id &&
+          other.url == this.url &&
+          other.name == this.name);
 }
 
 class ServersCompanion extends UpdateCompanion<Server> {
@@ -105,7 +112,8 @@ class ServersCompanion extends UpdateCompanion<Server> {
     });
   }
 
-  ServersCompanion copyWith({Value<int>? id, Value<String>? url, Value<String>? name}) {
+  ServersCompanion copyWith(
+      {Value<int>? id, Value<String>? url, Value<String>? name}) {
     return ServersCompanion(
       id: id ?? this.id,
       url: url ?? this.url,
@@ -146,16 +154,21 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   $ServersTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>('id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
-  late final GeneratedColumn<String?> url =
-      GeneratedColumn<String?>('url', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
+      'url', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name =
-      GeneratedColumn<String?>('name', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, name];
   @override
@@ -163,19 +176,22 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   @override
   String get actualTableName => 'servers';
   @override
-  VerificationContext validateIntegrity(Insertable<Server> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(Insertable<Server> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('url')) {
-      context.handle(_urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
@@ -186,7 +202,8 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Server.fromData(data, prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    return Server.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -200,6 +217,7 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
   final String name;
   final String password;
   final String apiKey;
+  final String jellyfinUserId;
   final int settingsId;
   final int serverId;
   UserAppData(
@@ -207,17 +225,26 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
       required this.name,
       required this.password,
       required this.apiKey,
+      required this.jellyfinUserId,
       required this.settingsId,
       required this.serverId});
   factory UserAppData.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return UserAppData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      password: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
-      apiKey: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}api_key'])!,
-      settingsId: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}settings_id'])!,
-      serverId: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}server_id'])!,
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      password: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
+      apiKey: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}api_key'])!,
+      jellyfinUserId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}jellyfin_user_id'])!,
+      settingsId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}settings_id'])!,
+      serverId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}server_id'])!,
     );
   }
   @override
@@ -227,6 +254,7 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
     map['name'] = Variable<String>(name);
     map['password'] = Variable<String>(password);
     map['api_key'] = Variable<String>(apiKey);
+    map['jellyfin_user_id'] = Variable<String>(jellyfinUserId);
     map['settings_id'] = Variable<int>(settingsId);
     map['server_id'] = Variable<int>(serverId);
     return map;
@@ -238,18 +266,21 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
       name: Value(name),
       password: Value(password),
       apiKey: Value(apiKey),
+      jellyfinUserId: Value(jellyfinUserId),
       settingsId: Value(settingsId),
       serverId: Value(serverId),
     );
   }
 
-  factory UserAppData.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory UserAppData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserAppData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       password: serializer.fromJson<String>(json['password']),
       apiKey: serializer.fromJson<String>(json['apiKey']),
+      jellyfinUserId: serializer.fromJson<String>(json['jellyfinUserId']),
       settingsId: serializer.fromJson<int>(json['settingsId']),
       serverId: serializer.fromJson<int>(json['serverId']),
     );
@@ -262,17 +293,26 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
       'name': serializer.toJson<String>(name),
       'password': serializer.toJson<String>(password),
       'apiKey': serializer.toJson<String>(apiKey),
+      'jellyfinUserId': serializer.toJson<String>(jellyfinUserId),
       'settingsId': serializer.toJson<int>(settingsId),
       'serverId': serializer.toJson<int>(serverId),
     };
   }
 
-  UserAppData copyWith({int? id, String? name, String? password, String? apiKey, int? settingsId, int? serverId}) =>
+  UserAppData copyWith(
+          {int? id,
+          String? name,
+          String? password,
+          String? apiKey,
+          String? jellyfinUserId,
+          int? settingsId,
+          int? serverId}) =>
       UserAppData(
         id: id ?? this.id,
         name: name ?? this.name,
         password: password ?? this.password,
         apiKey: apiKey ?? this.apiKey,
+        jellyfinUserId: jellyfinUserId ?? this.jellyfinUserId,
         settingsId: settingsId ?? this.settingsId,
         serverId: serverId ?? this.serverId,
       );
@@ -283,6 +323,7 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
           ..write('name: $name, ')
           ..write('password: $password, ')
           ..write('apiKey: $apiKey, ')
+          ..write('jellyfinUserId: $jellyfinUserId, ')
           ..write('settingsId: $settingsId, ')
           ..write('serverId: $serverId')
           ..write(')'))
@@ -290,7 +331,8 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, password, apiKey, settingsId, serverId);
+  int get hashCode => Object.hash(
+      id, name, password, apiKey, jellyfinUserId, settingsId, serverId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -299,6 +341,7 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
           other.name == this.name &&
           other.password == this.password &&
           other.apiKey == this.apiKey &&
+          other.jellyfinUserId == this.jellyfinUserId &&
           other.settingsId == this.settingsId &&
           other.serverId == this.serverId);
 }
@@ -308,6 +351,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
   final Value<String> name;
   final Value<String> password;
   final Value<String> apiKey;
+  final Value<String> jellyfinUserId;
   final Value<int> settingsId;
   final Value<int> serverId;
   const UserAppCompanion({
@@ -315,6 +359,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
     this.name = const Value.absent(),
     this.password = const Value.absent(),
     this.apiKey = const Value.absent(),
+    this.jellyfinUserId = const Value.absent(),
     this.settingsId = const Value.absent(),
     this.serverId = const Value.absent(),
   });
@@ -323,16 +368,19 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
     required String name,
     required String password,
     required String apiKey,
+    required String jellyfinUserId,
     this.settingsId = const Value.absent(),
     this.serverId = const Value.absent(),
   })  : name = Value(name),
         password = Value(password),
-        apiKey = Value(apiKey);
+        apiKey = Value(apiKey),
+        jellyfinUserId = Value(jellyfinUserId);
   static Insertable<UserAppData> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? password,
     Expression<String>? apiKey,
+    Expression<String>? jellyfinUserId,
     Expression<int>? settingsId,
     Expression<int>? serverId,
   }) {
@@ -341,6 +389,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
       if (name != null) 'name': name,
       if (password != null) 'password': password,
       if (apiKey != null) 'api_key': apiKey,
+      if (jellyfinUserId != null) 'jellyfin_user_id': jellyfinUserId,
       if (settingsId != null) 'settings_id': settingsId,
       if (serverId != null) 'server_id': serverId,
     });
@@ -351,6 +400,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
       Value<String>? name,
       Value<String>? password,
       Value<String>? apiKey,
+      Value<String>? jellyfinUserId,
       Value<int>? settingsId,
       Value<int>? serverId}) {
     return UserAppCompanion(
@@ -358,6 +408,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
       name: name ?? this.name,
       password: password ?? this.password,
       apiKey: apiKey ?? this.apiKey,
+      jellyfinUserId: jellyfinUserId ?? this.jellyfinUserId,
       settingsId: settingsId ?? this.settingsId,
       serverId: serverId ?? this.serverId,
     );
@@ -378,6 +429,9 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
     if (apiKey.present) {
       map['api_key'] = Variable<String>(apiKey.value);
     }
+    if (jellyfinUserId.present) {
+      map['jellyfin_user_id'] = Variable<String>(jellyfinUserId.value);
+    }
     if (settingsId.present) {
       map['settings_id'] = Variable<int>(settingsId.value);
     }
@@ -394,6 +448,7 @@ class UserAppCompanion extends UpdateCompanion<UserAppData> {
           ..write('name: $name, ')
           ..write('password: $password, ')
           ..write('apiKey: $apiKey, ')
+          ..write('jellyfinUserId: $jellyfinUserId, ')
           ..write('settingsId: $settingsId, ')
           ..write('serverId: $serverId')
           ..write(')'))
@@ -408,61 +463,96 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   $UserAppTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>('id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name =
-      GeneratedColumn<String?>('name', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
   @override
-  late final GeneratedColumn<String?> password =
-      GeneratedColumn<String?>('password', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
+      'password', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
   @override
-  late final GeneratedColumn<String?> apiKey =
-      GeneratedColumn<String?>('api_key', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> apiKey = GeneratedColumn<String?>(
+      'api_key', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _jellyfinUserIdMeta =
+      const VerificationMeta('jellyfinUserId');
+  @override
+  late final GeneratedColumn<String?> jellyfinUserId = GeneratedColumn<String?>(
+      'jellyfin_user_id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
   @override
-  late final GeneratedColumn<int?> settingsId = GeneratedColumn<int?>('settings_id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultValue: const Constant(0));
+  late final GeneratedColumn<int?> settingsId = GeneratedColumn<int?>(
+      'settings_id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
   @override
-  late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>('server_id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultValue: const Constant(0));
+  late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>(
+      'server_id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
   @override
-  List<GeneratedColumn> get $columns => [id, name, password, apiKey, settingsId, serverId];
+  List<GeneratedColumn> get $columns =>
+      [id, name, password, apiKey, jellyfinUserId, settingsId, serverId];
   @override
   String get aliasedName => _alias ?? 'user_app';
   @override
   String get actualTableName => 'user_app';
   @override
-  VerificationContext validateIntegrity(Insertable<UserAppData> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(Insertable<UserAppData> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('password')) {
-      context.handle(_passwordMeta, password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+      context.handle(_passwordMeta,
+          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
     } else if (isInserting) {
       context.missing(_passwordMeta);
     }
     if (data.containsKey('api_key')) {
-      context.handle(_apiKeyMeta, apiKey.isAcceptableOrUnknown(data['api_key']!, _apiKeyMeta));
+      context.handle(_apiKeyMeta,
+          apiKey.isAcceptableOrUnknown(data['api_key']!, _apiKeyMeta));
     } else if (isInserting) {
       context.missing(_apiKeyMeta);
     }
+    if (data.containsKey('jellyfin_user_id')) {
+      context.handle(
+          _jellyfinUserIdMeta,
+          jellyfinUserId.isAcceptableOrUnknown(
+              data['jellyfin_user_id']!, _jellyfinUserIdMeta));
+    } else if (isInserting) {
+      context.missing(_jellyfinUserIdMeta);
+    }
     if (data.containsKey('settings_id')) {
-      context.handle(_settingsIdMeta, settingsId.isAcceptableOrUnknown(data['settings_id']!, _settingsIdMeta));
+      context.handle(
+          _settingsIdMeta,
+          settingsId.isAcceptableOrUnknown(
+              data['settings_id']!, _settingsIdMeta));
     }
     if (data.containsKey('server_id')) {
-      context.handle(_serverIdMeta, serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta));
+      context.handle(_serverIdMeta,
+          serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta));
     }
     return context;
   }
@@ -471,7 +561,8 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   UserAppData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return UserAppData.fromData(data, prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    return UserAppData.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -499,14 +590,20 @@ class Setting extends DataClass implements Insertable<Setting> {
   factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Setting(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      preferredPlayer: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}preferred_player'])!,
-      preferredTranscodeAudioCodec:
-          const StringType().mapFromDatabaseResponse(data['${effectivePrefix}preferred_transcode_audio_codec'])!,
-      maxVideoBitrate: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}max_video_bitrate'])!,
-      maxAudioBitrate: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}max_audio_bitrate'])!,
-      downloadPath: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}download_path']),
-      directPlay: const BoolType().mapFromDatabaseResponse(data['${effectivePrefix}direct_play'])!,
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      preferredPlayer: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}preferred_player'])!,
+      preferredTranscodeAudioCodec: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}preferred_transcode_audio_codec'])!,
+      maxVideoBitrate: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}max_video_bitrate'])!,
+      maxAudioBitrate: const IntType().mapFromDatabaseResponse(
+          data['${effectivePrefix}max_audio_bitrate'])!,
+      downloadPath: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}download_path']),
+      directPlay: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}direct_play'])!,
     );
   }
   @override
@@ -514,7 +611,8 @@ class Setting extends DataClass implements Insertable<Setting> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['preferred_player'] = Variable<String>(preferredPlayer);
-    map['preferred_transcode_audio_codec'] = Variable<String>(preferredTranscodeAudioCodec);
+    map['preferred_transcode_audio_codec'] =
+        Variable<String>(preferredTranscodeAudioCodec);
     map['max_video_bitrate'] = Variable<int>(maxVideoBitrate);
     map['max_audio_bitrate'] = Variable<int>(maxAudioBitrate);
     if (!nullToAbsent || downloadPath != null) {
@@ -531,17 +629,21 @@ class Setting extends DataClass implements Insertable<Setting> {
       preferredTranscodeAudioCodec: Value(preferredTranscodeAudioCodec),
       maxVideoBitrate: Value(maxVideoBitrate),
       maxAudioBitrate: Value(maxAudioBitrate),
-      downloadPath: downloadPath == null && nullToAbsent ? const Value.absent() : Value(downloadPath),
+      downloadPath: downloadPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(downloadPath),
       directPlay: Value(directPlay),
     );
   }
 
-  factory Setting.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Setting.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Setting(
       id: serializer.fromJson<int>(json['id']),
       preferredPlayer: serializer.fromJson<String>(json['preferredPlayer']),
-      preferredTranscodeAudioCodec: serializer.fromJson<String>(json['preferredTranscodeAudioCodec']),
+      preferredTranscodeAudioCodec:
+          serializer.fromJson<String>(json['preferredTranscodeAudioCodec']),
       maxVideoBitrate: serializer.fromJson<int>(json['maxVideoBitrate']),
       maxAudioBitrate: serializer.fromJson<int>(json['maxAudioBitrate']),
       downloadPath: serializer.fromJson<String?>(json['downloadPath']),
@@ -554,7 +656,8 @@ class Setting extends DataClass implements Insertable<Setting> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'preferredPlayer': serializer.toJson<String>(preferredPlayer),
-      'preferredTranscodeAudioCodec': serializer.toJson<String>(preferredTranscodeAudioCodec),
+      'preferredTranscodeAudioCodec':
+          serializer.toJson<String>(preferredTranscodeAudioCodec),
       'maxVideoBitrate': serializer.toJson<int>(maxVideoBitrate),
       'maxAudioBitrate': serializer.toJson<int>(maxAudioBitrate),
       'downloadPath': serializer.toJson<String?>(downloadPath),
@@ -573,10 +676,12 @@ class Setting extends DataClass implements Insertable<Setting> {
       Setting(
         id: id ?? this.id,
         preferredPlayer: preferredPlayer ?? this.preferredPlayer,
-        preferredTranscodeAudioCodec: preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
+        preferredTranscodeAudioCodec:
+            preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
         maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
         maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
-        downloadPath: downloadPath.present ? downloadPath.value : this.downloadPath,
+        downloadPath:
+            downloadPath.present ? downloadPath.value : this.downloadPath,
         directPlay: directPlay ?? this.directPlay,
       );
   @override
@@ -584,7 +689,8 @@ class Setting extends DataClass implements Insertable<Setting> {
     return (StringBuffer('Setting(')
           ..write('id: $id, ')
           ..write('preferredPlayer: $preferredPlayer, ')
-          ..write('preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
+          ..write(
+              'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
           ..write('downloadPath: $downloadPath, ')
@@ -595,14 +701,21 @@ class Setting extends DataClass implements Insertable<Setting> {
 
   @override
   int get hashCode => Object.hash(
-      id, preferredPlayer, preferredTranscodeAudioCodec, maxVideoBitrate, maxAudioBitrate, downloadPath, directPlay);
+      id,
+      preferredPlayer,
+      preferredTranscodeAudioCodec,
+      maxVideoBitrate,
+      maxAudioBitrate,
+      downloadPath,
+      directPlay);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Setting &&
           other.id == this.id &&
           other.preferredPlayer == this.preferredPlayer &&
-          other.preferredTranscodeAudioCodec == this.preferredTranscodeAudioCodec &&
+          other.preferredTranscodeAudioCodec ==
+              this.preferredTranscodeAudioCodec &&
           other.maxVideoBitrate == this.maxVideoBitrate &&
           other.maxAudioBitrate == this.maxAudioBitrate &&
           other.downloadPath == this.downloadPath &&
@@ -647,7 +760,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (preferredPlayer != null) 'preferred_player': preferredPlayer,
-      if (preferredTranscodeAudioCodec != null) 'preferred_transcode_audio_codec': preferredTranscodeAudioCodec,
+      if (preferredTranscodeAudioCodec != null)
+        'preferred_transcode_audio_codec': preferredTranscodeAudioCodec,
       if (maxVideoBitrate != null) 'max_video_bitrate': maxVideoBitrate,
       if (maxAudioBitrate != null) 'max_audio_bitrate': maxAudioBitrate,
       if (downloadPath != null) 'download_path': downloadPath,
@@ -666,7 +780,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     return SettingsCompanion(
       id: id ?? this.id,
       preferredPlayer: preferredPlayer ?? this.preferredPlayer,
-      preferredTranscodeAudioCodec: preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
+      preferredTranscodeAudioCodec:
+          preferredTranscodeAudioCodec ?? this.preferredTranscodeAudioCodec,
       maxVideoBitrate: maxVideoBitrate ?? this.maxVideoBitrate,
       maxAudioBitrate: maxAudioBitrate ?? this.maxAudioBitrate,
       downloadPath: downloadPath ?? this.downloadPath,
@@ -684,7 +799,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       map['preferred_player'] = Variable<String>(preferredPlayer.value);
     }
     if (preferredTranscodeAudioCodec.present) {
-      map['preferred_transcode_audio_codec'] = Variable<String>(preferredTranscodeAudioCodec.value);
+      map['preferred_transcode_audio_codec'] =
+          Variable<String>(preferredTranscodeAudioCodec.value);
     }
     if (maxVideoBitrate.present) {
       map['max_video_bitrate'] = Variable<int>(maxVideoBitrate.value);
@@ -706,7 +822,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
     return (StringBuffer('SettingsCompanion(')
           ..write('id: $id, ')
           ..write('preferredPlayer: $preferredPlayer, ')
-          ..write('preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
+          ..write(
+              'preferredTranscodeAudioCodec: $preferredTranscodeAudioCodec, ')
           ..write('maxVideoBitrate: $maxVideoBitrate, ')
           ..write('maxAudioBitrate: $maxAudioBitrate, ')
           ..write('downloadPath: $downloadPath, ')
@@ -723,45 +840,75 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   $SettingsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>('id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _preferredPlayerMeta = const VerificationMeta('preferredPlayer');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _preferredPlayerMeta =
+      const VerificationMeta('preferredPlayer');
   @override
-  late final GeneratedColumn<String?> preferredPlayer = GeneratedColumn<String?>('preferred_player', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: false, defaultValue: Constant(getDefaultPlayer()));
-  final VerificationMeta _preferredTranscodeAudioCodecMeta = const VerificationMeta('preferredTranscodeAudioCodec');
+  late final GeneratedColumn<String?> preferredPlayer =
+      GeneratedColumn<String?>('preferred_player', aliasedName, false,
+          type: const StringType(),
+          requiredDuringInsert: false,
+          defaultValue: Constant(getDefaultPlayer()));
+  final VerificationMeta _preferredTranscodeAudioCodecMeta =
+      const VerificationMeta('preferredTranscodeAudioCodec');
   @override
-  late final GeneratedColumn<String?> preferredTranscodeAudioCodec = GeneratedColumn<String?>(
-      'preferred_transcode_audio_codec', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: false, defaultValue: const Constant('auto'));
-  final VerificationMeta _maxVideoBitrateMeta = const VerificationMeta('maxVideoBitrate');
+  late final GeneratedColumn<String?> preferredTranscodeAudioCodec =
+      GeneratedColumn<String?>(
+          'preferred_transcode_audio_codec', aliasedName, false,
+          type: const StringType(),
+          requiredDuringInsert: false,
+          defaultValue: const Constant('auto'));
+  final VerificationMeta _maxVideoBitrateMeta =
+      const VerificationMeta('maxVideoBitrate');
   @override
-  late final GeneratedColumn<int?> maxVideoBitrate = GeneratedColumn<int?>('max_video_bitrate', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultValue: const Constant(50000000));
-  final VerificationMeta _maxAudioBitrateMeta = const VerificationMeta('maxAudioBitrate');
+  late final GeneratedColumn<int?> maxVideoBitrate = GeneratedColumn<int?>(
+      'max_video_bitrate', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(50000000));
+  final VerificationMeta _maxAudioBitrateMeta =
+      const VerificationMeta('maxAudioBitrate');
   @override
-  late final GeneratedColumn<int?> maxAudioBitrate = GeneratedColumn<int?>('max_audio_bitrate', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: false, defaultValue: const Constant(8000000));
-  final VerificationMeta _downloadPathMeta = const VerificationMeta('downloadPath');
+  late final GeneratedColumn<int?> maxAudioBitrate = GeneratedColumn<int?>(
+      'max_audio_bitrate', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(8000000));
+  final VerificationMeta _downloadPathMeta =
+      const VerificationMeta('downloadPath');
   @override
-  late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>('download_path', aliasedName, true,
+  late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>(
+      'download_path', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _directPlayMeta = const VerificationMeta('directPlay');
   @override
-  late final GeneratedColumn<bool?> directPlay = GeneratedColumn<bool?>('direct_play', aliasedName, false,
+  late final GeneratedColumn<bool?> directPlay = GeneratedColumn<bool?>(
+      'direct_play', aliasedName, false,
       type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (direct_play IN (0, 1))',
       defaultValue: const Constant(false));
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, preferredPlayer, preferredTranscodeAudioCodec, maxVideoBitrate, maxAudioBitrate, downloadPath, directPlay];
+  List<GeneratedColumn> get $columns => [
+        id,
+        preferredPlayer,
+        preferredTranscodeAudioCodec,
+        maxVideoBitrate,
+        maxAudioBitrate,
+        downloadPath,
+        directPlay
+      ];
   @override
   String get aliasedName => _alias ?? 'settings';
   @override
   String get actualTableName => 'settings';
   @override
-  VerificationContext validateIntegrity(Insertable<Setting> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(Insertable<Setting> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -769,27 +916,40 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
     }
     if (data.containsKey('preferred_player')) {
       context.handle(
-          _preferredPlayerMeta, preferredPlayer.isAcceptableOrUnknown(data['preferred_player']!, _preferredPlayerMeta));
+          _preferredPlayerMeta,
+          preferredPlayer.isAcceptableOrUnknown(
+              data['preferred_player']!, _preferredPlayerMeta));
     }
     if (data.containsKey('preferred_transcode_audio_codec')) {
       context.handle(
           _preferredTranscodeAudioCodecMeta,
           preferredTranscodeAudioCodec.isAcceptableOrUnknown(
-              data['preferred_transcode_audio_codec']!, _preferredTranscodeAudioCodecMeta));
+              data['preferred_transcode_audio_codec']!,
+              _preferredTranscodeAudioCodecMeta));
     }
     if (data.containsKey('max_video_bitrate')) {
-      context.handle(_maxVideoBitrateMeta,
-          maxVideoBitrate.isAcceptableOrUnknown(data['max_video_bitrate']!, _maxVideoBitrateMeta));
+      context.handle(
+          _maxVideoBitrateMeta,
+          maxVideoBitrate.isAcceptableOrUnknown(
+              data['max_video_bitrate']!, _maxVideoBitrateMeta));
     }
     if (data.containsKey('max_audio_bitrate')) {
-      context.handle(_maxAudioBitrateMeta,
-          maxAudioBitrate.isAcceptableOrUnknown(data['max_audio_bitrate']!, _maxAudioBitrateMeta));
+      context.handle(
+          _maxAudioBitrateMeta,
+          maxAudioBitrate.isAcceptableOrUnknown(
+              data['max_audio_bitrate']!, _maxAudioBitrateMeta));
     }
     if (data.containsKey('download_path')) {
-      context.handle(_downloadPathMeta, downloadPath.isAcceptableOrUnknown(data['download_path']!, _downloadPathMeta));
+      context.handle(
+          _downloadPathMeta,
+          downloadPath.isAcceptableOrUnknown(
+              data['download_path']!, _downloadPathMeta));
     }
     if (data.containsKey('direct_play')) {
-      context.handle(_directPlayMeta, directPlay.isAcceptableOrUnknown(data['direct_play']!, _directPlayMeta));
+      context.handle(
+          _directPlayMeta,
+          directPlay.isAcceptableOrUnknown(
+              data['direct_play']!, _directPlayMeta));
     }
     return context;
   }
@@ -798,7 +958,8 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data, prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    return Setting.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -814,17 +975,28 @@ class Download extends DataClass implements Insertable<Download> {
   final Uint8List? primary;
   final Uint8List? backdrop;
   final Item? item;
-  Download({required this.id, this.name, required this.path, this.primary, this.backdrop, this.item});
+  Download(
+      {required this.id,
+      this.name,
+      required this.path,
+      this.primary,
+      this.backdrop,
+      this.item});
   factory Download.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Download(
-      id: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      path: const StringType().mapFromDatabaseResponse(data['${effectivePrefix}path'])!,
-      primary: const BlobType().mapFromDatabaseResponse(data['${effectivePrefix}primary']),
-      backdrop: const BlobType().mapFromDatabaseResponse(data['${effectivePrefix}backdrop']),
-      item: $DownloadsTable.$converter0
-          .mapToDart(const StringType().mapFromDatabaseResponse(data['${effectivePrefix}item'])),
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      path: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}path'])!,
+      primary: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}primary']),
+      backdrop: const BlobType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}backdrop']),
+      item: $DownloadsTable.$converter0.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item'])),
     );
   }
   @override
@@ -853,13 +1025,18 @@ class Download extends DataClass implements Insertable<Download> {
       id: Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       path: Value(path),
-      primary: primary == null && nullToAbsent ? const Value.absent() : Value(primary),
-      backdrop: backdrop == null && nullToAbsent ? const Value.absent() : Value(backdrop),
+      primary: primary == null && nullToAbsent
+          ? const Value.absent()
+          : Value(primary),
+      backdrop: backdrop == null && nullToAbsent
+          ? const Value.absent()
+          : Value(backdrop),
       item: item == null && nullToAbsent ? const Value.absent() : Value(item),
     );
   }
 
-  factory Download.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Download.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Download(
       id: serializer.fromJson<String>(json['id']),
@@ -1023,44 +1200,53 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
   }
 }
 
-class $DownloadsTable extends Downloads with TableInfo<$DownloadsTable, Download> {
+class $DownloadsTable extends Downloads
+    with TableInfo<$DownloadsTable, Download> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DownloadsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id =
-      GeneratedColumn<String?>('id', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name =
-      GeneratedColumn<String?>('name', aliasedName, true, type: const StringType(), requiredDuringInsert: false);
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _pathMeta = const VerificationMeta('path');
   @override
-  late final GeneratedColumn<String?> path =
-      GeneratedColumn<String?>('path', aliasedName, false, type: const StringType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> path = GeneratedColumn<String?>(
+      'path', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _primaryMeta = const VerificationMeta('primary');
   @override
-  late final GeneratedColumn<Uint8List?> primary =
-      GeneratedColumn<Uint8List?>('primary', aliasedName, true, type: const BlobType(), requiredDuringInsert: false);
+  late final GeneratedColumn<Uint8List?> primary = GeneratedColumn<Uint8List?>(
+      'primary', aliasedName, true,
+      type: const BlobType(), requiredDuringInsert: false);
   final VerificationMeta _backdropMeta = const VerificationMeta('backdrop');
   @override
-  late final GeneratedColumn<Uint8List?> backdrop =
-      GeneratedColumn<Uint8List?>('backdrop', aliasedName, true, type: const BlobType(), requiredDuringInsert: false);
+  late final GeneratedColumn<Uint8List?> backdrop = GeneratedColumn<Uint8List?>(
+      'backdrop', aliasedName, true,
+      type: const BlobType(), requiredDuringInsert: false);
   final VerificationMeta _itemMeta = const VerificationMeta('item');
   @override
   late final GeneratedColumnWithTypeConverter<Item, String?> item =
-      GeneratedColumn<String?>('item', aliasedName, true, type: const StringType(), requiredDuringInsert: false)
+      GeneratedColumn<String?>('item', aliasedName, true,
+              type: const StringType(), requiredDuringInsert: false)
           .withConverter<Item>($DownloadsTable.$converter0);
   @override
-  List<GeneratedColumn> get $columns => [id, name, path, primary, backdrop, item];
+  List<GeneratedColumn> get $columns =>
+      [id, name, path, primary, backdrop, item];
   @override
   String get aliasedName => _alias ?? 'downloads';
   @override
   String get actualTableName => 'downloads';
   @override
-  VerificationContext validateIntegrity(Insertable<Download> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(Insertable<Download> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1069,18 +1255,22 @@ class $DownloadsTable extends Downloads with TableInfo<$DownloadsTable, Download
       context.missing(_idMeta);
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     }
     if (data.containsKey('path')) {
-      context.handle(_pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
+      context.handle(
+          _pathMeta, path.isAcceptableOrUnknown(data['path']!, _pathMeta));
     } else if (isInserting) {
       context.missing(_pathMeta);
     }
     if (data.containsKey('primary')) {
-      context.handle(_primaryMeta, primary.isAcceptableOrUnknown(data['primary']!, _primaryMeta));
+      context.handle(_primaryMeta,
+          primary.isAcceptableOrUnknown(data['primary']!, _primaryMeta));
     }
     if (data.containsKey('backdrop')) {
-      context.handle(_backdropMeta, backdrop.isAcceptableOrUnknown(data['backdrop']!, _backdropMeta));
+      context.handle(_backdropMeta,
+          backdrop.isAcceptableOrUnknown(data['backdrop']!, _backdropMeta));
     }
     context.handle(_itemMeta, const VerificationResult.success());
     return context;
@@ -1090,7 +1280,8 @@ class $DownloadsTable extends Downloads with TableInfo<$DownloadsTable, Download
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Download.fromData(data, prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    return Download.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -1115,7 +1306,8 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [servers, userApp, settings, downloads];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [servers, userApp, settings, downloads];
 }
 
 // **************************************************************************

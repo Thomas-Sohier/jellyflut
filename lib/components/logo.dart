@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -55,9 +55,7 @@ class Logo extends StatelessWidget {
           item: item,
           showParent: true,
           boxFit: BoxFit.contain,
-          errorWidget: (_, __, ___) => const SizedBox(),
-          placeholder: (_) => const SizedBox(),
-          tag: ImageType.Logo,
+          imageType: ImageType.Logo,
         ));
   }
 }

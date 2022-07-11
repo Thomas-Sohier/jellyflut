@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
-import 'package:jellyflut/screens/details/template/components/background_image.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/async_right_details.dart';
 import 'package:jellyflut/screens/details/template/details_background.dart';
 import 'package:jellyflut/screens/details/template/components/left_details.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-
-import 'components/background_image.dart';
 
 class LargeDetails extends StatelessWidget {
   const LargeDetails({super.key});
@@ -17,7 +15,13 @@ class LargeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.topCenter, children: [
-      const BackgroundImage(imageType: ImageType.Backdrop),
+      AsyncImage(
+        item: context.read<DetailsBloc>().state.item,
+        width: double.infinity,
+        height: double.infinity,
+        imageType: ImageType.Backdrop,
+        boxFit: BoxFit.cover,
+      ),
       const DetailsBackground(),
       LayoutBuilder(builder: ((_, constraints) {
         // Constraint emitter

@@ -87,6 +87,7 @@ class AuthService {
           name: name,
           password: password,
           apiKey: authenticationResponse.accessToken,
+          jellyfinUserId: authenticationResponse.user.id,
           settingsId: Value(settingsId),
           serverId: Value(serverId));
       return db.userAppDao.createUser(userCompanion);

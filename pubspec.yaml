@@ -23,7 +23,10 @@ dependencies:
   carousel_slider: ^4.1.1
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.5
-  dart_vlc: ^0.3.0
+  dart_vlc:
+      git:
+        url: https://github.com/erikas-taroza/dart_vlc.git # Url to the repository
+        ref: e661980
   database_downloads_api:
     path: packages/downloads/database_downloads_api
   device_info_plus: ^4.0.0

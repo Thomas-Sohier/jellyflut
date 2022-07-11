@@ -252,7 +252,7 @@ class __$$_ImageBlurHashesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ImageBlurHashes implements _ImageBlurHashes {
+class _$_ImageBlurHashes extends _ImageBlurHashes {
   _$_ImageBlurHashes(
       {final Map<String, String>? primary,
       final Map<String, String>? art,
@@ -279,7 +279,8 @@ class _$_ImageBlurHashes implements _ImageBlurHashes {
         _menu = menu,
         _chapter = chapter,
         _boxrear = boxrear,
-        _profile = profile;
+        _profile = profile,
+        super._();
 
   factory _$_ImageBlurHashes.fromJson(Map<String, dynamic> json) =>
       _$$_ImageBlurHashesFromJson(json);
@@ -456,7 +457,7 @@ class _$_ImageBlurHashes implements _ImageBlurHashes {
   }
 }
 
-abstract class _ImageBlurHashes implements ImageBlurHashes {
+abstract class _ImageBlurHashes extends ImageBlurHashes {
   factory _ImageBlurHashes(
       {final Map<String, String>? primary,
       final Map<String, String>? art,
@@ -471,6 +472,7 @@ abstract class _ImageBlurHashes implements ImageBlurHashes {
       final Map<String, String>? chapter,
       final Map<String, String>? boxrear,
       final Map<String, String>? profile}) = _$_ImageBlurHashes;
+  _ImageBlurHashes._() : super._();
 
   factory _ImageBlurHashes.fromJson(Map<String, dynamic> json) =
       _$_ImageBlurHashes.fromJson;

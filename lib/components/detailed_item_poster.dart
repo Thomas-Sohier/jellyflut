@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart';
@@ -39,10 +39,9 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
                               AsyncImage(
                                   item: widget.item,
                                   boxFit: BoxFit.cover,
-                                  errorWidget: (_, __, ___) => const SizedBox(),
                                   width: double.infinity,
                                   height: double.infinity,
-                                  tag: ImageType.Backdrop),
+                                  imageType: ImageType.Backdrop),
                               Container(color: Colors.black87),
                               Padding(
                                   padding: EdgeInsets.all(8),

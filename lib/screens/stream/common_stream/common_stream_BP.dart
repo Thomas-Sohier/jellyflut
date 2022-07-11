@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
@@ -36,7 +38,8 @@ class CommonStreamBP {
 
   static Future<BetterPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final streamURL = await item.getItemURL();
+    final context = customRouter.navigatorKey.currentContext!;
+    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final dataSource;

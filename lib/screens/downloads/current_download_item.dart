@@ -128,7 +128,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
       aspectRatio: widget.itemDownload.item.getPrimaryAspectRatio(),
       child: Poster(
           key: ValueKey(widget.itemDownload),
-          tag: ImageType.Primary,
+          imageType: ImageType.Primary,
           heroTag: '${widget.itemDownload.item.id}-${Uuid().v1()}-${widget.itemDownload.item.name}',
           clickable: false,
           width: double.infinity,

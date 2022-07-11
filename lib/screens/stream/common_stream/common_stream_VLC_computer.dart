@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -20,7 +22,8 @@ class CommonStreamVLCComputer {
   const CommonStreamVLCComputer({required this.player});
 
   static Future<Player> setupData({required Item item}) async {
-    final streamURL = await item.getItemURL();
+    final context = customRouter.navigatorKey.currentContext!;
+    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
     final player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
       '--no-spu'
@@ -63,8 +66,7 @@ class CommonStreamVLCComputer {
   }
 
   void addListener(void Function() listener) {
-    final timer =
-        Timer.periodic(Duration(milliseconds: 100), (i) => listener());
+    final timer = Timer.periodic(Duration(milliseconds: 100), (i) => listener());
     timers.add(timer);
   }
 
@@ -83,10 +85,8 @@ class CommonStreamVLCComputer {
 
     return PlaybackProgress(
         itemId: streamingProvider.item!.id,
-        audioStreamIndex:
-            streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
-        subtitleStreamIndex:
-            streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
+        audioStreamIndex: streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
+        subtitleStreamIndex: streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
         canSeek: true,
         isMuted: controller.general.volume == 0 ? true : false,
         isPaused: controller.playback.isPlaying,
@@ -102,9 +102,7 @@ class CommonStreamVLCComputer {
 
   static Timer _startProgressTimer(Item item, Player player) {
     return Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) =>
-            StreamingService.streamingProgress(getPlaybackProgress(player)));
+        Duration(seconds: 15), (Timer t) => StreamingService.streamingProgress(getPlaybackProgress(player)));
   }
 
   Future<void> play() {
@@ -170,28 +168,26 @@ class CommonStreamVLCComputer {
 
   void toggleFullscreen() async {
     final windowInstance = WindowManager.instance;
-    await windowInstance.isFullScreen().then(
-        (bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
+    await windowInstance.isFullScreen().then((bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
   }
 
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
-    player.positionStream.listen((PositionState positionState) =>
-        streamController.add(positionState.position ?? Duration(seconds: 0)));
+    player.positionStream
+        .listen((PositionState positionState) => streamController.add(positionState.position ?? Duration(seconds: 0)));
     return streamController;
   }
 
   BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
-    player.positionStream.listen((PositionState positionState) =>
-        streamController.add(positionState.duration ?? Duration(seconds: 0)));
+    player.positionStream
+        .listen((PositionState positionState) => streamController.add(positionState.duration ?? Duration(seconds: 0)));
     return streamController;
   }
 
   BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    player.playbackStream
-        .listen((PlaybackState event) => streamController.add(event.isPlaying));
+    player.playbackStream.listen((PlaybackState event) => streamController.add(event.isPlaying));
     return streamController;
   }
 

@@ -16,7 +16,7 @@ class LeftDetails extends StatelessWidget {
         key: ValueKey(context.read<DetailsBloc>().state.item),
         item: context.read<DetailsBloc>().state.item,
         heroTag: context.read<DetailsBloc>().state.heroTag,
-        tag: ImageType.Primary,
+        imageType: ImageType.Primary,
         clickable: false,
         dropShadow: true,
         showParent: false,

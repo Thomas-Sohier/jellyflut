@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
@@ -20,18 +23,17 @@ class CommonStreamVLC {
   Duration getBufferingDurationVLC() {
     final durationCurrentFile = vlcPlayerController.value.duration;
     final totalMilliseconds = durationCurrentFile.inMilliseconds;
-    final currentBufferedMilliseconds =
-        totalMilliseconds / vlcPlayerController.value.bufferPercent;
+    final currentBufferedMilliseconds = totalMilliseconds / vlcPlayerController.value.bufferPercent;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN ||
-                currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
 
   static Future<VlcPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final streamURL = await item.getItemURL();
+    final context = customRouter.navigatorKey.currentContext!;
+    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final vlcPlayerController;
@@ -73,8 +75,7 @@ class CommonStreamVLC {
     return Future.value(vlcPlayerController);
   }
 
-  static Future<VlcPlayerController> setupDataFromUrl(
-      {required String url}) async {
+  static Future<VlcPlayerController> setupDataFromUrl({required String url}) async {
     // Create vlcPlayerController
     final vlcPlayerController = VlcPlayerController.network(
       url,
@@ -102,10 +103,8 @@ class CommonStreamVLC {
 
     return PlaybackProgress(
         itemId: streamingProvider.item!.id,
-        audioStreamIndex:
-            streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
-        subtitleStreamIndex:
-            streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
+        audioStreamIndex: streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
+        subtitleStreamIndex: streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
         canSeek: true,
         isMuted: controller.value.volume == 0 ? true : false,
         isPaused: controller.value.isPlaying,
@@ -121,9 +120,7 @@ class CommonStreamVLC {
 
   static Timer _startProgressTimer(Item item, VlcPlayerController c) {
     return Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) =>
-            StreamingService.streamingProgress(getPlaybackProgress(c)));
+        Duration(seconds: 15), (Timer t) => StreamingService.streamingProgress(getPlaybackProgress(c)));
   }
 
   Future<List<Subtitle>> getSubtitles() async {
@@ -133,10 +130,7 @@ class CommonStreamVLC {
     for (var i = 0; i < subtitles.length; i++) {
       final subtitleKey = subtitles.keys.elementAt(i);
       parsedSubtitiles.add(Subtitle(
-          index: subtitleKey,
-          mediaType: MediaType.LOCAL,
-          jellyfinSubtitleIndex: null,
-          name: subtitles[subtitleKey]!));
+          index: subtitleKey, mediaType: MediaType.LOCAL, jellyfinSubtitleIndex: null, name: subtitles[subtitleKey]!));
     }
     return parsedSubtitiles;
   }
@@ -178,8 +172,7 @@ class CommonStreamVLC {
 
   BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    vlcPlayerController.addListener(
-        () => streamController.add(vlcPlayerController.value.isPlaying));
+    vlcPlayerController.addListener(() => streamController.add(vlcPlayerController.value.isPlaying));
     return streamController;
   }
 

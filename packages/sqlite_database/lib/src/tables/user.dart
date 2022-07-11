@@ -5,6 +5,7 @@ class UserApp extends Table {
   TextColumn get name => text()();
   TextColumn get password => text()();
   TextColumn get apiKey => text()();
+  TextColumn get jellyfinUserId => text()();
   IntColumn get settingsId => integer().withDefault(const Constant(0))();
   IntColumn get serverId => integer().withDefault(const Constant(0))();
 

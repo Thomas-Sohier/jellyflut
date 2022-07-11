@@ -46,7 +46,7 @@ class _SearchButtonState extends State<SearchButton> {
 
   Widget fieldClosed(VoidCallback openContainer) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 4),
       child: OutlinedButtonSelector(
         onPressed: openContainer,
         child: ExcludeFocus(

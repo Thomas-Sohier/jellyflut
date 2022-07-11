@@ -333,9 +333,11 @@ packages:
   dart_vlc:
     dependency: "direct main"
     description:
-      name: dart_vlc
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: e661980
+      resolved-ref: e661980ce7369d9a0e92c01184ac89cd366750e3
+      url: "https://github.com/erikas-taroza/dart_vlc.git"
+    source: git
     version: "0.3.0"
   dart_vlc_ffi:
     dependency: transitive
@@ -762,7 +764,7 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.3.0"
+    version: "6.3.1"
   just_audio:
     dependency: "direct main"
     description:

@@ -82,15 +82,18 @@ class Theme {
             appBarTheme: AppBarTheme(
                 color: theme.colorScheme.background,
                 foregroundColor: theme.colorScheme.onBackground,
+                scrolledUnderElevation: 4,
+                shadowColor: Colors.black38,
+                toolbarTextStyle: theme.textTheme.headline5,
+                titleTextStyle: theme.textTheme.headline5,
+                surfaceTintColor: theme.colorScheme.background,
                 systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarBrightness: reveredBrightness,
                   statusBarIconBrightness: reveredBrightness,
                   statusBarColor: theme.colorScheme.background,
                   systemNavigationBarColor: theme.colorScheme.background,
                   systemNavigationBarContrastEnforced: false,
-                ),
-                toolbarTextStyle: theme.textTheme.headline5,
-                titleTextStyle: theme.textTheme.headline5))
+                )))
         .copyWith(
             snackBarTheme: SnackBarThemeData(
                 behavior: SnackBarBehavior.floating,

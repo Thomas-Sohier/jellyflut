@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
@@ -70,13 +70,6 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
             child: AsyncImage(
               item: widget.person.asItem(),
               boxFit: BoxFit.contain,
-              placeholder: (_) => Container(
-                decoration:
-                    BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Center(
-                  child: Icon(Icons.person),
-                ),
-              ),
             )));
   }
 
@@ -93,13 +86,6 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                   AsyncImage(
                     item: widget.person.asItem(),
                     boxFit: BoxFit.contain,
-                    placeholder: (_) => Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200, borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: Center(
-                        child: Icon(Icons.person),
-                      ),
-                    ),
                   ),
                   Container(
                     margin: EdgeInsets.zero,

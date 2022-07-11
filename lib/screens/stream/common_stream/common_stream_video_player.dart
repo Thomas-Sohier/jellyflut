@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
@@ -25,15 +27,15 @@ class CommonStreamVideoPlayer {
     // final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds = 0;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN ||
-                currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
 
   static Future<VideoPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final streamURL = await item.getItemURL(directPlay: false);
+    final context = customRouter.navigatorKey.currentContext!;
+    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final VideoPlayerController videoPlayerController;
@@ -55,8 +57,7 @@ class CommonStreamVideoPlayer {
       });
     } else {
       // videoPlayerController = VideoPlayerController.file(File(streamURL));
-      throw UnsupportedError(
-          'No suitable player implementation was found to play local file.');
+      throw UnsupportedError('No suitable player implementation was found to play local file.');
     }
 
     // create timer to save progress
@@ -71,8 +72,7 @@ class CommonStreamVideoPlayer {
     return Future.value(videoPlayerController);
   }
 
-  static Future<VideoPlayerController> setupDataFromUrl(
-      {required String url}) async {
+  static Future<VideoPlayerController> setupDataFromUrl({required String url}) async {
     // Create vlcPlayerController
     final videoPlayerController = VideoPlayerController.network(url);
 
@@ -83,8 +83,7 @@ class CommonStreamVideoPlayer {
     return Future.value(videoPlayerController);
   }
 
-  static PlaybackProgress getPlaybackProgress(
-      VideoPlayerController controller) {
+  static PlaybackProgress getPlaybackProgress(VideoPlayerController controller) {
     PlayMethod _playMethod() {
       final isDirectPlay = streamingProvider.isDirectPlay ?? true;
       if (isDirectPlay) return PlayMethod.directPlay;
@@ -93,10 +92,8 @@ class CommonStreamVideoPlayer {
 
     return PlaybackProgress(
         itemId: streamingProvider.item!.id,
-        audioStreamIndex:
-            streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
-        subtitleStreamIndex:
-            streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
+        audioStreamIndex: streamingProvider.selectedAudioTrack!.jellyfinSubtitleIndex ?? 0,
+        subtitleStreamIndex: streamingProvider.selectedSubtitleTrack!.jellyfinSubtitleIndex ?? 0,
         canSeek: true,
         isMuted: controller.value.volume == 0 ? true : false,
         isPaused: controller.value.isPlaying,
@@ -112,9 +109,7 @@ class CommonStreamVideoPlayer {
 
   static Timer _startProgressTimer(Item item, VideoPlayerController c) {
     return Timer.periodic(
-        Duration(seconds: 15),
-        (Timer t) =>
-            StreamingService.streamingProgress(getPlaybackProgress(c)));
+        Duration(seconds: 15), (Timer t) => StreamingService.streamingProgress(getPlaybackProgress(c)));
   }
 
   /// No implemented, do nothing
@@ -167,8 +162,7 @@ class CommonStreamVideoPlayer {
 
   BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    videoPlayerController.addListener(
-        () => streamController.add(videoPlayerController.value.isPlaying));
+    videoPlayerController.addListener(() => streamController.add(videoPlayerController.value.isPlaying));
     return streamController;
   }
 

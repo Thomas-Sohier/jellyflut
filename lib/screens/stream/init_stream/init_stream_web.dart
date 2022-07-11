@@ -28,9 +28,8 @@ class InitStreamingItemUtil {
     final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
-    final tempItem = await item.getPlayableItemOrLastUnplayed();
-    item = await customRouter.navigatorKey.currentContext!.read<ItemsRepository>().getItem(tempItem.id);
-
+    final context = customRouter.navigatorKey.currentContext!;
+    item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
       case StreamingSoftware.HTMLPlayer:

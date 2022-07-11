@@ -49,7 +49,7 @@ class _ChannelsState extends State<Channels> {
                           Padding(
                             padding: const EdgeInsets.only(top: 4, right: 4),
                             child: Poster(
-                                tag: ImageType.Primary,
+                                imageType: ImageType.Primary,
                                 heroTag: channel.id,
                                 clickable: false,
                                 boxFit: BoxFit.contain,
