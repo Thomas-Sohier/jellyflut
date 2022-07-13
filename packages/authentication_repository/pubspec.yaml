@@ -9,6 +9,7 @@ environment:
 dependencies:
   authentication_api:
     path: ../authentication_api
+  dio: ^4.0.6
   drift: ^1.7.1
   freezed_annotation: ^2.0.3
   json_annotation: ^4.6.0

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:authentication_api/authentication_api.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:downloads_api/downloads_api.dart';
 import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/widgets.dart';
@@ -21,9 +22,9 @@ import 'package:users_repository/users_repository.dart';
 import 'providers/theme/theme_provider.dart';
 
 void bootstrap(
-    {required bool authenticated,
-    required Database database,
+    {required Database database,
     required ThemeProvider themeProvider,
+    required Dio dioClient,
     required AuthenticationApi authenticationApi,
     required DownloadsApi downloadsApi,
     required ItemsApi itemsApi,
@@ -34,11 +35,14 @@ void bootstrap(
   };
 
   final authenticationRepository = AuthenticationRepository(
-      authenticationApi: authenticationApi, database: database, sharedPreferences: sharedPrefs.sharedPrefs);
+      authenticationApi: authenticationApi,
+      database: database,
+      sharedPreferences: SharedPrefs.sharedPrefs,
+      dioClient: dioClient);
   final downloadsRepository = DownloadsRepository(downloadsApi: downloadsApi);
   final itemsRepository =
       ItemsRepository(itemsApi: itemsApi, database: database, authenticationrepository: authenticationRepository);
-  final usersRepository = UsersRepository(usersApi: usersApi);
+  final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);
   final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
 
   runZonedGuarded(
@@ -46,7 +50,6 @@ void bootstrap(
       await BlocOverrides.runZoned(
         () async => runApp(
           App(
-              authenticated: authenticated,
               database: database,
               themeProvider: themeProvider,
               authenticationRepository: authenticationRepository,

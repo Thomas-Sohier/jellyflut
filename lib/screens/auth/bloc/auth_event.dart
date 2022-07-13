@@ -8,14 +8,14 @@ class CheckAuthState extends AuthEvent {}
 
 // Server form is filled
 class AuthServerAdded extends AuthEvent {
-  final Server server;
+  final ServerDto server;
 
   AuthServerAdded(this.server);
 }
 
 // User form is filled
 class AuthUserAdded extends AuthEvent {
-  final User user;
+  final UserDto user;
 
   AuthUserAdded(this.user);
 }

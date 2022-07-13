@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:authentication_api/authentication_api.dart';
+import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
@@ -16,18 +17,23 @@ class AuthenticationRepository {
   AuthenticationRepository(
       {required AuthenticationApi authenticationApi,
       required SharedPreferences sharedPreferences,
+      required Dio dioClient,
       required Database database})
       : _authenticationApi = authenticationApi,
         _sharedPreferences = sharedPreferences,
-        _database = database;
+        _dioClient = dioClient,
+        _database = database {
+    _initListeners();
+  }
 
   final AuthenticationApi _authenticationApi;
   final SharedPreferences _sharedPreferences;
+  final Dio _dioClient;
   final Database _database;
 
   // Stream of user and server when state change
-  final StreamController<User> _userStream = StreamController<User>();
-  final StreamController<Server> _serverStream = StreamController<Server>();
+  final StreamController<User> _userStream = StreamController<User>.broadcast();
+  final StreamController<Server> _serverStream = StreamController<Server>.broadcast();
 
   // Shared preferences key
   final String _spUserKey = 'authentication_repository_user';
@@ -37,10 +43,7 @@ class AuthenticationRepository {
   /// the authentication state changes.
   ///
   /// Emits [User.empty] if the user is not authenticated.
-  Stream<User> get user => _userStream.stream.map((user) {
-        _setSharedPrefUser(user);
-        return user;
-      });
+  Stream<User> get user => _userStream.stream;
 
   /// Returns the current cached user.
   /// If there is no cached user then a [NoCurrentUserException] is thrown
@@ -50,14 +53,32 @@ class AuthenticationRepository {
   /// the authentication state changes.
   ///
   /// Emits [Server.empty] if the server is not defined yet.
-  Stream<Server> get server => _serverStream.stream.map((server) {
-        _setSharedPrefServer(server);
-        return server;
-      });
+  Stream<Server> get server => _serverStream.stream;
 
   /// Returns the current cached server.
   /// If there is no cached server then a [NoCurrentServerException] is thrown
   Server get currentServer => _getSharedPreServer();
+
+  void _initListeners() {
+    _serverStream.stream.listen(_setSharedPrefServer);
+    _userStream.stream.listen((user) async {
+      await _setSharedPrefUser(user);
+      await _setDioInterceptor(user);
+    });
+    _setDioInterceptor(currentUser);
+  }
+
+  Future<void> _setDioInterceptor(User user) async {
+    final tokenInterceptor = await _authenticationApi.generateToken(accessToken: user.token);
+    final dioInterceptor =
+        QueuedInterceptorsWrapper(onRequest: (RequestOptions requestOptions, RequestInterceptorHandler handler) async {
+      requestOptions.queryParameters.addAll(tokenInterceptor.queryParameters);
+      requestOptions.headers.addAll(tokenInterceptor.headers);
+      handler.next(requestOptions);
+    });
+    _dioClient.interceptors.clear();
+    _dioClient.interceptors.add(dioInterceptor);
+  }
 
   /// Login a user to defined endpoint
   /// A server URL need o be defined as backend can vary
@@ -69,16 +90,35 @@ class AuthenticationRepository {
       required String username,
       required String password}) async {
     final user = await _authenticationApi.logIn(
-        serverName: serverName, serverUrl: serverUrl, username: username, password: password);
-    final serverId = await _createOrGetServer(serverUrl, serverName);
-    final uri = Uri.parse(serverUrl);
-    final server =
-        Server(id: serverId.toString(), name: serverName, host: uri.host, port: uri.port, scheme: uri.scheme);
-    await _createOrGetUser(user.id, user.username, user.token, password, serverId);
+      serverName: serverName,
+      serverUrl: serverUrl,
+      username: username,
+      password: password,
+    );
+    try {
+      final serverId = await _createOrGetServer(serverUrl, serverName);
+      final uri = Uri.parse(serverUrl);
+      final server = Server(
+        id: serverId.toString(),
+        name: serverName,
+        host: uri.host,
+        port: uri.port,
+        scheme: uri.scheme,
+      );
+      await _createOrGetUser(
+        user.id,
+        user.username,
+        user.token,
+        password,
+        serverId,
+      );
 
-    // Notify new user and server
-    _userStream.add(user);
-    _serverStream.add(server);
+      // Notify new user and server
+      _userStream.add(user);
+      _serverStream.add(server);
+    } catch (_) {
+      throw AuthenticationStorageException();
+    }
   }
 
   /// Logout a user to the defined endpoint
@@ -130,20 +170,20 @@ class AuthenticationRepository {
 
   User _getSharedPrefUser() {
     final userAsString = _sharedPreferences.getString(_spUserKey);
-    if (userAsString == null) throw NoCurrentUserException();
+    if (userAsString == null) return User.empty;
     return User.fromJson(jsonDecode(userAsString));
   }
 
-  Future<void> _setSharedPrefUser(User user) => _sharedPreferences.setString(_spUserKey, user.toJson().toString());
+  Future<void> _setSharedPrefUser(User user) => _sharedPreferences.setString(_spUserKey, json.encode(user.toJson()));
 
   Server _getSharedPreServer() {
     final serverAsString = _sharedPreferences.getString(_spServerKey);
-    if (serverAsString == null) throw NoCurrentServerException();
+    if (serverAsString == null) return Server.empty;
     return Server.fromJson(jsonDecode(serverAsString));
   }
 
   Future<void> _setSharedPrefServer(Server server) =>
-      _sharedPreferences.setString(_spServerKey, server.toJson().toString());
+      _sharedPreferences.setString(_spServerKey, json.encode(server.toJson()));
 }
 
 /// Error thrown when there is no current user saved in shared preferences
@@ -151,3 +191,6 @@ class NoCurrentUserException implements Exception {}
 
 /// Error thrown when there is no current server saved in shared preferences
 class NoCurrentServerException implements Exception {}
+
+/// Error thrown when there is an error while storing auth infos
+class AuthenticationStorageException implements Exception {}

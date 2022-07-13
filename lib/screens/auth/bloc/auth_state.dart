@@ -1,48 +1,27 @@
 part of 'auth_bloc.dart';
 
+enum AuthStatus { initial, submissionInProgress, submissionSuccess, submissionFailure }
+
+enum AuthPage { serverPage, loginPage }
+
 @immutable
-abstract class AuthState {
-  final bool authenticated = false;
-}
+class AuthState {
+  final AuthStatus authStatus;
+  final AuthPage authPage;
+  final ServerDto server;
+  final UserDto user;
 
-/// User unauthenticated.
-class AuthenticationUnauthenticated extends AuthState {}
+  const AuthState(
+      {this.authStatus = AuthStatus.initial,
+      this.authPage = AuthPage.serverPage,
+      this.server = ServerDto.empty,
+      this.user = UserDto.empty});
 
-/// Authentication initialized.
-class AuthenticationServerAdded extends AuthState {
-  final Server server;
-
-  AuthenticationServerAdded({required this.server});
-}
-
-/// Authentication initialized.
-class AuthenticationUserAdded extends AuthState {
-  final User user;
-
-  AuthenticationUserAdded({required this.user});
-}
-
-/// Authentication initialized.
-class AuthenticationInitialized extends AuthState {
-  final User user;
-  final Server server;
-
-  AuthenticationInitialized({required this.user, required this.server});
-}
-
-/// Authenticated.
-class AuthenticationSuccessful extends AuthState {
-  @override
-  bool get authenticated => true;
-}
-
-/// Authenticated.
-class AuthenticationInProgress extends AuthState {}
-
-class AuthenticationFirstForm extends AuthState {}
-
-/// Error.
-class AuthenticationError extends AuthState {
-  AuthenticationError(this.error);
-  final String error;
+  AuthState copyWith({AuthStatus? authStatus, AuthPage? authPage, ServerDto? server, UserDto? user}) {
+    return AuthState(
+        authPage: authPage ?? this.authPage,
+        authStatus: authStatus ?? this.authStatus,
+        server: server ?? this.server,
+        user: user ?? this.user);
+  }
 }

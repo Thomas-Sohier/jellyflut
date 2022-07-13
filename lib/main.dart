@@ -6,8 +6,7 @@ import 'package:items_api/items_api.dart';
 import 'package:jellyfin_authentication_api/jellyfin_authentication_api.dart';
 import 'package:jellyflut/bootstrap.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_api/users_api.dart';
@@ -20,14 +19,12 @@ void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await impl.init();
-  await SharedPrefs().init();
+  await SharedPrefs.init();
   await EasyLocalization.ensureInitialized();
   await setUpAndroidTv();
-  final authenticated = await AuthService.isAuth();
   final database = AppDatabase().getDatabase;
   final themeProvider = ThemeProvider();
-  final dioExtra = DioExtra(jellyfinUserId: userJellyfin?.id);
-  final dioClient = DioHelper.generateDioClient(baseUrl: server.url, extra: dioExtra);
+  final dioClient = DioHelper.generateDioClient();
 
   // Providerss
   final authenticationApi = JellyfinAuthenticationApi(dioClient: dioClient); // TODO implement auth api from jellyfin
@@ -37,9 +34,9 @@ void main() async {
   final musicPlayerApi = MusicPlayerApi();
 
   bootstrap(
-      authenticated: authenticated,
       database: database,
       themeProvider: themeProvider,
+      dioClient: dioClient,
       downloadsApi: databaseDownloadsApi,
       authenticationApi: authenticationApi,
       itemsApi: itemsApi,

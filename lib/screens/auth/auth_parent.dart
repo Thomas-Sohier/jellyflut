@@ -12,9 +12,7 @@ import 'package:jellyflut/screens/auth/server_form.dart';
 import 'components/lava/lava_painter.dart';
 
 class AuthParent extends StatefulWidget {
-  final VoidCallback? onAuthenticated;
-
-  AuthParent({super.key, this.onAuthenticated});
+  AuthParent({super.key});
 
   @override
   State<AuthParent> createState() => _AuthParentState();
@@ -74,28 +72,19 @@ class _AuthParentState extends State<AuthParent> {
               Align(
                 child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) async {
-                    if (state is AuthenticationSuccessful) {
-                      if (widget.onAuthenticated != null) {
-                        widget.onAuthenticated!();
-                      } else {
-                        await AutoRouter.of(context).replace(HomeRouter());
-                      }
+                    if (state.authStatus == AuthStatus.submissionSuccess) {
+                      await AutoRouter.of(context).replace(HomeRouter());
                     }
                   },
                   builder: (context, state) {
-                    if (state is AuthenticationUnauthenticated ||
-                        state is AuthenticationFirstForm ||
-                        state is AuthenticationInitialized) {
-                      return firstForm(context);
-                    } else if (state is AuthenticationServerAdded) {
-                      return secondForm(context);
-                    } else if (state is AuthenticationUserAdded ||
-                        state is AuthenticationInProgress ||
-                        state is AuthenticationSuccessful ||
-                        state is AuthenticationError) {
-                      return secondForm(context);
+                    switch (state.authPage) {
+                      case AuthPage.loginPage:
+                        return firstForm(context);
+                      case AuthPage.serverPage:
+                        return secondForm(context);
+                      default:
+                        return const SizedBox();
                     }
-                    return const SizedBox();
                   },
                 ),
               ),
@@ -122,9 +111,8 @@ class _AuthParentState extends State<AuthParent> {
               constraints: BoxConstraints(maxHeight: 400, maxWidth: 600),
               child: LoginForm())),
       Positioned.fill(
-        top: 0,
-        child: Align(alignment: Alignment.topCenter, child: AuthBubbleIndicator(value: authBloc.server?.name ?? '')),
-      ),
+          top: 0,
+          child: Align(alignment: Alignment.topCenter, child: AuthBubbleIndicator(value: authBloc.state.server.name))),
     ]);
   }
 }

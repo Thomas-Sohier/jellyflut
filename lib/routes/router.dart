@@ -12,9 +12,6 @@ import 'package:jellyflut/screens/music_player/routes/playlist.dart';
 import 'package:jellyflut/screens/server/server_parent.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
-import 'package:jellyflut/services/auth/auth_service.dart';
-
-import 'router.gr.dart';
 
 // Generate files
 // flutter packages pub run build_runner watch
@@ -26,82 +23,36 @@ import 'router.gr.dart';
   // durationInMilliseconds: 250,
   routes: <AutoRoute>[
     AutoRoute(page: AuthParent, path: 'authentication'),
-    AutoRoute(page: HomeParent, path: 'home', name: 'HomeRouter', guards: [
-      AuthGuard
-    ], children: [
+    AutoRoute(page: HomeParent, path: 'home', name: 'HomeRouter', children: [
       AutoRoute(page: Home, name: 'HomeRoute', path: '', initial: true),
-      AutoRoute(
-          page: CollectionParent,
-          name: 'CollectionRoute',
-          path: 'collection',
-          guards: [AuthGuard]),
-      AutoRoute(
-          page: Iptv, name: 'IptvRoute', path: 'iptv', guards: [AuthGuard]),
+      AutoRoute(page: CollectionParent, name: 'CollectionRoute', path: 'collection'),
+      AutoRoute(page: Iptv, name: 'IptvRoute', path: 'iptv'),
       RedirectRoute(path: '*', redirectTo: ''),
     ]),
     CustomRoute(
         page: CollectionParent,
         name: 'collectionParentRoute',
         path: 'collection',
-        transitionsBuilder: TransitionsBuilders.slideLeft,
-        guards: [AuthGuard]),
-    CustomRoute(
-        page: Details,
-        path: 'details',
-        transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
-        guards: [AuthGuard]),
+        transitionsBuilder: TransitionsBuilders.slideLeft),
+    CustomRoute(page: Details, path: 'details', transitionsBuilder: TransitionsBuilders.slideLeftWithFade),
     CustomRoute(
         page: DownloadsParent,
         name: 'downloadsRoute',
         path: 'downloads',
-        transitionsBuilder: TransitionsBuilders.slideLeft,
-        guards: [AuthGuard]),
+        transitionsBuilder: TransitionsBuilders.slideLeft),
     CustomRoute(
-        page: Settings,
-        name: 'settingsRoute',
-        path: 'settings',
-        transitionsBuilder: TransitionsBuilders.slideLeft,
-        guards: [AuthGuard]),
-    AutoRoute(page: MusicPlayer, path: 'musicPlayer', guards: [AuthGuard]),
+        page: Settings, name: 'settingsRoute', path: 'settings', transitionsBuilder: TransitionsBuilders.slideLeft),
+    AutoRoute(page: MusicPlayer, path: 'musicPlayer'),
     CustomRoute(
-        page: ServerParent,
-        name: 'serversRoute',
-        path: 'servers',
-        transitionsBuilder: TransitionsBuilders.slideLeft,
-        guards: [AuthGuard]),
+        page: ServerParent, name: 'serversRoute', path: 'servers', transitionsBuilder: TransitionsBuilders.slideLeft),
     CustomRoute(
-        page: Playlist,
-        name: 'playlistRoute',
-        path: 'playlist',
-        transitionsBuilder: TransitionsBuilders.slideLeft,
-        guards: [AuthGuard]),
-    CustomRoute(
-        page: Stream,
-        name: 'streamRoute',
-        path: 'stream',
-        transitionsBuilder: TransitionsBuilders.fadeIn,
-        guards: [AuthGuard]),
-    AutoRoute(
-        page: BookReaderPage,
-        name: 'epubRoute',
-        path: 'epub',
-        guards: [AuthGuard]),
+      page: Playlist,
+      name: 'playlistRoute',
+      path: 'playlist',
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(page: Stream, name: 'streamRoute', path: 'stream', transitionsBuilder: TransitionsBuilders.fadeIn),
+    AutoRoute(page: BookReaderPage, name: 'epubRoute', path: 'epub'),
   ],
 )
 class $AppRouter {}
-
-class AuthGuard extends AutoRouteGuard {
-  @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    if (!await AuthService.isAuth()) {
-      await router.replaceAll([
-        AuthParentRoute(onAuthenticated: () {
-          router.removeLast();
-          resolver.next(true);
-        }),
-      ]);
-    } else {
-      resolver.next(true);
-    }
-  }
-}

@@ -4,63 +4,50 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:jellyflut/screens/auth/models/server_dto.dart';
+import 'package:jellyflut/screens/auth/models/user_dto.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:jellyflut/globals.dart' as globals;
-import 'package:sqlite_database/sqlite_database.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FToast fToast = FToast();
   final BehaviorSubject<String> errors = BehaviorSubject<String>();
   final AuthenticationRepository _authenticationRepository;
-  Server? server;
-  String? username;
-  String? userPassword;
 
-  AuthBloc(
-      {required AuthenticationRepository authenticationRepository,
-      required bool authenticated,
-      this.username,
-      this.userPassword,
-      this.server})
+  AuthBloc({required AuthenticationRepository authenticationRepository, required bool authenticated})
       : _authenticationRepository = authenticationRepository,
-        super(authenticated ? AuthenticationSuccessful() : AuthenticationUnauthenticated()) {
+        super(authenticated ? AuthState(authStatus: AuthStatus.submissionSuccess) : AuthState()) {
     on<RequestAuth>(login);
     on<AuthServerAdded>(authServerAdded);
-    on<AuthSuccessful>((event, emit) => emit(AuthenticationSuccessful()));
-    on<BackToFirstForm>((event, emit) => emit(AuthenticationFirstForm()));
-    on<ResetStates>((event, emit) => emit(AuthenticationUnauthenticated()));
-    on<LogOut>((event, emit) => emit(AuthenticationUnauthenticated()));
+    on<BackToFirstForm>(_onFirstPageRequested);
     on<AuthError>((event, emit) => errors.add(event.error));
   }
 
-  void authServerAdded(AuthServerAdded event, Emitter<AuthState> emit) {
-    server = event.server;
-    globals.server = event.server;
+  void _onFirstPageRequested(BackToFirstForm event, Emitter<AuthState> emit) {
+    emit(state.copyWith(authPage: AuthPage.loginPage));
+  }
 
-    emit(AuthenticationServerAdded(server: event.server));
+  void authServerAdded(AuthServerAdded event, Emitter<AuthState> emit) {
+    emit(state.copyWith(server: event.server, authPage: AuthPage.serverPage));
   }
 
   void login(RequestAuth event, Emitter<AuthState> emit) async {
     try {
-      emit(AuthenticationInProgress());
-      username = event.username;
-      userPassword = event.password;
+      emit(state.copyWith(
+          user: UserDto(username: event.username, password: event.password),
+          authStatus: AuthStatus.submissionInProgress));
       await _authenticationRepository.logIn(
-        username: event.username,
-        password: event.password,
-        serverName: server?.name ?? '',
-        serverUrl: server?.url ?? '',
+        username: state.user.username,
+        password: state.user.password,
+        serverName: state.server.name,
+        serverUrl: state.server.url,
       );
-      emit(AuthenticationSuccessful());
+      emit(state.copyWith(authStatus: AuthStatus.submissionSuccess));
     } catch (e) {
       log(e.toString());
       errors.add(e.toString());
-      emit(AuthenticationError(e.toString()));
+      emit(state.copyWith(authStatus: AuthStatus.submissionFailure));
     }
   }
 }

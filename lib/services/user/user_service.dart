@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class UserService {

@@ -1,5 +1,5 @@
 enum RepeatMode {
-  repeatNone,
-  repeatAll,
-  repeatOne;
+  RepeatNone,
+  RepeatAll,
+  RepeatOne;
 }

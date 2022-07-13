@@ -4,20 +4,17 @@ import 'dart:math';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
-final AppRouter _customRouter = AppRouter(authGuard: AuthGuard());
+final AppRouter _customRouter = AppRouter();
 AppRouter get customRouter => _customRouter;
 
 BuildContext get currentContext => customRouter.navigatorKey.currentContext!;
 
-double get _itemHeightTemp =>
-    log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) *
-    30;
+double get _itemHeightTemp => log(MediaQuery.of(_customRouter.navigatorKey.currentContext!).size.width) * 30;
 
 double get itemPosterHeight => (_itemHeightTemp <= 150 ? 150 : _itemHeightTemp);
 
@@ -37,8 +34,7 @@ Future setUpAndroidTv() async {
   if (Platform.isAndroid) {
     final deviceInfo = DeviceInfoPlugin();
     final androidInfo = await deviceInfo.androidInfo;
-    _isAndroidTv =
-        androidInfo.systemFeatures.contains('android.software.leanback_only');
+    _isAndroidTv = androidInfo.systemFeatures.contains('android.software.leanback_only');
   } else {
     _isAndroidTv = false;
   }

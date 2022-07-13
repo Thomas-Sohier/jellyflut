@@ -27,14 +27,12 @@ class App extends StatelessWidget {
       {super.key,
       required this.database,
       required this.themeProvider,
-      required this.authenticated,
       required this.authenticationRepository,
       required this.downloadsRepository,
       required this.itemsRepository,
       required this.usersRepository,
       required this.musicPlayerRepository});
 
-  final bool authenticated;
   final Database database;
   final AuthenticationRepository authenticationRepository;
   final DownloadsRepository downloadsRepository;
@@ -57,8 +55,9 @@ class App extends StatelessWidget {
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
-                  create: (_) =>
-                      AuthBloc(authenticationRepository: authenticationRepository, authenticated: authenticated),
+                  create: (_) => AuthBloc(
+                      authenticationRepository: authenticationRepository,
+                      authenticated: authenticationRepository.currentUser.isNotEmpty),
                   lazy: false),
               BlocProvider(
                   create: (c) => MusicPlayerBloc(

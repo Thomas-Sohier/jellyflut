@@ -1,5 +1,5 @@
 enum SyncPlayAccess {
-  createAndJoinGroups,
-  joinGroups,
-  none;
+  CreateAndJoinGroups,
+  JoinGroups,
+  None;
 }

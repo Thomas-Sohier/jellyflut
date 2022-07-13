@@ -1,5 +1,5 @@
 enum PlayMethod {
-  transcode,
-  directStream,
-  directPlay;
+  Transcode,
+  DirectStream,
+  DirectPlay;
 }

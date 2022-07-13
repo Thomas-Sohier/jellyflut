@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'models/token_interceptor.dart';
 import 'models/user.dart';
 
 /// {@template authentication_api}
@@ -14,6 +15,8 @@ abstract class AuthenticationApi {
       {required String serverName, required String serverUrl, required String username, required String password});
 
   Future<void> logout({required String serverUrl});
+
+  Future<TokenInterceptor> generateToken({String? accessToken, String? refreshToken});
 }
 
 /// Error thrown when login fail

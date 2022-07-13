@@ -1,6 +1,7 @@
 import 'package:authentication_api/authentication_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jellyfin_authentication_api/src/helper/token_helper.dart';
 import 'package:jellyfin_authentication_api/src/models/auth_by_name.dart';
 
 import 'models/authentication_response.dart';
@@ -63,6 +64,17 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
     if (response.statusCode != 204) {
       throw AuthenticationFailure('Error while logout from jellyfin');
     }
+  }
+
+  @override
+  Future<TokenInterceptor> generateToken({String? accessToken, String? refreshToken}) async {
+    final tokenInterceptor = TokenInterceptor(queryParameters: {}, headers: {});
+    final authEmby = await TokenHelper.generateHeader(accessToken: accessToken);
+    if (accessToken != null) {
+      tokenInterceptor.queryParameters.putIfAbsent('api_key', () => accessToken);
+    }
+    tokenInterceptor.headers.putIfAbsent('X-Emby-Authorization', () => authEmby);
+    return tokenInterceptor;
   }
 }
 

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
+import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:jellyflut/shared/exoplayer.dart';
 import 'package:jellyflut/shared/utils/uri_utils.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';

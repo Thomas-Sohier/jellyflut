@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'models/dio_extra.dart';
 
 /// Exception thrown when item request fails.
 class ItemViewRequestFailure implements Exception {}
@@ -39,17 +38,12 @@ class ItemsApi {
 
   final Dio _dioClient;
 
-  DioExtra get dioExtra => DioExtra.fromJson(_dioClient.options.extra);
-
-  String get _userId => dioExtra.jellyfinUserId;
-  String get _serverUrl => _dioClient.options.baseUrl;
-
   /// Get an item from jellyfin API from it's id
   ///
   /// Can throw [ItemNotFoundFailure]
-  Future<Item> getItem(String itemId) async {
+  Future<Item> getItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$_userId/Items/$itemId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId/Items/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemNotFoundFailure();
@@ -67,7 +61,9 @@ class ItemsApi {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getCategory(
-      {String? parentId,
+      {required String serverUrl,
+      required String userId,
+      String? parentId,
       String? albumArtistIds,
       String? personIds,
       String? filter = 'IsNotFolder',
@@ -107,7 +103,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/Items',
+        '$serverUrl/Users/$userId/Items',
         queryParameters: finalQueryParams,
       );
 
@@ -124,8 +120,8 @@ class ItemsApi {
   /// Delete an item from his ID
   ///
   /// Can throw [ItemNotFoundFailure]
-  Future<int> deleteItem(String itemId) async {
-    final url = '$_serverUrl/Items/$itemId';
+  Future<int> deleteItem({required String serverUrl, required String userId, required, required String itemId}) async {
+    final url = '$serverUrl/Items/$itemId';
 
     try {
       final response = await _dioClient.delete<void>(url);
@@ -140,7 +136,9 @@ class ItemsApi {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getResumeItems(
-      {String filter = 'IsNotFolder, IsUnplayed',
+      {required String serverUrl,
+      required String userId,
+      String filter = 'IsNotFolder, IsUnplayed',
       bool recursive = true,
       String sortBy = '',
       String sortOrder = '',
@@ -174,7 +172,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/Items/Resume',
+        '$serverUrl/Users/$userId/Items/Resume',
         queryParameters: queryParams,
       );
 
@@ -191,16 +189,17 @@ class ItemsApi {
   /// Get epsiodes from series ID, can filter by season id if needed
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getEpsiodes(String seriesId, {String? seasonId}) async {
+  Future<Category> getEpsiodes(
+      {required String serverUrl, required String userId, required String seriesId, String? seasonId}) async {
     final queryParams = <String, dynamic>{};
     if (seasonId != null) queryParams['seasonId'] = seasonId;
-    queryParams['userId'] = _userId;
+    queryParams['userId'] = userId;
     queryParams['Fields'] =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Shows/$seriesId/Episodes',
+        '$serverUrl/Shows/$seriesId/Episodes',
         queryParameters: queryParams,
       );
 
@@ -217,16 +216,17 @@ class ItemsApi {
   /// Get seasons from series ID
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) async {
+  Future<Category> getSeasons(
+      {required String serverUrl, required String userId, required String seriesId, bool? isSpecialSeason}) async {
     final queryParams = <String, dynamic>{};
     if (isSpecialSeason != null) queryParams['isSpecialSeason'] = isSpecialSeason;
-    queryParams['userId'] = _userId;
+    queryParams['userId'] = userId;
     queryParams['fields'] =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Shows/$seriesId/Seasons',
+        '$serverUrl/Shows/$seriesId/Seasons',
         queryParameters: queryParams,
       );
 
@@ -245,7 +245,9 @@ class ItemsApi {
   ///
   /// Can throw [ItemSearchFailure]
   Future<Category> searchItems(
-      {required String searchTerm,
+      {required String serverUrl,
+      required String userId,
+      required String searchTerm,
       bool includePeople = false,
       bool includeMedia = true,
       bool includeGenres = false,
@@ -277,7 +279,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/Items',
+        '$serverUrl/Users/$userId/Items',
         queryParameters: queryParams,
       );
 
@@ -294,11 +296,11 @@ class ItemsApi {
   /// Update item an return updated object
   ///
   /// Can throw [ItemUpdateFailure]
-  Future<void> updateItem({required Item item}) async {
+  Future<void> updateItem({required String serverUrl, required String userId, required Item item}) async {
     try {
       // final payload = item.toJson();
       final response = await _dioClient.post<void>(
-        '$_serverUrl/Items/${item.id}',
+        '$serverUrl/Items/${item.id}',
         data: item,
       );
 
@@ -313,10 +315,10 @@ class ItemsApi {
   /// Mark item as viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> viewItem(String itemId) async {
+  Future<UserData> viewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/PlayedItems/$itemId',
+        '$serverUrl/Users/$userId/PlayedItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -332,10 +334,10 @@ class ItemsApi {
   /// Mark item as not viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> unviewItem(String itemId) async {
+  Future<UserData> unviewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/PlayedItems/$itemId',
+        '$serverUrl/Users/$userId/PlayedItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -351,10 +353,10 @@ class ItemsApi {
   /// Mark item as favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> favItem(String itemId) async {
+  Future<UserData> favItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/FavoriteItems/$itemId',
+        '$serverUrl/Users/$userId/FavoriteItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -370,10 +372,10 @@ class ItemsApi {
   /// Mark item as not favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> unfavItem(String itemId) async {
+  Future<UserData> unfavItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$_serverUrl/Users/$_userId/FavoriteItems/$itemId',
+        '$serverUrl/Users/$userId/FavoriteItems/$itemId',
       );
 
       if (response.statusCode != 200) {
@@ -391,6 +393,8 @@ class ItemsApi {
   ///
   /// can throw [ItemRequestFailure]
   Future<List<Item>> getLatestMedia({
+    required String serverUrl,
+    required String userId,
     String? parentId,
     int limit = 16,
     String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
@@ -406,7 +410,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<List<dynamic>>(
-        '$_serverUrl/Users/$_userId/Items/Latest',
+        '$serverUrl/Users/$userId/Items/Latest',
         queryParameters: queryParams,
       );
 
@@ -425,9 +429,12 @@ class ItemsApi {
   /// Return a Category with all Views
   ///
   /// Can throw [ViewRequestFailure]
-  Future<Category> getLibraryViews() async {
+  Future<Category> getLibraryViews({
+    required String serverUrl,
+    required String userId,
+  }) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$_userId/Views');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId/Views');
 
       if (response.statusCode != 200) {
         throw ViewRequestFailure();
@@ -458,6 +465,7 @@ class ItemsApi {
   /// * [foregroundLayer]     =>  Apply a foreground layer on top of the image.
   /// * [imageIndex]          => Image index.
   String getItemImageUrl({
+    required String serverUrl,
     required String itemId,
     required ImageType type,
     int? maxWidth,
@@ -477,7 +485,7 @@ class ItemsApi {
     String? foregroundLayer,
     int? imageIndex,
   }) {
-    final uri = Uri.parse('$_serverUrl/Items/$itemId/Images/${type.name}');
+    final uri = Uri.parse('$serverUrl/Items/$itemId/Images/${type.name}');
     final queryParams = <String, dynamic>{};
     queryParams.putIfAbsent('maxWidth', () => maxWidth);
     queryParams.putIfAbsent('maxHeight', () => maxHeight);
@@ -503,8 +511,9 @@ class ItemsApi {
   }
 
   /// Get all availables images for an item
-  Future<RemoteImage> getRemoteImages(
-    String itemId, {
+  Future<RemoteImage> getRemoteImages({
+    required String serverUrl,
+    required String itemId,
     String? type,
     int? startIndex,
     int? limit,
@@ -520,7 +529,7 @@ class ItemsApi {
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
-        '$_serverUrl/Items/$itemId/RemoteImages',
+        '$serverUrl/Items/$itemId/RemoteImages',
         queryParameters: queryParams,
       );
 
@@ -535,9 +544,11 @@ class ItemsApi {
   }
 
   /// Download an image for a given itemId
-  Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) async {
+  Future<Uint8List> downloadRemoteImage(
+      {required String serverUrl, required String itemId, ImageType type = ImageType.Primary}) async {
     try {
-      final response = await _dioClient.get<Uint8List>(getItemImageUrl(itemId: itemId, type: type, quality: 100),
+      final response = await _dioClient.get<Uint8List>(
+          getItemImageUrl(serverUrl: serverUrl, itemId: itemId, type: type, quality: 100),
           options: Options(responseType: ResponseType.bytes));
       if (response.statusCode != 200) {
         throw IamgeRequestFailure();
@@ -548,8 +559,12 @@ class ItemsApi {
     }
   }
 
-  Future<PlayBackInfos> playbackInfos(DeviceProfileParent? profile, String itemId,
-      {startTimeTick = 0,
+  Future<PlayBackInfos> playbackInfos(
+      {required String serverUrl,
+      required String userId,
+      required String itemId,
+      DeviceProfileParent? profile,
+      int startTimeTick = 0,
       int? subtitleStreamIndex,
       int? audioStreamIndex,
       int? maxStreamingBitrate,
@@ -557,7 +572,7 @@ class ItemsApi {
       int? maxAudioBitrate}) async {
     // Query params are deprecated but still used for older version of jellyfin server
     final queryParams = <String, dynamic>{};
-    queryParams['UserId'] = _userId;
+    queryParams['UserId'] = userId;
     queryParams['StartTimeTicks'] = startTimeTick;
     queryParams['IsPlayback'] = true;
     queryParams['AutoOpenLiveStream'] = true;
@@ -570,7 +585,7 @@ class ItemsApi {
     final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     profile ??= DeviceProfileParent();
-    profile.userId ??= _userId;
+    profile.userId ??= userId;
     profile.enableDirectPlay ??= true;
     profile.allowAudioStreamCopy ??= true;
     profile.allowVideoStreamCopy ??= true;
@@ -583,7 +598,7 @@ class ItemsApi {
     profile.startTimeTicks ??= startTimeTick;
     profile.maxStreamingBitrate ??= maxVideoBitrate;
 
-    final url = '$_serverUrl/Items/$itemId/PlaybackInfo';
+    final url = '$serverUrl/Items/$itemId/PlaybackInfo';
 
     try {
       final response = await _dioClient.post(url, queryParameters: finalQueryParams, data: profile.toJson());

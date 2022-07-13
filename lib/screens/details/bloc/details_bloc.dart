@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
-import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as t;
@@ -20,6 +20,7 @@ part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ItemsRepository _itemsRepository;
+  final AuthenticationRepository _authenticationRepository;
   final BehaviorSubject<bool> pinnedHeaderStream = BehaviorSubject.seeded(false);
   final ValueNotifier<ThemeData> theme = ValueNotifier(ThemeProvider()
       .getThemeData
@@ -39,15 +40,19 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   /// Helper cache method
   /// generate cache colorkey from item and current user
-  String spKey(Item item) => 'colors-${item.id}-${userApp!.id}';
+  String spKey(String id) => 'colors-$id-$currentUserId';
+
+  String get currentUserId => _authenticationRepository.currentUser.id;
 
   DetailsBloc(
       {required Item item,
       required ThemeData theme,
       required ItemsRepository itemsRepository,
+      required AuthenticationRepository authenticationRepository,
       String? heroTag,
       ScreenLayout screenLayout = ScreenLayout.desktop})
       : _itemsRepository = itemsRepository,
+        _authenticationRepository = authenticationRepository,
         super(DetailsState(item: item, theme: theme, heroTag: heroTag, screenLayout: screenLayout)) {
     on<DetailsInitRequested>(_onDetailsInitRequested);
     on<DetailsItemUpdate>(_onItemUpdate);
@@ -106,22 +111,22 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   Future<bool> cacheSeedColor(final List<Color> colors) async {
-    final sp = SharedPrefs().sharedPrefs;
+    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
     final colorsAsInt = colors.map((c) => c.value.toString());
-    return sp.setStringList(spKey(item), colorsAsInt.toList());
+    return sp.setStringList(spKey(item.id), colorsAsInt.toList());
   }
 
   bool isSeedColorCached() {
-    final sp = SharedPrefs().sharedPrefs;
+    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
-    return sp.containsKey(spKey(item));
+    return sp.containsKey(spKey(item.id));
   }
 
   List<Color> getCachedSeedColor() {
-    final sp = SharedPrefs().sharedPrefs;
+    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
-    final colorsAsString = sp.getStringList(spKey(item))!;
+    final colorsAsString = sp.getStringList(spKey(item.id))!;
     return colorsAsString.map((c) => Color(int.parse(c))).toList();
   }
 
@@ -132,7 +137,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       return add(DetailsUpdateSeedColor(colors: getCachedSeedColor()));
     }
 
-    final url = ItemImageService.getItemImageUrl(
+    final url = _itemsRepository.getItemImageUrl(
         itemId: item.id,
         tag: item.correctImageTags(searchType: ImageType.Primary),
         type: item.correctImageType(searchType: ImageType.Primary),

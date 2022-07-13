@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
@@ -12,7 +13,6 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

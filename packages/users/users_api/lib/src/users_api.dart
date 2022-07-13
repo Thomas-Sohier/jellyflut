@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'models/dio_extra.dart';
-
 /// Exception thrown when views request has failed.
 class UserNotFound implements Exception {}
 
@@ -16,17 +14,12 @@ class UsersApi {
 
   final Dio _dioClient;
 
-  DioExtra get dioExtra => DioExtra.fromJson(_dioClient.options.extra);
-
-  String get _userId => dioExtra.jellyfinUserId;
-  String get _serverUrl => _dioClient.options.baseUrl;
-
   /// Get user by his ID
   ///
   /// Can throw [UserNotFound]
-  Future<User> getUserById({required String userId}) async {
+  Future<User> getUserById({required String serverUrl, required String userId}) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$userId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -41,9 +34,9 @@ class UsersApi {
   /// Get current User based on current used userid
   ///
   /// Can throw [UserNotFound]
-  Future<User> getCurrentUser() async {
+  Future<User> getCurrentUser({required String serverUrl, required String userId}) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/$_userId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -58,9 +51,9 @@ class UsersApi {
   /// Get current User based on current token
   ///
   /// Can throw [UserNotFound]
-  Future<User> getCurrentUserFromToken() async {
+  Future<User> getCurrentUserFromToken({required String serverUrl}) async {
     try {
-      final response = await _dioClient.get<Map<String, dynamic>>('$_serverUrl/Users/Me');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/Me');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -75,9 +68,9 @@ class UsersApi {
   /// Get all users from current server
   ///
   /// Can throw [UserNotFound]
-  Future<List<User>> getUsers() async {
+  Future<List<User>> getUsers({required String serverUrl}) async {
     try {
-      final response = await _dioClient.get<List<dynamic>>('$_serverUrl/Users');
+      final response = await _dioClient.get<List<dynamic>>('$serverUrl/Users');
 
       if (response.statusCode != 200) {
         throw UserNotFound();

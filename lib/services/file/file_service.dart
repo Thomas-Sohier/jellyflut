@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/services/item/item_image_service.dart';
 import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -19,13 +20,14 @@ class FileService {
   /// Return the rowId of the download inserted
   static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
     final i = item;
+    final context = customRouter.navigatorKey.currentContext!;
 
-    final primaryUrl = ItemImageService.getItemImageUrl(
+    final primaryUrl = context.read<ItemsRepository>().getItemImageUrl(
         itemId: item.id,
         tag: item.correctImageTags(searchType: ImageType.Primary),
         type: item.correctImageType(searchType: ImageType.Primary));
 
-    final backdropUrl = ItemImageService.getItemImageUrl(
+    final backdropUrl = context.read<ItemsRepository>().getItemImageUrl(
         itemId: item.id,
         tag: item.correctImageTags(searchType: ImageType.Primary),
         type: item.correctImageType(searchType: ImageType.Primary));
