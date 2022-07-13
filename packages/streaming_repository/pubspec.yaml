@@ -4,13 +4,27 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  dio: ^4.0.6
   flutter:
     sdk: flutter
+  jellyflut_models:
+    path: ../jellyflut_models
+  items_api:
+    path: ../items/items_api
+  sqlite_database:
+    path: ../sqlite_database
+  streaming_api:
+    path: ../streaming_api
+  freezed_annotation: ^2.0.3
+  json_annotation: ^4.5.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  very_good_analysis: ^2.4.0
+  mocktail: ^0.3.0
+  test: ^1.19.2
+  pedantic: ^1.11.1
+  freezed: ^2.0.4
+  build_runner: ^2.1.11
+  json_serializable: ^6.2.0

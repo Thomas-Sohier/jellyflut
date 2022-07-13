@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:downloads_repository/downloads_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
@@ -27,6 +28,7 @@ class App extends StatelessWidget {
       required this.database,
       required this.themeProvider,
       required this.authenticated,
+      required this.authenticationRepository,
       required this.downloadsRepository,
       required this.itemsRepository,
       required this.usersRepository,
@@ -34,6 +36,7 @@ class App extends StatelessWidget {
 
   final bool authenticated;
   final Database database;
+  final AuthenticationRepository authenticationRepository;
   final DownloadsRepository downloadsRepository;
   final ItemsRepository itemsRepository;
   final UsersRepository usersRepository;
@@ -53,7 +56,10 @@ class App extends StatelessWidget {
         ],
         child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => AuthBloc(usersRepository, authenticated: authenticated), lazy: false),
+              BlocProvider(
+                  create: (_) =>
+                      AuthBloc(authenticationRepository: authenticationRepository, authenticated: authenticated),
+                  lazy: false),
               BlocProvider(
                   create: (c) => MusicPlayerBloc(
                         database: database,
@@ -65,6 +71,7 @@ class App extends StatelessWidget {
             ],
             child: MultiRepositoryProvider(
                 providers: [
+                  RepositoryProvider.value(value: authenticationRepository),
                   RepositoryProvider.value(value: downloadsRepository),
                   RepositoryProvider.value(value: itemsRepository),
                   RepositoryProvider.value(value: usersRepository),

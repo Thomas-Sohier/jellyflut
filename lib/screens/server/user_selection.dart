@@ -47,8 +47,8 @@ class UserSelection extends StatelessWidget {
                       return UserItem(
                         user: u,
                         onUserSelection: (user) {
-                          AuthService.changeUser(
-                                  user.name, user.password, server.url, server.id, user.settingsId, user.id)
+                          AuthService.changeUser(user.name, user.password, server.url, server.name, server.id,
+                                  user.settingsId, user.id)
                               .catchError((error) {
                             customRouter.pop();
                             SnackbarUtil.message(error.toString(), Icons.error, Colors.red);

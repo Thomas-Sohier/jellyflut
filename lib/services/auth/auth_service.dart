@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
@@ -14,7 +15,6 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/services/dio/interceptor.dart';
 import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:users_repository/users_repository.dart';
 
 class AuthService {
   static Future<bool> isAuth() async {
@@ -156,6 +156,7 @@ class AuthService {
     final String username,
     final String password,
     final String serverUrl,
+    final String serverName,
     final int serverId,
     final int settingsId,
     final int userId,
@@ -164,12 +165,12 @@ class AuthService {
     // If there is an error then an exception is thrown
     // or we juste flush all data on connect with second account
     final context = customRouter.navigatorKey.currentContext!;
-    final response =
-        await context.read<UsersRepository>().login(username: username, password: password, serverUrl: serverUrl);
-    await _removeGlobals();
-    await _removeSharedPreferences();
-    await _saveToSharedPreferences(serverId, settingsId, userId, response);
-    await _saveToGlobals();
+    await context.read<AuthenticationRepository>().logIn(
+          username: username,
+          password: password,
+          serverUrl: serverUrl,
+          serverName: serverName,
+        );
     HomeCategoryProvider().clear();
     await context.read<MusicPlayerRepository>().reset();
     await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(HomeRouter());

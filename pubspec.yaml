@@ -31,6 +31,10 @@ dependencies:
     path: packages/downloads/database_downloads_api
   device_info_plus: ^4.0.0
   dio: ^4.0.6
+  jellyfin_authentication_api:
+    path: packages/jellyfin_authentication_api
+  authentication_repository:
+    path: packages/authentication_repository
   downloads_api:
     path: packages/downloads/downloads_api
   downloads_repository:

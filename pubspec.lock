@@ -78,6 +78,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.0"
+  authentication_api:
+    dependency: transitive
+    description:
+      path: "packages/authentication_api"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  authentication_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/authentication_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   auto_route:
     dependency: "direct main"
     description:
@@ -734,6 +748,13 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/items/items_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  jellyfin_authentication_api:
+    dependency: "direct main"
+    description:
+      path: "packages/jellyfin_authentication_api"
       relative: true
     source: path
     version: "1.0.0+1"

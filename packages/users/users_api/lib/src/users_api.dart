@@ -1,40 +1,25 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
+import 'models/dio_extra.dart';
+
 /// Exception thrown when views request has failed.
 class UserNotFound implements Exception {}
-
-/// Exception thrown when views request has failed.
-class AuthenticationFailure implements Exception {
-  final dynamic message;
-
-  AuthenticationFailure([this.message]);
-}
 
 /// {@template users_api}
 /// A dart API client for the Jellyfin User API
 /// {@endtemplate}
 class UsersApi {
   /// {@macro users_api}
-  UsersApi({required String serverUrl, String? userId, Dio? dioClient})
-      : _dioClient = dioClient ?? Dio(),
-        _serverUrl = serverUrl,
-        _userId = userId ?? _notLoggedUserId;
+  UsersApi({required Dio? dioClient}) : _dioClient = dioClient ?? Dio();
 
-  static const _notLoggedUserId = '-1';
   final Dio _dioClient;
-  String _serverUrl;
-  String _userId;
 
-  /// Update API properties
-  /// UseFul when endpoint Server or user change
-  void updateProperties({String? serverUrl, String? userId}) {
-    _serverUrl = serverUrl ?? _serverUrl;
-    _userId = userId ?? _userId;
-  }
+  DioExtra get dioExtra => DioExtra.fromJson(_dioClient.options.extra);
+
+  String get _userId => dioExtra.jellyfinUserId;
+  String get _serverUrl => _dioClient.options.baseUrl;
 
   /// Get user by his ID
   ///
@@ -103,44 +88,6 @@ class UsersApi {
       return compute(parseUsers, response.data!);
     } catch (_) {
       throw UserNotFound();
-    }
-  }
-
-  /// Login a user to defined endpoint
-  /// A server URL can be defined to override current one
-  ///
-  /// Can throw [AuthenticationFailure]
-  Future<AuthenticationResponse> login(String username, String password, [String? serverUrl]) async {
-    try {
-      // final authEmby = await authHeader(embedToken: false);
-      // Override default sever URL if needed
-      serverUrl ??= _serverUrl;
-      final response = await _dioClient.post(
-        '$_serverUrl/Users/authenticatebyname',
-        data: jsonEncode({'Username': username, 'Pw': password}),
-        // X-Emby-Authorization needs to be set manually here
-        // I don't know why...
-        // options: Options(headers: {'X-Emby-Authorization': authEmby}
-      );
-
-      if (response.statusCode != 200) {
-        throw AuthenticationFailure('Error while trying to authenticate');
-      }
-
-      return AuthenticationResponse.fromMap(response.data);
-    } on DioError catch (dioError) {
-      switch (dioError.response?.statusCode ?? 500) {
-        case 401:
-          throw AuthenticationFailure('Authentication error, check your login, password and server\'s url');
-        case 404:
-          throw AuthenticationFailure('Url error, check that youre using the correct url and/or subpath');
-        case 500:
-          throw AuthenticationFailure('Server error, check that you can connect to your server');
-        default:
-          throw AuthenticationFailure('Cannot access to the server, check your url and/or your server');
-      }
-    } on Exception catch (e) {
-      throw AuthenticationFailure('Unknow error : ${e.toString()}');
     }
   }
 }

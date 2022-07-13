@@ -10,11 +10,6 @@ class UsersRepository {
 
   final UsersApi _usersApi;
 
-  /// Update API properties
-  /// UseFul when endpoint Server  or user change
-  void updateProperties({String? serverUrl, String? userId}) =>
-      _usersApi.updateProperties(serverUrl: serverUrl, userId: userId);
-
   /// Get current User based on current used userid
   ///
   /// Can throw [UserNotFound]
@@ -34,11 +29,4 @@ class UsersRepository {
   ///
   /// Can throw [UserNotFound]
   Future<List<User>> getUsers() => _usersApi.getUsers();
-
-  /// Login a user to defined endpoint
-  /// A server URL can be defined to override current one
-  ///
-  /// Can throw [AuthenticationFailure]
-  Future<AuthenticationResponse> login({required String username, required String password, String? serverUrl}) =>
-      _usersApi.login(username, password, serverUrl);
 }

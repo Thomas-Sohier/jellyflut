@@ -1,0 +1,153 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:authentication_api/authentication_api.dart';
+import 'package:drift/drift.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqlite_database/sqlite_database.dart' hide Server;
+
+import 'models/server.dart';
+
+/// {@template authentication_repository}
+/// A repository that handles auth related requests
+/// {@endtemplate}
+class AuthenticationRepository {
+  /// {@macro authentication_repository}
+  AuthenticationRepository(
+      {required AuthenticationApi authenticationApi,
+      required SharedPreferences sharedPreferences,
+      required Database database})
+      : _authenticationApi = authenticationApi,
+        _sharedPreferences = sharedPreferences,
+        _database = database;
+
+  final AuthenticationApi _authenticationApi;
+  final SharedPreferences _sharedPreferences;
+  final Database _database;
+
+  // Stream of user and server when state change
+  final StreamController<User> _userStream = StreamController<User>();
+  final StreamController<Server> _serverStream = StreamController<Server>();
+
+  // Shared preferences key
+  final String _spUserKey = 'authentication_repository_user';
+  final String _spServerKey = 'authentication_repository_server';
+
+  /// Stream of [User] which will emit the current user when
+  /// the authentication state changes.
+  ///
+  /// Emits [User.empty] if the user is not authenticated.
+  Stream<User> get user => _userStream.stream.map((user) {
+        _setSharedPrefUser(user);
+        return user;
+      });
+
+  /// Returns the current cached user.
+  /// If there is no cached user then a [NoCurrentUserException] is thrown
+  User get currentUser => _getSharedPrefUser();
+
+  /// Stream of [Server] which will emit the current server when
+  /// the authentication state changes.
+  ///
+  /// Emits [Server.empty] if the server is not defined yet.
+  Stream<Server> get server => _serverStream.stream.map((server) {
+        _setSharedPrefServer(server);
+        return server;
+      });
+
+  /// Returns the current cached server.
+  /// If there is no cached server then a [NoCurrentServerException] is thrown
+  Server get currentServer => _getSharedPreServer();
+
+  /// Login a user to defined endpoint
+  /// A server URL need o be defined as backend can vary
+  ///
+  /// Can throw [AuthenticationFailure]
+  Future<void> logIn(
+      {required String serverName,
+      required String serverUrl,
+      required String username,
+      required String password}) async {
+    final user = await _authenticationApi.logIn(
+        serverName: serverName, serverUrl: serverUrl, username: username, password: password);
+    final serverId = await _createOrGetServer(serverUrl, serverName);
+    final uri = Uri.parse(serverUrl);
+    final server =
+        Server(id: serverId.toString(), name: serverName, host: uri.host, port: uri.port, scheme: uri.scheme);
+    await _createOrGetUser(user.id, user.username, user.token, password, serverId);
+
+    // Notify new user and server
+    _userStream.add(user);
+    _serverStream.add(server);
+  }
+
+  /// Logout a user to the defined endpoint
+  Future<void> logout({required String serverUrl}) async {
+    await _authenticationApi.logout(serverUrl: serverUrl);
+
+    // Notify user disconnected
+    _userStream.add(User.empty);
+    _serverStream.add(Server.empty);
+  }
+
+  /// Try to get server with url, if it exist then return it's [id]. If it doesn't exist
+  /// then it create it and return it"s [id]
+  Future<int> _createOrGetServer(String serverUrl, String serverName) async {
+    return _database.serversDao.getServerByUrl(serverUrl).then((value) => value.id).catchError((e) {
+      // Create server if not present
+      final serverCompanion = ServersCompanion.insert(url: serverUrl, name: serverName);
+      return _database.serversDao.createServer(serverCompanion);
+    });
+  }
+
+  /// Try to get user with it's [username] and [serverId], if it exist then return it's [id]. If it doesn't exist
+  /// then it :
+  /// - create default settings
+  /// - create user
+  /// - return user's [id]
+  Future<int> _createOrGetUser(String id, String name, String? token, String password, int serverId) async {
+    return _database.userAppDao
+        .getUserByNameAndServerId(name, serverId)
+        .then((value) => value.id)
+        .catchError((e) async {
+      // Create default settings if not present
+      final settingsCompanion = SettingsCompanion.insert();
+      final settingsId = await _database.settingsDao.createSettings(settingsCompanion);
+
+      // Create default user if not present
+      final userCompanion = UserAppCompanion.insert(
+          name: name,
+          password: password,
+          apiKey: token ?? '',
+          jellyfinUserId: id,
+          settingsId: Value(settingsId),
+          serverId: Value(serverId));
+      return _database.userAppDao.createUser(userCompanion);
+    });
+  }
+
+  // Helper
+
+  User _getSharedPrefUser() {
+    final userAsString = _sharedPreferences.getString(_spUserKey);
+    if (userAsString == null) throw NoCurrentUserException();
+    return User.fromJson(jsonDecode(userAsString));
+  }
+
+  Future<void> _setSharedPrefUser(User user) => _sharedPreferences.setString(_spUserKey, user.toJson().toString());
+
+  Server _getSharedPreServer() {
+    final serverAsString = _sharedPreferences.getString(_spServerKey);
+    if (serverAsString == null) throw NoCurrentServerException();
+    return Server.fromJson(jsonDecode(serverAsString));
+  }
+
+  Future<void> _setSharedPrefServer(Server server) =>
+      _sharedPreferences.setString(_spServerKey, server.toJson().toString());
+}
+
+/// Error thrown when there is no current user saved in shared preferences
+class NoCurrentUserException implements Exception {}
+
+/// Error thrown when there is no current server saved in shared preferences
+class NoCurrentServerException implements Exception {}

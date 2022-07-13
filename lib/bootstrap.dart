@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:authentication_api/authentication_api.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:downloads_api/downloads_api.dart';
 import 'package:downloads_repository/downloads_repository.dart';
@@ -9,6 +11,7 @@ import 'package:items_api/items_api.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/app/app.dart';
 import 'package:jellyflut/app/app_bloc_observer.dart';
+import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
@@ -21,6 +24,7 @@ void bootstrap(
     {required bool authenticated,
     required Database database,
     required ThemeProvider themeProvider,
+    required AuthenticationApi authenticationApi,
     required DownloadsApi downloadsApi,
     required ItemsApi itemsApi,
     required UsersApi usersApi,
@@ -29,8 +33,11 @@ void bootstrap(
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
+  final authenticationRepository = AuthenticationRepository(
+      authenticationApi: authenticationApi, database: database, sharedPreferences: sharedPrefs.sharedPrefs);
   final downloadsRepository = DownloadsRepository(downloadsApi: downloadsApi);
-  final itemsRepository = ItemsRepository(itemsApi: itemsApi);
+  final itemsRepository =
+      ItemsRepository(itemsApi: itemsApi, database: database, authenticationrepository: authenticationRepository);
   final usersRepository = UsersRepository(usersApi: usersApi);
   final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
 
@@ -42,6 +49,7 @@ void bootstrap(
               authenticated: authenticated,
               database: database,
               themeProvider: themeProvider,
+              authenticationRepository: authenticationRepository,
               downloadsRepository: downloadsRepository,
               itemsRepository: itemsRepository,
               usersRepository: usersRepository,

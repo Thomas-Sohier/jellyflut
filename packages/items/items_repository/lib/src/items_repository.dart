@@ -1,21 +1,31 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:items_api/items_api.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
+import 'package:flutter/foundation.dart' hide Category;
+import 'package:path/path.dart' as p;
+
+import 'helper/profiles.dart';
 
 /// {@template items_repository}
 /// A repository that handles items related requests
 /// {@endtemplate}
 class ItemsRepository {
   /// {@macro items_repository}
-  const ItemsRepository({required ItemsApi itemsApi}) : _itemsApi = itemsApi;
+  const ItemsRepository(
+      {required ItemsApi itemsApi,
+      required AuthenticationRepository authenticationrepository,
+      required Database database})
+      : _itemsApi = itemsApi,
+        _authenticationrepository = authenticationrepository,
+        _database = database;
 
   final ItemsApi _itemsApi;
-
-  /// Update API properties
-  /// UseFul when endpoint Server or user change
-  void updateProperties({String? serverUrl, String? userId}) =>
-      _itemsApi.updateProperties(serverUrl: serverUrl, userId: userId);
+  final Database _database;
+  final AuthenticationRepository _authenticationrepository;
 
   /// Get an item from jellyfin API with an ID
   /// Can add other parameter (already good defaults for most queries)
@@ -282,20 +292,166 @@ class ItemsRepository {
   Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
       _itemsApi.downloadRemoteImage(itemId, type: type);
 
-  Future<String> getItemURL({required Item item, bool directPlay = false}) =>
-      _itemsApi.getItemURL(item: item, directPlay: directPlay);
+  Future<String> getItemURL({required Item item, bool directPlay = false}) async {
+    // if (directPlay == false && offlineMode == false) {
+    //   await StreamingService.bitrateTest(size: 500000);
+    //   await StreamingService.bitrateTest(size: 1000000);
+    //   await StreamingService.bitrateTest(size: 3000000);
+    // }
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationrepository.currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+    final directPlaySettingsOverride = settings.directPlay;
 
-  Future<Item> getPlayableItemOrLastUnplayed({required Item item}) =>
-      _itemsApi.getPlayableItemOrLastUnplayed(item: item);
+    // If direct play if forced by parameters or settings we direct play
+    directPlay = directPlaySettingsOverride || directPlay;
+    if (item.type == ItemType.Episode ||
+        item.type == ItemType.Movie ||
+        item.type == ItemType.TvChannel ||
+        item.type == ItemType.Video ||
+        item.type == ItemType.MusicVideo ||
+        item.type == ItemType.Audio) {
+      return getStreamURL(item, directPlay);
+    } else if (item.type == ItemType.Season || item.type == ItemType.Series) {
+      return getStreamURL(await getPlayableItemOrLastUnplayed(item: item), directPlay);
+    } else if (item.type == ItemType.Audio) {
+      return createMusicURL(item.id);
+    } else {
+      throw UnimplementedError('File cannot be played');
+    }
+  }
 
-  Future<Item> getFirstUnplayedItem({required String itemId}) => _itemsApi.getFirstUnplayedItem(itemId: itemId);
+  Future<Item> getPlayableItemOrLastUnplayed({required Item item}) async {
+    if (item.type == ItemType.Episode ||
+        item.type == ItemType.Movie ||
+        item.type == ItemType.TvChannel ||
+        item.type == ItemType.Video ||
+        item.type == ItemType.MusicVideo ||
+        item.type == ItemType.Audio) {
+      return item;
+    } else if (item.type == ItemType.Season || item.type == ItemType.Series) {
+      item = await getFirstUnplayedItem(itemId: item.id);
+    }
+    throw UnimplementedError('File cannot be played');
+  }
 
-  Future<String> getStreamURL(Item item, bool directPlay) => _itemsApi.getStreamURL(item, directPlay);
+  Future<Item> getFirstUnplayedItem({required String itemId}) async {
+    int sortItem(Item? a, Item? b) {
+      final aIndex = a?.indexNumber;
+      final bIndex = b?.indexNumber;
+      if (aIndex != null && bIndex != null) {
+        return bIndex.compareTo(aIndex);
+      } else if (aIndex != null && bIndex == null) {
+        return -1;
+      }
+      if (aIndex == null && bIndex == null) {
+        return 1;
+      }
+      return 0;
+    }
+
+    final category = await getCategory(parentId: itemId, filter: 'IsNotFolder', fields: 'MediaStreams');
+    // remove all item without an index to avoid sort error
+    category.items.removeWhere((item) => item.indexNumber == null || item.userData == null);
+    category.items.sort(sortItem);
+    return category.items.firstWhere((item) => !item.userData!.played, orElse: () => category.items.first);
+  }
+
+  Future<String> getStreamURL(Item item, bool directPlay) async {
+    // First we try to fetch item locally to play it
+    //  final itemExist = await _database.downloadsDao.doesExist(item.id);
+    //  if (itemExist) return await FileService.getStoragePathItem(item);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationrepository.currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+
+    // If item do not exist locally the we fetch it from remote server
+    final data = await isCodecSupported();
+    final backInfos = await _itemsApi.playbackInfos(data, item.id,
+        startTimeTick: item.userData!.playbackPositionTicks,
+        maxVideoBitrate: settings.maxVideoBitrate,
+        maxAudioBitrate: settings.maxAudioBitrate);
+    var completeTranscodeUrl;
+    // Check if we have a transcide url or we create it
+    if (backInfos.isTranscoding() && !directPlay) {
+      completeTranscodeUrl =
+          '${_authenticationrepository.currentServer.url}${backInfos.mediaSources.first.transcodingUrl}';
+    }
+    final finalUrl =
+        completeTranscodeUrl ?? await createURL(item, backInfos, startTick: item.userData!.playbackPositionTicks);
+    // Current item, playbackinfos, stream url and direct play bool
+    // streamingProvider.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
+    // streamingProvider.setPlaybackInfos(backInfos);
+    // streamingProvider.setURL(finalUrl);
+    return finalUrl;
+  }
+
+  Future<DeviceProfileParent?> isCodecSupported() async {
+    final profiles = PlayersProfile();
+    // TODO make IOS
+    if (kIsWeb) {
+      final playerProfile = profiles.webOs;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
+    } else if (Platform.isAndroid) {
+      final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationrepository.currentUser.id);
+      final streamingSoftwareDB = await _database.settingsDao.getSettingsById(user.settingsId);
+      final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+
+      switch (streamingSoftware) {
+        case StreamingSoftware.VLC:
+          final playerProfile = profiles.vlcPhone;
+          return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
+        case StreamingSoftware.EXOPLAYER:
+        case StreamingSoftware.AVPLAYER:
+        default:
+          final deviceProfile = await Profiles(database: _database, userId: _authenticationrepository.currentUser.id)
+              .getExoplayerProfile();
+          return DeviceProfileParent(deviceProfile: deviceProfile);
+      }
+    } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      final playerProfile = profiles.vlcComputer;
+      return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
+    }
+    return null;
+  }
 
   Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-          {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) =>
-      _itemsApi.createURL(item, playBackInfos,
-          startTick: startTick, audioStreamIndex: audioStreamIndex, subtitleStreamIndex: subtitleStreamIndex);
+      {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationrepository.currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+    final info = await DeviceInfo.getCurrentDeviceInfo();
+    final queryParams = <String, dynamic>{};
+    queryParams['startTimeTicks'] = startTick;
+    queryParams['static'] = true;
+    queryParams['mediaSourceId'] = item.id;
+    queryParams['deviceId'] = info.id;
+    queryParams['videoBitrate'] = settings.maxVideoBitrate;
+    queryParams['audioBitrate'] = settings.maxAudioBitrate;
+    if (playBackInfos.mediaSources.isNotEmpty) queryParams['tag'] = playBackInfos.mediaSources.first.eTag;
+    queryParams['subtitleStreamIndex'] = subtitleStreamIndex;
+    queryParams['audioStreamIndex'] = audioStreamIndex;
+    queryParams['api_key'] = user.apiKey;
+    queryParams.removeWhere((_, value) => value == null);
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
-  Future<String> createMusicURL(String itemId) => _itemsApi.createMusicURL(itemId);
+    late final path;
+    switch (item.type) {
+      case ItemType.TvChannel:
+        final playbackPath = Uri.parse(playBackInfos.mediaSources.first.path!);
+        path = playbackPath.path;
+        break;
+      default:
+        final ext = p.extension(playBackInfos.mediaSources.first.path!);
+        path = 'Videos/${item.id}/stream$ext';
+    }
+    final uri = Uri.parse('${_authenticationrepository.currentServer.url}/$path');
+    return uri.replace(queryParameters: finalQueryParams).toString();
+  }
+
+  Future<String> createMusicURL(String itemId) async {
+    final streamingSoftwareDB = await _database.settingsDao.getSettingsById(0);
+    final streamingSoftware = TranscodeAudioCodec.fromString(streamingSoftwareDB.preferredTranscodeAudioCodec);
+    // First we try to fetch item locally to play it
+    //  final itemExist = await _database.downloadsDao.doesExist(itemId);
+    //  if (itemExist) return await FileService.getStoragePathItem(this);
+    return '${_authenticationrepository.currentServer.url}/Audio/$itemId/stream.${streamingSoftware.codecName}';
+  }
 }
