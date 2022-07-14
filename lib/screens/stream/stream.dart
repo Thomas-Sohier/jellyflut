@@ -5,7 +5,6 @@ import 'package:universal_io/io.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
 import 'package:jellyflut/services/streaming/streaming_service.dart';
@@ -36,12 +35,12 @@ class _StreamState extends State<Stream> {
     if (widget.item != null && widget.url == null) {
       videoFuture = InitStreamingItemUtil.initFromItem(item: widget.item!);
     } else if (widget.url != null) {
-      videoFuture = InitStreamingUrlUtil.initFromUrl(
-          url: widget.url!, streamName: widget.item?.name ?? '');
+      videoFuture = InitStreamingUrlUtil.initFromUrl(url: widget.url!, streamName: widget.item?.name ?? '');
     }
 
     videoFuture.catchError((error, stackTrace) {
-      customRouter.pop();
+      // context.router.root.pop();
+      // FIXME
       var msg = error.toString();
       log(error.toString());
       log(stackTrace.toString());
@@ -58,8 +57,7 @@ class _StreamState extends State<Stream> {
     streamingProvider = StreamingProvider();
     // Hide device overlays
     // device orientation
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
@@ -81,8 +79,7 @@ class _StreamState extends State<Stream> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 

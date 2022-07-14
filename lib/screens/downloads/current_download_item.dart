@@ -1,10 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
@@ -40,7 +40,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
   }
 
   void _onTap(String heroTag) {
-    customRouter.push(DetailsRoute(item: widget.itemDownload.item, heroTag: heroTag));
+    context.router.root.push(r.DetailsPage(item: widget.itemDownload.item, heroTag: heroTag));
   }
 
   @override

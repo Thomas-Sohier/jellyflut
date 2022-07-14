@@ -1,9 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import '../async_item_image/async_item_image.dart';
@@ -71,7 +71,7 @@ class _PosterState extends State<Poster> with AbsordAction {
   }
 
   Future<void> redirection() {
-    return customRouter.push(DetailsRoute(item: widget.item, heroTag: widget.heroTag));
+    return context.router.root.push(r.DetailsPage(item: widget.item, heroTag: widget.heroTag));
   }
 
   @override

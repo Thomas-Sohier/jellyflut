@@ -8,6 +8,7 @@ import 'package:jellyflut/bootstrap.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:music_player_api/music_player_api.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_api/users_api.dart';
 
@@ -22,12 +23,13 @@ void main() async {
   await SharedPrefs.init();
   await EasyLocalization.ensureInitialized();
   await setUpAndroidTv();
-  final database = AppDatabase().getDatabase;
-  final themeProvider = ThemeProvider();
-  final dioClient = DioHelper.generateDioClient();
+  final packageInfo = await PackageInfo.fromPlatform();
 
-  // Providerss
-  final authenticationApi = JellyfinAuthenticationApi(dioClient: dioClient); // TODO implement auth api from jellyfin
+  // Providers
+  final dioClient = DioHelper.generateDioClient();
+  final themeProvider = ThemeProvider();
+  final database = AppDatabase().getDatabase;
+  final authenticationApi = JellyfinAuthenticationApi(dioClient: dioClient);
   final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
   final itemsApi = ItemsApi(dioClient: dioClient);
   final usersApi = UsersApi(dioClient: dioClient);
@@ -37,6 +39,7 @@ void main() async {
       database: database,
       themeProvider: themeProvider,
       dioClient: dioClient,
+      packageInfo: packageInfo,
       downloadsApi: databaseDownloadsApi,
       authenticationApi: authenticationApi,
       itemsApi: itemsApi,

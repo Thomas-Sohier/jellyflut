@@ -1,9 +1,9 @@
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/music_player/components/song_infos.dart';
 import 'package:jellyflut/screens/music_player/components/song_playlist.dart';
@@ -56,7 +56,7 @@ class SongDetails extends StatelessWidget {
               backgroundColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
               elevation: 0,
-              actions: [if (state.screenLayout == ScreenLayout.mobile) playlistButton()])),
+              actions: [if (state.screenLayout == ScreenLayout.mobile) playlistButton(context)])),
       const SizedBox(height: 10),
       const SongInfos(),
       const SizedBox(height: 20),
@@ -85,8 +85,9 @@ class SongDetails extends StatelessWidget {
     return (smallestSide * 0.90 > 600 ? 600 : smallestSide * 0.90) * 0.9;
   }
 
-  Widget playlistButton() {
+  Widget playlistButton(BuildContext context) {
     return IconButton(
-        onPressed: () => customRouter.push(PlaylistRoute(body: const SongPlaylist())), icon: const Icon(Icons.album));
+        onPressed: () => context.router.root.push(r.PlaylistPage(body: const SongPlaylist())),
+        icon: const Icon(Icons.album));
   }
 }

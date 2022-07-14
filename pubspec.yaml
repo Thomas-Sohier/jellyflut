@@ -16,6 +16,8 @@ dependencies:
   animations: ^2.0.3
   archive: ^3.3.0
   audio_video_progress_bar: ^0.10.0
+  authentication_repository:
+    path: packages/authentication_repository
   auto_route: ^4.0.1
   better_player: ^0.0.83
   blurhash_dart: ^1.1.0
@@ -24,17 +26,13 @@ dependencies:
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.5
   dart_vlc:
-      git:
-        url: https://github.com/erikas-taroza/dart_vlc.git # Url to the repository
-        ref: e661980
+    git:
+      url: https://github.com/erikas-taroza/dart_vlc.git
+      ref: e661980
   database_downloads_api:
     path: packages/downloads/database_downloads_api
   device_info_plus: ^4.0.0
   dio: ^4.0.6
-  jellyfin_authentication_api:
-    path: packages/jellyfin_authentication_api
-  authentication_repository:
-    path: packages/authentication_repository
   downloads_api:
     path: packages/downloads/downloads_api
   downloads_repository:
@@ -60,11 +58,17 @@ dependencies:
     path: packages/items/items_api
   items_repository:
     path: packages/items/items_repository
+  jellyfin_authentication_api:
+    path: packages/jellyfin_authentication_api
   jellyflut_models:
     path: packages/jellyflut_models
   json_serializable: ^6.2.0
   just_audio: ^0.9.25
   just_audio_libwinmedia: ^0.0.4
+  music_player_api:
+    path: packages/music_player_api
+  music_player_repository:
+    path: packages/music_player_repository
   octo_image: ^1.0.2
   package_info_plus: ^1.4.2
   path: ^1.8.1
@@ -75,26 +79,24 @@ dependencies:
   reactive_forms: ^13.0.0
   responsive_builder: ^0.4.2
   rxdart: ^0.27.4
+  settings_repository:
+    path: packages/settings_repository
   shared_preferences: ^2.0.15
   shimmer: ^2.0.0
   shu_epub:
     git:
       url: https://github.com/getBoolean/shu_epub.git
       ref: main
-  users_api:
-    path: packages/users/users_api
-  users_repository:
-    path: packages/users/users_repository
-  music_player_api:
-    path: packages/music_player_api
-  music_player_repository:
-    path: packages/music_player_repository
   sqlite3_flutter_libs: ^0.5.7
   sqlite_database:
     path: packages/sqlite_database
   subtitle: ^0.1.0-beta.3
   universal_io: ^2.0.4
   url_launcher: ^6.1.4
+  users_api:
+    path: packages/users/users_api
+  users_repository:
+    path: packages/users/users_repository
   uuid: ^3.0.6
   video_player: ^2.4.5
   wakelock: ^0.6.1+2

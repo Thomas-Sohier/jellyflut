@@ -1,16 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 
 class DrawerLargeButton extends StatelessWidget {
   final int index;
   final IconData icon;
   final String name;
 
-  const DrawerLargeButton(
-      {super.key, required this.index, required this.icon, required this.name});
+  const DrawerLargeButton({super.key, required this.index, required this.icon, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +19,8 @@ class DrawerLargeButton extends StatelessWidget {
         onTap: () {
           context.tabsRouter
             ..setActiveIndex(index)
-            ..innerRouterOf<StackRouter>(HomeRouter.name)?.push(HomeRoute());
-          customRouter.pop();
+            ..innerRouterOf<StackRouter>(r.HomeRouter.name)?.push(r.HomeRouter());
+          context.router.root.pop();
         },
         child: Container(
           margin: const EdgeInsets.all(10),
@@ -34,13 +32,9 @@ class DrawerLargeButton extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(10, 10, 4, 10),
               child: Row(
                 children: [
-                  Icon(icon,
-                      color: isActive ? activeColor : inactiveColor, size: 28),
+                  Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28),
                   SizedBox(width: 12),
-                  Flexible(
-                      child: Text(name,
-                          style: TextStyle(
-                              color: isActive ? activeColor : inactiveColor)))
+                  Flexible(child: Text(name, style: TextStyle(color: isActive ? activeColor : inactiveColor)))
                 ],
               )),
         ));

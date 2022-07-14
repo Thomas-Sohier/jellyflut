@@ -7,18 +7,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
+import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
 import 'package:music_player_repository/music_player_repository.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:settings_repository/settings_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:users_repository/users_repository.dart';
 
@@ -26,15 +28,23 @@ class App extends StatelessWidget {
   const App(
       {super.key,
       required this.database,
+      required this.appRouter,
+      required this.authBloc,
+      required this.packageInfo,
       required this.themeProvider,
       required this.authenticationRepository,
+      required this.settingsRepository,
       required this.downloadsRepository,
       required this.itemsRepository,
       required this.usersRepository,
       required this.musicPlayerRepository});
 
   final Database database;
+  final r.AppRouter appRouter;
+  final AuthBloc authBloc;
+  final PackageInfo packageInfo;
   final AuthenticationRepository authenticationRepository;
+  final SettingsRepository settingsRepository;
   final DownloadsRepository downloadsRepository;
   final ItemsRepository itemsRepository;
   final UsersRepository usersRepository;
@@ -54,34 +64,41 @@ class App extends StatelessWidget {
         ],
         child: MultiBlocProvider(
             providers: [
+              BlocProvider<AuthBloc>.value(value: authBloc),
+              BlocProvider<SettingsBloc>(
+                create: (_) => SettingsBloc(
+                    settingsRepository: settingsRepository,
+                    authenticationRepository: authenticationRepository,
+                    packageInfo: packageInfo)
+                  ..add(const SettingsInitRequested()),
+                lazy: false,
+              ),
               BlocProvider(
-                  create: (_) => AuthBloc(
-                      authenticationRepository: authenticationRepository,
-                      authenticated: authenticationRepository.currentUser.isNotEmpty),
-                  lazy: false),
-              BlocProvider(
-                  create: (c) => MusicPlayerBloc(
-                        database: database,
-                        itemsRepository: itemsRepository,
-                        musicPlayerRepository: musicPlayerRepository,
-                        theme: themeProvider.getThemeData,
-                      ),
-                  lazy: false),
+                create: (c) => MusicPlayerBloc(
+                  database: database,
+                  itemsRepository: itemsRepository,
+                  musicPlayerRepository: musicPlayerRepository,
+                  theme: themeProvider.getThemeData,
+                ),
+                lazy: false,
+              ),
             ],
             child: MultiRepositoryProvider(
-                providers: [
-                  RepositoryProvider.value(value: authenticationRepository),
-                  RepositoryProvider.value(value: downloadsRepository),
-                  RepositoryProvider.value(value: itemsRepository),
-                  RepositoryProvider.value(value: usersRepository),
-                  RepositoryProvider.value(value: musicPlayerRepository)
-                ],
-                child: EasyLocalization(
-                    supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
-                    path: 'translations',
-                    assetLoader: YamlAssetLoader(),
-                    fallbackLocale: Locale('en', 'US'),
-                    child: const AppView()))));
+              providers: [
+                RepositoryProvider.value(value: authenticationRepository),
+                RepositoryProvider.value(value: settingsRepository),
+                RepositoryProvider.value(value: downloadsRepository),
+                RepositoryProvider.value(value: itemsRepository),
+                RepositoryProvider.value(value: usersRepository),
+                RepositoryProvider.value(value: musicPlayerRepository)
+              ],
+              child: EasyLocalization(
+                  supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
+                  path: 'translations',
+                  assetLoader: YamlAssetLoader(),
+                  fallbackLocale: Locale('en', 'US'),
+                  child: AppView(appRouter: appRouter)),
+            )));
   }
 }
 
@@ -99,7 +116,10 @@ class ShortcutsWrapper extends StatelessWidget {
 }
 
 class AppView extends StatelessWidget {
-  const AppView({super.key});
+  final r.AppRouter appRouter;
+
+  const AppView({super.key, required this.appRouter});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -113,8 +133,15 @@ class AppView extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         theme: themeNotifier.getThemeData,
         localizationsDelegates: context.localizationDelegates,
-        routerDelegate: customRouter.delegate(initialRoutes: [HomeRouter()]),
-        routeInformationParser: customRouter.defaultRouteParser(),
+        routeInformationParser: appRouter.defaultRouteParser(),
+        routerDelegate: appRouter.delegate(initialRoutes: [r.HomeRouter()]),
+        builder: (contextRouter, router) => BlocListener<AuthBloc, AuthState>(
+            listener: (_, state) {
+              if (!state.authStatus.isAuthenticated) {
+                appRouter.replace(r.LoginPage());
+              }
+            },
+            child: router),
       );
     });
   }

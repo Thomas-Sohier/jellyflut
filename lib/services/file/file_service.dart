@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
@@ -20,28 +17,30 @@ class FileService {
   /// Return the rowId of the download inserted
   static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
     final i = item;
-    final context = customRouter.navigatorKey.currentContext!;
+    throw UnimplementedError();
+    // TODO rework this in repository download
+    // final context = context.router.root.navigatorKey.currentContext!;
 
-    final primaryUrl = context.read<ItemsRepository>().getItemImageUrl(
-        itemId: item.id,
-        tag: item.correctImageTags(searchType: ImageType.Primary),
-        type: item.correctImageType(searchType: ImageType.Primary));
+    // final primaryUrl = context.read<ItemsRepository>().getItemImageUrl(
+    //     itemId: item.id,
+    //     tag: item.correctImageTags(searchType: ImageType.Primary),
+    //     type: item.correctImageType(searchType: ImageType.Primary));
 
-    final backdropUrl = context.read<ItemsRepository>().getItemImageUrl(
-        itemId: item.id,
-        tag: item.correctImageTags(searchType: ImageType.Primary),
-        type: item.correctImageType(searchType: ImageType.Primary));
+    // final backdropUrl = context.read<ItemsRepository>().getItemImageUrl(
+    //     itemId: item.id,
+    //     tag: item.correctImageTags(searchType: ImageType.Primary),
+    //     type: item.correctImageType(searchType: ImageType.Primary));
 
-    final primaryImage = await Dio().get<String>(primaryUrl);
-    final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));
-    final backdropImage = await Dio().get<String>(backdropUrl);
-    final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
+    // final primaryImage = await Dio().get<String>(primaryUrl);
+    // final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));
+    // final backdropImage = await Dio().get<String>(backdropUrl);
+    // final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
 
     final db = AppDatabase().getDatabase;
     final dc = DownloadsCompanion(
         id: Value(i.id),
-        primary: Value(primaryImageByte),
-        backdrop: Value(backdropImageByte),
+        // primary: Value(primaryImageByte),
+        // backdrop: Value(backdropImageByte),
         name: Value.ofNullable(i.name),
         item: Value.ofNullable(i),
         path: Value.ofNullable(path));
@@ -51,8 +50,8 @@ class FileService {
   static Future<String> getUserStoragePath() async {
     final db = AppDatabase().getDatabase;
     final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    if (settings.downloadPath != null && settings.downloadPath!.isNotEmpty) {
-      return settings.downloadPath!;
+    if (settings.downloadPath.isNotEmpty) {
+      return settings.downloadPath;
     }
     return getStoragePath();
   }

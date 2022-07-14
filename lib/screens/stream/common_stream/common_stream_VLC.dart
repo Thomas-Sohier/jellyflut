@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
@@ -32,8 +29,10 @@ class CommonStreamVLC {
 
   static Future<VlcPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final context = customRouter.navigatorKey.currentContext!;
-    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
+    // final context = context.router.root.navigatorKey.currentContext!;
+    final streamURL = '';
+    // TODO refaire au propre
+    // await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final vlcPlayerController;

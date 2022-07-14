@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:authentication_repository/authentication_repository.dart' hide User;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:users_api/users_api.dart';
 

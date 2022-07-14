@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -38,8 +35,10 @@ class CommonStreamBP {
 
   static Future<BetterPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final context = customRouter.navigatorKey.currentContext!;
-    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
+    // final context = context.router.root.navigatorKey.currentContext!;
+    final streamURL = '';
+    // TODO en refaire un repo propre
+    //await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final dataSource;
@@ -55,7 +54,8 @@ class CommonStreamBP {
         aspectRatio: aspectRatio, startAt: item.getPlaybackPosition(), customConfiguration: _configuration()));
     betterPlayerController.addEventsListener((event) {
       if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
-        customRouter.pop();
+        // context.router.root.pop();
+        // TODO refaire au propre avec les repo
       } else if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
         final timer = _startProgressTimer(item, betterPlayerController);
         streamingProvider.timer?.cancel();

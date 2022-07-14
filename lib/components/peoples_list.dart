@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/people_poster.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -93,6 +93,6 @@ class _PeoplesListState extends State<PeoplesList> {
   }
 
   Future<void> onTap(Item item, People person, String heroTag) {
-    return customRouter.push(DetailsRoute(item: item, heroTag: heroTag));
+    return context.router.root.push(r.DetailsPage(item: item, heroTag: heroTag));
   }
 }

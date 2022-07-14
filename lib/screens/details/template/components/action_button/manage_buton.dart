@@ -65,11 +65,13 @@ class Dialog extends StatelessWidget {
         if (state.formStatus == FormStatus.submitted) {
           context.read<DetailsBloc>().add(DetailsItemUpdate(item: state.item));
           context.read<FormBloc>().add(ResetForm());
-          customRouter.pop();
+          context.router.root.pop();
         }
       },
       builder: (context, state) => DialogStructure(
-          expanded: expanded, onClose: customRouter.pop, onSubmit: () => context.read<FormBloc>().add(FormSubmitted())),
+          expanded: expanded,
+          onClose: context.router.root.pop,
+          onSubmit: () => context.read<FormBloc>().add(FormSubmitted())),
     );
   }
 }

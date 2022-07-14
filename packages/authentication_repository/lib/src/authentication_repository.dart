@@ -76,7 +76,7 @@ class AuthenticationRepository {
       requestOptions.headers.addAll(tokenInterceptor.headers);
       handler.next(requestOptions);
     });
-    _dioClient.interceptors.clear();
+    _dioClient.interceptors.removeWhere((i) => i is QueuedInterceptorsWrapper);
     _dioClient.interceptors.add(dioInterceptor);
   }
 
@@ -122,8 +122,8 @@ class AuthenticationRepository {
   }
 
   /// Logout a user to the defined endpoint
-  Future<void> logout({required String serverUrl}) async {
-    await _authenticationApi.logout(serverUrl: serverUrl);
+  Future<void> logout() async {
+    await _authenticationApi.logout(serverUrl: currentServer.url);
 
     // Notify user disconnected
     _userStream.add(User.empty);

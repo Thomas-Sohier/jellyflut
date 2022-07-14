@@ -22,11 +22,9 @@ class _DownloadButtonState extends State<DownloadButton> {
   @override
   void initState() {
     downloadProvider = DownloadProvider();
-    final isItemDownload =
-        downloadProvider.isItemDownloadPresent(widget.item.id);
+    final isItemDownload = downloadProvider.isItemDownloadPresent(widget.item.id);
     if (isItemDownload) {
-      percentDownload =
-          downloadProvider.getItemDownloadProgress(widget.item.id);
+      percentDownload = downloadProvider.getItemDownloadProgress(widget.item.id);
       buttonEnabled = false;
     } else {
       percentDownload = BehaviorSubject<int>();
@@ -48,18 +46,10 @@ class _DownloadButtonState extends State<DownloadButton> {
       downloadProvider
           .downloadItem(widget.item, percentDownload, dialogRedownload)
           // ignore: invalid_return_type_for_catch_error
-          .catchError((e) => SnackbarUtil.message(
-              'Error while downloading. ${e.toString()}',
-              Icons.file_download_off,
-              Colors.red))
-          .whenComplete(
-              () => mounted ? setState(() => buttonEnabled = true) : {});
-    },
-        minWidth: 40,
-        maxWidth: widget.maxWidth,
-        borderRadius: 4,
-        enabled: buttonEnabled,
-        trailing: trailing());
+          .catchError((e) =>
+              SnackbarUtil.message('Error while downloading. ${e.toString()}', Icons.file_download_off, Colors.red))
+          .whenComplete(() => mounted ? setState(() => buttonEnabled = true) : {});
+    }, minWidth: 40, maxWidth: widget.maxWidth, borderRadius: 4, enabled: buttonEnabled, trailing: trailing());
   }
 
   Widget trailing() {
@@ -78,14 +68,11 @@ class _DownloadButtonState extends State<DownloadButton> {
       return Padding(
           padding: const EdgeInsets.only(left: 4),
           child: DownloadAnimation(
-              percentDownload: percentDownload,
-              child: Icon(Icons.download_done, color: Colors.green.shade900)));
+              percentDownload: percentDownload, child: Icon(Icons.download_done, color: Colors.green.shade900)));
     }
     return Padding(
         padding: const EdgeInsets.only(left: 4),
-        child: DownloadAnimation(
-            percentDownload: percentDownload,
-            child: Icon(Icons.download, color: Colors.black87)));
+        child: DownloadAnimation(percentDownload: percentDownload, child: Icon(Icons.download, color: Colors.black87)));
   }
 
   Future<bool?> dialogRedownload() async {
@@ -104,13 +91,9 @@ class _DownloadButtonState extends State<DownloadButton> {
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
                           text: widget.item.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(fontStyle: FontStyle.italic)),
+                          style: Theme.of(context).textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic)),
                       TextSpan(
-                          text:
-                              ' seems to be already downloaded would you like to downlodad it again ?',
+                          text: ' seems to be already downloaded would you like to downlodad it again ?',
                           style: Theme.of(context).textTheme.bodyText1),
                       TextSpan(text: '\n\n'),
                       TextSpan(
@@ -119,9 +102,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                           style: Theme.of(context).textTheme.bodyText1),
                     ]))),
             actions: [
-              TextButton(
-                  onPressed: () => customRouter.pop<bool>(false),
-                  child: Text('cancel'.tr())),
+              TextButton(onPressed: () => context.router.root.pop<bool>(false), child: Text('cancel'.tr())),
               TextButton(
                   onPressed: () {
                     AppDatabase()
@@ -129,12 +110,10 @@ class _DownloadButtonState extends State<DownloadButton> {
                         .downloadsDao
                         .getDownloadById(widget.item.id)
                         .then(downloadProvider.deleteDownloadedFile);
-                    customRouter.pop<bool>(false);
+                    context.router.root.pop<bool>(false);
                   },
                   child: Text('delete'.tr())),
-              TextButton(
-                  onPressed: () => customRouter.pop<bool>(true),
-                  child: Text('download'.tr()))
+              TextButton(onPressed: () => context.router.root.pop<bool>(true), child: Text('download'.tr()))
             ],
           );
         });

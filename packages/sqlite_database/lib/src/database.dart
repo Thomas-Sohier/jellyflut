@@ -104,7 +104,7 @@ class UserAppDao extends DatabaseAccessor<Database> with _$UserAppDaoMixin {
   Stream<UserAppData> watchUserById(int userId) =>
       (select(userApp)..where((tbl) => tbl.id.equals(userId))).watchSingle();
   Future<int> createUser(UserAppCompanion user) => into(userApp).insert(user);
-  Future<bool> updateUser(UserAppCompanion user) => update(userApp).replace(user);
+  Future<bool> updateUser(Insertable<UserAppData> user) => update(userApp).replace(user);
   Future<int> deleteUser(UserAppCompanion user) => delete(userApp).delete(user);
 }
 
@@ -120,7 +120,7 @@ class SettingsDao extends DatabaseAccessor<Database> with _$SettingsDaoMixin {
       (select(settings)..where((tbl) => tbl.id.equals(settingsId))).watchSingle();
   Future<int> createSettings(SettingsCompanion setting) =>
       into(settings).insert(setting, mode: InsertMode.insertOrReplace);
-  Future<bool> updateSettings(SettingsCompanion setting) => update(settings).replace(setting);
+  Future<bool> updateSettings(Insertable<Setting> setting) => update(settings).replace(setting);
   Future<int> deleteSettings(SettingsCompanion setting) => delete(settings).delete(setting);
 }
 
@@ -135,7 +135,7 @@ class ServersDao extends DatabaseAccessor<Database> with _$ServersDaoMixin {
       (select(servers)..where((tbl) => tbl.id.equals(serverId))).watchSingle();
   Future<Server> getServerByUrl(String url) => (select(servers)..where((tbl) => tbl.url.equals(url))).getSingle();
   Future<int> createServer(ServersCompanion server) => into(servers).insert(server, mode: InsertMode.insertOrReplace);
-  Future<bool> updateserver(ServersCompanion server) => update(servers).replace(server);
+  Future<bool> updateserver(Insertable<Server> server) => update(servers).replace(server);
   Future<int> deleteServer(ServersCompanion server) => delete(servers).delete(server);
 }
 

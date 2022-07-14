@@ -10,11 +10,11 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'template/components/photo_item.dart';
 import 'template/large_details.dart';
 
-class Details extends StatelessWidget {
+class DetailsPage extends StatelessWidget {
   final Item item;
   final String? heroTag;
 
-  const Details({required this.item, required this.heroTag});
+  const DetailsPage({required this.item, required this.heroTag});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -57,11 +56,7 @@ class DownloadService {
       final downloadUrl = FileService.getDownloadFileUrl(item.id);
       final downloadPath = await FileService.getStoragePathItem(item);
 
-      final download = addDownload(
-          item: item,
-          context: context ?? customRouter.navigatorKey.currentContext,
-          downloadPath: downloadPath,
-          downloadUrl: downloadUrl);
+      final download = addDownload(item: item, context: context, downloadPath: downloadPath, downloadUrl: downloadUrl);
       downloads.add(download);
     }
     return downloads;

@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Drawer;
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/home/components/drawer/custom_drawer.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
@@ -66,14 +66,14 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
     final i = items ?? <Item>[];
 
     //initial route
-    routes.add(HomeRoute(key: UniqueKey()));
+    routes.add(r.HomePage(key: UniqueKey()));
     for (var item in i) {
       switch (item.collectionType) {
         case CollectionType.tvshows:
-          routes.add(IptvRoute(key: UniqueKey()));
+          routes.add(r.IptvPage(key: UniqueKey()));
           break;
         default:
-          routes.add(CollectionRoute(key: ValueKey(item), item: item));
+          routes.add(r.CollectionPage(key: ValueKey(item), item: item));
       }
     }
     return routes;

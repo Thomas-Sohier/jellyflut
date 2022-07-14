@@ -1171,6 +1171,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  settings_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/settings_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   shared_preferences:
     dependency: "direct main"
     description:

@@ -6,7 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/music_player/music_player.dart';
 
@@ -96,7 +96,7 @@ class FabButtonBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      onPressed: () => customRouter.push(MusicPlayerRoute()),
+                      onPressed: () => context.router.root.push(r.MusicPlayerPage()),
                       iconSize: 28,
                       icon: Icon(
                         Icons.more_vert,

@@ -1,10 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/mixins/absorb_action.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -42,7 +42,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
   }
 
   Future<void> _onTap() {
-    return customRouter.push(DetailsRoute(item: widget.item, heroTag: posterHeroTag));
+    return context.router.root.push(r.DetailsPage(item: widget.item, heroTag: posterHeroTag));
   }
 
   @override

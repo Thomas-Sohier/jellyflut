@@ -1,11 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import '../critics.dart';
 
 class CarousselItem extends StatefulWidget {
@@ -80,7 +80,7 @@ Widget carrousselDetailItem(Item item, Color textColor, BuildContext context) {
     ),
     Expanded(
         child: GestureDetector(
-            onTap: () => customRouter.push(DetailsRoute(item: item, heroTag: heroTag)),
+            onTap: () => context.router.root.push(r.DetailsPage(item: item, heroTag: heroTag)),
             child: Row(children: [
               Expanded(
                   flex: 2,

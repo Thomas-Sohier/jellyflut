@@ -1,11 +1,11 @@
 import 'dart:collection';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -42,7 +42,7 @@ class _ChannelsState extends State<Channels> {
                 child: Row(
                   children: [
                     OutlinedButtonSelector(
-                      onPressed: () => customRouter.push(DetailsRoute(item: channel, heroTag: channel.id)),
+                      onPressed: () => context.router.root.push(r.DetailsPage(item: channel, heroTag: channel.id)),
                       child: SizedBox(
                         width: 80,
                         child: Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
@@ -98,7 +98,7 @@ class _ChannelsState extends State<Channels> {
   Widget programBuilder(Item program) {
     final width = (program.endDate!.difference(program.startDate!).inMinutes * 10).toDouble();
     return OutlinedButtonSelector(
-      onPressed: () => customRouter.push(DetailsRoute(item: program, heroTag: program.id)),
+      onPressed: () => context.router.root.push(r.DetailsPage(item: program, heroTag: program.id)),
       child: Card(
           elevation: 0,
           margin: EdgeInsets.symmetric(horizontal: 4),

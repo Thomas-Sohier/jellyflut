@@ -1,31 +1,13 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:jellyflut/screens/settings/components/sections.dart';
-import 'package:jellyflut/services/file/file_service.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sqlite_database/sqlite_database.dart';
 
-class Settings extends StatefulWidget {
-  @override
-  State<Settings> createState() => _SettingsState();
-}
+import 'bloc/settings_bloc.dart';
 
-class _SettingsState extends State<Settings> {
-  PackageInfo? packageInfo;
-  String? downloadPath;
-  late Setting setting;
-  late Database db;
-  late Future<dynamic> settingsInfosFuture;
-
-  @override
-  void initState() {
-    db = AppDatabase().getDatabase;
-    settingsInfosFuture = getSettingsInfos();
-    super.initState();
-  }
+class Settings extends StatelessWidget {
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,43 +17,59 @@ class _SettingsState extends State<Settings> {
           'settings'.tr(),
           style: Theme.of(context).textTheme.headline5,
         )),
-        body: FutureBuilder(
-            future: settingsInfosFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 600),
-                    child: SettingsList(
-                      contentPadding: EdgeInsets.only(bottom: 30),
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      darkBackgroundColor: Theme.of(context).primaryColorDark,
-                      lightBackgroundColor: Theme.of(context).primaryColorLight,
-                      sections: [
-                        VideoPlayerSection(setting: setting, database: db).build(context),
-                        AudioPlayerSection(setting: setting, database: db).build(context),
-                        InfosSection(version: packageInfo?.version).build(context),
-                        DownloadPathSection(setting: setting, database: db, downloadPath: downloadPath).build(context),
-                        InterfaceSection().build(context),
-                        ThemeSwitcherSection().build(context),
-                        AccountSection().build(context)
-                      ],
-                    ),
-                  ),
-                );
+        body: BlocBuilder<SettingsBloc, SettingsState>(
+            buildWhen: (previous, current) => previous.settingsStatus != current.settingsStatus,
+            builder: (context, state) {
+              switch (state.settingsStatus) {
+                case SettingsStatus.success:
+                  return const SettingsView();
+                case SettingsStatus.initial:
+                case SettingsStatus.loading:
+                  return const LoadingSettingsView();
+                default:
+                  return const LoadingSettingsView();
               }
-              return Center(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              ));
             }));
   }
+}
 
-  Future<void> getSettingsInfos() async {
-    final user = await db.userAppDao.getUserByJellyfinUserId(context.read<AuthenticationRepository>().currentUser.id);
-    setting = await db.settingsDao.getSettingsById(user.settingsId);
-    packageInfo = await PackageInfo.fromPlatform();
-    downloadPath = await FileService.getUserStoragePath();
+class SettingsView extends StatelessWidget {
+  const SettingsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 600),
+        child: SettingsList(
+          contentPadding: EdgeInsets.only(bottom: 30),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          darkBackgroundColor: Theme.of(context).primaryColorDark,
+          lightBackgroundColor: Theme.of(context).primaryColorLight,
+          sections: [
+            VideoPlayerSection().build(context),
+            AudioPlayerSection().build(context),
+            InfosSection().build(context),
+            DownloadPathSection().build(context),
+            InterfaceSection().build(context),
+            ThemeSwitcherSection().build(context),
+            AccountSection().build(context)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingSettingsView extends StatelessWidget {
+  const LoadingSettingsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircularProgressIndicator(),
+    ));
   }
 }

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
@@ -23,15 +21,19 @@ import 'package:jellyflut/screens/stream/components/player_interface.dart';
 class InitStreamingItemUtil {
   static Future<Widget> initFromItem({required Item item}) async {
     final controller = await initControllerFromItem(item: item);
-    final streamingProvider = StreamingProvider();
-    streamingProvider.setItem(item);
     return PlayerInterface(controller: controller);
   }
 
   static Future<dynamic> initControllerFromItem({required Item item}) async {
+    // FIXME
+    // TODO put in repository
+    throw UnimplementedError();
+    // final context = context.router.root.navigatorKey.currentContext!;
     final db = AppDatabase().getDatabase;
-    final setting = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
+    // final user = context.read<AuthenticationRepository>().currentUser;
+    // final userApp = await db.userAppDao.getUserByJellyfinUserId(user.id);
+    // final setting = await db.settingsDao.getSettingsById(userApp.settingsId);
+    // final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
     final itemExist = await db.downloadsDao.doesExist(item.id);
@@ -40,19 +42,19 @@ class InitStreamingItemUtil {
       final download = await db.downloadsDao.getDownloadById(item.id);
       item = download.item!;
     } else {
-      final context = customRouter.navigatorKey.currentContext!;
-      item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
+      // item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
     }
+    StreamingProvider().setItem(item);
 
     // Depending the platform and soft => init video player
-    switch (streamingSoftware) {
-      case StreamingSoftware.VLC:
-        return _initVLCMediaPlayer(item);
-      case StreamingSoftware.AVPLAYER:
-      case StreamingSoftware.EXOPLAYER:
-      default:
-        return _initExoPlayerMediaPlayer(item);
-    }
+    // switch (streamingSoftware) {
+    //   case StreamingSoftware.VLC:
+    //     return _initVLCMediaPlayer(item);
+    //   case StreamingSoftware.AVPLAYER:
+    //   case StreamingSoftware.EXOPLAYER:
+    //   default:
+    //     return _initExoPlayerMediaPlayer(item);
+    // }
   }
 
   static Future<dynamic> _initVLCMediaPlayer(Item item) async {

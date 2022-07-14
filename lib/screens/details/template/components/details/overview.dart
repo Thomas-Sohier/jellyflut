@@ -9,8 +9,7 @@ class OverviewDetailsWidget extends StatefulWidget {
   State<OverviewDetailsWidget> createState() => _OverviewDetailsWidgetState();
 }
 
-class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
-    with AppThemeGrabber {
+class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget> with AppThemeGrabber {
   late String? overview;
 
   @override
@@ -55,14 +54,10 @@ class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
                   // the Theme with Theme.of().
                   builder: (BuildContext dialogContext) => AlertDialog(
                         title: Text('overview'.tr()),
-                        titlePadding:
-                            const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                        titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
                         contentPadding: const EdgeInsets.all(8.0),
                         actions: [
-                          TextButton(
-                              autofocus: true,
-                              onPressed: customRouter.pop,
-                              child: Text('ok'.tr()))
+                          TextButton(autofocus: true, onPressed: context.router.root.pop, child: Text('ok'.tr()))
                         ],
                         content: ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 600),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/stream/exception/unsupported_player_exception.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 
@@ -18,7 +17,8 @@ class _ControllerbuilderState extends State<Controllerbuilder> {
   void initState() {
     super.initState();
     SnackbarUtil.message('Unsupported platform', Icons.error, Colors.red);
-    customRouter.pop();
+    // context.router.root.pop();
+    // FIXME
   }
 
   @override

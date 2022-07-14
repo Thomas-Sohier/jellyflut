@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream_video_player.dart';
@@ -28,8 +26,8 @@ class InitStreamingItemUtil {
     final streamingSoftware = StreamingSoftware.fromString(setting.preferredPlayer);
 
     // We check if item is already downloaded before trying to get it from api
-    final context = customRouter.navigatorKey.currentContext!;
-    item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
+    // final context = context.router.root.navigatorKey.currentContext!;
+    // item = await context.read<ItemsRepository>().getPlayableItemOrLastUnplayed(item: item);
     // Depending the platform and soft => init video player
     switch (streamingSoftware) {
       case StreamingSoftware.HTMLPlayer:

@@ -350,7 +350,7 @@ class ItemsRepository {
         item.type == ItemType.Audio) {
       return item;
     } else if (item.type == ItemType.Season || item.type == ItemType.Series) {
-      item = await getFirstUnplayedItem(itemId: item.id);
+      return getFirstUnplayedItem(itemId: item.id);
     }
     throw UnimplementedError('File cannot be played');
   }

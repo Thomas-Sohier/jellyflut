@@ -1,11 +1,18 @@
 part of 'auth_bloc.dart';
 
-enum AuthStatus { initial, submissionInProgress, submissionSuccess, submissionFailure }
+enum AuthStatus {
+  initial,
+  authenticationInProgress,
+  authenticated,
+  authenticationFailure;
+
+  bool get isAuthenticated => this == authenticated;
+}
 
 enum AuthPage { serverPage, loginPage }
 
 @immutable
-class AuthState {
+class AuthState extends Equatable {
   final AuthStatus authStatus;
   final AuthPage authPage;
   final ServerDto server;
@@ -24,4 +31,7 @@ class AuthState {
         server: server ?? this.server,
         user: user ?? this.user);
   }
+
+  @override
+  List<Object?> get props => [authStatus, authPage, server, user];
 }

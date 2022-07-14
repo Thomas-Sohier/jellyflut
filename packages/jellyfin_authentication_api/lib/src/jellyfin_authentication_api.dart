@@ -58,12 +58,8 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
   }
 
   @override
-  Future<void> logout({required String serverUrl}) async {
-    final response = await _dioClient.post('$serverUrl/Sessions​/Logout');
-
-    if (response.statusCode != 204) {
-      throw AuthenticationFailure('Error while logout from jellyfin');
-    }
+  Future<void> logout({required String serverUrl}) {
+    return Future.value();
   }
 
   @override

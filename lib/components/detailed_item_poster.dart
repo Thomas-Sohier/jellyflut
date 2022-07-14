@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -29,7 +29,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
               MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                      onTap: () => customRouter.push(DetailsRoute(item: widget.item, heroTag: widget.heroTag)),
+                      onTap: () => context.router.root.push(r.DetailsPage(item: widget.item, heroTag: widget.heroTag)),
                       child: ClipRRect(
                         borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
                         child: ConstrainedBox(

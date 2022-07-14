@@ -1,5 +1,5 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/screens/server/user_item.dart';
 import 'package:jellyflut/services/auth/auth_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
@@ -50,7 +50,7 @@ class UserSelection extends StatelessWidget {
                           AuthService.changeUser(user.name, user.password, server.url, server.name, server.id,
                                   user.settingsId, user.id)
                               .catchError((error) {
-                            customRouter.pop();
+                            context.router.root.pop();
                             SnackbarUtil.message(error.toString(), Icons.error, Colors.red);
                           });
                         },

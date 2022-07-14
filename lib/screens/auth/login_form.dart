@@ -15,7 +15,7 @@ import 'enum/fields_enum.dart';
 class LoginForm extends StatefulWidget {
   final VoidCallback? onAuthenticated;
 
-  LoginForm({super.key, this.onAuthenticated});
+  const LoginForm({super.key, this.onAuthenticated});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -105,7 +105,9 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void backToFirstForm(FormGroup form, BuildContext context) {
-    authBloc.add(BackToFirstForm());
+    final username = form.value[FieldsType.USER_USERNAME.value].toString();
+    final password = form.value[FieldsType.USER_PASSWORD.value].toString();
+    authBloc.add(BackToFirstForm(username: username, password: password));
   }
 
   Widget loginButton(FormGroup form, BuildContext context) {
@@ -114,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
         bloc: authBloc,
         listener: (c, a) => {},
         builder: (context, state) {
-          if (state.authStatus == AuthStatus.submissionInProgress) {
+          if (state.authStatus == AuthStatus.authenticationInProgress) {
             return GradienButton('', () => {},
                 borderRadius: 4,
                 enabled: false,

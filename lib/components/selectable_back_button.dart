@@ -1,6 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/globals.dart';
 
 class SelectableBackButton extends StatefulWidget {
   final bool shadow;
@@ -17,10 +17,7 @@ class _SelectableBackButtonState extends State<SelectableBackButton> {
   void initState() {
     shadows = widget.shadow
         ? [
-            BoxShadow(
-                blurRadius: 28,
-                color: Colors.black.withAlpha(20),
-                spreadRadius: 8),
+            BoxShadow(blurRadius: 28, color: Colors.black.withAlpha(20), spreadRadius: 8),
             BoxShadow(blurRadius: 24, color: Colors.black12, spreadRadius: 1),
             BoxShadow(blurRadius: 22, color: Colors.black26, spreadRadius: 0)
           ]
@@ -32,7 +29,7 @@ class _SelectableBackButtonState extends State<SelectableBackButton> {
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         shape: const CircleBorder(),
-        onPressed: customRouter.pop,
+        onPressed: context.router.root.pop,
         primary: Colors.white,
         child: ExcludeFocus(child: IgnorePointer(child: const BackButton())));
   }

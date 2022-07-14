@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
 import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -22,8 +20,10 @@ class CommonStreamVLCComputer {
   const CommonStreamVLCComputer({required this.player});
 
   static Future<Player> setupData({required Item item}) async {
-    final context = customRouter.navigatorKey.currentContext!;
-    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
+    // final context = context.router.root.navigatorKey.currentContext!;
+    final streamURL = '';
+    // TODO refaire au preopre
+    // await context.read<ItemsRepository>().getItemURL(item: item);
     final player = Player(id: videoPlayerId, commandlineArguments: [
       '--start-time=${Duration(microseconds: item.getPlaybackPosition()).inSeconds}',
       '--no-spu'

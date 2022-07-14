@@ -10,57 +10,50 @@ import 'package:sqlite_database/sqlite_database.dart';
 class StreamingApi {
   /// {@macro streaming_api}
   StreamingApi({required String serverUrl, required Database database, String? userId, Dio? dioClient})
-      : _dioClient = dioClient ?? Dio(),
-        _serverUrl = serverUrl,
-        _database = database,
-        _userId = userId ?? _notLoggedUserId;
+      : _dioClient = dioClient ?? Dio();
 
-  static const _notLoggedUserId = '-1';
   final Dio _dioClient;
-  final Database _database;
-  String _userId;
-  String _serverUrl;
 
-  /// Update API properties
-  /// UseFul when endpoint Server or user change
-  void updateProperties({String? serverUrl, String? userId}) {
-    _serverUrl = serverUrl ?? _serverUrl;
-    _userId = userId ?? _userId;
-  }
-
-  Future<PlayBackInfos> getPlaybackInfos(DeviceProfileParent? profile, String itemId,
-      {startTimeTick = 0, int? subtitleStreamIndex, int? audioStreamIndex, int? maxStreamingBitrate}) async {
-    final user = await _database.userAppDao.getUserByJellyfinUserId(_userId);
-    final settings = await _database.settingsDao.getSettingsById(user.settingsId);
+  Future<PlayBackInfos> getPlaybackInfos(
+      {required String serverUrl,
+      required String userId,
+      required String itemId,
+      DeviceProfileParent? profile,
+      int? startTimeTick,
+      int? maxVideoBitrate,
+      int? subtitleStreamIndex,
+      int? maxAudioBitrate,
+      int? audioStreamIndex,
+      int? maxStreamingBitrate}) async {
     // Query params are deprecated but still used for older version of jellyfin server
     final queryParams = <String, dynamic>{};
-    queryParams['UserId'] = _userId;
+    queryParams['UserId'] = userId;
     queryParams['StartTimeTicks'] = startTimeTick;
     queryParams['IsPlayback'] = true;
     queryParams['AutoOpenLiveStream'] = true;
-    queryParams['MaxStreamingBitrate'] = maxStreamingBitrate ?? settings.maxVideoBitrate;
-    queryParams['VideoBitrate'] = settings.maxVideoBitrate.toString();
-    queryParams['AudioBitrate'] = settings.maxAudioBitrate.toString();
+    queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
+    queryParams['VideoBitrate'] = maxVideoBitrate;
+    queryParams['AudioBitrate'] = maxAudioBitrate;
     if (subtitleStreamIndex != null) queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     if (audioStreamIndex != null) queryParams['AudioStreamIndex'] = audioStreamIndex;
     queryParams.removeWhere((_, value) => value == null);
     final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     profile ??= DeviceProfileParent();
-    profile.userId ??= _userId;
+    profile.deviceProfile ??= DeviceProfile();
+    profile.userId ??= userId;
     profile.enableDirectPlay ??= true;
     profile.allowAudioStreamCopy ??= true;
     profile.allowVideoStreamCopy ??= true;
     profile.enableTranscoding ??= true;
     profile.enableDirectStream ??= true;
     profile.autoOpenLiveStream ??= true;
-    profile.deviceProfile ??= DeviceProfile();
     profile.audioStreamIndex ??= audioStreamIndex;
     profile.subtitleStreamIndex ??= subtitleStreamIndex;
     profile.startTimeTicks ??= startTimeTick;
-    profile.maxStreamingBitrate ??= settings.maxVideoBitrate;
+    profile.maxStreamingBitrate ??= maxStreamingBitrate;
 
-    final url = '$_serverUrl/Items/$itemId/PlaybackInfo';
+    final url = '$serverUrl/Items/$itemId/PlaybackInfo';
 
     try {
       final response = await _dioClient.post(url, queryParameters: finalQueryParams, data: profile.toJson());

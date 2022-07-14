@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/home/home_category_title.dart';
 import 'package:jellyflut/theme.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -47,9 +48,7 @@ class _HomeCategoryState extends State<HomeCategory> with AutomaticKeepAliveClie
   bool get wantKeepAlive => true;
 
   void slideToPageDetail() {
-    customRouter.push(CollectionParentRoute(
-      item: widget.item,
-    ));
+    context.router.root.push(r.CollectionPage(item: widget.item));
   }
 
   @override

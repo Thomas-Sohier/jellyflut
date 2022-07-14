@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/home/components/error/error_user_actions.dart';
 import 'package:jellyflut/screens/home/header_bar.dart';
 
@@ -43,7 +43,7 @@ class OffLineScreen extends StatelessWidget {
                         textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyText1),
                     const SizedBox(height: 12),
                     PaletteButton('Go to my offline library',
-                        borderRadius: 4, minHeight: 40, onPressed: () => customRouter.push(DownloadsRoute())),
+                        borderRadius: 4, minHeight: 40, onPressed: () => context.router.root.push(r.DownloadsPage())),
                     Divider(height: 32),
                     ErrorUserActions(
                         reloadFunction: reloadFunction,

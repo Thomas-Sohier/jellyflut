@@ -1,8 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/fav_button/fav_button.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 
 class SongInfos extends StatelessWidget {
@@ -55,7 +55,7 @@ class SongArtistLabel extends StatelessWidget {
             return GestureDetector(
               onTap: () async {
                 if (audioSource.metadata.artist.isNotEmpty) {
-                  await customRouter.push(DetailsRoute(item: audioSource.metadata.item, heroTag: ''));
+                  await context.router.root.push(r.DetailsPage(item: audioSource.metadata.item, heroTag: ''));
                 }
               },
               child: Text(

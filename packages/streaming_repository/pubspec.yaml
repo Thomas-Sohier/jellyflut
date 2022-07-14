@@ -18,6 +18,8 @@ dependencies:
     path: ../sqlite_database
   streaming_api:
     path: ../streaming_api
+  authentication_repository:
+    path: ../authentication_repository
   freezed_annotation: ^2.0.3
   json_annotation: ^4.5.0
 

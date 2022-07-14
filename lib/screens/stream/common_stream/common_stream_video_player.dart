@@ -3,9 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/screens/stream/common_stream/common_stream.dart';
 import 'package:jellyflut/screens/stream/model/audio_track.dart';
@@ -34,8 +31,10 @@ class CommonStreamVideoPlayer {
 
   static Future<VideoPlayerController> setupData({required Item item}) async {
     final streamingProvider = StreamingProvider();
-    final context = customRouter.navigatorKey.currentContext!;
-    final streamURL = await context.read<ItemsRepository>().getItemURL(item: item);
+    // final context = context.router.root.navigatorKey.currentContext!;
+    final streamURL = '';
+    // TODO refaire au propre avec les repo
+    //await context.read<ItemsRepository>().getItemURL(item: item);
 
     // Detect if media is available locdally or only remotely
     late final VideoPlayerController videoPlayerController;
@@ -53,7 +52,8 @@ class CommonStreamVideoPlayer {
         }
         log(errorMessage, level: 5);
         SnackbarUtil.message(errorMessage, Icons.play_disabled, Colors.red);
-        customRouter.pop();
+        // FIXME
+        // context.router.root.pop();
       });
     } else {
       // videoPlayerController = VideoPlayerController.file(File(streamURL));

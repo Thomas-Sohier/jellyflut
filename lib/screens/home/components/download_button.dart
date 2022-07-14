@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
 class DownloadButton extends StatelessWidget {
@@ -12,7 +12,7 @@ class DownloadButton extends StatelessWidget {
     return OutlinedButtonSelector(
         shape: CircleBorder(),
         padding: EdgeInsets.all(8),
-        onPressed: () => customRouter.push(DownloadsRoute()),
+        onPressed: () => context.router.root.push(r.DownloadsPage()),
         child: Icon(
           Icons.download_for_offline_outlined,
           size: 26,

@@ -26,7 +26,7 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
   void playTrailer(MediaUrl trailer) async {
     try {
       final url = await item.getYoutubeTrailerUrl(trailer);
-      await customRouter.push(StreamRoute(url: url.toString(), item: item));
+      await context.router.root.push(r.StreamPage(url: url.toString(), item: item));
     } catch (exception) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -52,7 +52,7 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
                         title: Text('trailer'.tr()),
                         titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
                         contentPadding: const EdgeInsets.all(0),
-                        actions: [TextButton(onPressed: customRouter.pop, child: Text('cancel'.tr()))],
+                        actions: [TextButton(onPressed: context.router.root.pop, child: Text('cancel'.tr()))],
                         content: Container(
                           decoration: BoxDecoration(
                             border: Border.symmetric(horizontal: BorderSide(width: 1)),

@@ -1,7 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Logo extends StatelessWidget {
@@ -9,11 +9,6 @@ class Logo extends StatelessWidget {
   final bool selectable;
   final EdgeInsets padding;
   final BoxConstraints constraints;
-  final actions = <Type, Action<Intent>>{
-    ActivateIntent: CallbackAction<Intent>(
-      onInvoke: (Intent intent) => customRouter.pop(),
-    ),
-  };
 
   Logo({
     super.key,
@@ -37,12 +32,11 @@ class Logo extends StatelessWidget {
         barrierColor: Colors.black.withOpacity(0.64),
         builder: (_) {
           return GestureDetector(
-            onTap: () => customRouter.pop(),
+            onTap: () => context.router.root.pop(),
             child: FocusableActionDetector(
                 autofocus: true,
                 descendantsAreFocusable: false,
                 mouseCursor: SystemMouseCursors.click,
-                actions: actions,
                 child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });

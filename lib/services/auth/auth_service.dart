@@ -1,18 +1,12 @@
 import 'dart:convert';
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:authentication_repository/authentication_repository.dart' hide User;
 import 'package:jellyflut/services/dio/dio_helper.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:music_player_repository/music_player_repository.dart';
-import 'package:sqlite_database/sqlite_database.dart';
+import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:universal_io/io.dart';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -118,24 +112,6 @@ class AuthService {
     return;
   }
 
-  static Future<void> _removeGlobals() async {
-    // delete globals variable
-    server = Server(id: 0, url: 'http://localhost', name: 'localhost');
-    userApp = null;
-    apiKey = null;
-    userJellyfin = null;
-    return;
-  }
-
-  static Future<void> _removeSharedPreferences() async {
-    // get shared preferences instance
-    final sharedPreferences = await SharedPreferences.getInstance();
-    // delete shared preferences
-    // reset state of authentication bloc
-    // then redirect to login page
-    await sharedPreferences.clear();
-  }
-
   static Future<Response> _isAccountStillAuthorized() async {
     final authKeys = '/Auth/Keys';
     return dio.get('${server.url}$authKeys');
@@ -143,13 +119,11 @@ class AuthService {
 
   /// Reset every fields
   static Future<void> logout() async {
-    final context = customRouter.navigatorKey.currentContext!;
-    await _removeGlobals();
-    await _removeSharedPreferences();
-    HomeCategoryProvider().clear();
-    await context.read<MusicPlayerRepository>().reset();
-    BlocProvider.of<AuthBloc>(context).add(ResetStates());
-    await AutoRouter.of(context).replace(AuthParentRoute());
+    // final context = context.router.root.navigatorKey.currentContext!;
+    // HomeCategoryProvider().clear();
+    // await context.read<MusicPlayerRepository>().reset();
+    // BlocProvider.of<AuthBloc>(context).add(ResetStates());
+    // await AutoRouter.of(context).push(r.AuthRouter());
   }
 
   static Future<void> changeUser(
@@ -164,15 +138,16 @@ class AuthService {
     // Try to connect first
     // If there is an error then an exception is thrown
     // or we juste flush all data on connect with second account
-    final context = customRouter.navigatorKey.currentContext!;
-    await context.read<AuthenticationRepository>().logIn(
-          username: username,
-          password: password,
-          serverUrl: serverUrl,
-          serverName: serverName,
-        );
-    HomeCategoryProvider().clear();
-    await context.read<MusicPlayerRepository>().reset();
-    await AutoRouter.of(customRouter.navigatorKey.currentContext!).replace(HomeRouter());
+    // final context = context.router.root.navigatorKey.currentContext!;
+    // await context.read<AuthenticationRepository>().logIn(
+    //       username: username,
+    //       password: password,
+    //       serverUrl: serverUrl,
+    //       serverName: serverName,
+    //     );
+    // HomeCategoryProvider().clear();
+    // await context.read<MusicPlayerRepository>().reset();
+    // await AutoRouter.of(context).replace(r.HomeRouter());
+    throw UnimplementedError('Need to FIX this method');
   }
 }
