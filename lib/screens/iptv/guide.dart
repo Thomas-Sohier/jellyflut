@@ -18,7 +18,7 @@ class Guide extends StatefulWidget {
   State<Guide> createState() => _GuideState();
 }
 
-class _GuideState extends State<Guide> with AutomaticKeepAliveClientMixin {
+class _GuideState extends State<Guide> {
   late final List<String> channelsIds;
   late final Future<Category> programsFuture;
   late final Future<SplayTreeMap<Item, List<Item>>> parsedPrograms;
@@ -27,22 +27,17 @@ class _GuideState extends State<Guide> with AutomaticKeepAliveClientMixin {
   void initState() {
     super.initState();
     channelsIds = widget.items.map((e) => e.id).toList();
-    programsFuture = IptvService.getPrograms(
-        body: ProgramsRequestBody(channelIds: channelsIds));
+    programsFuture = IptvService.getPrograms(body: ProgramsRequestBody(channelIds: channelsIds));
     parsedPrograms = _initData();
   }
 
   Future<SplayTreeMap<Item, List<Item>>> _initData() async {
     final programs = await programsFuture;
-    return compute(
-        parseChannels,
-        ParseChannelsParameters(
-            channels: widget.items, programs: programs.items));
+    return compute(parseChannels, ParseChannelsParameters(channels: widget.items, programs: programs.items));
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build;
     return FutureBuilder<SplayTreeMap<Item, List<Item>>>(
         future: parsedPrograms,
         builder: (_, snapshot) {
@@ -92,8 +87,7 @@ SplayTreeMap<Item, List<Item>> parseChannels(ParseChannelsParameters params) {
         final item = params.channels.firstWhere((c) => c.id == key);
         return MapEntry(item, value);
       }),
-      (item1, item2) => int.parse(item1.channelNumber!)
-          .compareTo(int.parse(item2.channelNumber!)));
+      (item1, item2) => int.parse(item1.channelNumber!).compareTo(int.parse(item2.channelNumber!)));
 }
 
 class ParseChannelsParameters {

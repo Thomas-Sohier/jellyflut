@@ -36,8 +36,7 @@ class PaletteButton extends StatefulWidget {
   State<StatefulWidget> createState() => _PaletteButtonState();
 }
 
-class _PaletteButtonState extends State<PaletteButton>
-    with AutomaticKeepAliveClientMixin, AbsordAction {
+class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
   // variable for both button size
   double get minWidth => widget.minWidth;
   double get minHeight => widget.minHeight;
@@ -52,11 +51,7 @@ class _PaletteButtonState extends State<PaletteButton>
   List<Color> get gradient => widget.gradient;
   ThemeData get theme => _theme;
   bool get useTheme => widget.useTheme;
-  BorderRadius get borderRadius =>
-      BorderRadius.all(Radius.circular(widget.borderRadius));
-
-  @override
-  bool get wantKeepAlive => true;
+  BorderRadius get borderRadius => BorderRadius.all(Radius.circular(widget.borderRadius));
 
   @override
   void initState() {
@@ -72,8 +67,6 @@ class _PaletteButtonState extends State<PaletteButton>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     late final child;
     if (useTheme) {
       child = buttonFromTheme();
@@ -84,11 +77,7 @@ class _PaletteButtonState extends State<PaletteButton>
     }
 
     return ConstrainedBox(
-        constraints: BoxConstraints(
-            minHeight: minHeight,
-            minWidth: minWidth,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight),
+        constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
         child: IgnorePointer(
           ignoring: !widget.enabled,
           child: Center(
@@ -110,20 +99,14 @@ class _PaletteButtonState extends State<PaletteButton>
   }
 
   Widget buttonFromTheme() {
-    final palette = [
-      theme.colorScheme.primary,
-      theme.colorScheme.secondary,
-      theme.colorScheme.tertiary
-    ];
+    final palette = [theme.colorScheme.primary, theme.colorScheme.secondary, theme.colorScheme.tertiary];
     final onBackground = theme.colorScheme.onBackground;
     return buttonFromPalette(palette, onBackground);
   }
 
   Widget buttonFromColors() {
     final middleElement = (gradient.length / 2).round();
-    final onBackground = gradient[middleElement].computeLuminance() > 0.5
-        ? Colors.black
-        : Colors.white;
+    final onBackground = gradient[middleElement].computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return buttonFromPalette(gradient, onBackground);
   }
 
@@ -131,55 +114,41 @@ class _PaletteButtonState extends State<PaletteButton>
     return Ink(
       key: ValueKey<int>(0),
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: palette,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
+          gradient: LinearGradient(colors: palette, begin: Alignment.topLeft, end: Alignment.bottomRight),
           borderRadius: borderRadius),
       child: Container(
-        constraints: BoxConstraints(
-            minHeight: minHeight,
-            minWidth: minWidth,
-            maxWidth: maxWidth,
-            maxHeight: maxHeight),
+        constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
         alignment: Alignment.center,
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.text,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: onBackground, fontSize: 18),
+        child:
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(
+            widget.text,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: onBackground, fontSize: 18),
+          ),
+          if (widget.icon != null)
+            Padding(
+              padding: padding,
+              child: Icon(
+                widget.icon!.icon,
+                color: onBackground,
               ),
-              if (widget.icon != null)
-                Padding(
-                  padding: padding,
-                  child: Icon(
-                    widget.icon!.icon,
-                    color: onBackground,
-                  ),
-                ),
-              if (widget.trailing != null) widget.trailing!
-            ]),
+            ),
+          if (widget.trailing != null) widget.trailing!
+        ]),
       ),
     );
   }
 
   Widget buttonDefault() {
-    final color = widget.enabled
-        ? Colors.grey.shade200.withOpacity(0.5)
-        : Colors.grey.shade400.withOpacity(0.5);
+    final color = widget.enabled ? Colors.grey.shade200.withOpacity(0.5) : Colors.grey.shade400.withOpacity(0.5);
     return ClipRRect(
       borderRadius: borderRadius,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
-            constraints: BoxConstraints(
-                minHeight: minHeight,
-                minWidth: minWidth,
-                maxWidth: maxWidth,
-                maxHeight: maxHeight),
+            constraints:
+                BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
             decoration: BoxDecoration(
               color: color,
               borderRadius: borderRadius,
@@ -208,8 +177,7 @@ class _PaletteButtonState extends State<PaletteButton>
   MaterialStateProperty<double> buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return 6;
         }
         return 0; // defer to the default
@@ -220,15 +188,13 @@ class _PaletteButtonState extends State<PaletteButton>
   MaterialStateProperty<BorderSide> buttonBorderSide() {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 2,
             color: Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

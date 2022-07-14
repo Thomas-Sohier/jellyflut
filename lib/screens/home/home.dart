@@ -1,30 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:universal_io/io.dart';
+import 'package:jellyflut/screens/home/home_category/home_category.dart';
 
 import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
-import 'package:jellyflut/providers/search/search_provider.dart';
-import 'package:jellyflut/screens/home/home_category.dart';
-import 'package:jellyflut/screens/home/latest.dart';
-import 'package:jellyflut/screens/home/resume.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
-class Home extends StatefulWidget {
-  Home({super.key});
+import 'cubit/home_cubit.dart';
+import 'home_category/cubit/home_category_cubit.dart';
+
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _HomeState();
+  Widget build(BuildContext context) {
+    return BlocProvider<HomeCubit>(
+      create: (_) => HomeCubit(itemsRepository: context.read<ItemsRepository>()),
+      child: const HomeView(),
+    );
   }
 }
 
-class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
-  late final PageController _pageController;
-  late final ScrollController _scrollController;
-  late SearchProvider searchProvider;
-  late Future<Category> categoryFuture;
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> with HomeTab, TickerProviderStateMixin {
   @override
   set tabController(TabController tabController) {
     super.tabController = tabController;
@@ -32,74 +36,21 @@ class _HomeState extends State<Home> with HomeTab, TickerProviderStateMixin {
 
   @override
   void initState() {
-    searchProvider = SearchProvider();
-    _scrollController = ScrollController(initialScrollOffset: 0);
-    categoryFuture = context.read<ItemsRepository>().getLibraryViews();
-    _pageController = PageController();
     tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
+
     return ExcludeFocus(
-      excluding: excluding,
-      child: CustomScrollView(scrollDirection: Axis.vertical, controller: _scrollController, slivers: [
-        SliverToBoxAdapter(child: SizedBox(height: statusBarHeight + 10)),
-        SliverToBoxAdapter(child: Resume()),
-        SliverToBoxAdapter(child: Latest()),
-        categoryBuilder()
-      ]),
-    );
-  }
-
-  /// Can show error if any
-  Widget categoryBuilder() {
-    return FutureBuilder<Category>(
-      future: categoryFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData && !snapshot.hasError) {
-          return buildCategory(snapshot.data!);
-        } else if (snapshot.hasError) {
-          return noConnectivity(SocketException(snapshot.error.toString()));
-        }
-        return SliverToBoxAdapter();
-      },
-    );
-  }
-
-  Widget noConnectivity(SocketException error) {
-    return SliverToBoxAdapter(
-        child: Center(
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Icon(
-          Icons.wifi_off,
-          color: Colors.white,
-          size: 50,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            error.message,
-            style: TextStyle(color: Colors.white70, fontSize: 16),
-          ),
-        )
-      ]),
-    ));
-  }
-
-  Widget buildCategory(Category category) {
-    return SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-      var item = category.items[index];
-      return HomeCategory(item);
-    }, childCount: category.items.length));
+        excluding: excluding,
+        child: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
+          const SliverToBoxAdapter(child: SizedBox(height: 10)),
+          const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.resume)),
+          const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.latest)),
+          ...items.map((i) => SliverToBoxAdapter(child: HomeCategory.fromItem(item: i))).toList()
+        ]));
   }
 }

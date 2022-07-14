@@ -11,6 +11,7 @@ class AsyncImageState extends Equatable {
       this.hash,
       this.imageTag,
       this.width,
+      this.notFoundPlaceholder,
       this.height,
       required this.boxFit,
       required this.showOverlay,
@@ -25,6 +26,7 @@ class AsyncImageState extends Equatable {
   final String? hash;
   final String? imageTag;
   final ImageType imageType;
+  final Widget? notFoundPlaceholder;
   final double? width;
   final double? height;
   final bool showOverlay;
@@ -35,6 +37,7 @@ class AsyncImageState extends Equatable {
   AsyncImageState copyWith(
       {AsyncImageStatus? status,
       ZoomableImageController? zoomableImageController,
+      Widget? notFoundPlaceholder,
       String? itemId,
       String? hash,
       String? imageTag,
@@ -50,6 +53,7 @@ class AsyncImageState extends Equatable {
         status: status ?? this.status,
         itemId: itemId ?? this.itemId,
         zoomableImageController: zoomableImageController ?? this.zoomableImageController,
+        notFoundPlaceholder: notFoundPlaceholder ?? this.notFoundPlaceholder,
         hash: hash ?? this.hash,
         image: image ?? this.image,
         imageTag: imageTag ?? this.imageTag,
@@ -71,6 +75,7 @@ class AsyncImageState extends Equatable {
         imageTag,
         imageTag,
         width,
+        notFoundPlaceholder,
         height,
         showOverlay,
         backup,

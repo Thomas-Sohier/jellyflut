@@ -38,14 +38,14 @@ class ListItems extends StatefulWidget {
   final double verticalListPosterHeight;
   final double gridPosterHeight;
   final ScrollPhysics physics;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
 
   const ListItems.fromFuture(
       {super.key,
       required this.itemsFuture,
       this.loadMoreFunction = _defaultLoadMore,
       this.collectionBloc,
-      this.placeholder,
+      this.notFoundPlaceholder,
       this.showTitle = false,
       this.boxFit = BoxFit.cover,
       this.showIfEmpty = true,
@@ -61,7 +61,7 @@ class ListItems extends StatefulWidget {
       {super.key,
       required this.category,
       this.collectionBloc,
-      this.placeholder,
+      this.notFoundPlaceholder,
       this.loadMoreFunction = _defaultLoadMore,
       this.showTitle = false,
       this.boxFit = BoxFit.cover,
@@ -82,15 +82,16 @@ class ListItems extends StatefulWidget {
   State<ListItems> createState() => _ListItemsState();
 }
 
-class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixin {
+class _ListItemsState extends State<ListItems> {
   late final ScrollController scrollController;
   late final CollectionBloc collectionBloc;
   late final List<ListType> listTypes;
-  late Widget Function(BuildContext)? placeholder;
-  late double horizontalListPosterHeight;
-  late double verticalListPosterHeight;
-  late double gridPosterHeight;
-  late BoxFit boxFit;
+
+  double get horizontalListPosterHeight => widget.horizontalListPosterHeight;
+  double get verticalListPosterHeight => widget.verticalListPosterHeight;
+  double get gridPosterHeight => widget.gridPosterHeight;
+  BoxFit get boxFit => widget.boxFit;
+  Widget? get notFoundPlaceholder => widget.notFoundPlaceholder;
 
   // late final CarrousselProvider carrousselProvider;
 
@@ -118,11 +119,6 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
   @override
   void didChangeDependencies() {
     _setdataToBloc();
-    horizontalListPosterHeight = widget.horizontalListPosterHeight;
-    verticalListPosterHeight = widget.verticalListPosterHeight;
-    gridPosterHeight = widget.gridPosterHeight;
-    boxFit = widget.boxFit;
-    placeholder = widget.placeholder;
     super.didChangeDependencies();
   }
 
@@ -154,7 +150,6 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocProvider.value(
       value: collectionBloc,
       child: sortingThenbuildSelection(),
@@ -212,7 +207,7 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
                     child: ListItemsVerticalList(
                       items: items,
                       boxFit: boxFit,
-                      placeholder: placeholder,
+                      notFoundPlaceholder: notFoundPlaceholder,
                       verticalListPosterHeight: verticalListPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController,
@@ -225,7 +220,7 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
                 child: ListItemsHorizontalList(
                     items: items,
                     boxFit: boxFit,
-                    placeholder: placeholder,
+                    notFoundPlaceholder: notFoundPlaceholder,
                     horizontalListPosterHeight: horizontalListPosterHeight,
                     scrollPhysics: widget.physics,
                     scrollController: scrollController),
@@ -237,7 +232,7 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
                   child: ListItemsGrid(
                       items: items,
                       boxFit: boxFit,
-                      placeholder: placeholder,
+                      notFoundPlaceholder: notFoundPlaceholder,
                       gridPosterHeight: gridPosterHeight,
                       scrollPhysics: widget.physics,
                       scrollController: scrollController));
@@ -247,7 +242,7 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
                 showTitle: widget.showTitle,
                 child: ListItemsGrid(
                     items: items,
-                    placeholder: placeholder,
+                    notFoundPlaceholder: notFoundPlaceholder,
                     boxFit: boxFit,
                     gridPosterHeight: gridPosterHeight,
                     scrollPhysics: widget.physics,
@@ -256,7 +251,4 @@ class _ListItemsState extends State<ListItems> with AutomaticKeepAliveClientMixi
           }
         });
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

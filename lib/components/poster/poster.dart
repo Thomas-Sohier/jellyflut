@@ -20,7 +20,7 @@ class Poster extends StatefulWidget {
   final bool clickable;
   final bool showOverlay;
   final String? heroTag;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
 
   const Poster(
       {super.key,
@@ -29,7 +29,7 @@ class Poster extends StatefulWidget {
       this.backup = true,
       this.showOverlay = false,
       this.height,
-      this.placeholder,
+      this.notFoundPlaceholder,
       this.width,
       this.heroTag,
       this.clickable = true,
@@ -105,6 +105,7 @@ class _PosterState extends State<Poster> with AbsordAction {
             width: widget.width,
             height: widget.height,
             backup: widget.backup,
+            notFoundPlaceholder: widget.notFoundPlaceholder,
             zoomableImageController: _zoomableImageController,
             showOverlay: widget.showOverlay,
             showParent: widget.showParent)),

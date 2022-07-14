@@ -6,13 +6,13 @@ class ListItemsGrid extends StatelessWidget {
   final ScrollPhysics scrollPhysics;
   final double gridPosterHeight;
   final BoxFit boxFit;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
   final EdgeInsetsGeometry padding;
 
   const ListItemsGrid(
       {super.key,
       this.boxFit = BoxFit.cover,
-      this.placeholder,
+      this.notFoundPlaceholder,
       this.padding = const EdgeInsets.symmetric(horizontal: 8),
       required this.scrollPhysics,
       required this.scrollController,
@@ -39,7 +39,7 @@ class ListItemsGrid extends StatelessWidget {
                 return ItemPoster(
                   items.elementAt(index),
                   boxFit: boxFit,
-                  placeholder: placeholder,
+                  notFoundPlaceholder: notFoundPlaceholder,
                   width: double.infinity,
                   height: double.infinity,
                 );

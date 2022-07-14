@@ -12,7 +12,7 @@ class ItemPoster extends StatefulWidget {
       this.widgetAspectRatio,
       this.height,
       this.width,
-      this.placeholder,
+      this.notFoundPlaceholder,
       this.imagefilter = false,
       this.backup = false,
       this.showName = true,
@@ -29,7 +29,7 @@ class ItemPoster extends StatefulWidget {
   final Color? textColor;
   final bool imagefilter;
   final bool backup;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
   final double? height;
   final double? width;
   final bool showName;
@@ -106,7 +106,7 @@ class _ItemPosterState extends State<ItemPoster> {
                   clickable: widget.clickable,
                   heroTag: posterHeroTag,
                   boxFit: widget.boxFit,
-                  placeholder: widget.placeholder,
+                  notFoundPlaceholder: widget.notFoundPlaceholder,
                   width: widget.width,
                   backup: widget.backup,
                   showOverlay: widget.imagefilter,

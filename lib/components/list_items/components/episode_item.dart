@@ -14,10 +14,10 @@ class EpisodeItem extends StatefulWidget {
   final bool clickable;
   final Item item;
   final BoxFit boxFit;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
 
   const EpisodeItem(
-      {super.key, required this.item, this.placeholder, this.clickable = true, this.boxFit = BoxFit.cover});
+      {super.key, required this.item, this.notFoundPlaceholder, this.clickable = true, this.boxFit = BoxFit.cover});
 
   @override
   State<EpisodeItem> createState() => _EpisodeItemState();
@@ -99,7 +99,7 @@ class _EpisodeItemState extends State<EpisodeItem> with AbsordAction {
           imageType: ImageType.Primary,
           heroTag: posterHeroTag,
           clickable: false,
-          placeholder: widget.placeholder,
+          notFoundPlaceholder: widget.notFoundPlaceholder,
           width: double.infinity,
           height: double.infinity,
           boxFit: widget.boxFit,

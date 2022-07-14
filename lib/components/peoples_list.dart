@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/people_poster.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
-import 'package:jellyflut/shared/responsive_builder.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class PeoplesList extends StatefulWidget {
@@ -39,60 +38,39 @@ class _PeoplesListState extends State<PeoplesList> {
           padding: widget.padding,
           itemBuilder: (context, index) {
             final person = peoples[index];
-            final item = Item(
-                name: person.name,
-                id: person.id,
-                imageBlurHashes: person.imageBlurHashes,
-                imageTags: Map<String, String>.from({ImageType.Primary.name: person.primaryImageTag ?? ''}),
-                type: ItemType.Person);
-            return ResponsiveBuilder.builder(
-                mobile: () => largeScreenTemplate(item, person, index),
-                tablet: () => largeScreenTemplate(item, person, index),
-                desktop: () => largeScreenTemplate(item, person, index));
+            return Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: PeoplePoster(
+                person: person,
+                bigPoster: true,
+                clickable: true,
+                notFoundPlaceholder: const NotFoundActorPlaceholder(),
+                onPressed: (heroTag) => onTap(person, heroTag),
+              ),
+            );
           }),
     );
   }
 
-  Widget phonePoster(Item item, People person, int index) {
-    return Padding(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-                flex: 5, child: PeoplePoster(person: person, onPressed: (heroTag) => onTap(item, person, heroTag))),
-            Flexible(
-                fit: FlexFit.loose,
-                child: Text(
-                  person.name ?? '',
-                  overflow: TextOverflow.clip,
-                  softWrap: false,
-                  style: TextStyle(color: fontColor.withAlpha(240), fontSize: 16),
-                )),
-            if (person.role != null)
-              Flexible(
-                  fit: FlexFit.loose,
-                  child: Text(
-                    person.role!,
-                    overflow: TextOverflow.clip,
-                    softWrap: false,
-                    style: TextStyle(color: fontColor.withAlpha(200), fontSize: 12),
-                  ))
-          ],
-        ));
+  Future<void> onTap(People person, String heroTag) {
+    return context.router.root.push(r.DetailsPage(item: person.asItem(), heroTag: heroTag));
   }
+}
 
-  Widget largeScreenTemplate(Item item, People person, int index) {
-    return Padding(
-      padding: EdgeInsets.only(right: 10),
-      child: PeoplePoster(
-          person: person, bigPoster: true, clickable: true, onPressed: (heroTag) => onTap(item, person, heroTag)),
+class NotFoundActorPlaceholder extends StatelessWidget {
+  const NotFoundActorPlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: ColoredBox(
+        color: Theme.of(context).colorScheme.background,
+        child: Center(
+            child: Icon(
+          Icons.person,
+          color: Theme.of(context).colorScheme.onBackground,
+        )),
+      ),
     );
-  }
-
-  Future<void> onTap(Item item, People person, String heroTag) {
-    return context.router.root.push(r.DetailsPage(item: item, heroTag: heroTag));
   }
 }

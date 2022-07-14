@@ -6,20 +6,13 @@ class ZoomableImage extends StatefulWidget {
   final ZoomableImageController? zoomableImageController;
   final Color? overlay;
 
-  const ZoomableImage(
-      {super.key,
-      required this.imageWidget,
-      this.zoomableImageController,
-      this.overlay});
+  const ZoomableImage({super.key, required this.imageWidget, this.zoomableImageController, this.overlay});
 
   @override
   State<ZoomableImage> createState() => _ZoomableImageState();
 }
 
-class _ZoomableImageState extends State<ZoomableImage>
-    with
-        SingleTickerProviderStateMixin,
-        AutomaticKeepAliveClientMixin<ZoomableImage> {
+class _ZoomableImageState extends State<ZoomableImage> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   double scale = 1.0;
 
@@ -56,13 +49,10 @@ class _ZoomableImageState extends State<ZoomableImage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Stack(children: [
       scaleImage(),
       if (widget.overlay != null)
-        IgnorePointer(
-            child: SizedBox.expand(
-                child: ColoredBox(color: Colors.black.withAlpha(100)))),
+        IgnorePointer(child: SizedBox.expand(child: ColoredBox(color: Colors.black.withAlpha(100)))),
     ]);
   }
 
@@ -73,7 +63,4 @@ class _ZoomableImageState extends State<ZoomableImage>
       return widget.imageWidget;
     }
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

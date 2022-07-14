@@ -46,11 +46,10 @@ class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
   Widget listItems() {
     return ListItems.fromFuture(
       itemsFuture: programs,
-      placeholder: (_) => Container(
+      notFoundPlaceholder: Container(
         color: ColorUtil.darken(Theme.of(context).colorScheme.background),
         child: Center(
-          child:
-              Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
+          child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
         ),
       ),
       verticalListPosterHeight: 150,
@@ -58,9 +57,7 @@ class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
       boxFit: BoxFit.contain,
       listType: ListType.GRID,
       loadMoreFunction: (int startIndex, int numberOfItemsToLoad) {
-        return IptvService.getChannels(
-            body: ChannelsRequestBody(
-                startIndex: startIndex, limit: numberOfItemsToLoad));
+        return IptvService.getChannels(body: ChannelsRequestBody(startIndex: startIndex, limit: numberOfItemsToLoad));
       },
     );
   }

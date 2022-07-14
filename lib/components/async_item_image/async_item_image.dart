@@ -18,6 +18,7 @@ class AsyncImage extends StatelessWidget {
   final bool showParent;
   final bool backup;
   final bool showOverlay;
+  final Widget? notFoundPlaceholder;
   final ZoomableImageController? zoomableImageController;
 
   /// Class to construct a class which return widget with image associated to parameters
@@ -32,6 +33,7 @@ class AsyncImage extends StatelessWidget {
       this.boxFit = BoxFit.fitHeight,
       this.width,
       this.height,
+      this.notFoundPlaceholder,
       this.zoomableImageController,
       this.showOverlay = false,
       this.backup = true,
@@ -48,6 +50,7 @@ class AsyncImage extends StatelessWidget {
           width: width,
           height: height,
           showOverlay: showOverlay,
+          notFoundPlaceholder: notFoundPlaceholder,
           backup: backup,
           showParent: showParent,
           boxFit: boxFit,
@@ -91,7 +94,7 @@ class AsyncImageLoaded extends StatelessWidget {
         child: OctoImage(
             image: asyncImageCubit.state.image!,
             placeholderBuilder: (_) => const AsyncImagePlaceholder(),
-            errorBuilder: (_, __, ___) => const AsyncImagePlaceholder(),
+            errorBuilder: (_, __, ___) => asyncImageCubit.state.notFoundPlaceholder ?? const AsyncImagePlaceholder(),
             imageBuilder: (_, image) => ZoomableImage(
                 zoomableImageController: asyncImageCubit.state.zoomableImageController,
                 imageWidget: image,

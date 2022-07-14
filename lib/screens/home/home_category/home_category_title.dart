@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HomeCategoryTitle extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle> {
         child: Row(children: [
           Expanded(
             child: Text(
-              widget.categoryTitle,
+              widget.categoryTitle.tr(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.headline4,

@@ -37,6 +37,11 @@ class Logo extends StatelessWidget {
                 autofocus: true,
                 descendantsAreFocusable: false,
                 mouseCursor: SystemMouseCursors.click,
+                actions: <Type, Action<Intent>>{
+                  ActivateIntent: CallbackAction<Intent>(
+                    onInvoke: (Intent intent) => context.router.pop(),
+                  ),
+                },
                 child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });

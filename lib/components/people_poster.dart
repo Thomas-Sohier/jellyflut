@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/async_item_image/async_item_image.dart';
-import 'package:jellyflut/mixins/absorb_action.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class PeoplePoster extends StatefulWidget {
   final People person;
+  final Widget? notFoundPlaceholder;
   final bool clickable;
   final bool bigPoster;
   final Function(String)? onPressed;
 
-  PeoplePoster({super.key, required this.person, this.onPressed, this.bigPoster = false, this.clickable = true});
+  PeoplePoster(
+      {super.key,
+      required this.person,
+      this.onPressed,
+      this.bigPoster = false,
+      this.clickable = true,
+      this.notFoundPlaceholder});
 
   @override
   State<PeoplePoster> createState() => _PeoplePosterState();
 }
 
-class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
+class _PeoplePosterState extends State<PeoplePoster> {
   // Dpad navigation
   late FocusNode _node;
   late String posterHeroTag;
@@ -45,35 +52,43 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
 
   @override
   Widget build(BuildContext context) {
-    final finalPoster = widget.bigPoster ? bigPoster(heroTag) : poster(heroTag);
+    final finalPoster = widget.bigPoster
+        ? BigPersonPoster(heroTag: heroTag, person: widget.person, notFoundPlaceholder: widget.notFoundPlaceholder)
+        : PersonPoster(heroTag: heroTag, person: widget.person, notFoundPlaceholder: widget.notFoundPlaceholder);
     if (widget.clickable) {
-      return OutlinedButton(
-          onPressed: () => action(onTap),
-          autofocus: false,
-          focusNode: _node,
-          style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
-                  backgroundColor: Colors.transparent)
-              .copyWith(side: buttonBorderSide())
-              .copyWith(elevation: buttonElevation()),
-          child: finalPoster);
+      return OutlinedButtonSelector(onPressed: onTap, child: finalPoster);
     }
     return finalPoster;
   }
+}
 
-  Widget poster(String heroTag) {
+class PersonPoster extends StatelessWidget {
+  final String heroTag;
+  final People person;
+  final Widget? notFoundPlaceholder;
+  const PersonPoster({super.key, required this.heroTag, required this.person, this.notFoundPlaceholder});
+  @override
+  Widget build(BuildContext context) {
     return Hero(
         tag: heroTag,
         child: AspectRatio(
             aspectRatio: 2 / 3,
             child: AsyncImage(
-              item: widget.person.asItem(),
+              item: person.asItem(),
+              notFoundPlaceholder: notFoundPlaceholder,
               boxFit: BoxFit.contain,
             )));
   }
+}
 
-  Widget bigPoster(String heroTag) {
+class BigPersonPoster extends StatelessWidget {
+  final String heroTag;
+  final People person;
+  final Widget? notFoundPlaceholder;
+  const BigPersonPoster({super.key, required this.heroTag, required this.person, this.notFoundPlaceholder});
+
+  @override
+  Widget build(BuildContext context) {
     return Hero(
         tag: heroTag,
         child: AspectRatio(
@@ -84,7 +99,8 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                 alignment: Alignment.bottomCenter,
                 children: [
                   AsyncImage(
-                    item: widget.person.asItem(),
+                    item: person.asItem(),
+                    notFoundPlaceholder: notFoundPlaceholder,
                     boxFit: BoxFit.contain,
                   ),
                   Container(
@@ -110,14 +126,14 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            widget.person.name ?? '',
+                            person.name ?? '',
                             overflow: TextOverflow.clip,
                             softWrap: false,
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
-                          if (widget.person.role != null)
+                          if (person.role != null)
                             Text(
-                              widget.person.role!,
+                              person.role!,
                               overflow: TextOverflow.clip,
                               softWrap: false,
                               style: TextStyle(color: Colors.white70, fontSize: 12),
@@ -130,29 +146,29 @@ class _PeoplePosterState extends State<PeoplePoster> with AbsordAction {
               )),
         ));
   }
+}
 
-  MaterialStateProperty<double> buttonElevation() {
-    return MaterialStateProperty.resolveWith<double>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-          return 2;
-        }
-        return 0; // defer to the default
-      },
-    );
-  }
+MaterialStateProperty<double> buttonElevation() {
+  return MaterialStateProperty.resolveWith<double>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
+        return 2;
+      }
+      return 0; // defer to the default
+    },
+  );
+}
 
-  MaterialStateProperty<BorderSide> buttonBorderSide() {
-    return MaterialStateProperty.resolveWith<BorderSide>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
-          return BorderSide(
-            width: 2,
-            color: Colors.white,
-          );
-        }
-        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
-      },
-    );
-  }
+MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
+  return MaterialStateProperty.resolveWith<BorderSide>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.focused)) {
+        return BorderSide(
+          width: 2,
+          color: Theme.of(context).colorScheme.onBackground,
+        );
+      }
+      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+    },
+  );
 }

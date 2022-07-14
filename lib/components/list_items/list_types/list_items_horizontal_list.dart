@@ -6,12 +6,12 @@ class ListItemsHorizontalList extends StatelessWidget {
   final ScrollController scrollController;
   final double horizontalListPosterHeight;
   final BoxFit boxFit;
-  final Widget Function(BuildContext)? placeholder;
+  final Widget? notFoundPlaceholder;
 
   const ListItemsHorizontalList(
       {super.key,
       this.boxFit = BoxFit.cover,
-      this.placeholder,
+      this.notFoundPlaceholder,
       required this.items,
       required this.scrollPhysics,
       required this.horizontalListPosterHeight,
@@ -29,7 +29,7 @@ class ListItemsHorizontalList extends StatelessWidget {
           itemBuilder: (context, index) => ItemPoster(
                 items.elementAt(index),
                 boxFit: boxFit,
-                placeholder: placeholder,
+                notFoundPlaceholder: notFoundPlaceholder,
                 width: double.infinity,
                 height: double.infinity,
               )),

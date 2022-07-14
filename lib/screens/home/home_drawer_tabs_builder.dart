@@ -1,46 +1,44 @@
 import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Drawer;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart' as r;
-import 'package:jellyflut/screens/home/components/drawer/custom_drawer.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:jellyflut/screens/home/cubit/home_cubit.dart';
 import 'package:provider/provider.dart';
 
 import 'header_bar.dart';
 
-class HomeDrawerTabsBuilder extends StatefulWidget {
-  final List<Item> items;
-  HomeDrawerTabsBuilder({super.key, required this.items});
-
-  @override
-  State<HomeDrawerTabsBuilder> createState() => _HomeDrawerTabsBuilderState();
-}
-
-class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
-  late final GlobalKey<ScaffoldState> _scaffoldKey;
-  late final List<PageRouteInfo<dynamic>> routes;
-  late final List<Item> items;
-  late final HomeTabsProvider _homeTabsProvider;
-
-  @override
-  void initState() {
-    items = widget.items;
-    routes = generateRouteFromItems(items);
-    _scaffoldKey = GlobalKey();
-    _homeTabsProvider = HomeTabsProvider();
-    super.initState();
-  }
+class HomeDrawerTabsBuilder extends StatelessWidget {
+  const HomeDrawerTabsBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(builder: (_, state) {
+      switch (state.status) {
+        case HomeStatus.success:
+          return const HomeTabs();
+        case HomeStatus.initial:
+        case HomeStatus.loading:
+        default:
+          return const SizedBox();
+      }
+    });
+  }
+}
+
+class HomeTabs extends StatelessWidget {
+  const HomeTabs({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
     return AutoTabsScaffold(
-        scaffoldKey: _scaffoldKey,
-        drawer: CutsomDrawer(items: items),
+        // drawer: CustomDrawer(items: context.read<HomeCubit>().state.items),
         drawerEnableOpenDragGesture: true,
-        drawerEdgeDragWidth: MediaQuery.of(context).size.width * 0.2,
-        routes: routes,
-        appBarBuilder: (_, __) => AppBar(flexibleSpace: HeaderBar(), bottom: tabbar()),
+        drawerEdgeDragWidth: 300,
+        routes: cubit.state.routes,
+        appBarBuilder: (_, __) => AppBar(
+            flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsProvider: context.read<HomeTabsProvider>())),
         builder: (context, child, animation) {
           return PageTransitionSwitcher(
             transitionBuilder: (
@@ -59,33 +57,21 @@ class _HomeDrawerTabsBuilderState extends State<HomeDrawerTabsBuilder> {
           );
         });
   }
+}
 
-  /// generate appropriate route for each button
-  List<PageRouteInfo<dynamic>> generateRouteFromItems(final List<Item>? items) {
-    final routes = <PageRouteInfo<dynamic>>[];
-    final i = items ?? <Item>[];
+class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
+  final HomeTabsProvider homeTabsProvider;
+  const BottomTabBar({super.key, required this.homeTabsProvider});
 
-    //initial route
-    routes.add(r.HomePage(key: UniqueKey()));
-    for (var item in i) {
-      switch (item.collectionType) {
-        case CollectionType.tvshows:
-          routes.add(r.IptvPage(key: UniqueKey()));
-          break;
-        default:
-          routes.add(r.CollectionPage(key: ValueKey(item), item: item));
-      }
+  @override
+  Widget build(BuildContext context) {
+    if (context.read<HomeTabsProvider>().getTabs.isNotEmpty) {
+      return Consumer<HomeTabsProvider>(
+          builder: (_, provider, ___) => TabBar(controller: provider.getTabController, tabs: provider.getTabs));
     }
-    return routes;
+    return const SizedBox();
   }
 
-  PreferredSizeWidget? tabbar() {
-    if (_homeTabsProvider.getTabs.isNotEmpty) {
-      return PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: Consumer<HomeTabsProvider>(
-              builder: (_, provider, ___) => TabBar(controller: provider.getTabController, tabs: provider.getTabs)));
-    }
-    return null;
-  }
+  @override
+  Size get preferredSize => homeTabsProvider.getTabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
 }

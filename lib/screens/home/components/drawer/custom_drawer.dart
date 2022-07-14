@@ -3,15 +3,15 @@ import 'package:jellyflut/screens/home/shared/icon_navigation_mapper.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'drawer_large_button.dart';
 
-class CutsomDrawer extends StatefulWidget {
+class CustomDrawer extends StatefulWidget {
   final List<Item> items;
-  CutsomDrawer({super.key, required this.items});
+  CustomDrawer({super.key, required this.items});
 
   @override
-  State<CutsomDrawer> createState() => _CutsomDrawerState();
+  State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
-class _CutsomDrawerState extends State<CutsomDrawer> {
+class _CustomDrawerState extends State<CustomDrawer> {
   late final ScrollController _scrollController;
 
   @override
