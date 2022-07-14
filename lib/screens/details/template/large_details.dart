@@ -37,19 +37,18 @@ class LargeDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [leftDetailsPart(constraints), rightDetailsPart(constraints)]),
-          StreamBuilder<bool>(
-              initialData: false,
-              stream: context.read<DetailsBloc>().pinnedHeaderStream,
-              builder: (_, snapshot) => AnimatedPositioned(
+          BlocBuilder<DetailsBloc, DetailsState>(
+              buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+              builder: (_, state) => AnimatedPositioned(
                   duration: Duration(milliseconds: 200),
                   left: 0,
-                  top: snapshot.data! ? 15 : 0,
+                  top: state.pinnedHeader ? 15 : 0,
                   child: SizedBox(
                     height: 48,
                     child: Row(
                       children: [
                         SelectableBackButton(),
-                        if (!snapshot.data! && constraints.maxWidth < 960)
+                        if (!state.pinnedHeader && constraints.maxWidth < 960)
                           Logo(item: context.read<DetailsBloc>().state.item, padding: EdgeInsets.symmetric(vertical: 8))
                       ],
                     ),

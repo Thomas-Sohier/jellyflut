@@ -9,7 +9,7 @@ final Color shimmerColor2 = Colors.grey.shade200.withAlpha(150);
 Map<int, Color> jellyPurpleMap = ColorUtil.generateColorSwatch(Color.fromARGB(255, 130, 81, 145));
 Map<int, Color> jellyBlueMap = ColorUtil.generateColorSwatch(Color.fromARGB(255, 4, 162, 219));
 
-class Theme {
+abstract class Theme {
   static ThemeData generateThemeFromSeedColor(Color dominantColor) {
     final brightness = dominantColor.computeLuminance() > 0.5 ? Brightness.light : Brightness.dark;
     return generateThemeDataFromSeedColor(brightness, dominantColor);
@@ -129,6 +129,12 @@ class Theme {
                 floatingLabelStyle: TextStyle(color: theme.colorScheme.onBackground),
                 hintStyle: TextStyle(color: theme.colorScheme.onBackground)))
         .copyWith(cardTheme: CardTheme(color: theme.colorScheme.background));
+  }
+
+  /// Generate a text theme from a background color
+  static TextTheme generateTextThemeFromBackgroundColor({required Color backgroundColor}) {
+    final fontcolor = backgroundColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    return generateTextThemeFromColor(fontcolor);
   }
 
   /// Generate a text theme specific to this app

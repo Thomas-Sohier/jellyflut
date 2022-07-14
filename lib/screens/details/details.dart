@@ -22,9 +22,9 @@ class DetailsPage extends StatelessWidget {
         create: (context) => DetailsBloc(
             item: item,
             heroTag: heroTag,
+            themeProvider: context.read<ThemeProvider>(),
             authenticationRepository: context.read<AuthenticationRepository>(),
-            itemsRepository: context.read<ItemsRepository>(),
-            theme: context.read<ThemeProvider>().getThemeData)
+            itemsRepository: context.read<ItemsRepository>())
           ..add(DetailsInitRequested(item: item)),
         child: const DetailsView());
   }

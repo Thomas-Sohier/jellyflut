@@ -14,24 +14,32 @@ class DetailsState extends Equatable {
   final ThemeData theme;
   final ScreenLayout screenLayout;
   final DetailsStatus detailsStatus;
+  final bool pinnedHeader;
 
   const DetailsState(
       {required this.theme,
       required this.item,
       required this.screenLayout,
+      this.pinnedHeader = false,
       this.heroTag,
       this.detailsStatus = DetailsStatus.initial});
 
   DetailsState copyWith(
-      {ThemeData? theme, Item? item, ScreenLayout? screenLayout, String? heroTag, DetailsStatus? detailsStatus}) {
+      {ThemeData? theme,
+      Item? item,
+      ScreenLayout? screenLayout,
+      String? heroTag,
+      DetailsStatus? detailsStatus,
+      bool? pinnedHeader}) {
     return DetailsState(
         item: item ?? this.item,
         theme: theme ?? this.theme,
         heroTag: heroTag ?? this.heroTag,
+        pinnedHeader: pinnedHeader ?? this.pinnedHeader,
         screenLayout: screenLayout ?? this.screenLayout,
         detailsStatus: detailsStatus ?? this.detailsStatus);
   }
 
   @override
-  List<Object?> get props => [theme, item, heroTag, detailsStatus, screenLayout];
+  List<Object?> get props => [theme, item, heroTag, detailsStatus, pinnedHeader, screenLayout];
 }

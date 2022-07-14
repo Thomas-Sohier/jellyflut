@@ -18,7 +18,7 @@ class TabHeader extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    context.read<DetailsBloc>().shrinkOffsetChanged(shrinkOffset);
+    context.read<DetailsBloc>().add(PinnedHeaderChangeRequested(shrinkOffset: shrinkOffset));
     return BlocConsumer<CollectionCubit, CollectionState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -73,11 +73,10 @@ class ShimmerHeaderBar extends StatelessWidget {
           child: Shimmer.fromColors(
             baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
             highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
-            child: StreamBuilder<bool>(
-                initialData: false,
-                stream: context.read<DetailsBloc>().pinnedHeaderStream,
-                builder: (_, headerSnapsot) => AnimatedPadding(
-                      padding: headerSnapsot.data! ? padding.copyWith(left: padding.left + 40) : padding,
+            child: BlocBuilder<DetailsBloc, DetailsState>(
+                buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+                builder: (_, state) => AnimatedPadding(
+                      padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
                       duration: Duration(milliseconds: 200),
                       child: ListView.builder(
                           padding: EdgeInsets.zero,
@@ -118,11 +117,10 @@ class HeaderBar extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: SizedBox(
           height: _height,
-          child: StreamBuilder<bool>(
-            initialData: false,
-            stream: context.read<DetailsBloc>().pinnedHeaderStream,
-            builder: (_, headerSnapsot) => AnimatedPadding(
-                padding: headerSnapsot.data! ? padding.copyWith(left: padding.left + 40) : padding,
+          child: BlocBuilder<DetailsBloc, DetailsState>(
+            buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+            builder: (_, state) => AnimatedPadding(
+                padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
                 duration: Duration(milliseconds: 200),
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
