@@ -4,8 +4,10 @@ import 'package:flutter/material.dart' hide Drawer;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 import 'package:jellyflut/screens/home/cubit/home_cubit.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';
 
+import 'components/drawer/custom_drawer.dart';
 import 'header_bar.dart';
 
 class HomeDrawerTabsBuilder extends StatelessWidget {
@@ -33,7 +35,7 @@ class HomeTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<HomeCubit>();
     return AutoTabsScaffold(
-        // drawer: CustomDrawer(items: context.read<HomeCubit>().state.items),
+        drawer: CustomDrawer(items: context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items)),
         drawerEnableOpenDragGesture: true,
         drawerEdgeDragWidth: 300,
         routes: cubit.state.routes,

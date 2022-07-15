@@ -33,14 +33,11 @@ class _IptvState extends State<Iptv> with HomeTab, TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ExcludeFocus(excluding: excluding, child: tabsBuilder());
-  }
-
-  Widget tabsBuilder() {
-    return TabBarView(
+    return super.parentBuild(
+        child: TabBarView(
       controller: super.tabController,
       children: [listItems(), guide()],
-    );
+    ));
   }
 
   Widget listItems() {

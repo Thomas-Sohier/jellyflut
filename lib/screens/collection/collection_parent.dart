@@ -36,8 +36,7 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
 
   @override
   Widget build(BuildContext context) {
-    return ExcludeFocus(
-      excluding: excluding,
+    return super.parentBuild(
       child: Stack(children: [
         if (widget.item.collectionType == CollectionType.movies ||
             widget.item.collectionType == CollectionType.books ||

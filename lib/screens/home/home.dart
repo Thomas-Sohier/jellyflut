@@ -44,13 +44,12 @@ class _HomeViewState extends State<HomeView> with HomeTab, TickerProviderStateMi
   Widget build(BuildContext context) {
     final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
 
-    return ExcludeFocus(
-        excluding: excluding,
+    return super.parentBuild(
         child: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
-          const SliverToBoxAdapter(child: SizedBox(height: 10)),
-          const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.resume)),
-          const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.latest)),
-          ...items.map((i) => SliverToBoxAdapter(child: HomeCategory.fromItem(item: i))).toList()
-        ]));
+      const SliverToBoxAdapter(child: SizedBox(height: 10)),
+      const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.resume)),
+      const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.latest)),
+      ...items.map((i) => SliverToBoxAdapter(child: HomeCategory.fromItem(item: i))).toList()
+    ]));
   }
 }

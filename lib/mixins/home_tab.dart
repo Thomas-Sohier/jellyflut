@@ -9,16 +9,26 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
   late final TabsRouter _tabsRouter;
   final List<Widget> tabs = [];
   late TabController tabController;
-  late bool excluding;
+  late ValueNotifier<bool> excluding;
 
   @override
   void initState() {
     super.initState();
-    excluding = false;
+    excluding = ValueNotifier(false);
     _tabsRouter = context.tabsRouter;
     _tabsRouter.addListener(_excludeWatcher);
     _homeTabsProvider = HomeTabsProvider();
     _homeTabsProvider.setTabs(tabs, tabController);
+  }
+
+  Widget parentBuild({Widget? child}) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: excluding,
+      builder: (BuildContext context, bool value, Widget? child) {
+        return ExcludeFocus(excluding: value, child: child ?? const SizedBox());
+      },
+      child: child,
+    );
   }
 
   @override
@@ -30,12 +40,12 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
 
   void _excludeWatcher() {
     final index = _tabsRouter.activeIndex;
-    final activeChild = _tabsRouter.stack[index].routeData;
-    if (activeChild.key == widget.key) {
-      setState(() => excluding = false);
+    final activeChild = _tabsRouter.stack[index].arguments as dynamic;
+    if (activeChild?.key == widget.key) {
+      excluding.value = false;
       _homeTabsProvider.setTabs(tabs, tabController);
     } else {
-      setState(() => excluding = true);
+      excluding.value = true;
     }
   }
 }
