@@ -24,6 +24,10 @@ dependencies:
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
   community_material_icon: ^5.9.55
+  live_tv_api:
+    path: packages/live_tv_api
+  live_tv_repository:
+    path: packages/live_tv_repository
   cupertino_icons: ^1.0.5
   dart_vlc:
     git:

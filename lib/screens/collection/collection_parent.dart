@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/components/carroussel/carrousselBackGroundImage.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/providers/items/carroussel_provider.dart';
@@ -38,27 +37,25 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
   Widget build(BuildContext context) {
     return super.parentBuild(
       child: Stack(children: [
-        if (widget.item.collectionType == CollectionType.movies ||
-            widget.item.collectionType == CollectionType.books ||
-            widget.item.collectionType == CollectionType.tvshows)
-          ChangeNotifierProvider.value(value: carrousselProvider, child: CarrousselBackGroundImage()),
-        ListItems.fromFuture(
-            itemsFuture: getItems(item: widget.item),
-            verticalListPosterHeight: 250,
-            loadMoreFunction: (int startIndex, int numberOfItemsToLoad) =>
-                getItems(item: widget.item, startIndex: startIndex, limit: numberOfItemsToLoad),
-            listType: ListType.GRID),
+        // if (widget.item.collectionType == CollectionType.movies ||
+        //     widget.item.collectionType == CollectionType.books ||
+        //     widget.item.collectionType == CollectionType.tvshows)
+        //   ChangeNotifierProvider.value(value: carrousselProvider, child: CarrousselBackGroundImage()),
+
+        ListItems.fromCustomRequest(
+            fetchMethod: (startIndex, limit) => getItems(startIndex: startIndex, limit: limit),
+            verticalListPosterHeight: 250),
       ]),
     );
   }
 
-  Future<Category> getItems({required Item item, int startIndex = 0, int limit = 100}) async {
-    return context.read<ItemsRepository>().getCategory(
-        parentId: item.id,
+  Future<List<Item>> getItems({int startIndex = 0, int limit = 100}) async {
+    final category = await context.read<ItemsRepository>().getCategory(
+        parentId: widget.item.id,
         fields: 'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview,ChildCount',
-        recursive: false,
         startIndex: startIndex,
-        includeItemTypes: item.getCollectionType().map((ItemType e) => e.name).toList().join(','),
+        includeItemTypes: widget.item.getCollectionType().map((ItemType e) => e.name).toList().join(','),
         limit: limit);
+    return category.items;
   }
 }

@@ -1,7 +1,4 @@
-import 'package:universal_io/io.dart';
-
 import 'package:flutter/material.dart';
-import 'package:jellyflut/screens/home/components/jellyfin_logo.dart';
 
 import '../details/template/components/user_icon.dart';
 import 'components/download_button.dart';
@@ -30,20 +27,5 @@ class HeaderBar extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  List<Widget> logoAndText() {
-    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
-      return <Widget>[
-        const SizedBox(width: 8),
-        Hero(tag: 'logo', child: const JellyfinLogo()),
-        const Padding(padding: EdgeInsets.fromLTRB(6, 0, 0, 0)),
-        Hero(
-          tag: 'logo_text',
-          child: Text('Jellyfin', style: TextStyle(fontSize: 22, fontFamily: 'Quicksand')),
-        )
-      ];
-    }
-    return [];
   }
 }

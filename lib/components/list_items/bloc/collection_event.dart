@@ -4,14 +4,18 @@ class CollectionEvent {
   const CollectionEvent();
 }
 
+class InitCollectionRequested extends CollectionEvent {
+  const InitCollectionRequested();
+}
+
 class AddItem extends CollectionEvent {
   final List<Item> items;
 
   const AddItem({required this.items});
 }
 
-class ClearItem extends CollectionEvent {
-  const ClearItem();
+class ClearItemsRequested extends CollectionEvent {
+  const ClearItemsRequested();
 }
 
 class SortByField extends CollectionEvent {
@@ -20,6 +24,12 @@ class SortByField extends CollectionEvent {
   const SortByField({required this.fieldEnum});
 }
 
-class LoadMoreItems extends CollectionEvent {
-  const LoadMoreItems();
+class LoadMoreItemsRequested extends CollectionEvent {
+  const LoadMoreItemsRequested();
+}
+
+class SetScrollController extends CollectionEvent {
+  final ScrollController scrollController;
+
+  const SetScrollController({required this.scrollController});
 }

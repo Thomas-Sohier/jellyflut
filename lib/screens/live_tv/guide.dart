@@ -49,6 +49,16 @@ class _GuideState extends State<Guide> {
   }
 
   Widget placeholder() {
+    return 
+  }
+}
+
+
+class GuidePlaceholder extends StatelessWidget {
+  const GuidePlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Shimmer.fromColors(
         enabled: shimmerAnimation,
         baseColor: shimmerColor1,
@@ -76,23 +86,4 @@ class _GuideState extends State<Guide> {
                   ),
                 ))));
   }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-SplayTreeMap<Item, List<Item>> parseChannels(ParseChannelsParameters params) {
-  return SplayTreeMap.from(
-      c.groupBy(params.programs, (Item v) => v.channelId).map((key, value) {
-        final item = params.channels.firstWhere((c) => c.id == key);
-        return MapEntry(item, value);
-      }),
-      (item1, item2) => int.parse(item1.channelNumber!).compareTo(int.parse(item2.channelNumber!)));
-}
-
-class ParseChannelsParameters {
-  final List<Item> channels;
-  final List<Item> programs;
-
-  ParseChannelsParameters({required this.channels, required this.programs});
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/screens/home/components/search/search_no_results_placeholder.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -46,17 +44,18 @@ class _SearchResultState extends State<SearchResult> {
           scrollDirection: Axis.vertical,
           itemBuilder: (_, index) {
             final category = search.searchResult.values.toList().elementAt(index);
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: ListItems.fromFuture(
-                  key: ValueKey(category),
-                  itemsFuture: category,
-                  horizontalListPosterHeight: itemPosterHeight,
-                  showIfEmpty: false,
-                  showTitle: true,
-                  showSorting: false,
-                  listType: ListType.POSTER),
-            );
+            return const SizedBox();
+            // return Padding(
+            //   padding: const EdgeInsets.only(bottom: 12),
+            //   child: ListItems(
+            //       key: ValueKey(category),
+            //       parentItem: category,
+            //       horizontalListPosterHeight: itemPosterHeight,
+            //       showIfEmpty: false,
+            //       showTitle: true,
+            //       showSorting: false,
+            //       listType: ListType.poster),
+            // );
           },
         );
       } else if (search.searchResult.isEmpty) {

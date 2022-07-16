@@ -7,6 +7,7 @@ import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 mixin HomeTab<T extends StatefulWidget> on State<T> {
   late final HomeTabsProvider _homeTabsProvider;
   late final TabsRouter _tabsRouter;
+  //late final StackRouter _stackRouter;
   final List<Widget> tabs = [];
   late TabController tabController;
   late ValueNotifier<bool> excluding;
@@ -16,16 +17,24 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
     super.initState();
     excluding = ValueNotifier(false);
     _tabsRouter = context.tabsRouter;
+    // _stackRouter = context.router;
     _tabsRouter.addListener(_excludeWatcher);
+    // _stackRouter.addListener(_excludeWatcherOnPush);
     _homeTabsProvider = HomeTabsProvider();
-    _homeTabsProvider.setTabs(tabs, tabController);
+    // _homeTabsProvider.setTabs(tabs, tabController);
   }
 
   Widget parentBuild({Widget? child}) {
     return ValueListenableBuilder<bool>(
       valueListenable: excluding,
       builder: (BuildContext context, bool value, Widget? child) {
-        return ExcludeFocus(excluding: value, child: child ?? const SizedBox());
+        return Visibility(
+            visible: !value,
+            maintainInteractivity: false,
+            maintainAnimation: false,
+            maintainSize: false,
+            maintainState: true,
+            child: ExcludeFocus(excluding: value, child: child ?? const SizedBox()));
       },
       child: child,
     );
@@ -35,17 +44,35 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
   void dispose() {
     super.dispose();
     _tabsRouter.removeListener(_excludeWatcher);
+    //_stackRouter.removeListener(_excludeWatcherOnPush);
     tabController.dispose();
+    //_stackRouter.dispose();
   }
 
   void _excludeWatcher() {
     final index = _tabsRouter.activeIndex;
-    final activeChild = _tabsRouter.stack[index].arguments as dynamic;
-    if (activeChild?.key == widget.key) {
+    final activeChildArgs = _tabsRouter.stack[index].arguments as dynamic;
+    if (activeChildArgs?.key == widget.key) {
       excluding.value = false;
-      _homeTabsProvider.setTabs(tabs, tabController);
+      // _homeTabsProvider.setTabs(tabs, tabController);
     } else {
       excluding.value = true;
     }
   }
+
+  // void _excludeWatcherOnPush() {
+  //   try {
+  //     // Try to find the key of current âge in stack
+  //     // if none found we exclude it
+  //     final activeChildKey = (_stackRouter.current.args as dynamic).key;
+  //     if (activeChildKey == widget.key) {
+  //       excluding.value = false;
+  //       _homeTabsProvider.setTabs(tabs, tabController);
+  //     } else {
+  //       excluding.value = true;
+  //     }
+  //   } catch (_) {
+  //     excluding.value = true;
+  //   }
+  // }
 }

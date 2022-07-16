@@ -17,6 +17,7 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
+import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ class App extends StatelessWidget {
       required this.downloadsRepository,
       required this.itemsRepository,
       required this.usersRepository,
+      required this.liveTvRepository,
       required this.musicPlayerRepository});
 
   final Database database;
@@ -48,6 +50,7 @@ class App extends StatelessWidget {
   final DownloadsRepository downloadsRepository;
   final ItemsRepository itemsRepository;
   final UsersRepository usersRepository;
+  final LiveTvRepository liveTvRepository;
   final MusicPlayerRepository musicPlayerRepository;
   final ThemeProvider themeProvider;
 
@@ -90,7 +93,8 @@ class App extends StatelessWidget {
                 RepositoryProvider.value(value: downloadsRepository),
                 RepositoryProvider.value(value: itemsRepository),
                 RepositoryProvider.value(value: usersRepository),
-                RepositoryProvider.value(value: musicPlayerRepository)
+                RepositoryProvider.value(value: musicPlayerRepository),
+                RepositoryProvider.value(value: liveTvRepository)
               ],
               child: EasyLocalization(
                   supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],

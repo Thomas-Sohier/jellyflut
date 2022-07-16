@@ -21,8 +21,8 @@ class ListTitle extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline4,
               ),
             ),
-            SizedBox(height: 12),
-            child
+            const SizedBox(height: 12),
+            Expanded(child: child)
           ]);
     }
     return child;

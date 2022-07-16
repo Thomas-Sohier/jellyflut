@@ -43,7 +43,8 @@ class _HomeViewState extends State<HomeView> with HomeTab, TickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
-
+    // TODO try to store HomeCategory "state" upper in widget tree using BLoC to allow [visibility] widget from [HomeTab] mixin
+    // to not maintain state and allow better performance while resizing (for example)
     return super.parentBuild(
         child: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
       const SliverToBoxAdapter(child: SizedBox(height: 10)),

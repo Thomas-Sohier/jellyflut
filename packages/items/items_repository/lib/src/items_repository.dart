@@ -40,12 +40,14 @@ class ItemsRepository {
   /// Get an item from jellyfin API with an ID
   /// Can add other parameter (already good defaults for most queries)
   ///
+  /// [recursive] => When searching within folders, this determines whether or not the search will be recursive. true/false
+  ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getCategory(
           {String? parentId,
           String? albumArtistIds,
           String? personIds,
-          String? filter = 'IsNotFolder',
+          String? filter,
           bool? recursive = true,
           List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
           String? sortOrder = 'Descending',
@@ -56,7 +58,7 @@ class ItemsRepository {
           int? startIndex = 0,
           int? imageTypeLimit = 1,
           String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
-          String? excludeLocationTypes = 'Virtual',
+          String? excludeLocationTypes,
           bool? enableTotalRecordCount = false,
           bool? collapseBoxSetItems = false}) =>
       _itemsApi.getCategory(

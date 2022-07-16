@@ -6,28 +6,60 @@ import 'package:flutter/foundation.dart' hide Category;
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 /// Exception thrown when item request fails.
-class ItemViewRequestFailure implements Exception {}
+class ItemViewRequestFailure implements Exception {
+  final dynamic message;
+
+  const ItemViewRequestFailure([this.message]);
+}
 
 /// Exception thrown when item request fails.
-class ItemFavoriteRequestFailure implements Exception {}
+class ItemFavoriteRequestFailure implements Exception {
+  final dynamic message;
+
+  const ItemFavoriteRequestFailure([this.message]);
+}
 
 /// Exception thrown when item request fails.
-class ItemRequestFailure implements Exception {}
+class ItemRequestFailure implements Exception {
+  final dynamic message;
+
+  const ItemRequestFailure([this.message]);
+}
 
 /// Exception thrown when item for provided ID is not found.
-class ItemNotFoundFailure implements Exception {}
+class ItemNotFoundFailure implements Exception {
+  final dynamic message;
+
+  const ItemNotFoundFailure([this.message]);
+}
 
 /// Exception thrown when item update has failed.
-class ItemUpdateFailure implements Exception {}
+class ItemUpdateFailure implements Exception {
+  final dynamic message;
+
+  const ItemUpdateFailure([this.message]);
+}
 
 /// Exception thrown when item search has failed.
-class ItemSearchFailure implements Exception {}
+class ItemSearchFailure implements Exception {
+  final dynamic message;
+
+  const ItemSearchFailure([this.message]);
+}
 
 /// Exception thrown when views request has failed.
-class ViewRequestFailure implements Exception {}
+class ViewRequestFailure implements Exception {
+  final dynamic message;
+
+  const ViewRequestFailure([this.message]);
+}
 
 /// Exception thrown when images request has failed.
-class IamgeRequestFailure implements Exception {}
+class IamgeRequestFailure implements Exception {
+  final dynamic message;
+
+  const IamgeRequestFailure([this.message]);
+}
 
 /// {@template items_api}
 /// A dart API client for the Jellyfin Item API
@@ -112,8 +144,8 @@ class ItemsApi {
       }
 
       return compute(Category.fromMap, response.data!);
-    } catch (_) {
-      throw ItemRequestFailure();
+    } catch (e) {
+      throw ItemRequestFailure(e);
     }
   }
 

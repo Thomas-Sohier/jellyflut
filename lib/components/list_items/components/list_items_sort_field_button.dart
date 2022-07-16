@@ -13,27 +13,17 @@ class ListItemsSortFieldButton extends StatefulWidget {
 }
 
 class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
-  late final CollectionBloc collectionBloc;
   late final GlobalKey<PopupMenuButtonState<FieldsEnum>> popupButtonKey;
   late FieldsEnum? currentValue;
 
   @override
   void initState() {
     popupButtonKey = GlobalKey();
-    collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    currentValue = collectionBloc.getCurrentSortedValue.value;
-    collectionBloc.getCurrentSortedValue.addListener(listSortedValue);
     super.initState();
   }
 
-  @override
-  void dispose() {
-    collectionBloc.getCurrentSortedValue.removeListener(listSortedValue);
-    super.dispose();
-  }
-
   void listSortedValue() {
-    currentValue = collectionBloc.getCurrentSortedValue.value;
+    // currentValue = collectionBloc.getCurrentSortedValue.value;
   }
 
   @override
@@ -45,7 +35,7 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
         child: IgnorePointer(
           child: PopupMenuButton<FieldsEnum>(
             key: popupButtonKey,
-            initialValue: currentValue,
+            initialValue: FieldsEnum.AIRDAYS,
             onSelected: (FieldsEnum? field) => sortByField(context, field),
             itemBuilder: (BuildContext c) => _fieldTile(c),
             child: Icon(
@@ -70,14 +60,15 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
   }
 
   Widget _leadingListTile() {
-    late final IconData icon;
-    if (collectionBloc.getSortOrder == SortBy.ASC) {
-      icon = Icons.arrow_upward;
-    } else if (collectionBloc.getSortOrder == SortBy.DESC) {
-      icon = Icons.arrow_downward;
-    }
+    // late final IconData icon;
+    // final collectionBloc = context.read<CollectionBloc>();
+    // if (collectionBloc.getSortOrder == SortBy.ASC) {
+    //   icon = Icons.arrow_upward;
+    // } else if (collectionBloc.getSortOrder == SortBy.DESC) {
+    //   icon = Icons.arrow_downward;
+    // }
 
-    return Icon(icon, color: Theme.of(context).iconTheme.color);
+    return Icon(Icons.arrow_downward, color: Theme.of(context).iconTheme.color);
   }
 
   void sortByField(final BuildContext context, final FieldsEnum? fieldEnum) {

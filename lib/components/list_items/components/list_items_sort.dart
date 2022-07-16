@@ -2,9 +2,8 @@ part of '../list_items_parent.dart';
 
 class ListItemsSort extends StatelessWidget {
   final Widget child;
-  final List<ListType> listTypes;
 
-  const ListItemsSort({super.key, this.child = const SizedBox(), required this.listTypes});
+  const ListItemsSort({super.key, this.child = const SizedBox()});
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +57,10 @@ class ListItemsSort extends StatelessWidget {
   }
 
   void getNextListType(final BuildContext context) async {
-    final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    final currentListType = collectionBloc.listType.stream.value;
-    final nextIndex =
-        listTypes.indexOf(currentListType) == listTypes.length - 1 ? 0 : listTypes.indexOf(currentListType) + 1;
-    collectionBloc.listType.add(listTypes.elementAt(nextIndex));
+    // final collectionBloc = BlocProvider.of<CollectionBloc>(context);
+    // final currentListType = collectionBloc.listType.stream.value;
+    // final nextIndex =
+    //     ListType.values.indexOf(currentListType) == ListType.values.length - 1 ? 0 : ListType.values.indexOf(currentListType) + 1;
+    // collectionBloc.listType.add(ListType.values.elementAt(nextIndex));
   }
 }

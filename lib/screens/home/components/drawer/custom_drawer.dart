@@ -1,48 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/screens/home/shared/icon_navigation_mapper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import '../../cubit/home_cubit.dart';
 import 'drawer_large_button.dart';
 
-class CustomDrawer extends StatefulWidget {
-  final List<Item> items;
-  CustomDrawer({super.key, required this.items});
-
-  @override
-  State<CustomDrawer> createState() => _CustomDrawerState();
-}
-
-class _CustomDrawerState extends State<CustomDrawer> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
     return Drawer(
-      child: ListView(controller: _scrollController, children: createButtonRouteDesktop(widget.items)),
-    );
+        child: ListView(controller: ScrollController(), children: [
+      const DrawerLargeButton(
+        index: 0,
+        name: 'Home',
+        icon: Icons.home_outlined,
+      ),
+      ...items.map((i) => DrawerLargeButton(
+            index: items.indexOf(i) + 1,
+            name: i.name ?? '',
+            icon: _getRightIconForCollectionType(i.collectionType),
+          ))
+    ]));
   }
 
-  List<Widget> createButtonRouteDesktop(List<Item> items) {
-    final navBarItems = <Widget>[];
-    //initial route
-    navBarItems.add(DrawerLargeButton(name: 'Home', index: 0, icon: Icons.home_outlined));
-    for (var item in items) {
-      navBarItems.add(DrawerLargeButton(
-          index: items.indexOf(item) + 1,
-          name: item.name ?? '',
-          icon: getRightIconForCollectionType(item.collectionType)));
+  IconData _getRightIconForCollectionType(CollectionType? collectionType) {
+    switch (collectionType) {
+      case CollectionType.books:
+        return Icons.book_outlined;
+      case CollectionType.tvshows:
+        return Icons.tv_outlined;
+      case CollectionType.boxsets:
+        return Icons.account_box_outlined;
+      case CollectionType.movies:
+        return Icons.movie_outlined;
+      case CollectionType.music:
+        return Icons.music_note_outlined;
+      case CollectionType.homevideos:
+        return Icons.video_camera_back_outlined;
+      case CollectionType.musicvideos:
+        return Icons.music_video_outlined;
+      case CollectionType.mixed:
+        return Icons.blender_outlined;
+      default:
+        return Icons.tv;
     }
-    return navBarItems;
   }
 }

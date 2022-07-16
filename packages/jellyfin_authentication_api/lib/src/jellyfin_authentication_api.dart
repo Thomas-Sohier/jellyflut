@@ -78,5 +78,5 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
 class AuthenticationFailure implements Exception {
   final dynamic message;
 
-  AuthenticationFailure([this.message]);
+  const AuthenticationFailure([this.message]);
 }

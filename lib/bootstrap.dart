@@ -16,6 +16,8 @@ import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
+import 'package:live_tv_api/live_tv_api.dart';
+import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -35,6 +37,7 @@ void bootstrap(
     required DownloadsApi downloadsApi,
     required ItemsApi itemsApi,
     required UsersApi usersApi,
+    required LiveTvApi liveTvApi,
     required MusicPlayerApi musicPlayerApi}) {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
@@ -51,6 +54,7 @@ void bootstrap(
       ItemsRepository(itemsApi: itemsApi, database: database, authenticationrepository: authenticationRepository);
   final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);
   final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
+  final liveTvRepository = LiveTvRepository(liveTvApi: liveTvApi, authenticationrepository: authenticationRepository);
 
   // Init auth bloc here to use it down the tree in AppView
   // Needed to route correctly without context
@@ -75,6 +79,7 @@ void bootstrap(
               downloadsRepository: downloadsRepository,
               itemsRepository: itemsRepository,
               usersRepository: usersRepository,
+              liveTvRepository: liveTvRepository,
               musicPlayerRepository: musicPlayerRepository),
         ),
         blocObserver: AppBlocObserver(),

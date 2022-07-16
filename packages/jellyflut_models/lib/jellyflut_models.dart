@@ -2,7 +2,6 @@
 library sqlite_database;
 
 export 'src/enum/index.dart';
-export 'src/iptv/iptv.dart';
 export 'src/jellyfin/index.dart';
 export 'src/players/players.dart';
 export 'src/streaming/streaming.dart';

@@ -33,7 +33,7 @@ class DrawerLargeButton extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Flexible(child: Text(name, style: TextStyle(color: isActive ? activeColor : inactiveColor)))
                 ],
               )),

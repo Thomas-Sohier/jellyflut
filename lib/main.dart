@@ -7,6 +7,7 @@ import 'package:jellyfin_authentication_api/jellyfin_authentication_api.dart';
 import 'package:jellyflut/bootstrap.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/dio/dio_helper.dart';
+import 'package:live_tv_api/live_tv_api.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqlite_database/sqlite_database.dart';
@@ -33,6 +34,7 @@ void main() async {
   final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
   final itemsApi = ItemsApi(dioClient: dioClient);
   final usersApi = UsersApi(dioClient: dioClient);
+  final liveTvApi = LiveTvApi(dioClient: dioClient);
   final musicPlayerApi = MusicPlayerApi();
 
   bootstrap(
@@ -44,5 +46,6 @@ void main() async {
       authenticationApi: authenticationApi,
       itemsApi: itemsApi,
       usersApi: usersApi,
+      liveTvApi: liveTvApi,
       musicPlayerApi: musicPlayerApi);
 }
