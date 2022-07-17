@@ -9,8 +9,15 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'cubit/home_cubit.dart';
 import 'home_category/cubit/home_category_cubit.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomePage extends StatelessWidget {
+  /// This property is only there to make auto_route generate page arguments so
+  /// we can pass a key to the route. Auto_route doesn't generate page arguments
+  /// if there is only [super.key] as a param
+  ///
+  /// Do nothing
+  final String? blank;
+
+  const HomePage({super.key, this.blank});
 
   @override
   Widget build(BuildContext context) {

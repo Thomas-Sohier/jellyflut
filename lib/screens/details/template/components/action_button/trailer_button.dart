@@ -1,17 +1,10 @@
 part of '../action_button.dart';
 
-class TrailerButton extends StatefulWidget {
-  final Item item;
+class TrailerButton extends StatelessWidget {
   final double maxWidth;
-  TrailerButton({super.key, required this.item, this.maxWidth = 150});
 
   @override
-  State<TrailerButton> createState() => _TrailerButtonState();
-}
-
-class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
-  Item get item => widget.item;
-  double get maxWidth => widget.maxWidth;
+  const TrailerButton({super.key, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +16,11 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
         icon: Icon(Icons.movie, color: Colors.black87));
   }
 
-  void playTrailer(MediaUrl trailer) async {
+  void playTrailer(BuildContext context, MediaUrl trailer) async {
+    final state = context.read<DetailsBloc>().state;
     try {
-      final url = await item.getYoutubeTrailerUrl(trailer);
-      await context.router.root.push(r.StreamPage(url: url.toString(), item: item));
+      final url = await state.item.getYoutubeTrailerUrl(trailer);
+      await context.router.root.push(r.StreamPage(url: url.toString(), item: state.item));
     } catch (exception) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -38,13 +32,14 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
   }
 
   void trailersDialog(BuildContext context) {
-    final trailers = item.remoteTrailers;
+    final state = context.read<DetailsBloc>().state;
+    final trailers = state.item.remoteTrailers;
     showDialog(
         barrierDismissible: true,
         context: context,
         builder: (_) {
           return Theme(
-              data: getThemeData,
+              data: state.theme,
               child: Builder(
                   // Create an inner BuildContext so that we can refer to
                   // the Theme with Theme.of().
@@ -66,7 +61,7 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
                                 return Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 4),
                                     child: TrailerDialogButton(
-                                        playTrailer: playTrailer, theme: getThemeData, trailer: trailers[index]));
+                                        playTrailer: playTrailer, theme: state.theme, trailer: trailers[index]));
                               }),
                         ),
                       )));
@@ -75,7 +70,7 @@ class _TrailerButtonState extends State<TrailerButton> with AppThemeGrabber {
 }
 
 class TrailerDialogButton extends StatelessWidget {
-  final void Function(MediaUrl) playTrailer;
+  final void Function(BuildContext, MediaUrl) playTrailer;
   final ThemeData theme;
   final MediaUrl trailer;
 
@@ -84,7 +79,7 @@ class TrailerDialogButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      onPressed: () => playTrailer(trailer),
+      onPressed: () => playTrailer(context, trailer),
       padding: const EdgeInsets.only(left: 2, top: 4, bottom: 4),
       primary: theme.colorScheme.onBackground,
       child: Row(

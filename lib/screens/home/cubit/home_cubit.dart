@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
     for (var item in i) {
       switch (item.collectionType) {
         case CollectionType.livetv:
-          routes.add(r.IptvPage(key: UniqueKey()));
+          routes.add(r.LiveTvPage(key: UniqueKey()));
           break;
         default:
           routes.add(r.CollectionPage(key: UniqueKey(), item: item));

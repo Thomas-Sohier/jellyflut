@@ -8,6 +8,7 @@ import 'cubit/home_cubit.dart';
 
 class HomeParent extends StatelessWidget {
   const HomeParent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

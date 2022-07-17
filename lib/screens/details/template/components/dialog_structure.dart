@@ -50,8 +50,17 @@ class DialogStructure extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        TextButton(onPressed: onClose, child: Text('cancel'.tr())),
-                        TextButton(onPressed: onSubmit, child: Text('edit'.tr()))
+                        TextButton(
+                            onPressed: onClose,
+                            style: TextButton.styleFrom(
+                                textStyle: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+                            child: Text('cancel'.tr())),
+                        const SizedBox(width: 4),
+                        TextButton(
+                            onPressed: onSubmit,
+                            style: TextButton.styleFrom(
+                                textStyle: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
+                            child: Text('edit'.tr(), style: TextStyle(color: Theme.of(context).colorScheme.primary)))
                       ]),
                 )),
           ]),

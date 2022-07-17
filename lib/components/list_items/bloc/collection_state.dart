@@ -6,6 +6,19 @@ enum ListType {
   poster,
   list,
   grid;
+
+  const ListType();
+
+  ListType getNextListType() => ListType.values[(index + 1) >= ListType.values.length ? 0 : index + 1];
+}
+
+enum SortBy {
+  ASC,
+  DESC;
+
+  const SortBy();
+
+  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
 }
 
 class CollectionState extends Equatable {
@@ -16,6 +29,8 @@ class CollectionState extends Equatable {
   final bool showTitle;
   final bool showIfEmpty;
   final bool showSorting;
+  final SortBy sortBy;
+  final String sortField;
   final CollectionStatus collectionStatus;
   final ScrollController scrollController;
   final Future<List<Item>> Function(int startIndex, int limit) fetchMethod;
@@ -23,12 +38,14 @@ class CollectionState extends Equatable {
   const CollectionState(
       {required this.scrollController,
       required this.fetchMethod,
+      this.sortField = '',
       this.carouselSliderItems = const <Item>[],
       this.items = const <Item>[],
       this.canLoadMore = true,
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
+      this.sortBy = SortBy.DESC,
       this.collectionStatus = CollectionStatus.initial,
       this.listType = ListType.grid});
 
@@ -40,6 +57,8 @@ class CollectionState extends Equatable {
     bool? showTitle,
     bool? showIfEmpty,
     bool? showSorting,
+    SortBy? sortBy,
+    String? sortField,
     ScrollController? scrollController,
     CollectionStatus? collectionStatus,
   }) {
@@ -52,6 +71,8 @@ class CollectionState extends Equatable {
         showTitle: showTitle ?? this.showTitle,
         showIfEmpty: showIfEmpty ?? this.showIfEmpty,
         showSorting: showSorting ?? this.showSorting,
+        sortBy: sortBy ?? this.sortBy,
+        sortField: sortField ?? this.sortField,
         scrollController: scrollController ?? this.scrollController,
         collectionStatus: collectionStatus ?? this.collectionStatus);
   }
@@ -66,6 +87,8 @@ class CollectionState extends Equatable {
         showTitle,
         showIfEmpty,
         showSorting,
+        sortBy,
+        sortField,
         listType
       ];
 }

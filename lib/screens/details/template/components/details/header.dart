@@ -16,7 +16,9 @@ class Header extends StatelessWidget {
           if (state.screenLayout == ScreenLayout.mobile) {
             return Center(
               child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: itemPosterHeight), child: Poster(item: state.item)),
+                constraints: BoxConstraints(maxHeight: itemPosterHeight),
+                child: const Poster(),
+              ),
             );
           } else {
             if (state.item.hasLogo()) return Logo(item: state.item);

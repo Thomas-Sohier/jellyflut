@@ -35,19 +35,42 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
-        builder: (_, state) => Theme(
-            data: state.theme,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                    statusBarColor: Colors.transparent,
-                    statusBarIconBrightness: state.theme.colorScheme.onBackground.computeLuminance() > 0.5
-                        ? Brightness.light
-                        : Brightness.dark),
-                child: Scaffold(
-                    body: context.read<DetailsBloc>().state.item.type != ItemType.Photo
-                        ? const LargeDetails()
-                        : const PhotoItem()))));
+    return _SubtreeBuilder(
+        builder: (_, child) {
+          return BlocBuilder<DetailsBloc, DetailsState>(
+              buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
+              builder: (_, state) => Theme(
+                  data: state.theme,
+                  child: AnnotatedRegion<SystemUiOverlayStyle>(
+                      value: SystemUiOverlayStyle(
+                          statusBarColor: Colors.transparent,
+                          statusBarIconBrightness: state.theme.colorScheme.onBackground.computeLuminance() > 0.5
+                              ? Brightness.light
+                              : Brightness.dark),
+                      child: child ?? const SizedBox())));
+        },
+        child: Scaffold(
+            body: context.read<DetailsBloc>().state.item.type != ItemType.Photo
+                ? const LargeDetails()
+                : const PhotoItem()));
+  }
+}
+
+/// Helper class to only build parent which can change while preserving subtree
+/// Optimize loading time with huge subtree (such as DetailsPage)
+class _SubtreeBuilder extends StatelessWidget {
+  @override
+  const _SubtreeBuilder({
+    super.key,
+    required this.builder,
+    this.child,
+  });
+
+  final Widget Function(BuildContext context, Widget? child) builder;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return builder(context, child);
   }
 }

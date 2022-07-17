@@ -20,7 +20,7 @@ class ListItemsSort extends StatelessWidget {
                 size: 26,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
-              onPressed: () => getNextListType(context)),
+              onPressed: () => context.read<CollectionBloc>().add(ListTypeChangeRequested())),
           OutlinedButtonSelector(
               padding: EdgeInsets.all(8),
               shape: CircleBorder(),
@@ -29,7 +29,7 @@ class ListItemsSort extends StatelessWidget {
                 size: 26,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
-              onPressed: () => sortByDate(context)),
+              onPressed: () => context.read<CollectionBloc>().add(SortByField(fieldEnum: FieldsEnum.DATECREATED))),
           OutlinedButtonSelector(
               padding: EdgeInsets.all(8),
               shape: CircleBorder(),
@@ -38,29 +38,11 @@ class ListItemsSort extends StatelessWidget {
                 size: 26,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
-              onPressed: () => sortByName(context)),
+              onPressed: () => context.read<CollectionBloc>().add(SortByField(fieldEnum: FieldsEnum.NAME))),
           ListItemsSortFieldButton()
         ]),
       ),
       child
     ]);
-  }
-
-  void sortByDate(final BuildContext context) {
-    final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.DATECREATED));
-  }
-
-  void sortByName(final BuildContext context) {
-    final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByField(fieldEnum: FieldsEnum.NAME));
-  }
-
-  void getNextListType(final BuildContext context) async {
-    // final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    // final currentListType = collectionBloc.listType.stream.value;
-    // final nextIndex =
-    //     ListType.values.indexOf(currentListType) == ListType.values.length - 1 ? 0 : ListType.values.indexOf(currentListType) + 1;
-    // collectionBloc.listType.add(ListType.values.elementAt(nextIndex));
   }
 }

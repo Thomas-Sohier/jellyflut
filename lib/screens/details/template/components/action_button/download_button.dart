@@ -1,10 +1,9 @@
 part of '../action_button.dart';
 
 class DownloadButton extends StatefulWidget {
-  final Item item;
   final double maxWidth;
 
-  const DownloadButton({super.key, required this.item, this.maxWidth = 150});
+  const DownloadButton({super.key, this.maxWidth = 150});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,15 +20,16 @@ class _DownloadButtonState extends State<DownloadButton> {
 
   @override
   void initState() {
-    downloadProvider = DownloadProvider();
-    final isItemDownload = downloadProvider.isItemDownloadPresent(widget.item.id);
+    final state = context.read<DetailsBloc>().state;
+    downloadProvider = context.read<DownloadProvider>();
+    final isItemDownload = downloadProvider.isItemDownloadPresent(state.item.id);
     if (isItemDownload) {
-      percentDownload = downloadProvider.getItemDownloadProgress(widget.item.id);
+      percentDownload = downloadProvider.getItemDownloadProgress(state.item.id);
       buttonEnabled = false;
     } else {
       percentDownload = BehaviorSubject<int>();
     }
-    isDownloaded = FileService.isItemDownloaded(widget.item.id);
+    isDownloaded = FileService.isItemDownloaded(state.item.id);
     super.initState();
   }
 
@@ -41,10 +41,11 @@ class _DownloadButtonState extends State<DownloadButton> {
   @override
   Widget build(BuildContext context) {
     // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
+    final state = context.read<DetailsBloc>().state;
     return PaletteButton('download'.tr(), onPressed: () {
       setState(() => buttonEnabled = false);
       downloadProvider
-          .downloadItem(widget.item, percentDownload, dialogRedownload)
+          .downloadItem(state.item, percentDownload, dialogRedownload)
           // ignore: invalid_return_type_for_catch_error
           .catchError((e) =>
               SnackbarUtil.message('Error while downloading. ${e.toString()}', Icons.file_download_off, Colors.red))
@@ -76,6 +77,7 @@ class _DownloadButtonState extends State<DownloadButton> {
   }
 
   Future<bool?> dialogRedownload() async {
+    final state = context.read<DetailsBloc>().state;
     return showDialog<bool?>(
         context: context,
         barrierDismissible: false,
@@ -90,7 +92,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                     textAlign: TextAlign.left,
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
-                          text: widget.item.name,
+                          text: state.item.name,
                           style: Theme.of(context).textTheme.bodyText1?.copyWith(fontStyle: FontStyle.italic)),
                       TextSpan(
                           text: ' seems to be already downloaded would you like to downlodad it again ?',
@@ -98,7 +100,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                       TextSpan(text: '\n\n'),
                       TextSpan(
                           text:
-                              ' It will overwrite any files with the name ${FileService.getItemStorageName(widget.item)}',
+                              ' It will overwrite any files with the name ${FileService.getItemStorageName(state.item)}',
                           style: Theme.of(context).textTheme.bodyText1),
                     ]))),
             actions: [
@@ -108,7 +110,7 @@ class _DownloadButtonState extends State<DownloadButton> {
                     AppDatabase()
                         .getDatabase
                         .downloadsDao
-                        .getDownloadById(widget.item.id)
+                        .getDownloadById(state.item.id)
                         .then(downloadProvider.deleteDownloadedFile);
                     context.router.root.pop<bool>(false);
                   },

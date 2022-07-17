@@ -7,7 +7,7 @@ import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/downloads/downloads_parent.dart';
 import 'package:jellyflut/screens/home/home.dart';
 import 'package:jellyflut/screens/home/home_parent.dart';
-import 'package:jellyflut/screens/iptv/iptv.dart';
+import 'package:jellyflut/screens/live_tv/live_tv.dart';
 import 'package:jellyflut/screens/music_player/music_player.dart';
 import 'package:jellyflut/screens/music_player/routes/playlist.dart';
 import 'package:jellyflut/screens/server/server_parent.dart';
@@ -44,9 +44,10 @@ const mainRouter = [
       initial: true,
       children: [
         AutoRoute(
-          page: Home,
+          page: HomePage,
           guards: [AuthGuard],
           path: '',
+          initial: true,
           name: 'HomePage',
         ),
         AutoRoute(
@@ -56,10 +57,10 @@ const mainRouter = [
           name: 'CollectionPage',
         ),
         AutoRoute(
-          page: Iptv,
+          page: LiveTvPage,
           guards: [AuthGuard],
-          path: 'iptv',
-          name: 'IptvPage',
+          path: 'live_tv',
+          name: 'liveTvPage',
         ),
       ]),
   CustomRoute(

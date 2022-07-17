@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -10,15 +12,16 @@ class LiveTvGuideCubit extends Cubit<LiveTvGuideState> {
   LiveTvGuideCubit({required LiveTvRepository liveTvRepository})
       : _liveTvRepository = liveTvRepository,
         super(const LiveTvGuideState()) {
-    loadLiveTvGuide();
+    unawaited(loadLiveTvGuide());
   }
 
   final LiveTvRepository _liveTvRepository;
 
-  void loadLiveTvGuide() async {
+  Future<void> loadLiveTvGuide({int? startIndex, int? limit}) async {
     emit(state.copyWith(status: LiveTvGuideStatus.loading));
     try {
-      final guide = await _liveTvRepository.getGuide(startIndex: state.guide.length, limit: state.limit);
+      final guide =
+          await _liveTvRepository.getGuide(startIndex: startIndex ?? state.guide.length, limit: limit ?? state.limit);
       emit(state.copyWith(guide: [...state.guide, ...guide], status: LiveTvGuideStatus.success));
     } catch (_) {
       emit(state.copyWith(status: LiveTvGuideStatus.failure));

@@ -14,16 +14,11 @@ class ListItemsSortFieldButton extends StatefulWidget {
 
 class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
   late final GlobalKey<PopupMenuButtonState<FieldsEnum>> popupButtonKey;
-  late FieldsEnum? currentValue;
 
   @override
   void initState() {
     popupButtonKey = GlobalKey();
     super.initState();
-  }
-
-  void listSortedValue() {
-    // currentValue = collectionBloc.getCurrentSortedValue.value;
   }
 
   @override
@@ -36,8 +31,8 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
           child: PopupMenuButton<FieldsEnum>(
             key: popupButtonKey,
             initialValue: FieldsEnum.AIRDAYS,
-            onSelected: (FieldsEnum? field) => sortByField(context, field),
-            itemBuilder: (BuildContext c) => _fieldTile(c),
+            onSelected: sortByField,
+            itemBuilder: (BuildContext c) => _fieldTile(),
             child: Icon(
               CommunityMaterialIcons.dots_horizontal,
               size: 26,
@@ -47,36 +42,33 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
         ));
   }
 
-  List<PopupMenuEntry<FieldsEnum>> _fieldTile(BuildContext context) {
-    final fieldItems = <PopupMenuEntry<FieldsEnum>>[];
-    FieldsEnum.getSortable().forEach((field) => fieldItems.add(PopupMenuItem(
-          value: field,
-          child: ListTile(
-            leading: currentValue == field ? _leadingListTile() : const SizedBox(),
-            title: Text(field.fullName),
-          ),
-        )));
-    return fieldItems;
+  List<PopupMenuEntry<FieldsEnum>> _fieldTile() {
+    final collectionBloc = context.read<CollectionBloc>();
+    return FieldsEnum.getSortable()
+        .map((field) => PopupMenuItem(
+              value: field,
+              child: ListTile(
+                leading: collectionBloc.state.sortField == field.fieldName ? _leadingListTile() : const SizedBox(),
+                title: Text(field.fullName),
+              ),
+            ))
+        .toList();
   }
 
   Widget _leadingListTile() {
-    // late final IconData icon;
-    // final collectionBloc = context.read<CollectionBloc>();
-    // if (collectionBloc.getSortOrder == SortBy.ASC) {
-    //   icon = Icons.arrow_upward;
-    // } else if (collectionBloc.getSortOrder == SortBy.DESC) {
-    //   icon = Icons.arrow_downward;
-    // }
+    late final IconData icon;
+    final collectionBloc = context.read<CollectionBloc>();
+    if (collectionBloc.state.sortBy == SortBy.ASC) {
+      icon = Icons.arrow_upward;
+    } else if (collectionBloc.state.sortBy == SortBy.DESC) {
+      icon = Icons.arrow_downward;
+    }
 
-    return Icon(Icons.arrow_downward, color: Theme.of(context).iconTheme.color);
+    return Icon(icon, color: Theme.of(context).iconTheme.color);
   }
 
-  void sortByField(final BuildContext context, final FieldsEnum? fieldEnum) {
+  void sortByField(final FieldsEnum? fieldEnum) {
     if (fieldEnum == null) return;
-
-    currentValue = fieldEnum;
-
-    final collectionBloc = BlocProvider.of<CollectionBloc>(context);
-    collectionBloc.add(SortByField(fieldEnum: fieldEnum));
+    context.read<CollectionBloc>().add(SortByField(fieldEnum: fieldEnum));
   }
 }

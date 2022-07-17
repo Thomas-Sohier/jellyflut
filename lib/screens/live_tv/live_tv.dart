@@ -7,9 +7,16 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 
 import 'bloc/live_tv_guide_cubit.dart';
+import 'guide_view.dart';
 
 class LiveTvPage extends StatelessWidget {
-  const LiveTvPage({super.key});
+  /// This property is only there to make auto_route generate page arguments so
+  /// we can pass a key to the route. Auto_route doesn't generate page arguments
+  /// if there is only [super.key] as a param
+  ///
+  /// Do nothing
+  final String? blank;
+  const LiveTvPage({super.key, this.blank});
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +52,35 @@ class _LiveTvViewState extends State<LiveTvView> with HomeTab, TickerProviderSta
   @override
   Widget build(BuildContext context) {
     return super.parentBuild(
-        child: TabBarView(
-      controller: super.tabController,
-      children: const [ChannelsView(), GuideView()],
+        child: BlocBuilder<LiveTvGuideCubit, LiveTvGuideState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (_, state) {
+        switch (state.status) {
+          case LiveTvGuideStatus.initial:
+          case LiveTvGuideStatus.loading:
+          case LiveTvGuideStatus.success:
+            return TabBarView(
+              controller: super.tabController,
+              children: const [ChannelsView(), GuideView()],
+            );
+          case LiveTvGuideStatus.failure:
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Failed to load TV channels'),
+                  IconButton(
+                    icon: Icon(Icons.refresh),
+                    onPressed: () => context.read<LiveTvGuideCubit>().loadLiveTvGuide(),
+                  ),
+                ],
+              ),
+            );
+          default:
+            return const SizedBox();
+        }
+      },
     ));
   }
 }
@@ -58,9 +91,9 @@ class ChannelsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListItems.fromCustomRequest(
-      fetchMethod: (startIndex, limit) {
-        context.read<LiveTvGuideCubit>().loadLiveTvGuide();
-        return context.read<LiveTvRepository>().getChannels(startIndex: startIndex, limit: limit);
+      fetchMethod: (startIndex, limit) async {
+        await context.read<LiveTvGuideCubit>().loadLiveTvGuide(startIndex: startIndex, limit: limit);
+        return context.read<LiveTvGuideCubit>().state.guide.map((e) => e.channel).toList();
       },
       notFoundPlaceholder: const ChannelPlaceholder(),
       verticalListPosterHeight: 150,
@@ -82,14 +115,5 @@ class ChannelPlaceholder extends StatelessWidget {
         child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
       ),
     );
-  }
-}
-
-class GuideView extends StatelessWidget {
-  const GuideView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

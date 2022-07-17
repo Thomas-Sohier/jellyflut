@@ -30,12 +30,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ScreenLayout screenLayout = ScreenLayout.desktop})
       : _itemsRepository = itemsRepository,
         _authenticationRepository = authenticationRepository,
-        super(DetailsState(
-            item: item,
-            theme: t.Theme.generateThemeFromColors(
-                themeProvider.getThemeData.colorScheme.primary, themeProvider.getThemeData.colorScheme.secondary),
-            heroTag: heroTag,
-            screenLayout: screenLayout)) {
+        super(
+            DetailsState(item: item, theme: themeProvider.getThemeData, heroTag: heroTag, screenLayout: screenLayout)) {
     on<DetailsInitRequested>(_onDetailsInitRequested);
     on<DetailsItemUpdate>(_onItemUpdate);
     on<PinnedHeaderChangeRequested>(_shrinkOffsetChanged);
@@ -51,6 +47,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   void _onDetailsInitRequested(DetailsInitRequested event, Emitter<DetailsState> emit) async {
     emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.loading));
+
     if (offlineMode) {
       return emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.success));
     }

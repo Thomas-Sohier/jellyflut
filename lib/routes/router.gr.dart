@@ -21,7 +21,7 @@ import '../screens/details/details.dart' as _i4;
 import '../screens/downloads/downloads_parent.dart' as _i5;
 import '../screens/home/home.dart' as _i12;
 import '../screens/home/home_parent.dart' as _i2;
-import '../screens/iptv/iptv.dart' as _i13;
+import '../screens/live_tv/live_tv.dart' as _i13;
 import '../screens/music_player/music_player.dart' as _i7;
 import '../screens/music_player/routes/playlist.dart' as _i9;
 import '../screens/server/server_parent.dart' as _i8;
@@ -48,10 +48,8 @@ class AppRouter extends _i14.RootStackRouter {
               key: args.key, onAuthenticated: args.onAuthenticated));
     },
     HomeRouter.name: (routeData) {
-      final args = routeData.argsAs<HomeRouterArgs>(
-          orElse: () => const HomeRouterArgs());
       return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i2.HomeParent(key: args.key));
+          routeData: routeData, child: const _i2.HomeParent());
     },
     CollectionPage.name: (routeData) {
       final args = routeData.argsAs<CollectionPageArgs>();
@@ -129,20 +127,22 @@ class AppRouter extends _i14.RootStackRouter {
       final args =
           routeData.argsAs<HomePageArgs>(orElse: () => const HomePageArgs());
       return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i12.Home(key: args.key));
+          routeData: routeData,
+          child: _i12.HomePage(key: args.key, blank: args.blank));
     },
-    IptvPage.name: (routeData) {
-      final args =
-          routeData.argsAs<IptvPageArgs>(orElse: () => const IptvPageArgs());
+    LiveTvPage.name: (routeData) {
+      final args = routeData.argsAs<LiveTvPageArgs>(
+          orElse: () => const LiveTvPageArgs());
       return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i13.Iptv(key: args.key));
+          routeData: routeData,
+          child: _i13.LiveTvPage(key: args.key, blank: args.blank));
     }
   };
 
   @override
   List<_i14.RouteConfig> get routes => [
         _i14.RouteConfig('/#redirect',
-            path: '/', redirectTo: 'login', fullMatch: true),
+            path: '/', redirectTo: 'home', fullMatch: true),
         _i14.RouteConfig(LoginPage.name, path: 'login'),
         _i14.RouteConfig(HomeRouter.name, path: 'home', guards: [
           authGuard
@@ -151,8 +151,8 @@ class AppRouter extends _i14.RootStackRouter {
               path: '', parent: HomeRouter.name, guards: [authGuard]),
           _i14.RouteConfig(CollectionPage.name,
               path: 'collection', parent: HomeRouter.name, guards: [authGuard]),
-          _i14.RouteConfig(IptvPage.name,
-              path: 'iptv', parent: HomeRouter.name, guards: [authGuard])
+          _i14.RouteConfig(LiveTvPage.name,
+              path: 'live_tv', parent: HomeRouter.name, guards: [authGuard])
         ]),
         _i14.RouteConfig(CollectionPage.name,
             path: 'collection', guards: [authGuard]),
@@ -201,25 +201,11 @@ class LoginPageArgs {
 
 /// generated route for
 /// [_i2.HomeParent]
-class HomeRouter extends _i14.PageRouteInfo<HomeRouterArgs> {
-  HomeRouter({_i15.Key? key, List<_i14.PageRouteInfo>? children})
-      : super(HomeRouter.name,
-            path: 'home',
-            args: HomeRouterArgs(key: key),
-            initialChildren: children);
+class HomeRouter extends _i14.PageRouteInfo<void> {
+  const HomeRouter({List<_i14.PageRouteInfo>? children})
+      : super(HomeRouter.name, path: 'home', initialChildren: children);
 
   static const String name = 'HomeRouter';
-}
-
-class HomeRouterArgs {
-  const HomeRouterArgs({this.key});
-
-  final _i15.Key? key;
-
-  @override
-  String toString() {
-    return 'HomeRouterArgs{key: $key}';
-  }
 }
 
 /// generated route for
@@ -397,41 +383,47 @@ class EpubPageArgs {
 }
 
 /// generated route for
-/// [_i12.Home]
+/// [_i12.HomePage]
 class HomePage extends _i14.PageRouteInfo<HomePageArgs> {
-  HomePage({_i15.Key? key})
-      : super(HomePage.name, path: '', args: HomePageArgs(key: key));
+  HomePage({_i15.Key? key, String? blank})
+      : super(HomePage.name,
+            path: '', args: HomePageArgs(key: key, blank: blank));
 
   static const String name = 'HomePage';
 }
 
 class HomePageArgs {
-  const HomePageArgs({this.key});
+  const HomePageArgs({this.key, this.blank});
 
   final _i15.Key? key;
 
+  final String? blank;
+
   @override
   String toString() {
-    return 'HomePageArgs{key: $key}';
+    return 'HomePageArgs{key: $key, blank: $blank}';
   }
 }
 
 /// generated route for
-/// [_i13.Iptv]
-class IptvPage extends _i14.PageRouteInfo<IptvPageArgs> {
-  IptvPage({_i15.Key? key})
-      : super(IptvPage.name, path: 'iptv', args: IptvPageArgs(key: key));
+/// [_i13.LiveTvPage]
+class LiveTvPage extends _i14.PageRouteInfo<LiveTvPageArgs> {
+  LiveTvPage({_i15.Key? key, String? blank})
+      : super(LiveTvPage.name,
+            path: 'live_tv', args: LiveTvPageArgs(key: key, blank: blank));
 
-  static const String name = 'IptvPage';
+  static const String name = 'LiveTvPage';
 }
 
-class IptvPageArgs {
-  const IptvPageArgs({this.key});
+class LiveTvPageArgs {
+  const LiveTvPageArgs({this.key, this.blank});
 
   final _i15.Key? key;
 
+  final String? blank;
+
   @override
   String toString() {
-    return 'IptvPageArgs{key: $key}';
+    return 'LiveTvPageArgs{key: $key, blank: $blank}';
   }
 }

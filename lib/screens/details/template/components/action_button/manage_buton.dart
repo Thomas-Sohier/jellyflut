@@ -34,7 +34,7 @@ class Dialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: context.read<ThemeProvider>().getThemeData,
+      data: context.read<DetailsBloc>().state.theme,
       child: Material(
         color: Colors.transparent,
         child: Center(child: dialogBuilder(context)),

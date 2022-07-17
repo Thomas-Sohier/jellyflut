@@ -55,36 +55,32 @@ class RightDetailsView extends StatelessWidget {
       _boxAdapter(const SizedBox(height: 48)),
       _boxAdapter(const Header()),
       _boxAdapter(const SizedBox(height: 24)),
-      _boxAdapter(Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder(item: item))),
+      _boxAdapter(const Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder())),
       _boxAdapter(const SizedBox(height: 36)),
-      _boxAdapter(TaglineDetailsWidget(item: item)),
+      _boxAdapter(const TaglineDetailsWidget()),
       _boxAdapter(const SizedBox(height: 24)),
       _boxAdapter(Row(children: [
-        TitleDetailsWidget(title: item.name ?? ''),
+        const TitleDetailsWidget(),
         const SizedBox(width: 8),
-        RatingDetailsWidget(rating: item.officialRating),
+        const RatingDetailsWidget(),
       ])),
-      if (item.haveDifferentOriginalTitle()) _boxAdapter(OriginalTitleDetailsWidget(title: item.originalTitle)),
+      _boxAdapter(const OriginalTitleDetailsWidget()),
       _boxAdapter(const SizedBox(height: 8)),
-      _boxAdapter(QuickInfos(item: item)),
+      _boxAdapter(const QuickInfos()),
       _boxAdapter(const SizedBox(height: 12)),
-      _boxAdapter(OverviewDetailsWidget(overview: item.overview)),
+      _boxAdapter(const OverviewDetailsWidget()),
       _boxAdapter(const SizedBox(height: 24)),
-      _boxAdapter(ProvidersDetailsWidget(item: item)),
+      _boxAdapter(const ProvidersDetailsWidget()),
       _boxAdapter(const SizedBox(height: 12)),
-      SliverToBoxAdapter(
-          child: PeoplesDetailsWidget(
-        item: item,
-        padding: horizotalScrollbaleWidgetPadding,
-      )),
+      _boxAdapter(const PeoplesDetailsWidget(padding: horizotalScrollbaleWidgetPadding)),
       // Shown only if current item is a series (because it contains seasons)
       if (item.type == ItemType.Series)
         SliverPersistentHeader(
           pinned: true,
           floating: false,
-          delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
+          delegate: const TabHeader(padding: horizotalScrollbaleWidgetPadding),
         ),
-      if (item.type == ItemType.Series) _boxAdapter(SeasonEpisode()),
+      if (item.type == ItemType.Series) _boxAdapter(const SeasonEpisode()),
       _boxAdapter(const SizedBox(height: 24)),
     ]);
   }

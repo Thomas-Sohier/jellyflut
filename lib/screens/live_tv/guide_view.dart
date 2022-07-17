@@ -10,10 +10,11 @@ import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 
-class Channels extends StatelessWidget {
+class GuideView extends StatelessWidget {
+  const GuideView({super.key});
   @override
   Widget build(BuildContext context) {
-    final guide = context.read<LiveTvGuideCubit>().state.guide;
+    final guide = context.select<LiveTvGuideCubit, List<Channel>>((cubit) => cubit.state.guide);
     return ListView.builder(
         itemCount: guide.length,
         padding: EdgeInsets.zero,

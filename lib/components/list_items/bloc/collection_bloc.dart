@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/form/fields/fields_enum.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -36,7 +37,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<ClearItemsRequested>(_onClearItems);
     on<SetScrollController>(_onScrollControllerUpdate);
     on<LoadMoreItemsRequested>(_onLoadMoreItems);
-    on<SortByField>(sortByField);
+    on<ListTypeChangeRequested>(_onListTypeChange);
+    on<SortByField>(_onSort);
   }
 
   static Future<List<Item>> Function(int startIndex, int limit) _initFetchMethod(
@@ -96,29 +98,22 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     emit(state.copyWith(scrollController: event.scrollController));
   }
 
-  void sortByField(SortByField event, Emitter<CollectionState> emit) async {
-    // emit(CollectionLoadingState());
-    // final items = await _sortByField(event.fieldEnum, _sortBy);
-    // _items.clear();
-    // _items.addAll(items);
-    // emit(CollectionLoadedState());
+  void _onListTypeChange(ListTypeChangeRequested event, Emitter<CollectionState> emit) async {
+    if (event.listType == null) {
+      emit(state.copyWith(listType: state.listType.getNextListType()));
+    } else {
+      emit(state.copyWith(listType: event.listType));
+    }
   }
 
-  // Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
-  //   final i = await compute(_sortItemByField, {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
-  //   _sortBy = sortBy.reverse();
-  //   _currentSortedValue.value = fieldEnum;
-  //   return i['items'];
-  // }
-}
+  void _onSort(SortByField event, Emitter<CollectionState> emit) async {
+    emit(state.copyWith(collectionStatus: CollectionStatus.loadingMore));
+    final items = await _sortByField(event.fieldEnum);
+    emit(state.copyWith(sortField: event.fieldEnum.fieldName, items: items, sortBy: state.sortBy.reverse()));
+  }
 
-enum SortBy {
-  ASC,
-  DESC;
-
-  const SortBy();
-
-  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
+  Future<List<Item>> _sortByField(FieldsEnum fieldEnum) async => (await compute(_sortItemByField,
+      {'items': state.items, 'field': fieldEnum.fieldName, 'sortBy': state.sortBy.reverse()}))['items'];
 }
 
 Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {

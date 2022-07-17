@@ -33,3 +33,9 @@ class SetScrollController extends CollectionEvent {
 
   const SetScrollController({required this.scrollController});
 }
+
+class ListTypeChangeRequested extends CollectionEvent {
+  final ListType? listType;
+
+  const ListTypeChangeRequested({this.listType});
+}

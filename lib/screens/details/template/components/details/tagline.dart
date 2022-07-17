@@ -1,14 +1,14 @@
 part of '../details_widgets.dart';
 
 class TaglineDetailsWidget extends StatelessWidget {
-  final Item item;
-  const TaglineDetailsWidget({super.key, required this.item});
+  const TaglineDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (item.taglines.isEmpty) return SizedBox();
+    final state = context.read<DetailsBloc>().state;
+    if (state.item.taglines.isEmpty) return SizedBox();
     return SelectableText(
-      '“ ${item.taglines.first} „',
+      '“ ${state.item.taglines.first} „',
       textAlign: TextAlign.center,
       style: Theme.of(context)
           .textTheme
