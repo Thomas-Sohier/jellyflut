@@ -1,0 +1,177 @@
+import 'dart:async';
+import 'package:universal_io/io.dart';
+
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '../models/index.dart';
+
+class CommonStreamVLC extends CommonStream {
+  @override
+  // ignore: overridden_fields
+  final VlcPlayerController controller;
+
+  const CommonStreamVLC({required this.controller}) : super(controller: controller);
+
+  CommonStreamVLC.fromUri({required Uri uri, int startAtPosition = 0, required this.controller})
+      : super(controller: _initController(uri: uri, startAtPosition: startAtPosition));
+
+  static VlcPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
+    late final VlcPlayerController controller;
+    if (uri.isScheme('http') || uri.isScheme('https')) {
+      controller = VlcPlayerController.network(
+        uri.toString(),
+        autoPlay: true,
+        options: VlcPlayerOptions(
+            advanced: VlcAdvancedOptions([
+              VlcAdvancedOptions.networkCaching(2000),
+            ]),
+            extras: [
+              '--start-time=${Duration(microseconds: startAtPosition).inSeconds}' // Start at x seconds
+            ]),
+      );
+    } else {
+      controller = VlcPlayerController.file(
+        File(uri.toFilePath()),
+        autoPlay: true,
+        options: VlcPlayerOptions(
+            advanced: VlcAdvancedOptions([
+              VlcAdvancedOptions.networkCaching(2000),
+            ]),
+            extras: [
+              '--start-time=${Duration(microseconds: startAtPosition).inSeconds}' // Start at x seconds
+            ]),
+      );
+    }
+    return controller;
+  }
+
+  @override
+  void enterFullscreen() {
+    // already in fullscreen by default
+  }
+
+  @override
+  void exitFullscreen() {
+    // already in fullscreen by default
+  }
+
+  @override
+  void toggleFullscreen() {
+    // already in fullscreen by default
+  }
+
+  @override
+  BehaviorSubject<bool> getPlayingStateStream() {
+    final streamController = BehaviorSubject<bool>();
+    controller.addListener(() => streamController.add(controller.value.isPlaying));
+    return streamController;
+  }
+
+  @override
+  Duration? getCurrentPosition() => controller.value.position;
+
+  @override
+  BehaviorSubject<Duration> getPositionStream() {
+    final streamController = BehaviorSubject<Duration>();
+    controller.addListener(() {
+      streamController.add(controller.value.position);
+    });
+    return streamController;
+  }
+
+  @override
+  Duration? getDuration() => controller.value.duration;
+
+  @override
+  BehaviorSubject<Duration> getDurationStream() {
+    final streamController = BehaviorSubject<Duration>();
+    controller.addListener(() {
+      streamController.add(controller.value.duration);
+    });
+    return streamController;
+  }
+
+  @override
+  Duration? getBufferingDuration() {
+    final durationCurrentFile = controller.value.duration;
+    final totalMilliseconds = durationCurrentFile.inMilliseconds;
+    final currentBufferedMilliseconds = totalMilliseconds / controller.value.bufferPercent;
+    return Duration(
+        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
+            ? 0
+            : currentBufferedMilliseconds.toInt());
+  }
+
+  @override
+  Future<bool> hasPip() => Future.value(false);
+
+  @override
+  bool isInit() => controller.value.isInitialized;
+
+  @override
+  bool isPlaying() => controller.value.isPlaying;
+
+  @override
+  Future<void> pause() => controller.pause();
+
+  @override
+  Future<void>? pip() => throw UnimplementedError();
+
+  @override
+  Future<void> play() => controller.play();
+
+  @override
+  Future<void> seekTo(Duration duration) => controller.seekTo(duration);
+
+  @override
+  Future<List<AudioTrack>> getAudioTracks() async {
+    // ignore: omit_local_variable_types
+    final List<AudioTrack> parsedAudioTracks = [];
+    final audioTracks = await controller.getAudioTracks();
+    for (var i = 0; i < audioTracks.length; i++) {
+      final audioTrackKey = audioTracks.keys.elementAt(i);
+      parsedAudioTracks.add(AudioTrack(
+        index: i,
+        mediaType: MediaType.local,
+        jellyfinSubtitleIndex: audioTrackKey,
+        name: audioTracks[audioTrackKey] ?? 'Track $i',
+      ));
+    }
+    return parsedAudioTracks;
+  }
+
+  @override
+  Future<void> setAudioTrack(AudioTrack trackIndex) {
+    return controller.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
+  }
+
+  @override
+  Future<void> disableSubtitles() => controller.setSpuTrack(-1);
+
+  @override
+  Future<List<Subtitle>> getSubtitles() async {
+    // ignore: omit_local_variable_types
+    final List<Subtitle> parsedSubtitiles = [];
+    final subtitles = await controller.getSpuTracks();
+    for (var i = 0; i < subtitles.length; i++) {
+      final subtitleKey = subtitles.keys.elementAt(i);
+      parsedSubtitiles.add(Subtitle(
+        index: subtitleKey,
+        mediaType: MediaType.local,
+        jellyfinSubtitleIndex: null,
+        name: subtitles[subtitleKey] ?? 'Track $i',
+      ));
+    }
+    return parsedSubtitiles;
+  }
+
+  @override
+  Future<void> setSubtitle(Subtitle subtitle) => controller.setSpuTrack(subtitle.index);
+
+  @override
+  Future<void> dispose() async {
+    await controller.stop();
+    return await controller.dispose();
+  }
+}

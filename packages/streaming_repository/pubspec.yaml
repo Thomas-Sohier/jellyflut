@@ -7,26 +7,33 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  authentication_repository:
+    path: ../authentication_repository
+  better_player: ^0.0.83
+  dart_vlc:
+    git:
+      url: https://github.com/erikas-taroza/dart_vlc.git
+      ref: e661980
   dio: ^4.0.6
   flutter:
     sdk: flutter
-  jellyflut_models:
-    path: ../jellyflut_models
+  flutter_vlc_player: ^7.1.5
+  freezed_annotation: ^2.0.3
   items_api:
     path: ../items/items_api
+  jellyflut_models:
+    path: ../jellyflut_models
+  json_annotation: ^4.6.0
   sqlite_database:
     path: ../sqlite_database
   streaming_api:
     path: ../streaming_api
-  authentication_repository:
-    path: ../authentication_repository
-  freezed_annotation: ^2.0.3
-  json_annotation: ^4.5.0
+  video_player: ^2.4.5
 
 dev_dependencies:
-  mocktail: ^0.3.0
-  test: ^1.19.2
-  pedantic: ^1.11.1
-  freezed: ^2.0.4
   build_runner: ^2.1.11
+  freezed: ^2.0.4
   json_serializable: ^6.2.0
+  mocktail: ^0.3.0
+  pedantic: ^1.11.1
+  test: ^1.19.2
