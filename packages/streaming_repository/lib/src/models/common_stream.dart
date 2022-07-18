@@ -5,12 +5,12 @@ import 'audio_track.dart';
 import 'subtitle.dart';
 
 @Immutable()
-abstract class CommonStream {
-  final dynamic controller;
+abstract class CommonStream<T> {
+  late final T controller;
 
-  const CommonStream({required this.controller});
+  CommonStream();
 
-  const CommonStream.fromUri({required Uri uri, required this.controller, int startAtPosition = 0});
+  CommonStream.fromUri({required Uri uri, int startAtPosition = 0});
 
   Future<void> play();
   Future<void> pause();
@@ -25,6 +25,7 @@ abstract class CommonStream {
   void enterFullscreen();
   void exitFullscreen();
   void toggleFullscreen();
+  Future<bool> isFullscreen();
   Future<List<Subtitle>> getSubtitles();
   Future<void> setSubtitle(Subtitle subtitle);
   Future<void> disableSubtitles();

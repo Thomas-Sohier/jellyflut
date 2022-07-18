@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/stream_cubit.dart';
 import 'common_controls/common_controls.dart';
 import 'controller_builder/controller_builder.dart';
 
 class PlayerInterface extends StatefulWidget {
-  final dynamic controller;
-  PlayerInterface({super.key, this.controller});
+  const PlayerInterface({super.key});
 
   @override
   State<PlayerInterface> createState() => _PlayerInterfaceState();
@@ -13,13 +14,25 @@ class PlayerInterface extends StatefulWidget {
 class _PlayerInterfaceState extends State<PlayerInterface> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        Controllerbuilder(controller: widget.controller),
-        CommonControls(),
-      ],
-    );
+    return BlocBuilder<StreamCubit, StreamState>(
+        buildWhen: (previous, current) => previous.controller != current.controller,
+        builder: (_, state) {
+          switch (state.status) {
+            case StreamStatus.initial:
+            case StreamStatus.loading:
+              return const SizedBox();
+            case StreamStatus.success:
+              return Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: const <Widget>[
+                  Controllerbuilder(),
+                  CommonControls(),
+                ],
+              );
+            default:
+              return const SizedBox();
+          }
+        });
   }
 }

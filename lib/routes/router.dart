@@ -109,7 +109,7 @@ const mainRouter = [
     transitionsBuilder: TransitionsBuilders.slideLeft,
   ),
   CustomRoute(
-    page: Stream,
+    page: StreamPage,
     guards: [AuthGuard],
     path: 'stream',
     name: 'StreamPage',

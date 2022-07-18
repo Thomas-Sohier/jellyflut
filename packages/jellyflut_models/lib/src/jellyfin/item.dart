@@ -169,6 +169,14 @@ class Item with _$Item {
 
   factory Item.fromJson(Map<String, Object?> json) => _$ItemFromJson(json);
 
+  static const empty = Item(id: 'id_that_do_not_exist', type: ItemType.Folder);
+
+  /// Convenience getter to determine whether the current item is empty.
+  bool get isEmpty => this == Item.empty;
+
+  /// Convenience getter to determine whether the current item is not empty.
+  bool get isNotEmpty => this != Item.empty;
+
   ///Check if item is new
   ///
   /// Return [true] if is less than 3 days old
@@ -672,37 +680,7 @@ class Item with _$Item {
     return communityRating != null || criticRating != null;
   }
 
-  Future<String> createMusicURL() async {
-    // final streamingSoftwareDB = await db.AppDatabase()
-    //     .getDatabase
-    //     .settingsDao
-    //     .getSettingsById(userApp!.settingsId);
-    // final streamingSoftware = TranscodeAudioCodec.fromString(
-    //     streamingSoftwareDB.preferredTranscodeAudioCodec);
-
-    // // First we try to fetch item locally to play it
-    // final database = db.AppDatabase().getDatabase;
-    // final itemExist = await database.downloadsDao.doesExist(id);
-    // if (itemExist) return await FileService.getStoragePathItem(this);
-
-    // return '${server.url}/Audio/$id/stream.$streamingSoftware';
-
-    throw UnimplementedError('createMusicURL is not defined right now, TODO');
-  }
-
   List<MediaStream> getMediaStreamFromType({required MediaStreamType type}) {
     return mediaStreams.where((element) => element.type == type).toList();
-  }
-
-  Future<Uri> getYoutubeTrailerUrl(MediaUrl trailer) async {
-    // final youtubeUrl = trailer.url;
-    // final itemURi = Uri.parse(youtubeUrl);
-    // final videoId = itemURi.queryParameters['v'];
-    // final yt = YoutubeExplode();
-    // final manifest = await yt.videos.streamsClient.getManifest(videoId);
-    // final streamInfo = manifest.muxed.withHighestBitrate();
-    // yt.close();
-    // return streamInfo.url;
-    throw UnimplementedError('getYoutubeTrailerUrl is not defined right now, TODO');
   }
 }

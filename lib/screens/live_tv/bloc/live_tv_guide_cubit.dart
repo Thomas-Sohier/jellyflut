@@ -11,9 +11,7 @@ part 'live_tv_guide_state.dart';
 class LiveTvGuideCubit extends Cubit<LiveTvGuideState> {
   LiveTvGuideCubit({required LiveTvRepository liveTvRepository})
       : _liveTvRepository = liveTvRepository,
-        super(const LiveTvGuideState()) {
-    unawaited(loadLiveTvGuide());
-  }
+        super(const LiveTvGuideState());
 
   final LiveTvRepository _liveTvRepository;
 

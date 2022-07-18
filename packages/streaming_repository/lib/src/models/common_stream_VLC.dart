@@ -6,15 +6,10 @@ import 'package:rxdart/rxdart.dart';
 
 import '../models/index.dart';
 
-class CommonStreamVLC extends CommonStream {
-  @override
-  // ignore: overridden_fields
-  final VlcPlayerController controller;
-
-  const CommonStreamVLC({required this.controller}) : super(controller: controller);
-
-  CommonStreamVLC.fromUri({required Uri uri, int startAtPosition = 0, required this.controller})
-      : super(controller: _initController(uri: uri, startAtPosition: startAtPosition));
+class CommonStreamVLC extends CommonStream<VlcPlayerController> {
+  CommonStreamVLC.fromUri({required Uri uri, int startAtPosition = 0}) {
+    controller = _initController(uri: uri, startAtPosition: startAtPosition);
+  }
 
   static VlcPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
     late final VlcPlayerController controller;
@@ -59,6 +54,11 @@ class CommonStreamVLC extends CommonStream {
   @override
   void toggleFullscreen() {
     // already in fullscreen by default
+  }
+
+  @override
+  Future<bool> isFullscreen() {
+    return Future.value(true);
   }
 
   @override
@@ -142,8 +142,8 @@ class CommonStreamVLC extends CommonStream {
   }
 
   @override
-  Future<void> setAudioTrack(AudioTrack trackIndex) {
-    return controller.setAudioTrack(trackIndex.jellyfinSubtitleIndex!);
+  Future<void> setAudioTrack(AudioTrack audioTrack) {
+    return controller.setAudioTrack(audioTrack.jellyfinSubtitleIndex!);
   }
 
   @override

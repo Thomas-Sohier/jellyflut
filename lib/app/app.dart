@@ -23,6 +23,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_repository/settings_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 import 'package:users_repository/users_repository.dart';
 
 class App extends StatelessWidget {
@@ -39,6 +40,7 @@ class App extends StatelessWidget {
       required this.itemsRepository,
       required this.usersRepository,
       required this.liveTvRepository,
+      required this.streamingRepository,
       required this.musicPlayerRepository});
 
   final Database database;
@@ -51,6 +53,7 @@ class App extends StatelessWidget {
   final ItemsRepository itemsRepository;
   final UsersRepository usersRepository;
   final LiveTvRepository liveTvRepository;
+  final StreamingRepository streamingRepository;
   final MusicPlayerRepository musicPlayerRepository;
   final ThemeProvider themeProvider;
 
@@ -81,6 +84,7 @@ class App extends StatelessWidget {
                   database: database,
                   itemsRepository: itemsRepository,
                   musicPlayerRepository: musicPlayerRepository,
+                  streamingRepository: streamingRepository,
                   theme: themeProvider.getThemeData,
                 ),
                 lazy: false,
@@ -94,7 +98,8 @@ class App extends StatelessWidget {
                 RepositoryProvider.value(value: itemsRepository),
                 RepositoryProvider.value(value: usersRepository),
                 RepositoryProvider.value(value: musicPlayerRepository),
-                RepositoryProvider.value(value: liveTvRepository)
+                RepositoryProvider.value(value: liveTvRepository),
+                RepositoryProvider.value(value: streamingRepository)
               ],
               child: EasyLocalization(
                   supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],

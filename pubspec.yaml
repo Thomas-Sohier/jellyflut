@@ -97,6 +97,10 @@ dependencies:
   subtitle: ^0.1.0-beta.3
   universal_io: ^2.0.4
   url_launcher: ^6.1.4
+  streaming_api:
+    path: packages/streaming_api
+  streaming_repository:
+    path: packages/streaming_repository
   users_api:
     path: packages/users/users_api
   users_repository:

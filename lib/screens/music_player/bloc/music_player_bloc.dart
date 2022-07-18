@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/services/streaming/streaming_service.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as personnal_theme;
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -13,6 +12,7 @@ import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 
 part 'music_player_event.dart';
 part 'music_player_state.dart';
@@ -22,9 +22,11 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     required Database database,
     required ItemsRepository itemsRepository,
     required MusicPlayerRepository musicPlayerRepository,
+    required StreamingRepository streamingRepository,
     required ThemeData theme,
   })  : _itemsRepository = itemsRepository,
         _musicPlayerRepository = musicPlayerRepository,
+        _streamingRepository = streamingRepository,
         _database = database,
         super(MusicPlayerState(theme: theme, postionStream: BehaviorSubject.seeded(Duration.zero))) {
     on<LayoutChanged>(_onLayoutChange);
@@ -43,6 +45,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
   final Database _database;
   final ItemsRepository _itemsRepository;
   final MusicPlayerRepository _musicPlayerRepository;
+  final StreamingRepository _streamingRepository;
 
   Future<void> _onPlaySong(PlaySongRequested event, Emitter<MusicPlayerState> emit) async {
     final streamURL = await _itemsRepository.createMusicURL(event.item.id);
@@ -66,8 +69,8 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
 
     for (var index = 0; index < items.length; index++) {
       final item = items.elementAt(index);
-      final streamURL = await StreamingService.contructAudioURL(itemId: item.id);
-      final musicItem = await _parseItemToAudioSource(streamURL, item);
+      final streamURL = await _streamingRepository.createMusicURL(item);
+      final musicItem = await _parseItemToAudioSource(streamURL.url, item);
       audioSources.add(musicItem);
     }
     _musicPlayerRepository.addAllToPlaylist(audioSources);

@@ -17,10 +17,9 @@ class TrailerButton extends StatelessWidget {
   }
 
   void playTrailer(BuildContext context, MediaUrl trailer) async {
-    final state = context.read<DetailsBloc>().state;
     try {
-      final url = await state.item.getYoutubeTrailerUrl(trailer);
-      await context.router.root.push(r.StreamPage(url: url.toString(), item: state.item));
+      final url = await context.read<StreamingRepository>().getYoutubeTrailerUrl(trailer);
+      await context.router.root.push(r.StreamPage(url: url.toString()));
     } catch (exception) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -61,7 +60,9 @@ class TrailerButton extends StatelessWidget {
                                 return Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 4),
                                     child: TrailerDialogButton(
-                                        playTrailer: playTrailer, theme: state.theme, trailer: trailers[index]));
+                                        playTrailer: (_, mediaUrl) => playTrailer(context, mediaUrl),
+                                        theme: state.theme,
+                                        trailer: trailers[index]));
                               }),
                         ),
                       )));

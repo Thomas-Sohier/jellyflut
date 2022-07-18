@@ -10,9 +10,9 @@ import 'package:live_tv_repository/src/models/parse_channel_from_jellyfin.dart';
 /// {@endtemplate}
 class LiveTvRepository {
   /// {@macro live_tv_repository}
-  const LiveTvRepository({required LiveTvApi liveTvApi, required AuthenticationRepository authenticationrepository})
+  const LiveTvRepository({required LiveTvApi liveTvApi, required AuthenticationRepository authenticationRepository})
       : _liveTvApi = liveTvApi,
-        _authenticationRepository = authenticationrepository;
+        _authenticationRepository = authenticationRepository;
 
   final LiveTvApi _liveTvApi;
   final AuthenticationRepository _authenticationRepository;

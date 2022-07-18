@@ -17,10 +17,10 @@ class ItemsRepository {
   /// {@macro items_repository}
   const ItemsRepository(
       {required ItemsApi itemsApi,
-      required AuthenticationRepository authenticationrepository,
+      required AuthenticationRepository authenticationRepository,
       required Database database})
       : _itemsApi = itemsApi,
-        _authenticationRepository = authenticationrepository,
+        _authenticationRepository = authenticationRepository,
         _database = database;
 
   final ItemsApi _itemsApi;

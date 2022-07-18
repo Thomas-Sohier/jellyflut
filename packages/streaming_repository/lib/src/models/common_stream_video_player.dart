@@ -5,15 +5,10 @@ import 'package:video_player/video_player.dart';
 
 import '../models/index.dart';
 
-class CommonStreamVideoPlayer extends CommonStream {
-  @override
-  // ignore: overridden_fields
-  final VideoPlayerController controller;
-
-  const CommonStreamVideoPlayer({required this.controller}) : super(controller: controller);
-
-  CommonStreamVideoPlayer.fromUri({required Uri uri, int startAtPosition = 0, required this.controller})
-      : super(controller: _initController(uri: uri, startAtPosition: startAtPosition));
+class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
+  CommonStreamVideoPlayer.fromUri({required Uri uri, int startAtPosition = 0}) {
+    controller = _initController(uri: uri, startAtPosition: startAtPosition);
+  }
 
   static VideoPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
     // Detect if media is available locdally or only remotely
@@ -102,13 +97,10 @@ class CommonStreamVideoPlayer extends CommonStream {
   }
 
   @override
-  Duration? getCurrentPosition() {
-    // TODO: implement getCurrentPosition
-    throw UnimplementedError();
-  }
+  Duration? getCurrentPosition() => controller.value.position;
 
   @override
-  Duration? getDuration() => controller.value.duration ?? Duration.zero;
+  Duration? getDuration() => controller.value.duration;
 
   @override
   Future<bool> hasPip() => Future.value(false);
@@ -133,17 +125,22 @@ class CommonStreamVideoPlayer extends CommonStream {
 
   @override
   void enterFullscreen() {
-    // TODO: implement enterFullscreen
+    // already in fullscreen by default
   }
 
   @override
   void exitFullscreen() {
-    // TODO: implement exitFullscreen
+    // already in fullscreen by default
   }
 
   @override
   void toggleFullscreen() {
-    // TODO: implement toggleFullscreen
+    // already in fullscreen by default
+  }
+
+  @override
+  Future<bool> isFullscreen() async {
+    return Future.value(true);
   }
 
   @override

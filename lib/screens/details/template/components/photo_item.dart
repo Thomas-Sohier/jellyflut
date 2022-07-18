@@ -27,7 +27,7 @@ class PhotoItem extends StatelessWidget {
   }
 
   Widget listOfPhoto(List<Item> items) {
-    final startAt = 0;
+    const startAt = 0;
     final pageController = PageController(initialPage: startAt);
     return PhotoViewGallery.builder(
       scrollPhysics: const BouncingScrollPhysics(),

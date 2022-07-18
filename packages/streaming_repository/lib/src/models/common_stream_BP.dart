@@ -9,15 +9,10 @@ import 'package:rxdart/rxdart.dart';
 import '../models/index.dart';
 
 /// CommonStream Better Player specific code
-class CommonStreamBP extends CommonStream {
-  @override
-  // ignore: overridden_fields
-  final BetterPlayerController controller;
-
-  const CommonStreamBP({required this.controller}) : super(controller: controller);
-
-  CommonStreamBP.fromUri({required Uri uri, int startAtPosition = 0, required this.controller})
-      : super(controller: _initController(uri: uri, startAtPosition: startAtPosition));
+class CommonStreamBP extends CommonStream<BetterPlayerController> {
+  CommonStreamBP.fromUri({required Uri uri, int startAtPosition = 0}) {
+    controller = _initController(uri: uri, startAtPosition: startAtPosition);
+  }
 
   static BetterPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
     late final BetterPlayerDataSource dataSource;
@@ -174,6 +169,11 @@ class CommonStreamBP extends CommonStream {
   @override
   void toggleFullscreen() {
     // TODO: implement toggleFullscreen
+  }
+
+  @override
+  Future<bool> isFullscreen() async {
+    return Future.value(true);
   }
 
   @override

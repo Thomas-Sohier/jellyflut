@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class PlayPauseButton extends StatefulWidget {
+import '../../cubit/stream_cubit.dart';
+
+class PlayPauseButton extends StatelessWidget {
   final double? size;
   const PlayPauseButton({super.key, this.size});
 
   @override
-  State<PlayPauseButton> createState() => _PlayPauseButtonState();
-}
-
-class _PlayPauseButtonState extends State<PlayPauseButton> {
-  late final StreamingProvider streamingProvider;
-  late final VoidCallback listener;
-
-  double? get size => widget.size;
-
-  @override
-  void initState() {
-    streamingProvider = StreamingProvider();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      initialData: streamingProvider.commonStream?.isPlaying(),
-      stream: streamingProvider.commonStream!.getPlayingStateStream(),
-      builder: (context, isPlayingSnapshot) => OutlinedButtonSelector(
-          onPressed: () => isPlayingSnapshot.data ?? false
-              ? streamingProvider.pause()
-              : streamingProvider.play(),
+    return BlocBuilder<StreamCubit, StreamState>(
+      buildWhen: (previous, current) => previous.playing != current.playing,
+      builder: (_, state) => OutlinedButtonSelector(
+          onPressed: context.read<StreamCubit>().togglePlay,
           shape: CircleBorder(),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(
-              isPlayingSnapshot.data ?? false ? Icons.pause : Icons.play_arrow,
+              state.playing ? Icons.pause : Icons.play_arrow,
               color: Colors.white,
               size: size,
             ),

@@ -1374,6 +1374,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  streaming_api:
+    dependency: "direct main"
+    description:
+      path: "packages/streaming_api"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  streaming_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/streaming_repository"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   string_scanner:
     dependency: transitive
     description:

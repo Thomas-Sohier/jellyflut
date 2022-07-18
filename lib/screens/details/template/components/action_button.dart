@@ -12,11 +12,11 @@ import 'package:jellyflut/screens/details/template/components/action_button/down
 import 'package:jellyflut/screens/details/template/components/dialog_structure.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
 import 'package:jellyflut/services/file/file_service.dart';
-import 'package:jellyflut/shared/utils/item_util.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 
 part 'action_button/download_button.dart';
 part 'action_button/like_button.dart';

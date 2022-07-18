@@ -14,4 +14,4 @@ class SharedPrefs {
   }
 }
 
-final sharedPrefs = SharedPrefs;
+const sharedPrefs = SharedPrefs;

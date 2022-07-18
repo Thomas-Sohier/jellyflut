@@ -2,15 +2,14 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:sqlite_database/sqlite_database.dart';
+import 'dart:convert' as convert;
 
 /// {@template streaming_api}
 /// A dart API client for the Jellyfin Streaming API
 /// {@endtemplate}
 class StreamingApi {
   /// {@macro streaming_api}
-  StreamingApi({required String serverUrl, required Database database, String? userId, Dio? dioClient})
-      : _dioClient = dioClient ?? Dio();
+  StreamingApi({Dio? dioClient}) : _dioClient = dioClient ?? Dio();
 
   final Dio _dioClient;
 
@@ -69,5 +68,35 @@ class StreamingApi {
       log(e.toString(), stackTrace: stacktrace, level: 5);
       rethrow;
     }
+  }
+
+  Future<int> deleteActiveEncoding(
+      {required String serverUrl, required String userId, required String playSessionId}) async {
+    final info = await DeviceInfo.getCurrentDeviceInfo();
+    final queryParam = <String, String>{};
+    queryParam['deviceId'] = info.id;
+    queryParam['PlaySessionId'] = playSessionId;
+
+    final url = '$serverUrl/Videos/ActiveEncodings';
+
+    final response = await _dioClient.delete(url, queryParameters: queryParam);
+    if (response.statusCode == 204) {
+      print('Stream decoding successfully deleted');
+      return response.statusCode!;
+    } else {
+      throw ('Stream encoding cannot be deleted, ${response.data}');
+    }
+  }
+
+  void streamingProgress(
+      {required String serverUrl, required String userId, required PlaybackProgress playbackProgress}) async {
+    final url = '$serverUrl/Sessions/Playing/Progress';
+    final playbackProgressJSON = playbackProgress.toMap();
+    playbackProgressJSON.removeWhere((key, value) => value == null);
+
+    final json = convert.json.encode(playbackProgressJSON);
+
+    _dioClient.options.contentType = 'application/json';
+    await _dioClient.post(url, data: json);
   }
 }

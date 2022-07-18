@@ -23,6 +23,8 @@ import 'package:music_player_repository/music_player_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:settings_repository/settings_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
+import 'package:streaming_api/streaming_api.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 import 'package:users_api/users_api.dart';
 import 'package:users_repository/users_repository.dart';
 
@@ -35,6 +37,7 @@ void bootstrap(
     required PackageInfo packageInfo,
     required AuthenticationApi authenticationApi,
     required DownloadsApi downloadsApi,
+    required StreamingApi streamingApi,
     required ItemsApi itemsApi,
     required UsersApi usersApi,
     required LiveTvApi liveTvApi,
@@ -51,10 +54,15 @@ void bootstrap(
   final settingsRepository = SettingsRepository(database: database, authenticationRepository: authenticationRepository);
   final downloadsRepository = DownloadsRepository(downloadsApi: downloadsApi);
   final itemsRepository =
-      ItemsRepository(itemsApi: itemsApi, database: database, authenticationrepository: authenticationRepository);
+      ItemsRepository(itemsApi: itemsApi, database: database, authenticationRepository: authenticationRepository);
   final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);
   final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
-  final liveTvRepository = LiveTvRepository(liveTvApi: liveTvApi, authenticationrepository: authenticationRepository);
+  final liveTvRepository = LiveTvRepository(liveTvApi: liveTvApi, authenticationRepository: authenticationRepository);
+  final streamingRepository = StreamingRepository(
+      streamingApi: streamingApi,
+      itemsApi: itemsApi,
+      database: database,
+      authenticationRepository: authenticationRepository);
 
   // Init auth bloc here to use it down the tree in AppView
   // Needed to route correctly without context
@@ -80,6 +88,7 @@ void bootstrap(
               itemsRepository: itemsRepository,
               usersRepository: usersRepository,
               liveTvRepository: liveTvRepository,
+              streamingRepository: streamingRepository,
               musicPlayerRepository: musicPlayerRepository),
         ),
         blocObserver: AppBlocObserver(),

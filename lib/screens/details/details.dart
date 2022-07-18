@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -35,7 +36,7 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SubtreeBuilder(
+    return SubtreeBuilder(
         builder: (_, child) {
           return BlocBuilder<DetailsBloc, DetailsState>(
               buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
@@ -53,24 +54,5 @@ class DetailsView extends StatelessWidget {
             body: context.read<DetailsBloc>().state.item.type != ItemType.Photo
                 ? const LargeDetails()
                 : const PhotoItem()));
-  }
-}
-
-/// Helper class to only build parent which can change while preserving subtree
-/// Optimize loading time with huge subtree (such as DetailsPage)
-class _SubtreeBuilder extends StatelessWidget {
-  @override
-  const _SubtreeBuilder({
-    super.key,
-    required this.builder,
-    this.child,
-  });
-
-  final Widget Function(BuildContext context, Widget? child) builder;
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    return builder(context, child);
   }
 }

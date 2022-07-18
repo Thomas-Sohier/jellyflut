@@ -142,7 +142,7 @@ abstract class Theme {
   static TextTheme generateTextThemeFromColor([Color? color]) {
     TextStyle? poppinsFont(TextStyle? textStyle) => textStyle?.copyWith(fontFamily: 'Poppins', color: color);
     TextStyle? hindMaduraiFont(TextStyle? textStyle) => textStyle?.copyWith(fontFamily: 'HindMadurai', color: color);
-    final typography = Typography.englishLike2021;
+    const typography = Typography.englishLike2021;
 
     return typography
         .copyWith(headline1: poppinsFont(typography.headline1))

@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:items_api/items_api.dart';
-import 'package:jellyflut_models/jellyflut_models.dart' hide User;
+import 'package:jellyflut_models/jellyflut_models.dart' hide User, StreamingSoftware;
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
 import 'package:path/path.dart' as p;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'helper/profiles.dart';
+import 'models/index.dart';
 
 /// {@template streaming_repository}
 /// A repository that handles streaming related requests
@@ -31,7 +33,59 @@ class StreamingRepository {
   User get currentUser => _authenticationRepository.currentUser;
   Server get currentServer => _authenticationRepository.currentServer;
 
-  Future<String> getItemURL({required Item item, bool directPlay = false}) async {
+  Future<CommonStream> createController({required Uri uri}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+    switch (StreamingSoftware.fromString(settings.preferredPlayer)) {
+      case StreamingSoftware.VLC:
+        if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+          return CommonStreamVLCComputer.fromUri(uri: uri);
+        }
+        return CommonStreamVLC.fromUri(uri: uri);
+      case StreamingSoftware.AVPLAYER:
+      case StreamingSoftware.EXOPLAYER:
+        return CommonStreamBP.fromUri(uri: uri);
+      case StreamingSoftware.HTMLPlayer:
+        return CommonStreamVideoPlayer.fromUri(uri: uri);
+      default:
+        throw UnsupportedError('Platform video streaming is unsuportted');
+    }
+  }
+
+  Future<Uri> getYoutubeTrailerUrl(MediaUrl trailer) async {
+    if (trailer.url == null) throw Exception('Not a valid Url');
+    final itemURi = Uri.parse(trailer.url!);
+    final videoId = itemURi.queryParameters['v'];
+    final yt = YoutubeExplode();
+    final manifest = await yt.videos.streamsClient.getManifest(videoId);
+    final streamInfo = manifest.muxed.withHighestBitrate();
+    yt.close();
+    return streamInfo.url;
+  }
+
+  Future<void> deleteActiveEncoding({required String playSessionId}) => _streamingApi.deleteActiveEncoding(
+        serverUrl: currentServer.url,
+        userId: currentUser.id,
+        playSessionId: playSessionId,
+      );
+
+  Future<PlayBackInfos> getPlaybackInfos({required Uri uri, required int startTimeTick, required String itemId}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+    final data = await _isCodecSupported();
+
+    return _streamingApi.getPlaybackInfos(
+        profile: data,
+        startTimeTick: startTimeTick,
+        maxVideoBitrate: settings.maxVideoBitrate,
+        maxAudioBitrate: settings.maxAudioBitrate,
+        maxStreamingBitrate: settings.maxVideoBitrate,
+        itemId: itemId,
+        serverUrl: currentServer.url,
+        userId: currentUser.id);
+  }
+
+  Future<StreamItem> getStreamItem({required Item item, bool directPlay = false}) async {
     // if (directPlay == false && offlineMode == false) {
     //   await StreamingService.bitrateTest(size: 500000);
     //   await StreamingService.bitrateTest(size: 1000000);
@@ -53,7 +107,7 @@ class StreamingRepository {
       final itemToPlay = await _getPlayableItemOrLastUnplayed(item: item);
       return getStreamURL(itemToPlay, directPlay);
     } else if (item.type == ItemType.Audio) {
-      return createMusicURL(item.id);
+      return createMusicURL(item);
     } else {
       throw UnimplementedError('File cannot be played');
     }
@@ -96,7 +150,7 @@ class StreamingRepository {
     return category.items.firstWhere((item) => !item.userData!.played, orElse: () => category.items.first);
   }
 
-  Future<String> getStreamURL(Item item, bool directPlay) async {
+  Future<StreamItem> getStreamURL(Item item, bool directPlay) async {
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(item.id);
     //  if (itemExist) return await FileService.getStoragePathItem(item);
@@ -104,21 +158,24 @@ class StreamingRepository {
     final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final data = await _isCodecSupported();
-    final backInfos = await _streamingApi.getPlaybackInfos(
+    final playbackInfos = await _streamingApi.getPlaybackInfos(
         profile: data,
         startTimeTick: item.userData!.playbackPositionTicks,
         maxVideoBitrate: settings.maxVideoBitrate,
         maxAudioBitrate: settings.maxAudioBitrate,
         maxStreamingBitrate: settings.maxVideoBitrate,
         itemId: item.id,
-        serverUrl: currentServer.id,
+        serverUrl: currentServer.url,
         userId: currentUser.id);
 
     // Check if we have a transcide url or we create it
-    if (backInfos.isTranscoding() && !directPlay) {
-      return '${currentServer.url}${backInfos.mediaSources.first.transcodingUrl}';
+    late final String url;
+    if (playbackInfos.isTranscoding() && !directPlay) {
+      url = '${currentServer.url}${playbackInfos.mediaSources.first.transcodingUrl}';
+    } else {
+      url = await createURL(item, playbackInfos, startTick: item.userData!.playbackPositionTicks);
     }
-    return createURL(item, backInfos, startTick: item.userData!.playbackPositionTicks);
+    return StreamItem(url: url, item: item, playbackInfos: playbackInfos);
   }
 
   Future<DeviceProfileParent?> _isCodecSupported() async {
@@ -180,13 +237,14 @@ class StreamingRepository {
     return uri.replace(queryParameters: finalQueryParams).toString();
   }
 
-  Future<String> createMusicURL(String itemId) async {
+  Future<StreamItem> createMusicURL(Item item) async {
     final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final streamingSoftware = TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(itemId);
     //  if (itemExist) return await FileService.getStoragePathItem(this);
-    return '${currentServer.url}/Audio/$itemId/stream.${streamingSoftware.codecName}';
+    final url = '${currentServer.url}/Audio/${item.id}/stream.${streamingSoftware.codecName}';
+    return StreamItem(url: url, item: item);
   }
 }

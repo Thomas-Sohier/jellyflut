@@ -7,18 +7,12 @@ import 'package:window_manager/window_manager.dart';
 
 import '../models/index.dart';
 
-class CommonStreamVLCComputer extends CommonStream {
-  @override
-  // ignore: overridden_fields
-  final Player controller;
+class CommonStreamVLCComputer extends CommonStream<Player> {
   final List<Timer> timers;
 
-  const CommonStreamVLCComputer({required this.controller, this.timers = const <Timer>[]})
-      : super(controller: controller);
-
-  CommonStreamVLCComputer.fromUri(
-      {required Uri uri, int startAtPosition = 0, required this.controller, this.timers = const <Timer>[]})
-      : super(controller: _initController(uri: uri, startAtPosition: startAtPosition));
+  CommonStreamVLCComputer.fromUri({required Uri uri, int startAtPosition = 0, this.timers = const <Timer>[]}) {
+    controller = _initController(uri: uri, startAtPosition: startAtPosition);
+  }
 
   static Player _initController({required Uri uri, int startAtPosition = 0}) {
     final controller = Player(
@@ -107,6 +101,12 @@ class CommonStreamVLCComputer extends CommonStream {
   }
 
   @override
+  Future<bool> isFullscreen() async {
+    final windowInstance = WindowManager.instance;
+    return windowInstance.isFullScreen();
+  }
+
+  @override
   void enterFullscreen() async {
     final windowInstance = WindowManager.instance;
     await windowInstance.setFullScreen(true);
@@ -155,8 +155,7 @@ class CommonStreamVLCComputer extends CommonStream {
 
   @override
   Duration? getBufferingDuration() {
-    // TODO: implement getBufferingDuration
-    throw UnimplementedError();
+    return Duration.zero;
   }
 
   @override

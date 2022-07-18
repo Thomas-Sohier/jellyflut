@@ -5,14 +5,25 @@ import 'media_type.dart';
 part 'audio_track.freezed.dart';
 part 'audio_track.g.dart';
 
-@Freezed()
 @immutable
+@Freezed()
 class AudioTrack with _$AudioTrack {
-  factory AudioTrack(
+  const AudioTrack._();
+
+  const factory AudioTrack(
       {required int index,
       int? jellyfinSubtitleIndex,
       required MediaType mediaType,
       required String name}) = _AudioTrack;
 
   factory AudioTrack.fromJson(Map<String, Object?> json) => _$AudioTrackFromJson(json);
+
+  /// Empty audio track which represents an empty audio track.
+  static const empty = AudioTrack(index: -1, mediaType: MediaType.local, name: '');
+
+  /// Convenience getter to determine whether the current audio track is empty.
+  bool get isEmpty => this == AudioTrack.empty;
+
+  /// Convenience getter to determine whether the current audio track is not empty.
+  bool get isNotEmpty => this != AudioTrack.empty;
 }

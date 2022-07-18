@@ -112,7 +112,7 @@ class AppRouter extends _i14.RootStackRouter {
           orElse: () => const StreamPageArgs());
       return _i14.CustomPage<dynamic>(
           routeData: routeData,
-          child: _i10.Stream(item: args.item, url: args.url),
+          child: _i10.StreamPage(key: args.key, item: args.item, url: args.url),
           transitionsBuilder: _i14.TransitionsBuilders.fadeIn,
           opaque: true,
           barrierDismissible: false);
@@ -337,17 +337,20 @@ class PlaylistPageArgs {
 }
 
 /// generated route for
-/// [_i10.Stream]
+/// [_i10.StreamPage]
 class StreamPage extends _i14.PageRouteInfo<StreamPageArgs> {
-  StreamPage({_i17.Item? item, String? url})
+  StreamPage({_i15.Key? key, _i17.Item? item, String? url})
       : super(StreamPage.name,
-            path: 'stream', args: StreamPageArgs(item: item, url: url));
+            path: 'stream',
+            args: StreamPageArgs(key: key, item: item, url: url));
 
   static const String name = 'StreamPage';
 }
 
 class StreamPageArgs {
-  const StreamPageArgs({this.item, this.url});
+  const StreamPageArgs({this.key, this.item, this.url});
+
+  final _i15.Key? key;
 
   final _i17.Item? item;
 
@@ -355,7 +358,7 @@ class StreamPageArgs {
 
   @override
   String toString() {
-    return 'StreamPageArgs{item: $item, url: $url}';
+    return 'StreamPageArgs{key: $key, item: $item, url: $url}';
   }
 }
 
