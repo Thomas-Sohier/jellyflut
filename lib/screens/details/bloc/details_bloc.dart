@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/theme.dart' as t;
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
@@ -118,17 +117,22 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         type: item.correctImageType(searchType: ImageType.Primary),
         quality: 40);
 
-    await NetworkAssetBundle(Uri.parse(url)).load(url).then((ByteData byteData) async {
-      final imageBytes = byteData.buffer.asUint8List();
-      final colorsFuture = compute(ColorUtil.extractPixelsColors, imageBytes);
-
+    await NetworkAssetBundle(Uri.parse(url)).load(url).then(_computePalette).then((colors) async {
       // save binary in sharedpref to load faster and prevent future API call
       if (cache) {
-        unawaited(colorsFuture.then((c) async {
-          await cacheSeedColor(c);
-          add(DetailsUpdateSeedColor(colors: c));
-        }));
+        await cacheSeedColor(colors);
+        add(DetailsUpdateSeedColor(colors: colors));
       }
     });
+  }
+
+  Future<List<Color>> _computePalette(ByteData byteData) async {
+    // We resize the image first to avoid too much computation from palette generator
+    final resizedImage = ResizeImage(Image.memory(byteData.buffer.asUint8List()).image, height: 120, width: 120);
+    final palette = await PaletteGenerator.fromImageProvider(
+      resizedImage,
+      maximumColorCount: 4,
+    );
+    return palette.colors.toList();
   }
 }

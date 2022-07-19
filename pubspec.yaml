@@ -24,10 +24,6 @@ dependencies:
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
   community_material_icon: ^5.9.55
-  live_tv_api:
-    path: packages/live_tv_api
-  live_tv_repository:
-    path: packages/live_tv_repository
   cupertino_icons: ^1.0.5
   dart_vlc:
     git:
@@ -69,12 +65,17 @@ dependencies:
   json_serializable: ^6.2.0
   just_audio: ^0.9.25
   just_audio_libwinmedia: ^0.0.4
+  live_tv_api:
+    path: packages/live_tv_api
+  live_tv_repository:
+    path: packages/live_tv_repository
   music_player_api:
     path: packages/music_player_api
   music_player_repository:
     path: packages/music_player_repository
   octo_image: ^1.0.2
   package_info_plus: ^1.4.2
+  palette_generator: ^0.3.3+1
   path: ^1.8.1
   path_provider: ^2.0.11
   permission_handler: ^10.0.0
@@ -94,13 +95,13 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.7
   sqlite_database:
     path: packages/sqlite_database
-  subtitle: ^0.1.0-beta.3
-  universal_io: ^2.0.4
-  url_launcher: ^6.1.4
   streaming_api:
     path: packages/streaming_api
   streaming_repository:
     path: packages/streaming_repository
+  subtitle: ^0.1.0-beta.3
+  universal_io: ^2.0.4
+  url_launcher: ^6.1.4
   users_api:
     path: packages/users_api
   users_repository:
