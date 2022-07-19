@@ -34,13 +34,13 @@ dependencies:
       url: https://github.com/erikas-taroza/dart_vlc.git
       ref: e661980
   database_downloads_api:
-    path: packages/downloads/database_downloads_api
+    path: packages/database_downloads_api
   device_info_plus: ^4.0.0
   dio: ^4.0.6
   downloads_api:
-    path: packages/downloads/downloads_api
+    path: packages/downloads_api
   downloads_repository:
-    path: packages/downloads/downloads_repository
+    path: packages/downloads_repository
   drift: ^1.7.0
   drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.1
@@ -59,9 +59,9 @@ dependencies:
   hydrated_bloc: ^8.1.0
   intl: ^0.17.0
   items_api:
-    path: packages/items/items_api
+    path: packages/items_api
   items_repository:
-    path: packages/items/items_repository
+    path: packages/items_repository
   jellyfin_authentication_api:
     path: packages/jellyfin_authentication_api
   jellyflut_models:
@@ -102,9 +102,9 @@ dependencies:
   streaming_repository:
     path: packages/streaming_repository
   users_api:
-    path: packages/users/users_api
+    path: packages/users_api
   users_repository:
-    path: packages/users/users_repository
+    path: packages/users_repository
   uuid: ^3.0.6
   video_player: ^2.4.5
   wakelock: ^0.6.1+2

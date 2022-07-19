@@ -10,7 +10,7 @@ dependencies:
   downloads_api:
     path: ../downloads_api
   jellyflut_models:
-    path: ../../jellyflut_models
+    path: ../jellyflut_models
   json_annotation: ^4.5.0
 
 dev_dependencies:

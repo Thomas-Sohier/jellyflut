@@ -408,7 +408,7 @@ packages:
   items_api:
     dependency: "direct main"
     description:
-      path: "../items/items_api"
+      path: "../items_api"
       relative: true
     source: path
     version: "1.0.0+1"

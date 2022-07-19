@@ -8,11 +8,11 @@ environment:
 
 dependencies:
   jellyflut_models:
-    path: ../../jellyflut_models
+    path: ../jellyflut_models
   users_api:
     path: ../users_api
   authentication_repository:
-    path: ../../authentication_repository
+    path: ../authentication_repository
   flutter:
     sdk: flutter
 

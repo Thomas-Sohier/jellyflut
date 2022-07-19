@@ -10,11 +10,11 @@ dependencies:
   items_api:
     path: ../items_api
   authentication_repository:
-    path: ../../authentication_repository
+    path: ../authentication_repository
   jellyflut_models:
-    path: ../../jellyflut_models
+    path: ../jellyflut_models
   sqlite_database:
-    path: ../../sqlite_database
+    path: ../sqlite_database
 
 dev_dependencies:
   pedantic: ^1.11.1

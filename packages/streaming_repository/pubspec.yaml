@@ -20,7 +20,7 @@ dependencies:
   flutter_vlc_player: ^7.1.5
   freezed_annotation: ^2.0.3
   items_api:
-    path: ../items/items_api
+    path: ../items_api
   jellyflut_models:
     path: ../jellyflut_models
   json_annotation: ^4.6.0

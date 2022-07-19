@@ -7,414 +7,401 @@ part of 'item.dart';
 // **************************************************************************
 
 _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
-      id: json['Id'] as String,
-      originalTitle: json['OriginalTitle'] as String?,
-      name: json['Name'] as String?,
-      serverId: json['ServerId'] as String?,
-      etag: json['Etag'] as String?,
-      sourceType: json['SourceType'] as String?,
-      playlistItemId: json['PlaylistItemId'] as String?,
-      dateCreated: json['DateCreated'] == null
+      id: json['id'] as String,
+      originalTitle: json['originalTitle'] as String?,
+      name: json['name'] as String?,
+      serverId: json['serverId'] as String?,
+      etag: json['etag'] as String?,
+      sourceType: json['sourceType'] as String?,
+      playlistItemId: json['playlistItemId'] as String?,
+      dateCreated: json['dateCreated'] == null
           ? null
-          : DateTime.parse(json['DateCreated'] as String),
-      dateLastMediaAdded: json['DateLastMediaAdded'] == null
+          : DateTime.parse(json['dateCreated'] as String),
+      dateLastMediaAdded: json['dateLastMediaAdded'] == null
           ? null
-          : DateTime.parse(json['DateLastMediaAdded'] as String),
-      extraType: json['ExtraType'] as String?,
-      airsBeforeSeasonNumber: json['AirsBeforeSeasonNumber'] as int?,
-      airsAfterSeasonNumber: json['AirsAfterSeasonNumber'] as int?,
-      airsBeforeEpisodeNumber: json['AirsBeforeEpisodeNumber'] as int?,
-      canDelete: json['CanDelete'] as bool?,
-      canDownload: json['CanDownload'] as bool?,
-      hasSubtitles: json['HasSubtitles'] as bool?,
-      preferredMetadataLanguage: json['PreferredMetadataLanguage'] as String?,
+          : DateTime.parse(json['dateLastMediaAdded'] as String),
+      extraType: json['extraType'] as String?,
+      airsBeforeSeasonNumber: json['airsBeforeSeasonNumber'] as int?,
+      airsAfterSeasonNumber: json['airsAfterSeasonNumber'] as int?,
+      airsBeforeEpisodeNumber: json['airsBeforeEpisodeNumber'] as int?,
+      canDelete: json['canDelete'] as bool?,
+      canDownload: json['canDownload'] as bool?,
+      hasSubtitles: json['hasSubtitles'] as bool?,
+      preferredMetadataLanguage: json['preferredMetadataLanguage'] as String?,
       preferredMetadataCountryCode:
-          json['PreferredMetadataCountryCode'] as String?,
-      supportsSync: json['SupportsSync'] as bool?,
-      container: json['Container'] as String?,
-      sortName: json['SortName'] as String?,
-      forcedSortName: json['ForcedSortName'] as String?,
+          json['preferredMetadataCountryCode'] as String?,
+      supportsSync: json['supportsSync'] as bool?,
+      container: json['container'] as String?,
+      sortName: json['sortName'] as String?,
+      forcedSortName: json['forcedSortName'] as String?,
       video3DFormat:
-          $enumDecodeNullable(_$Video3DFormatEnumMap, json['Video3DFormat']),
-      premiereDate: json['PremiereDate'] == null
+          $enumDecodeNullable(_$Video3DFormatEnumMap, json['video3DFormat']),
+      premiereDate: json['premiereDate'] == null
           ? null
-          : DateTime.parse(json['PremiereDate'] as String),
-      externalUrls: (json['ExternalUrls'] as List<dynamic>?)
+          : DateTime.parse(json['premiereDate'] as String),
+      externalUrls: (json['externalUrls'] as List<dynamic>?)
               ?.map((e) => ExternalUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <ExternalUrl>[],
-      mediaSources: (json['MediaSources'] as List<dynamic>?)
+      mediaSources: (json['mediaSources'] as List<dynamic>?)
               ?.map((e) => MediaSource.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <MediaSource>[],
-      criticRating: json['CriticRating'] as int?,
-      productionLocations: (json['ProductionLocations'] as List<dynamic>?)
+      criticRating: json['criticRating'] as int?,
+      productionLocations: (json['productionLocations'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      path: json['Path'] as String?,
-      enableMediaSourceDisplay: json['EnableMediaSourceDisplay'] as bool?,
-      officialRating: json['OfficialRating'] as String?,
-      customRating: json['CustomRating'] as String?,
-      channelId: json['ChannelId'] as String?,
-      channelName: json['ChannelName'] as String?,
-      overview: json['Overview'] as String?,
-      taglines: (json['Taglines'] as List<dynamic>?)
+      path: json['path'] as String?,
+      enableMediaSourceDisplay: json['enableMediaSourceDisplay'] as bool?,
+      officialRating: json['officialRating'] as String?,
+      customRating: json['customRating'] as String?,
+      channelId: json['channelId'] as String?,
+      channelName: json['channelName'] as String?,
+      overview: json['overview'] as String?,
+      taglines: (json['taglines'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      genres: (json['Genres'] as List<dynamic>?)
+      genres: (json['genres'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      communityRating: (json['CommunityRating'] as num?)?.toDouble(),
+      communityRating: (json['communityRating'] as num?)?.toDouble(),
       cumulativeRunTimeTicks:
-          (json['CumulativeRunTimeTicks'] as num?)?.toDouble(),
-      runTimeTicks: (json['RunTimeTicks'] as num?)?.toDouble(),
-      playAccess: $enumDecodeNullable(_$PlayAccessEnumMap, json['PlayAccess']),
-      aspectRatio: json['AspectRatio'] as String?,
-      productionYear: json['ProductionYear'] as int?,
-      isPlaceHolder: json['IsPlaceHolder'] as bool?,
-      number: json['Number'] as String?,
-      channelNumber: json['ChannelNumber'] as String?,
-      indexNumber: json['IndexNumber'] as int?,
-      indexNumberEnd: json['IndexNumberEnd'] as int?,
-      parentIndexNumber: json['ParentIndexNumber'] as int?,
-      remoteTrailers: (json['RemoteTrailers'] as List<dynamic>?)
+          (json['cumulativeRunTimeTicks'] as num?)?.toDouble(),
+      runTimeTicks: (json['runTimeTicks'] as num?)?.toDouble(),
+      playAccess: $enumDecodeNullable(_$PlayAccessEnumMap, json['playAccess']),
+      aspectRatio: json['aspectRatio'] as String?,
+      productionYear: json['productionYear'] as int?,
+      isPlaceHolder: json['isPlaceHolder'] as bool?,
+      number: json['number'] as String?,
+      channelNumber: json['channelNumber'] as String?,
+      indexNumber: json['indexNumber'] as int?,
+      indexNumberEnd: json['indexNumberEnd'] as int?,
+      parentIndexNumber: json['parentIndexNumber'] as int?,
+      remoteTrailers: (json['remoteTrailers'] as List<dynamic>?)
               ?.map((e) => MediaUrl.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <MediaUrl>[],
-      providerIds: (json['ProviderIds'] as Map<String, dynamic>?)?.map(
+      providerIds: (json['providerIds'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
           ) ??
           const <String, String>{},
-      isHD: json['IsHD'] as bool?,
-      isFolder: json['IsFolder'] as bool?,
-      parentId: json['ParentId'] as String?,
-      type: $enumDecode(_$ItemTypeEnumMap, json['Type']),
-      people: (json['People'] as List<dynamic>?)
+      isHD: json['isHD'] as bool?,
+      isFolder: json['isFolder'] as bool?,
+      parentId: json['parentId'] as String?,
+      type: $enumDecode(_$ItemTypeEnumMap, json['type']),
+      people: (json['people'] as List<dynamic>?)
               ?.map((e) => People.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <People>[],
-      studios: (json['Studios'] as List<dynamic>?)
+      studios: (json['studios'] as List<dynamic>?)
               ?.map((e) => NamedGuidPair.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <NamedGuidPair>[],
-      genreItems: (json['GenreItems'] as List<dynamic>?)
+      genreItems: (json['genreItems'] as List<dynamic>?)
               ?.map((e) => NamedGuidPair.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <NamedGuidPair>[],
-      parentLogoItemId: json['ParentLogoItemId'] as String?,
-      parentBackdropItemId: json['ParentBackdropItemId'] as String?,
+      parentLogoItemId: json['parentLogoItemId'] as String?,
+      parentBackdropItemId: json['parentBackdropItemId'] as String?,
       parentBackdropImageTags:
-          (json['ParentBackdropImageTags'] as List<dynamic>?)
+          (json['parentBackdropImageTags'] as List<dynamic>?)
                   ?.map((e) => e as String)
                   .toList() ??
               const <String>[],
-      localTrailerCount: json['LocalTrailerCount'] as int?,
-      userData: json['UserData'] == null
+      localTrailerCount: json['localTrailerCount'] as int?,
+      userData: json['userData'] == null
           ? null
-          : UserData.fromJson(json['UserData'] as Map<String, dynamic>),
-      recursiveItemCount: json['RecursiveItemCount'] as int?,
-      childCount: json['ChildCount'] as int?,
-      seriesName: json['SeriesName'] as String?,
-      seriesId: json['SeriesId'] as String?,
-      seasonId: json['SeasonId'] as String?,
-      specialFeatureCount: json['SpecialFeatureCount'] as int?,
-      displayPreferencesId: json['DisplayPreferencesId'] as String?,
-      status: json['Status'] as String?,
-      airTime: json['AirTime'] as String?,
-      airDays: (json['AirDays'] as List<dynamic>?)
+          : UserData.fromJson(json['userData'] as Map<String, dynamic>),
+      recursiveItemCount: json['recursiveItemCount'] as int?,
+      childCount: json['childCount'] as int?,
+      seriesName: json['seriesName'] as String?,
+      seriesId: json['seriesId'] as String?,
+      seasonId: json['seasonId'] as String?,
+      specialFeatureCount: json['specialFeatureCount'] as int?,
+      displayPreferencesId: json['displayPreferencesId'] as String?,
+      status: json['status'] as String?,
+      airTime: json['airTime'] as String?,
+      airDays: (json['airDays'] as List<dynamic>?)
               ?.map((e) => $enumDecode(_$DayOfWeekEnumMap, e))
               .toList() ??
           const <DayOfWeek>[],
       tags:
-          (json['Tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               const <String>[],
       primaryImageAspectRatio:
-          (json['PrimaryImageAspectRatio'] as num?)?.toDouble(),
-      artists: (json['Artists'] as List<dynamic>?)
+          (json['primaryImageAspectRatio'] as num?)?.toDouble(),
+      artists: (json['artists'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      artistItems: (json['ArtistItems'] as List<dynamic>?)
+      artistItems: (json['artistItems'] as List<dynamic>?)
               ?.map((e) => NamedGuidPair.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <NamedGuidPair>[],
-      album: json['Album'] as String?,
+      album: json['album'] as String?,
       collectionType:
-          $enumDecodeNullable(_$CollectionTypeEnumMap, json['CollectionType']),
-      displayOrder: json['DisplayOrder'] as String?,
-      albumId: json['AlbumId'] as String?,
-      albumPrimaryImageTag: json['AlbumPrimaryImageTag'] as String?,
-      seriesPrimaryImageTag: json['SeriesPrimaryImageTag'] as String?,
-      albumArtist: json['AlbumArtist'] as String?,
-      albumArtists: (json['AlbumArtists'] as List<dynamic>?)
+          $enumDecodeNullable(_$CollectionTypeEnumMap, json['collectionType']),
+      displayOrder: json['displayOrder'] as String?,
+      albumId: json['albumId'] as String?,
+      albumPrimaryImageTag: json['albumPrimaryImageTag'] as String?,
+      seriesPrimaryImageTag: json['seriesPrimaryImageTag'] as String?,
+      albumArtist: json['albumArtist'] as String?,
+      albumArtists: (json['albumArtists'] as List<dynamic>?)
               ?.map((e) => NamedGuidPair.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <NamedGuidPair>[],
-      seasonName: json['SeasonName'] as String?,
-      mediaStreams: (json['MediaStreams'] as List<dynamic>?)
+      seasonName: json['seasonName'] as String?,
+      mediaStreams: (json['mediaStreams'] as List<dynamic>?)
               ?.map((e) => MediaStream.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <MediaStream>[],
-      videoType: $enumDecodeNullable(_$VideoTypeEnumMap, json['VideoType']),
-      partCount: json['PartCount'] as int?,
-      mediaSourceCount: json['MediaSourceCount'] as int?,
-      imageTags: (json['ImageTags'] as Map<String, dynamic>?)?.map(
+      videoType: $enumDecodeNullable(_$VideoTypeEnumMap, json['videoType']),
+      partCount: json['partCount'] as int?,
+      mediaSourceCount: json['mediaSourceCount'] as int?,
+      imageTags: (json['imageTags'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
           ) ??
           const <String, String>{},
-      backdropImageTags: (json['BackdropImageTags'] as List<dynamic>?)
+      backdropImageTags: (json['backdropImageTags'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      screenshotImageTags: (json['ScreenshotImageTags'] as List<dynamic>?)
+      screenshotImageTags: (json['screenshotImageTags'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      parentLogoImageTag: json['ParentLogoImageTag'] as String?,
-      parentArtItemId: json['ParentArtItemId'] as String?,
-      parentArtImageTag: json['ParentArtImageTag'] as String?,
-      seriesThumbImageTag: json['SeriesThumbImageTag'] as String?,
-      imageBlurHashes: json['ImageBlurHashes'] == null
+      parentLogoImageTag: json['parentLogoImageTag'] as String?,
+      parentArtItemId: json['parentArtItemId'] as String?,
+      parentArtImageTag: json['parentArtImageTag'] as String?,
+      seriesThumbImageTag: json['seriesThumbImageTag'] as String?,
+      imageBlurHashes: json['imageBlurHashes'] == null
           ? null
           : ImageBlurHashes.fromJson(
-              json['ImageBlurHashes'] as Map<String, dynamic>),
-      seriesStudio: json['SeriesStudio'] as String?,
-      parentThumbItemId: json['ParentThumbItemId'] as String?,
-      parentThumbImageTag: json['ParentThumbImageTag'] as String?,
-      parentPrimaryImageItemId: json['ParentPrimaryImageItemId'] as String?,
-      parentPrimaryImageTag: json['ParentPrimaryImageTag'] as String?,
-      chapters: (json['Chapters'] as List<dynamic>?)
+              json['imageBlurHashes'] as Map<String, dynamic>),
+      seriesStudio: json['seriesStudio'] as String?,
+      parentThumbItemId: json['parentThumbItemId'] as String?,
+      parentThumbImageTag: json['parentThumbImageTag'] as String?,
+      parentPrimaryImageItemId: json['parentPrimaryImageItemId'] as String?,
+      parentPrimaryImageTag: json['parentPrimaryImageTag'] as String?,
+      chapters: (json['chapters'] as List<dynamic>?)
               ?.map((e) => Chapter.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Chapter>[],
       locationType:
-          $enumDecodeNullable(_$LocationTypeEnumMap, json['LocationType']),
-      isoType: $enumDecodeNullable(_$IsoTypeEnumMap, json['IsoType']),
-      mediaType: json['MediaType'] as String?,
-      endDate: json['EndDate'] == null
+          $enumDecodeNullable(_$LocationTypeEnumMap, json['locationType']),
+      isoType: $enumDecodeNullable(_$IsoTypeEnumMap, json['isoType']),
+      mediaType: json['mediaType'] as String?,
+      endDate: json['endDate'] == null
           ? null
-          : DateTime.parse(json['EndDate'] as String),
-      lockedFields: (json['LockedFields'] as List<dynamic>?)
+          : DateTime.parse(json['endDate'] as String),
+      lockedFields: (json['lockedFields'] as List<dynamic>?)
               ?.map((e) => $enumDecode(_$MetaDataFieldEnumMap, e))
               .toList() ??
           const <MetaDataField>[],
-      trailerCount: json['TrailerCount'] as int?,
-      movieCount: json['MovieCount'] as int?,
-      seriesCount: json['SeriesCount'] as int?,
-      programCount: json['ProgramCount'] as int?,
-      episodeCount: json['EpisodeCount'] as int?,
-      songCount: json['SongCount'] as int?,
-      albumCount: json['AlbumCount'] as int?,
-      artistCount: json['ArtistCount'] as int?,
-      musicVideoCount: json['MusicVideoCount'] as int?,
-      lockData: json['LockData'] as bool?,
-      width: json['Width'] as int?,
-      height: json['Height'] as int?,
-      cameraMake: json['CameraMake'] as String?,
-      cameraModel: json['CameraModel'] as String?,
-      software: json['Software'] as String?,
-      exposureTime: json['ExposureTime'] as int?,
-      focalLength: json['FocalLength'] as int?,
-      imageOrientation: json['ImageOrientation'] as String?,
-      aperture: json['Aperture'] as int?,
-      shutterSpeed: json['ShutterSpeed'] as int?,
-      latitude: json['Latitude'] as int?,
-      longitude: json['Longitude'] as int?,
-      altitude: json['Altitude'] as int?,
-      isoSpeedRating: json['IsoSpeedRating'] as int?,
-      seriesTimerId: json['SeriesTimerId'] as String?,
-      programId: json['ProgramId'] as String?,
-      channelPrimaryImageTag: json['ChannelPrimaryImageTag'] as String?,
-      startDate: json['StartDate'] == null
+      trailerCount: json['trailerCount'] as int?,
+      movieCount: json['movieCount'] as int?,
+      seriesCount: json['seriesCount'] as int?,
+      programCount: json['programCount'] as int?,
+      episodeCount: json['episodeCount'] as int?,
+      songCount: json['songCount'] as int?,
+      albumCount: json['albumCount'] as int?,
+      artistCount: json['artistCount'] as int?,
+      musicVideoCount: json['musicVideoCount'] as int?,
+      lockData: json['lockData'] as bool?,
+      width: json['width'] as int?,
+      height: json['height'] as int?,
+      cameraMake: json['cameraMake'] as String?,
+      cameraModel: json['cameraModel'] as String?,
+      software: json['software'] as String?,
+      exposureTime: json['exposureTime'] as int?,
+      focalLength: json['focalLength'] as int?,
+      imageOrientation: json['imageOrientation'] as String?,
+      aperture: json['aperture'] as int?,
+      shutterSpeed: json['shutterSpeed'] as int?,
+      latitude: json['latitude'] as int?,
+      longitude: json['longitude'] as int?,
+      altitude: json['altitude'] as int?,
+      isoSpeedRating: json['isoSpeedRating'] as int?,
+      seriesTimerId: json['seriesTimerId'] as String?,
+      programId: json['programId'] as String?,
+      channelPrimaryImageTag: json['channelPrimaryImageTag'] as String?,
+      startDate: json['startDate'] == null
           ? null
-          : DateTime.parse(json['StartDate'] as String),
-      completionPercentage: json['CompletionPercentage'] as int?,
-      isRepeat: json['IsRepeat'] as bool?,
-      episodeTitle: json['EpisodeTitle'] as String?,
+          : DateTime.parse(json['startDate'] as String),
+      completionPercentage: json['completionPercentage'] as int?,
+      isRepeat: json['isRepeat'] as bool?,
+      episodeTitle: json['episodeTitle'] as String?,
       channelType:
-          $enumDecodeNullable(_$ChannelTypeEnumMap, json['ChannelType']),
-      audio: $enumDecodeNullable(_$AudioEnumMap, json['Audio']),
-      isMovie: json['IsMovie'] as bool?,
-      isSports: json['IsSports'] as bool?,
-      isSeries: json['IsSeries'] as bool?,
-      isLive: json['IsLive'] as bool?,
-      isNews: json['IsNews'] as bool?,
-      isKids: json['IsKids'] as bool?,
-      isPremiere: json['IsPremiere'] as bool?,
-      timerId: json['TimerId'] as String?,
-      currentProgram: json['CurrentProgram'] as String?,
+          $enumDecodeNullable(_$ChannelTypeEnumMap, json['channelType']),
+      audio: $enumDecodeNullable(_$AudioEnumMap, json['audio']),
+      isMovie: json['isMovie'] as bool?,
+      isSports: json['isSports'] as bool?,
+      isSeries: json['isSeries'] as bool?,
+      isLive: json['isLive'] as bool?,
+      isNews: json['isNews'] as bool?,
+      isKids: json['isKids'] as bool?,
+      isPremiere: json['isPremiere'] as bool?,
+      timerId: json['timerId'] as String?,
+      currentProgram: json['currentProgram'] as String?,
     );
 
-Map<String, dynamic> _$$_ItemToJson(_$_Item instance) {
-  final val = <String, dynamic>{
-    'Id': instance.id,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('OriginalTitle', instance.originalTitle);
-  writeNotNull('Name', instance.name);
-  writeNotNull('ServerId', instance.serverId);
-  writeNotNull('Etag', instance.etag);
-  writeNotNull('SourceType', instance.sourceType);
-  writeNotNull('PlaylistItemId', instance.playlistItemId);
-  writeNotNull('DateCreated', instance.dateCreated?.toIso8601String());
-  writeNotNull(
-      'DateLastMediaAdded', instance.dateLastMediaAdded?.toIso8601String());
-  writeNotNull('ExtraType', instance.extraType);
-  writeNotNull('AirsBeforeSeasonNumber', instance.airsBeforeSeasonNumber);
-  writeNotNull('AirsAfterSeasonNumber', instance.airsAfterSeasonNumber);
-  writeNotNull('AirsBeforeEpisodeNumber', instance.airsBeforeEpisodeNumber);
-  writeNotNull('CanDelete', instance.canDelete);
-  writeNotNull('CanDownload', instance.canDownload);
-  writeNotNull('HasSubtitles', instance.hasSubtitles);
-  writeNotNull('PreferredMetadataLanguage', instance.preferredMetadataLanguage);
-  writeNotNull(
-      'PreferredMetadataCountryCode', instance.preferredMetadataCountryCode);
-  writeNotNull('SupportsSync', instance.supportsSync);
-  writeNotNull('Container', instance.container);
-  writeNotNull('SortName', instance.sortName);
-  writeNotNull('ForcedSortName', instance.forcedSortName);
-  writeNotNull('Video3DFormat', _$Video3DFormatEnumMap[instance.video3DFormat]);
-  writeNotNull('PremiereDate', instance.premiereDate?.toIso8601String());
-  val['ExternalUrls'] = instance.externalUrls;
-  val['MediaSources'] = instance.mediaSources;
-  writeNotNull('CriticRating', instance.criticRating);
-  val['ProductionLocations'] = instance.productionLocations;
-  writeNotNull('Path', instance.path);
-  writeNotNull('EnableMediaSourceDisplay', instance.enableMediaSourceDisplay);
-  writeNotNull('OfficialRating', instance.officialRating);
-  writeNotNull('CustomRating', instance.customRating);
-  writeNotNull('ChannelId', instance.channelId);
-  writeNotNull('ChannelName', instance.channelName);
-  writeNotNull('Overview', instance.overview);
-  val['Taglines'] = instance.taglines;
-  val['Genres'] = instance.genres;
-  writeNotNull('CommunityRating', instance.communityRating);
-  writeNotNull('CumulativeRunTimeTicks', instance.cumulativeRunTimeTicks);
-  writeNotNull('RunTimeTicks', instance.runTimeTicks);
-  writeNotNull('PlayAccess', _$PlayAccessEnumMap[instance.playAccess]);
-  writeNotNull('AspectRatio', instance.aspectRatio);
-  writeNotNull('ProductionYear', instance.productionYear);
-  writeNotNull('IsPlaceHolder', instance.isPlaceHolder);
-  writeNotNull('Number', instance.number);
-  writeNotNull('ChannelNumber', instance.channelNumber);
-  writeNotNull('IndexNumber', instance.indexNumber);
-  writeNotNull('IndexNumberEnd', instance.indexNumberEnd);
-  writeNotNull('ParentIndexNumber', instance.parentIndexNumber);
-  val['RemoteTrailers'] = instance.remoteTrailers;
-  val['ProviderIds'] = instance.providerIds;
-  writeNotNull('IsHD', instance.isHD);
-  writeNotNull('IsFolder', instance.isFolder);
-  writeNotNull('ParentId', instance.parentId);
-  val['Type'] = _$ItemTypeEnumMap[instance.type]!;
-  val['People'] = instance.people;
-  val['Studios'] = instance.studios;
-  val['GenreItems'] = instance.genreItems;
-  writeNotNull('ParentLogoItemId', instance.parentLogoItemId);
-  writeNotNull('ParentBackdropItemId', instance.parentBackdropItemId);
-  val['ParentBackdropImageTags'] = instance.parentBackdropImageTags;
-  writeNotNull('LocalTrailerCount', instance.localTrailerCount);
-  writeNotNull('UserData', instance.userData);
-  writeNotNull('RecursiveItemCount', instance.recursiveItemCount);
-  writeNotNull('ChildCount', instance.childCount);
-  writeNotNull('SeriesName', instance.seriesName);
-  writeNotNull('SeriesId', instance.seriesId);
-  writeNotNull('SeasonId', instance.seasonId);
-  writeNotNull('SpecialFeatureCount', instance.specialFeatureCount);
-  writeNotNull('DisplayPreferencesId', instance.displayPreferencesId);
-  writeNotNull('Status', instance.status);
-  writeNotNull('AirTime', instance.airTime);
-  val['AirDays'] = instance.airDays.map((e) => _$DayOfWeekEnumMap[e]!).toList();
-  val['Tags'] = instance.tags;
-  writeNotNull('PrimaryImageAspectRatio', instance.primaryImageAspectRatio);
-  val['Artists'] = instance.artists;
-  val['ArtistItems'] = instance.artistItems;
-  writeNotNull('Album', instance.album);
-  writeNotNull(
-      'CollectionType', _$CollectionTypeEnumMap[instance.collectionType]);
-  writeNotNull('DisplayOrder', instance.displayOrder);
-  writeNotNull('AlbumId', instance.albumId);
-  writeNotNull('AlbumPrimaryImageTag', instance.albumPrimaryImageTag);
-  writeNotNull('SeriesPrimaryImageTag', instance.seriesPrimaryImageTag);
-  writeNotNull('AlbumArtist', instance.albumArtist);
-  val['AlbumArtists'] = instance.albumArtists;
-  writeNotNull('SeasonName', instance.seasonName);
-  val['MediaStreams'] = instance.mediaStreams;
-  writeNotNull('VideoType', _$VideoTypeEnumMap[instance.videoType]);
-  writeNotNull('PartCount', instance.partCount);
-  writeNotNull('MediaSourceCount', instance.mediaSourceCount);
-  val['ImageTags'] = instance.imageTags;
-  val['BackdropImageTags'] = instance.backdropImageTags;
-  val['ScreenshotImageTags'] = instance.screenshotImageTags;
-  writeNotNull('ParentLogoImageTag', instance.parentLogoImageTag);
-  writeNotNull('ParentArtItemId', instance.parentArtItemId);
-  writeNotNull('ParentArtImageTag', instance.parentArtImageTag);
-  writeNotNull('SeriesThumbImageTag', instance.seriesThumbImageTag);
-  writeNotNull('ImageBlurHashes', instance.imageBlurHashes);
-  writeNotNull('SeriesStudio', instance.seriesStudio);
-  writeNotNull('ParentThumbItemId', instance.parentThumbItemId);
-  writeNotNull('ParentThumbImageTag', instance.parentThumbImageTag);
-  writeNotNull('ParentPrimaryImageItemId', instance.parentPrimaryImageItemId);
-  writeNotNull('ParentPrimaryImageTag', instance.parentPrimaryImageTag);
-  val['Chapters'] = instance.chapters;
-  writeNotNull('LocationType', _$LocationTypeEnumMap[instance.locationType]);
-  writeNotNull('IsoType', _$IsoTypeEnumMap[instance.isoType]);
-  writeNotNull('MediaType', instance.mediaType);
-  writeNotNull('EndDate', instance.endDate?.toIso8601String());
-  val['LockedFields'] =
-      instance.lockedFields.map((e) => _$MetaDataFieldEnumMap[e]!).toList();
-  writeNotNull('TrailerCount', instance.trailerCount);
-  writeNotNull('MovieCount', instance.movieCount);
-  writeNotNull('SeriesCount', instance.seriesCount);
-  writeNotNull('ProgramCount', instance.programCount);
-  writeNotNull('EpisodeCount', instance.episodeCount);
-  writeNotNull('SongCount', instance.songCount);
-  writeNotNull('AlbumCount', instance.albumCount);
-  writeNotNull('ArtistCount', instance.artistCount);
-  writeNotNull('MusicVideoCount', instance.musicVideoCount);
-  writeNotNull('LockData', instance.lockData);
-  writeNotNull('Width', instance.width);
-  writeNotNull('Height', instance.height);
-  writeNotNull('CameraMake', instance.cameraMake);
-  writeNotNull('CameraModel', instance.cameraModel);
-  writeNotNull('Software', instance.software);
-  writeNotNull('ExposureTime', instance.exposureTime);
-  writeNotNull('FocalLength', instance.focalLength);
-  writeNotNull('ImageOrientation', instance.imageOrientation);
-  writeNotNull('Aperture', instance.aperture);
-  writeNotNull('ShutterSpeed', instance.shutterSpeed);
-  writeNotNull('Latitude', instance.latitude);
-  writeNotNull('Longitude', instance.longitude);
-  writeNotNull('Altitude', instance.altitude);
-  writeNotNull('IsoSpeedRating', instance.isoSpeedRating);
-  writeNotNull('SeriesTimerId', instance.seriesTimerId);
-  writeNotNull('ProgramId', instance.programId);
-  writeNotNull('ChannelPrimaryImageTag', instance.channelPrimaryImageTag);
-  writeNotNull('StartDate', instance.startDate?.toIso8601String());
-  writeNotNull('CompletionPercentage', instance.completionPercentage);
-  writeNotNull('IsRepeat', instance.isRepeat);
-  writeNotNull('EpisodeTitle', instance.episodeTitle);
-  writeNotNull('ChannelType', _$ChannelTypeEnumMap[instance.channelType]);
-  writeNotNull('Audio', _$AudioEnumMap[instance.audio]);
-  writeNotNull('IsMovie', instance.isMovie);
-  writeNotNull('IsSports', instance.isSports);
-  writeNotNull('IsSeries', instance.isSeries);
-  writeNotNull('IsLive', instance.isLive);
-  writeNotNull('IsNews', instance.isNews);
-  writeNotNull('IsKids', instance.isKids);
-  writeNotNull('IsPremiere', instance.isPremiere);
-  writeNotNull('TimerId', instance.timerId);
-  writeNotNull('CurrentProgram', instance.currentProgram);
-  return val;
-}
+Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
+      'id': instance.id,
+      'originalTitle': instance.originalTitle,
+      'name': instance.name,
+      'serverId': instance.serverId,
+      'etag': instance.etag,
+      'sourceType': instance.sourceType,
+      'playlistItemId': instance.playlistItemId,
+      'dateCreated': instance.dateCreated?.toIso8601String(),
+      'dateLastMediaAdded': instance.dateLastMediaAdded?.toIso8601String(),
+      'extraType': instance.extraType,
+      'airsBeforeSeasonNumber': instance.airsBeforeSeasonNumber,
+      'airsAfterSeasonNumber': instance.airsAfterSeasonNumber,
+      'airsBeforeEpisodeNumber': instance.airsBeforeEpisodeNumber,
+      'canDelete': instance.canDelete,
+      'canDownload': instance.canDownload,
+      'hasSubtitles': instance.hasSubtitles,
+      'preferredMetadataLanguage': instance.preferredMetadataLanguage,
+      'preferredMetadataCountryCode': instance.preferredMetadataCountryCode,
+      'supportsSync': instance.supportsSync,
+      'container': instance.container,
+      'sortName': instance.sortName,
+      'forcedSortName': instance.forcedSortName,
+      'video3DFormat': _$Video3DFormatEnumMap[instance.video3DFormat],
+      'premiereDate': instance.premiereDate?.toIso8601String(),
+      'externalUrls': instance.externalUrls,
+      'mediaSources': instance.mediaSources,
+      'criticRating': instance.criticRating,
+      'productionLocations': instance.productionLocations,
+      'path': instance.path,
+      'enableMediaSourceDisplay': instance.enableMediaSourceDisplay,
+      'officialRating': instance.officialRating,
+      'customRating': instance.customRating,
+      'channelId': instance.channelId,
+      'channelName': instance.channelName,
+      'overview': instance.overview,
+      'taglines': instance.taglines,
+      'genres': instance.genres,
+      'communityRating': instance.communityRating,
+      'cumulativeRunTimeTicks': instance.cumulativeRunTimeTicks,
+      'runTimeTicks': instance.runTimeTicks,
+      'playAccess': _$PlayAccessEnumMap[instance.playAccess],
+      'aspectRatio': instance.aspectRatio,
+      'productionYear': instance.productionYear,
+      'isPlaceHolder': instance.isPlaceHolder,
+      'number': instance.number,
+      'channelNumber': instance.channelNumber,
+      'indexNumber': instance.indexNumber,
+      'indexNumberEnd': instance.indexNumberEnd,
+      'parentIndexNumber': instance.parentIndexNumber,
+      'remoteTrailers': instance.remoteTrailers,
+      'providerIds': instance.providerIds,
+      'isHD': instance.isHD,
+      'isFolder': instance.isFolder,
+      'parentId': instance.parentId,
+      'type': _$ItemTypeEnumMap[instance.type]!,
+      'people': instance.people,
+      'studios': instance.studios,
+      'genreItems': instance.genreItems,
+      'parentLogoItemId': instance.parentLogoItemId,
+      'parentBackdropItemId': instance.parentBackdropItemId,
+      'parentBackdropImageTags': instance.parentBackdropImageTags,
+      'localTrailerCount': instance.localTrailerCount,
+      'userData': instance.userData,
+      'recursiveItemCount': instance.recursiveItemCount,
+      'childCount': instance.childCount,
+      'seriesName': instance.seriesName,
+      'seriesId': instance.seriesId,
+      'seasonId': instance.seasonId,
+      'specialFeatureCount': instance.specialFeatureCount,
+      'displayPreferencesId': instance.displayPreferencesId,
+      'status': instance.status,
+      'airTime': instance.airTime,
+      'airDays': instance.airDays.map((e) => _$DayOfWeekEnumMap[e]!).toList(),
+      'tags': instance.tags,
+      'primaryImageAspectRatio': instance.primaryImageAspectRatio,
+      'artists': instance.artists,
+      'artistItems': instance.artistItems,
+      'album': instance.album,
+      'collectionType': _$CollectionTypeEnumMap[instance.collectionType],
+      'displayOrder': instance.displayOrder,
+      'albumId': instance.albumId,
+      'albumPrimaryImageTag': instance.albumPrimaryImageTag,
+      'seriesPrimaryImageTag': instance.seriesPrimaryImageTag,
+      'albumArtist': instance.albumArtist,
+      'albumArtists': instance.albumArtists,
+      'seasonName': instance.seasonName,
+      'mediaStreams': instance.mediaStreams,
+      'videoType': _$VideoTypeEnumMap[instance.videoType],
+      'partCount': instance.partCount,
+      'mediaSourceCount': instance.mediaSourceCount,
+      'imageTags': instance.imageTags,
+      'backdropImageTags': instance.backdropImageTags,
+      'screenshotImageTags': instance.screenshotImageTags,
+      'parentLogoImageTag': instance.parentLogoImageTag,
+      'parentArtItemId': instance.parentArtItemId,
+      'parentArtImageTag': instance.parentArtImageTag,
+      'seriesThumbImageTag': instance.seriesThumbImageTag,
+      'imageBlurHashes': instance.imageBlurHashes,
+      'seriesStudio': instance.seriesStudio,
+      'parentThumbItemId': instance.parentThumbItemId,
+      'parentThumbImageTag': instance.parentThumbImageTag,
+      'parentPrimaryImageItemId': instance.parentPrimaryImageItemId,
+      'parentPrimaryImageTag': instance.parentPrimaryImageTag,
+      'chapters': instance.chapters,
+      'locationType': _$LocationTypeEnumMap[instance.locationType],
+      'isoType': _$IsoTypeEnumMap[instance.isoType],
+      'mediaType': instance.mediaType,
+      'endDate': instance.endDate?.toIso8601String(),
+      'lockedFields':
+          instance.lockedFields.map((e) => _$MetaDataFieldEnumMap[e]!).toList(),
+      'trailerCount': instance.trailerCount,
+      'movieCount': instance.movieCount,
+      'seriesCount': instance.seriesCount,
+      'programCount': instance.programCount,
+      'episodeCount': instance.episodeCount,
+      'songCount': instance.songCount,
+      'albumCount': instance.albumCount,
+      'artistCount': instance.artistCount,
+      'musicVideoCount': instance.musicVideoCount,
+      'lockData': instance.lockData,
+      'width': instance.width,
+      'height': instance.height,
+      'cameraMake': instance.cameraMake,
+      'cameraModel': instance.cameraModel,
+      'software': instance.software,
+      'exposureTime': instance.exposureTime,
+      'focalLength': instance.focalLength,
+      'imageOrientation': instance.imageOrientation,
+      'aperture': instance.aperture,
+      'shutterSpeed': instance.shutterSpeed,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'altitude': instance.altitude,
+      'isoSpeedRating': instance.isoSpeedRating,
+      'seriesTimerId': instance.seriesTimerId,
+      'programId': instance.programId,
+      'channelPrimaryImageTag': instance.channelPrimaryImageTag,
+      'startDate': instance.startDate?.toIso8601String(),
+      'completionPercentage': instance.completionPercentage,
+      'isRepeat': instance.isRepeat,
+      'episodeTitle': instance.episodeTitle,
+      'channelType': _$ChannelTypeEnumMap[instance.channelType],
+      'audio': _$AudioEnumMap[instance.audio],
+      'isMovie': instance.isMovie,
+      'isSports': instance.isSports,
+      'isSeries': instance.isSeries,
+      'isLive': instance.isLive,
+      'isNews': instance.isNews,
+      'isKids': instance.isKids,
+      'isPremiere': instance.isPremiere,
+      'timerId': instance.timerId,
+      'currentProgram': instance.currentProgram,
+    };
 
 const _$Video3DFormatEnumMap = {
   Video3DFormat.HalfSideBySide: 'HalfSideBySide',

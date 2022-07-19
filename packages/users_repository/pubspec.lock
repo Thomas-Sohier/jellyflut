@@ -11,14 +11,14 @@ packages:
   authentication_api:
     dependency: transitive
     description:
-      path: "../../authentication_api"
+      path: "../authentication_api"
       relative: true
     source: path
     version: "1.0.0+1"
   authentication_repository:
     dependency: "direct main"
     description:
-      path: "../../authentication_repository"
+      path: "../authentication_repository"
       relative: true
     source: path
     version: "1.0.0+1"
@@ -194,7 +194,7 @@ packages:
   jellyflut_models:
     dependency: "direct main"
     description:
-      path: "../../jellyflut_models"
+      path: "../jellyflut_models"
       relative: true
     source: path
     version: "1.0.0"
@@ -402,7 +402,7 @@ packages:
   sqlite_database:
     dependency: transitive
     description:
-      path: "../../sqlite_database"
+      path: "../sqlite_database"
       relative: true
     source: path
     version: "1.0.0"

@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   freezed_annotation: ^2.0.3
   items_repository:
-    path: ../items/items_repository
+    path: ../items_repository
   jellyflut_models:
     path: ../jellyflut_models
   sqlite_database:

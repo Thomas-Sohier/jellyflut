@@ -363,7 +363,7 @@ packages:
   database_downloads_api:
     dependency: "direct main"
     description:
-      path: "packages/downloads/database_downloads_api"
+      path: "packages/database_downloads_api"
       relative: true
     source: path
     version: "1.0.0"
@@ -419,14 +419,14 @@ packages:
   downloads_api:
     dependency: "direct main"
     description:
-      path: "packages/downloads/downloads_api"
+      path: "packages/downloads_api"
       relative: true
     source: path
     version: "1.0.0"
   downloads_repository:
     dependency: "direct main"
     description:
-      path: "packages/downloads/downloads_repository"
+      path: "packages/downloads_repository"
       relative: true
     source: path
     version: "1.0.0"
@@ -740,14 +740,14 @@ packages:
   items_api:
     dependency: "direct main"
     description:
-      path: "packages/items/items_api"
+      path: "packages/items_api"
       relative: true
     source: path
     version: "1.0.0+1"
   items_repository:
     dependency: "direct main"
     description:
-      path: "packages/items/items_repository"
+      path: "packages/items_repository"
       relative: true
     source: path
     version: "1.0.0+1"
@@ -1512,14 +1512,14 @@ packages:
   users_api:
     dependency: "direct main"
     description:
-      path: "packages/users/users_api"
+      path: "packages/users_api"
       relative: true
     source: path
     version: "1.0.0+1"
   users_repository:
     dependency: "direct main"
     description:
-      path: "packages/users/users_repository"
+      path: "packages/users_repository"
       relative: true
     source: path
     version: "1.0.0+1"

@@ -8,68 +8,60 @@ part of 'image_blur_hashes.dart';
 
 _$_ImageBlurHashes _$$_ImageBlurHashesFromJson(Map<String, dynamic> json) =>
     _$_ImageBlurHashes(
-      primary: (json['Primary'] as Map<String, dynamic>?)?.map(
+      primary: (json['primary'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      art: (json['Art'] as Map<String, dynamic>?)?.map(
+      art: (json['art'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      backdrop: (json['Backdrop'] as Map<String, dynamic>?)?.map(
+      backdrop: (json['backdrop'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      banner: (json['Banner'] as Map<String, dynamic>?)?.map(
+      banner: (json['banner'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      logo: (json['Logo'] as Map<String, dynamic>?)?.map(
+      logo: (json['logo'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      thumb: (json['Thumb'] as Map<String, dynamic>?)?.map(
+      thumb: (json['thumb'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      disc: (json['Disc'] as Map<String, dynamic>?)?.map(
+      disc: (json['disc'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      box: (json['Box'] as Map<String, dynamic>?)?.map(
+      box: (json['box'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      screenshot: (json['Screenshot'] as Map<String, dynamic>?)?.map(
+      screenshot: (json['screenshot'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      menu: (json['Menu'] as Map<String, dynamic>?)?.map(
+      menu: (json['menu'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      chapter: (json['Chapter'] as Map<String, dynamic>?)?.map(
+      chapter: (json['chapter'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      boxrear: (json['Boxrear'] as Map<String, dynamic>?)?.map(
+      boxrear: (json['boxrear'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-      profile: (json['Profile'] as Map<String, dynamic>?)?.map(
+      profile: (json['profile'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
     );
 
-Map<String, dynamic> _$$_ImageBlurHashesToJson(_$_ImageBlurHashes instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('Primary', instance.primary);
-  writeNotNull('Art', instance.art);
-  writeNotNull('Backdrop', instance.backdrop);
-  writeNotNull('Banner', instance.banner);
-  writeNotNull('Logo', instance.logo);
-  writeNotNull('Thumb', instance.thumb);
-  writeNotNull('Disc', instance.disc);
-  writeNotNull('Box', instance.box);
-  writeNotNull('Screenshot', instance.screenshot);
-  writeNotNull('Menu', instance.menu);
-  writeNotNull('Chapter', instance.chapter);
-  writeNotNull('Boxrear', instance.boxrear);
-  writeNotNull('Profile', instance.profile);
-  return val;
-}
+Map<String, dynamic> _$$_ImageBlurHashesToJson(_$_ImageBlurHashes instance) =>
+    <String, dynamic>{
+      'primary': instance.primary,
+      'art': instance.art,
+      'backdrop': instance.backdrop,
+      'banner': instance.banner,
+      'logo': instance.logo,
+      'thumb': instance.thumb,
+      'disc': instance.disc,
+      'box': instance.box,
+      'screenshot': instance.screenshot,
+      'menu': instance.menu,
+      'chapter': instance.chapter,
+      'boxrear': instance.boxrear,
+      'profile': instance.profile,
+    };

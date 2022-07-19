@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   jellyflut_models:
-    path: ../../jellyflut_models
+    path: ../jellyflut_models
   sqlite_database:
-    path: ../../sqlite_database
+    path: ../sqlite_database
   freezed_annotation: ^2.0.3
   json_annotation: ^4.5.0
 

@@ -8,120 +8,110 @@ part of 'media_source.dart';
 
 _$_MediaSource _$$_MediaSourceFromJson(Map<String, dynamic> json) =>
     _$_MediaSource(
-      protocol: $enumDecode(_$ProtocolEnumMap, json['Protocol']),
-      id: json['Id'] as String?,
-      path: json['Path'] as String?,
-      encoderPath: json['EncoderPath'] as String?,
+      protocol: $enumDecode(_$ProtocolEnumMap, json['protocol']),
+      id: json['id'] as String?,
+      path: json['path'] as String?,
+      encoderPath: json['encoderPath'] as String?,
       encoderProtocol:
-          $enumDecodeNullable(_$ProtocolEnumMap, json['EncoderProtocol']),
-      type: $enumDecode(_$MediaSourceTypeEnumMap, json['Type']),
-      container: json['Container'] as String?,
-      size: json['Size'] as int?,
-      name: json['Name'] as String?,
-      isRemote: json['IsRemote'] as bool,
-      eTag: json['ETag'] as String?,
-      runTimeTicks: json['RunTimeTicks'] as int?,
-      readAtNativeFramerate: json['ReadAtNativeFramerate'] as bool,
-      ignoreDts: json['IgnoreDts'] as bool,
-      ignoreIndex: json['IgnoreIndex'] as bool,
-      genPtsInput: json['GenPtsInput'] as bool,
-      supportsTranscoding: json['SupportsTranscoding'] as bool,
-      supportsDirectStream: json['SupportsDirectStream'] as bool,
-      supportsDirectPlay: json['SupportsDirectPlay'] as bool,
-      isInfiniteStream: json['IsInfiniteStream'] as bool,
-      requiresOpening: json['RequiresOpening'] as bool,
-      openToken: json['OpenToken'] as String?,
-      requiresClosing: json['RequiresClosing'] as bool,
-      liveStreamId: json['LiveStreamId'] as String?,
-      bufferMs: json['BufferMs'] as int?,
-      requiresLooping: json['RequiresLooping'] as bool,
-      supportsProbing: json['SupportsProbing'] as bool,
-      videoType: $enumDecodeNullable(_$VideoTypeEnumMap, json['VideoType']),
-      isoType: $enumDecodeNullable(_$IsoTypeEnumMap, json['IsoType']),
+          $enumDecodeNullable(_$ProtocolEnumMap, json['encoderProtocol']),
+      type: $enumDecode(_$MediaSourceTypeEnumMap, json['type']),
+      container: json['container'] as String?,
+      size: json['size'] as int?,
+      name: json['name'] as String?,
+      isRemote: json['isRemote'] as bool,
+      eTag: json['eTag'] as String?,
+      runTimeTicks: json['runTimeTicks'] as int?,
+      readAtNativeFramerate: json['readAtNativeFramerate'] as bool,
+      ignoreDts: json['ignoreDts'] as bool,
+      ignoreIndex: json['ignoreIndex'] as bool,
+      genPtsInput: json['genPtsInput'] as bool,
+      supportsTranscoding: json['supportsTranscoding'] as bool,
+      supportsDirectStream: json['supportsDirectStream'] as bool,
+      supportsDirectPlay: json['supportsDirectPlay'] as bool,
+      isInfiniteStream: json['isInfiniteStream'] as bool,
+      requiresOpening: json['requiresOpening'] as bool,
+      openToken: json['openToken'] as String?,
+      requiresClosing: json['requiresClosing'] as bool,
+      liveStreamId: json['liveStreamId'] as String?,
+      bufferMs: json['bufferMs'] as int?,
+      requiresLooping: json['requiresLooping'] as bool,
+      supportsProbing: json['supportsProbing'] as bool,
+      videoType: $enumDecodeNullable(_$VideoTypeEnumMap, json['videoType']),
+      isoType: $enumDecodeNullable(_$IsoTypeEnumMap, json['isoType']),
       video3DFormat:
-          $enumDecodeNullable(_$Video3DFormatEnumMap, json['Video3DFormat']),
-      mediaStreams: (json['MediaStreams'] as List<dynamic>?)
+          $enumDecodeNullable(_$Video3DFormatEnumMap, json['video3DFormat']),
+      mediaStreams: (json['mediaStreams'] as List<dynamic>?)
               ?.map((e) => MediaStream.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <MediaStream>[],
-      mediaAttachments: (json['MediaAttachments'] as List<dynamic>?)
+      mediaAttachments: (json['mediaAttachments'] as List<dynamic>?)
               ?.map((e) => MediaAttachment.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <MediaAttachment>[],
-      formats: (json['Formats'] as List<dynamic>?)
+      formats: (json['formats'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
-      bitrate: json['Bitrate'] as int?,
-      timestamp: $enumDecodeNullable(_$TimestampEnumMap, json['Timestamp']),
+      bitrate: json['bitrate'] as int?,
+      timestamp: $enumDecodeNullable(_$TimestampEnumMap, json['timestamp']),
       requiredHttpHeaders:
-          (json['RequiredHttpHeaders'] as Map<String, dynamic>?)?.map(
+          (json['requiredHttpHeaders'] as Map<String, dynamic>?)?.map(
                 (k, e) => MapEntry(k, e as String),
               ) ??
               const <String, String>{},
-      transcodingUrl: json['TranscodingUrl'] as String?,
-      transcodingSubProtocol: json['TranscodingSubProtocol'] as String?,
-      transcodingContainer: json['TranscodingContainer'] as String?,
-      analyzeDurationMs: json['AnalyzeDurationMs'] as int?,
-      defaultAudioStreamIndex: json['DefaultAudioStreamIndex'] as int?,
-      defaultSubtitleStreamIndex: json['DefaultSubtitleStreamIndex'] as int?,
+      transcodingUrl: json['transcodingUrl'] as String?,
+      transcodingSubProtocol: json['transcodingSubProtocol'] as String?,
+      transcodingContainer: json['transcodingContainer'] as String?,
+      analyzeDurationMs: json['analyzeDurationMs'] as int?,
+      defaultAudioStreamIndex: json['defaultAudioStreamIndex'] as int?,
+      defaultSubtitleStreamIndex: json['defaultSubtitleStreamIndex'] as int?,
     );
 
-Map<String, dynamic> _$$_MediaSourceToJson(_$_MediaSource instance) {
-  final val = <String, dynamic>{
-    'Protocol': _$ProtocolEnumMap[instance.protocol]!,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('Id', instance.id);
-  writeNotNull('Path', instance.path);
-  writeNotNull('EncoderPath', instance.encoderPath);
-  writeNotNull('EncoderProtocol', _$ProtocolEnumMap[instance.encoderProtocol]);
-  val['Type'] = _$MediaSourceTypeEnumMap[instance.type]!;
-  writeNotNull('Container', instance.container);
-  writeNotNull('Size', instance.size);
-  writeNotNull('Name', instance.name);
-  val['IsRemote'] = instance.isRemote;
-  writeNotNull('ETag', instance.eTag);
-  writeNotNull('RunTimeTicks', instance.runTimeTicks);
-  val['ReadAtNativeFramerate'] = instance.readAtNativeFramerate;
-  val['IgnoreDts'] = instance.ignoreDts;
-  val['IgnoreIndex'] = instance.ignoreIndex;
-  val['GenPtsInput'] = instance.genPtsInput;
-  val['SupportsTranscoding'] = instance.supportsTranscoding;
-  val['SupportsDirectStream'] = instance.supportsDirectStream;
-  val['SupportsDirectPlay'] = instance.supportsDirectPlay;
-  val['IsInfiniteStream'] = instance.isInfiniteStream;
-  val['RequiresOpening'] = instance.requiresOpening;
-  writeNotNull('OpenToken', instance.openToken);
-  val['RequiresClosing'] = instance.requiresClosing;
-  writeNotNull('LiveStreamId', instance.liveStreamId);
-  writeNotNull('BufferMs', instance.bufferMs);
-  val['RequiresLooping'] = instance.requiresLooping;
-  val['SupportsProbing'] = instance.supportsProbing;
-  writeNotNull('VideoType', _$VideoTypeEnumMap[instance.videoType]);
-  writeNotNull('IsoType', _$IsoTypeEnumMap[instance.isoType]);
-  writeNotNull('Video3DFormat', _$Video3DFormatEnumMap[instance.video3DFormat]);
-  val['MediaStreams'] = instance.mediaStreams;
-  val['MediaAttachments'] = instance.mediaAttachments;
-  val['Formats'] = instance.formats;
-  writeNotNull('Bitrate', instance.bitrate);
-  writeNotNull('Timestamp', _$TimestampEnumMap[instance.timestamp]);
-  val['RequiredHttpHeaders'] = instance.requiredHttpHeaders;
-  writeNotNull('TranscodingUrl', instance.transcodingUrl);
-  writeNotNull('TranscodingSubProtocol', instance.transcodingSubProtocol);
-  writeNotNull('TranscodingContainer', instance.transcodingContainer);
-  writeNotNull('AnalyzeDurationMs', instance.analyzeDurationMs);
-  writeNotNull('DefaultAudioStreamIndex', instance.defaultAudioStreamIndex);
-  writeNotNull(
-      'DefaultSubtitleStreamIndex', instance.defaultSubtitleStreamIndex);
-  return val;
-}
+Map<String, dynamic> _$$_MediaSourceToJson(_$_MediaSource instance) =>
+    <String, dynamic>{
+      'protocol': _$ProtocolEnumMap[instance.protocol]!,
+      'id': instance.id,
+      'path': instance.path,
+      'encoderPath': instance.encoderPath,
+      'encoderProtocol': _$ProtocolEnumMap[instance.encoderProtocol],
+      'type': _$MediaSourceTypeEnumMap[instance.type]!,
+      'container': instance.container,
+      'size': instance.size,
+      'name': instance.name,
+      'isRemote': instance.isRemote,
+      'eTag': instance.eTag,
+      'runTimeTicks': instance.runTimeTicks,
+      'readAtNativeFramerate': instance.readAtNativeFramerate,
+      'ignoreDts': instance.ignoreDts,
+      'ignoreIndex': instance.ignoreIndex,
+      'genPtsInput': instance.genPtsInput,
+      'supportsTranscoding': instance.supportsTranscoding,
+      'supportsDirectStream': instance.supportsDirectStream,
+      'supportsDirectPlay': instance.supportsDirectPlay,
+      'isInfiniteStream': instance.isInfiniteStream,
+      'requiresOpening': instance.requiresOpening,
+      'openToken': instance.openToken,
+      'requiresClosing': instance.requiresClosing,
+      'liveStreamId': instance.liveStreamId,
+      'bufferMs': instance.bufferMs,
+      'requiresLooping': instance.requiresLooping,
+      'supportsProbing': instance.supportsProbing,
+      'videoType': _$VideoTypeEnumMap[instance.videoType],
+      'isoType': _$IsoTypeEnumMap[instance.isoType],
+      'video3DFormat': _$Video3DFormatEnumMap[instance.video3DFormat],
+      'mediaStreams': instance.mediaStreams,
+      'mediaAttachments': instance.mediaAttachments,
+      'formats': instance.formats,
+      'bitrate': instance.bitrate,
+      'timestamp': _$TimestampEnumMap[instance.timestamp],
+      'requiredHttpHeaders': instance.requiredHttpHeaders,
+      'transcodingUrl': instance.transcodingUrl,
+      'transcodingSubProtocol': instance.transcodingSubProtocol,
+      'transcodingContainer': instance.transcodingContainer,
+      'analyzeDurationMs': instance.analyzeDurationMs,
+      'defaultAudioStreamIndex': instance.defaultAudioStreamIndex,
+      'defaultSubtitleStreamIndex': instance.defaultSubtitleStreamIndex,
+    };
 
 const _$ProtocolEnumMap = {
   Protocol.File: 'File',
