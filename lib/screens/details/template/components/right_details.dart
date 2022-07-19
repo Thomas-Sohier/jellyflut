@@ -52,40 +52,48 @@ class RightDetailsView extends StatelessWidget {
 
   Widget scrollView(final Item item) {
     return CustomScrollView(scrollDirection: Axis.vertical, slivers: [
-      _boxAdapter(const SizedBox(height: 48)),
-      _boxAdapter(const Header()),
-      _boxAdapter(const SizedBox(height: 24)),
-      _boxAdapter(const Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder())),
-      _boxAdapter(const SizedBox(height: 36)),
-      _boxAdapter(const TaglineDetailsWidget()),
-      _boxAdapter(const SizedBox(height: 24)),
-      _boxAdapter(Row(children: [
-        const TitleDetailsWidget(),
-        const SizedBox(width: 8),
-        const RatingDetailsWidget(),
+      const _BoxAdaptater(SizedBox(height: 48)),
+      const _BoxAdaptater(Header()),
+      const _BoxAdaptater(SizedBox(height: 24)),
+      const _BoxAdaptater(Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder())),
+      const _BoxAdaptater(SizedBox(height: 36)),
+      const _BoxAdaptater(TaglineDetailsWidget()),
+      const _BoxAdaptater(SizedBox(height: 24)),
+      _BoxAdaptater(Row(children: const [
+        TitleDetailsWidget(),
+        SizedBox(width: 8),
+        RatingDetailsWidget(),
       ])),
-      _boxAdapter(const OriginalTitleDetailsWidget()),
-      _boxAdapter(const SizedBox(height: 8)),
-      _boxAdapter(const QuickInfos()),
-      _boxAdapter(const SizedBox(height: 12)),
-      _boxAdapter(const OverviewDetailsWidget()),
-      _boxAdapter(const SizedBox(height: 24)),
-      _boxAdapter(const ProvidersDetailsWidget()),
-      _boxAdapter(const SizedBox(height: 12)),
-      _boxAdapter(const PeoplesDetailsWidget(padding: horizotalScrollbaleWidgetPadding)),
+      const _BoxAdaptater(OriginalTitleDetailsWidget()),
+      const _BoxAdaptater(SizedBox(height: 8)),
+      const _BoxAdaptater(QuickInfos()),
+      const _BoxAdaptater(SizedBox(height: 12)),
+      const _BoxAdaptater(OverviewDetailsWidget()),
+      const _BoxAdaptater(SizedBox(height: 24)),
+      const _BoxAdaptater(ProvidersDetailsWidget()),
+      const _BoxAdaptater(SizedBox(height: 12)),
+      const _BoxAdaptater(PeoplesDetailsWidget(padding: horizotalScrollbaleWidgetPadding)),
       // Shown only if current item is a series (because it contains seasons)
       if (item.type == ItemType.Series)
-        SliverPersistentHeader(
+        const SliverPersistentHeader(
           pinned: true,
           floating: false,
-          delegate: const TabHeader(padding: horizotalScrollbaleWidgetPadding),
+          delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
         ),
-      if (item.type == ItemType.Series) _boxAdapter(const SeasonEpisode()),
-      _boxAdapter(const SizedBox(height: 24)),
+      if (item.type == ItemType.Series) const _BoxAdaptater(SeasonEpisode()),
+      const _BoxAdaptater(SizedBox(height: 24)),
     ]);
   }
+}
 
-  SliverPadding _boxAdapter(Widget? child) {
-    return SliverPadding(padding: contentPadding, sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
+class _BoxAdaptater extends StatelessWidget {
+  final Widget? child;
+  final EdgeInsets padding;
+
+  const _BoxAdaptater(this.child, {super.key, this.padding = const EdgeInsets.symmetric(horizontal: 12)});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(padding: padding, sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
   }
 }

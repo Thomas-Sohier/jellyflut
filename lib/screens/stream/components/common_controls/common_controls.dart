@@ -29,7 +29,7 @@ class _CommonControlsState extends State<CommonControls> {
 
   void _onKey(RawKeyEvent e) {
     if (e.runtimeType.toString() == 'RawKeyDownEvent') {
-      context.read<StreamCubit>().autoHideControl();
+      // context.read<StreamCubit>().autoHideControl();
       switch (e.logicalKey.debugName) {
         case 'Media Play Pause':
           context.read<StreamCubit>().togglePlay();
@@ -49,19 +49,14 @@ class _CommonControlsState extends State<CommonControls> {
               onHover: (PointerHoverEvent event) =>
                   event.kind == PointerDeviceKind.mouse ? context.read<StreamCubit>().autoHideControl() : {},
               child: SubtreeBuilder(
-                  builder: (_, child) => BlocBuilder<StreamCubit, StreamState>(
-                      bloc: context.read<StreamCubit>(),
-                      buildWhen: (previous, current) => previous.visible != current.visible,
-                      builder: (_, state) {
-                        return Visibility(
-                            maintainSize: false,
-                            maintainAnimation: false,
-                            maintainState: false,
-                            maintainSemantics: false,
-                            maintainInteractivity: false,
-                            visible: state.visible,
-                            child: child ?? const SizedBox());
-                      }),
+                  builder: (_, child) => Visibility(
+                      maintainSize: false,
+                      maintainAnimation: false,
+                      maintainState: false,
+                      maintainSemantics: false,
+                      maintainInteractivity: false,
+                      visible: true,
+                      child: child ?? const SizedBox()),
                   child: const Controls()))),
     );
   }

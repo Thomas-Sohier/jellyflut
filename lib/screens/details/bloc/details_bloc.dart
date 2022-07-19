@@ -61,10 +61,12 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   }
 
   void _onScreenLayoutChanged(DetailsScreenSizeChanged event, Emitter<DetailsState> emit) {
+    if (event.screenLayout == state.screenLayout) return;
     if (event.screenLayout == ScreenLayout.desktop) {
-      emit(state.copyWith(pinnedHeader: false));
+      emit(state.copyWith(pinnedHeader: false, screenLayout: event.screenLayout));
+    } else {
+      emit(state.copyWith(screenLayout: event.screenLayout));
     }
-    emit(state.copyWith(screenLayout: event.screenLayout));
   }
 
   /// Update the theme of current details

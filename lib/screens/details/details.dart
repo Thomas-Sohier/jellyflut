@@ -20,9 +20,10 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<DetailsBloc>(
-        create: (context) => DetailsBloc(
+        create: (blocContext) => DetailsBloc(
             item: item,
             heroTag: heroTag,
+            screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
             themeProvider: context.read<ThemeProvider>(),
             authenticationRepository: context.read<AuthenticationRepository>(),
             itemsRepository: context.read<ItemsRepository>())

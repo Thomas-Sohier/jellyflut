@@ -14,7 +14,7 @@ import 'models/server.dart';
 /// {@endtemplate}
 class AuthenticationRepository {
   /// {@macro authentication_repository}
-  AuthenticationRepository(
+  AuthenticationRepository._(
       {required AuthenticationApi authenticationApi,
       required SharedPreferences sharedPreferences,
       required Dio dioClient,
@@ -22,8 +22,21 @@ class AuthenticationRepository {
       : _authenticationApi = authenticationApi,
         _sharedPreferences = sharedPreferences,
         _dioClient = dioClient,
-        _database = database {
-    _initListeners();
+        _database = database;
+
+  static Future<AuthenticationRepository> create(
+      {required AuthenticationApi authenticationApi,
+      required SharedPreferences sharedPreferences,
+      required Dio dioClient,
+      required Database database}) async {
+    final authenticationRepository = AuthenticationRepository._(
+      authenticationApi: authenticationApi,
+      sharedPreferences: sharedPreferences,
+      dioClient: dioClient,
+      database: database,
+    );
+    await authenticationRepository._initListeners();
+    return authenticationRepository;
   }
 
   final AuthenticationApi _authenticationApi;
@@ -59,13 +72,13 @@ class AuthenticationRepository {
   /// If there is no cached server then a [NoCurrentServerException] is thrown
   Server get currentServer => _getSharedPreServer();
 
-  void _initListeners() {
+  Future<void> _initListeners() {
     _serverStream.stream.listen(_setSharedPrefServer);
     _userStream.stream.listen((user) async {
       await _setSharedPrefUser(user);
       await _setDioInterceptor(user);
     });
-    _setDioInterceptor(currentUser);
+    return _setDioInterceptor(currentUser);
   }
 
   Future<void> _setDioInterceptor(User user) async {

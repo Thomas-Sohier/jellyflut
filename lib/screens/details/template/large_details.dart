@@ -5,8 +5,8 @@ import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/async_right_details.dart';
+import 'package:jellyflut/screens/details/template/components/details/poster.dart';
 import 'package:jellyflut/screens/details/template/details_background.dart';
-import 'package:jellyflut/screens/details/template/components/left_details.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class LargeDetails extends StatelessWidget {
@@ -47,7 +47,7 @@ class LargeDetails extends StatelessWidget {
                     height: 48,
                     child: Row(
                       children: [
-                        SelectableBackButton(),
+                        const SelectableBackButton(),
                         if (!state.pinnedHeader && constraints.maxWidth < 960)
                           Logo(item: context.read<DetailsBloc>().state.item, padding: EdgeInsets.symmetric(vertical: 8))
                       ],
@@ -60,10 +60,10 @@ class LargeDetails extends StatelessWidget {
 
   Widget leftDetailsPart(BoxConstraints constraints) {
     if (constraints.maxWidth <= 960) return const SizedBox();
-    return Expanded(flex: 4, child: const LeftDetails());
+    return const Expanded(flex: 4, child: Center(child: Padding(padding: EdgeInsets.all(16), child: Poster())));
   }
 
   Widget rightDetailsPart(BoxConstraints constraints) {
-    return Expanded(flex: 6, child: const AsyncRightDetails());
+    return const Expanded(flex: 6, child: AsyncRightDetails());
   }
 }

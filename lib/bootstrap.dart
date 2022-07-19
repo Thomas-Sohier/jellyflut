@@ -30,7 +30,7 @@ import 'package:users_repository/users_repository.dart';
 
 import 'providers/theme/theme_provider.dart';
 
-void bootstrap(
+Future<void> bootstrap(
     {required Database database,
     required ThemeProvider themeProvider,
     required Dio dioClient,
@@ -41,12 +41,12 @@ void bootstrap(
     required ItemsApi itemsApi,
     required UsersApi usersApi,
     required LiveTvApi liveTvApi,
-    required MusicPlayerApi musicPlayerApi}) {
+    required MusicPlayerApi musicPlayerApi}) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
-  final authenticationRepository = AuthenticationRepository(
+  final authenticationRepository = await AuthenticationRepository.create(
       authenticationApi: authenticationApi,
       database: database,
       sharedPreferences: SharedPrefs.sharedPrefs,
@@ -72,7 +72,7 @@ void bootstrap(
 
   final appRouter = AppRouter(authGuard: AuthGuard(authBloc: authBloc));
 
-  runZonedGuarded(
+  await runZonedGuarded(
     () async {
       await BlocOverrides.runZoned(
         () async => runApp(

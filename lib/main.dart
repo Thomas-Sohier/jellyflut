@@ -39,7 +39,7 @@ void main() async {
   final liveTvApi = LiveTvApi(dioClient: dioClient);
   final musicPlayerApi = MusicPlayerApi();
 
-  bootstrap(
+  await bootstrap(
       database: database,
       themeProvider: themeProvider,
       dioClient: dioClient,

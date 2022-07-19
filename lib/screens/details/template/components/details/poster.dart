@@ -5,9 +5,7 @@ import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Poster extends StatelessWidget {
-  final String? heroTag;
-
-  const Poster({super.key, this.heroTag});
+  const Poster({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class Poster extends StatelessWidget {
           clickable: false,
           showParent: true,
           imageType: ImageType.Primary,
-          heroTag: heroTag,
+          heroTag: state.heroTag,
         ));
   }
 }

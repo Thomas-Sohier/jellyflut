@@ -13,17 +13,19 @@ class Header extends StatelessWidget {
     return BlocBuilder<DetailsBloc, DetailsState>(
         buildWhen: ((previous, current) => previous.screenLayout != current.screenLayout),
         builder: ((context, state) {
-          if (state.screenLayout == ScreenLayout.mobile) {
-            return Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: itemPosterHeight),
-                child: const Poster(),
-              ),
-            );
-          } else {
-            if (state.item.hasLogo()) return Logo(item: state.item);
+          switch (state.screenLayout) {
+            case ScreenLayout.desktop:
+              if (state.item.hasLogo()) return Logo(item: state.item);
+              return const SizedBox();
+            case ScreenLayout.mobile:
+            default:
+              return Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: itemPosterHeight),
+                  child: const Poster(),
+                ),
+              );
           }
-          return const SizedBox();
         }));
   }
 }

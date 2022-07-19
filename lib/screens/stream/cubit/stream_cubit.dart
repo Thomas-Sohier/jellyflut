@@ -84,7 +84,7 @@ class StreamCubit extends Cubit<StreamState> {
 
   void autoHideControl() {
     // if (state.visible == false) return;
-    emit(state.copyWith(visible: true));
+    // emit(state.copyWith(visible: true));
     // state.controlsVisibilityTimer.cancel();
     // final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
     // emit(state.copyWith(controlsVisibilityTimer: newTimer));
