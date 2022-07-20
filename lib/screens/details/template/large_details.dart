@@ -38,11 +38,12 @@ class LargeDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [leftDetailsPart(constraints), rightDetailsPart(constraints)]),
           BlocBuilder<DetailsBloc, DetailsState>(
-              buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+              buildWhen: (previous, current) =>
+                  previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
               builder: (_, state) => AnimatedPositioned(
                   duration: Duration(milliseconds: 200),
                   left: 0,
-                  top: state.pinnedHeader ? 15 : 0,
+                  top: state.pinnedHeader && state.screenLayout.isMobile ? 15 : 0,
                   child: SizedBox(
                     height: 48,
                     child: Row(

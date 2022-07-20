@@ -13,8 +13,8 @@ class SeasonEpisode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final collectionCubit = context.read<CollectionCubit>();
-    return BlocConsumer<CollectionCubit, CollectionState>(
-      listener: (context, state) {},
+    return BlocBuilder<CollectionCubit, CollectionState>(
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         switch (state.status) {
           case CollectionStatus.failure:
@@ -28,7 +28,8 @@ class SeasonEpisode extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, int index) {
-                    return EpisodeItem(item: episodes[index]);
+                    return ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 250), child: EpisodeItem(item: episodes[index]));
                   },
                   childCount: episodes.length,
                   addAutomaticKeepAlives: false,
@@ -39,7 +40,7 @@ class SeasonEpisode extends StatelessWidget {
             // return Collection(collectionCubit.item, seasons: collectionCubit.seasons);
             return const SeasonEpisodeEmpty();
           default:
-            return const SizedBox();
+            return const SliverToBoxAdapter();
         }
       },
     );

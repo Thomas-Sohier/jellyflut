@@ -1,7 +1,8 @@
 part of '../action_button.dart';
 
 class ManageButton extends StatelessWidget {
-  const ManageButton({super.key});
+  final double maxWidth;
+  const ManageButton({super.key, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {
@@ -9,6 +10,7 @@ class ManageButton extends StatelessWidget {
         onPressed: () => dialog(context),
         minWidth: 40,
         borderRadius: 4,
+        maxWidth: maxWidth,
         icon: Icon(Icons.settings, color: Colors.black87));
   }
 

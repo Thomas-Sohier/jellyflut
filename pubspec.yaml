@@ -92,6 +92,7 @@ dependencies:
     git:
       url: https://github.com/getBoolean/shu_epub.git
       ref: main
+  sliver_tools: ^0.2.7
   sqlite3_flutter_libs: ^0.5.7
   sqlite_database:
     path: packages/sqlite_database

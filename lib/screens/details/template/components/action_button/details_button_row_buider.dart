@@ -10,24 +10,23 @@ class DetailsButtonRowBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<DetailsBloc>().state;
-    return Wrap(
-      direction: Axis.horizontal,
-      spacing: 10,
-      runSpacing: 10,
-      children: [
-        if (state.item.isPlayableOrCanHavePlayableChilren())
-          LayoutBuilder(builder: (context, constraints) {
-            final buttonExpanded = constraints.maxWidth < 960;
-            if (buttonExpanded) return const PlayButton(maxWidth: double.infinity);
-            if (!buttonExpanded) return const PlayButton();
-            return const SizedBox();
-          }),
-        if (state.item.hasTrailer()) const TrailerButton(),
-        if (state.item.isViewable()) const ViewedButton(),
-        if (state.item.isDownloable()) const DownloadButton(),
-        const LikeButton(),
-        const ManageButton()
-      ],
+    return SliverGrid(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 250.0,
+        mainAxisExtent: 45,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+      ),
+      delegate: SliverChildListDelegate(
+        [
+          if (state.item.isPlayableOrCanHavePlayableChilren()) const PlayButton(maxWidth: double.infinity),
+          if (state.item.hasTrailer()) const TrailerButton(maxWidth: double.infinity),
+          if (state.item.isViewable()) const ViewedButton(maxWidth: double.infinity),
+          if (state.item.isDownloable()) const DownloadButton(maxWidth: double.infinity),
+          const LikeButton(maxWidth: double.infinity),
+          const ManageButton(maxWidth: double.infinity)
+        ],
+      ),
     );
   }
 }

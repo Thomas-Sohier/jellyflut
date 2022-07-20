@@ -7,18 +7,21 @@ class PeoplesDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<DetailsBloc>().state;
-    if (!state.item.hasPeople()) return SizedBox();
-    return Column(
+    if (state.item.type != ItemType.Person && !state.item.hasPeople()) {
+      return const SliverToBoxAdapter(child: SizedBox());
+    }
+    return MultiSliver(
       children: [
-        const SizedBox(height: 24),
-        Padding(
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverPadding(
             padding: padding,
-            child: Align(
+            sliver: SliverToBoxAdapter(
+                child: Align(
               alignment: Alignment.centerLeft,
               child: Text('item_cast'.tr(args: [state.item.name ?? '']), style: Theme.of(context).textTheme.headline5),
-            )),
-        const SizedBox(height: 8),
-        SizedBox(height: 230, child: PeoplesList(state.item.people, padding: padding)),
+            ))),
+        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        SliverPadding(padding: padding, sliver: const SliverToBoxAdapter(child: PeoplesList()))
       ],
     );
   }

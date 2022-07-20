@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/stream/components/player_interface.dart';
 import 'package:jellyflut/screens/stream/cubit/stream_cubit.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 import 'package:universal_io/io.dart';
@@ -80,8 +82,19 @@ class _StreamViewState extends State<StreamView> {
     return Scaffold(
         backgroundColor: Colors.black,
         body: BlocConsumer<StreamCubit, StreamState>(
-          listenWhen: (previous, current) => current.status == StreamStatus.success,
-          listener: (_, state) => context.read<StreamCubit>().play(),
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (c, state) {
+            switch (state.status) {
+              case StreamStatus.success:
+                context.read<StreamCubit>().play();
+                break;
+              case StreamStatus.failure:
+                context.router.pop();
+                SnackbarUtil.message('Failed to play item', Icons.play_disabled, Colors.red, context: context);
+                break;
+              default:
+            }
+          },
           buildWhen: (previous, current) => previous.status != current.status,
           builder: (_, state) {
             switch (state.status) {

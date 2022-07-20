@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
-import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
-import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
+import 'action_button/details_button_row_buider.dart';
 import 'details/header.dart';
+import 'details/quick_infos.dart';
+import 'details_widgets.dart';
 import 'items_collection/cubit/collection_cubit.dart';
-import 'items_collection/season_episode.dart';
+import 'items_collection/seasons.dart';
 
 class RightDetails extends StatefulWidget {
   const RightDetails({super.key});
@@ -55,7 +54,7 @@ class RightDetailsView extends StatelessWidget {
       const _BoxAdaptater(SizedBox(height: 48)),
       const _BoxAdaptater(Header()),
       const _BoxAdaptater(SizedBox(height: 24)),
-      const _BoxAdaptater(Align(alignment: Alignment.centerLeft, child: DetailsButtonRowBuilder())),
+      const SliverPadding(padding: contentPadding, sliver: DetailsButtonRowBuilder()),
       const _BoxAdaptater(SizedBox(height: 36)),
       const _BoxAdaptater(TaglineDetailsWidget()),
       const _BoxAdaptater(SizedBox(height: 24)),
@@ -72,15 +71,9 @@ class RightDetailsView extends StatelessWidget {
       const _BoxAdaptater(SizedBox(height: 24)),
       const _BoxAdaptater(ProvidersDetailsWidget()),
       const _BoxAdaptater(SizedBox(height: 12)),
-      const _BoxAdaptater(PeoplesDetailsWidget(padding: horizotalScrollbaleWidgetPadding)),
-      // Shown only if current item is a series (because it contains seasons)
-      if (item.type == ItemType.Series)
-        const SliverPersistentHeader(
-          pinned: true,
-          floating: false,
-          delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
-        ),
-      if (item.type == ItemType.Series) const SeasonEpisode(),
+      const PeoplesDetailsWidget(
+          padding: horizotalScrollbaleWidgetPadding), // Shown only if current item is a not a person
+      const Seasons(), // Shown only if current item is a series (because it contains seasons)
       const _BoxAdaptater(SizedBox(height: 24)),
     ]);
   }

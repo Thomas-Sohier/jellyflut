@@ -32,22 +32,26 @@ class StreamCubit extends Cubit<StreamState> {
 
   Future<void> init() async {
     emit(state.copyWith(status: StreamStatus.loading));
-    if (state.parentItem != null) {
-      final streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
-      final commonStream = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
-      emit(state.copyWith(
-          controller: commonStream,
-          streamItem: streamItem,
-          hasPip: await commonStream.hasPip(),
-          status: StreamStatus.success));
-    } else if (state.url != null) {
-      final commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
-      final streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
-      emit(state.copyWith(
-          controller: commonStream,
-          streamItem: streamItem,
-          hasPip: await commonStream.hasPip(),
-          status: StreamStatus.success));
+    try {
+      if (state.parentItem != null) {
+        final streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
+        final commonStream = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
+        emit(state.copyWith(
+            controller: commonStream,
+            streamItem: streamItem,
+            hasPip: await commonStream.hasPip(),
+            status: StreamStatus.success));
+      } else if (state.url != null) {
+        final commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
+        final streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
+        emit(state.copyWith(
+            controller: commonStream,
+            streamItem: streamItem,
+            hasPip: await commonStream.hasPip(),
+            status: StreamStatus.success));
+      }
+    } catch (_) {
+      emit(state.copyWith(status: StreamStatus.failure));
     }
   }
 

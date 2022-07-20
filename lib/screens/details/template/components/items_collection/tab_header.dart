@@ -114,7 +114,8 @@ class HeaderBar extends StatelessWidget {
     final seasons = context.read<CollectionCubit>().seasons;
     return SubtreeBuilder(
         builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
-            buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+            buildWhen: (previous, current) =>
+                previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
             builder: (_, state) => _HeaderBlur(
                 pinnedHeader: state.pinnedHeader,
                 child: SizedBox(
@@ -143,7 +144,7 @@ class _HeaderBlur extends StatelessWidget {
   Widget build(BuildContext context) {
     if (pinnedHeader) {
       return ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
           child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: child));
     }
     return child;
