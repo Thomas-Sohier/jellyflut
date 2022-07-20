@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
-import 'package:jellyflut/shared/shared_prefs.dart';
-import 'package:jellyflut/theme.dart' as t;
+import 'package:jellyflut/theme/theme.dart' as t;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'details_event.dart';
 part 'details_state.dart';
@@ -19,16 +19,19 @@ part 'details_state.dart';
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ItemsRepository _itemsRepository;
   final AuthenticationRepository _authenticationRepository;
+  final SharedPreferences _sharedPreferences;
 
   DetailsBloc(
       {required Item item,
       required ItemsRepository itemsRepository,
       required AuthenticationRepository authenticationRepository,
       required ThemeProvider themeProvider,
+      required SharedPreferences sharedPreferences,
       String? heroTag,
       ScreenLayout screenLayout = ScreenLayout.desktop})
       : _itemsRepository = itemsRepository,
         _authenticationRepository = authenticationRepository,
+        _sharedPreferences = sharedPreferences,
         super(
             DetailsState(item: item, theme: themeProvider.getThemeData, heroTag: heroTag, screenLayout: screenLayout)) {
     on<DetailsInitRequested>(_onDetailsInitRequested);
@@ -50,7 +53,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     if (offlineMode) {
       return emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.success));
     }
-    _getItemBackgroundColor(event.item);
+    unawaited(_getItemBackgroundColor(event.item));
     final item = await _itemsRepository.getItem(event.item.id);
     return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
   }
@@ -70,41 +73,36 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   /// Update the theme of current details
   void _onSeedColorUpdate(DetailsUpdateSeedColor event, Emitter<DetailsState> emit) {
-    final detailsTheme = t.Theme.generateThemeFromColors(event.colors[0], event.colors[1]);
+    final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(event.colors);
     emit(state.copyWith(theme: detailsTheme));
   }
 
   void _shrinkOffsetChanged(PinnedHeaderChangeRequested event, Emitter<DetailsState> emit) {
-    if (state.screenLayout == ScreenLayout.mobile) {
-      if (event.shrinkOffset > 0) {
-        emit(state.copyWith(pinnedHeader: true));
-      } else {
-        emit(state.copyWith(pinnedHeader: false));
-      }
+    if (event.shrinkOffset > 0) {
+      emit(state.copyWith(pinnedHeader: true));
+    } else {
+      emit(state.copyWith(pinnedHeader: false));
     }
   }
 
   Future<bool> cacheSeedColor(final List<Color> colors) async {
-    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
     final colorsAsInt = colors.map((c) => c.value.toString());
-    return sp.setStringList(spKey(item.id), colorsAsInt.toList());
+    return _sharedPreferences.setStringList(spKey(item.id), colorsAsInt.toList());
   }
 
   bool isSeedColorCached() {
-    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
-    return sp.containsKey(spKey(item.id));
+    return _sharedPreferences.containsKey(spKey(item.id));
   }
 
   List<Color> getCachedSeedColor() {
-    final sp = SharedPrefs.sharedPrefs;
     final item = state.item;
-    final colorsAsString = sp.getStringList(spKey(item.id))!;
+    final colorsAsString = _sharedPreferences.getStringList(spKey(item.id))!;
     return colorsAsString.map((c) => Color(int.parse(c))).toList();
   }
 
-  void _getItemBackgroundColor(final Item item, {final bool cache = true}) async {
+  Future<void> _getItemBackgroundColor(final Item item, {final bool cache = true}) async {
     // get seed color from sharedPref to prevent computation on remote image
     // to load faster and prevent future API call
     if (cache && isSeedColorCached()) {
@@ -117,7 +115,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         type: item.correctImageType(searchType: ImageType.Primary),
         quality: 40);
 
-    await NetworkAssetBundle(Uri.parse(url)).load(url).then(_computePalette).then((colors) async {
+    return NetworkAssetBundle(Uri.parse(url)).load(url).then(_computePalette).then((colors) async {
       // save binary in sharedpref to load faster and prevent future API call
       if (cache) {
         await cacheSeedColor(colors);
@@ -126,13 +124,42 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     });
   }
 
+  /// Method that use an image ByteData to generate a color palette from most used
+  /// colors
   Future<List<Color>> _computePalette(ByteData byteData) async {
     // We resize the image first to avoid too much computation from palette generator
-    final resizedImage = ResizeImage(Image.memory(byteData.buffer.asUint8List()).image, height: 120, width: 120);
+    final resizedImage = ResizeImage(Image.memory(byteData.buffer.asUint8List()).image, height: 240, width: 240);
     final palette = await PaletteGenerator.fromImageProvider(
       resizedImage,
-      maximumColorCount: 4,
+      maximumColorCount: 6,
     );
     return palette.colors.toList();
   }
 }
+
+// const _saturation = 0.5;
+// const _value = 0.5;
+
+// bool _avoidRedBlackWhitePaletteFilter(HSLColor color) {
+//   bool _isBlack(HSLColor hslColor) {
+//     const blackMaxLightness = 0.1;
+//     return hslColor.lightness <= blackMaxLightness;
+//   }
+
+//   bool _isWhite(HSLColor hslColor) {
+//     const whiteMinLightness = 0.9;
+//     return hslColor.lightness >= whiteMinLightness;
+//   }
+
+//   // Returns true if the color is close to the red side of the I line.
+//   bool _isNearRedILine(HSLColor hslColor) {
+//     const redLineMinHue = 10.0;
+//     const redLineMaxHue = 37.0;
+//     const redLineMaxSaturation = 0.82;
+//     return hslColor.hue >= redLineMinHue &&
+//         hslColor.hue <= redLineMaxHue &&
+//         hslColor.saturation <= redLineMaxSaturation;
+//   }
+
+//   return !_isWhite(color) && !_isBlack(color) && !_isNearRedILine(color);
+// }

@@ -7,7 +7,7 @@ import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/home/home_category/cubit/home_category_cubit.dart';
 import 'package:jellyflut/screens/home/home_category/home_category_title.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/theme/theme.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 

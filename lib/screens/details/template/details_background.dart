@@ -1,8 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/theme/theme_extend_own.dart';
 
 class DetailsBackground extends StatelessWidget {
   const DetailsBackground({super.key});
@@ -21,19 +20,18 @@ class GradientBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-        builder: (context, state) => AnimatedContainer(
-            duration: duration,
-            decoration: BoxDecoration(
-                color: Colors.transparent.withOpacity(0.6),
-                gradient: LinearGradient(
-                  colors: [
-                    state.theme.colorScheme.primary,
-                    state.theme.colorScheme.secondary,
-                    state.theme.colorScheme.tertiary
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ))));
+    return AnimatedContainer(
+        duration: duration,
+        decoration: BoxDecoration(
+            color: Colors.transparent.withOpacity(0.6),
+            gradient: LinearGradient(
+              colors: [
+                ownDetailsTheme(context).primary,
+                ownDetailsTheme(context).secondary,
+                ownDetailsTheme(context).tertiary
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            )));
   }
 }

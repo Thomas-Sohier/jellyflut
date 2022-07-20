@@ -7,6 +7,7 @@ import 'package:jellyflut/components/peoples_list.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
 import 'package:jellyflut/screens/details/template/components/details/provider_button.dart';
+import 'package:jellyflut/theme/theme_extend_own.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import '../../../../shared/shared.dart';

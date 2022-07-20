@@ -105,7 +105,7 @@ class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
   }
 
   Widget buttonFromColors() {
-    final middleElement = (gradient.length / 2).round();
+    final middleElement = (gradient.length / 2).round() - 1;
     final onBackground = gradient[middleElement].computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return buttonFromPalette(gradient, onBackground);
   }
@@ -114,7 +114,11 @@ class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
     return Ink(
       key: ValueKey<int>(0),
       decoration: BoxDecoration(
-          gradient: LinearGradient(colors: palette, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: palette,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: borderRadius),
       child: Container(
         constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),

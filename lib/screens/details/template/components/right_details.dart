@@ -80,7 +80,7 @@ class RightDetailsView extends StatelessWidget {
           floating: false,
           delegate: TabHeader(padding: horizotalScrollbaleWidgetPadding),
         ),
-      if (item.type == ItemType.Series) const _BoxAdaptater(SeasonEpisode()),
+      if (item.type == ItemType.Series) const SeasonEpisode(),
       const _BoxAdaptater(SizedBox(height: 24)),
     ]);
   }

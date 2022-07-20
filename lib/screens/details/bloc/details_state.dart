@@ -3,6 +3,11 @@ part of 'details_bloc.dart';
 enum ScreenLayout {
   mobile,
   desktop;
+
+  const ScreenLayout();
+
+  bool get isDesktop => this == desktop;
+  bool get isMobile => this == mobile;
 }
 
 enum DetailsStatus { initial, loading, success, failure }

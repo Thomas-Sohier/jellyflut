@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/list_items/components/episode_item.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../collection.dart';
 import 'cubit/collection_cubit.dart';
 
 class SeasonEpisode extends StatelessWidget {
@@ -24,8 +24,19 @@ class SeasonEpisode extends StatelessWidget {
           case CollectionStatus.initial:
           case CollectionStatus.success:
             if (collectionCubit.seasons.isNotEmpty) {
-              return Collection(collectionCubit.item, seasons: collectionCubit.seasons);
+              final episodes = context.read<CollectionCubit>().state.episodes;
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (_, int index) {
+                    return EpisodeItem(item: episodes[index]);
+                  },
+                  childCount: episodes.length,
+                  addAutomaticKeepAlives: false,
+                ),
+              );
             }
+
+            // return Collection(collectionCubit.item, seasons: collectionCubit.seasons);
             return const SeasonEpisodeEmpty();
           default:
             return const SizedBox();
@@ -40,8 +51,9 @@ class SeasonEpisodeError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Padding(
+    return SliverFillRemaining(
+        child: Center(
+            child: Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -52,7 +64,7 @@ class SeasonEpisodeError extends StatelessWidget {
           PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<CollectionCubit>().retry())
         ],
       ),
-    ));
+    )));
   }
 }
 
@@ -61,8 +73,9 @@ class SeasonEpisodeEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Padding(
+    return SliverFillRemaining(
+        child: Center(
+            child: Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
@@ -73,7 +86,7 @@ class SeasonEpisodeEmpty extends StatelessWidget {
           PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<CollectionCubit>().retry())
         ],
       ),
-    ));
+    )));
   }
 }
 
@@ -85,29 +98,31 @@ class EpisodesShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: (height + padding) * count,
-        child: Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemExtent: height + padding,
-                  itemCount: count,
-                  itemBuilder: (_, __) => Padding(
-                        padding: const EdgeInsets.only(top: padding),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            child: Container(
-                              height: height,
-                              width: double.infinity,
-                              color: Theme.of(context).colorScheme.background.withAlpha(150),
-                            )),
-                      )),
-            )));
+    return SliverToBoxAdapter(
+      child: SizedBox(
+          height: (height + padding) * count,
+          child: Shimmer.fromColors(
+              baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
+              highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemExtent: height + padding,
+                    itemCount: count,
+                    itemBuilder: (_, __) => Padding(
+                          padding: const EdgeInsets.only(top: padding),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(4)),
+                              child: Container(
+                                height: height,
+                                width: double.infinity,
+                                color: Theme.of(context).colorScheme.background.withAlpha(150),
+                              )),
+                        )),
+              ))),
+    );
   }
 }

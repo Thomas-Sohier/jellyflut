@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/form/form.dart';
+import 'package:jellyflut/theme/theme.dart' as t;
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class DialogStructure extends StatelessWidget {
@@ -41,7 +42,11 @@ class DialogStructure extends StatelessWidget {
                         ),
                       ],
                     ))),
-            form(),
+            Theme(
+                data: Theme.of(context).copyWith(
+                    textTheme:
+                        t.Theme.generateTextThemeFromColor(Theme.of(context).dialogTheme.contentTextStyle?.color)),
+                child: form()),
             DecoratedBox(
                 decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.black26))),
                 child: Padding(
@@ -69,8 +74,8 @@ class DialogStructure extends StatelessWidget {
 
   Widget form() {
     if (expanded) {
-      return Expanded(child: const FormBuilder<Item>());
+      return const Expanded(child: FormBuilder<Item>());
     }
-    return Flexible(child: const FormBuilder<Item>());
+    return const Flexible(child: FormBuilder<Item>());
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
+import 'package:jellyflut/theme/theme.dart' as personnal_theme;
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
-import 'package:jellyflut/theme.dart' as personnal_theme;
+import 'package:jellyflut/theme/theme.dart' as personnal_theme;
 
 class ThemeProvider extends ChangeNotifier {
   static const String THEME_KEY = 'theme_brightness';

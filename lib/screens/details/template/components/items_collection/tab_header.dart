@@ -1,3 +1,4 @@
+import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/screens/details/template/components/items_collection/cubit/collection_cubit.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
@@ -19,8 +20,8 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     context.read<DetailsBloc>().add(PinnedHeaderChangeRequested(shrinkOffset: shrinkOffset));
-    return BlocConsumer<CollectionCubit, CollectionState>(
-      listener: (context, state) {},
+    return BlocBuilder<CollectionCubit, CollectionState>(
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         switch (state.status) {
           case CollectionStatus.initial:
@@ -65,42 +66,41 @@ class ShimmerHeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-        child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      child: SizedBox(
-          height: _height,
-          child: Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
-            child: BlocBuilder<DetailsBloc, DetailsState>(
-                buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
-                builder: (_, state) => AnimatedPadding(
-                      padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
-                      duration: Duration(milliseconds: 200),
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: count,
-                          itemExtent: (width + buttonPadding.right),
-                          itemBuilder: (context, index) {
-                            return Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: buttonPadding,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                                      child: SizedBox(
-                                          height: height,
-                                          width: double.infinity,
-                                          child: ColoredBox(
-                                            color: Theme.of(context).colorScheme.background.withAlpha(150),
-                                          ))),
-                                ));
-                          }),
-                    )),
-          )),
-    ));
+    return SubtreeBuilder(
+      builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
+          buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+          builder: (_, state) => _HeaderBlur(
+              pinnedHeader: state.pinnedHeader,
+              child: SizedBox(
+                  height: _height,
+                  child: Shimmer.fromColors(
+                      baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
+                      highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+                      child: AnimatedPadding(
+                          padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
+                          duration: Duration(milliseconds: 200),
+                          child: child ?? const SizedBox()))))),
+      child: ListView.builder(
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.horizontal,
+          itemCount: count,
+          itemExtent: (width + buttonPadding.right),
+          itemBuilder: (context, index) {
+            return Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: buttonPadding,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      child: SizedBox(
+                          height: height,
+                          width: double.infinity,
+                          child: ColoredBox(
+                            color: Theme.of(context).colorScheme.background.withAlpha(150),
+                          ))),
+                ));
+          }),
+    );
   }
 }
 
@@ -112,24 +112,41 @@ class HeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final seasons = context.read<CollectionCubit>().seasons;
-    return ClipRRect(
-        child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      child: SizedBox(
-          height: _height,
-          child: BlocBuilder<DetailsBloc, DetailsState>(
+    return SubtreeBuilder(
+        builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
             buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
-            builder: (_, state) => AnimatedPadding(
-                padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
-                duration: Duration(milliseconds: 200),
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: seasons.length,
-                    itemBuilder: (context, index) {
-                      return HeaderButton(item: seasons[index]);
-                    })),
-          )),
-    ));
+            builder: (_, state) => _HeaderBlur(
+                pinnedHeader: state.pinnedHeader,
+                child: SizedBox(
+                    height: _height,
+                    child: AnimatedPadding(
+                        padding: state.pinnedHeader && state.screenLayout.isMobile
+                            ? padding.copyWith(left: padding.left + 40)
+                            : padding,
+                        duration: Duration(milliseconds: 200),
+                        child: child)))),
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: seasons.length,
+            itemBuilder: (context, index) {
+              return HeaderButton(item: seasons[index]);
+            }));
+  }
+}
+
+class _HeaderBlur extends StatelessWidget {
+  final Widget child;
+  final bool pinnedHeader;
+  const _HeaderBlur({super.key, required this.child, required this.pinnedHeader});
+
+  @override
+  Widget build(BuildContext context) {
+    if (pinnedHeader) {
+      return ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: child));
+    }
+    return child;
   }
 }
 

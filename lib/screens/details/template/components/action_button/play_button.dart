@@ -14,7 +14,11 @@ class PlayButton extends StatelessWidget {
       minWidth: 40,
       maxWidth: maxWidth,
       icon: Icon(Icons.play_arrow, color: Colors.black87),
-      useTheme: true,
+      gradient: [
+        ownDetailsTheme(context).primary,
+        ownDetailsTheme(context).secondary,
+        ownDetailsTheme(context).tertiary
+      ],
     );
   }
 }

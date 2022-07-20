@@ -17,7 +17,7 @@ class DetailsButtonRowBuilder extends StatelessWidget {
       children: [
         if (state.item.isPlayableOrCanHavePlayableChilren())
           LayoutBuilder(builder: (context, constraints) {
-            final buttonExpanded = constraints.maxWidth < 600;
+            final buttonExpanded = constraints.maxWidth < 960;
             if (buttonExpanded) return const PlayButton(maxWidth: double.infinity);
             if (!buttonExpanded) return const PlayButton();
             return const SizedBox();
