@@ -1,6 +1,6 @@
 part of 'collection_bloc.dart';
 
-enum CollectionStatus { initial, loading, loadingMore, success, failure }
+enum SeasonStatus { initial, loading, loadingMore, success, failure }
 
 enum ListType {
   poster,
@@ -21,7 +21,7 @@ enum SortBy {
   SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
 }
 
-class CollectionState extends Equatable {
+class SeasonState extends Equatable {
   final List<Item> carouselSliderItems;
   final List<Item> items;
   final ListType listType;
@@ -31,11 +31,11 @@ class CollectionState extends Equatable {
   final bool showSorting;
   final SortBy sortBy;
   final String sortField;
-  final CollectionStatus collectionStatus;
+  final SeasonStatus collectionStatus;
   final ScrollController scrollController;
   final Future<List<Item>> Function(int startIndex, int limit) fetchMethod;
 
-  const CollectionState(
+  const SeasonState(
       {required this.scrollController,
       required this.fetchMethod,
       this.sortField = '',
@@ -46,10 +46,10 @@ class CollectionState extends Equatable {
       this.showIfEmpty = true,
       this.showSorting = true,
       this.sortBy = SortBy.DESC,
-      this.collectionStatus = CollectionStatus.initial,
+      this.collectionStatus = SeasonStatus.initial,
       this.listType = ListType.grid});
 
-  CollectionState copyWith({
+  SeasonState copyWith({
     List<Item>? carouselSliderItems,
     List<Item>? items,
     ListType? listType,
@@ -60,9 +60,9 @@ class CollectionState extends Equatable {
     SortBy? sortBy,
     String? sortField,
     ScrollController? scrollController,
-    CollectionStatus? collectionStatus,
+    SeasonStatus? collectionStatus,
   }) {
-    return CollectionState(
+    return SeasonState(
         carouselSliderItems: carouselSliderItems ?? this.carouselSliderItems,
         items: items ?? this.items,
         fetchMethod: fetchMethod,

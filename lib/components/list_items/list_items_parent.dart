@@ -153,18 +153,18 @@ class _ListItemsViewState extends State<ListItemsView> {
   }
 
   Widget buildList() {
-    return BlocBuilder<CollectionBloc, CollectionState>(builder: (_, state) {
+    return BlocBuilder<CollectionBloc, SeasonState>(builder: (_, state) {
       switch (state.collectionStatus) {
-        case CollectionStatus.initial:
-        case CollectionStatus.loading:
+        case SeasonStatus.initial:
+        case SeasonStatus.loading:
           return const ListItemsSkeleton();
-        case CollectionStatus.loadingMore:
-        case CollectionStatus.success:
+        case SeasonStatus.loadingMore:
+        case SeasonStatus.success:
           if (state.items.isNotEmpty) {
             return const CollectionListView();
           }
           return const EmptyCollectionView();
-        case CollectionStatus.failure:
+        case SeasonStatus.failure:
           return Center(child: Text('error'.tr()));
         default:
           return const SizedBox();
@@ -178,7 +178,7 @@ class CollectionListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionBloc, CollectionState>(
+    return BlocBuilder<CollectionBloc, SeasonState>(
         buildWhen: (previous, current) => previous.listType != current.listType,
         builder: (_, state) {
           switch (state.listType) {

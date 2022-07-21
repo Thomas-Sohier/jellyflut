@@ -14,7 +14,7 @@ part 'collection_state.dart';
 enum ListItemsType { fromItem, fromList, fromFunction }
 
 /// A `CollectionBloc` which manages an `List<Item>` as its state.
-class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
+class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
   CollectionBloc({
     required ItemsRepository itemsRepository,
     Item? parentItem,
@@ -25,7 +25,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     bool showSorting = true,
     ListType listType = ListType.grid,
   })  : assert(parentItem != null || fetchMethod != null || items != null),
-        super(CollectionState(
+        super(SeasonState(
             fetchMethod: _initFetchMethod(
                 itemsRepository: itemsRepository, parentItem: parentItem, items: items, fetchMethod: fetchMethod),
             listType: listType,
@@ -72,33 +72,33 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     }
   }
 
-  void _initCollectionList(InitCollectionRequested event, Emitter<CollectionState> emit) async {
-    emit(state.copyWith(collectionStatus: CollectionStatus.loading));
+  void _initCollectionList(InitCollectionRequested event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(collectionStatus: SeasonStatus.loading));
     final items = await state.fetchMethod(state.items.length, 100);
     final canLoadMore = items.length >= 100;
-    emit(state.copyWith(items: items, canLoadMore: canLoadMore, collectionStatus: CollectionStatus.success));
+    emit(state.copyWith(items: items, canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
   }
 
-  void _onClearItems(ClearItemsRequested event, Emitter<CollectionState> emit) {
+  void _onClearItems(ClearItemsRequested event, Emitter<SeasonState> emit) {
     emit(state.copyWith(items: [], carouselSliderItems: [], canLoadMore: true));
   }
 
-  void _onLoadMoreItems(LoadMoreItemsRequested event, Emitter<CollectionState> emit) async {
-    if (state.canLoadMore && state.collectionStatus != CollectionStatus.loadingMore) {
-      emit(state.copyWith(collectionStatus: CollectionStatus.loadingMore));
+  void _onLoadMoreItems(LoadMoreItemsRequested event, Emitter<SeasonState> emit) async {
+    if (state.canLoadMore && state.collectionStatus != SeasonStatus.loadingMore) {
+      emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
       final items = await state.fetchMethod(state.items.length, 100);
       final canLoadMore = items.length >= 100;
 
       emit(state.copyWith(
-          items: [...state.items, ...items], canLoadMore: canLoadMore, collectionStatus: CollectionStatus.success));
+          items: [...state.items, ...items], canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
     }
   }
 
-  void _onScrollControllerUpdate(SetScrollController event, Emitter<CollectionState> emit) async {
+  void _onScrollControllerUpdate(SetScrollController event, Emitter<SeasonState> emit) async {
     emit(state.copyWith(scrollController: event.scrollController));
   }
 
-  void _onListTypeChange(ListTypeChangeRequested event, Emitter<CollectionState> emit) async {
+  void _onListTypeChange(ListTypeChangeRequested event, Emitter<SeasonState> emit) async {
     if (event.listType == null) {
       emit(state.copyWith(listType: state.listType.getNextListType()));
     } else {
@@ -106,8 +106,8 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     }
   }
 
-  void _onSort(SortByField event, Emitter<CollectionState> emit) async {
-    emit(state.copyWith(collectionStatus: CollectionStatus.loadingMore));
+  void _onSort(SortByField event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
     final items = await _sortByField(event.fieldEnum);
     emit(state.copyWith(sortField: event.fieldEnum.fieldName, items: items, sortBy: state.sortBy.reverse()));
   }

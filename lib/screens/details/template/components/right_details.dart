@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -8,38 +7,13 @@ import 'action_button/details_button_row_buider.dart';
 import 'details/header.dart';
 import 'details/quick_infos.dart';
 import 'details_widgets.dart';
-import 'items_collection/cubit/collection_cubit.dart';
-import 'items_collection/seasons.dart';
+import 'items_collection/seasons/seasons.dart';
 
-class RightDetails extends StatefulWidget {
-  const RightDetails({super.key});
-
-  @override
-  State<RightDetails> createState() => _RightDetailsState();
-}
-
-class _RightDetailsState extends State<RightDetails> with TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CollectionCubit(
-          itemsRepository: context.read<ItemsRepository>(),
-          item: context.read<DetailsBloc>().state.item,
-          tabController: TabController(length: 0, vsync: this)),
-      child: BlocListener<CollectionCubit, CollectionState>(
-          listener: (context, state) {
-            context.read<CollectionCubit>().tabController = TabController(length: state.episodes.length, vsync: this);
-          },
-          child: const RightDetailsView()),
-    );
-  }
-}
-
-class RightDetailsView extends StatelessWidget {
+class RightDetails extends StatelessWidget {
   static const contentPadding = EdgeInsets.symmetric(horizontal: 12);
   static const horizotalScrollbaleWidgetPadding = EdgeInsets.only(left: 12);
 
-  const RightDetailsView({super.key});
+  const RightDetails({super.key});
 
   @override
   Widget build(BuildContext context) {

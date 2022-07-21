@@ -1,5 +1,4 @@
 import 'package:jellyflut/components/subtree_builder.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/cubit/collection_cubit.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:universal_io/io.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+
+import 'cubit/season_cubit.dart';
 
 const _height = 80.0;
 
@@ -20,15 +21,16 @@ class TabHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     context.read<DetailsBloc>().add(PinnedHeaderChangeRequested(shrinkOffset: shrinkOffset));
-    return BlocBuilder<CollectionCubit, CollectionState>(
-      buildWhen: (previous, current) => previous.status != current.status,
+    return BlocBuilder<SeasonCubit, SeasonState>(
+      buildWhen: (previous, current) => previous.seasonStatus != current.seasonStatus,
       builder: (context, state) {
-        switch (state.status) {
-          case CollectionStatus.initial:
-          case CollectionStatus.loading:
+        switch (state.seasonStatus) {
+          case Status.initial:
+          case Status.loading:
             return ShimmerHeaderBar(padding: padding);
-          case CollectionStatus.success:
+          case Status.success:
             return HeaderBar(padding: padding);
+          case Status.failure:
           default:
             return const SizedBox(height: _height);
         }
@@ -111,7 +113,6 @@ class HeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seasons = context.read<CollectionCubit>().seasons;
     return SubtreeBuilder(
         builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
             buildWhen: (previous, current) =>
@@ -125,8 +126,19 @@ class HeaderBar extends StatelessWidget {
                             ? padding.copyWith(left: padding.left + 40)
                             : padding,
                         duration: Duration(milliseconds: 200),
-                        child: child)))),
-        child: ListView.builder(
+                        child: _HeaderSeasonsButtons())))));
+  }
+}
+
+class _HeaderSeasonsButtons extends StatelessWidget {
+  const _HeaderSeasonsButtons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final seasons = context.read<SeasonCubit>().state.seasons;
+    return BlocBuilder<SeasonCubit, SeasonState>(
+        buildWhen: (previous, current) => previous.currentSeason != current.currentSeason,
+        builder: (_, state) => ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: seasons.length,
             itemBuilder: (context, index) {
@@ -161,11 +173,14 @@ class HeaderButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20),
       child: PaletteButton(
         item.name ?? '',
-        onPressed: () => context.read<CollectionCubit>().goToSeason(item),
+        onPressed: () => context.read<SeasonCubit>().goToSeason(item),
         borderRadius: 4,
         maxHeight: 50,
         minWidth: 40,
         maxWidth: 150,
+        icon: item == context.read<SeasonCubit>().state.currentSeason
+            ? Icon(Icons.check_circle_outline, color: Colors.black)
+            : null,
       ),
     );
   }

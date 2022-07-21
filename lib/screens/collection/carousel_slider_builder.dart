@@ -24,7 +24,7 @@ class _CarouselSliderBuilderState extends State<CarouselSliderBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionBloc, CollectionState>(builder: (_, state) {
+    return BlocBuilder<CollectionBloc, SeasonState>(builder: (_, state) {
       if (state.items.isEmpty) {
         return const SizedBox();
       } else {

@@ -5,26 +5,27 @@ import 'package:jellyflut/components/list_items/components/episode_item.dart';
 import 'package:jellyflut/components/palette_button.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'cubit/collection_cubit.dart';
+import 'cubit/season_cubit.dart';
 
 class SeasonEpisode extends StatelessWidget {
   const SeasonEpisode({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final collectionCubit = context.read<CollectionCubit>();
-    return BlocBuilder<CollectionCubit, CollectionState>(
-      buildWhen: (previous, current) => previous.status != current.status,
+    final collectionCubit = context.read<SeasonCubit>();
+    return BlocBuilder<SeasonCubit, SeasonState>(
+      buildWhen: (previous, current) =>
+          previous.epsiodesStatus != current.epsiodesStatus || previous.currentEpisodes != current.currentEpisodes,
       builder: (context, state) {
-        switch (state.status) {
-          case CollectionStatus.failure:
+        switch (state.epsiodesStatus) {
+          case Status.failure:
             return const SeasonEpisodeError();
-          case CollectionStatus.loading:
+          case Status.loading:
             return const EpisodesShimmer();
-          case CollectionStatus.initial:
-          case CollectionStatus.success:
-            if (collectionCubit.seasons.isNotEmpty) {
-              final episodes = context.read<CollectionCubit>().state.episodes;
+          case Status.initial:
+          case Status.success:
+            if (collectionCubit.state.currentSeason.isNotEmpty) {
+              final episodes = context.read<SeasonCubit>().state.currentEpisodes;
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, int index) {
@@ -62,7 +63,7 @@ class SeasonEpisodeError extends StatelessWidget {
           const SizedBox(height: 4),
           Text('error_loading_item'.tr(args: ['episodes'])),
           const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<CollectionCubit>().retry())
+          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<SeasonCubit>().retry())
         ],
       ),
     )));
@@ -84,7 +85,7 @@ class SeasonEpisodeEmpty extends StatelessWidget {
           const SizedBox(height: 4),
           Text('empty_collection'.tr()),
           const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<CollectionCubit>().retry())
+          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<SeasonCubit>().retry())
         ],
       ),
     )));
