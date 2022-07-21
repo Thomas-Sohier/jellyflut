@@ -50,8 +50,9 @@ class FabButtonBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-          boxShadow: [BoxShadow(blurRadius: 8, color: Theme.of(context).colorScheme.primary, spreadRadius: 2)]),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(blurRadius: 8, color: Theme.of(context).colorScheme.primary.withAlpha(120), spreadRadius: 2)
+      ]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: ConstrainedBox(

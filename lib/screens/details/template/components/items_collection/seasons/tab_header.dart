@@ -76,8 +76,8 @@ class ShimmerHeaderBar extends StatelessWidget {
               child: SizedBox(
                   height: _height,
                   child: Shimmer.fromColors(
-                      baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-                      highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+                      baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
+                      highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
                       child: AnimatedPadding(
                           padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
                           duration: Duration(milliseconds: 200),
@@ -98,7 +98,7 @@ class ShimmerHeaderBar extends StatelessWidget {
                           height: height,
                           width: double.infinity,
                           child: ColoredBox(
-                            color: Theme.of(context).colorScheme.background.withAlpha(150),
+                            color: Theme.of(context).colorScheme.onBackground.withAlpha(150),
                           ))),
                 ));
           }),
@@ -113,20 +113,19 @@ class HeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SubtreeBuilder(
-        builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
-            buildWhen: (previous, current) =>
-                previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
-            builder: (_, state) => _HeaderBlur(
-                pinnedHeader: state.pinnedHeader,
-                child: SizedBox(
-                    height: _height,
-                    child: AnimatedPadding(
-                        padding: state.pinnedHeader && state.screenLayout.isMobile
-                            ? padding.copyWith(left: padding.left + 40)
-                            : padding,
-                        duration: Duration(milliseconds: 200),
-                        child: _HeaderSeasonsButtons())))));
+    return BlocBuilder<DetailsBloc, DetailsState>(
+        buildWhen: (previous, current) =>
+            previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
+        builder: (_, state) => _HeaderBlur(
+            pinnedHeader: state.pinnedHeader,
+            child: SizedBox(
+                height: _height,
+                child: AnimatedPadding(
+                    padding: state.pinnedHeader && state.screenLayout.isMobile
+                        ? padding.copyWith(left: padding.left + 40)
+                        : padding,
+                    duration: Duration(milliseconds: 200),
+                    child: _HeaderSeasonsButtons()))));
   }
 }
 

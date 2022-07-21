@@ -104,8 +104,8 @@ class EpisodesShimmer extends StatelessWidget {
       child: SizedBox(
           height: (height + padding) * count,
           child: Shimmer.fromColors(
-              baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-              highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
+              baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
+              highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: ListView.builder(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/album/album.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'action_button/details_button_row_buider.dart';
@@ -48,6 +49,7 @@ class RightDetails extends StatelessWidget {
       const PeoplesDetailsWidget(
           padding: horizotalScrollbaleWidgetPadding), // Shown only if current item is a not a person
       const Seasons(), // Shown only if current item is a series (because it contains seasons)
+      const Album(), // Shown only if current item is an album (because it contains songs and discs)
       const _BoxAdaptater(SizedBox(height: 24)),
     ]);
   }

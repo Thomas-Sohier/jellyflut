@@ -473,8 +473,9 @@ class ItemsRepository {
   }
 
   Future<String> createMusicURL(String itemId) async {
-    final streamingSoftwareDB = await _database.settingsDao.getSettingsById(0);
-    final streamingSoftware = TranscodeAudioCodec.fromString(streamingSoftwareDB.preferredTranscodeAudioCodec);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+    final settings = await _database.settingsDao.getSettingsById(user.id);
+    final streamingSoftware = TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(itemId);
     //  if (itemExist) return await FileService.getStoragePathItem(this);

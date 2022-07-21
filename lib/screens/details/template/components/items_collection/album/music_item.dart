@@ -32,6 +32,7 @@ class _MusicItemState extends State<MusicItem> {
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Expanded(
               child: OutlinedButtonSelector(
+                  padding: const EdgeInsets.all(4),
                   onPressed: _onTap,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
