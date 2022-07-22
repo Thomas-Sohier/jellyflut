@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/screens/details/template/components/details/peoples_list.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
-import 'package:jellyflut/screens/details/template/components/details/details_seprator.dart';
+import 'package:jellyflut/screens/details/template/components/details/details_separator.dart';
 import 'package:jellyflut/screens/details/template/components/details/provider_button.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sliver_tools/sliver_tools.dart';

@@ -27,13 +27,18 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       required AuthenticationRepository authenticationRepository,
       required ThemeProvider themeProvider,
       required SharedPreferences sharedPreferences,
+      bool contrastedPage = false,
       String? heroTag,
       ScreenLayout screenLayout = ScreenLayout.desktop})
       : _itemsRepository = itemsRepository,
         _authenticationRepository = authenticationRepository,
         _sharedPreferences = sharedPreferences,
-        super(
-            DetailsState(item: item, theme: themeProvider.getThemeData, heroTag: heroTag, screenLayout: screenLayout)) {
+        super(DetailsState(
+            item: item,
+            contrastedPage: contrastedPage,
+            theme: themeProvider.getThemeData,
+            heroTag: heroTag,
+            screenLayout: screenLayout)) {
     on<DetailsInitRequested>(_onDetailsInitRequested);
     on<DetailsItemUpdate>(_onItemUpdate);
     on<PinnedHeaderChangeRequested>(_shrinkOffsetChanged);
@@ -73,7 +78,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   /// Update the theme of current details
   void _onSeedColorUpdate(DetailsUpdateSeedColor event, Emitter<DetailsState> emit) {
-    final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(event.colors);
+    final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(event.colors, state.contrastedPage);
     emit(state.copyWith(theme: detailsTheme));
   }
 
@@ -136,30 +141,3 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     return palette.colors.toList();
   }
 }
-
-// const _saturation = 0.5;
-// const _value = 0.5;
-
-// bool _avoidRedBlackWhitePaletteFilter(HSLColor color) {
-//   bool _isBlack(HSLColor hslColor) {
-//     const blackMaxLightness = 0.1;
-//     return hslColor.lightness <= blackMaxLightness;
-//   }
-
-//   bool _isWhite(HSLColor hslColor) {
-//     const whiteMinLightness = 0.9;
-//     return hslColor.lightness >= whiteMinLightness;
-//   }
-
-//   // Returns true if the color is close to the red side of the I line.
-//   bool _isNearRedILine(HSLColor hslColor) {
-//     const redLineMinHue = 10.0;
-//     const redLineMaxHue = 37.0;
-//     const redLineMaxSaturation = 0.82;
-//     return hslColor.hue >= redLineMinHue &&
-//         hslColor.hue <= redLineMaxHue &&
-//         hslColor.saturation <= redLineMaxSaturation;
-//   }
-
-//   return !_isWhite(color) && !_isBlack(color) && !_isNearRedILine(color);
-// }

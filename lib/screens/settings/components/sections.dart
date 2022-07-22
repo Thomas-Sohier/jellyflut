@@ -11,6 +11,7 @@ import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
+import 'package:jellyflut/screens/settings/components/details_contrast_switch.dart';
 import 'package:jellyflut/screens/settings/components/direct_play_switch.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:provider/provider.dart';

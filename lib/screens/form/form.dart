@@ -16,10 +16,12 @@ class FormBuilder<T extends Object> extends StatelessWidget {
     return BlocConsumer<FormBloc, FormState>(listener: (context, state) {
       switch (state.formStatus) {
         case FormStatus.submitted:
-          SnackbarUtil.message('form_submit_success'.tr(), Icons.check, Colors.green, context: context);
+          SnackbarUtil.message(
+              messageTitle: 'form_submit_success'.tr(), icon: Icons.check, color: Colors.green, context: context);
           break;
         case FormStatus.failure:
-          SnackbarUtil.message('form_submit_error'.tr(), Icons.error, Colors.red, context: context);
+          SnackbarUtil.message(
+              messageTitle: 'form_submit_error'.tr(), icon: Icons.error, color: Colors.red, context: context);
           break;
         default:
       }

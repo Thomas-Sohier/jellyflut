@@ -238,8 +238,12 @@ class Item with _$Item {
   }
 
   bool hasLogo() {
-    if (imageBlurHashes?.logo != null) return imageBlurHashes!.logo!.isNotEmpty;
+    if (imageTags['Logo'] != null) return imageTags['Logo']!.isNotEmpty;
     return false;
+  }
+
+  bool hasBackrop() {
+    return backdropImageTags.isNotEmpty;
   }
 
   bool hasPeople() {

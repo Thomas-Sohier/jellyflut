@@ -31,18 +31,26 @@ class DownloadedItemsView extends StatelessWidget {
         listeners: [
           BlocListener<DownloadsBloc, DownloadsState>(
             listenWhen: (previous, current) => previous.status != current.status,
-            listener: (context, state) {
+            listener: (_, state) {
               if (state.status == DownloadsStatus.failure) {
-                SnackbarUtil.message('Error while loading downloads', Icons.download, Colors.red);
+                SnackbarUtil.message(
+                    messageTitle: 'Error while loading downloads',
+                    icon: Icons.download,
+                    color: Colors.red,
+                    context: context);
               }
             },
           ),
           BlocListener<DownloadsBloc, DownloadsState>(
             listenWhen: (previous, current) =>
                 previous.lastDeletedDownload != current.lastDeletedDownload && current.lastDeletedDownload != null,
-            listener: (context, state) {
+            listener: (_, state) {
               final deletedDownload = state.lastDeletedDownload!;
-              SnackbarUtil.message('${deletedDownload.item.name} has been deleted', Icons.delete, Colors.green);
+              SnackbarUtil.message(
+                  messageTitle: '${deletedDownload.item.name} has been deleted',
+                  icon: Icons.delete,
+                  color: Colors.green,
+                  context: context);
             },
           ),
         ],

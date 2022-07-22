@@ -11,6 +11,7 @@ import '../zoomable_image/zoomable_image.dart';
 class AsyncImage extends StatelessWidget {
   final Item item;
   final ImageType imageType;
+  final BorderRadius borderRadius;
   final String? tag;
   final BoxFit boxFit;
   final double? width;
@@ -33,6 +34,7 @@ class AsyncImage extends StatelessWidget {
       this.boxFit = BoxFit.fitHeight,
       this.width,
       this.height,
+      this.borderRadius = const BorderRadius.all(Radius.circular(5)),
       this.notFoundPlaceholder,
       this.zoomableImageController,
       this.showOverlay = false,
@@ -52,6 +54,7 @@ class AsyncImage extends StatelessWidget {
           showOverlay: showOverlay,
           notFoundPlaceholder: notFoundPlaceholder,
           backup: backup,
+          borderRadius: borderRadius,
           showParent: showParent,
           boxFit: boxFit,
           imageType: imageType,
@@ -90,7 +93,7 @@ class AsyncImageLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     final asyncImageCubit = context.read<AsyncImageCubit>();
     return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderRadius: asyncImageCubit.state.borderRadius,
         child: OctoImage(
             image: asyncImageCubit.state.image!,
             placeholderBuilder: (_) => const AsyncImagePlaceholder(),

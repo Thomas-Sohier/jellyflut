@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/providers/home/home_provider.dart';
 import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
@@ -17,6 +16,7 @@ import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
+import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -65,7 +65,6 @@ class App extends StatelessWidget {
           ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
           ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
           ChangeNotifierProvider<HomeTabsProvider>(create: (_) => HomeTabsProvider()),
-          ChangeNotifierProvider<DownloadProvider>(create: (_) => DownloadProvider()),
           ChangeNotifierProvider<HomeCategoryProvider>(create: (_) => HomeCategoryProvider()),
         ],
         child: MultiBlocProvider(
@@ -75,6 +74,7 @@ class App extends StatelessWidget {
                 create: (_) => SettingsBloc(
                     settingsRepository: settingsRepository,
                     authenticationRepository: authenticationRepository,
+                    sharedPreferences: SharedPrefs.sharedPrefs,
                     packageInfo: packageInfo)
                   ..add(const SettingsInitRequested()),
                 lazy: false,

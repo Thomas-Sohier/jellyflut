@@ -85,6 +85,9 @@ class StreamingRepository {
         userId: currentUser.id);
   }
 
+  /// Method that create a [StreamItem]. StreamItem contains every infos needed
+  /// about streaming.
+  /// It can be used latr to create a video controller for example
   Future<StreamItem> getStreamItem({required Item item, bool directPlay = false}) async {
     // if (directPlay == false && offlineMode == false) {
     //   await StreamingService.bitrateTest(size: 500000);
@@ -99,6 +102,7 @@ class StreamingRepository {
     if (item.type == ItemType.Episode ||
         item.type == ItemType.Movie ||
         item.type == ItemType.TvChannel ||
+        item.type == ItemType.LiveTvChannel ||
         item.type == ItemType.Video ||
         item.type == ItemType.MusicVideo ||
         item.type == ItemType.Audio) {

@@ -52,7 +52,7 @@ class SettingsView extends StatelessWidget {
             InfosSection().build(context),
             DownloadPathSection().build(context),
             InterfaceSection().build(context),
-            ThemeSwitcherSection().build(context),
+            ThemeSection().build(context),
             AccountSection().build(context)
           ],
         ),

@@ -44,16 +44,28 @@ abstract class Theme {
   }
 
   /// Generate a theme from a colorScheme
-  /// You can provide a [brightness] if needed (by default -> Brightness.light)
+  /// You can provide a [brightness], only used if in contrastedPage
   /// You can provide a [seedColor] if needed (by default -> jellyfin purple color)
-  static ThemeData generateDetailsThemeDataFromPaletteColor(List<Color> colors) {
+  static ThemeData generateDetailsThemeDataFromPaletteColor(List<Color> colors,
+      [bool contastedPage = false, Brightness brightness = Brightness.dark]) {
     final palette = colors.sublist(0, min(3, colors.length));
     final middleElement = (palette.length / 2).round() - 1;
     final onBackground = palette[middleElement].computeLuminance() > 0.5 ? Colors.black : Colors.white;
-    final themeDataInitial = generateThemeFromSeedColor(palette.first);
-    final themeData = themeDataInitial
-        .copyWith(textTheme: generateTextThemeFromColor(onBackground))
-        .copyWith(colorScheme: themeDataInitial.colorScheme.copyWith(onBackground: onBackground))
+    if (contastedPage) {
+      final themeDataInitial = generateThemeFromSeedColor(palette.first);
+      return themeDataInitial
+          .copyWith(textTheme: generateTextThemeFromColor(onBackground))
+          .copyWith(colorScheme: themeDataInitial.colorScheme.copyWith(onBackground: onBackground))
+        ..addOwn(
+            detailsTheme: DetailsTheme(
+          primary: palette[0],
+          secondary: palette[1],
+          tertiary: palette[2],
+          onBackground: onBackground,
+        ));
+    }
+    final themeDataInitial = generateThemeDataFromSeedColor(brightness, palette.first);
+    return themeDataInitial
       ..addOwn(
           detailsTheme: DetailsTheme(
         primary: palette[0],
@@ -61,7 +73,6 @@ abstract class Theme {
         tertiary: palette[2],
         onBackground: onBackground,
       ));
-    return themeData;
   }
 
   /// Generate a custom theme

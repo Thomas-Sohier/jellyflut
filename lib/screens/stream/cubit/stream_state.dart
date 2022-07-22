@@ -16,7 +16,8 @@ class StreamState extends Equatable {
       this.selectedAudioTrack = AudioTrack.empty,
       this.selectedSubtitleTrack = Subtitle.empty,
       this.status = StreamStatus.initial,
-      this.controller});
+      this.controller,
+      this.failureMessage});
 
   final StreamStatus status;
   final Item? parentItem;
@@ -30,6 +31,7 @@ class StreamState extends Equatable {
   final AudioTrack selectedAudioTrack;
   final Subtitle selectedSubtitleTrack;
   final Timer controlsVisibilityTimer;
+  final String? failureMessage;
 
   StreamState copyWith(
       {StreamStatus? status,
@@ -43,21 +45,22 @@ class StreamState extends Equatable {
       bool? hasPip,
       Timer? controlsVisibilityTimer,
       AudioTrack? selectedAudioTrack,
-      Subtitle? selectedSubtitleTrack}) {
+      Subtitle? selectedSubtitleTrack,
+      String? failureMessage}) {
     return StreamState(
-      status: status ?? this.status,
-      controller: controller ?? this.controller,
-      parentItem: parentItem ?? this.parentItem,
-      url: url ?? this.url,
-      streamItem: streamItem ?? this.streamItem,
-      playing: playing ?? this.playing,
-      visible: visible ?? this.visible,
-      fullscreen: fullscreen ?? this.fullscreen,
-      hasPip: hasPip ?? this.hasPip,
-      controlsVisibilityTimer: controlsVisibilityTimer ?? this.controlsVisibilityTimer,
-      selectedAudioTrack: selectedAudioTrack ?? this.selectedAudioTrack,
-      selectedSubtitleTrack: selectedSubtitleTrack ?? this.selectedSubtitleTrack,
-    );
+        status: status ?? this.status,
+        controller: controller ?? this.controller,
+        parentItem: parentItem ?? this.parentItem,
+        url: url ?? this.url,
+        streamItem: streamItem ?? this.streamItem,
+        playing: playing ?? this.playing,
+        visible: visible ?? this.visible,
+        fullscreen: fullscreen ?? this.fullscreen,
+        hasPip: hasPip ?? this.hasPip,
+        controlsVisibilityTimer: controlsVisibilityTimer ?? this.controlsVisibilityTimer,
+        selectedAudioTrack: selectedAudioTrack ?? this.selectedAudioTrack,
+        selectedSubtitleTrack: selectedSubtitleTrack ?? this.selectedSubtitleTrack,
+        failureMessage: failureMessage ?? this.failureMessage);
   }
 
   @override
@@ -73,6 +76,7 @@ class StreamState extends Equatable {
         hasPip,
         selectedAudioTrack,
         controlsVisibilityTimer,
-        selectedSubtitleTrack
+        selectedSubtitleTrack,
+        failureMessage
       ];
 }

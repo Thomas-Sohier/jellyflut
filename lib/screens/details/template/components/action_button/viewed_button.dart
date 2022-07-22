@@ -15,7 +15,7 @@ class ViewedButton extends StatelessWidget {
       minWidth: 40,
       maxWidth: maxWidth,
       icon: state.item.isPlayed()
-          ? Icon(Icons.check_box, color: Colors.green.shade600)
+          ? Icon(Icons.check_box, color: Colors.green.shade900)
           : Icon(Icons.check_box_outline_blank, color: Colors.black87),
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
@@ -115,7 +114,6 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
                   icon: Icon(Icons.close),
                   onPressed: () {
                     widget.callbackOnDelete?.call();
-                    DownloadProvider().removeDownload(widget.itemDownload);
                   },
                   color: Colors.green),
             ],

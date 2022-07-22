@@ -10,22 +10,25 @@ class DetailsButtonRowBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<DetailsBloc>().state;
-    return SliverGrid(
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 250.0,
-        mainAxisExtent: 45,
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-      ),
-      delegate: SliverChildListDelegate(
-        [
-          if (state.item.isPlayableOrCanHavePlayableChilren()) const PlayButton(maxWidth: double.infinity),
-          if (state.item.hasTrailer()) const TrailerButton(maxWidth: double.infinity),
-          if (state.item.isViewable()) const ViewedButton(maxWidth: double.infinity),
-          if (state.item.isDownloable()) const DownloadButton(maxWidth: double.infinity),
-          const LikeButton(maxWidth: double.infinity),
-          const ManageButton(maxWidth: double.infinity)
-        ],
+    return SliverPadding(
+      padding: state.contentPadding,
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 250.0,
+          mainAxisExtent: 45,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+        ),
+        delegate: SliverChildListDelegate(
+          [
+            // if (state.item.isPlayableOrCanHavePlayableChilren()) const PlayButton(maxWidth: double.infinity),
+            if (state.item.hasTrailer()) const TrailerButton(maxWidth: double.infinity),
+            if (state.item.isViewable()) const ViewedButton(maxWidth: double.infinity),
+            if (state.item.isDownloable()) const DownloadButton(maxWidth: double.infinity),
+            const LikeButton(maxWidth: double.infinity),
+            const ManageButton(maxWidth: double.infinity)
+          ],
+        ),
       ),
     );
   }

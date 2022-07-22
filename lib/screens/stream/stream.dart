@@ -90,7 +90,12 @@ class _StreamViewState extends State<StreamView> {
                 break;
               case StreamStatus.failure:
                 context.router.pop();
-                SnackbarUtil.message('Failed to play item', Icons.play_disabled, Colors.red, context: context);
+                SnackbarUtil.message(
+                    messageTitle: 'Failed to play item',
+                    messageDetails: state.failureMessage,
+                    icon: Icons.play_disabled,
+                    color: Theme.of(context).colorScheme.error,
+                    context: context);
                 break;
               default:
             }
@@ -103,6 +108,7 @@ class _StreamViewState extends State<StreamView> {
                 return const PlaceholderScreen();
               case StreamStatus.success:
                 return const Center(child: PlayerInterface());
+
               default:
                 return const PlaceholderScreen();
             }

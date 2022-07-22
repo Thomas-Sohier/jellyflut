@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/providers/downloads/download_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/action_button/download_animation.dart';

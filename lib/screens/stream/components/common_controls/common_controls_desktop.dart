@@ -38,14 +38,14 @@ class TopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: [
-      SelectableBackButton(shadow: true),
+      const SelectableBackButton(),
       Expanded(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [const ItemTitle(), const ItemParentTitle()],
+            children: const [ItemTitle(), ItemParentTitle()],
           ),
         ),
       ),

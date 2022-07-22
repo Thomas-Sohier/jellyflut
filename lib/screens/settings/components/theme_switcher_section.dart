@@ -1,7 +1,7 @@
 part of 'sections.dart';
 
-class ThemeSwitcherSection extends StatelessWidget {
-  ThemeSwitcherSection({super.key});
+class ThemeSection extends StatelessWidget {
+  ThemeSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {
@@ -22,7 +22,12 @@ class ThemeSwitcherSection extends StatelessWidget {
                 builder: (context, ThemeProvider themeNotifier, child) => Icon(
                       Icons.circle,
                       color: ThemeProvider().getThemeData.colorScheme.primary,
-                    )))
+                    ))),
+        SettingsTile(
+          title: 'contrast_details'.tr(),
+          subtitle: 'Use a different details page theme with proper background/foreground contrast',
+          trailing: const DetailsContrastSwitch(),
+        ),
       ],
     );
   }

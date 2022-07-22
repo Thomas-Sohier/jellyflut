@@ -17,3 +17,9 @@ class SettingsUpdateRequested extends SettingsEvent {
 
   const SettingsUpdateRequested({required this.databaseSettingDto});
 }
+
+class DetailsPageContrastChangeRequested extends SettingsEvent {
+  final bool detailsPageContrasted;
+
+  const DetailsPageContrastChangeRequested({required this.detailsPageContrasted});
+}

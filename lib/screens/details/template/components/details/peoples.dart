@@ -1,8 +1,7 @@
 part of '../details_widgets.dart';
 
 class PeoplesDetailsWidget extends StatelessWidget {
-  final EdgeInsets padding;
-  const PeoplesDetailsWidget({super.key, this.padding = const EdgeInsets.only(left: 12)});
+  const PeoplesDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +13,16 @@ class PeoplesDetailsWidget extends StatelessWidget {
       children: [
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
         SliverPadding(
-            padding: padding,
+            padding: state.contentPadding,
             sliver: SliverToBoxAdapter(
                 child: Align(
               alignment: Alignment.centerLeft,
               child: Text('item_cast'.tr(args: [state.item.name ?? '']), style: Theme.of(context).textTheme.headline5),
             ))),
         const SliverToBoxAdapter(child: SizedBox(height: 8)),
-        SliverPadding(padding: padding, sliver: const SliverToBoxAdapter(child: PeoplesList()))
+        SliverPadding(
+            padding: EdgeInsets.only(left: state.contentPadding.left),
+            sliver: const SliverToBoxAdapter(child: PeoplesList()))
       ],
     );
   }

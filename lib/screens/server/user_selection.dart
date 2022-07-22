@@ -51,7 +51,8 @@ class UserSelection extends StatelessWidget {
                                   user.settingsId, user.id)
                               .catchError((error) {
                             context.router.root.pop();
-                            SnackbarUtil.message(error.toString(), Icons.error, Colors.red);
+                            SnackbarUtil.message(
+                                messageTitle: error.toString(), icon: Icons.error, color: Colors.red, context: context);
                           });
                         },
                       );

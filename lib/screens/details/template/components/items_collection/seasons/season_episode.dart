@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/components/episode_item.dart';
 import 'package:jellyflut/components/palette_button.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'cubit/season_cubit.dart';
@@ -100,31 +101,34 @@ class EpisodesShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-          height: (height + padding) * count,
-          child: Shimmer.fromColors(
-              baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-              highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemExtent: height + padding,
-                    itemCount: count,
-                    itemBuilder: (_, __) => Padding(
-                          padding: const EdgeInsets.only(top: padding),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
-                              child: Container(
-                                height: height,
-                                width: double.infinity,
-                                color: Theme.of(context).colorScheme.background.withAlpha(150),
-                              )),
-                        )),
-              ))),
+    return SliverPadding(
+      padding: context.read<DetailsBloc>().state.contentPadding,
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+            height: (height + padding) * count,
+            child: Shimmer.fromColors(
+                baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
+                highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemExtent: height + padding,
+                      itemCount: count,
+                      itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.only(top: padding),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                                child: Container(
+                                  height: height,
+                                  width: double.infinity,
+                                  color: Theme.of(context).colorScheme.background.withAlpha(150),
+                                )),
+                          )),
+                ))),
+      ),
     );
   }
 }

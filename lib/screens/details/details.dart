@@ -6,6 +6,7 @@ import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -24,6 +25,7 @@ class DetailsPage extends StatelessWidget {
         create: (blocContext) => DetailsBloc(
             item: item,
             heroTag: heroTag,
+            contrastedPage: !context.read<SettingsBloc>().state.detailsPageContrasted,
             screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
             sharedPreferences: SharedPrefs.sharedPrefs,
             themeProvider: context.read<ThemeProvider>(),

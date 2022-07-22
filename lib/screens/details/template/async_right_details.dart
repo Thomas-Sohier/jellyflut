@@ -32,15 +32,11 @@ class RightDetailsShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: ListView(
-        children: const [
-          SizedBox(height: 48),
-          Header(),
-          SkeletonRightDetails(),
-        ],
-      ),
+    return ListView(
+      children: const [
+        Header(),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: SkeletonRightDetails()),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image_lib;
 
-class ColorUtil {
+abstract class ColorUtil {
   static Map<int, Color> generateColorSwatch(Color color) => <int, Color>{
         50: ColorUtil.lighten(color, 0.45),
         100: ColorUtil.lighten(color, 0.4),

@@ -6,15 +6,17 @@ class TaglineDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<DetailsBloc>().state;
-    if (state.item.taglines.isEmpty) return SizedBox();
-    return SelectableText(
-      '“ ${state.item.taglines.first} „',
-      textAlign: TextAlign.center,
-      style: Theme.of(context)
-          .textTheme
-          .headline5!
-          .copyWith(fontStyle: FontStyle.italic)
-          .copyWith(fontFamily: 'Quicksand'),
-    );
+    if (state.item.taglines.isEmpty) return const SizedBox();
+    return Padding(
+        padding: EdgeInsets.only(top: 36),
+        child: SelectableText(
+          '“ ${state.item.taglines.first} „',
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .headline5!
+              .copyWith(fontStyle: FontStyle.italic)
+              .copyWith(fontFamily: 'Quicksand'),
+        ));
   }
 }

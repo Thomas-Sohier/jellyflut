@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:streaming_api/streaming_api.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 import 'package:subtitle/subtitle.dart' as subtitle;
 
@@ -50,8 +51,10 @@ class StreamCubit extends Cubit<StreamState> {
             hasPip: await commonStream.hasPip(),
             status: StreamStatus.success));
       }
-    } catch (_) {
-      emit(state.copyWith(status: StreamStatus.failure));
+    } on StreamingException catch (e) {
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
+    } catch (e) {
+      emit(state.copyWith(failureMessage: e.toString(), status: StreamStatus.failure));
     }
   }
 

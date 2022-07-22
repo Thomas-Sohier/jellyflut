@@ -13,6 +13,7 @@ class AsyncImageState extends Equatable {
       this.width,
       this.notFoundPlaceholder,
       this.height,
+      required this.borderRadius,
       required this.boxFit,
       required this.showOverlay,
       required this.backup,
@@ -29,6 +30,7 @@ class AsyncImageState extends Equatable {
   final Widget? notFoundPlaceholder;
   final double? width;
   final double? height;
+  final BorderRadius borderRadius;
   final bool showOverlay;
   final bool backup;
   final bool showParent;
@@ -45,6 +47,7 @@ class AsyncImageState extends Equatable {
       double? width,
       double? height,
       ImageProvider<Object>? image,
+      BorderRadius? borderRadius,
       bool? showOverlay,
       bool? backup,
       bool? showParent,
@@ -57,6 +60,7 @@ class AsyncImageState extends Equatable {
         hash: hash ?? this.hash,
         image: image ?? this.image,
         imageTag: imageTag ?? this.imageTag,
+        borderRadius: borderRadius ?? this.borderRadius,
         imageType: imageType ?? this.imageType,
         width: width ?? this.width,
         height: height ?? this.height,
@@ -76,6 +80,7 @@ class AsyncImageState extends Equatable {
         imageTag,
         width,
         notFoundPlaceholder,
+        borderRadius,
         height,
         showOverlay,
         backup,

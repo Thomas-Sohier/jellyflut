@@ -11,6 +11,7 @@ part 'async_image_state.dart';
 class AsyncImageCubit extends Cubit<AsyncImageState> {
   AsyncImageCubit(this._itemsRepository,
       {required String itemId,
+      required BorderRadius borderRadius,
       ZoomableImageController? zoomableImageController,
       String? imageTag,
       String? hash,
@@ -28,6 +29,7 @@ class AsyncImageCubit extends Cubit<AsyncImageState> {
             zoomableImageController: zoomableImageController,
             imageType: imageType ?? ImageType.Primary,
             notFoundPlaceholder: notFoundPlaceholder,
+            borderRadius: borderRadius,
             itemId: itemId,
             width: width,
             height: height,

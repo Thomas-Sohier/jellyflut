@@ -81,7 +81,7 @@ class BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      return Row(children: const [SelectableBackButton(shadow: true), SizedBox(width: 12)]);
+      return Row(children: const [SelectableBackButton(), SizedBox(width: 12)]);
     }
     return const SizedBox();
   }

@@ -52,7 +52,7 @@ class TrailerButton extends StatelessWidget {
                             border: Border.symmetric(horizontal: BorderSide(width: 1)),
                           ),
                           width: 600,
-                          height: 200,
+                          height: 300,
                           child: ListView.builder(
                               itemCount: trailers.length,
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -62,6 +62,7 @@ class TrailerButton extends StatelessWidget {
                                     child: TrailerDialogButton(
                                         playTrailer: (_, mediaUrl) => playTrailer(context, mediaUrl),
                                         theme: state.theme,
+                                        index: index,
                                         trailer: trailers[index]));
                               }),
                         ),
@@ -74,8 +75,10 @@ class TrailerDialogButton extends StatelessWidget {
   final void Function(BuildContext, MediaUrl) playTrailer;
   final ThemeData theme;
   final MediaUrl trailer;
+  final int index;
 
-  const TrailerDialogButton({super.key, required this.playTrailer, required this.theme, required this.trailer});
+  const TrailerDialogButton(
+      {super.key, required this.index, required this.playTrailer, required this.theme, required this.trailer});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,7 @@ class TrailerDialogButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(trailer.name ?? '',
+                Text(trailer.name ?? 'Trailer #$index',
                     maxLines: 2, style: theme.textTheme.bodyText1, overflow: TextOverflow.ellipsis),
                 Text(trailer.url ?? '',
                     style: TextStyle(color: theme.colorScheme.secondary), overflow: TextOverflow.ellipsis),

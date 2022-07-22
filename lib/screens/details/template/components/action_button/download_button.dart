@@ -12,24 +12,11 @@ class DownloadButton extends StatefulWidget {
 }
 
 class _DownloadButtonState extends State<DownloadButton> {
-  late var fToast;
-  late final BehaviorSubject<int> percentDownload;
-  late final Future<bool> isDownloaded;
-  late final DownloadProvider downloadProvider;
   bool buttonEnabled = true;
 
   @override
   void initState() {
     final state = context.read<DetailsBloc>().state;
-    downloadProvider = context.read<DownloadProvider>();
-    final isItemDownload = downloadProvider.isItemDownloadPresent(state.item.id);
-    if (isItemDownload) {
-      percentDownload = downloadProvider.getItemDownloadProgress(state.item.id);
-      buttonEnabled = false;
-    } else {
-      percentDownload = BehaviorSubject<int>();
-    }
-    isDownloaded = FileService.isItemDownloaded(state.item.id);
     super.initState();
   }
 
@@ -42,38 +29,31 @@ class _DownloadButtonState extends State<DownloadButton> {
   Widget build(BuildContext context) {
     // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
     final state = context.read<DetailsBloc>().state;
-    return PaletteButton('download'.tr(), onPressed: () {
-      setState(() => buttonEnabled = false);
-      downloadProvider
-          .downloadItem(state.item, percentDownload, dialogRedownload)
-          // ignore: invalid_return_type_for_catch_error
-          .catchError((e) =>
-              SnackbarUtil.message('Error while downloading. ${e.toString()}', Icons.file_download_off, Colors.red))
-          .whenComplete(() => mounted ? setState(() => buttonEnabled = true) : {});
-    }, minWidth: 40, maxWidth: widget.maxWidth, borderRadius: 4, enabled: buttonEnabled, trailing: trailing());
+    return PaletteButton('download'.tr(),
+        minWidth: 40,
+        maxWidth: widget.maxWidth,
+        borderRadius: 4,
+        enabled: buttonEnabled,
+        trailing: trailing(),
+        onPressed: () => SnackbarUtil.message(
+            messageTitle: 'Downloads are being reworked', icon: Icons.construction, context: context));
   }
 
   Widget trailing() {
-    return FutureBuilder<bool>(
-        future: isDownloaded,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return trailingBuilder(snapshot.data!);
-          }
-          return const SizedBox();
-        });
+    return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
   }
 
   Widget trailingBuilder(bool isDownloaded) {
-    if (isDownloaded) {
-      return Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: DownloadAnimation(
-              percentDownload: percentDownload, child: Icon(Icons.download_done, color: Colors.green.shade900)));
-    }
-    return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: DownloadAnimation(percentDownload: percentDownload, child: Icon(Icons.download, color: Colors.black87)));
+    return const SizedBox();
+    // if (isDownloaded) {
+    //   return Padding(
+    //       padding: const EdgeInsets.only(left: 4),
+    //       child: DownloadAnimation(
+    //           percentDownload: percentDownload, child: Icon(Icons.download_done, color: Colors.green.shade900)));
+    // }
+    // return Padding(
+    //     padding: const EdgeInsets.only(left: 4),
+    //     child: DownloadAnimation(percentDownload: percentDownload, child: Icon(Icons.download, color: Colors.black87)));
   }
 
   Future<bool?> dialogRedownload() async {
@@ -107,12 +87,12 @@ class _DownloadButtonState extends State<DownloadButton> {
               TextButton(onPressed: () => context.router.root.pop<bool>(false), child: Text('cancel'.tr())),
               TextButton(
                   onPressed: () {
-                    AppDatabase()
-                        .getDatabase
-                        .downloadsDao
-                        .getDownloadById(state.item.id)
-                        .then(downloadProvider.deleteDownloadedFile);
-                    context.router.root.pop<bool>(false);
+                    // AppDatabase()
+                    //     .getDatabase
+                    //     .downloadsDao
+                    //     .getDownloadById(state.item.id)
+                    //     .then(downloadProvider.deleteDownloadedFile);
+                    // context.router.root.pop<bool>(false);
                   },
                   child: Text('delete'.tr())),
               TextButton(onPressed: () => context.router.root.pop<bool>(true), child: Text('download'.tr()))

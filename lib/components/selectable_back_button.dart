@@ -1,36 +1,34 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class SelectableBackButton extends StatefulWidget {
-  final bool shadow;
-  const SelectableBackButton({super.key, this.shadow = false});
-
-  @override
-  State<SelectableBackButton> createState() => _SelectableBackButtonState();
-}
-
-class _SelectableBackButtonState extends State<SelectableBackButton> {
-  late final List<BoxShadow> shadows;
-
-  @override
-  void initState() {
-    shadows = widget.shadow
-        ? [
-            BoxShadow(blurRadius: 28, color: Colors.black.withAlpha(20), spreadRadius: 8),
-            BoxShadow(blurRadius: 24, color: Colors.black12, spreadRadius: 1),
-            BoxShadow(blurRadius: 22, color: Colors.black26, spreadRadius: 0)
-          ]
-        : [];
-    super.initState();
-  }
+class SelectableBackButton extends StatelessWidget {
+  const SelectableBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButtonSelector(
-        shape: const CircleBorder(),
+    return OutlinedButton(
+        autofocus: false,
         onPressed: context.router.root.pop,
-        primary: Colors.white,
-        child: ExcludeFocus(child: IgnorePointer(child: const BackButton())));
+        style: TextButton.styleFrom(
+                minimumSize: Size(24, 24),
+                padding: EdgeInsets.all(12),
+                primary: Theme.of(context).colorScheme.onBackground,
+                shape: const CircleBorder())
+            .copyWith(side: _buttonBorderSide(context)),
+        child: Icon(Icons.arrow_back));
+  }
+
+  MaterialStateProperty<BorderSide> _buttonBorderSide(BuildContext context) {
+    return MaterialStateProperty.resolveWith<BorderSide>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return BorderSide(
+            width: 2,
+            color: Theme.of(context).colorScheme.onBackground,
+          );
+        }
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+      },
+    );
   }
 }
