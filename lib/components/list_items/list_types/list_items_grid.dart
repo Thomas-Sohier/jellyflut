@@ -4,7 +4,6 @@ class ListItemsGrid extends StatelessWidget {
   final List<Item> items;
   final ScrollController scrollController;
   final ScrollPhysics scrollPhysics;
-  final double gridPosterHeight;
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
   final EdgeInsetsGeometry padding;
@@ -16,15 +15,16 @@ class ListItemsGrid extends StatelessWidget {
       this.padding = const EdgeInsets.symmetric(horizontal: 8),
       required this.scrollPhysics,
       required this.scrollController,
-      required this.gridPosterHeight,
       required this.items});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      final height = gridPosterHeight.isInfinite ? itemPosterHeight : gridPosterHeight;
+      final itemHeight = context.read<CollectionBloc>().state.gridPosterHeight.isInfinite
+          ? itemPosterHeight
+          : context.read<CollectionBloc>().state.gridPosterHeight;
       final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
-      final numberOfItemRow = (constraints.maxWidth / (height * itemAspectRatio)).round();
+      final numberOfItemRow = (constraints.maxWidth / (itemHeight * itemAspectRatio)).round();
       return CustomScrollView(controller: scrollController, scrollDirection: Axis.vertical, slivers: <Widget>[
         SliverPadding(
           padding: padding,
@@ -32,7 +32,7 @@ class ListItemsGrid extends StatelessWidget {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: items.first.getPrimaryAspectRatio(),
                   crossAxisCount: numberOfItemRow,
-                  mainAxisExtent: height + itemPosterLabelHeight,
+                  mainAxisExtent: itemHeight + itemPosterLabelHeight,
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 5),
               delegate: SliverChildBuilderDelegate((BuildContext c, int index) {

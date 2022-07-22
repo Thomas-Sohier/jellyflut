@@ -239,9 +239,9 @@ class StreamingRepository {
         break;
       default:
         final ext = p.extension(playBackInfos.mediaSources.first.path!);
-        path = 'Videos/${item.id}/stream$ext';
+        path = '/Videos/${item.id}/stream$ext';
     }
-    final uri = Uri.parse('${currentServer.url}/$path');
+    final uri = Uri.parse('${currentServer.url}$path');
     return uri.replace(queryParameters: finalQueryParams).toString();
   }
 

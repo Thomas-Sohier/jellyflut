@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import '../../cubit/home_cubit.dart';
+import '../../home_cubit/home_cubit.dart';
 import 'drawer_large_button.dart';
 
 class CustomDrawer extends StatelessWidget {

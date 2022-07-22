@@ -13,6 +13,7 @@ import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/custom_scroll_behavior.dart';
@@ -77,6 +78,10 @@ class App extends StatelessWidget {
                     sharedPreferences: SharedPrefs.sharedPrefs,
                     packageInfo: packageInfo)
                   ..add(const SettingsInitRequested()),
+                lazy: false,
+              ),
+              BlocProvider(
+                create: (c) => HomeTabsCubit(),
                 lazy: false,
               ),
               BlocProvider(

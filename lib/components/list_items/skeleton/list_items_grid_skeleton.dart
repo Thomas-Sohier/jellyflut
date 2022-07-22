@@ -1,23 +1,21 @@
 part of 'list_items_skeleton.dart';
 
 class ListItemsGridSkeleton extends StatelessWidget {
-  final double gridPosterHeight;
-  ListItemsGridSkeleton({required this.gridPosterHeight});
+  const ListItemsGridSkeleton();
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (context, constraints) =>
-            buildSkeletonItemsGrid(context, constraints));
+    return LayoutBuilder(builder: (context, constraints) => buildSkeletonItemsGrid(context, constraints));
   }
 
-  Widget buildSkeletonItemsGrid(
-      BuildContext context, BoxConstraints constraints) {
+  Widget buildSkeletonItemsGrid(BuildContext context, BoxConstraints constraints) {
+    final itemHeight = context.read<CollectionBloc>().state.gridPosterHeight.isInfinite
+        ? itemPosterHeight
+        : context.read<CollectionBloc>().state.gridPosterHeight;
     final ratio = aspectRatio();
     final size = MediaQuery.of(context).size;
-    final numberOfRow = (size.height / itemPosterHeight).round() * 2;
-    final numberOfItemInRow =
-        (constraints.maxWidth / (itemPosterHeight * ratio)).round();
+    final numberOfRow = (size.height / itemHeight).round() * 2;
+    final numberOfItemInRow = (constraints.maxWidth / (itemHeight * ratio)).round();
 
     return Shimmer.fromColors(
       enabled: shimmerAnimation,
@@ -28,12 +26,8 @@ class ListItemsGridSkeleton extends StatelessWidget {
           itemCount: numberOfItemInRow * numberOfRow,
           padding: EdgeInsets.only(left: 4, right: 4),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: numberOfItemInRow,
-              childAspectRatio: ratio,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 5),
-          itemBuilder: (context, index) =>
-              SkeletonItemPoster(height: gridPosterHeight)),
+              crossAxisCount: numberOfItemInRow, childAspectRatio: ratio, mainAxisSpacing: 10, crossAxisSpacing: 5),
+          itemBuilder: (context, index) => SkeletonItemPoster(height: itemHeight)),
     );
   }
 }

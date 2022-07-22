@@ -2,9 +2,8 @@ import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Drawer;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/providers/home/home_tabs_provider.dart';
-import 'package:jellyflut/screens/home/cubit/home_cubit.dart';
-import 'package:provider/provider.dart';
+import 'package:jellyflut/screens/home/home_cubit/home_cubit.dart';
+import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 
 import 'components/drawer/custom_drawer.dart';
 import 'header_bar.dart';
@@ -38,8 +37,8 @@ class HomeTabs extends StatelessWidget {
         drawerEnableOpenDragGesture: true,
         drawerEdgeDragWidth: 300,
         routes: cubit.state.routes,
-        appBarBuilder: (_, __) => AppBar(
-            flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsProvider: context.read<HomeTabsProvider>())),
+        appBarBuilder: (_, __) =>
+            AppBar(flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())),
         builder: (context, child, animation) {
           return PageTransitionSwitcher(
             transitionBuilder: (
@@ -61,18 +60,28 @@ class HomeTabs extends StatelessWidget {
 }
 
 class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
-  final HomeTabsProvider homeTabsProvider;
-  const BottomTabBar({super.key, required this.homeTabsProvider});
+  final HomeTabsCubit homeTabsCubit;
+  const BottomTabBar({super.key, required this.homeTabsCubit});
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<HomeTabsProvider>().getTabs.isNotEmpty) {
-      return Consumer<HomeTabsProvider>(
-          builder: (_, provider, ___) => TabBar(controller: provider.getTabController, tabs: provider.getTabs));
-    }
-    return const SizedBox();
+    return BlocBuilder<HomeTabsCubit, HomeTabsState>(
+        bloc: homeTabsCubit,
+        buildWhen: (previous, current) => previous.tabs != current.tabs || previous.status != current.status,
+        builder: (_, state) {
+          switch (state.status) {
+            case Status.initial:
+            case Status.loading:
+              return const SizedBox();
+            case Status.success:
+              if (state.tabs.isEmpty) return const SizedBox();
+              return TabBar(controller: state.tabController, tabs: state.tabs);
+            default:
+              return const SizedBox();
+          }
+        });
   }
 
   @override
-  Size get preferredSize => homeTabsProvider.getTabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
+  Size get preferredSize => homeTabsCubit.state.tabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
 }

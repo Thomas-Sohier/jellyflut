@@ -106,6 +106,9 @@ class ListItems extends StatelessWidget {
             showSorting: showSorting,
             showTitle: showTitle,
             listType: listType,
+            horizontalListPosterHeight: horizontalListPosterHeight,
+            verticalListPosterHeight: verticalListPosterHeight,
+            gridPosterHeight: gridPosterHeight,
             fetchMethod: fetchMethod)
           ..add(InitCollectionRequested()),
         child: ListItemsView());
@@ -210,7 +213,6 @@ class VerticalListView extends StatelessWidget {
             items: items,
             boxFit: BoxFit.cover,
             notFoundPlaceholder: null,
-            verticalListPosterHeight: 200,
             scrollPhysics: AlwaysScrollableScrollPhysics(),
             scrollController: context.read<CollectionBloc>().state.scrollController,
           ),
@@ -231,7 +233,6 @@ class HorizontalListView extends StatelessWidget {
             items: items,
             boxFit: BoxFit.cover,
             notFoundPlaceholder: null,
-            horizontalListPosterHeight: 200,
             scrollPhysics: AlwaysScrollableScrollPhysics(),
             scrollController: context.read<CollectionBloc>().state.scrollController));
   }
@@ -250,7 +251,6 @@ class GridListView extends StatelessWidget {
           items: items,
           boxFit: BoxFit.cover,
           notFoundPlaceholder: null,
-          gridPosterHeight: 200,
           scrollPhysics: AlwaysScrollableScrollPhysics(),
           scrollController: context.read<CollectionBloc>().state.scrollController,
         ));

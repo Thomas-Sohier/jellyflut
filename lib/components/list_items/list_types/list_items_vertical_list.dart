@@ -4,7 +4,6 @@ class ListItemsVerticalList extends StatelessWidget {
   final List<Item> items;
   final ScrollPhysics scrollPhysics;
   final ScrollController scrollController;
-  final double verticalListPosterHeight;
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
 
@@ -14,7 +13,6 @@ class ListItemsVerticalList extends StatelessWidget {
       this.notFoundPlaceholder,
       required this.scrollPhysics,
       required this.items,
-      required this.verticalListPosterHeight,
       required this.scrollController});
 
   @override
@@ -26,9 +24,9 @@ class ListItemsVerticalList extends StatelessWidget {
         scrollDirection: Axis.vertical,
         controller: scrollController,
         physics: scrollPhysics,
-        itemBuilder: (context, index) => Column(
+        itemBuilder: (_, index) => Column(
               children: [
-                itemSelector(items.elementAt(index)),
+                itemSelector(items.elementAt(index), context),
 
                 // If item is not last and screen is mobile then we show a
                 // divider for better readability
@@ -48,24 +46,24 @@ class ListItemsVerticalList extends StatelessWidget {
     return const SizedBox();
   }
 
-  Widget itemSelector(final Item item) {
+  Widget itemSelector(final Item item, BuildContext context) {
+    final itemHeight = context.read<CollectionBloc>().state.verticalListPosterHeight;
     switch (item.type) {
       case ItemType.Audio:
       case ItemType.MusicAlbum:
         // Music items will fit automatically
         return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
-            child: MusicItem(item: item));
+            constraints: BoxConstraints(maxHeight: itemHeight, minHeight: 50), child: MusicItem(item: item));
       case ItemType.Movie:
       case ItemType.Episode:
         // Episode items need height to avoid unbounded height
         return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
+            constraints: BoxConstraints(maxHeight: itemHeight, minHeight: 50),
             child: EpisodeItem(item: item, boxFit: boxFit, notFoundPlaceholder: notFoundPlaceholder));
       default:
         // Episode items need height to avoid unbounded height
         return ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: verticalListPosterHeight, minHeight: 50),
+            constraints: BoxConstraints(maxHeight: itemHeight, minHeight: 50),
             child: EpisodeItem(item: item, boxFit: boxFit, notFoundPlaceholder: notFoundPlaceholder));
     }
   }

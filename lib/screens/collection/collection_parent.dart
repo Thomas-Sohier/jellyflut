@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/providers/items/carroussel_provider.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 import 'package:provider/provider.dart';
@@ -19,8 +18,6 @@ class CollectionParent extends StatefulWidget {
 }
 
 class _CollectionParentState extends State<CollectionParent> with HomeTab, TickerProviderStateMixin {
-  late final CarrousselProvider carrousselProvider;
-
   @override
   set tabController(TabController tabController) {
     super.tabController = tabController;
@@ -28,7 +25,6 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
 
   @override
   void initState() {
-    carrousselProvider = CarrousselProvider();
     tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
@@ -44,6 +40,8 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
 
         ListItems.fromCustomRequest(
             fetchMethod: (startIndex, limit) => getItems(startIndex: startIndex, limit: limit),
+            gridPosterHeight: 200,
+            horizontalListPosterHeight: double.maxFinite,
             verticalListPosterHeight: 250),
       ]),
     );

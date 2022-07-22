@@ -1,11 +1,11 @@
 targets:
   $default:
+
     # Reducing sources makes the build slightly faster (some of these are required
     # to exist in the default target).
     sources:
       - lib/**
       - web/**
-      - packages/**
       - pubspec.yaml
       - lib/$lib$
       - $package$

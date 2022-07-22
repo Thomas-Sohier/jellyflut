@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/providers/home/home_tabs_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 
 /// This mixin allow to handle focus while tabs is inactive
 /// It prevent the cursor from focusing off-screen tab while using d-pad
 mixin HomeTab<T extends StatefulWidget> on State<T> {
-  late final HomeTabsProvider _homeTabsProvider;
-  late final TabsRouter _tabsRouter;
   //late final StackRouter _stackRouter;
+  late final TabsRouter _tabsRouter;
   final List<Widget> tabs = [];
   late TabController tabController;
   late ValueNotifier<bool> excluding;
@@ -16,12 +16,11 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
   void initState() {
     super.initState();
     excluding = ValueNotifier(false);
-    _tabsRouter = context.tabsRouter;
     // _stackRouter = context.router;
-    _tabsRouter.addListener(_excludeWatcher);
     // _stackRouter.addListener(_excludeWatcherOnPush);
-    _homeTabsProvider = HomeTabsProvider();
-    // _homeTabsProvider.setTabs(tabs, tabController);
+    _tabsRouter = context.tabsRouter;
+    _tabsRouter.addListener(_excludeWatcher);
+    context.read<HomeTabsCubit>().setTabs(tabs, tabController);
   }
 
   Widget parentBuild({Widget? child}) {

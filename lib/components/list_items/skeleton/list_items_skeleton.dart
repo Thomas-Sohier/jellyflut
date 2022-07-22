@@ -24,13 +24,13 @@ class ListItemsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (context.read<CollectionBloc>().state.listType) {
       case ListType.list:
-        return ListItemsVerticalSkeleton(verticalListPosterHeight: verticalListPosterHeight);
+        return const ListItemsVerticalSkeleton();
       case ListType.poster:
-        return ListItemsHorizontalSkeleton(horizontalListPosterHeight: horizontalListPosterHeight);
+        return const ListItemsHorizontalSkeleton();
       case ListType.grid:
-        return ListItemsGridSkeleton(gridPosterHeight: gridPosterHeight);
+        return const ListItemsGridSkeleton();
       default:
-        return ListItemsGridSkeleton(gridPosterHeight: gridPosterHeight);
+        return const ListItemsGridSkeleton();
     }
   }
 }

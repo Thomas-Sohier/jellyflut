@@ -23,6 +23,9 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
     bool showTitle = false,
     bool showIfEmpty = true,
     bool showSorting = true,
+    double verticalListPosterHeight = double.infinity,
+    double horizontalListPosterHeight = 150,
+    double gridPosterHeight = 100,
     ListType listType = ListType.grid,
   })  : assert(parentItem != null || fetchMethod != null || items != null),
         super(SeasonState(
@@ -32,6 +35,9 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
             showTitle: showTitle,
             showIfEmpty: showIfEmpty,
             showSorting: showSorting,
+            horizontalListPosterHeight: horizontalListPosterHeight,
+            verticalListPosterHeight: verticalListPosterHeight,
+            gridPosterHeight: gridPosterHeight,
             scrollController: ScrollController())) {
     on<InitCollectionRequested>(_initCollectionList);
     on<ClearItemsRequested>(_onClearItems);

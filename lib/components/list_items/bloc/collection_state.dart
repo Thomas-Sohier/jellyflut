@@ -31,6 +31,9 @@ class SeasonState extends Equatable {
   final bool showSorting;
   final SortBy sortBy;
   final String sortField;
+  final double horizontalListPosterHeight;
+  final double verticalListPosterHeight;
+  final double gridPosterHeight;
   final SeasonStatus collectionStatus;
   final ScrollController scrollController;
   final Future<List<Item>> Function(int startIndex, int limit) fetchMethod;
@@ -45,6 +48,9 @@ class SeasonState extends Equatable {
       this.showTitle = false,
       this.showIfEmpty = true,
       this.showSorting = true,
+      this.horizontalListPosterHeight = 150,
+      this.verticalListPosterHeight = double.infinity,
+      this.gridPosterHeight = 100,
       this.sortBy = SortBy.DESC,
       this.collectionStatus = SeasonStatus.initial,
       this.listType = ListType.grid});
@@ -57,6 +63,9 @@ class SeasonState extends Equatable {
     bool? showTitle,
     bool? showIfEmpty,
     bool? showSorting,
+    double? horizontalListPosterHeight,
+    double? verticalListPosterHeight,
+    double? gridPosterHeight,
     SortBy? sortBy,
     String? sortField,
     ScrollController? scrollController,
@@ -72,6 +81,9 @@ class SeasonState extends Equatable {
         showIfEmpty: showIfEmpty ?? this.showIfEmpty,
         showSorting: showSorting ?? this.showSorting,
         sortBy: sortBy ?? this.sortBy,
+        horizontalListPosterHeight: horizontalListPosterHeight ?? this.horizontalListPosterHeight,
+        verticalListPosterHeight: verticalListPosterHeight ?? this.verticalListPosterHeight,
+        gridPosterHeight: gridPosterHeight ?? this.gridPosterHeight,
         sortField: sortField ?? this.sortField,
         scrollController: scrollController ?? this.scrollController,
         collectionStatus: collectionStatus ?? this.collectionStatus);

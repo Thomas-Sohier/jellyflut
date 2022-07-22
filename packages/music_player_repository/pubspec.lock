@@ -231,14 +231,14 @@ packages:
   items_api:
     dependency: transitive
     description:
-      path: "../items/items_api"
+      path: "../items_api"
       relative: true
     source: path
     version: "1.0.0+1"
   items_repository:
     dependency: transitive
     description:
-      path: "../items/items_repository"
+      path: "../items_repository"
       relative: true
     source: path
     version: "1.0.0+1"

@@ -403,10 +403,7 @@ class ItemsRepository {
     }
     final finalUrl =
         completeTranscodeUrl ?? await createURL(item, backInfos, startTick: item.userData!.playbackPositionTicks);
-    // Current item, playbackinfos, stream url and direct play bool
-    // streamingProvider.setIsDirectPlay(completeTranscodeUrl != null ? false : true);
-    // streamingProvider.setPlaybackInfos(backInfos);
-    // streamingProvider.setURL(finalUrl);
+
     return finalUrl;
   }
 

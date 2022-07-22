@@ -6,18 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'cubit/home_cubit.dart';
+import 'home_cubit/home_cubit.dart';
 import 'home_category/cubit/home_category_cubit.dart';
 
 class HomePage extends StatelessWidget {
-  /// This property is only there to make auto_route generate page arguments so
-  /// we can pass a key to the route. Auto_route doesn't generate page arguments
-  /// if there is only [super.key] as a param
-  ///
-  /// Do nothing
-  final String? blank;
-
-  const HomePage({super.key, this.blank});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +46,7 @@ class _HomeViewState extends State<HomeView> with HomeTab, TickerProviderStateMi
     // TODO try to store HomeCategory "state" upper in widget tree using BLoC to allow [visibility] widget from [HomeTab] mixin
     // to not maintain state and allow better performance while resizing (for example)
     return super.parentBuild(
-        child: CustomScrollView(scrollDirection: Axis.vertical, slivers: [
+        child: CustomScrollView(controller: ScrollController(), scrollDirection: Axis.vertical, slivers: [
       const SliverToBoxAdapter(child: SizedBox(height: 10)),
       const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.resume)),
       const SliverToBoxAdapter(child: HomeCategory.fromType(itemType: HomeCategoryType.latest)),

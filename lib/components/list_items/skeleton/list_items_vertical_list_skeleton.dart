@@ -2,12 +2,11 @@ part of 'list_items_skeleton.dart';
 
 class ListItemsVerticalSkeleton extends StatelessWidget {
   final int count;
-  final double verticalListPosterHeight;
-  ListItemsVerticalSkeleton(
-      {this.count = 10, required this.verticalListPosterHeight});
+  const ListItemsVerticalSkeleton({this.count = 10});
 
   @override
   Widget build(BuildContext context) {
+    final itemHeight = context.read<CollectionBloc>().state.verticalListPosterHeight;
     return Shimmer.fromColors(
         baseColor: shimmerColor1,
         highlightColor: shimmerColor2,
@@ -18,7 +17,7 @@ class ListItemsVerticalSkeleton extends StatelessWidget {
             shrinkWrap: true,
             itemCount: count,
             itemBuilder: (context, index) => SkeletonItemPoster(
-                  height: verticalListPosterHeight,
+                  height: itemHeight,
                   padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
                 )));
   }

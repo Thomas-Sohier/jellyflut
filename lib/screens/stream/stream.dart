@@ -113,7 +113,6 @@ class _StreamViewState extends State<StreamView> {
                   return const PlaceholderScreen();
                 case StreamStatus.success:
                   return const Center(child: PlayerInterface());
-
                 default:
                   return const PlaceholderScreen();
               }

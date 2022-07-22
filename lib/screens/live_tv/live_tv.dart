@@ -10,13 +10,7 @@ import 'bloc/live_tv_guide_cubit.dart';
 import 'guide_view.dart';
 
 class LiveTvPage extends StatelessWidget {
-  /// This property is only there to make auto_route generate page arguments so
-  /// we can pass a key to the route. Auto_route doesn't generate page arguments
-  /// if there is only [super.key] as a param
-  ///
-  /// Do nothing
-  final String? blank;
-  const LiveTvPage({super.key, this.blank});
+  const LiveTvPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +58,7 @@ class _LiveTvViewState extends State<LiveTvView> with HomeTab, TickerProviderSta
               children: const [ChannelsView(), GuideView()],
             );
           case LiveTvGuideStatus.failure:
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Failed to load TV channels'),
-                  IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: () => context.read<LiveTvGuideCubit>().loadLiveTvGuide(),
-                  ),
-                ],
-              ),
-            );
+            return const _ChannelFailure();
           default:
             return const SizedBox();
         }
@@ -95,17 +77,17 @@ class ChannelsView extends StatelessWidget {
         await context.read<LiveTvGuideCubit>().loadLiveTvGuide(startIndex: startIndex, limit: limit);
         return context.read<LiveTvGuideCubit>().state.guide.map((e) => e.channel).toList();
       },
-      notFoundPlaceholder: const ChannelPlaceholder(),
+      notFoundPlaceholder: const _ChannelPlaceholder(),
       verticalListPosterHeight: 150,
-      gridPosterHeight: 100,
+      gridPosterHeight: 120,
       boxFit: BoxFit.contain,
       listType: ListType.grid,
     );
   }
 }
 
-class ChannelPlaceholder extends StatelessWidget {
-  const ChannelPlaceholder({super.key});
+class _ChannelPlaceholder extends StatelessWidget {
+  const _ChannelPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +95,27 @@ class ChannelPlaceholder extends StatelessWidget {
       color: ColorUtil.darken(Theme.of(context).colorScheme.background),
       child: Center(
         child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
+      ),
+    );
+  }
+}
+
+class _ChannelFailure extends StatelessWidget {
+  const _ChannelFailure({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Failed to load TV channels'),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => context.read<LiveTvGuideCubit>().loadLiveTvGuide(),
+          ),
+        ],
       ),
     );
   }

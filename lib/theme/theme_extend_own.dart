@@ -28,8 +28,8 @@ class DetailsTheme {
         primary: colorScheme.primary,
         secondary: colorScheme.secondary,
         tertiary: colorScheme.tertiary,
-        onBackground: colorScheme.onSecondary,
-        onGradientBackground: colorScheme.onBackground);
+        onBackground: colorScheme.onBackground,
+        onGradientBackground: colorScheme.onSecondary);
   }
 }
 
