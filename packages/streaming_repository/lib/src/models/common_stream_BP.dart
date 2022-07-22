@@ -22,12 +22,10 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
       dataSource = BetterPlayerDataSource.file(uri.toFilePath());
     }
 
-    final aspectRatio = 16 / 9;
-    final betterPlayerKey = GlobalKey();
-    final controller = BetterPlayerController(
-        _setupPlayerControllerConfiguration(aspectRatio: aspectRatio, customConfiguration: _configuration()));
+    final controller = BetterPlayerController(_setupPlayerControllerConfiguration(
+      customConfiguration: _configuration(),
+    ));
     controller.setupDataSource(dataSource);
-    controller.setBetterPlayerGlobalKey(betterPlayerKey);
     return controller;
   }
 

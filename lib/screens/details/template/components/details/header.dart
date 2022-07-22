@@ -75,18 +75,28 @@ class MobileHeader extends StatelessWidget {
             Column(
               children: [
                 Hero(
-                  tag: state.heroTag ?? '',
-                  child: AsyncImage(
-                    item: state.item,
-                    imageType: ImageType.Primary,
-                    boxFit: BoxFit.cover,
-                    notFoundPlaceholder: const SizedBox(),
-                    width: double.infinity,
-                    borderRadius: BorderRadius.zero,
-                    height: 250,
-                    showOverlay: true,
-                  ),
-                ),
+                    tag: state.heroTag ?? '',
+                    child: ShaderMask(
+                      shaderCallback: (rect) {
+                        return LinearGradient(
+                          begin: Alignment.topCenter,
+                          stops: [0.7, 1],
+                          end: Alignment.bottomCenter,
+                          colors: [Theme.of(context).colorScheme.background, Colors.transparent],
+                        ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
+                      },
+                      blendMode: BlendMode.dstIn,
+                      child: AsyncImage(
+                        item: state.item,
+                        imageType: ImageType.Primary,
+                        boxFit: BoxFit.cover,
+                        notFoundPlaceholder: const SizedBox(),
+                        width: double.infinity,
+                        borderRadius: BorderRadius.zero,
+                        height: 250,
+                        showOverlay: true,
+                      ),
+                    )),
                 SizedBox(height: controlsOverflowSize)
               ],
             ),
@@ -101,7 +111,7 @@ class MobileHeader extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 24)
+        const SizedBox(height: 16)
       ],
     );
   }

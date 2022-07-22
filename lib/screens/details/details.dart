@@ -25,7 +25,7 @@ class DetailsPage extends StatelessWidget {
         create: (blocContext) => DetailsBloc(
             item: item,
             heroTag: heroTag,
-            contrastedPage: !context.read<SettingsBloc>().state.detailsPageContrasted,
+            contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
             screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
             sharedPreferences: SharedPrefs.sharedPrefs,
             themeProvider: context.read<ThemeProvider>(),

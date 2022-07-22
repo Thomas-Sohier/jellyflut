@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/shared/shared.dart';
 
@@ -9,11 +9,13 @@ class CurrentDurationPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return StreamBuilder<Duration>(
       stream: context.read<StreamCubit>().state.controller?.getDurationStream(),
       initialData: Duration.zero,
       builder: (context, snapshot) {
-        return Text(printDuration(snapshot.data ?? Duration.zero));
+        return Text(printDuration(snapshot.data ?? Duration.zero),
+            style: theme.textTheme.bodyText1?.copyWith(color: theme.colorScheme.onBackground));
       },
     );
   }

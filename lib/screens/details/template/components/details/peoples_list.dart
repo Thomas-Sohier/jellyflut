@@ -46,11 +46,11 @@ class NotFoundActorPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox.expand(
       child: ColoredBox(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.secondary,
         child: Center(
             child: Icon(
           Icons.person,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.onSecondary,
         )),
       ),
     );

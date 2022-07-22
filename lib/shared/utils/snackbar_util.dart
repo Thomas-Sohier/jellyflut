@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jellyflut/theme/theme_extend_own.dart';
 
 /// Helper class that help showing a snackbar.
 /// Especially useful to have something similar everywhere on the app
@@ -25,7 +26,7 @@ abstract class SnackbarUtil {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
             width: 600,
             content: Theme(
-              data: Theme.of(context),
+              data: Theme.of(context), // context.read<ThemeProvider>().getThemeData,
               child: _CustomSnackbarBody(
                   messageTitle: messageTitle, messageDetails: messageDetails, icon: icon, color: color),
             )),
@@ -43,9 +44,7 @@ class _CustomSnackbarBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background, borderRadius: BorderRadius.all(Radius.circular(4))),
+    return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -58,7 +57,12 @@ class _CustomSnackbarBody extends StatelessWidget {
                   children: [
                     Flexible(
                         child: Text(messageTitle,
-                            maxLines: 1, style: Theme.of(context).textTheme.bodyText1?.apply(fontSizeFactor: 1.2))),
+                            maxLines: 1,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.apply(fontSizeFactor: 1.2)
+                                .copyWith(color: ownDetailsTheme(context).onBackground))),
                     messageDetails != null
                         ? Padding(
                             padding: const EdgeInsets.only(top: 4),
@@ -66,7 +70,10 @@ class _CustomSnackbarBody extends StatelessWidget {
                               messageDetails!,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(color: ownDetailsTheme(context).onBackground),
                               textAlign: TextAlign.justify,
                             ),
                           )

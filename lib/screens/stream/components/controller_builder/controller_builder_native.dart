@@ -18,7 +18,7 @@ class Controllerbuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.read<StreamCubit>().state.controller;
     if (controller is CommonStreamBP) {
-      return BetterPlayer(key: controller.controller.betterPlayerGlobalKey, controller: controller.controller);
+      return BetterPlayer(controller: controller.controller);
     } else if (controller is CommonStreamVLC) {
       return VlcPlayer(
           controller: controller.controller,

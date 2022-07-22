@@ -45,11 +45,10 @@ class DirectPlayIcon extends StatelessWidget {
     final color = Theme.of(context).colorScheme.onSecondary;
     return Row(
       children: [
-        GradientMask(
-            child: Icon(
+        Icon(
           Icons.play_for_work,
           color: color,
-        )),
+        ),
         const SizedBox(width: 8),
         Text(
           'Direct play',
@@ -71,11 +70,10 @@ class TranscodeIcon extends StatelessWidget {
         richMessage: generateTranscodeReasons(context.read<StreamCubit>().state.streamItem.url).textSpan,
         child: Row(
           children: [
-            GradientMask(
-                child: Icon(
+            Icon(
               Icons.cloud_outlined,
               color: color,
-            )),
+            ),
             const SizedBox(width: 8),
             Text(
               'Transcoding',

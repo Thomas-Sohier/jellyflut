@@ -20,6 +20,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ItemsRepository _itemsRepository;
   final AuthenticationRepository _authenticationRepository;
   final SharedPreferences _sharedPreferences;
+  final ThemeProvider _themeProvider;
 
   DetailsBloc(
       {required Item item,
@@ -33,6 +34,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       : _itemsRepository = itemsRepository,
         _authenticationRepository = authenticationRepository,
         _sharedPreferences = sharedPreferences,
+        _themeProvider = themeProvider,
         super(DetailsState(
             item: item,
             contrastedPage: contrastedPage,
@@ -78,7 +80,8 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   /// Update the theme of current details
   void _onSeedColorUpdate(DetailsUpdateSeedColor event, Emitter<DetailsState> emit) {
-    final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(event.colors, state.contrastedPage);
+    final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(
+        event.colors, state.contrastedPage, _themeProvider.getThemeData.brightness);
     emit(state.copyWith(theme: detailsTheme));
   }
 

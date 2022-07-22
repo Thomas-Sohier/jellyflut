@@ -34,10 +34,9 @@ abstract class Theme {
   /// You can provide a [brightness] if needed (by default -> Brightness.light)
   /// You can provide a [seedColor] if needed (by default -> jellyfin purple color)
   static ThemeData generateThemeDataFromSeedColor([Brightness brightness = Brightness.light, Color? seedColor]) {
-    final background = brightness == Brightness.light ? null : Colors.grey.shade900;
+    // final background = brightness == Brightness.light ? null : Colors.grey.shade900;
     final theme = ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: seedColor ?? jellyPurpleMap[500]!, brightness: brightness, background: background),
+        colorScheme: ColorScheme.fromSeed(seedColor: seedColor ?? jellyPurpleMap[500]!, brightness: brightness),
         visualDensity: VisualDensity.standard,
         useMaterial3: true);
     return _generateTheme(theme);
@@ -52,26 +51,27 @@ abstract class Theme {
     final middleElement = (palette.length / 2).round() - 1;
     final onBackground = palette[middleElement].computeLuminance() > 0.5 ? Colors.black : Colors.white;
     if (contastedPage) {
-      final themeDataInitial = generateThemeFromSeedColor(palette.first);
+      final themeDataInitial = generateThemeDataFromSeedColor(brightness, palette.first);
       return themeDataInitial
-          .copyWith(textTheme: generateTextThemeFromColor(onBackground))
-          .copyWith(colorScheme: themeDataInitial.colorScheme.copyWith(onBackground: onBackground))
         ..addOwn(
             detailsTheme: DetailsTheme(
-          primary: palette[0],
-          secondary: palette[1],
-          tertiary: palette[2],
-          onBackground: onBackground,
-        ));
+                primary: palette[0],
+                secondary: palette[1],
+                tertiary: palette[2],
+                onBackground: themeDataInitial.colorScheme.onBackground,
+                onGradientBackground: onBackground));
     }
-    final themeDataInitial = generateThemeDataFromSeedColor(brightness, palette.first);
+    final themeDataInitial = generateThemeFromSeedColor(palette.first);
     return themeDataInitial
+        .copyWith(textTheme: generateTextThemeFromColor(onBackground))
+        .copyWith(colorScheme: themeDataInitial.colorScheme.copyWith(onBackground: onBackground))
       ..addOwn(
           detailsTheme: DetailsTheme(
         primary: palette[0],
         secondary: palette[1],
         tertiary: palette[2],
-        onBackground: onBackground,
+        onBackground: themeDataInitial.colorScheme.onBackground,
+        onGradientBackground: onBackground,
       ));
   }
 

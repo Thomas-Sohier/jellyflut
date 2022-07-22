@@ -117,7 +117,7 @@ class _PosterState extends State<Poster> with AbsordAction {
 
   Widget dropShadowBuilder(Widget child) {
     if (widget.dropShadow) {
-      return DropShadow(blurRadius: 8, spread: 1, offset: const Offset(0, 0), child: child);
+      return DropShadow(blurRadius: 6, spread: 1, offset: const Offset(0, 0), child: child);
     }
     return child;
   }
