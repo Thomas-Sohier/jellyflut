@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -51,10 +52,14 @@ class StreamCubit extends Cubit<StreamState> {
             hasPip: await commonStream.hasPip(),
             status: StreamStatus.success));
       }
-    } on StreamingException catch (e) {
+    } on StreamingException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
-    } catch (e) {
-      emit(state.copyWith(failureMessage: e.toString(), status: StreamStatus.failure));
+    } on DioError catch (e, _) {
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
+    } catch (e, s) {
+      print(s);
+      emit(state.copyWith(
+          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(), status: StreamStatus.failure));
     }
   }
 
@@ -91,7 +96,7 @@ class StreamCubit extends Cubit<StreamState> {
 
   void autoHideControl() {
     // if (state.visible == false) return;
-    // emit(state.copyWith(visible: true));
+    emit(state.copyWith(visible: !state.visible));
     // state.controlsVisibilityTimer.cancel();
     // final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
     // emit(state.copyWith(controlsVisibilityTimer: newTimer));

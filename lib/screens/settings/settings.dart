@@ -50,7 +50,7 @@ class SettingsView extends StatelessWidget {
             VideoPlayerSection().build(context),
             AudioPlayerSection().build(context),
             InfosSection().build(context),
-            DownloadPathSection().build(context),
+            // DownloadPathSection().build(context),
             InterfaceSection().build(context),
             ThemeSection().build(context),
             AccountSection().build(context)

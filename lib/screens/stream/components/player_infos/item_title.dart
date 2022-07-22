@@ -10,7 +10,7 @@ class ItemTitle extends StatelessWidget {
       context.read<StreamCubit>().state.streamItem.item.name ?? '',
       textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
-      style: Theme.of(context).textTheme.headline3?.copyWith(color: Colors.white),
+      style: Theme.of(context).textTheme.headline4?.copyWith(color: Colors.white),
     );
   }
 }

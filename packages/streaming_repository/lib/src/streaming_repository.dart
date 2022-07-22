@@ -136,7 +136,7 @@ class StreamingRepository {
       final aIndex = a?.indexNumber;
       final bIndex = b?.indexNumber;
       if (aIndex != null && bIndex != null) {
-        return bIndex.compareTo(aIndex);
+        return aIndex.compareTo(bIndex);
       } else if (aIndex != null && bIndex == null) {
         return -1;
       }
@@ -147,7 +147,11 @@ class StreamingRepository {
     }
 
     final category = await _itemsApi.getCategory(
-        parentId: itemId, filter: 'IsNotFolder', fields: 'MediaStreams', serverUrl: '', userId: '');
+        parentId: itemId,
+        filter: 'IsNotFolder',
+        fields: 'MediaStreams',
+        serverUrl: currentServer.url,
+        userId: currentUser.id);
     // remove all item without an index to avoid sort error
     category.items.removeWhere((item) => item.indexNumber == null || item.userData == null);
     category.items.sort(sortItem);
@@ -199,7 +203,7 @@ class StreamingRepository {
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
-          final deviceProfile = await Profiles(database: _database, userId: currentServer.id).getExoplayerProfile();
+          final deviceProfile = await Profiles(database: _database, userId: currentUser.id).getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {

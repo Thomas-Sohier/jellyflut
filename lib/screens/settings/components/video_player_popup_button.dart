@@ -13,11 +13,9 @@ class VideoPlayerPopupButton extends StatelessWidget {
       builder: (_, state) => PopupMenuButton<String>(
         key: popupButtonKey,
         initialValue: state.databaseSetting.preferredPlayer,
-        onSelected: (String? player) =>
-            player ??
-            context
-                .read<SettingsBloc>()
-                .add(SettingsUpdateRequested(databaseSettingDto: DatabaseSettingDto(preferredPlayer: player))),
+        onSelected: (String? player) => context
+            .read<SettingsBloc>()
+            .add(SettingsUpdateRequested(databaseSettingDto: DatabaseSettingDto(preferredPlayer: player))),
         itemBuilder: (BuildContext c) => _playerListTile(c),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Text(state.databaseSetting.preferredPlayer, style: TextStyle()),

@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:items_api/items_api.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:sqlite_database/sqlite_database.dart';
+import 'package:jellyflut_models/jellyflut_models.dart' hide User;
+import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:path/path.dart' as p;
 
