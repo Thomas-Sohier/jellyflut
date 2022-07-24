@@ -3,7 +3,6 @@ part of '../list_items_parent.dart';
 class ListItemsVerticalList extends StatelessWidget {
   final List<Item> items;
   final ScrollPhysics scrollPhysics;
-  final ScrollController scrollController;
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
 
@@ -12,8 +11,7 @@ class ListItemsVerticalList extends StatelessWidget {
       this.boxFit = BoxFit.cover,
       this.notFoundPlaceholder,
       required this.scrollPhysics,
-      required this.items,
-      required this.scrollController});
+      required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class ListItemsVerticalList extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         scrollDirection: Axis.vertical,
-        controller: scrollController,
+        controller: ScrollController(),
         physics: scrollPhysics,
         itemBuilder: (_, index) => Column(
               children: [

@@ -16,6 +16,7 @@ class ListItemsHorizontalSkeleton extends StatelessWidget {
             height: itemHeight,
             child: ListView.builder(
                 padding: EdgeInsets.zero,
+                controller: ScrollController(),
                 physics: NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: count,

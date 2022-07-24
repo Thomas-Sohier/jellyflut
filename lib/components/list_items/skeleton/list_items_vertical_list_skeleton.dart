@@ -12,6 +12,7 @@ class ListItemsVerticalSkeleton extends StatelessWidget {
         highlightColor: shimmerColor2,
         child: ListView.builder(
             padding: EdgeInsets.zero,
+            controller: ScrollController(),
             physics: NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

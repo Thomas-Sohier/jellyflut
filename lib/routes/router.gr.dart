@@ -124,12 +124,18 @@ class AppRouter extends _i14.RootStackRouter {
           child: _i11.BookReaderPage(key: args.key, item: args.item));
     },
     HomePage.name: (routeData) {
+      final args =
+          routeData.argsAs<HomePageArgs>(orElse: () => const HomePageArgs());
       return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i12.HomePage());
+          routeData: routeData,
+          child: _i12.HomePage(key: args.key, blank: args.blank));
     },
     LiveTvPage.name: (routeData) {
+      final args = routeData.argsAs<LiveTvPageArgs>(
+          orElse: () => const LiveTvPageArgs());
       return _i14.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i13.LiveTvPage());
+          routeData: routeData,
+          child: _i13.LiveTvPage(key: args.key, blank: args.blank));
     }
   };
 
@@ -381,16 +387,46 @@ class EpubPageArgs {
 
 /// generated route for
 /// [_i12.HomePage]
-class HomePage extends _i14.PageRouteInfo<void> {
-  const HomePage() : super(HomePage.name, path: '');
+class HomePage extends _i14.PageRouteInfo<HomePageArgs> {
+  HomePage({_i15.Key? key, String? blank})
+      : super(HomePage.name,
+            path: '', args: HomePageArgs(key: key, blank: blank));
 
   static const String name = 'HomePage';
 }
 
+class HomePageArgs {
+  const HomePageArgs({this.key, this.blank});
+
+  final _i15.Key? key;
+
+  final String? blank;
+
+  @override
+  String toString() {
+    return 'HomePageArgs{key: $key, blank: $blank}';
+  }
+}
+
 /// generated route for
 /// [_i13.LiveTvPage]
-class LiveTvPage extends _i14.PageRouteInfo<void> {
-  const LiveTvPage() : super(LiveTvPage.name, path: 'live_tv');
+class LiveTvPage extends _i14.PageRouteInfo<LiveTvPageArgs> {
+  LiveTvPage({_i15.Key? key, String? blank})
+      : super(LiveTvPage.name,
+            path: 'live_tv', args: LiveTvPageArgs(key: key, blank: blank));
 
   static const String name = 'LiveTvPage';
+}
+
+class LiveTvPageArgs {
+  const LiveTvPageArgs({this.key, this.blank});
+
+  final _i15.Key? key;
+
+  final String? blank;
+
+  @override
+  String toString() {
+    return 'LiveTvPageArgs{key: $key, blank: $blank}';
+  }
 }

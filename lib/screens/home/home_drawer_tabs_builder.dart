@@ -67,15 +67,20 @@ class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeTabsCubit, HomeTabsState>(
         bloc: homeTabsCubit,
-        buildWhen: (previous, current) => previous.tabs != current.tabs || previous.status != current.status,
+        buildWhen: (previous, current) =>
+            previous.currentHomeTabController != current.currentHomeTabController || previous.status != current.status,
         builder: (_, state) {
           switch (state.status) {
             case Status.initial:
             case Status.loading:
               return const SizedBox();
             case Status.success:
-              if (state.tabs.isEmpty) return const SizedBox();
-              return TabBar(controller: state.tabController, tabs: state.tabs);
+              if (state.currentHomeTabControllerTabs.isEmpty) {
+                return const SizedBox();
+              }
+              return TabBar(
+                  controller: state.currentHomeTabController?.tabController,
+                  tabs: state.currentHomeTabController?.tabs ?? []);
             default:
               return const SizedBox();
           }
@@ -83,5 +88,6 @@ class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => homeTabsCubit.state.tabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
+  Size get preferredSize =>
+      homeTabsCubit.state.currentHomeTabControllerTabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
 }

@@ -5,25 +5,36 @@ import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 
 /// This mixin allow to handle focus while tabs is inactive
 /// It prevent the cursor from focusing off-screen tab while using d-pad
+///
+/// Must be included in the root tab widget
 mixin HomeTab<T extends StatefulWidget> on State<T> {
-  //late final StackRouter _stackRouter;
+  @protected
+  List<Widget> get tabs;
+
+  @protected
+  TabController get tabController;
+
+  @protected
+  Key get tabControllerUniqueKey;
+
   late final TabsRouter _tabsRouter;
-  final List<Widget> tabs = [];
-  late TabController tabController;
-  late ValueNotifier<bool> excluding;
+  late final HomeTabsCubit _homeTabsCubit;
+  late final ValueNotifier<bool> excluding;
 
   @override
   void initState() {
     super.initState();
+    // TODO listen to tabs router and check tab key to know if current widget is on top
     excluding = ValueNotifier(false);
-    // _stackRouter = context.router;
-    // _stackRouter.addListener(_excludeWatcherOnPush);
     _tabsRouter = context.tabsRouter;
     _tabsRouter.addListener(_excludeWatcher);
-    context.read<HomeTabsCubit>().setTabs(tabs, tabController);
+    _homeTabsCubit = context.read<HomeTabsCubit>();
+    _homeTabsCubit.addHomeTabController(
+        tabControllerUniqueKey, HomeTabController(tabs: tabs, tabController: tabController));
+    _homeTabsCubit.setCurrentHomeTabController(tabControllerUniqueKey);
   }
 
-  Widget parentBuild({Widget? child}) {
+  Widget visibiltyBuilder({Widget? child}) {
     return ValueListenableBuilder<bool>(
       valueListenable: excluding,
       builder: (BuildContext context, bool value, Widget? child) {
@@ -43,9 +54,7 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
   void dispose() {
     super.dispose();
     _tabsRouter.removeListener(_excludeWatcher);
-    //_stackRouter.removeListener(_excludeWatcherOnPush);
     tabController.dispose();
-    //_stackRouter.dispose();
   }
 
   void _excludeWatcher() {
@@ -53,25 +62,9 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
     final activeChildArgs = _tabsRouter.stack[index].arguments as dynamic;
     if (activeChildArgs?.key == widget.key) {
       excluding.value = false;
-      // _homeTabsProvider.setTabs(tabs, tabController);
+      _homeTabsCubit.setCurrentHomeTabController(tabControllerUniqueKey);
     } else {
       excluding.value = true;
     }
   }
-
-  // void _excludeWatcherOnPush() {
-  //   try {
-  //     // Try to find the key of current âge in stack
-  //     // if none found we exclude it
-  //     final activeChildKey = (_stackRouter.current.args as dynamic).key;
-  //     if (activeChildKey == widget.key) {
-  //       excluding.value = false;
-  //       _homeTabsProvider.setTabs(tabs, tabController);
-  //     } else {
-  //       excluding.value = true;
-  //     }
-  //   } catch (_) {
-  //     excluding.value = true;
-  //   }
-  // }
 }

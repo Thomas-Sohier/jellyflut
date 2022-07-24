@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
@@ -28,14 +29,14 @@ class HomeCubit extends Cubit<HomeState> {
     final i = items ?? <Item>[];
 
     //initial route
-    routes.add(r.HomePage());
+    routes.add(r.HomePage(key: UniqueKey()));
     for (var item in i) {
       switch (item.collectionType) {
         case CollectionType.livetv:
-          routes.add(r.LiveTvPage());
+          routes.add(r.LiveTvPage(key: UniqueKey()));
           break;
         default:
-          routes.add(r.CollectionPage(item: item));
+          routes.add(r.CollectionPage(key: UniqueKey(), item: item));
       }
     }
     return routes;

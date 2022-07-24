@@ -3,7 +3,6 @@ part of '../list_items_parent.dart';
 class ListItemsHorizontalList extends StatelessWidget {
   final List<Item> items;
   final ScrollPhysics scrollPhysics;
-  final ScrollController scrollController;
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
 
@@ -12,8 +11,7 @@ class ListItemsHorizontalList extends StatelessWidget {
       this.boxFit = BoxFit.cover,
       this.notFoundPlaceholder,
       required this.items,
-      required this.scrollPhysics,
-      required this.scrollController});
+      required this.scrollPhysics});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class ListItemsHorizontalList extends StatelessWidget {
       child: ListView.builder(
           itemCount: items.length,
           scrollDirection: Axis.horizontal,
-          controller: scrollController,
+          controller: ScrollController(),
           physics: scrollPhysics,
           itemBuilder: (context, index) => ItemPoster(
                 items.elementAt(index),

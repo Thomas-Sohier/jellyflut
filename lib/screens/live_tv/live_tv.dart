@@ -3,50 +3,51 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/mixins/home_tab.dart';
+import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 
 import 'bloc/live_tv_guide_cubit.dart';
 import 'guide_view.dart';
 
-class LiveTvPage extends StatelessWidget {
-  const LiveTvPage({super.key});
+const Key _tabControllerKey = ValueKey('LiveTvKey');
+
+class LiveTvPage extends StatefulWidget {
+  final String? _blank;
+
+  const LiveTvPage({super.key, String? blank}) : _blank = blank;
+
+  @override
+  State<LiveTvPage> createState() => _LiveTvPageState();
+}
+
+class _LiveTvPageState extends State<LiveTvPage> with TickerProviderStateMixin, HomeTab {
+  @override
+  List<Widget> get tabs => const <Tab>[Tab(text: 'Chaines'), Tab(text: 'Guide')];
+
+  @override
+  TabController get tabController => TabController(length: tabs.length, vsync: this);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LiveTvGuideCubit(liveTvRepository: context.read<LiveTvRepository>()),
-      child: const LiveTvView(),
+      child: super.visibiltyBuilder(child: const LiveTvView()),
     );
   }
+
+  @override
+  Key get tabControllerUniqueKey => _tabControllerKey;
 }
 
-class LiveTvView extends StatefulWidget {
+class LiveTvView extends StatelessWidget {
   const LiveTvView({super.key});
 
   @override
-  State<LiveTvView> createState() => _LiveTvViewState();
-}
-
-class _LiveTvViewState extends State<LiveTvView> with HomeTab, TickerProviderStateMixin {
-  @override
-  List<Widget> get tabs => [Tab(text: 'Chaines'), Tab(text: 'Guide')];
-
-  @override
-  set tabController(TabController tabController) {
-    super.tabController = tabController;
-  }
-
-  @override
-  void initState() {
-    tabController = TabController(length: tabs.length, vsync: this);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return super.parentBuild(
-        child: BlocBuilder<LiveTvGuideCubit, LiveTvGuideState>(
+    final tabControllers =
+        context.select<HomeTabsCubit, Map<Key, HomeTabController>>((cubit) => cubit.state.homeTabControllers);
+    return BlocBuilder<LiveTvGuideCubit, LiveTvGuideState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (_, state) {
         switch (state.status) {
@@ -54,7 +55,7 @@ class _LiveTvViewState extends State<LiveTvView> with HomeTab, TickerProviderSta
           case LiveTvGuideStatus.loading:
           case LiveTvGuideStatus.success:
             return TabBarView(
-              controller: super.tabController,
+              controller: tabControllers[_tabControllerKey]?.tabController,
               children: const [ChannelsView(), GuideView()],
             );
           case LiveTvGuideStatus.failure:
@@ -63,7 +64,7 @@ class _LiveTvViewState extends State<LiveTvView> with HomeTab, TickerProviderSta
             return const SizedBox();
         }
       },
-    ));
+    );
   }
 }
 

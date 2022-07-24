@@ -2,7 +2,6 @@ part of '../list_items_parent.dart';
 
 class ListItemsGrid extends StatelessWidget {
   final List<Item> items;
-  final ScrollController scrollController;
   final ScrollPhysics scrollPhysics;
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
@@ -14,7 +13,6 @@ class ListItemsGrid extends StatelessWidget {
       this.notFoundPlaceholder,
       this.padding = const EdgeInsets.symmetric(horizontal: 8),
       required this.scrollPhysics,
-      required this.scrollController,
       required this.items});
 
   @override
@@ -25,7 +23,7 @@ class ListItemsGrid extends StatelessWidget {
           : context.read<CollectionBloc>().state.gridPosterHeight;
       final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
       final numberOfItemRow = (constraints.maxWidth / (itemHeight * itemAspectRatio)).round();
-      return CustomScrollView(controller: scrollController, scrollDirection: Axis.vertical, slivers: <Widget>[
+      return CustomScrollView(controller: ScrollController(), scrollDirection: Axis.vertical, slivers: <Widget>[
         SliverPadding(
           padding: padding,
           sliver: SliverGrid(

@@ -19,19 +19,17 @@ class CollectionParent extends StatefulWidget {
 
 class _CollectionParentState extends State<CollectionParent> with HomeTab, TickerProviderStateMixin {
   @override
-  set tabController(TabController tabController) {
-    super.tabController = tabController;
-  }
+  Key get tabControllerUniqueKey => ValueKey('CollectionPageKey-unused-${widget.key}');
 
   @override
-  void initState() {
-    tabController = TabController(length: 0, vsync: this);
-    super.initState();
-  }
+  List<Widget> get tabs => const <Tab>[];
+
+  @override
+  TabController get tabController => TabController(length: tabs.length, vsync: this);
 
   @override
   Widget build(BuildContext context) {
-    return super.parentBuild(
+    return super.visibiltyBuilder(
       child: Stack(children: [
         // if (widget.item.collectionType == CollectionType.movies ||
         //     widget.item.collectionType == CollectionType.books ||

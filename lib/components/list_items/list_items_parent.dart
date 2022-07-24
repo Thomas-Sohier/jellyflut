@@ -214,7 +214,6 @@ class VerticalListView extends StatelessWidget {
             boxFit: BoxFit.cover,
             notFoundPlaceholder: null,
             scrollPhysics: AlwaysScrollableScrollPhysics(),
-            scrollController: context.read<CollectionBloc>().state.scrollController,
           ),
         ));
   }
@@ -233,8 +232,7 @@ class HorizontalListView extends StatelessWidget {
             items: items,
             boxFit: BoxFit.cover,
             notFoundPlaceholder: null,
-            scrollPhysics: AlwaysScrollableScrollPhysics(),
-            scrollController: context.read<CollectionBloc>().state.scrollController));
+            scrollPhysics: AlwaysScrollableScrollPhysics()));
   }
 }
 
@@ -252,7 +250,6 @@ class GridListView extends StatelessWidget {
           boxFit: BoxFit.cover,
           notFoundPlaceholder: null,
           scrollPhysics: AlwaysScrollableScrollPhysics(),
-          scrollController: context.read<CollectionBloc>().state.scrollController,
         ));
   }
 }
