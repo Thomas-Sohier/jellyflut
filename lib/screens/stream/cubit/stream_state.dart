@@ -13,6 +13,7 @@ class StreamState extends Equatable {
       this.visible = false,
       this.fullscreen = false,
       this.hasPip = false,
+      this.showChannelPanel = false,
       this.selectedAudioTrack = AudioTrack.empty,
       this.selectedSubtitleTrack = Subtitle.empty,
       this.status = StreamStatus.initial,
@@ -28,6 +29,7 @@ class StreamState extends Equatable {
   final bool visible;
   final bool fullscreen;
   final bool hasPip;
+  final bool showChannelPanel;
   final AudioTrack selectedAudioTrack;
   final Subtitle selectedSubtitleTrack;
   final Timer controlsVisibilityTimer;
@@ -43,6 +45,7 @@ class StreamState extends Equatable {
       bool? visible,
       bool? fullscreen,
       bool? hasPip,
+      bool? showChannelPanel,
       Timer? controlsVisibilityTimer,
       AudioTrack? selectedAudioTrack,
       Subtitle? selectedSubtitleTrack,
@@ -57,6 +60,7 @@ class StreamState extends Equatable {
         visible: visible ?? this.visible,
         fullscreen: fullscreen ?? this.fullscreen,
         hasPip: hasPip ?? this.hasPip,
+        showChannelPanel: showChannelPanel ?? this.showChannelPanel,
         controlsVisibilityTimer: controlsVisibilityTimer ?? this.controlsVisibilityTimer,
         selectedAudioTrack: selectedAudioTrack ?? this.selectedAudioTrack,
         selectedSubtitleTrack: selectedSubtitleTrack ?? this.selectedSubtitleTrack,
@@ -74,6 +78,7 @@ class StreamState extends Equatable {
         url,
         fullscreen,
         hasPip,
+        showChannelPanel,
         selectedAudioTrack,
         controlsVisibilityTimer,
         selectedSubtitleTrack,

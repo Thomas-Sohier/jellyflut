@@ -14,6 +14,7 @@ import '../controls/audio_button_selector.dart';
 import '../controls/backward_button.dart';
 import '../controls/chapter_button.dart';
 import '../controls/forward_button.dart';
+import '../controls/show_channel_button.dart';
 import '../controls/subtitle_button_selector.dart';
 import '../player_infos/subtitle_box.dart';
 
@@ -68,6 +69,7 @@ class TopRow extends StatelessWidget {
           ChapterButton(),
           SubtitleButtonSelector(),
           AudioButtonSelector(),
+          ShowChannelButton(),
           TranscodeState()
         ],
       )

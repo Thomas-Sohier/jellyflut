@@ -3,6 +3,7 @@ import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/bottom_row_player_controls.dart';
 import 'package:jellyflut/screens/stream/components/player_infos/player_infos.dart';
 
+import '../controls/show_channel_button.dart';
 import '../player_infos/subtitle_box.dart';
 
 class CommonControlsDesktop extends StatefulWidget {
@@ -37,7 +38,7 @@ class TopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: [
+    return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
       const SelectableBackButton(),
       Expanded(
         child: Padding(
@@ -49,6 +50,8 @@ class TopRow extends StatelessWidget {
           ),
         ),
       ),
+      const Spacer(),
+      const ShowChannelButton()
     ]);
   }
 }

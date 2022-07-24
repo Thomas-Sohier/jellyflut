@@ -2,10 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
+import 'package:jellyflut/screens/stream/channel_cubit/channel_cubit.dart';
 import 'package:jellyflut/screens/stream/components/player_interface.dart';
 import 'package:jellyflut/screens/stream/cubit/stream_cubit.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 import 'package:universal_io/io.dart';
 
@@ -23,15 +25,20 @@ class StreamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => StreamCubit(
-        itemsRepository: context.read<ItemsRepository>(),
-        streamingRepository: context.read<StreamingRepository>(),
-        item: item,
-        url: url,
-      )..init(),
-      child: const StreamView(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => StreamCubit(
+          itemsRepository: context.read<ItemsRepository>(),
+          streamingRepository: context.read<StreamingRepository>(),
+          item: item,
+          url: url,
+        )..init(),
+      ),
+      if (item?.type == ItemType.TvChannel)
+        BlocProvider(
+          create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init(),
+        )
+    ], child: const StreamView());
   }
 }
 

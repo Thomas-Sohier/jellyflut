@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/stream_cubit.dart';
 import 'common_controls/common_controls.dart';
 import 'controller_builder/controller_builder.dart';
+import 'controls/channels_picker.dart';
 
 class PlayerInterface extends StatefulWidget {
   const PlayerInterface({super.key});
@@ -22,12 +23,19 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
             case StreamStatus.loading:
               return const SizedBox();
             case StreamStatus.success:
-              return Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
-                children: const <Widget>[
-                  Controllerbuilder(),
-                  CommonControls(),
+              return Row(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      children: const <Widget>[
+                        Controllerbuilder(),
+                        CommonControls(),
+                      ],
+                    ),
+                  ),
+                  const ChannelPicker()
                 ],
               );
             default:

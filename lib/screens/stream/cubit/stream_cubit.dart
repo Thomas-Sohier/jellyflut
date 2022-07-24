@@ -34,27 +34,26 @@ class StreamCubit extends Cubit<StreamState> {
 
   Future<void> init() async {
     emit(state.copyWith(status: StreamStatus.loading));
+    late final commonStream;
+    late final streamItem;
     try {
       if (state.parentItem != null) {
-        final streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
-        final commonStream = await _streamingRepository.createController(
-            uri: Uri.parse(streamItem.url),
-            startAtPosition:
-                Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()));
-        emit(state.copyWith(
-            controller: commonStream,
-            streamItem: streamItem,
-            hasPip: await commonStream.hasPip(),
-            status: StreamStatus.success));
+        streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
+        commonStream = await _streamingRepository.createController(
+          uri: Uri.parse(streamItem.url),
+          startAtPosition:
+              Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
+        );
       } else if (state.url != null) {
-        final commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
-        final streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
-        emit(state.copyWith(
-            controller: commonStream,
-            streamItem: streamItem,
-            hasPip: await commonStream.hasPip(),
-            status: StreamStatus.success));
+        commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
+        streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
       }
+
+      emit(state.copyWith(
+          controller: commonStream,
+          streamItem: streamItem,
+          hasPip: await commonStream.hasPip(),
+          status: StreamStatus.success));
     } on StreamingException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } on DioError catch (e, _) {
