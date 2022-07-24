@@ -10,13 +10,13 @@ import '../models/index.dart';
 class CommonStreamVLCComputer extends CommonStream<Player> {
   final List<Timer> timers;
 
-  CommonStreamVLCComputer.fromUri({required Uri uri, int startAtPosition = 0, this.timers = const <Timer>[]}) {
+  CommonStreamVLCComputer.fromUri({required Uri uri, Duration? startAtPosition, this.timers = const <Timer>[]}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static Player _initController({required Uri uri, int startAtPosition = 0}) {
-    final controller = Player(
-        id: 0, commandlineArguments: ['--start-time=${Duration(microseconds: startAtPosition).inSeconds}', '--no-spu']);
+  static Player _initController({required Uri uri, Duration? startAtPosition}) {
+    final controller =
+        Player(id: 0, commandlineArguments: ['--start-time=${startAtPosition?.inSeconds ?? 0}', '--no-spu']);
 
     late final Media media;
     if (uri.isScheme('http') || uri.isScheme('https')) {

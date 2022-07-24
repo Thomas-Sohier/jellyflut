@@ -7,11 +7,11 @@ import 'package:rxdart/rxdart.dart';
 import '../models/index.dart';
 
 class CommonStreamVLC extends CommonStream<VlcPlayerController> {
-  CommonStreamVLC.fromUri({required Uri uri, int startAtPosition = 0}) {
+  CommonStreamVLC.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static VlcPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
+  static VlcPlayerController _initController({required Uri uri, Duration? startAtPosition}) {
     late final VlcPlayerController controller;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       controller = VlcPlayerController.network(
@@ -22,7 +22,7 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
               VlcAdvancedOptions.networkCaching(2000),
             ]),
             extras: [
-              '--start-time=${Duration(microseconds: startAtPosition).inSeconds}' // Start at x seconds
+              '--start-time=${startAtPosition?.inSeconds ?? 0}' // Start at x seconds
             ]),
       );
     } else {
@@ -34,7 +34,7 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
               VlcAdvancedOptions.networkCaching(2000),
             ]),
             extras: [
-              '--start-time=${Duration(microseconds: startAtPosition).inSeconds}' // Start at x seconds
+              '--start-time=${startAtPosition?.inSeconds ?? 0}' // Start at x seconds
             ]),
       );
     }

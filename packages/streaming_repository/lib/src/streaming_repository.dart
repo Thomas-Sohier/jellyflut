@@ -33,20 +33,20 @@ class StreamingRepository {
   User get currentUser => _authenticationRepository.currentUser;
   Server get currentServer => _authenticationRepository.currentServer;
 
-  Future<CommonStream> createController({required Uri uri}) async {
+  Future<CommonStream> createController({required Uri uri, Duration? startAtPosition}) async {
     final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     switch (StreamingSoftware.fromString(settings.preferredPlayer)) {
       case StreamingSoftware.VLC:
         if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-          return CommonStreamVLCComputer.fromUri(uri: uri);
+          return CommonStreamVLCComputer.fromUri(uri: uri, startAtPosition: startAtPosition);
         }
-        return CommonStreamVLC.fromUri(uri: uri);
+        return CommonStreamVLC.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.AVPLAYER:
       case StreamingSoftware.EXOPLAYER:
-        return CommonStreamBP.fromUri(uri: uri);
+        return CommonStreamBP.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.HTMLPlayer:
-        return CommonStreamVideoPlayer.fromUri(uri: uri);
+        return CommonStreamVideoPlayer.fromUri(uri: uri, startAtPosition: startAtPosition);
       default:
         throw UnsupportedError('Platform video streaming is unsuportted');
     }

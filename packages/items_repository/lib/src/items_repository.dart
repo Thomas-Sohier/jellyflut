@@ -476,6 +476,34 @@ class ItemsRepository {
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(itemId);
     //  if (itemExist) return await FileService.getStoragePathItem(this);
-    return '${_authenticationRepository.currentServer.url}/Audio/$itemId/stream.${streamingSoftware.codecName}';
+    switch (streamingSoftware) {
+      case TranscodeAudioCodec.auto:
+        final info = await DeviceInfo.getCurrentDeviceInfo();
+        final queryParams = <String, dynamic>{};
+        queryParams['container'] = [];
+        queryParams['mediaSourceId'] = null;
+        queryParams['deviceId'] = info.id;
+        queryParams['userId'] = currentUserId;
+        queryParams['audioCodec'] = 'aac';
+        queryParams['maxAudioChannels'] = 2;
+        queryParams['transcodingAudioChannels'] = 2;
+        queryParams['maxStreamingBitrate'] = settings.maxAudioBitrate;
+        queryParams['audioBitRate'] = settings.maxAudioBitrate;
+        queryParams['transcodingContainer'] = 'ts';
+        queryParams['transcodingProtocol'] = 'hls';
+        queryParams['maxAudioSampleRate'] = null;
+        queryParams['maxAudioBitDepth'] = null;
+        queryParams['enableRemoteMedia'] = null;
+        queryParams['breakOnNonKeyFrames'] = false;
+        queryParams['enableRedirection'] = true;
+        queryParams['api_key'] = user.apiKey;
+        queryParams.removeWhere((_, value) => value == null);
+        final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+
+        final uri = Uri.parse('$currentServerUrl/Audio/$itemId/universal');
+        return uri.replace(queryParameters: finalQueryParams).toString();
+      default:
+        return '$currentServerUrl/Audio/$itemId/stream.${streamingSoftware.codecName}';
+    }
   }
 }

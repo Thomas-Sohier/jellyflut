@@ -10,11 +10,11 @@ import '../models/index.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP extends CommonStream<BetterPlayerController> {
-  CommonStreamBP.fromUri({required Uri uri, int startAtPosition = 0}) {
+  CommonStreamBP.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static BetterPlayerController _initController({required Uri uri, int startAtPosition = 0}) {
+  static BetterPlayerController _initController({required Uri uri, Duration? startAtPosition}) {
     late final BetterPlayerDataSource dataSource;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       dataSource = BetterPlayerDataSource.network(uri.toString());
@@ -24,13 +24,16 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
 
     final controller = BetterPlayerController(_setupPlayerControllerConfiguration(
       customConfiguration: _configuration(),
+      startAt: startAtPosition,
     ));
     controller.setupDataSource(dataSource);
     return controller;
   }
 
   static BetterPlayerConfiguration _setupPlayerControllerConfiguration(
-      {double aspectRatio = 16 / 9, int startAt = 0, required BetterPlayerControlsConfiguration customConfiguration}) {
+      {double aspectRatio = 16 / 9,
+      Duration? startAt,
+      required BetterPlayerControlsConfiguration customConfiguration}) {
     return BetterPlayerConfiguration(
         aspectRatio: aspectRatio,
         fit: BoxFit.contain,
@@ -47,7 +50,7 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
         autoDetectFullscreenDeviceOrientation: true,
         allowedScreenSleep: false,
         subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(fontSize: 18),
-        startAt: Duration(microseconds: startAt),
+        startAt: startAt,
         controlsConfiguration: customConfiguration);
   }
 

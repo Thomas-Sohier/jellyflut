@@ -37,7 +37,10 @@ class StreamCubit extends Cubit<StreamState> {
     try {
       if (state.parentItem != null) {
         final streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
-        final commonStream = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
+        final commonStream = await _streamingRepository.createController(
+            uri: Uri.parse(streamItem.url),
+            startAtPosition:
+                Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()));
         emit(state.copyWith(
             controller: commonStream,
             streamItem: streamItem,
@@ -66,12 +69,12 @@ class StreamCubit extends Cubit<StreamState> {
   void play() async {
     if (state.controller == null) return;
     await state.controller?.play();
-    emit(state.copyWith(playing: state.controller?.isPlaying(), fullscreen: await state.controller?.isFullscreen()));
+    emit(state.copyWith(playing: true, fullscreen: await state.controller?.isFullscreen()));
   }
 
   void togglePlay() async {
     if (state.controller == null) return;
-    if (state.controller!.isPlaying()) {
+    if (state.playing) {
       await state.controller?.pause();
       emit(state.copyWith(playing: false));
     } else {

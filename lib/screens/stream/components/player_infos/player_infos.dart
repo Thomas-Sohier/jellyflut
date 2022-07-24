@@ -7,3 +7,5 @@ import '../../cubit/stream_cubit.dart';
 
 part 'item_parent_title.dart';
 part 'item_title.dart';
+part 'item_title_phone.dart';
+part 'item_parent_title_phone.dart';

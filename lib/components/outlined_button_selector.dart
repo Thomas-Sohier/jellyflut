@@ -40,13 +40,12 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector> with Ab
     return OutlinedButton(
         autofocus: false,
         onPressed: () => action(onPressed),
-        style: TextButton.styleFrom(
+        style: OutlinedButton.styleFrom(
                 minimumSize: Size(24, 24),
                 primary: primary ?? Theme.of(context).colorScheme.onBackground.withOpacity(0.05),
                 alignment: alignment,
                 padding: padding,
-                shape: shape,
-                backgroundColor: background)
+                shape: shape)
             .copyWith(side: _buttonBorderSide(context)),
         child: child);
   }

@@ -58,17 +58,17 @@ class TopRow extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: const [ItemTitle(), ItemParentTitle()],
+          children: const [ItemTitlePhone(), ItemParentTitlePhone()],
         ),
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const PipButton(),
-          const ChapterButton(),
-          const SubtitleButtonSelector(),
-          const AudioButtonSelector(),
-          const TranscodeState()
+        children: const [
+          PipButton(),
+          ChapterButton(),
+          SubtitleButtonSelector(),
+          AudioButtonSelector(),
+          TranscodeState()
         ],
       )
     ]);

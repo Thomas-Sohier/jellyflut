@@ -55,63 +55,66 @@ class FabButtonBody extends StatelessWidget {
       ]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxWidth),
-          child: Stack(
-            children: [
-              BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-                  buildWhen: (previous, current) => previous.playingState != current.playingState,
-                  builder: (context, state) {
-                    if (state.currentlyPlaying != null) {
-                      return Align(
-                          alignment: Alignment.centerRight,
-                          child: Image.memory(
-                            state.currentlyPlaying!.metadata.artworkByte,
-                            alignment: Alignment.center,
-                            width: maxWidth * 0.3, // 30% of width to prevent blank space with gradient
-                            height: maxHeight,
-                            fit: BoxFit.cover,
-                          ));
-                    }
-                    return const SizedBox();
-                  }),
-              SizedBox.expand(
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.primary,
-                  gradient: LinearGradient(colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.primary.withAlpha(160),
-                    Theme.of(context).colorScheme.primary.withAlpha(80)
-                  ], stops: [
-                    0.7,
-                    0.8,
-                    1
-                  ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-                )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: () => context.router.root.push(r.MusicPlayerPage()),
-                      iconSize: 28,
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
-                    const ExcludeFocus(excluding: true, child: Expanded(child: CenterPart())),
-                    const SizedBox(width: 8),
-                    const PlayPausebutton(),
-                    const SizedBox(width: 8),
-                  ],
+        child: Material(
+          color: Colors.transparent,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxWidth),
+            child: Stack(
+              children: [
+                BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+                    buildWhen: (previous, current) => previous.playingState != current.playingState,
+                    builder: (context, state) {
+                      if (state.currentlyPlaying != null) {
+                        return Align(
+                            alignment: Alignment.centerRight,
+                            child: Image.memory(
+                              state.currentlyPlaying!.metadata.artworkByte,
+                              alignment: Alignment.center,
+                              width: maxWidth * 0.3, // 30% of width to prevent blank space with gradient
+                              height: maxHeight,
+                              fit: BoxFit.cover,
+                            ));
+                      }
+                      return const SizedBox();
+                    }),
+                SizedBox.expand(
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.primary,
+                    gradient: LinearGradient(colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.primary.withAlpha(160),
+                      Theme.of(context).colorScheme.primary.withAlpha(80)
+                    ], stops: [
+                      0.7,
+                      0.8,
+                      1
+                    ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                  )),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () => context.router.root.push(r.MusicPlayerPage()),
+                        iconSize: 28,
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                      const ExcludeFocus(excluding: true, child: Expanded(child: CenterPart())),
+                      const SizedBox(width: 8),
+                      const PlayPausebutton(),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

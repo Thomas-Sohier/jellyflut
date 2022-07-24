@@ -45,7 +45,7 @@ class TopRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [ItemTitle(), ItemParentTitle()],
+            children: const [ItemTitle(), ItemParentTitlePhone()],
           ),
         ),
       ),
