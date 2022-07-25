@@ -90,6 +90,7 @@ class _PinnedHeaderChannelList extends StatelessWidget {
                 child: TextField(
                   minLines: 1,
                   keyboardType: TextInputType.number,
+                  onSubmitted: (value) => changeChannel(value, context),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                   cursorColor: Theme.of(context).colorScheme.onPrimary,
@@ -116,6 +117,25 @@ class _PinnedHeaderChannelList extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  /// Method that change channel based on input. [channelNumber] can be null and the method
+  /// won't change channel
+  void changeChannel(String? channelNumber, BuildContext context) {
+    // We check first that channel number is correctly setup
+    if (channelNumber == null || int.tryParse(channelNumber) == null) {
+      return SnackbarUtil.message(messageTitle: 'Input is not valid', context: context);
+    }
+    final channel = context
+        .read<ChannelCubit>()
+        .state
+        .channels
+        .firstWhere((element) => element.channelNumber == channelNumber, orElse: () => Item.empty);
+
+    if (channel.isEmpty) {
+      return SnackbarUtil.message(messageTitle: 'No channel match channel number : $channelNumber', context: context);
+    }
+    context.read<StreamCubit>().changeDataSource(item: channel);
   }
 }
 
