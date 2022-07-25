@@ -3,7 +3,6 @@ library globals;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 double get itemPosterLabelHeight => 39;
@@ -36,10 +35,6 @@ const BorderRadius borderRadiusButton = BorderRadius.all(Radius.circular(16));
 
 // Specific stuff
 // TODO rework this as a provider later
-User? userJellyfin;
-UserAppData? userApp;
-Server server = Server(id: 0, url: 'http://localhost', name: 'localhost');
-String? apiKey;
 DeviceProfile? savedDeviceProfile;
 bool shimmerAnimation = true;
 bool offlineMode = false;

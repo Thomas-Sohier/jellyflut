@@ -1,9 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/shared/extensions/string_extensions.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
@@ -60,10 +57,10 @@ class UserItem extends StatelessWidget {
         ),
         IconButton(
             onPressed: () async {
-              // TODO add this to auth bloc
-              final u = UserAppCompanion(id: Value(userApp!.id));
-              await AppDatabase().getDatabase.userAppDao.deleteUser(u);
-              if (inUse) context.read<AuthBloc>().add(LogoutRequested());
+              // TODO add this to auth bloc or somehing else
+              // final u = UserAppCompanion(id: Value(userApp!.id));
+              // await AppDatabase().getDatabase.userAppDao.deleteUser(u);
+              // if (inUse) context.read<AuthBloc>().add(LogoutRequested());
             },
             icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary))
       ],

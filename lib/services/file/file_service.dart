@@ -3,15 +3,14 @@ import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FileService {
   static String getDownloadFileUrl(final String itemId) {
-    return '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+    // return '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+    throw UnimplementedError('Downloads not implemented yet');
   }
 
   /// Return the rowId of the download inserted
@@ -36,24 +35,25 @@ class FileService {
     // final backdropImage = await Dio().get<String>(backdropUrl);
     // final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
 
-    final db = AppDatabase().getDatabase;
-    final dc = DownloadsCompanion(
-        id: Value(i.id),
-        // primary: Value(primaryImageByte),
-        // backdrop: Value(backdropImageByte),
-        name: Value.ofNullable(i.name),
-        item: Value.ofNullable(i),
-        path: Value.ofNullable(path));
-    return db.downloadsDao.createDownload(dc);
+    // final db = AppDatabase().getDatabase;
+    // final dc = DownloadsCompanion(
+    //     id: Value(i.id),
+    //     // primary: Value(primaryImageByte),
+    //     // backdrop: Value(backdropImageByte),
+    //     name: Value.ofNullable(i.name),
+    //     item: Value.ofNullable(i),
+    //     path: Value.ofNullable(path));
+    // return db.downloadsDao.createDownload(dc);
   }
 
   static Future<String> getUserStoragePath() async {
-    final db = AppDatabase().getDatabase;
-    final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    if (settings.downloadPath.isNotEmpty) {
-      return settings.downloadPath;
-    }
-    return getStoragePath();
+    throw UnimplementedError('Downloads not implemented yet');
+    // final db = AppDatabase().getDatabase;
+    // final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
+    // if (settings.downloadPath.isNotEmpty) {
+    //   return settings.downloadPath;
+    // }
+    // return getStoragePath();
   }
 
   static Future<String> getStoragePath() async {
