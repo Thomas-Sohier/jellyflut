@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import '../cubit/stream_cubit.dart';
 import 'common_controls/common_controls.dart';
 import 'controller_builder/controller_builder.dart';
@@ -35,7 +36,7 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
                       ],
                     ),
                   ),
-                  const ChannelPicker()
+                  if (state.streamItem.item.type == ItemType.TvChannel) const ChannelPicker()
                 ],
               );
             default:
