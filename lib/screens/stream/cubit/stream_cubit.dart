@@ -9,7 +9,6 @@ import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:streaming_api/streaming_api.dart';
 import 'package:streaming_repository/streaming_repository.dart';
-import 'package:subtitle/subtitle.dart' as subtitle;
 
 part 'stream_state.dart';
 
@@ -100,12 +99,21 @@ class StreamCubit extends Cubit<StreamState> {
     emit(state.copyWith(fullscreen: await state.controller?.isFullscreen()));
   }
 
-  void autoHideControl() {
-    // if (state.visible == false) return;
-    emit(state.copyWith(visible: !state.visible));
-    // state.controlsVisibilityTimer.cancel();
-    // final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
-    // emit(state.copyWith(controlsVisibilityTimer: newTimer));
+  void toggleControl() {
+    if (state.visible) {
+      state.controlsVisibilityTimer.cancel();
+      emit(state.copyWith(visible: false));
+    } else {
+      state.controlsVisibilityTimer.cancel();
+      final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
+      emit(state.copyWith(visible: true, controlsVisibilityTimer: newTimer));
+    }
+  }
+
+  void autoHideControlTimer() {
+    state.controlsVisibilityTimer.cancel();
+    final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
+    emit(state.copyWith(visible: true, controlsVisibilityTimer: newTimer));
   }
 
   void setAudioStreamIndex(AudioTrack audioTrack) async {
@@ -197,6 +205,8 @@ class StreamCubit extends Cubit<StreamState> {
     return audioTracks;
   }
 
+  /// Method to fetch local (from video player controller) and remote
+  /// subtitles
   Future<List<Subtitle>> getSubtitles() async {
     final subtitles = <Subtitle>[];
     final localSubtitles = await state.controller?.getSubtitles() ?? [];
@@ -207,6 +217,9 @@ class StreamCubit extends Cubit<StreamState> {
     return subtitles;
   }
 
+  /// Method to fetch remote subtitles
+  /// Can set [startIndex] a number to count from, useful if need to mix
+  /// muliple subitles sources
   List<Subtitle> _getRemoteSubtitles([final int startIndex = 0]) {
     final subtitles = <Subtitle>[];
     final remoteSubtitlesMediaStream =
@@ -226,32 +239,11 @@ class StreamCubit extends Cubit<StreamState> {
     return subtitles;
   }
 
-  Future<subtitle.SubtitleController?> getSub(Subtitle? subtitle) async {
-    if (subtitle == null || subtitle.index == -1) return null;
-    return null;
-
-    // final subUrl = StreamingService.getSubtitleURL(item!.id, 'vtt', subtitle.jellyfinSubtitleIndex!);
-
-    // return await Dio().get<dynamic>(subUrl).then<SubtitleController>((subFile) async {
-    //   final controller = SubtitleController(
-    //       provider: SubtitleProvider.fromString(
-    //     data: subFile.data ?? '',
-    //     type: SubtitleType.vtt,
-    //   ));
-
-    //   await controller.initial();
-    //   return controller;
-    // });
-  }
-
+  /// Set current subtitle index to use
   void setSubtitleStreamIndex(Subtitle subtitleTrack) {
     if (subtitleTrack.mediaType == MediaType.local) {
       state.controller?.setSubtitle(subtitleTrack);
       emit(state.copyWith(selectedSubtitleTrack: subtitleTrack));
     }
   }
-
-  // void setTimer(Timer timer) {
-  //   _timer = timer;
-  // }
 }

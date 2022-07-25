@@ -33,9 +33,9 @@ class _SubtitleBoxState extends State<SubtitleBox> {
   void streamingEventListener() {
     subtitlesStream.add(null);
     // This works now try to make it faster
-    final subtitleControllerFuture =
-        context.read<StreamCubit>().getSub(context.read<StreamCubit>().state.selectedSubtitleTrack);
-    subtitleControllerFuture.then(streamingPositionListener);
+    // final subtitleControllerFuture =
+    //     context.read<StreamCubit>().get(context.read<StreamCubit>().state.selectedSubtitleTrack);
+    // subtitleControllerFuture.then(streamingPositionListener);
   }
 
   void streamingPositionListener(SubtitleController? subtitleController) {
