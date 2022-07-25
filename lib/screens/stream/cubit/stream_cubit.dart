@@ -126,15 +126,32 @@ class StreamCubit extends Cubit<StreamState> {
   }
 
   Future<void> changeDataSource({required Item item}) async {
+    emit(state.copyWith(status: StreamStatus.loading));
     final playSessionId = state.streamItem.playbackInfos?.playSessionId;
     if (playSessionId == null) return;
-    await _streamingRepository.deleteActiveEncoding(playSessionId: playSessionId);
+    await state.controller?.pause();
     await state.controller?.dispose();
+    try {
+      await _streamingRepository.deleteActiveEncoding(playSessionId: playSessionId);
+    } catch (e, s) {
+      print(e);
+      print(s);
+    }
 
-    final streamItem = await _streamingRepository.getStreamItem(item: item);
-    final controller = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
+    try {
+      final streamItem = await _streamingRepository.getStreamItem(item: item);
+      final controller = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
 
-    emit(state.copyWith(controller: controller, streamItem: streamItem, status: StreamStatus.success));
+      emit(state.copyWith(controller: controller, streamItem: streamItem, status: StreamStatus.success));
+    } on StreamingException catch (e, _) {
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
+    } on DioError catch (e, _) {
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
+    } catch (e, s) {
+      print(s);
+      emit(state.copyWith(
+          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(), status: StreamStatus.failure));
+    }
   }
 
   Future<List<AudioTrack>> getAudioTracks() async {
