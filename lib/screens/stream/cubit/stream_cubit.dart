@@ -33,9 +33,9 @@ class StreamCubit extends Cubit<StreamState> {
   final Duration _fastForwardStep = const Duration(seconds: 10);
 
   Future<void> init() async {
-    emit(state.copyWith(status: StreamStatus.loading));
-    late final commonStream;
-    late final streamItem;
+    emit(state.copyWith(status: StreamStatus.initial));
+    late final CommonStream commonStream;
+    late final StreamItem streamItem;
     try {
       if (state.parentItem != null) {
         streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
@@ -53,32 +53,36 @@ class StreamCubit extends Cubit<StreamState> {
           controller: commonStream,
           streamItem: streamItem,
           hasPip: await commonStream.hasPip(),
-          status: StreamStatus.success));
+          status: StreamStatus.loading));
+      await commonStream.initialize();
+      emit(state.copyWith(status: StreamStatus.success));
+      await play();
+      emit(state.copyWith(audioTracks: await _getAudioTracks()));
     } on StreamingException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } on DioError catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } catch (e, s) {
       print(s);
-      emit(state.copyWith(
-          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(), status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: (e as dynamic).toString(), status: StreamStatus.failure));
     }
   }
 
-  void play() async {
+  Future<void> play() async {
     if (state.controller == null) return;
     await state.controller?.play();
-    emit(state.copyWith(playing: true, fullscreen: await state.controller?.isFullscreen()));
+    return emit(state.copyWith(
+        playing: state.controller?.isPlaying() ?? false, fullscreen: await state.controller?.isFullscreen()));
   }
 
   void togglePlay() async {
     if (state.controller == null) return;
-    if (state.playing) {
+    if (state.controller!.isPlaying()) {
       await state.controller?.pause();
-      emit(state.copyWith(playing: false));
+      emit(state.copyWith(playing: state.controller!.isPlaying()));
     } else {
       await state.controller?.play();
-      emit(state.copyWith(playing: true));
+      emit(state.copyWith(playing: state.controller!.isPlaying()));
     }
   }
 
@@ -106,7 +110,12 @@ class StreamCubit extends Cubit<StreamState> {
 
   void setAudioStreamIndex(AudioTrack audioTrack) async {
     if (audioTrack.mediaType == MediaType.remote) {
-      await changeDataSource(item: state.streamItem.item);
+      final streamParamters = StreamParameters(
+          startAt: state.controller?.getCurrentPosition(), audioStreamIndex: audioTrack.jellyfinSubtitleIndex);
+      await changeDataSource(
+        item: state.streamItem.item,
+        streamParameters: streamParamters,
+      );
     } else if (audioTrack.mediaType == MediaType.local) {
       await state.controller?.setAudioTrack(audioTrack);
     }
@@ -125,7 +134,8 @@ class StreamCubit extends Cubit<StreamState> {
     state.controller?.seekTo(seekToDuration);
   }
 
-  Future<void> changeDataSource({required Item item}) async {
+  Future<void> changeDataSource(
+      {required Item item, StreamParameters streamParameters = StreamParameters.empty}) async {
     emit(state.copyWith(status: StreamStatus.loading));
     final playSessionId = state.streamItem.playbackInfos?.playSessionId;
     if (playSessionId == null) return;
@@ -139,7 +149,7 @@ class StreamCubit extends Cubit<StreamState> {
     }
 
     try {
-      final streamItem = await _streamingRepository.getStreamItem(item: item);
+      final streamItem = await _streamingRepository.getStreamItem(item: item, streamParameters: streamParameters);
       final controller = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
 
       emit(state.copyWith(controller: controller, streamItem: streamItem, status: StreamStatus.success));
@@ -154,7 +164,7 @@ class StreamCubit extends Cubit<StreamState> {
     }
   }
 
-  Future<List<AudioTrack>> getAudioTracks() async {
+  Future<List<AudioTrack>> _getAudioTracks() async {
     final audioTracks = <AudioTrack>[];
     final localAudioTracks = await state.controller?.getAudioTracks() ?? [];
     audioTracks.addAll(localAudioTracks);
@@ -167,7 +177,8 @@ class StreamCubit extends Cubit<StreamState> {
   List<AudioTrack> _getRemoteAudiotracks([final int startIndex = 0]) {
     final audioTracks = <AudioTrack>[];
 
-    if (!(state.streamItem.playbackInfos?.isTranscoding() ?? false)) return audioTracks;
+    // For now we can change remote audio source if already transcoding
+    if (state.streamItem.playbackInfos?.isTranscoding() ?? false) return audioTracks;
 
     final remoteAudioTracksMediaStream =
         state.streamItem.item.mediaStreams.where((e) => e.type == MediaStreamType.Audio).toList();

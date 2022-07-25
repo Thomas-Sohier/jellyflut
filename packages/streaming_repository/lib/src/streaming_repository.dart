@@ -6,6 +6,7 @@ import 'package:jellyflut_models/jellyflut_models.dart' hide User, StreamingSoft
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
 import 'package:path/path.dart' as p;
+import 'package:streaming_repository/src/models/stream_paramaters.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'helper/profiles.dart';
@@ -88,7 +89,8 @@ class StreamingRepository {
   /// Method that create a [StreamItem]. StreamItem contains every infos needed
   /// about streaming.
   /// It can be used latr to create a video controller for example
-  Future<StreamItem> getStreamItem({required Item item, bool directPlay = false}) async {
+  Future<StreamItem> getStreamItem(
+      {required Item item, StreamParameters streamParameters = StreamParameters.empty, bool directPlay = false}) async {
     // if (directPlay == false && offlineMode == false) {
     //   await StreamingService.bitrateTest(size: 500000);
     //   await StreamingService.bitrateTest(size: 1000000);
@@ -106,10 +108,10 @@ class StreamingRepository {
         item.type == ItemType.Video ||
         item.type == ItemType.MusicVideo ||
         item.type == ItemType.Audio) {
-      return getStreamURL(item, directPlay);
+      return getStreamURL(item, directPlay, streamParameters);
     } else if (item.type == ItemType.Season || item.type == ItemType.Series) {
       final itemToPlay = await _getPlayableItemOrLastUnplayed(item: item);
-      return getStreamURL(itemToPlay, directPlay);
+      return getStreamURL(itemToPlay, directPlay, streamParameters);
     } else if (item.type == ItemType.Audio) {
       return createMusicURL(item);
     } else {
@@ -158,7 +160,8 @@ class StreamingRepository {
     return category.items.firstWhere((item) => !item.userData!.played, orElse: () => category.items.first);
   }
 
-  Future<StreamItem> getStreamURL(Item item, bool directPlay) async {
+  Future<StreamItem> getStreamURL(Item item, bool directPlay,
+      [StreamParameters streamParameters = StreamParameters.empty]) async {
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(item.id);
     //  if (itemExist) return await FileService.getStoragePathItem(item);
@@ -168,7 +171,9 @@ class StreamingRepository {
     final data = await _isCodecSupported();
     final playbackInfos = await _streamingApi.getPlaybackInfos(
         profile: data,
-        startTimeTick: item.userData!.playbackPositionTicks,
+        startTimeTick: streamParameters.startAt?.inMilliseconds ?? item.userData?.playbackPositionTicks,
+        subtitleStreamIndex: streamParameters.subtitleStreamIndex,
+        audioStreamIndex: streamParameters.audioStreamIndex,
         maxVideoBitrate: settings.maxVideoBitrate,
         maxAudioBitrate: settings.maxAudioBitrate,
         maxStreamingBitrate: settings.maxVideoBitrate,

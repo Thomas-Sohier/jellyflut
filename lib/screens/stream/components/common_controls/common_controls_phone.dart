@@ -39,7 +39,8 @@ class _CommonControlsPhoneState extends State<CommonControlsPhone> {
                 SizedBox(height: 12),
                 Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: TopRow())),
                 Expanded(child: Controls()),
-                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: BottomRow()))
+                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: BottomRow())),
+                SizedBox(height: 24),
               ],
             )),
             Positioned.fill(child: const Align(alignment: Alignment.bottomCenter, child: SubtitleBox())),

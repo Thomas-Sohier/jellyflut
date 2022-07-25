@@ -38,11 +38,10 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   }
 
   Widget changeAudioTrack(BuildContext context) {
+    final audioTracks = context.read<StreamCubit>().state.audioTracks;
     return ExcludeFocus(
         child: IgnorePointer(
-            child: FutureBuilder<List<AudioTrack>>(
-      future: context.read<StreamCubit>().state.controller?.getAudioTracks(),
-      builder: (context, snapshot) => PopupMenuButton<AudioTrack>(
+      child: PopupMenuButton<AudioTrack>(
           key: _popupMenuButtonKey,
           icon: Icon(
             Icons.audiotrack,
@@ -51,12 +50,12 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
           tooltip: 'select_audio_source'.tr(),
           onSelected: context.read<StreamCubit>().setAudioStreamIndex,
           itemBuilder: (context) {
-            if (snapshot.hasData) {
-              return _audioTracksListTile(snapshot.data!);
+            if (audioTracks.isNotEmpty) {
+              return _audioTracksListTile(audioTracks);
             }
             return <PopupMenuEntry<AudioTrack>>[];
           }),
-    )));
+    ));
   }
 
   List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(List<AudioTrack> audioTracks) {

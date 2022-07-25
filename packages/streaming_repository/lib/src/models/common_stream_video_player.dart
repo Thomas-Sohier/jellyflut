@@ -6,6 +6,10 @@ import 'package:video_player/video_player.dart';
 import '../models/index.dart';
 
 class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
+  void _isInitListener(Completer<void> completer) {
+    if (controller.value.isInitialized) completer.complete();
+  }
+
   CommonStreamVideoPlayer.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
@@ -15,12 +19,19 @@ class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
     late final VideoPlayerController controller;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       controller = VideoPlayerController.network(uri.toString());
-      controller.initialize().then((_) => controller.seekTo(startAtPosition ?? Duration.zero));
     } else {
       throw UnsupportedError('No suitable player implementation was found to play local file.');
     }
 
     return controller;
+  }
+
+  @override
+  Future<void> initialize() {
+    if (controller.value.isInitialized) return Future.value();
+    final completer = Completer<void>();
+    controller.addListener(() => _isInitListener(completer));
+    return completer.future;
   }
 
   @override

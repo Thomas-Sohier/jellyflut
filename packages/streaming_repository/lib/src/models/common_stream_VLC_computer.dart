@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:universal_io/io.dart';
 
-import 'package:dart_vlc/dart_vlc.dart';
+import 'package:dart_vlc/dart_vlc.dart' hide MediaType;
 import 'package:rxdart/rxdart.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -58,6 +58,11 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
     return Future.value();
   }
 
+  @override
+  Future<void> initialize() {
+    return Future.value();
+  }
+
   /// No implemented, do nothing
   /// Only there to comply to common stream interface
   @override
@@ -90,13 +95,19 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   /// Only there to comply to common stream interface
   @override
   Future<List<AudioTrack>> getAudioTracks() {
-    return Future.value(<AudioTrack>[]);
+    final audioTracks = <AudioTrack>[];
+    for (var i = 0; i < controller.audioTrackCount; i++) {
+      final audioTrack = AudioTrack(index: i, name: 'Audio track #$i', mediaType: MediaType.local);
+      audioTracks.add(audioTrack);
+    }
+    return Future.value(audioTracks);
   }
 
   /// No implemented, do nothing
   /// Only there to comply to common stream interface
   @override
   Future<void> setAudioTrack(AudioTrack audioTrack) {
+    controller.setAudioTrack(audioTrack.index);
     return Future.value();
   }
 

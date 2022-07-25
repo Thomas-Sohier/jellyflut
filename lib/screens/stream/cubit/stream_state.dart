@@ -16,6 +16,7 @@ class StreamState extends Equatable {
       this.showChannelPanel = false,
       this.selectedAudioTrack = AudioTrack.empty,
       this.selectedSubtitleTrack = Subtitle.empty,
+      this.audioTracks = const <AudioTrack>[],
       this.status = StreamStatus.initial,
       this.controller,
       this.failureMessage});
@@ -31,6 +32,7 @@ class StreamState extends Equatable {
   final bool hasPip;
   final bool showChannelPanel;
   final AudioTrack selectedAudioTrack;
+  final List<AudioTrack> audioTracks;
   final Subtitle selectedSubtitleTrack;
   final Timer controlsVisibilityTimer;
   final String? failureMessage;
@@ -48,6 +50,7 @@ class StreamState extends Equatable {
       bool? showChannelPanel,
       Timer? controlsVisibilityTimer,
       AudioTrack? selectedAudioTrack,
+      List<AudioTrack>? audioTracks,
       Subtitle? selectedSubtitleTrack,
       String? failureMessage}) {
     return StreamState(
@@ -63,6 +66,7 @@ class StreamState extends Equatable {
         showChannelPanel: showChannelPanel ?? this.showChannelPanel,
         controlsVisibilityTimer: controlsVisibilityTimer ?? this.controlsVisibilityTimer,
         selectedAudioTrack: selectedAudioTrack ?? this.selectedAudioTrack,
+        audioTracks: audioTracks ?? this.audioTracks,
         selectedSubtitleTrack: selectedSubtitleTrack ?? this.selectedSubtitleTrack,
         failureMessage: failureMessage ?? this.failureMessage);
   }
@@ -80,6 +84,7 @@ class StreamState extends Equatable {
         hasPip,
         showChannelPanel,
         selectedAudioTrack,
+        audioTracks,
         controlsVisibilityTimer,
         selectedSubtitleTrack,
         failureMessage

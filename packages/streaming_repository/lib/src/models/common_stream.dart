@@ -25,6 +25,7 @@ abstract class CommonStream<T> {
   void enterFullscreen();
   void exitFullscreen();
   void toggleFullscreen();
+  Future<void> initialize();
   Future<bool> isFullscreen();
   Future<List<Subtitle>> getSubtitles();
   Future<void> setSubtitle(Subtitle subtitle);

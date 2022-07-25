@@ -10,6 +10,10 @@ import '../models/index.dart';
 
 /// CommonStream Better Player specific code
 class CommonStreamBP extends CommonStream<BetterPlayerController> {
+  void _isInitListener(BetterPlayerEvent event, Completer<void> completer) {
+    if (event.betterPlayerEventType == BetterPlayerEventType.initialized) return completer.complete();
+  }
+
   CommonStreamBP.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
@@ -66,10 +70,16 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
       enableQualities: false,
       showControlsOnInitialize: false,
       playerTheme: BetterPlayerTheme.custom,
-      // customControlsBuilder: (controller, onPlayerVisibilityChanged) =>
-      //     CommonControls(),
       controlBarHeight: 40,
     );
+  }
+
+  @override
+  Future<void> initialize() {
+    if (controller.isVideoInitialized() ?? false) return Future.value();
+    final completer = Completer<void>();
+    controller.addEventsListener((event) => _isInitListener(event, completer));
+    return completer.future;
   }
 
   @override

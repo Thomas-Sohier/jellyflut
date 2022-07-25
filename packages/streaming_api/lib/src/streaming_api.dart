@@ -71,6 +71,7 @@ class StreamingApi {
     profile.deviceProfile ??= DeviceProfile();
     profile.userId ??= userId;
     profile.enableDirectPlay ??= true;
+    profile.enableTranscoding ??= true;
     profile.allowAudioStreamCopy ??= true;
     profile.allowVideoStreamCopy ??= true;
     profile.enableTranscoding ??= true;

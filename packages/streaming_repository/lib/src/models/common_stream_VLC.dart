@@ -7,6 +7,10 @@ import 'package:rxdart/rxdart.dart';
 import '../models/index.dart';
 
 class CommonStreamVLC extends CommonStream<VlcPlayerController> {
+  void _isInitListener(Completer<void> completer) {
+    if (controller.isReadyToInitialize ?? false) completer.complete();
+  }
+
   CommonStreamVLC.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
@@ -16,29 +20,43 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     if (uri.isScheme('http') || uri.isScheme('https')) {
       controller = VlcPlayerController.network(
         uri.toString(),
-        autoPlay: true,
-        options: VlcPlayerOptions(
-            advanced: VlcAdvancedOptions([
-              VlcAdvancedOptions.networkCaching(2000),
-            ]),
-            extras: [
-              '--start-time=${startAtPosition?.inSeconds ?? 0}' // Start at x seconds
-            ]),
+        autoPlay: false,
+        autoInitialize: false,
+        options: _defaultOptions(startAtPosition),
       );
     } else {
       controller = VlcPlayerController.file(
         File(uri.toFilePath()),
-        autoPlay: true,
-        options: VlcPlayerOptions(
-            advanced: VlcAdvancedOptions([
-              VlcAdvancedOptions.networkCaching(2000),
-            ]),
-            extras: [
-              '--start-time=${startAtPosition?.inSeconds ?? 0}' // Start at x seconds
-            ]),
+        autoPlay: false,
+        autoInitialize: false,
+        options: _defaultOptions(startAtPosition),
       );
     }
     return controller;
+  }
+
+  static VlcPlayerOptions _defaultOptions(Duration? startAtPosition) {
+    return VlcPlayerOptions(
+        advanced: VlcAdvancedOptions([
+          VlcAdvancedOptions.networkCaching(2000),
+        ]),
+        http: VlcHttpOptions([
+          VlcHttpOptions.httpReconnect(true),
+        ]),
+        subtitle: VlcSubtitleOptions([
+          VlcSubtitleOptions.boldStyle(true),
+          // VlcSubtitleOptions.fontSize(26),
+          VlcSubtitleOptions.outlineColor(VlcSubtitleColor.black),
+          VlcSubtitleOptions.outlineThickness(VlcSubtitleThickness.normal),
+          // works only on externally added subtitles
+          VlcSubtitleOptions.color(VlcSubtitleColor.white),
+        ]),
+        rtp: VlcRtpOptions([
+          VlcRtpOptions.rtpOverRtsp(true),
+        ]),
+        extras: [
+          '--start-time=${startAtPosition?.inSeconds ?? 0}' // Start at x seconds
+        ]);
   }
 
   @override
@@ -54,6 +72,37 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
   @override
   void toggleFullscreen() {
     // already in fullscreen by default
+  }
+
+  void listener() async {
+    controller.addOnInitListener(() async {
+      await controller.startRendererScanning();
+    });
+    if (controller.value.isInitialized) print('init');
+  }
+
+  @override
+  Future<void> initialize() async {
+    // FIXME vlcplayer is broken if we try to initialize ourselves, it need to be in it's view
+    // We cannot init from domain layer
+    // [isReadyToInitialize] is always null until we call play()...
+
+    if (controller.isReadyToInitialize ?? false) return controller.initialize();
+    // final completer = Completer<void>();
+    // controller.addListener(() => _isInitListener(completer));
+    // return completer.future;
+    // try {
+    //   await controller.play();
+    // } catch (_) {}
+    final completer = Completer<void>();
+    final timer = Timer.periodic(const Duration(milliseconds: 50), (_) {
+      if ((controller.isReadyToInitialize ?? false) && !controller.value.isInitialized && !completer.isCompleted) {
+        completer.complete();
+      }
+    });
+    await completer.future;
+    timer.cancel();
+    return controller.initialize();
   }
 
   @override
