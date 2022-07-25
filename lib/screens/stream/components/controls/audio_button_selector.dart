@@ -50,10 +50,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
           tooltip: 'select_audio_source'.tr(),
           onSelected: context.read<StreamCubit>().setAudioStreamIndex,
           itemBuilder: (context) {
-            if (audioTracks.isNotEmpty) {
-              return _audioTracksListTile(audioTracks);
-            }
-            return <PopupMenuEntry<AudioTrack>>[];
+            return _audioTracksListTile(audioTracks);
           }),
     ));
   }

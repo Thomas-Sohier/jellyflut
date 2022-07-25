@@ -34,7 +34,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     return ExcludeFocus(
       child: IgnorePointer(
           child: FutureBuilder<List<Subtitle>>(
-        future: context.read<StreamCubit>().state.controller?.getSubtitles(),
+        future: context.read<StreamCubit>().getSubtitles(),
         builder: (context, snapshot) => PopupMenuButton<Subtitle>(
             key: _popupMenuButtonKey,
             icon: Icon(
