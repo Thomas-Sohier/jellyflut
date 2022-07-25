@@ -7,8 +7,6 @@ import 'package:jellyflut/screens/details/template/components/action_button.dart
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'poster.dart';
-
 class Header extends StatelessWidget {
   const Header({super.key});
 
@@ -23,10 +21,11 @@ class Header extends StatelessWidget {
               if (settings.detailsPageContrasted) {
                 return Padding(padding: state.contentPadding, child: const DesktopHeader());
               } else {
-                if (state.item.hasLogo()) return Logo(item: state.item);
                 return Column(
                   children: [
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
+                    if (state.item.hasLogo()) Logo(item: state.item),
+                    const SizedBox(height: 16),
                     Padding(
                         padding: state.contentPadding.copyWith(bottom: 10),
                         child: ConstrainedBox(
@@ -37,24 +36,7 @@ class Header extends StatelessWidget {
               }
             case ScreenLayout.mobile:
             default:
-              if (settings.detailsPageContrasted) {
-                return const MobileHeader();
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 32, bottom: 10),
-                  child: Column(
-                    children: [
-                      Center(child: ConstrainedBox(constraints: BoxConstraints(maxHeight: 250), child: const Poster())),
-                      const SizedBox(height: 16),
-                      Padding(
-                          padding: state.contentPadding,
-                          child: ConstrainedBox(
-                              constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
-                              child: PlayButton(maxWidth: double.infinity))),
-                    ],
-                  ),
-                );
-              }
+              return const MobileHeader();
           }
         }));
   }
@@ -111,7 +93,7 @@ class MobileHeader extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16)
+        const SizedBox(height: 10)
       ],
     );
   }
@@ -162,7 +144,7 @@ class DesktopHeader extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: 50, maxWidth: 200),
                   child: PlayButton(maxWidth: double.infinity),
-                ))
+                )),
           ],
         ),
         const SizedBox(height: 24)
