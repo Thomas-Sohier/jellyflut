@@ -22,7 +22,7 @@ class Server with _$Server {
     /// The unique identifier of the server
     ///
     /// Cannot be empty.
-    required final String id,
+    required final int id,
 
     /// The server name
     ///
@@ -49,7 +49,7 @@ class Server with _$Server {
   }) = _Server;
 
   /// Empty server which represents an empty server.
-  static const empty = Server(id: '', name: '', host: '', scheme: '');
+  static const empty = Server(id: 0, name: '', host: '', scheme: '');
 
   /// Convenience getter to determine whether the current server is empty.
   bool get isEmpty => this == Server.empty;

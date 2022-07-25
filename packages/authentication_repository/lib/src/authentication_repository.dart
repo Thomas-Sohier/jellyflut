@@ -112,7 +112,7 @@ class AuthenticationRepository {
       final serverId = await _createOrGetServer(serverUrl, serverName);
       final uri = Uri.parse(serverUrl);
       final server = Server(
-        id: serverId.toString(),
+        id: serverId,
         name: serverName,
         host: uri.host,
         port: uri.port,
@@ -141,6 +141,12 @@ class AuthenticationRepository {
     // Notify user disconnected
     _userStream.add(User.empty);
     _serverStream.add(Server.empty);
+  }
+
+  /// Get list of users for server
+  /// [serverId] id from local sqlite database
+  Future<List<UserAppData>> getUsersForServerId(int serverId) async {
+    return _database.userAppDao.getUserAppByserverId(serverId);
   }
 
   /// Try to get server with url, if it exist then return it's [id]. If it doesn't exist

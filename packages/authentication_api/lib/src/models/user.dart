@@ -12,6 +12,7 @@ part 'user.g.dart';
 ///
 /// Contains a [id], [username], [token] and [profilePicture]
 ///
+/// Represent a jellyfin remote user, not one from database
 ///
 /// [User]s are immutable and can be copied using [copyWith], in addition to
 /// being serialized and deserialized using [toJson] and [fromJson]

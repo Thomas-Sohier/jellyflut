@@ -10,7 +10,7 @@ class Logo extends StatelessWidget {
   final EdgeInsets padding;
   final BoxConstraints constraints;
 
-  Logo({
+  const Logo({
     super.key,
     required this.item,
     this.selectable = true,

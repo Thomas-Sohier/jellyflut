@@ -26,21 +26,13 @@ class PeoplePoster extends StatefulWidget {
 
 class _PeoplePosterState extends State<PeoplePoster> {
   // Dpad navigation
-  late FocusNode _node;
   late String posterHeroTag;
   late final heroTag;
 
   @override
   void initState() {
-    _node = FocusNode();
     heroTag = '${widget.person.id}-${Uuid().v1()}-person';
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
   }
 
   Future<void> onTap() {

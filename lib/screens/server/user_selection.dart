@@ -1,8 +1,9 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:authentication_repository/authentication_repository.dart' hide Server;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
+import 'package:jellyflut/screens/auth/models/server_dto.dart';
 import 'package:jellyflut/screens/server/user_item.dart';
-import 'package:jellyflut/services/auth/auth_service.dart';
-import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 
 class UserSelection extends StatelessWidget {
@@ -11,9 +12,10 @@ class UserSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final users = AppDatabase().getDatabase.userAppDao.watchUserAppByserverId(server.id);
-    return StreamBuilder<List<UserAppData>>(
-        stream: users,
+    // TODO add cubit here
+    final users = context.read<AuthenticationRepository>().getUsersForServerId(server.id);
+    return FutureBuilder<List<UserAppData>>(
+        future: users,
         builder: (_, a) {
           if (a.hasData) {
             return listUser(a.data, context);
@@ -27,40 +29,43 @@ class UserSelection extends StatelessWidget {
       return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Select users',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Flexible(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    itemCount: users.length,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (_, index) {
-                      final u = users.elementAt(index);
-                      return UserItem(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Select users',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Flexible(
+                    child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  itemCount: users.length,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (_, index) {
+                    final u = users.elementAt(index);
+                    return UserItem(
                         user: u,
                         onUserSelection: (user) {
-                          AuthService.changeUser(user.name, user.password, server.url, server.name, server.id,
-                                  user.settingsId, user.id)
-                              .catchError((error) {
-                            context.router.root.pop();
-                            SnackbarUtil.message(
-                                messageTitle: error.toString(), icon: Icons.error, color: Colors.red, context: context);
-                          });
-                        },
-                      );
-                    }),
-              ),
-            ],
-          ));
+                          context.read<AuthBloc>().add(LogoutRequested());
+                          context.read<AuthBloc>().add(AuthServerAdded(ServerDto(url: server.url, name: server.name)));
+                          context.read<AuthBloc>().add(RequestAuth(username: user.name, password: user.password));
+                        });
+                  },
+                ))
+              ]));
     }
+    return _NoUsers();
+  }
+}
+
+class _NoUsers extends StatelessWidget {
+  const _NoUsers({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(

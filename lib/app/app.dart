@@ -7,8 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/providers/home/home_provider.dart';
-import 'package:jellyflut/providers/home/home_tabs_provider.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
@@ -65,8 +63,6 @@ class App extends StatelessWidget {
           Provider<Database>.value(value: database),
           ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
           ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
-          ChangeNotifierProvider<HomeTabsProvider>(create: (_) => HomeTabsProvider()),
-          ChangeNotifierProvider<HomeCategoryProvider>(create: (_) => HomeCategoryProvider()),
         ],
         child: MultiBlocProvider(
             providers: [

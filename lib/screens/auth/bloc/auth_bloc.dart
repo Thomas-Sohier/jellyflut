@@ -19,8 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required AuthenticationRepository authenticationRepository, required bool authenticated})
       : _authenticationRepository = authenticationRepository,
         super(authenticated ? AuthState(authStatus: AuthStatus.authenticated) : AuthState()) {
-    on<RequestAuth>(login);
-    on<AuthServerAdded>(authServerAdded);
+    on<RequestAuth>(_login);
+    on<AuthServerAdded>(_authServerAdded);
     on<BackToFirstForm>(_onFirstPageRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<AuthError>((event, emit) => errors.add(event.error));
@@ -31,11 +31,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(authPage: AuthPage.serverPage));
   }
 
-  void authServerAdded(AuthServerAdded event, Emitter<AuthState> emit) {
+  void _authServerAdded(AuthServerAdded event, Emitter<AuthState> emit) {
     emit(state.copyWith(server: event.server, authPage: AuthPage.loginPage));
   }
 
-  void login(RequestAuth event, Emitter<AuthState> emit) async {
+  void _login(RequestAuth event, Emitter<AuthState> emit) async {
     try {
       emit(state.copyWith(
           user: UserDto(username: event.username, password: event.password),
