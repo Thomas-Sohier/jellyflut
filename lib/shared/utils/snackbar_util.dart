@@ -4,6 +4,8 @@ import 'package:jellyflut/theme/theme_extend_own.dart';
 /// Helper class that help showing a snackbar.
 /// Especially useful to have something similar everywhere on the app
 abstract class SnackbarUtil {
+  const SnackbarUtil._();
+
   /// Create a material snackbar to display a message
   /// Can be customized to cahnge depending on the type of message
   ///

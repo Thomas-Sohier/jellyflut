@@ -63,27 +63,37 @@ class _VideoBuilder extends StatelessWidget {
               return const PlaceholderScreen();
             case StreamStatus.loading:
             case StreamStatus.success:
-              final isLoaded = state.status == StreamStatus.success;
-              return Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
-                fit: StackFit.expand,
-                children: [
-                  if (!isLoaded) const PlaceholderScreen(),
-                  Visibility(
-                      visible: isLoaded,
-                      maintainState: true,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        fit: StackFit.expand,
-                        children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
-                      ))
-                ],
-              );
+              return const _VideoPlayerBuilder();
             default:
               return const PlaceholderScreen();
           }
         });
+  }
+}
+
+class _VideoPlayerBuilder extends StatelessWidget {
+  const _VideoPlayerBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final status = context.read<StreamCubit>().state.status;
+    final isLoaded = status == StreamStatus.success;
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      fit: StackFit.expand,
+      children: [
+        if (!isLoaded) const PlaceholderScreen(),
+        Visibility(
+            visible: isLoaded,
+            maintainState: true,
+            child: Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
+            ))
+      ],
+    );
   }
 }
