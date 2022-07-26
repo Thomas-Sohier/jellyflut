@@ -13,9 +13,7 @@ import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
 import 'package:jellyflut/screens/book/compact_book_view.dart';
 import 'package:jellyflut/screens/book/components/comic_view.dart';
 import 'package:jellyflut/screens/book/components/epub_view.dart';
-import 'package:jellyflut/screens/book/large_book_view.dart';
 import 'package:jellyflut/screens/book/util/book_utils.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
 
 import 'package:rxdart/subjects.dart';
 import 'package:shu_epub/shu_epub.dart';
@@ -119,24 +117,11 @@ class _BookReaderPageState extends State<BookReaderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder.builder(
-        mobile: () => CompactBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})),
-        tablet: () => CompactBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})),
-        desktop: () => LargeBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage})));
+    return CompactBookView(
+        item: item,
+        bookBloc: bookBloc,
+        pageController: _controller,
+        streamPosition: _pageListener,
+        listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}));
   }
 }

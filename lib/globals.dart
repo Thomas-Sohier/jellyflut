@@ -2,21 +2,13 @@ library globals;
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 
-double get itemPosterLabelHeight => 39;
-
+const double itemPosterLabelHeight = 39;
 const double itemPosterHeight = 200;
 
-// Used for some player to prevent from creating a new player
-int get audioPlayerId => 132;
-int get videoPlayerId => 213;
-
 // Init android tv detection to know if platform is a TV
-
-late bool _isAndroidTv;
-
+late final bool _isAndroidTv;
 bool get isAndroidTv => _isAndroidTv;
 
 Future setUpAndroidTv() async {
@@ -34,7 +26,5 @@ Future setUpAndroidTv() async {
 const BorderRadius borderRadiusButton = BorderRadius.all(Radius.circular(16));
 
 // Specific stuff
-// TODO rework this as a provider later
-DeviceProfile? savedDeviceProfile;
 bool shimmerAnimation = true;
 bool offlineMode = false;

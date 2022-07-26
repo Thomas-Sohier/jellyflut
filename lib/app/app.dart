@@ -139,7 +139,7 @@ class AppView extends StatelessWidget {
         title: 'JellyFlut',
         locale: context.locale,
         debugShowCheckedModeBanner: false,
-        scrollBehavior: CustomScrollBehavior(),
+        scrollBehavior: const CustomScrollBehavior(),
         supportedLocales: context.supportedLocales,
         theme: themeNotifier.getThemeData,
         localizationsDelegates: context.localizationDelegates,
