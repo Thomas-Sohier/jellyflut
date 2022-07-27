@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
 import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
@@ -14,9 +15,9 @@ class LargeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.topCenter, children: [
       const DetailsBackground(),
-      LayoutBuilder(builder: ((_, constraints) {
+      LayoutBuilderScreen(builder: ((_, constraints, type) {
         // Constraint emitter
-        if (constraints.maxWidth <= 960) {
+        if (type.isMobile) {
           BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.mobile));
         } else {
           BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.desktop));
@@ -27,7 +28,7 @@ class LargeDetails extends StatelessWidget {
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [leftDetailsPart(constraints), rightDetailsPart(constraints)]),
+              children: [leftDetailsPart(type), rightDetailsPart()]),
           BlocBuilder<DetailsBloc, DetailsState>(
               buildWhen: (previous, current) =>
                   previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
@@ -50,12 +51,12 @@ class LargeDetails extends StatelessWidget {
     ]);
   }
 
-  Widget leftDetailsPart(BoxConstraints constraints) {
-    if (constraints.maxWidth <= 960) return const SizedBox();
+  Widget leftDetailsPart(LayoutType type) {
+    if (!type.isDesktop && !type.isAndroidTv) return const SizedBox();
     return const Expanded(flex: 4, child: Center(child: Padding(padding: EdgeInsets.all(16), child: Poster())));
   }
 
-  Widget rightDetailsPart(BoxConstraints constraints) {
+  Widget rightDetailsPart() {
     return const Expanded(flex: 6, child: AsyncRightDetails());
   }
 }

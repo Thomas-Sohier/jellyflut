@@ -136,6 +136,7 @@ dev_dependencies:
 flutter:
   assets:
     - img/
+    - img/icon/
     - translations/
 
   fonts:

@@ -2,11 +2,13 @@ import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide Drawer;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
+import 'package:jellyflut/screens/home/components/drawer/custom_drawer.dart';
 import 'package:jellyflut/screens/home/home_cubit/home_cubit.dart';
 import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 
-import 'components/drawer/custom_drawer.dart';
 import 'header_bar.dart';
+import 'home_drawer_cubit/home_drawer_cubit.dart';
 
 class HomeDrawerTabsBuilder extends StatelessWidget {
   const HomeDrawerTabsBuilder({super.key});
@@ -31,31 +33,49 @@ class HomeTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomeCubit>();
-    return AutoTabsScaffold(
-        drawer: const CustomDrawer(),
-        drawerEnableOpenDragGesture: true,
-        drawerEdgeDragWidth: 300,
-        routes: cubit.state.routes,
-        appBarBuilder: (_, __) =>
-            AppBar(flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())),
-        builder: (context, child, animation) {
-          return PageTransitionSwitcher(
-            transitionBuilder: (
-              Widget child,
-              Animation<double> _,
-              Animation<double> secondaryAnimation,
-            ) {
-              return FadeThroughTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                fillColor: Theme.of(context).colorScheme.background,
-                child: child,
-              );
-            },
-            child: child,
-          );
-        });
+    return BlocProvider<HomeDrawerCubit>(create: (_) => HomeDrawerCubit(), child: const HomeTabsView());
+  }
+}
+
+class HomeTabsView extends StatelessWidget {
+  const HomeTabsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final homeCubit = context.read<HomeCubit>();
+    final homeDrawerCubit = context.read<HomeDrawerCubit>();
+    return LayoutBuilderScreen(builder: (_, contraint, type) {
+      homeDrawerCubit.changeViewMode(type);
+      return AutoTabsScaffold(
+          drawer: type.isMobile ? const CustomDrawer() : null,
+          drawerEnableOpenDragGesture: true,
+          drawerEdgeDragWidth: 300,
+          routes: homeCubit.state.routes,
+          appBarBuilder: (_, __) =>
+              AppBar(flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())),
+          builder: (context, child, animation) {
+            return Row(children: [
+              if (!type.isMobile) const CustomDrawer(),
+              Expanded(
+                child: PageTransitionSwitcher(
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> _,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      fillColor: Theme.of(context).colorScheme.background,
+                      child: child,
+                    );
+                  },
+                  child: child,
+                ),
+              )
+            ]);
+          });
+    });
   }
 }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
+import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import '../../home_cubit/home_cubit.dart';
+import '../../home_drawer_cubit/home_drawer_cubit.dart';
 import 'drawer_large_button.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -10,19 +13,53 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
-    return Drawer(
-        child: ListView(controller: ScrollController(), children: [
-      const DrawerLargeButton(
-        index: 0,
-        name: 'Home',
-        icon: Icons.home_outlined,
-      ),
-      ...items.map((i) => DrawerLargeButton(
-            index: items.indexOf(i) + 1,
-            name: i.name ?? '',
-            icon: _getRightIconForCollectionType(i.collectionType),
-          ))
-    ]));
+    return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+        buildWhen: (previous, current) => previous.screenLayout != current.screenLayout,
+        builder: (_, state) => AnimatedContainer(
+            width: guessDrawerWidth(state.screenLayout),
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(color: guessDrawerColor(state.screenLayout, context)),
+            duration: Duration(milliseconds: 300),
+            child: ListView.builder(
+                controller: ScrollController(),
+                itemCount: items.length + 1,
+                itemBuilder: (_, index) {
+                  if (index == 0) {
+                    return DrawerLargeButton(
+                      index: 0,
+                      name: 'Home',
+                      icon: Icons.home_outlined,
+                    );
+                  }
+                  final item = items.elementAt(index - 1);
+                  return DrawerLargeButton(
+                    index: index,
+                    name: item.name ?? '',
+                    icon: _getRightIconForCollectionType(item.collectionType),
+                  );
+                })));
+  }
+
+  double guessDrawerWidth(LayoutType layoutType) {
+    switch (layoutType) {
+      case LayoutType.tablet:
+        return 75;
+      case LayoutType.desktop:
+      case LayoutType.mobile:
+      default:
+        return 300;
+    }
+  }
+
+  Color guessDrawerColor(LayoutType layoutType, BuildContext context) {
+    switch (layoutType) {
+      case LayoutType.mobile:
+        return Theme.of(context).colorScheme.background;
+      case LayoutType.tablet:
+      case LayoutType.desktop:
+      default:
+        return ColorUtil.darken(Theme.of(context).colorScheme.background);
+    }
   }
 
   IconData _getRightIconForCollectionType(CollectionType? collectionType) {

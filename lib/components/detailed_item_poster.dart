@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/async_item_image/async_item_image.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/shared/shared.dart';
@@ -22,8 +23,8 @@ class DetailedItemPoster extends StatefulWidget {
 class _DetailedItemPosterState extends State<DetailedItemPoster> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (context, constraints) =>
+    return LayoutBuilderScreen(
+        builder: (_, constraints, __) =>
             Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
               ItemPoster(widget.item, showOverlay: false, showName: false),
               MouseRegion(
