@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/outlined_button_selector.dart';
 
 import 'package:jellyflut/routes/router.gr.dart' as r;
 
@@ -18,36 +19,39 @@ class DrawerLargeButton extends StatelessWidget {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
     final activeColor = Theme.of(context).colorScheme.primary;
     final inactiveColor = Theme.of(context).colorScheme.onBackground;
-    return InkWell(
-        onTap: () {
-          context.tabsRouter
-            ..setActiveIndex(index)
-            ..innerRouterOf<StackRouter>(r.HomeRouter.name)?.push(r.HomeRouter());
-          homeDrawerCubit.changeCurrentDrawerSelection(index);
-          context.router.root.pop();
-        },
-        child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-            buildWhen: (previous, current) => previous.currentIndexSelected != current.currentIndexSelected,
-            builder: (_, state) {
-              final isActive = index == state.currentIndexSelected;
-              return Container(
-                margin: const EdgeInsets.all(10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                    shape: BoxShape.rectangle),
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: buttonBody(context, activeColor, inactiveColor, isActive)),
-              );
-            }));
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: OutlinedButtonSelector(
+          onPressed: () {
+            context.tabsRouter
+              ..setActiveIndex(index)
+              ..innerRouterOf<StackRouter>(r.HomeRouter.name)?.push(r.HomeRouter());
+            homeDrawerCubit.changeCurrentDrawerSelection(index);
+            context.router.root.pop();
+          },
+          child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+              buildWhen: (previous, current) => previous.currentIndexSelected != current.currentIndexSelected,
+              builder: (_, state) {
+                final isActive = index == state.currentIndexSelected;
+                return Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      shape: BoxShape.rectangle),
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: buttonBody(context, activeColor, inactiveColor, isActive)),
+                );
+              })),
+    );
   }
 
   Widget buttonBody(BuildContext context, Color activeColor, Color inactiveColor, bool isActive) {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
-    if (homeDrawerCubit.state.screenLayout.isTablet)
+    if (homeDrawerCubit.state.screenLayout.isTablet) {
       return Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28);
+    }
     return Row(
       children: [
         Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28),
