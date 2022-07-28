@@ -8,8 +8,8 @@ class HomeDrawerCubit extends Cubit<HomeDrawerState> {
   HomeDrawerCubit({LayoutType screenLayout = LayoutType.desktop, int currentIndexSelected = 0})
       : super(HomeDrawerState(currentIndexSelected: currentIndexSelected, screenLayout: screenLayout));
 
-  void changeCurrentDrawerSelection(final int index) {
-    emit(state.copyWith(currentIndexSelected: index));
+  void changeCurrentDrawerSelection(final int index, final String name) {
+    emit(state.copyWith(currentIndexSelected: index, name: name));
   }
 
   void changeViewMode(final LayoutType screenLayout) {

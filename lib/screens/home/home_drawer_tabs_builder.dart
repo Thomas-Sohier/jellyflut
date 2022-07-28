@@ -51,28 +51,31 @@ class HomeTabsView extends StatelessWidget {
           drawerEnableOpenDragGesture: true,
           drawerEdgeDragWidth: 300,
           routes: homeCubit.state.routes,
-          appBarBuilder: (_, __) =>
-              AppBar(flexibleSpace: HeaderBar(), bottom: BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())),
           builder: (context, child, animation) {
             return Row(children: [
               if (!type.isMobile) const CustomDrawer(),
               Expanded(
-                child: PageTransitionSwitcher(
-                  transitionBuilder: (
-                    Widget child,
-                    Animation<double> _,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    return FadeThroughTransition(
-                      animation: animation,
-                      secondaryAnimation: secondaryAnimation,
-                      fillColor: Theme.of(context).colorScheme.background,
-                      child: child,
-                    );
-                  },
-                  child: child,
-                ),
-              )
+                  child: Column(
+                children: [
+                  AppBar(flexibleSpace: const HeaderBar()),
+                  Expanded(
+                    child: PageTransitionSwitcher(
+                        transitionBuilder: (
+                          Widget child,
+                          Animation<double> _,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          return FadeThroughTransition(
+                            animation: animation,
+                            secondaryAnimation: secondaryAnimation,
+                            fillColor: Theme.of(context).colorScheme.background,
+                            child: child,
+                          );
+                        },
+                        child: child),
+                  ),
+                ],
+              ))
             ]);
           });
     });

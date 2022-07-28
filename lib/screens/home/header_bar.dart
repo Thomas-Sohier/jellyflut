@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/layout_builder_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/screens/home/home_drawer_cubit/home_drawer_cubit.dart';
 
 import '../details/template/components/user_icon.dart';
 import 'components/download_button.dart';
 import 'components/search_button.dart';
 import 'components/settings_button.dart';
+import 'home_drawer_tabs_builder.dart';
+import 'home_tabs_cubit/home_tabs_cubit.dart';
 
 class HeaderBar extends StatelessWidget {
   const HeaderBar({super.key});
@@ -12,42 +15,27 @@ class HeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: LayoutBuilderScreen(
-      builder: (_, constraints, type) => Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          !type.isMobile
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    SizedBox(width: 12),
-                    _AppLogo(),
-                    SizedBox(width: 12),
-                    _AppBarTitle(),
-                  ],
-                )
-              : const SizedBox(),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: !type.isMobile ? 12 : 48),
-                const Flexible(child: SearchButton()),
-                const SizedBox(width: 6),
-                const SettingsButton(),
-                const SizedBox(width: 6),
-                const DownloadButton(),
-                const SizedBox(width: 12),
-                const UserIcon(),
-                const SizedBox(width: 12),
-              ],
-            ),
-          ),
-        ],
-      ),
+        child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            SizedBox(width: 12),
+            _AppBarTitle(),
+            Spacer(),
+            Expanded(child: SearchButton()),
+            SizedBox(width: 6),
+            SettingsButton(),
+            SizedBox(width: 6),
+            DownloadButton(),
+            SizedBox(width: 12),
+            UserIcon(),
+            SizedBox(width: 12),
+          ],
+        ),
+        BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())
+      ],
     ));
   }
 }
@@ -57,7 +45,8 @@ class _AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Jellyflut', style: Theme.of(context).textTheme.headline4);
+    return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+        builder: (_, state) => Text(state.name, style: Theme.of(context).textTheme.headline4));
   }
 }
 

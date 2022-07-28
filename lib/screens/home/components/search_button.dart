@@ -4,7 +4,6 @@ import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/screens/home/components/search/search_field.dart';
 import 'package:jellyflut/screens/home/components/search/search_icon.dart';
 import 'package:jellyflut/screens/home/components/search/search_result.dart';
-import 'package:jellyflut/shared/utils/color_util.dart';
 
 class SearchButton extends StatefulWidget {
   const SearchButton();
@@ -14,7 +13,6 @@ class SearchButton extends StatefulWidget {
 }
 
 class _SearchButtonState extends State<SearchButton> {
-  late Color fieldColor;
   late TextEditingController textEditingController;
   final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
 
@@ -25,17 +23,11 @@ class _SearchButtonState extends State<SearchButton> {
   }
 
   @override
-  void didChangeDependencies() {
-    fieldColor = ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return OpenContainer<bool>(
         transitionType: _transitionType,
-        openColor: Theme.of(context).colorScheme.background,
-        middleColor: Theme.of(context).colorScheme.background,
+        openColor: guessButtonColor(context),
+        middleColor: guessButtonColor(context),
         closedColor: Colors.transparent,
         openBuilder: (BuildContext _, VoidCallback openContainer) => fullscreenSearch(),
         tappable: true,
@@ -44,30 +36,38 @@ class _SearchButtonState extends State<SearchButton> {
         closedBuilder: (BuildContext _, VoidCallback openContainer) => fieldClosed(openContainer));
   }
 
+  Color guessButtonColor(BuildContext context) {
+    final currentTheme = Theme.of(context);
+    if (currentTheme.brightness == Brightness.dark) return currentTheme.colorScheme.secondaryContainer;
+    return currentTheme.colorScheme.primaryContainer;
+  }
+
   Widget fieldClosed(VoidCallback openContainer) {
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: OutlinedButtonSelector(
-        onPressed: openContainer,
-        child: ExcludeFocus(
-            excluding: true,
-            child: IgnorePointer(
-              ignoring: true,
-              child: SearchField(
-                fieldColor: fieldColor,
-                constraints: BoxConstraints(maxWidth: 300),
-                icon: const Icon(Icons.search),
-                padding: EdgeInsets.only(left: 24, top: 8),
-                textEditingController: textEditingController,
-              ),
-            )),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 300),
+        child: OutlinedButtonSelector(
+          onPressed: openContainer,
+          child: ExcludeFocus(
+              excluding: true,
+              child: IgnorePointer(
+                ignoring: true,
+                child: SearchField(
+                  fieldColor: guessButtonColor(context),
+                  icon: const Icon(Icons.search),
+                  padding: EdgeInsets.only(left: 24, top: 8),
+                  textEditingController: textEditingController,
+                ),
+              )),
+        ),
       ),
     );
   }
 
   Widget fullscreenSearch() {
     return Scaffold(
-        appBar: AppBar(leading: const SizedBox(), backgroundColor: fieldColor, actions: [
+        appBar: AppBar(leading: const SizedBox(), backgroundColor: guessButtonColor(context), actions: [
           const BackButton(),
           Flexible(child: SearchField(textEditingController: textEditingController)),
           SearchIcon(textEditingController: textEditingController)

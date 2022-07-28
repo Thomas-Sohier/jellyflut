@@ -17,7 +17,7 @@ class LargeDetails extends StatelessWidget {
       const DetailsBackground(),
       LayoutBuilderScreen(builder: ((_, constraints, type) {
         // Constraint emitter
-        if (type.isMobile) {
+        if (type.isMobile || type.isTablet) {
           BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.mobile));
         } else {
           BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.desktop));
@@ -52,8 +52,15 @@ class LargeDetails extends StatelessWidget {
   }
 
   Widget leftDetailsPart(LayoutType type) {
-    if (!type.isDesktop && !type.isAndroidTv) return const SizedBox();
-    return const Expanded(flex: 4, child: Center(child: Padding(padding: EdgeInsets.all(16), child: Poster())));
+    return BlocBuilder<DetailsBloc, DetailsState>(builder: (_, state) {
+      switch (state.screenLayout) {
+        case ScreenLayout.desktop:
+          return const Expanded(flex: 4, child: Center(child: Padding(padding: EdgeInsets.all(16), child: Poster())));
+
+        default:
+          return const SizedBox();
+      }
+    });
   }
 
   Widget rightDetailsPart() {

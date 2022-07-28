@@ -11,14 +11,17 @@ class DrawerLargeButton extends StatelessWidget {
   final int index;
   final IconData icon;
   final String name;
+  final Color? activeColor;
+  final Color? inactiveColor;
 
-  const DrawerLargeButton({super.key, required this.index, required this.icon, required this.name});
+  const DrawerLargeButton(
+      {super.key, required this.index, required this.icon, required this.name, this.activeColor, this.inactiveColor});
 
   @override
   Widget build(BuildContext context) {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
-    final activeColor = Theme.of(context).colorScheme.primary;
-    final inactiveColor = Theme.of(context).colorScheme.onBackground;
+    final finalActiveColor = activeColor ?? Theme.of(context).colorScheme.secondary;
+    final finalInactiveColor = inactiveColor ?? Theme.of(context).colorScheme.onSecondaryContainer;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: OutlinedButtonSelector(
@@ -26,7 +29,7 @@ class DrawerLargeButton extends StatelessWidget {
             context.tabsRouter
               ..setActiveIndex(index)
               ..innerRouterOf<StackRouter>(r.HomeRouter.name)?.push(r.HomeRouter());
-            homeDrawerCubit.changeCurrentDrawerSelection(index);
+            homeDrawerCubit.changeCurrentDrawerSelection(index, name);
             context.router.root.pop();
           },
           child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
@@ -36,12 +39,12 @@ class DrawerLargeButton extends StatelessWidget {
                 return Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: isActive ? activeColor.withAlpha(50) : Colors.transparent,
+                      color: isActive ? finalActiveColor.withAlpha(50) : Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                       shape: BoxShape.rectangle),
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: buttonBody(context, activeColor, inactiveColor, isActive)),
+                      child: buttonBody(context, finalActiveColor, finalInactiveColor, isActive)),
                 );
               })),
     );
