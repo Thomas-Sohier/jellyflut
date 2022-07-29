@@ -61,7 +61,7 @@ class EpisodeItem extends StatelessWidget {
                           if (item.overview != null) _Overview(overview: item.overview!)
                         ],
                       )),
-                )
+                ),
               ],
             ),
           );

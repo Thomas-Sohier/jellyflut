@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/layout_builder_screen.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
+import 'package:jellyflut/globals.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart';
 import '../../home_cubit/home_cubit.dart';
@@ -16,7 +17,9 @@ class CustomDrawer extends StatelessWidget {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
     return FocusableActionDetector(
         enabled: false,
-        onFocusChange: (value) => homeDrawerCubit.changeViewMode(value ? LayoutType.desktop : LayoutType.tablet),
+        onFocusChange: (value) {
+          if (isAndroidTv) homeDrawerCubit.changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
+        },
         child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
           buildWhen: (previous, current) =>
               previous.drawerLayout != current.drawerLayout ||
@@ -26,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
               width: state.getDrawerWidth,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(color: guessDrawerColor(state.drawerLayout, context)),
-              duration: Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 200),
               child: Column(
                 children: [
                   const Expanded(child: _DrawerButtons()),

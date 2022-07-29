@@ -55,9 +55,9 @@ abstract class Theme {
       return themeDataInitial
         ..addOwn(
             detailsTheme: DetailsTheme(
-                primary: palette[0],
-                secondary: palette[1],
-                tertiary: palette[2],
+                primary: palette[min(0, palette.length - 1)],
+                secondary: palette[min(1, palette.length - 1)],
+                tertiary: palette[min(2, palette.length - 1)],
                 onBackground: themeDataInitial.colorScheme.onBackground,
                 onGradientBackground: onBackground));
     }
@@ -67,9 +67,9 @@ abstract class Theme {
         .copyWith(colorScheme: themeDataInitial.colorScheme.copyWith(onBackground: onBackground))
       ..addOwn(
           detailsTheme: DetailsTheme(
-        primary: palette[0],
-        secondary: palette[1],
-        tertiary: palette[2],
+        primary: palette[min(0, palette.length - 1)],
+        secondary: palette[min(1, palette.length - 1)],
+        tertiary: palette[min(2, palette.length - 1)],
         onBackground: themeDataInitial.colorScheme.onBackground,
         onGradientBackground: onBackground,
       ));

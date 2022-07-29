@@ -177,9 +177,6 @@ class HeaderButton extends StatelessWidget {
         maxHeight: 50,
         minWidth: 40,
         maxWidth: 150,
-        icon: item == context.read<SeasonCubit>().state.currentSeason
-            ? Icon(Icons.check_circle_outline, color: Colors.black)
-            : null,
       ),
     );
   }

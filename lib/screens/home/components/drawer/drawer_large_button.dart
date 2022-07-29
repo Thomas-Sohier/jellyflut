@@ -53,13 +53,15 @@ class DrawerLargeButton extends StatelessWidget {
   Widget buttonBody(BuildContext context, Color activeColor, Color inactiveColor, bool isActive) {
     return Row(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28),
         BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
             buildWhen: (previous, current) =>
-                previous.drawerType != current.drawerType || previous.drawerLayout != current.drawerLayout,
+                previous.drawerType != current.drawerType ||
+                previous.drawerLayout != current.drawerLayout ||
+                previous.fixDrawerType != current.fixDrawerType,
             builder: (_, state) {
               if (state.isCompact) return const SizedBox();
               return Expanded(
