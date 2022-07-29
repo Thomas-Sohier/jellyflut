@@ -7,7 +7,6 @@ import 'components/download_button.dart';
 import 'components/search_button.dart';
 import 'components/settings_button.dart';
 import 'home_drawer_tabs_builder.dart';
-import 'home_tabs_cubit/home_tabs_cubit.dart';
 
 class HeaderBar extends StatelessWidget {
   const HeaderBar({super.key});
@@ -21,9 +20,7 @@ class HeaderBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
-            SizedBox(width: 12),
-            _AppBarTitle(),
-            Spacer(),
+            SizedBox(width: 48),
             Expanded(child: SearchButton()),
             SizedBox(width: 6),
             SettingsButton(),
@@ -34,7 +31,7 @@ class HeaderBar extends StatelessWidget {
             SizedBox(width: 12),
           ],
         ),
-        BottomTabBar(homeTabsCubit: context.read<HomeTabsCubit>())
+        const BottomTabBar()
       ],
     ));
   }

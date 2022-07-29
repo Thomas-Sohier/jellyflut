@@ -82,14 +82,12 @@ class HomeTabsView extends StatelessWidget {
   }
 }
 
-class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
-  final HomeTabsCubit homeTabsCubit;
-  const BottomTabBar({super.key, required this.homeTabsCubit});
+class BottomTabBar extends StatelessWidget {
+  const BottomTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeTabsCubit, HomeTabsState>(
-        bloc: homeTabsCubit,
         buildWhen: (previous, current) =>
             previous.currentHomeTabController != current.currentHomeTabController || previous.status != current.status,
         builder: (_, state) {
@@ -101,16 +99,15 @@ class BottomTabBar extends StatelessWidget implements PreferredSizeWidget {
               if (state.currentHomeTabControllerTabs.isEmpty) {
                 return const SizedBox();
               }
-              return TabBar(
-                  controller: state.currentHomeTabController?.tabController,
-                  tabs: state.currentHomeTabController?.tabs ?? []);
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TabBar(
+                    controller: state.currentHomeTabController?.tabController,
+                    tabs: state.currentHomeTabController?.tabs ?? []),
+              );
             default:
               return const SizedBox();
           }
         });
   }
-
-  @override
-  Size get preferredSize =>
-      homeTabsCubit.state.currentHomeTabControllerTabs.isNotEmpty ? Size.fromHeight(50) : Size.fromHeight(0);
 }

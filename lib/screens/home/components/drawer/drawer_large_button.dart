@@ -51,21 +51,26 @@ class DrawerLargeButton extends StatelessWidget {
   }
 
   Widget buttonBody(BuildContext context, Color activeColor, Color inactiveColor, bool isActive) {
-    final homeDrawerCubit = context.read<HomeDrawerCubit>();
-    if (homeDrawerCubit.state.screenLayout.isTablet) {
-      return Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28);
-    }
     return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(icon, color: isActive ? activeColor : inactiveColor, size: 28),
-        Flexible(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Text(name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: isActive ? activeColor : inactiveColor)),
-        ))
+        BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+            buildWhen: (previous, current) =>
+                previous.drawerType != current.drawerType || previous.drawerLayout != current.drawerLayout,
+            builder: (_, state) {
+              if (state.isCompact) return const SizedBox();
+              return Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: Text(name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: isActive ? activeColor : inactiveColor)),
+              ));
+            })
       ],
     );
   }
