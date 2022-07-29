@@ -19,10 +19,14 @@ class PlayerInterface extends StatefulWidget {
 class _PlayerInterfaceState extends State<PlayerInterface> {
   @override
   Widget build(BuildContext context) {
-    final streamItem = context.read<StreamCubit>().state.streamItem;
     return Row(children: [
       const Expanded(child: _VideoBuilder()),
-      if (streamItem.item.type == ItemType.TvChannel) const ChannelPicker()
+      BlocBuilder<StreamCubit, StreamState>(
+          buildWhen: (previous, current) => previous.streamItem != current.streamItem,
+          builder: (_, state) {
+            if (state.streamItem.item.type == ItemType.TvChannel) return const ChannelPicker();
+            return const SizedBox();
+          })
     ]);
   }
 }

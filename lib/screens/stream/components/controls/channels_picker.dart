@@ -15,6 +15,7 @@ class ChannelPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChannelCubit, ChannelState>(
+        buildWhen: (previous, current) => previous.showPanel != current.showPanel,
         builder: (_, state) => AnimatedContainer(
               duration: Duration(milliseconds: 200),
               height: double.infinity,
@@ -32,7 +33,6 @@ class _ChannelsPickerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channels = context.read<ChannelCubit>().state.channels;
     return CustomScrollView(slivers: [
       const SliverPinnedHeader(child: _PinnedHeaderChannelList()),
       BlocConsumer<ChannelCubit, ChannelState>(
