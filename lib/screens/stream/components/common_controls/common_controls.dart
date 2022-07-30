@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
 import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_desktop.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_phone.dart';
@@ -70,7 +71,8 @@ class Controls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilderScreen(builder: (_, constraints, type) {
+      if (type.isAndroidTv) return const CommonControlsPhone();
       if (constraints.maxWidth > 960) {
         return const CommonControlsDesktop();
       }

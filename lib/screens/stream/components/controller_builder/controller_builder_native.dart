@@ -16,23 +16,26 @@ class Controllerbuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.read<StreamCubit>().state.controller;
-    if (controller is CommonStreamBP) {
-      return BetterPlayer(controller: controller.controller);
-    } else if (controller is CommonStreamVLC) {
-      return VlcPlayer(
-          controller: controller.controller,
-          aspectRatio: 16 / 9,
-          placeholder: Center(child: CircularProgressIndicator()));
-    } else if (controller is CommonStreamVLCComputer) {
-      return Video(
-        player: controller.controller,
-        showControls: false,
-      );
-    } else if (controller is CommonStreamVideoPlayer) {
-      return VideoPlayer(controller.controller);
-    } else {
-      throw UnsupportedPlayerException('Unknow controller');
-    }
+    return BlocBuilder<StreamCubit, StreamState>(
+        buildWhen: (previous, current) => previous.controller != current.controller,
+        builder: (_, state) {
+          if (state.controller is CommonStreamBP) {
+            return BetterPlayer(controller: state.controller?.controller);
+          } else if (state.controller is CommonStreamVLC) {
+            return VlcPlayer(
+                controller: state.controller?.controller,
+                aspectRatio: 16 / 9,
+                placeholder: Center(child: CircularProgressIndicator()));
+          } else if (state.controller is CommonStreamVLCComputer) {
+            return Video(
+              player: state.controller?.controller,
+              showControls: false,
+            );
+          } else if (state.controller is CommonStreamVideoPlayer) {
+            return VideoPlayer(state.controller?.controller);
+          } else {
+            throw UnsupportedPlayerException('Unknow controller');
+          }
+        });
   }
 }

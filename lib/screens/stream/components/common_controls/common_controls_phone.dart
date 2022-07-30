@@ -98,12 +98,12 @@ class Controls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const BackwardButton(size: 42),
-        const SizedBox(width: 12),
-        const PlayPauseButton(size: 42),
-        const SizedBox(width: 12),
-        const ForwardButton(size: 42),
+      children: const [
+        BackwardButton(size: 42),
+        SizedBox(width: 12),
+        PlayPauseButton(size: 42),
+        SizedBox(width: 12),
+        ForwardButton(size: 42),
       ],
     );
   }

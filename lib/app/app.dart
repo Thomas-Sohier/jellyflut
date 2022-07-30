@@ -107,7 +107,7 @@ class App extends StatelessWidget {
                   path: 'translations',
                   assetLoader: YamlAssetLoader(),
                   fallbackLocale: Locale('en', 'US'),
-                  child: AppView(appRouter: appRouter)),
+                  child: ShortcutsWrapper(child: AppView(appRouter: appRouter))),
             )));
   }
 }

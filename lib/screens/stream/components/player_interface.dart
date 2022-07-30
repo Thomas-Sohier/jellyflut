@@ -59,8 +59,7 @@ class _VideoBuilder extends StatelessWidget {
             default:
           }
         },
-        buildWhen: (previous, current) =>
-            previous.controller != current.controller || previous.status != current.status,
+        buildWhen: (previous, current) => previous.status != current.status,
         builder: (_, state) {
           switch (state.status) {
             case StreamStatus.initial:
@@ -80,24 +79,27 @@ class _VideoPlayerBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final status = context.read<StreamCubit>().state.status;
-    final isLoaded = status == StreamStatus.success;
-    return Stack(
-      alignment: Alignment.center,
-      clipBehavior: Clip.none,
-      fit: StackFit.expand,
-      children: [
-        if (!isLoaded) const PlaceholderScreen(),
-        Visibility(
-            visible: isLoaded,
-            maintainState: true,
-            child: Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              fit: StackFit.expand,
-              children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
-            ))
-      ],
-    );
+    return BlocBuilder<StreamCubit, StreamState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) {
+          final isLoaded = state.status == StreamStatus.success;
+          return Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            fit: StackFit.expand,
+            children: [
+              if (!isLoaded) const PlaceholderScreen(),
+              Visibility(
+                  visible: isLoaded,
+                  maintainState: true,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
+                    children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
+                  ))
+            ],
+          );
+        });
   }
 }
