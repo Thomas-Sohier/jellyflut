@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:downloads_repository/downloads_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:logging/logging.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -40,7 +42,8 @@ class _BookReaderPageState extends State<BookReaderPage> {
     item = widget.item;
     bookBloc = BookBloc();
     bookBloc.add(BookLoading());
-    final book = BookUtils.loadItemBook(widget.item);
+    final book = context.read<DownloadsRepository>().downloadItem(itemId: item.id);
+    // BookUtils.loadItemBook(widget.item);
     constructView(book).catchError((error) {
       log('cannot_open_file'.tr(args: [widget.item.name ?? '']), level: 3, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
@@ -56,7 +59,8 @@ class _BookReaderPageState extends State<BookReaderPage> {
     super.dispose();
   }
 
-  Future<void> constructView(Future<Uint8List> book) async {
+  Future<void> constructView(Future<Uint8List> bookFuture) async {
+    final book = await bookFuture;
     final fileExtension = item.getFileExtension();
     final bookExtension = BookExtensions.fromString(fileExtension);
     switch (bookExtension) {
@@ -71,7 +75,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
         break;
       case BookExtensions.EPUB:
       default:
-        final epubController = EpubArchiveController(await book, enableCache: true);
+        final epubController = EpubArchiveController(book, enableCache: true);
         final bookView = await constructEpubView(epubController);
         bookBloc.add(BookLoaded(bookView: bookView));
         RawKeyboard.instance.addListener(_onKey);

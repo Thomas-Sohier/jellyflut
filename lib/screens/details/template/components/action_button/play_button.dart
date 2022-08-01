@@ -32,6 +32,9 @@ class PlayButton extends StatelessWidget {
       case ItemType.AudioBook:
         context.read<MusicPlayerBloc>().add(PlaySongRequested(item: item));
         break;
+      case ItemType.Book:
+        context.router.push(r.EpubPage(item: item));
+        break;
       default:
         context.router.push(r.StreamPage(item: item));
     }

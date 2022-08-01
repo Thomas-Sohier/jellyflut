@@ -21,6 +21,7 @@ import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:music_player_api/music_player_api.dart';
 import 'package:music_player_repository/music_player_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:remote_downloads_api/remote_downloads_api.dart';
 import 'package:settings_repository/settings_repository.dart';
 import 'package:sqlite_database/sqlite_database.dart';
 import 'package:streaming_api/streaming_api.dart';
@@ -37,6 +38,7 @@ Future<void> bootstrap(
     required PackageInfo packageInfo,
     required AuthenticationApi authenticationApi,
     required DownloadsApi downloadsApi,
+    required RemoteDownloadsApi remoteDownloadsApi,
     required StreamingApi streamingApi,
     required ItemsApi itemsApi,
     required UsersApi usersApi,
@@ -52,7 +54,11 @@ Future<void> bootstrap(
       sharedPreferences: SharedPrefs.sharedPrefs,
       dioClient: dioClient);
   final settingsRepository = SettingsRepository(database: database, authenticationRepository: authenticationRepository);
-  final downloadsRepository = DownloadsRepository(downloadsApi: downloadsApi);
+  final downloadsRepository = DownloadsRepository(
+      downloadsApi: downloadsApi,
+      remoteDownloadsApi: remoteDownloadsApi,
+      authenticationRepository: authenticationRepository,
+      database: database);
   final itemsRepository =
       ItemsRepository(itemsApi: itemsApi, database: database, authenticationRepository: authenticationRepository);
   final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);

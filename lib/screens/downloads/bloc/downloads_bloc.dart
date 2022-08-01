@@ -23,23 +23,24 @@ class DownloadsBloc extends Bloc<DownloadsEvent, DownloadsState> {
   ) async {
     emit(state.copyWith(status: () => DownloadsStatus.loading));
 
-    await emit.forEach<List<Download>>(
-      _downloadsRepository.getDownloads(),
-      onData: (downloads) => state.copyWith(
-        status: () => DownloadsStatus.success,
-        downloads: () => downloads,
-      ),
-      onError: (_, __) => state.copyWith(
-        status: () => DownloadsStatus.failure,
-      ),
-    );
+    // TODO later
+    // await emit.forEach<List<Download>>(
+    //   _downloadsRepository.getDownloads(),
+    //   onData: (downloads) => state.copyWith(
+    //     status: () => DownloadsStatus.success,
+    //     downloads: () => downloads,
+    //   ),
+    //   onError: (_, __) => state.copyWith(
+    //     status: () => DownloadsStatus.failure,
+    //   ),
+    // );
   }
 
   Future<void> _onDownloadDeleted(
     DownloadsDeleted event,
     Emitter<DownloadsState> emit,
   ) async {
-    emit(state.copyWith(lastDeletedDownload: () => event.download));
-    await _downloadsRepository.deleteDownload(event.download.id);
+    // emit(state.copyWith(lastDeletedDownload: () => event.download));
+    // await _downloadsRepository.deleteDownload(event.download.id);
   }
 }

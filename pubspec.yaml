@@ -14,11 +14,11 @@ module:
 dependencies:
   animated_fractionally_sized_box: ^2.0.1
   animations: ^2.0.3
-  archive: ^3.3.0
+  archive: ^3.3.1
   audio_video_progress_bar: ^0.10.0
   authentication_repository:
     path: packages/authentication_repository
-  auto_route: ^4.0.1
+  auto_route: ^4.2.1
   better_player: ^0.0.83
   blurhash_dart: ^1.1.0
   cached_network_image: ^3.2.1
@@ -31,25 +31,29 @@ dependencies:
       ref: e661980
   database_downloads_api:
     path: packages/database_downloads_api
-  device_info_plus: ^4.0.0
+  device_info_plus: ^4.0.1
   dio: ^4.0.6
   downloads_api:
     path: packages/downloads_api
+  remote_downloads_api:
+    path: packages/remote_downloads_api
+  jellyfin_downloads_api:
+    path: packages/jellyfin_downloads_api
   downloads_repository:
     path: packages/downloads_repository
-  drift: ^1.7.0
+  drift: ^1.7.1
   drop_shadow: ^0.0.1+4
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.0
   equatable: ^2.0.3
-  file_picker: ^4.6.1
+  file_picker: ^5.0.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_colorpicker: ^1.0.3
-  flutter_native_splash: ^2.2.3+1
+  flutter_native_splash: ^2.2.6
   flutter_settings_ui: ^2.0.1
-  flutter_svg: ^1.1.0
+  flutter_svg: ^1.1.1+1
   flutter_vlc_player: ^7.1.5
   fluttertoast: ^8.0.9
   hydrated_bloc: ^8.1.0
@@ -62,9 +66,9 @@ dependencies:
     path: packages/jellyfin_authentication_api
   jellyflut_models:
     path: packages/jellyflut_models
-  json_serializable: ^6.2.0
-  just_audio: ^0.9.25
-  just_audio_libwinmedia: ^0.0.4
+  json_serializable: ^6.3.1
+  just_audio: ^0.9.28
+  just_audio_libwinmedia: ^0.0.4+1
   live_tv_api:
     path: packages/live_tv_api
   live_tv_repository:
@@ -74,7 +78,7 @@ dependencies:
   music_player_repository:
     path: packages/music_player_repository
   octo_image: ^1.0.2
-  package_info_plus: ^1.4.2
+  package_info_plus: ^1.4.3
   palette_generator: ^0.3.3+1
   path: ^1.8.1
   path_provider: ^2.0.11
@@ -83,7 +87,7 @@ dependencies:
   provider: ^6.0.3
   reactive_forms: ^13.0.0
   responsive_builder: ^0.4.2
-  rxdart: ^0.27.4
+  rxdart: ^0.27.5
   settings_repository:
     path: packages/settings_repository
   shared_preferences: ^2.0.15
@@ -93,7 +97,7 @@ dependencies:
       url: https://github.com/getBoolean/shu_epub.git
       ref: main
   sliver_tools: ^0.2.7
-  sqlite3_flutter_libs: ^0.5.7
+  sqlite3_flutter_libs: ^0.5.9
   sqlite_database:
     path: packages/sqlite_database
   streaming_api:
@@ -102,20 +106,24 @@ dependencies:
     path: packages/streaming_repository
   subtitle: ^0.1.0-beta.3
   universal_io: ^2.0.4
-  url_launcher: ^6.1.4
+  url_launcher: ^6.1.5
   users_api:
     path: packages/users_api
   users_repository:
     path: packages/users_repository
   uuid: ^3.0.6
   video_player: ^2.4.5
-  wakelock: ^0.6.1+2
+  wakelock: ^0.6.2
   window_manager: ^0.2.5
-  youtube_explode_dart: ^1.11.0
+  youtube_explode_dart: ^1.12.0
 
 dependency_overrides:
   analyzer: ^4.0.0
+  ffi: ^2.0.1
   xml: ^5.3.1
+  permission_handler: ^10.0.0
+  bloc: ^8.0.2
+  flutter_bloc: ^8.0.1
   universal_html:
     git:
       url: https://github.com/juancastillo0/universal_html.git

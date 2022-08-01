@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:items_api/items_api.dart';
 import 'package:jellyfin_authentication_api/jellyfin_authentication_api.dart';
+import 'package:jellyfin_downloads_api/jellyfin_downloads_api.dart';
 import 'package:jellyflut/bootstrap.dart';
 import 'package:jellyflut/globals.dart';
 import 'package:jellyflut/services/dio/dio_helper.dart';
@@ -33,6 +34,7 @@ void main() async {
   final database = AppDatabase().getDatabase;
   final authenticationApi = JellyfinAuthenticationApi(dioClient: dioClient);
   final databaseDownloadsApi = DatabaseDownloadsApi(database: database);
+  final jellyfinDownloadsApi = JellyfinDownloadsApi(dioClient: dioClient);
   final streamingApi = StreamingApi(dioClient: dioClient);
   final itemsApi = ItemsApi(dioClient: dioClient);
   final usersApi = UsersApi(dioClient: dioClient);
@@ -45,6 +47,7 @@ void main() async {
       dioClient: dioClient,
       packageInfo: packageInfo,
       downloadsApi: databaseDownloadsApi,
+      remoteDownloadsApi: jellyfinDownloadsApi,
       authenticationApi: authenticationApi,
       itemsApi: itemsApi,
       usersApi: usersApi,

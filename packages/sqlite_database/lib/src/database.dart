@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/src/migrations/from_3_to_4.dart';
+import 'package:sqlite_database/src/models/download_dto.dart';
 import 'migrations/from_2_to_3.dart';
 import 'models/models.dart';
 import 'tables/download.dart';
@@ -148,13 +149,24 @@ class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
       (select(downloads)..where((tbl) => tbl.id.equals(downloadId))).getSingle();
   Stream<Download> watchDownloadById(String downloadId) =>
       (select(downloads)..where((tbl) => tbl.id.equals(downloadId))).watchSingle();
-  Future<int> createDownload(DownloadsCompanion download) =>
-      into(downloads).insert(download, mode: InsertMode.insertOrReplace);
-  Future<bool> updateDownload(DownloadsCompanion download) => update(downloads).replace(download);
+  Future<int> createDownload(DownloadDto downloadDto) {
+    assert(downloadDto.path != null && downloadDto.path!.isNotEmpty, 'Download path needs to be set');
+    final dc = DownloadsCompanion(
+      backdrop: Value(downloadDto.backdrop),
+      item: Value(downloadDto.item),
+      path: Value(downloadDto.path!),
+      primary: Value(downloadDto.primary),
+      name: Value(downloadDto.name),
+    );
+    return into(downloads).insert(dc, mode: InsertMode.insertOrReplace);
+  }
+
+  Future<bool> updateDownload(Insertable<Download> download) => update(downloads).replace(download);
   Future<bool> doesExist(String downloadId) async {
     final x = await (select(downloads)..where((tbl) => tbl.id.equals(downloadId))).getSingleOrNull();
     return x != null;
   }
 
+  Future<int> deleteDownloadFromId(String id) => (delete(downloads)..where((tbl) => tbl.id.equals(id))).go();
   Future<int> deleteDownload(DownloadsCompanion download) => delete(downloads).delete(download);
 }
