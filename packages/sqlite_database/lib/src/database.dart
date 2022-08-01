@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sqlite_database/src/migrations/from_3_to_4.dart';
-import 'package:sqlite_database/src/models/download_dto.dart';
 import 'migrations/from_2_to_3.dart';
 import 'models/models.dart';
 import 'tables/download.dart';
@@ -152,6 +151,7 @@ class DownloadsDao extends DatabaseAccessor<Database> with _$DownloadsDaoMixin {
   Future<int> createDownload(DownloadDto downloadDto) {
     assert(downloadDto.path != null && downloadDto.path!.isNotEmpty, 'Download path needs to be set');
     final dc = DownloadsCompanion(
+      id: Value(downloadDto.id),
       backdrop: Value(downloadDto.backdrop),
       item: Value(downloadDto.item),
       path: Value(downloadDto.path!),

@@ -48,17 +48,32 @@ class DownloadsRepository {
   // /// thrown.
   // Future<void> deleteDownload(String id) => _downloadsApi.deleteDownload(id);
 
-  /// Download an item from it's ID and save it to filesystem
-  Future<Uint8List> downloadItem({
-    required String itemId,
-    BehaviorSubject<int>? stateOfDownload,
-    CancelToken? cancelToken,
-  }) =>
-      _remoteDownloadsApi.downloadItem(
-          serverUrl: _authenticationRepository.currentServer.url,
-          itemId: itemId,
-          stateOfDownload: stateOfDownload,
-          cancelToken: cancelToken);
+  /// Download an item from it's Id
+  /// If item is already downloaded then return the one from filesystem instead
+  ///
+  /// - [forceRemoteFetch] parameter allow to bypass filesystem check to directly
+  /// download from API
+  Future<Uint8List> downloadItem(
+      {required String itemId,
+      BehaviorSubject<int>? stateOfDownload,
+      CancelToken? cancelToken,
+      bool forceRemoteFetch = false}) async {
+    if (!forceRemoteFetch) {
+      // Id item is already downloaded then return it instead
+      final isDownloaded = await _isItemDownloaded(itemId);
+      if (isDownloaded) {
+        final file = await _getItemFromStorage(itemId: itemId);
+        final isPresent = await file.exists();
+        if (isPresent) return file.readAsBytes();
+      }
+    }
+
+    return _remoteDownloadsApi.downloadItem(
+        serverUrl: _authenticationRepository.currentServer.url,
+        itemId: itemId,
+        stateOfDownload: stateOfDownload,
+        cancelToken: cancelToken);
+  }
 
   /// Return the rowId of the download inserted
   /// If [downloadName] is null then use item name as download name. No real use case
@@ -67,7 +82,7 @@ class DownloadsRepository {
     final hasAccess = await _requestStorage();
     if (!hasAccess) throw NotAllowedToSaveToFileSystem();
 
-    await _saveInStorage(bytes: bytes, itemId: item.id);
+    final file = await _saveInStorage(bytes: bytes, itemId: item.id);
 
     // const primaryUrl = '';
     // const backdropUrl = '';
@@ -76,7 +91,8 @@ class DownloadsRepository {
     // final backdropImage = await Dio().get<String>(backdropUrl);
     // final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
     final newDownload = DownloadDto.toInsert(
-      path: await getUserStoragePath(),
+      id: item.id,
+      path: file.path,
       name: downloadName,
       item: item,
       primary: null,
@@ -87,9 +103,23 @@ class DownloadsRepository {
 
   /// Save file to storage
   Future<File> _saveInStorage({required Uint8List bytes, required String itemId}) async {
+    // If file is already downloaded and present at the specified path then return it
+    final isDownloaded = await _isItemDownloaded(itemId);
+    if (isDownloaded) {
+      final file = await _getItemFromStorage(itemId: itemId);
+      final isPresent = await file.exists();
+      if (isPresent) return file;
+    }
+
     final storagePath = await _getStoragePathItem(itemId);
     final file = await File(storagePath).create(recursive: true);
     return file.writeAsBytes(bytes);
+  }
+
+  /// Save file to storage
+  Future<File> _getItemFromStorage({required String itemId}) async {
+    final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
+    return File(downloadDatabase.path);
   }
 
   /// Return user's download path
@@ -118,7 +148,7 @@ class DownloadsRepository {
   }
 
   /// Check if given item id is already downloaded
-  Future<bool> isItemDownloaded(String id) async {
+  Future<bool> _isItemDownloaded(String id) async {
     return _database.downloadsDao.doesExist(id);
   }
 

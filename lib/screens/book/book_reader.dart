@@ -61,6 +61,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
 
   Future<void> constructView(Future<Uint8List> bookFuture) async {
     final book = await bookFuture;
+    await context.read<DownloadsRepository>().saveFile(bytes: book, item: item);
     final fileExtension = item.getFileExtension();
     final bookExtension = BookExtensions.fromString(fileExtension);
     switch (bookExtension) {

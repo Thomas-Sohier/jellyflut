@@ -9,7 +9,7 @@ class JsonConverter extends TypeConverter<Item, String> {
   Item? mapToDart(String? fromDb) => fromDb == null ? null : Item.fromJson(json.decode(fromDb));
 
   @override
-  String? mapToSql(Item? value) => value?.toJson().toString();
+  String? mapToSql(Item? value) => json.encode(value?.toJson());
 }
 
 class Downloads extends Table {
