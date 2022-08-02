@@ -14,6 +14,7 @@ abstract class SnackbarUtil {
       {required String messageTitle,
       String? messageDetails,
       IconData? icon,
+      Duration duration = const Duration(seconds: 7),
       Color? color,
       required BuildContext context}) {
     ScaffoldMessenger.of(context)
@@ -25,6 +26,7 @@ abstract class SnackbarUtil {
         SnackBar(
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.transparent,
+            duration: duration,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
             width: 600,
             content: Theme(

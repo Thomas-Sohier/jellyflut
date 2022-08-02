@@ -60,9 +60,9 @@ class DownloadsRepository {
       bool forceRemoteFetch = false}) async {
     if (!forceRemoteFetch) {
       // Id item is already downloaded then return it instead
-      final isDownloaded = await _isItemDownloaded(itemId);
+      final isDownloaded = await isItemDownloaded(itemId);
       if (isDownloaded) {
-        final file = await _getItemFromStorage(itemId: itemId);
+        final file = await getItemFromStorage(itemId: itemId);
         final isPresent = await file.exists();
         if (isPresent) return file.readAsBytes();
       }
@@ -78,7 +78,7 @@ class DownloadsRepository {
   /// Return the rowId of the download inserted
   /// If [downloadName] is null then use item name as download name. No real use case
   /// right now, but can help identify row.
-  Future<int> saveFile({required Uint8List bytes, String? downloadName, required Item item}) async {
+  Future<File> saveFile({required Uint8List bytes, String? downloadName, required Item item}) async {
     final hasAccess = await _requestStorage();
     if (!hasAccess) throw NotAllowedToSaveToFileSystem();
 
@@ -98,15 +98,16 @@ class DownloadsRepository {
       primary: null,
       backdrop: null,
     );
-    return _database.downloadsDao.createDownload(newDownload);
+    await _database.downloadsDao.createDownload(newDownload);
+    return file;
   }
 
   /// Save file to storage
   Future<File> _saveInStorage({required Uint8List bytes, required String itemId}) async {
     // If file is already downloaded and present at the specified path then return it
-    final isDownloaded = await _isItemDownloaded(itemId);
+    final isDownloaded = await isItemDownloaded(itemId);
     if (isDownloaded) {
-      final file = await _getItemFromStorage(itemId: itemId);
+      final file = await getItemFromStorage(itemId: itemId);
       final isPresent = await file.exists();
       if (isPresent) return file;
     }
@@ -116,8 +117,8 @@ class DownloadsRepository {
     return file.writeAsBytes(bytes);
   }
 
-  /// Save file to storage
-  Future<File> _getItemFromStorage({required String itemId}) async {
+  /// Get file from storage
+  Future<File> getItemFromStorage({required String itemId}) async {
     final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
     return File(downloadDatabase.path);
   }
@@ -148,7 +149,7 @@ class DownloadsRepository {
   }
 
   /// Check if given item id is already downloaded
-  Future<bool> _isItemDownloaded(String id) async {
+  Future<bool> isItemDownloaded(String id) async {
     return _database.downloadsDao.doesExist(id);
   }
 

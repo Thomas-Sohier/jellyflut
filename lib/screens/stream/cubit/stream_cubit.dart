@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:streaming_api/streaming_api.dart';
 import 'package:streaming_repository/streaming_repository.dart';
@@ -14,20 +14,20 @@ part 'stream_state.dart';
 
 class StreamCubit extends Cubit<StreamState> {
   StreamCubit(
-      {required ItemsRepository itemsRepository,
-      required StreamingRepository streamingRepository,
+      {required StreamingRepository streamingRepository,
+      required DownloadsRepository downloadsRepository,
       Item? item,
       String? url})
       : assert(item != null || url != null, 'At least one param must be given'),
-        _itemsRepository = itemsRepository,
         _streamingRepository = streamingRepository,
+        _downloadsRepository = downloadsRepository,
         super(StreamState(
           parentItem: item,
           url: url,
           controlsVisibilityTimer: Timer(Duration.zero, () {}),
         ));
 
-  final ItemsRepository _itemsRepository;
+  final DownloadsRepository _downloadsRepository;
   final StreamingRepository _streamingRepository;
   final Duration _fastForwardStep = const Duration(seconds: 10);
 
@@ -37,12 +37,9 @@ class StreamCubit extends Cubit<StreamState> {
     late final StreamItem streamItem;
     try {
       if (state.parentItem != null) {
-        streamItem = await _streamingRepository.getStreamItem(item: state.parentItem!);
-        commonStream = await _streamingRepository.createController(
-          uri: Uri.parse(streamItem.url),
-          startAtPosition:
-              Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
-        );
+        final streamController = await _generateController(item: state.parentItem);
+        commonStream = streamController.controller;
+        streamItem = streamController.streamItem;
       } else if (state.url != null) {
         commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
         streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
@@ -157,10 +154,11 @@ class StreamCubit extends Cubit<StreamState> {
     }
 
     try {
-      final streamItem = await _streamingRepository.getStreamItem(item: item, streamParameters: streamParameters);
-      final controller = await _streamingRepository.createController(uri: Uri.parse(streamItem.url));
-
-      emit(state.copyWith(controller: controller, streamItem: streamItem, status: StreamStatus.success));
+      final streamController = await _generateController(item: item);
+      emit(state.copyWith(
+          controller: streamController.controller,
+          streamItem: streamController.streamItem,
+          status: StreamStatus.success));
     } on StreamingException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } on DioError catch (e, _) {
@@ -239,6 +237,29 @@ class StreamCubit extends Cubit<StreamState> {
     return subtitles;
   }
 
+  Future<_StreamController> _generateController({Item? item}) async {
+    final finalItem = item ?? state.parentItem;
+    assert(finalItem != null);
+
+    final streamItem = await _streamingRepository.getStreamItem(item: finalItem!);
+    final isDownloaded = await _downloadsRepository.isItemDownloaded(streamItem.item.id);
+    late final CommonStream<dynamic> controller;
+    if (isDownloaded) {
+      final file = await _downloadsRepository.getItemFromStorage(itemId: finalItem.id);
+      controller = await _streamingRepository.createController(
+        uri: Uri.parse(file.absolute.path),
+        startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
+      );
+    } else {
+      controller = await _streamingRepository.createController(
+        uri: Uri.parse(streamItem.url),
+        startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
+      );
+    }
+
+    return _StreamController(controller: controller, streamItem: streamItem);
+  }
+
   /// Set current subtitle index to use
   void setSubtitleStreamIndex(Subtitle subtitleTrack) {
     if (subtitleTrack.mediaType == MediaType.local) {
@@ -246,4 +267,11 @@ class StreamCubit extends Cubit<StreamState> {
       emit(state.copyWith(selectedSubtitleTrack: subtitleTrack));
     }
   }
+}
+
+class _StreamController {
+  final CommonStream<dynamic> controller;
+  final StreamItem streamItem;
+
+  const _StreamController({required this.controller, required this.streamItem});
 }

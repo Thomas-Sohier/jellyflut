@@ -1,62 +1,69 @@
 part of '../action_button.dart';
 
-class DownloadButton extends StatefulWidget {
+class DownloadButton extends StatelessWidget {
   final double maxWidth;
+  final buttonEnable = ValueNotifier(true);
 
-  const DownloadButton({super.key, this.maxWidth = 150});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _DownloadButtonState();
-  }
-}
-
-class _DownloadButtonState extends State<DownloadButton> {
-  bool buttonEnabled = true;
-
-  @override
-  void initState() {
-    final state = context.read<DetailsBloc>().state;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  DownloadButton({super.key, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {
     // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
-    final state = context.read<DetailsBloc>().state;
-    return PaletteButton('download'.tr(),
-        minWidth: 40,
-        maxWidth: widget.maxWidth,
-        borderRadius: 4,
-        enabled: buttonEnabled,
-        trailing: trailing(),
-        onPressed: () => SnackbarUtil.message(
-            messageTitle: 'Downloads are being reworked', icon: Icons.construction, context: context));
+    final item = context.read<DetailsBloc>().state.item;
+    return ValueListenableBuilder<bool>(
+        valueListenable: buttonEnable,
+        builder: (_, value, __) => PaletteButton(
+              'download'.tr(),
+              minWidth: 40,
+              maxWidth: maxWidth,
+              borderRadius: 4,
+              enabled: value,
+              trailing: trailing(context),
+              onPressed: () => downloadItem(context, item),
+            ));
   }
 
-  Widget trailing() {
-    return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
+  Future<void> downloadItem(BuildContext context, Item item) async {
+    buttonEnable.value = false;
+    try {
+      final fileBytes = await context.read<DownloadsRepository>().downloadItem(itemId: item.id);
+      final file = await context.read<DownloadsRepository>().saveFile(bytes: fileBytes, item: item);
+      SnackbarUtil.message(
+          messageTitle: 'File "${item.name}" has been successfully downloaded',
+          messageDetails: 'Path : ${file.path}',
+          icon: Icons.download_done,
+          context: context);
+    } catch (e) {
+      SnackbarUtil.message(
+          messageTitle: 'Error while downloading file : "${item.name}"',
+          messageDetails: e.toString(),
+          icon: Icons.file_download_off,
+          context: context);
+    }
+    buttonEnable.value = true;
   }
 
-  Widget trailingBuilder(bool isDownloaded) {
-    return const SizedBox();
-    // if (isDownloaded) {
-    //   return Padding(
-    //       padding: const EdgeInsets.only(left: 4),
-    //       child: DownloadAnimation(
-    //           percentDownload: percentDownload, child: Icon(Icons.download_done, color: Colors.green.shade900)));
-    // }
-    // return Padding(
-    //     padding: const EdgeInsets.only(left: 4),
-    //     child: DownloadAnimation(percentDownload: percentDownload, child: Icon(Icons.download, color: Colors.black87)));
+  Widget trailing(BuildContext context) {
+    return Padding(padding: const EdgeInsets.only(left: 4), child: trailingBuilder(context));
   }
 
-  Future<bool?> dialogRedownload() async {
+  Widget trailingBuilder(BuildContext context) {
+    final item = context.read<DetailsBloc>().state.item;
+    final isDownloadedFuture = context.read<DownloadsRepository>().isItemDownloaded(item.id);
+    return FutureBuilder<bool>(
+      future: isDownloadedFuture,
+      initialData: false,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData && snapshot.data) {
+          return Padding(
+              padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download_done, color: Colors.green.shade900));
+        }
+        return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
+      },
+    );
+  }
+
+  Future<bool?> dialogRedownload(BuildContext context) async {
     final state = context.read<DetailsBloc>().state;
     return showDialog<bool?>(
         context: context,
