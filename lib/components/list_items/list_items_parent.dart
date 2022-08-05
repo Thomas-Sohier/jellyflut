@@ -156,23 +156,26 @@ class _ListItemsViewState extends State<ListItemsView> {
   }
 
   Widget buildList() {
-    return BlocBuilder<CollectionBloc, SeasonState>(builder: (_, state) {
-      switch (state.collectionStatus) {
-        case SeasonStatus.initial:
-        case SeasonStatus.loading:
-          return const ListItemsSkeleton();
-        case SeasonStatus.loadingMore:
-        case SeasonStatus.success:
-          if (state.items.isNotEmpty) {
-            return const CollectionListView();
+    return BlocBuilder<CollectionBloc, SeasonState>(
+        buildWhen: (previous, current) =>
+            previous.collectionStatus != current.collectionStatus || previous.items != current.items,
+        builder: (_, state) {
+          switch (state.collectionStatus) {
+            case SeasonStatus.initial:
+            case SeasonStatus.loading:
+              return const ListItemsSkeleton();
+            case SeasonStatus.loadingMore:
+            case SeasonStatus.success:
+              if (state.items.isNotEmpty) {
+                return const CollectionListView();
+              }
+              return const EmptyCollectionView();
+            case SeasonStatus.failure:
+              return Center(child: Text('error'.tr()));
+            default:
+              return const SizedBox();
           }
-          return const EmptyCollectionView();
-        case SeasonStatus.failure:
-          return Center(child: Text('error'.tr()));
-        default:
-          return const SizedBox();
-      }
-    });
+        });
   }
 }
 

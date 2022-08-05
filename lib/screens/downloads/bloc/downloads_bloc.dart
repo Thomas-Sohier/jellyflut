@@ -11,7 +11,10 @@ class DownloadsBloc extends Bloc<DownloadsEvent, DownloadsState> {
     required DownloadsRepository downloadsRepository,
   })  : _downloadsRepository = downloadsRepository,
         super(const DownloadsState()) {
+    final streamListner = _downloadsRepository.getDownloads().listen((downloads) {});
+    streamListner.onData((downloads) => add(_AddDownloads(downloads)));
     on<DownloadsSubscriptionRequested>(_onSubscriptionRequested);
+    on<_AddDownloads>(_addDownloads);
     on<DownloadsDeleted>(_onDownloadDeleted);
   }
 
@@ -21,19 +24,14 @@ class DownloadsBloc extends Bloc<DownloadsEvent, DownloadsState> {
     DownloadsSubscriptionRequested event,
     Emitter<DownloadsState> emit,
   ) async {
-    emit(state.copyWith(status: () => DownloadsStatus.loading));
+    emit(state.copyWith(status: () => DownloadsStatus.success));
+  }
 
-    // TODO later
-    // await emit.forEach<List<Download>>(
-    //   _downloadsRepository.getDownloads(),
-    //   onData: (downloads) => state.copyWith(
-    //     status: () => DownloadsStatus.success,
-    //     downloads: () => downloads,
-    //   ),
-    //   onError: (_, __) => state.copyWith(
-    //     status: () => DownloadsStatus.failure,
-    //   ),
-    // );
+  void _addDownloads(
+    _AddDownloads event,
+    Emitter<DownloadsState> emit,
+  ) {
+    emit(state.copyWith(downloads: event.downloads));
   }
 
   Future<void> _onDownloadDeleted(

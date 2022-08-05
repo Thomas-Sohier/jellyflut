@@ -19,3 +19,12 @@ class DownloadsDeleted extends DownloadsEvent {
   @override
   List<Object> get props => [download];
 }
+
+class _AddDownloads extends DownloadsEvent {
+  const _AddDownloads(this.downloads);
+
+  final List<Download> downloads;
+
+  @override
+  List<Object> get props => [downloads];
+}

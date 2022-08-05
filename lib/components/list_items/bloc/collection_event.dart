@@ -14,6 +14,12 @@ class AddItem extends CollectionEvent {
   const AddItem({required this.items});
 }
 
+class ReplaceItem extends CollectionEvent {
+  final List<Item> items;
+
+  const ReplaceItem({required this.items});
+}
+
 class ClearItemsRequested extends CollectionEvent {
   const ClearItemsRequested();
 }

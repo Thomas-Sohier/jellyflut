@@ -3,16 +3,19 @@ import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
-import 'package:downloads_api/downloads_api.dart' hide Download;
+import 'package:downloads_api/downloads_api.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:path_provider/path_provider.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:remote_downloads_api/remote_downloads_api.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:sqlite_database/sqlite_database.dart';
+import 'package:sqlite_database/sqlite_database.dart' as database;
 
 /// Error thrown when a [Download] with a given id is not found.
 class NotAllowedToSaveToFileSystem implements Exception {}
+
+/// Error thrown when a [Download] file path does not exist.
+class FileDoesNotExist implements Exception {}
 
 /// {@template downloads_repository}
 /// A repository that handles download related requests.
@@ -23,7 +26,7 @@ class DownloadsRepository {
       {required DownloadsApi downloadsApi,
       required RemoteDownloadsApi remoteDownloadsApi,
       required AuthenticationRepository authenticationRepository,
-      required Database database})
+      required database.Database database})
       : _downloadsApi = downloadsApi,
         _remoteDownloadsApi = remoteDownloadsApi,
         _authenticationRepository = authenticationRepository,
@@ -32,21 +35,34 @@ class DownloadsRepository {
   final DownloadsApi _downloadsApi;
   final RemoteDownloadsApi _remoteDownloadsApi;
   final AuthenticationRepository _authenticationRepository;
-  final Database _database;
+  final database.Database _database;
 
   // /// Provides a [Stream] of all downloads.
-  // Stream<List<Download>> getDownloads() => _downloadsApi.getDownloads();
+  Stream<List<Download>> getDownloads() {
+    final BehaviorSubject<List<Download>> downloadsStream = BehaviorSubject.seeded(const []);
+    final streamListener = _database.downloadsDao.watchAllDownloads.listen((event) {});
+    streamListener.onData((dbDownloads) {
+      final downloads = dbDownloads.map(_parseDatabaseDownloads).toList();
+      downloadsStream.add(downloads);
+    });
+    return downloadsStream.shareValue();
+  }
 
-  // /// Saves a [download].
-  // ///
-  // /// If a [download] with the same id already exists, it will be replaced.
-  // Future<void> saveDownload(Download download) => _downloadsApi.saveDownload(download);
+  Download _parseDatabaseDownloads(database.Download download) {
+    return Download(
+        id: download.id,
+        item: download.item ?? Item.empty,
+        path: download.path,
+        name: download.name,
+        primary: download.primary,
+        backdrop: download.backdrop);
+  }
 
   // /// Deletes the download with the given id.
   // ///
   // /// If no download with the given id exists, a [DownloadNotFoundException] error is
   // /// thrown.
-  // Future<void> deleteDownload(String id) => _downloadsApi.deleteDownload(id);
+  Future<void> deleteDownload(String id) => _database.downloadsDao.deleteDownloadFromId(id);
 
   /// Download an item from it's Id
   /// If item is already downloaded then return the one from filesystem instead
@@ -62,7 +78,7 @@ class DownloadsRepository {
       // Id item is already downloaded then return it instead
       final isDownloaded = await isItemDownloaded(itemId);
       if (isDownloaded) {
-        final file = await getItemFromStorage(itemId: itemId);
+        final file = await getFileFromStorage(itemId: itemId);
         final isPresent = await file.exists();
         if (isPresent) return file.readAsBytes();
       }
@@ -90,7 +106,7 @@ class DownloadsRepository {
     // final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));
     // final backdropImage = await Dio().get<String>(backdropUrl);
     // final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
-    final newDownload = DownloadDto.toInsert(
+    final newDownload = database.DownloadDto.toInsert(
       id: item.id,
       path: file.path,
       name: downloadName,
@@ -107,9 +123,7 @@ class DownloadsRepository {
     // If file is already downloaded and present at the specified path then return it
     final isDownloaded = await isItemDownloaded(itemId);
     if (isDownloaded) {
-      final file = await getItemFromStorage(itemId: itemId);
-      final isPresent = await file.exists();
-      if (isPresent) return file;
+      return getFileFromStorage(itemId: itemId);
     }
 
     final storagePath = await _getStoragePathItem(itemId);
@@ -118,9 +132,43 @@ class DownloadsRepository {
   }
 
   /// Get file from storage
-  Future<File> getItemFromStorage({required String itemId}) async {
-    final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
-    return File(downloadDatabase.path);
+  ///
+  /// Check if file exist. If it does nt then throw [FileDoesNotExist] and delete
+  /// download entry
+  Future<File> getFileFromStorage({required String itemId}) async {
+    try {
+      final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
+      final file = File(downloadDatabase.path);
+      if (await file.exists()) {
+        return file;
+      } else {
+        _database.downloadsDao.deleteDownloadFromId(itemId);
+        throw FileDoesNotExist();
+      }
+    } on StateError {
+      throw FileDoesNotExist();
+    }
+  }
+
+  /// Get file from storage
+  ///
+  /// Check if file exist. If it doesn'then delete download entry and return
+  /// an empy Item
+  ///
+  /// Don't throw any error and return Item.empty if no item found
+  Future<Item> getItemFromStorage({required String itemId}) async {
+    try {
+      final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
+      final file = File(downloadDatabase.path);
+      if (await file.exists()) {
+        return downloadDatabase.item ?? Item.empty;
+      } else {
+        _database.downloadsDao.deleteDownloadFromId(itemId);
+        return Item.empty;
+      }
+    } on StateError {
+      return Item.empty;
+    }
   }
 
   /// Return user's download path

@@ -35,6 +35,7 @@ class StreamCubit extends Cubit<StreamState> {
     emit(state.copyWith(status: StreamStatus.initial));
     late final CommonStream commonStream;
     late final StreamItem streamItem;
+
     try {
       if (state.parentItem != null) {
         final streamController = await _generateController(item: state.parentItem);
@@ -237,25 +238,17 @@ class StreamCubit extends Cubit<StreamState> {
     return subtitles;
   }
 
+  /// Given an [item] generate the appropriate controller
+  /// - 1st check if is downloaded and availbale
   Future<_StreamController> _generateController({Item? item}) async {
     final finalItem = item ?? state.parentItem;
     assert(finalItem != null);
 
     final streamItem = await _streamingRepository.getStreamItem(item: finalItem!);
-    final isDownloaded = await _downloadsRepository.isItemDownloaded(streamItem.item.id);
-    late final CommonStream<dynamic> controller;
-    if (isDownloaded) {
-      final file = await _downloadsRepository.getItemFromStorage(itemId: finalItem.id);
-      controller = await _streamingRepository.createController(
-        uri: Uri.parse(file.absolute.path),
-        startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
-      );
-    } else {
-      controller = await _streamingRepository.createController(
-        uri: Uri.parse(streamItem.url),
-        startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
-      );
-    }
+    final controller = await _streamingRepository.createController(
+      uri: Uri.parse(streamItem.url),
+      startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
+    );
 
     return _StreamController(controller: controller, streamItem: streamItem);
   }

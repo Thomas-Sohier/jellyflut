@@ -10,57 +10,35 @@ class DownloadButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
     final item = context.read<DetailsBloc>().state.item;
-    return ValueListenableBuilder<bool>(
-        valueListenable: buttonEnable,
-        builder: (_, value, __) => PaletteButton(
+    return BlocBuilder<DetailsDownloadCubit, DetailsDownloadState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) => PaletteButton(
               'download'.tr(),
               minWidth: 40,
               maxWidth: maxWidth,
               borderRadius: 4,
-              enabled: value,
-              trailing: trailing(context),
+              enabled: !state.status.isDownloading,
+              trailing: const _DownloadTrailingState(),
               onPressed: () => downloadItem(context, item),
             ));
   }
 
   Future<void> downloadItem(BuildContext context, Item item) async {
-    buttonEnable.value = false;
+    final navigatorKey = context.router.navigatorKey;
     try {
-      final fileBytes = await context.read<DownloadsRepository>().downloadItem(itemId: item.id);
-      final file = await context.read<DownloadsRepository>().saveFile(bytes: fileBytes, item: item);
+      final file = await context.read<DetailsDownloadCubit>().downloadItem();
       SnackbarUtil.message(
-          messageTitle: 'File "${item.name}" has been successfully downloaded',
+          messageTitle: 'File "${item.name}" successfully downloaded',
           messageDetails: 'Path : ${file.path}',
           icon: Icons.download_done,
-          context: context);
+          context: navigatorKey.currentContext ?? context);
     } catch (e) {
       SnackbarUtil.message(
           messageTitle: 'Error while downloading file : "${item.name}"',
           messageDetails: e.toString(),
           icon: Icons.file_download_off,
-          context: context);
+          context: navigatorKey.currentContext ?? context);
     }
-    buttonEnable.value = true;
-  }
-
-  Widget trailing(BuildContext context) {
-    return Padding(padding: const EdgeInsets.only(left: 4), child: trailingBuilder(context));
-  }
-
-  Widget trailingBuilder(BuildContext context) {
-    final item = context.read<DetailsBloc>().state.item;
-    final isDownloadedFuture = context.read<DownloadsRepository>().isItemDownloaded(item.id);
-    return FutureBuilder<bool>(
-      future: isDownloadedFuture,
-      initialData: false,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData && snapshot.data) {
-          return Padding(
-              padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download_done, color: Colors.green.shade900));
-        }
-        return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
-      },
-    );
   }
 
   Future<bool?> dialogRedownload(BuildContext context) async {
@@ -106,5 +84,75 @@ class DownloadButton extends StatelessWidget {
             ],
           );
         });
+  }
+}
+
+class _DownloadTrailingState extends StatelessWidget {
+  const _DownloadTrailingState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(padding: const EdgeInsets.only(left: 4), child: trailingBuilder(context));
+  }
+
+  Widget trailingBuilder(BuildContext context) {
+    return BlocBuilder<DetailsDownloadCubit, DetailsDownloadState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) {
+          switch (state.status) {
+            case DownloadStatus.downloading:
+              return const _DownloadingProgressIcon();
+            case DownloadStatus.downloaded:
+              return const _DownloadedIcon();
+            case DownloadStatus.initial:
+            case DownloadStatus.notDownloaded:
+            default:
+              return const _DownloadIcon();
+          }
+        });
+  }
+}
+
+class _DownloadedIcon extends StatelessWidget {
+  const _DownloadedIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download_done, color: Colors.green.shade900));
+  }
+}
+
+class _DownloadIcon extends StatelessWidget {
+  const _DownloadIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
+  }
+}
+
+class _DownloadingProgressIcon extends StatelessWidget {
+  const _DownloadingProgressIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.read<DetailsDownloadCubit>().state;
+    return Padding(
+        padding: const EdgeInsets.only(left: 4, top: 8, bottom: 8),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: StreamBuilder<int>(
+              stream: state.stateOfDownload,
+              builder: (_, snapshot) {
+                final progress = snapshot.hasData ? (snapshot.data! / 100) : 0.0;
+                return CircularProgressIndicator(
+                  color: Colors.green.shade700,
+                  value: progress == 1 ? null : progress, // If at 100% we show undeterminate progress indicator
+                  backgroundColor: Colors.transparent.withOpacity(0.4),
+                  strokeWidth: 6,
+                );
+              }),
+        ));
   }
 }

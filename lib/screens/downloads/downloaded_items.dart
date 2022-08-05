@@ -1,6 +1,8 @@
-import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
+import 'package:jellyflut/components/list_items/list_items_parent.dart';
 import 'package:jellyflut/screens/downloads/bloc/downloads_bloc.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 
@@ -9,16 +11,7 @@ class DownloadedItemsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DownloadsBloc>(
-          create: (BuildContext context) => DownloadsBloc(
-            downloadsRepository: context.read<DownloadsRepository>(),
-          )..add(const DownloadsSubscriptionRequested()),
-        ),
-      ],
-      child: const DownloadedItemsView(),
-    );
+    return const DownloadedItemsView();
   }
 }
 
@@ -27,6 +20,15 @@ class DownloadedItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final downloadsState = context.read<DownloadsBloc>().state;
+    final downloads = downloadsState.downloads.map((e) => e.item).toList();
+    final bloc = CollectionBloc(
+        items: downloads,
+        itemsRepository: context.read<ItemsRepository>(),
+        verticalListPosterHeight: 200,
+        gridPosterHeight: 250,
+        listType: ListType.grid)
+      ..add(InitCollectionRequested());
     return MultiBlocListener(
         listeners: [
           BlocListener<DownloadsBloc, DownloadsState>(
@@ -53,15 +55,17 @@ class DownloadedItemsView extends StatelessWidget {
                   context: context);
             },
           ),
+          BlocListener<DownloadsBloc, DownloadsState>(
+            listenWhen: (previous, current) => previous.downloads != current.downloads,
+            listener: (_, state) {
+              final downloads = state.downloads.map((e) => e.item).toList();
+              bloc.add(ReplaceItem(items: downloads));
+            },
+          ),
         ],
-        child: BlocBuilder<DownloadsBloc, DownloadsState>(builder: (context, state) {
-          final downloads = state.downloads.map((e) => e.item).toList();
-          return const SizedBox();
-          // return ListItemsView.fromList(
-          //     collectionBloc: context.read<CollectionBloc>(),
-          //     category: Category(items: downloads, startIndex: 0, totalRecordCount: downloads.length),
-          //     verticalListPosterHeight: 250,
-          //     listType: ListType.grid);
-        }));
+        child: ListItems.fromList(
+          collectionBloc: bloc,
+          items: const [],
+        ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
+import 'details_download_cubit/details_download_cubit.dart';
 import 'template/components/photo_item.dart';
 import 'template/large_details.dart';
 
@@ -24,18 +26,25 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: const MusicPlayerFAB(),
-      body: BlocProvider<DetailsBloc>(
-          create: (blocContext) => DetailsBloc(
-              item: item,
-              heroTag: heroTag,
-              contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
-              screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
-              sharedPreferences: SharedPrefs.sharedPrefs,
-              themeProvider: context.read<ThemeProvider>(),
-              authenticationRepository: context.read<AuthenticationRepository>(),
-              itemsRepository: context.read<ItemsRepository>())
-            ..add(DetailsInitRequested(item: item)),
-          child: const DetailsView()),
+      body: MultiBlocProvider(providers: [
+        BlocProvider<DetailsDownloadCubit>(
+            create: (blocContext) => DetailsDownloadCubit(
+                item: item,
+                itemsRepository: context.read<ItemsRepository>(),
+                downloadsRepository: context.read<DownloadsRepository>())),
+        BlocProvider<DetailsBloc>(
+            create: (blocContext) => DetailsBloc(
+                item: item,
+                heroTag: heroTag,
+                sharedPreferences: SharedPrefs.sharedPrefs,
+                themeProvider: context.read<ThemeProvider>(),
+                itemsRepository: context.read<ItemsRepository>(),
+                downloadsRepository: context.read<DownloadsRepository>(),
+                authenticationRepository: context.read<AuthenticationRepository>(),
+                contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
+                screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop)
+              ..add(DetailsInitRequested(item: item))),
+      ], child: const DetailsView()),
     );
   }
 }

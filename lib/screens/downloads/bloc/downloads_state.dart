@@ -15,16 +15,13 @@ class DownloadsState extends Equatable {
 
   DownloadsState copyWith({
     DownloadsStatus Function()? status,
-    List<Download> Function()? downloads,
-    Download? Function()? lastDeletedDownload,
+    List<Download>? downloads,
+    Download? lastDeletedDownload,
   }) {
     return DownloadsState(
-      status: status != null ? status() : this.status,
-      downloads: downloads != null ? downloads() : this.downloads,
-      lastDeletedDownload: lastDeletedDownload != null
-          ? lastDeletedDownload()
-          : this.lastDeletedDownload,
-    );
+        status: status != null ? status() : this.status,
+        downloads: downloads ?? this.downloads,
+        lastDeletedDownload: lastDeletedDownload ?? this.lastDeletedDownload);
   }
 
   @override

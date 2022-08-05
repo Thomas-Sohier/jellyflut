@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ part 'details_state.dart';
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   final ItemsRepository _itemsRepository;
   final AuthenticationRepository _authenticationRepository;
+  final DownloadsRepository _downloadsRepository;
   final SharedPreferences _sharedPreferences;
   final ThemeProvider _themeProvider;
 
@@ -26,6 +28,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       {required Item item,
       required ItemsRepository itemsRepository,
       required AuthenticationRepository authenticationRepository,
+      required DownloadsRepository downloadsRepository,
       required ThemeProvider themeProvider,
       required SharedPreferences sharedPreferences,
       bool contrastedPage = false,
@@ -33,6 +36,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
       ScreenLayout screenLayout = ScreenLayout.desktop})
       : _itemsRepository = itemsRepository,
         _authenticationRepository = authenticationRepository,
+        _downloadsRepository = downloadsRepository,
         _sharedPreferences = sharedPreferences,
         _themeProvider = themeProvider,
         super(DetailsState(
@@ -56,13 +60,17 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   void _onDetailsInitRequested(DetailsInitRequested event, Emitter<DetailsState> emit) async {
     emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.loading));
-
-    if (offlineMode) {
-      return emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.success));
-    }
     unawaited(_getItemBackgroundColor(event.item));
-    final item = await _itemsRepository.getItem(event.item.id);
-    return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
+    final item = await _downloadsRepository.getItemFromStorage(itemId: event.item.id);
+    if (item.isNotEmpty || offlineMode) {
+      if (item.isEmpty) {
+        return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.failure));
+      }
+      return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
+    } else {
+      final item = await _itemsRepository.getItem(event.item.id);
+      return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
+    }
   }
 
   void _onItemUpdate(DetailsItemUpdate event, Emitter<DetailsState> emit) {

@@ -40,6 +40,7 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
             gridPosterHeight: gridPosterHeight,
             scrollController: ScrollController())) {
     on<InitCollectionRequested>(_initCollectionList);
+    on<ReplaceItem>(_replaceItems);
     on<ClearItemsRequested>(_onClearItems);
     on<SetScrollController>(_onScrollControllerUpdate);
     on<LoadMoreItemsRequested>(_onLoadMoreItems);
@@ -116,6 +117,10 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
     emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
     final items = await _sortByField(event.fieldEnum);
     emit(state.copyWith(sortField: event.fieldEnum.fieldName, items: items, sortBy: state.sortBy.reverse()));
+  }
+
+  void _replaceItems(ReplaceItem event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(items: event.items));
   }
 
   Future<List<Item>> _sortByField(FieldsEnum fieldEnum) async => (await compute(_sortItemByField,

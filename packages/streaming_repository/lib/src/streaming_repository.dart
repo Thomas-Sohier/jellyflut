@@ -6,7 +6,6 @@ import 'package:jellyflut_models/jellyflut_models.dart' hide User, StreamingSoft
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
 import 'package:path/path.dart' as p;
-import 'package:streaming_repository/src/models/stream_paramaters.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'helper/profiles.dart';
@@ -96,6 +95,12 @@ class StreamingRepository {
     //   await StreamingService.bitrateTest(size: 1000000);
     //   await StreamingService.bitrateTest(size: 3000000);
     // }
+    // First we try to fetch from databae
+    try {
+      final databaseItem = await _database.downloadsDao.getDownloadById(item.id);
+      return StreamItem(url: databaseItem.path, item: databaseItem.item!, playbackInfos: null);
+    } on StateError catch (_) {}
+
     final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final directPlaySettingsOverride = settings.directPlay;

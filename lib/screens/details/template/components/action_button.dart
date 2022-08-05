@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:downloads_repository/downloads_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' hide FormState;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +15,8 @@ import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut/theme/theme_extend_own.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:streaming_repository/streaming_repository.dart';
+
+import '../../details_download_cubit/details_download_cubit.dart';
 
 part 'action_button/download_button.dart';
 part 'action_button/like_button.dart';
