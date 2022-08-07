@@ -2,3 +2,4 @@
 library downloads_repository;
 
 export 'src/downloads_repository.dart';
+export 'src/models/ongoing_download.dart';

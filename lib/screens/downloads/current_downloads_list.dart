@@ -1,6 +1,8 @@
+import 'package:downloads_repository/downloads_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/downloads/current_download_item.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
 
 class CurrentDownloadList extends StatefulWidget {
   CurrentDownloadList({super.key});
@@ -10,59 +12,61 @@ class CurrentDownloadList extends StatefulWidget {
 }
 
 class _CurrentDownloadListState extends State<CurrentDownloadList> {
-  late final ScrollController scrollController;
   late final GlobalKey<AnimatedListState> _key;
 
   @override
   void initState() {
     super.initState();
     _key = GlobalKey();
-    scrollController = ScrollController();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TOOD finish download page
-    return const SizedBox();
-    // return AnimatedList(
-    //     key: _key,
-    //     controller: scrollController,
-    //     initialItemCount: _listLength > 0 ? _listLength - 1 : 0, // why ? i don't know
-    //     scrollDirection: Axis.vertical,
-    //     itemBuilder: (c, i, a) {
-    //       final download = _downloadProvider.getDownloads.elementAt(i);
-    //       return _buildItem(download, a, i);
-    //     });
-
-    // return Center(
-    //     child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [Icon(Icons.download), Text('empty_collection'.tr())]));
+    return StreamBuilder<List<OngoingDownload>>(
+      stream: context.read<DownloadsRepository>().getOnGoingsDownloads(),
+      initialData: const [],
+      builder: (_, snapshot) {
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final downloads = snapshot.data!;
+          return AnimatedList(
+              key: _key,
+              controller: ScrollController(),
+              initialItemCount: downloads.isNotEmpty ? downloads.length - 1 : 0, // why ? i don't know
+              scrollDirection: Axis.vertical,
+              itemBuilder: (_, i, a) {
+                final download = downloads.elementAt(i);
+                return _buildItem(download, a, i);
+              });
+        }
+        return Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [Icon(Icons.download), Text('empty_collection'.tr())]));
+      },
+    );
   }
 
-  Widget _buildItem(ItemDownload download, Animation<double> animation, int index) {
+  Widget _buildItem(OngoingDownload download, Animation<double> animation, int index) {
     return SizeTransition(
       sizeFactor: animation,
       child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 200),
-          child: CurrentDownloadItem(itemDownload: download, callbackOnDelete: () => _removeItem(download))),
+          child: CurrentDownloadItem(ongoingDownload: download, callbackOnDelete: () => _removeItem(download))),
     );
   }
 
-  void _removeItem(ItemDownload download) {
-    // final i = _downloadsList.toList().indexOf(download);
-    // _downloadsList.remove(download);
-    // _key.currentState?.removeItem(i, _itemBuilder(download, i), duration: Duration(milliseconds: 400));
+  Future<void> _removeItem(OngoingDownload download) async {
+    final index = context.read<DownloadsRepository>().removeOngoingDownload(download);
+    _key.currentState?.removeItem(index, _itemBuilder(download, index), duration: Duration(milliseconds: 400));
   }
 
-  void _insertItem(ItemDownload download) {
-    // _downloadsList.add(download);
-    // final i = _downloadsList.toList().indexOf(download);
-    // _key.currentState?.insertItem(i, duration: Duration(milliseconds: 400));
+  Future<void> _insertItem(OngoingDownload download) async {
+    final index = context.read<DownloadsRepository>().addOngoingDownload(download);
+    _key.currentState?.insertItem(index, duration: Duration(milliseconds: 400));
   }
 
-  AnimatedListRemovedItemBuilder _itemBuilder(ItemDownload download, int index) {
+  AnimatedListRemovedItemBuilder _itemBuilder(OngoingDownload download, int index) {
     return (context, animation) {
       return _buildItem(download, animation, index);
     };

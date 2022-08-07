@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
 import 'package:jellyflut/components/list_items/list_items_parent.dart';
-import 'package:jellyflut/screens/downloads/bloc/downloads_bloc.dart';
+import 'package:jellyflut/screens/downloads/downloads_bloc/downloads_bloc.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 
 class DownloadedItemsPage extends StatelessWidget {

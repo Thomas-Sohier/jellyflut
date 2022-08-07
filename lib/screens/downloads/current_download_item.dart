@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
@@ -11,43 +12,30 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class CurrentDownloadItem extends StatefulWidget {
-  final ItemDownload itemDownload;
+  final OngoingDownload ongoingDownload;
   final void Function()? callbackOnDelete;
 
-  const CurrentDownloadItem({super.key, required this.itemDownload, this.callbackOnDelete});
+  const CurrentDownloadItem({super.key, required this.ongoingDownload, this.callbackOnDelete});
 
   @override
   State<CurrentDownloadItem> createState() => _CurrentDownloadItemState();
 }
 
 class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
-  // Dpad navigation
-  late final FocusNode _node;
   late final String posterHeroTag;
 
   @override
   void initState() {
     posterHeroTag = Uuid().v4();
-    _node = FocusNode();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
-  }
-
   void _onTap(String heroTag) {
-    context.router.root.push(r.DetailsPage(item: widget.itemDownload.item, heroTag: heroTag));
+    context.router.root.push(r.DetailsPage(item: widget.ongoingDownload.item, heroTag: heroTag));
   }
 
   @override
   Widget build(BuildContext context) {
-    return epsiodeItem();
-  }
-
-  Widget epsiodeItem() {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       final rightPartPadding =
           constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
@@ -80,13 +68,13 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
                                         padding: const EdgeInsets.only(top: 4, bottom: 4),
                                         child: Row(
                                           children: [
-                                            if (widget.itemDownload.item.hasRatings())
-                                              Critics(item: widget.itemDownload.item),
-                                            if (widget.itemDownload.item.getDuration() != 0) duration()
+                                            if (widget.ongoingDownload.item.hasRatings())
+                                              Critics(item: widget.ongoingDownload.item),
+                                            if (widget.ongoingDownload.item.getDuration() != 0) duration()
                                           ],
                                         ),
                                       ),
-                                      if (widget.itemDownload.item.overview != null) overview()
+                                      if (widget.ongoingDownload.item.overview != null) overview()
                                     ],
                                   )),
                             ),
@@ -100,7 +88,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
 
   Widget downloadProgress() {
     return StreamBuilder<int>(
-        stream: widget.itemDownload.downloadValueWatcher,
+        stream: widget.ongoingDownload.stateOfDownload,
         builder: (context, snapshot) {
           return Stack(
             alignment: Alignment.center,
@@ -123,24 +111,24 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
 
   Widget poster() {
     return AspectRatio(
-      aspectRatio: widget.itemDownload.item.getPrimaryAspectRatio(),
+      aspectRatio: widget.ongoingDownload.item.getPrimaryAspectRatio(),
       child: Poster(
-          key: ValueKey(widget.itemDownload),
+          key: ValueKey(widget.ongoingDownload),
           imageType: ImageType.Primary,
-          heroTag: '${widget.itemDownload.item.id}-${Uuid().v1()}-${widget.itemDownload.item.name}',
+          heroTag: '${widget.ongoingDownload.item.id}-${Uuid().v1()}-${widget.ongoingDownload.item.name}',
           clickable: false,
           width: double.infinity,
           height: double.infinity,
           boxFit: BoxFit.cover,
           showParent: false,
-          item: widget.itemDownload.item),
+          item: widget.ongoingDownload.item),
     );
   }
 
   Widget title() {
-    final title = widget.itemDownload.item.indexNumber != null
-        ? '${widget.itemDownload.item.indexNumber} - ${widget.itemDownload.item.name}'
-        : widget.itemDownload.item.name;
+    final title = widget.ongoingDownload.item.indexNumber != null
+        ? '${widget.ongoingDownload.item.indexNumber} - ${widget.ongoingDownload.item.name}'
+        : widget.ongoingDownload.item.name;
 
     return Flexible(
       child: Text(title ?? '',
@@ -152,14 +140,14 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
 
   Widget duration() {
     return Flexible(
-        child: Text(printDuration(Duration(microseconds: widget.itemDownload.item.getDuration())),
+        child: Text(printDuration(Duration(microseconds: widget.ongoingDownload.item.getDuration())),
             maxLines: 1, style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
   }
 
   Widget overview() {
     return Flexible(
       child: Text(
-        widget.itemDownload.item.overview!,
+        widget.ongoingDownload.item.overview!,
         textAlign: TextAlign.justify,
         maxLines: 4,
         style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_api/downloads_api.dart';
+import 'package:downloads_repository/src/models/ongoing_download.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:path_provider/path_provider.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
@@ -22,7 +23,7 @@ class FileDoesNotExist implements Exception {}
 /// {@endtemplate}
 class DownloadsRepository {
   /// {@macro downloads_repository}
-  const DownloadsRepository(
+  DownloadsRepository(
       {required DownloadsApi downloadsApi,
       required RemoteDownloadsApi remoteDownloadsApi,
       required AuthenticationRepository authenticationRepository,
@@ -36,8 +37,26 @@ class DownloadsRepository {
   final RemoteDownloadsApi _remoteDownloadsApi;
   final AuthenticationRepository _authenticationRepository;
   final database.Database _database;
+  final List<OngoingDownload> _onGoingDownloads = <OngoingDownload>[];
+  final BehaviorSubject<List<OngoingDownload>> _onGoingDownloadsStream = BehaviorSubject.seeded(const []);
 
-  // /// Provides a [Stream] of all downloads.
+  /// Provides a [Stream] of all ongoing downloads.
+  Stream<List<OngoingDownload>> getOnGoingsDownloads() => _onGoingDownloadsStream.shareValue();
+
+  int addOngoingDownload(OngoingDownload download) {
+    _onGoingDownloads.add(download);
+    _onGoingDownloadsStream.add(_onGoingDownloads);
+    return _onGoingDownloads.indexOf(download);
+  }
+
+  int removeOngoingDownload(OngoingDownload download) {
+    final index = _onGoingDownloads.indexOf(download);
+    _onGoingDownloads.remove(download);
+    _onGoingDownloadsStream.add(_onGoingDownloads);
+    return index;
+  }
+
+  /// Provides a [Stream] of all downloads.
   Stream<List<Download>> getDownloads() {
     final BehaviorSubject<List<Download>> downloadsStream = BehaviorSubject.seeded(const []);
     final streamListener = _database.downloadsDao.watchAllDownloads.listen((event) {});
@@ -83,6 +102,10 @@ class DownloadsRepository {
         if (isPresent) return file.readAsBytes();
       }
     }
+
+    final ongoingDownload = OngoingDownload(
+        cancelToken: cancelToken!, id: itemId, item: Item.empty, path: '', stateOfDownload: stateOfDownload!);
+    addOngoingDownload(ongoingDownload);
 
     return _remoteDownloadsApi.downloadItem(
         serverUrl: _authenticationRepository.currentServer.url,
