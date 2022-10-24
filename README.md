@@ -1,9 +1,19 @@
-# jellyflut
+<img height="80" width="80" src="./img/icon/rounded_logo.png"/>
+
+# Jellyflut
 
 A jellyfin client made in Flutter
 
 It's a beta, it works okay.
+
+## :warning: News
  
+The project is stale for now. I don't have much time and interest in this project for now. Video player are too much pain in FLutter. I'm still looking for solutions but as of now, I'm going to slow down the developpement of this app.
+
+I'm still looking for any PR and will gladly accept them.
+ 
+## :gear: Features
+
 You can :
 - [x] Play a video
 - [x] Read a book (epub/CBZ)
