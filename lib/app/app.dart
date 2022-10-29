@@ -11,7 +11,7 @@ import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
-import 'package:jellyflut/screens/downloads/bloc/downloads_bloc.dart';
+import 'package:jellyflut/screens/downloads/downloads_bloc/downloads_bloc.dart';
 import 'package:jellyflut/screens/home/home_tabs_cubit/home_tabs_cubit.dart';
 import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';

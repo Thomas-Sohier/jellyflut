@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   dart_vlc
-  libwinmedia
   screen_retriever
   sqlite3_flutter_libs
   url_launcher_linux

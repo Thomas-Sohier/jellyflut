@@ -42,7 +42,7 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector> with Ab
         onPressed: () => action(onPressed),
         style: OutlinedButton.styleFrom(
                 minimumSize: Size(24, 24),
-                primary: primary ?? Theme.of(context).colorScheme.onBackground.withOpacity(0.05),
+                foregroundColor: primary ?? Theme.of(context).colorScheme.onBackground.withOpacity(0.05),
                 alignment: alignment,
                 padding: padding,
                 shape: shape)

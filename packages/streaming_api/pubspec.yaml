@@ -22,5 +22,5 @@ dev_dependencies:
   test: ^1.19.2
   pedantic: ^1.11.1
   freezed: ^2.0.4
-  build_runner: ^2.1.11
+  build_runner: ^2.3.2
   json_serializable: ^6.2.0

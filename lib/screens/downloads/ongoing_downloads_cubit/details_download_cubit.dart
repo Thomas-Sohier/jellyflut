@@ -12,24 +12,23 @@ class OngoingDownloadsCubit extends Cubit<OnGoingDownloadsState> {
 
   final DownloadsRepository _downloadsRepository;
 
- 
-
   /// Download the current item
   /// Can throw errors if something goes wrong
   Future<File> downloadItem() async {
-    emit(state.copyWith(status: OnGoingDownloadStatus.downloading));
-    try {
-      final fileBytes = await _downloadsRepository.downloadItem(
-          itemId: state.item.id, stateOfDownload: state.stateOfDownload, cancelToken: state.cancelToken);
-      final file = _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
-      state.stateOfDownload.add(0);
-      try {
-        emit(state.copyWith(status: OnGoingDownloadStatus.downloaded));
-      } on StateError catch (_) {}
-      return file;
-    } catch (_) {
-      emit(state.copyWith(status: OnGoingDownloadStatus.notDownloaded));
-      rethrow;
-    }
+    //   emit(state.copyWith(status: OnGoingDownloadStatus.downloading));
+    //   try {
+    //     final fileBytes = await _downloadsRepository.downloadItem(
+    //         itemId: state.item.id, stateOfDownload: state.stateOfDownload, cancelToken: state.cancelToken);
+    //     final file = _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
+    //     state.stateOfDownload.add(0);
+    //     try {
+    //       emit(state.copyWith(status: OnGoingDownloadStatus.downloaded));
+    //     } on StateError catch (_) {}
+    //     return file;
+    //   } catch (_) {
+    //     emit(state.copyWith(status: OnGoingDownloadStatus.notDownloaded));
+    //     rethrow;
+    //   }
+    return Future.value();
   }
 }
