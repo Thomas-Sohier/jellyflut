@@ -62,9 +62,9 @@ class _LoginFormState extends State<LoginForm> {
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
-              UserUsernameField(form: form, onSubmitted: () => form.focus(FieldsType.USER_PASSWORD.toString())),
+              UserUsernameField(form: form, onSubmitted: (_) => form.focus(FieldsType.USER_PASSWORD.toString())),
               const SizedBox(height: 12),
-              UserPasswordField(form: form, onSubmitted: () => addUser(form, context)),
+              UserPasswordField(form: form, onSubmitted: (_) => addUser(form, context)),
               const SizedBox(height: 24),
               actions(children: [backButton(form, context), const SizedBox(width: 12), loginButton(form, context)]),
               const SizedBox(height: 24)

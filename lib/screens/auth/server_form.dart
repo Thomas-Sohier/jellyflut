@@ -65,9 +65,9 @@ class _ServerFormState extends State<ServerForm> {
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
-              ServerNameField(form: form, onSubmitted: () => form.focus(FieldsType.SERVER_URL.toString())),
+              ServerNameField(form: form, onSubmitted: (_) => form.focus(FieldsType.SERVER_URL.toString())),
               const SizedBox(height: 12),
-              ServerUrlField(form: form, onSubmitted: () => addServer(form)),
+              ServerUrlField(form: form, onSubmitted: (_) => addServer(form)),
               const SizedBox(height: 24),
               GradienButton('add_server'.tr(), () => addServer(form),
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,

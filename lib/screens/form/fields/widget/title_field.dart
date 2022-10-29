@@ -7,8 +7,10 @@ class TitleField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveTextField<String>(
         formControlName: FieldsEnum.NAME.fieldName,
-        validationMessages: (control) => {ValidationMessage.required: 'The title must not be empty'},
-        onSubmitted: () =>
+        validationMessages: {
+          ValidationMessage.required: (_) => 'The title must not be empty',
+        },
+        onSubmitted: (_) =>
             context.read<FormBloc>().state.formBuilder.formGroup.focus(FieldsEnum.ORIGINALTITLE.fieldName),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(labelText: 'Title'));

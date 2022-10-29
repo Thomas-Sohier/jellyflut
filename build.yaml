@@ -21,9 +21,9 @@ targets:
           generate_connect_constructor: true
           apply_converters_on_variables: true
           generate_values_in_copy_with: true
-          new_sql_code_generation: true
+          # new_sql_code_generation: true
           scoped_dart_components: true
-          compact_query_methods: true
+          # compact_query_methods: true
           named_parameters: true
       build_web_compilers|entrypoint:
         generate_for:
