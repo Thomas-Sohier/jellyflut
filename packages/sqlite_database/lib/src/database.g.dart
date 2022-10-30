@@ -3,7 +3,7 @@
 part of 'database.dart';
 
 // **************************************************************************
-// MoorGenerator
+// DriftDatabaseGenerator
 // **************************************************************************
 
 // ignore_for_file: type=lint
@@ -11,18 +11,7 @@ class Server extends DataClass implements Insertable<Server> {
   final int id;
   final String url;
   final String name;
-  Server({required this.id, required this.url, required this.name});
-  factory Server.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Server(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      url: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}url'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-    );
-  }
+  const Server({required this.id, required this.url, required this.name});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -154,21 +143,21 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   $ServersTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
-  late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, url, name];
   @override
@@ -202,8 +191,15 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Server.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Server(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      url: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+    );
   }
 
   @override
@@ -220,7 +216,7 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
   final String jellyfinUserId;
   final int settingsId;
   final int serverId;
-  UserAppData(
+  const UserAppData(
       {required this.id,
       required this.name,
       required this.password,
@@ -228,25 +224,6 @@ class UserAppData extends DataClass implements Insertable<UserAppData> {
       required this.jellyfinUserId,
       required this.settingsId,
       required this.serverId});
-  factory UserAppData.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return UserAppData(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      password: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
-      apiKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}api_key'])!,
-      jellyfinUserId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}jellyfin_user_id'])!,
-      settingsId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}settings_id'])!,
-      serverId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}server_id'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -463,44 +440,44 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   $UserAppTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
   @override
-  late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
       'password', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
   @override
-  late final GeneratedColumn<String?> apiKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> apiKey = GeneratedColumn<String>(
       'api_key', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _jellyfinUserIdMeta =
       const VerificationMeta('jellyfinUserId');
   @override
-  late final GeneratedColumn<String?> jellyfinUserId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> jellyfinUserId = GeneratedColumn<String>(
       'jellyfin_user_id', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
   @override
-  late final GeneratedColumn<int?> settingsId = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> settingsId = GeneratedColumn<int>(
       'settings_id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
   @override
-  late final GeneratedColumn<int?> serverId = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> serverId = GeneratedColumn<int>(
       'server_id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
   @override
@@ -561,8 +538,23 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   UserAppData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return UserAppData.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserAppData(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      password: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
+      apiKey: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}api_key'])!,
+      jellyfinUserId: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}jellyfin_user_id'])!,
+      settingsId: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}settings_id'])!,
+      serverId: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}server_id'])!,
+    );
   }
 
   @override
@@ -579,7 +571,7 @@ class Setting extends DataClass implements Insertable<Setting> {
   final int maxAudioBitrate;
   final String downloadPath;
   final bool directPlay;
-  Setting(
+  const Setting(
       {required this.id,
       required this.preferredPlayer,
       required this.preferredTranscodeAudioCodec,
@@ -587,25 +579,6 @@ class Setting extends DataClass implements Insertable<Setting> {
       required this.maxAudioBitrate,
       required this.downloadPath,
       required this.directPlay});
-  factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Setting(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      preferredPlayer: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}preferred_player'])!,
-      preferredTranscodeAudioCodec: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}preferred_transcode_audio_codec'])!,
-      maxVideoBitrate: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}max_video_bitrate'])!,
-      maxAudioBitrate: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}max_audio_bitrate'])!,
-      downloadPath: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}download_path'])!,
-      directPlay: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}direct_play'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -835,59 +808,59 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   $SettingsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _preferredPlayerMeta =
       const VerificationMeta('preferredPlayer');
   @override
-  late final GeneratedColumn<String?> preferredPlayer =
-      GeneratedColumn<String?>('preferred_player', aliasedName, false,
-          type: const StringType(),
-          requiredDuringInsert: false,
-          defaultValue: Constant(getDefaultPlayer()));
+  late final GeneratedColumn<String> preferredPlayer = GeneratedColumn<String>(
+      'preferred_player', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: Constant(getDefaultPlayer()));
   final VerificationMeta _preferredTranscodeAudioCodecMeta =
       const VerificationMeta('preferredTranscodeAudioCodec');
   @override
-  late final GeneratedColumn<String?> preferredTranscodeAudioCodec =
-      GeneratedColumn<String?>(
+  late final GeneratedColumn<String> preferredTranscodeAudioCodec =
+      GeneratedColumn<String>(
           'preferred_transcode_audio_codec', aliasedName, false,
-          type: const StringType(),
+          type: DriftSqlType.string,
           requiredDuringInsert: false,
           defaultValue: const Constant('auto'));
   final VerificationMeta _maxVideoBitrateMeta =
       const VerificationMeta('maxVideoBitrate');
   @override
-  late final GeneratedColumn<int?> maxVideoBitrate = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> maxVideoBitrate = GeneratedColumn<int>(
       'max_video_bitrate', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(50000000));
   final VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
   @override
-  late final GeneratedColumn<int?> maxAudioBitrate = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> maxAudioBitrate = GeneratedColumn<int>(
       'max_audio_bitrate', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(8000000));
   final VerificationMeta _downloadPathMeta =
       const VerificationMeta('downloadPath');
   @override
-  late final GeneratedColumn<String?> downloadPath = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> downloadPath = GeneratedColumn<String>(
       'download_path', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
   final VerificationMeta _directPlayMeta = const VerificationMeta('directPlay');
   @override
-  late final GeneratedColumn<bool?> directPlay = GeneratedColumn<bool?>(
+  late final GeneratedColumn<bool> directPlay = GeneratedColumn<bool>(
       'direct_play', aliasedName, false,
-      type: const BoolType(),
+      type: DriftSqlType.bool,
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (direct_play IN (0, 1))',
+      defaultConstraints: 'CHECK ("direct_play" IN (0, 1))',
       defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
@@ -955,8 +928,24 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Setting(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      preferredPlayer: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}preferred_player'])!,
+      preferredTranscodeAudioCodec: attachedDatabase.options.types.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}preferred_transcode_audio_codec'])!,
+      maxVideoBitrate: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}max_video_bitrate'])!,
+      maxAudioBitrate: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}max_audio_bitrate'])!,
+      downloadPath: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}download_path'])!,
+      directPlay: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}direct_play'])!,
+    );
   }
 
   @override
@@ -972,47 +961,30 @@ class Download extends DataClass implements Insertable<Download> {
   final Uint8List? primary;
   final Uint8List? backdrop;
   final Item? item;
-  Download(
+  const Download(
       {required this.id,
       this.name,
       required this.path,
       this.primary,
       this.backdrop,
       this.item});
-  factory Download.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Download(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      path: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}path'])!,
-      primary: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}primary']),
-      backdrop: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}backdrop']),
-      item: $DownloadsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}item'])),
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String?>(name);
+      map['name'] = Variable<String>(name);
     }
     map['path'] = Variable<String>(path);
     if (!nullToAbsent || primary != null) {
-      map['primary'] = Variable<Uint8List?>(primary);
+      map['primary'] = Variable<Uint8List>(primary);
     }
     if (!nullToAbsent || backdrop != null) {
-      map['backdrop'] = Variable<Uint8List?>(backdrop);
+      map['backdrop'] = Variable<Uint8List>(backdrop);
     }
     if (!nullToAbsent || item != null) {
-      final converter = $DownloadsTable.$converter0;
-      map['item'] = Variable<String?>(converter.mapToSql(item));
+      final converter = $DownloadsTable.$converter0n;
+      map['item'] = Variable<String>(converter.toSql(item));
     }
     return map;
   }
@@ -1086,7 +1058,13 @@ class Download extends DataClass implements Insertable<Download> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, path, primary, backdrop, item);
+  int get hashCode => Object.hash(
+      id,
+      name,
+      path,
+      $driftBlobEquality.hash(primary),
+      $driftBlobEquality.hash(backdrop),
+      item);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1094,8 +1072,8 @@ class Download extends DataClass implements Insertable<Download> {
           other.id == this.id &&
           other.name == this.name &&
           other.path == this.path &&
-          other.primary == this.primary &&
-          other.backdrop == this.backdrop &&
+          $driftBlobEquality.equals(other.primary, this.primary) &&
+          $driftBlobEquality.equals(other.backdrop, this.backdrop) &&
           other.item == this.item);
 }
 
@@ -1125,11 +1103,11 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
         path = Value(path);
   static Insertable<Download> custom({
     Expression<String>? id,
-    Expression<String?>? name,
+    Expression<String>? name,
     Expression<String>? path,
-    Expression<Uint8List?>? primary,
-    Expression<Uint8List?>? backdrop,
-    Expression<Item?>? item,
+    Expression<Uint8List>? primary,
+    Expression<Uint8List>? backdrop,
+    Expression<String>? item,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1165,20 +1143,20 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
       map['id'] = Variable<String>(id.value);
     }
     if (name.present) {
-      map['name'] = Variable<String?>(name.value);
+      map['name'] = Variable<String>(name.value);
     }
     if (path.present) {
       map['path'] = Variable<String>(path.value);
     }
     if (primary.present) {
-      map['primary'] = Variable<Uint8List?>(primary.value);
+      map['primary'] = Variable<Uint8List>(primary.value);
     }
     if (backdrop.present) {
-      map['backdrop'] = Variable<Uint8List?>(backdrop.value);
+      map['backdrop'] = Variable<Uint8List>(backdrop.value);
     }
     if (item.present) {
-      final converter = $DownloadsTable.$converter0;
-      map['item'] = Variable<String?>(converter.mapToSql(item.value));
+      final converter = $DownloadsTable.$converter0n;
+      map['item'] = Variable<String>(converter.toSql(item.value));
     }
     return map;
   }
@@ -1205,35 +1183,35 @@ class $DownloadsTable extends Downloads
   $DownloadsTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _pathMeta = const VerificationMeta('path');
   @override
-  late final GeneratedColumn<String?> path = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> path = GeneratedColumn<String>(
       'path', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _primaryMeta = const VerificationMeta('primary');
   @override
-  late final GeneratedColumn<Uint8List?> primary = GeneratedColumn<Uint8List?>(
+  late final GeneratedColumn<Uint8List> primary = GeneratedColumn<Uint8List>(
       'primary', aliasedName, true,
-      type: const BlobType(), requiredDuringInsert: false);
+      type: DriftSqlType.blob, requiredDuringInsert: false);
   final VerificationMeta _backdropMeta = const VerificationMeta('backdrop');
   @override
-  late final GeneratedColumn<Uint8List?> backdrop = GeneratedColumn<Uint8List?>(
+  late final GeneratedColumn<Uint8List> backdrop = GeneratedColumn<Uint8List>(
       'backdrop', aliasedName, true,
-      type: const BlobType(), requiredDuringInsert: false);
+      type: DriftSqlType.blob, requiredDuringInsert: false);
   final VerificationMeta _itemMeta = const VerificationMeta('item');
   @override
-  late final GeneratedColumnWithTypeConverter<Item, String?> item =
-      GeneratedColumn<String?>('item', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Item>($DownloadsTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<Item?, String> item =
+      GeneratedColumn<String>('item', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Item?>($DownloadsTable.$converter0n);
   @override
   List<GeneratedColumn> get $columns =>
       [id, name, path, primary, backdrop, item];
@@ -1277,8 +1255,21 @@ class $DownloadsTable extends Downloads
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Download.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Download(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+      path: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}path'])!,
+      primary: attachedDatabase.options.types
+          .read(DriftSqlType.blob, data['${effectivePrefix}primary']),
+      backdrop: attachedDatabase.options.types
+          .read(DriftSqlType.blob, data['${effectivePrefix}backdrop']),
+      item: $DownloadsTable.$converter0n.fromSql(attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}item'])),
+    );
   }
 
   @override
@@ -1287,10 +1278,12 @@ class $DownloadsTable extends Downloads
   }
 
   static TypeConverter<Item, String> $converter0 = const JsonConverter();
+  static TypeConverter<Item?, String?> $converter0n =
+      NullAwareTypeConverter.wrap($converter0);
 }
 
 abstract class _$Database extends GeneratedDatabase {
-  _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$Database(QueryExecutor e) : super(e);
   _$Database.connect(DatabaseConnection c) : super.connect(c);
   late final $ServersTable servers = $ServersTable(this);
   late final $UserAppTable userApp = $UserAppTable(this);
@@ -1301,7 +1294,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final SettingsDao settingsDao = SettingsDao(this as Database);
   late final DownloadsDao downloadsDao = DownloadsDao(this as Database);
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, dynamic>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [servers, userApp, settings, downloads];

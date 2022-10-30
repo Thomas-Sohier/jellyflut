@@ -6,10 +6,10 @@ class JsonConverter extends TypeConverter<Item, String> {
   const JsonConverter();
 
   @override
-  Item? mapToDart(String? fromDb) => fromDb == null ? null : Item.fromJson(json.decode(fromDb));
+  Item fromSql(String fromDb) => Item.fromJson(json.decode(fromDb));
 
   @override
-  String? mapToSql(Item? value) => json.encode(value?.toJson());
+  String toSql(Item value) => json.encode(value.toJson());
 }
 
 class Downloads extends Table {
