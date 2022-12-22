@@ -14,8 +14,7 @@ class DeviceInfo {
   static Future<DeviceInfo> getCurrentDeviceInfo() async {
     return loadCurrentDeviceInfo().catchError((error, stacktrace) {
       log('Cannot load device info', level: Level.WARNING.value, error: error);
-      return Future.value(
-          DeviceInfo(host: 'Unknown', id: 'Unknown', model: 'Unknown'));
+      return Future.value(DeviceInfo(host: 'Unknown', id: 'Unknown', model: 'Unknown'));
     });
   }
 
@@ -23,9 +22,9 @@ class DeviceInfo {
     var deviceInfoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       final androidInfo = await deviceInfoPlugin.androidInfo;
-      final host = androidInfo.host ?? 'Unknown';
-      final id = androidInfo.id ?? 'Unknown';
-      final model = androidInfo.model ?? 'Unknown';
+      final host = androidInfo.host;
+      final id = androidInfo.id;
+      final model = androidInfo.model;
       return DeviceInfo(host: host, model: model, id: id);
     } else if (Platform.isIOS) {
       final iosInfo = await deviceInfoPlugin.iosInfo;

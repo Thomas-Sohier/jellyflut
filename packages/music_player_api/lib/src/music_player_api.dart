@@ -36,7 +36,7 @@ class MusicPlayerApi {
       final player = AudioPlayer();
       _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else if (Platform.isLinux) {
-      final player = Player(id: 0, registerTexture: false);
+      final player = Player(id: 0);
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
       throw UnimplementedError('No audio player on this platform');

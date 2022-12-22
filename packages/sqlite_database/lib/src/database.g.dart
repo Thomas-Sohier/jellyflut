@@ -2,10 +2,6 @@
 
 part of 'database.dart';
 
-// **************************************************************************
-// DriftDatabaseGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
 class Server extends DataClass implements Insertable<Server> {
   final int id;
@@ -141,19 +137,21 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ServersTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _urlMeta = const VerificationMeta('url');
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
@@ -193,11 +191,11 @@ class $ServersTable extends Servers with TableInfo<$ServersTable, Server> {
   Server map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Server(
-      id: attachedDatabase.options.types
+      id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      url: attachedDatabase.options.types
+      url: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
-      name: attachedDatabase.options.types
+      name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
   }
@@ -438,42 +436,47 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $UserAppTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _passwordMeta = const VerificationMeta('password');
+  static const VerificationMeta _passwordMeta =
+      const VerificationMeta('password');
   @override
   late final GeneratedColumn<String> password = GeneratedColumn<String>(
       'password', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
+  static const VerificationMeta _apiKeyMeta = const VerificationMeta('apiKey');
   @override
   late final GeneratedColumn<String> apiKey = GeneratedColumn<String>(
       'api_key', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _jellyfinUserIdMeta =
+  static const VerificationMeta _jellyfinUserIdMeta =
       const VerificationMeta('jellyfinUserId');
   @override
   late final GeneratedColumn<String> jellyfinUserId = GeneratedColumn<String>(
       'jellyfin_user_id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _settingsIdMeta = const VerificationMeta('settingsId');
+  static const VerificationMeta _settingsIdMeta =
+      const VerificationMeta('settingsId');
   @override
   late final GeneratedColumn<int> settingsId = GeneratedColumn<int>(
       'settings_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  final VerificationMeta _serverIdMeta = const VerificationMeta('serverId');
+  static const VerificationMeta _serverIdMeta =
+      const VerificationMeta('serverId');
   @override
   late final GeneratedColumn<int> serverId = GeneratedColumn<int>(
       'server_id', aliasedName, false,
@@ -540,19 +543,19 @@ class $UserAppTable extends UserApp with TableInfo<$UserAppTable, UserAppData> {
   UserAppData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserAppData(
-      id: attachedDatabase.options.types
+      id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.options.types
+      name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      password: attachedDatabase.options.types
+      password: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
-      apiKey: attachedDatabase.options.types
+      apiKey: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}api_key'])!,
-      jellyfinUserId: attachedDatabase.options.types.read(
+      jellyfinUserId: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}jellyfin_user_id'])!,
-      settingsId: attachedDatabase.options.types
+      settingsId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}settings_id'])!,
-      serverId: attachedDatabase.options.types
+      serverId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}server_id'])!,
     );
   }
@@ -806,14 +809,16 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $SettingsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
+      hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _preferredPlayerMeta =
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _preferredPlayerMeta =
       const VerificationMeta('preferredPlayer');
   @override
   late final GeneratedColumn<String> preferredPlayer = GeneratedColumn<String>(
@@ -821,7 +826,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: Constant(getDefaultPlayer()));
-  final VerificationMeta _preferredTranscodeAudioCodecMeta =
+  static const VerificationMeta _preferredTranscodeAudioCodecMeta =
       const VerificationMeta('preferredTranscodeAudioCodec');
   @override
   late final GeneratedColumn<String> preferredTranscodeAudioCodec =
@@ -830,7 +835,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
           type: DriftSqlType.string,
           requiredDuringInsert: false,
           defaultValue: const Constant('auto'));
-  final VerificationMeta _maxVideoBitrateMeta =
+  static const VerificationMeta _maxVideoBitrateMeta =
       const VerificationMeta('maxVideoBitrate');
   @override
   late final GeneratedColumn<int> maxVideoBitrate = GeneratedColumn<int>(
@@ -838,7 +843,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(50000000));
-  final VerificationMeta _maxAudioBitrateMeta =
+  static const VerificationMeta _maxAudioBitrateMeta =
       const VerificationMeta('maxAudioBitrate');
   @override
   late final GeneratedColumn<int> maxAudioBitrate = GeneratedColumn<int>(
@@ -846,7 +851,7 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(8000000));
-  final VerificationMeta _downloadPathMeta =
+  static const VerificationMeta _downloadPathMeta =
       const VerificationMeta('downloadPath');
   @override
   late final GeneratedColumn<String> downloadPath = GeneratedColumn<String>(
@@ -854,14 +859,19 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: DriftSqlType.string,
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
-  final VerificationMeta _directPlayMeta = const VerificationMeta('directPlay');
+  static const VerificationMeta _directPlayMeta =
+      const VerificationMeta('directPlay');
   @override
-  late final GeneratedColumn<bool> directPlay = GeneratedColumn<bool>(
-      'direct_play', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK ("direct_play" IN (0, 1))',
-      defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> directPlay =
+      GeneratedColumn<bool>('direct_play', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("direct_play" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }),
+          defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -930,20 +940,20 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Setting(
-      id: attachedDatabase.options.types
+      id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      preferredPlayer: attachedDatabase.options.types.read(
+      preferredPlayer: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}preferred_player'])!,
-      preferredTranscodeAudioCodec: attachedDatabase.options.types.read(
+      preferredTranscodeAudioCodec: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}preferred_transcode_audio_codec'])!,
-      maxVideoBitrate: attachedDatabase.options.types
+      maxVideoBitrate: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}max_video_bitrate'])!,
-      maxAudioBitrate: attachedDatabase.options.types
+      maxAudioBitrate: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}max_audio_bitrate'])!,
-      downloadPath: attachedDatabase.options.types
+      downloadPath: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}download_path'])!,
-      directPlay: attachedDatabase.options.types
+      directPlay: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}direct_play'])!,
     );
   }
@@ -983,7 +993,7 @@ class Download extends DataClass implements Insertable<Download> {
       map['backdrop'] = Variable<Uint8List>(backdrop);
     }
     if (!nullToAbsent || item != null) {
-      final converter = $DownloadsTable.$converter0n;
+      final converter = $DownloadsTable.$converteritemn;
       map['item'] = Variable<String>(converter.toSql(item));
     }
     return map;
@@ -1155,7 +1165,7 @@ class DownloadsCompanion extends UpdateCompanion<Download> {
       map['backdrop'] = Variable<Uint8List>(backdrop.value);
     }
     if (item.present) {
-      final converter = $DownloadsTable.$converter0n;
+      final converter = $DownloadsTable.$converteritemn;
       map['item'] = Variable<String>(converter.toSql(item.value));
     }
     return map;
@@ -1181,37 +1191,39 @@ class $DownloadsTable extends Downloads
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DownloadsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _pathMeta = const VerificationMeta('path');
+  static const VerificationMeta _pathMeta = const VerificationMeta('path');
   @override
   late final GeneratedColumn<String> path = GeneratedColumn<String>(
       'path', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _primaryMeta = const VerificationMeta('primary');
+  static const VerificationMeta _primaryMeta =
+      const VerificationMeta('primary');
   @override
   late final GeneratedColumn<Uint8List> primary = GeneratedColumn<Uint8List>(
       'primary', aliasedName, true,
       type: DriftSqlType.blob, requiredDuringInsert: false);
-  final VerificationMeta _backdropMeta = const VerificationMeta('backdrop');
+  static const VerificationMeta _backdropMeta =
+      const VerificationMeta('backdrop');
   @override
   late final GeneratedColumn<Uint8List> backdrop = GeneratedColumn<Uint8List>(
       'backdrop', aliasedName, true,
       type: DriftSqlType.blob, requiredDuringInsert: false);
-  final VerificationMeta _itemMeta = const VerificationMeta('item');
+  static const VerificationMeta _itemMeta = const VerificationMeta('item');
   @override
   late final GeneratedColumnWithTypeConverter<Item?, String> item =
       GeneratedColumn<String>('item', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<Item?>($DownloadsTable.$converter0n);
+          .withConverter<Item?>($DownloadsTable.$converteritemn);
   @override
   List<GeneratedColumn> get $columns =>
       [id, name, path, primary, backdrop, item];
@@ -1257,17 +1269,17 @@ class $DownloadsTable extends Downloads
   Download map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Download(
-      id: attachedDatabase.options.types
+      id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.options.types
+      name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name']),
-      path: attachedDatabase.options.types
+      path: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}path'])!,
-      primary: attachedDatabase.options.types
+      primary: attachedDatabase.typeMapping
           .read(DriftSqlType.blob, data['${effectivePrefix}primary']),
-      backdrop: attachedDatabase.options.types
+      backdrop: attachedDatabase.typeMapping
           .read(DriftSqlType.blob, data['${effectivePrefix}backdrop']),
-      item: $DownloadsTable.$converter0n.fromSql(attachedDatabase.options.types
+      item: $DownloadsTable.$converteritemn.fromSql(attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}item'])),
     );
   }
@@ -1277,9 +1289,9 @@ class $DownloadsTable extends Downloads
     return $DownloadsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Item, String> $converter0 = const JsonConverter();
-  static TypeConverter<Item?, String?> $converter0n =
-      NullAwareTypeConverter.wrap($converter0);
+  static TypeConverter<Item, String> $converteritem = const JsonConverter();
+  static TypeConverter<Item?, String?> $converteritemn =
+      NullAwareTypeConverter.wrap($converteritem);
 }
 
 abstract class _$Database extends GeneratedDatabase {
@@ -1294,25 +1306,21 @@ abstract class _$Database extends GeneratedDatabase {
   late final SettingsDao settingsDao = SettingsDao(this as Database);
   late final DownloadsDao downloadsDao = DownloadsDao(this as Database);
   @override
-  Iterable<TableInfo<Table, dynamic>> get allTables =>
+  Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [servers, userApp, settings, downloads];
 }
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+mixin _$ServersDaoMixin on DatabaseAccessor<Database> {
+  $ServersTable get servers => attachedDatabase.servers;
+}
 mixin _$UserAppDaoMixin on DatabaseAccessor<Database> {
   $UserAppTable get userApp => attachedDatabase.userApp;
 }
 mixin _$SettingsDaoMixin on DatabaseAccessor<Database> {
   $SettingsTable get settings => attachedDatabase.settings;
-}
-mixin _$ServersDaoMixin on DatabaseAccessor<Database> {
-  $ServersTable get servers => attachedDatabase.servers;
 }
 mixin _$DownloadsDaoMixin on DatabaseAccessor<Database> {
   $DownloadsTable get downloads => attachedDatabase.downloads;

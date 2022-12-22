@@ -7,10 +7,7 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
-  dart_vlc:
-      git:
-        url: https://github.com/erikas-taroza/dart_vlc.git # Url to the repository
-        ref: e661980
+  dart_vlc: ^0.4.0
   flutter:
     sdk: flutter
   freezed_annotation: ^2.0.3
@@ -18,11 +15,11 @@ dependencies:
     path: ../items_repository
   jellyflut_models:
     path: ../jellyflut_models
-  sqlite_database:
-    path: ../sqlite_database
   json_annotation: ^4.6.0
   just_audio: ^0.9.27
   rxdart: ^0.27.4
+  sqlite_database:
+    path: ../sqlite_database
 
 dev_dependencies:
   build_runner: ^2.3.2

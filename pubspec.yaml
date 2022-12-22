@@ -14,21 +14,18 @@ module:
 dependencies:
   animated_fractionally_sized_box: ^2.0.1
   animations: ^2.0.7
-  archive: ^3.3.2
+  archive: ^3.3.5
   audio_video_progress_bar: ^0.11.0
   authentication_repository:
     path: packages/authentication_repository
-  auto_route: ^5.0.2
+  auto_route: ^5.0.4
   better_player: ^0.0.83
   blurhash_dart: ^1.1.0
-  cached_network_image: ^3.2.2
-  carousel_slider: ^4.1.1
+  cached_network_image: ^3.2.3
+  carousel_slider: ^4.2.1
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.5
-  dart_vlc:
-    git:
-      url: https://github.com/erikas-taroza/dart_vlc.git
-      ref: e661980
+  dart_vlc: ^0.4.0
   database_downloads_api:
     path: packages/database_downloads_api
   device_info_plus: ^8.0.0
@@ -37,8 +34,8 @@ dependencies:
     path: packages/downloads_api
   downloads_repository:
     path: packages/downloads_repository
-  drift: ^2.2.0
-  drop_shadow: ^0.0.1+4
+  drift: ^2.3.0
+  drop_shadow: ^0.0.2+1
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.1+1
   equatable: ^2.0.5

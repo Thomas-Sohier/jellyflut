@@ -10,7 +10,7 @@ dependencies:
   authentication_api:
     path: ../authentication_api
   dio: ^4.0.6
-  drift: ^2.2.0
+  drift: ^2.3.0
   freezed_annotation: ^2.0.3
   json_annotation: ^4.6.0
   shared_preferences: ^2.0.15

@@ -12,7 +12,7 @@ dependencies:
   dio: ^4.0.6
   downloads_api:
     path: ../downloads_api
-  drift: ^2.2.0
+  drift: ^2.3.0
   jellyflut_models:
     path: ../jellyflut_models
   json_annotation: ^4.5.0
