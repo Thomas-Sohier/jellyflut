@@ -29,8 +29,8 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
     _tabsRouter = context.tabsRouter;
     _tabsRouter.addListener(_excludeWatcher);
     _homeTabsCubit = context.read<HomeTabsCubit>();
-    _homeTabsCubit.addHomeTabController(
-        tabControllerUniqueKey, HomeTabController(tabs: tabs, tabController: tabController));
+    _homeTabsCubit.addHomeTabController(tabControllerUniqueKey,
+        HomeTabController(tabs: tabs, tabController: tabController));
     _homeTabsCubit.setCurrentHomeTabController(tabControllerUniqueKey);
   }
 
@@ -44,7 +44,8 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
             maintainAnimation: false,
             maintainSize: false,
             maintainState: true,
-            child: ExcludeFocus(excluding: value, child: child ?? const SizedBox()));
+            child: ExcludeFocus(
+                excluding: value, child: child ?? const SizedBox()));
       },
       child: child,
     );

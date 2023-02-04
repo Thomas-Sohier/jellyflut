@@ -11,7 +11,13 @@ class SongControls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [PrevButton(), SizedBox(width: 12), PlayPauseButton(), SizedBox(width: 12), NextButton()],
+      children: const [
+        PrevButton(),
+        SizedBox(width: 12),
+        PlayPauseButton(),
+        SizedBox(width: 12),
+        NextButton()
+      ],
     );
   }
 }

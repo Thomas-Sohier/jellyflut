@@ -18,14 +18,18 @@ class TrailerButton extends StatelessWidget {
 
   void playTrailer(BuildContext context, MediaUrl trailer) async {
     try {
-      final url = await context.read<StreamingRepository>().getYoutubeTrailerUrl(trailer);
+      final url = await context
+          .read<StreamingRepository>()
+          .getYoutubeTrailerUrl(trailer);
       await context.router.root.push(r.StreamPage(url: url.toString()));
     } catch (exception) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
-            content: Row(
-                children: [Flexible(child: Text(exception.toString())), Icon(Icons.play_disabled, color: Colors.red)]),
+            content: Row(children: [
+              Flexible(child: Text(exception.toString())),
+              Icon(Icons.play_disabled, color: Colors.red)
+            ]),
             width: 600));
     }
   }
@@ -44,23 +48,32 @@ class TrailerButton extends StatelessWidget {
                   // the Theme with Theme.of().
                   builder: (BuildContext dialogContext) => AlertDialog(
                         title: Text('trailer'.tr()),
-                        titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                        titlePadding:
+                            const EdgeInsets.only(left: 8, top: 16, bottom: 12),
                         contentPadding: const EdgeInsets.all(0),
-                        actions: [TextButton(onPressed: context.router.root.pop, child: Text('cancel'.tr()))],
+                        actions: [
+                          TextButton(
+                              onPressed: context.router.root.pop,
+                              child: Text('cancel'.tr()))
+                        ],
                         content: Container(
                           decoration: BoxDecoration(
-                            border: Border.symmetric(horizontal: BorderSide(width: 1)),
+                            border: Border.symmetric(
+                                horizontal: BorderSide(width: 1)),
                           ),
                           width: 600,
                           height: 300,
                           child: ListView.builder(
                               itemCount: trailers.length,
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
                               itemBuilder: (_, index) {
                                 return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 4),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
                                     child: TrailerDialogButton(
-                                        playTrailer: (_, mediaUrl) => playTrailer(context, mediaUrl),
+                                        playTrailer: (_, mediaUrl) =>
+                                            playTrailer(context, mediaUrl),
                                         theme: state.theme,
                                         index: index,
                                         trailer: trailers[index]));
@@ -78,7 +91,11 @@ class TrailerDialogButton extends StatelessWidget {
   final int index;
 
   const TrailerDialogButton(
-      {super.key, required this.index, required this.playTrailer, required this.theme, required this.trailer});
+      {super.key,
+      required this.index,
+      required this.playTrailer,
+      required this.theme,
+      required this.trailer});
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +113,12 @@ class TrailerDialogButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(trailer.name ?? 'Trailer #$index',
-                    maxLines: 2, style: theme.textTheme.bodyText1, overflow: TextOverflow.ellipsis),
+                    maxLines: 2,
+                    style: theme.textTheme.bodyText1,
+                    overflow: TextOverflow.ellipsis),
                 Text(trailer.url ?? '',
-                    style: TextStyle(color: theme.colorScheme.secondary), overflow: TextOverflow.ellipsis),
+                    style: TextStyle(color: theme.colorScheme.secondary),
+                    overflow: TextOverflow.ellipsis),
               ],
             ),
           ),

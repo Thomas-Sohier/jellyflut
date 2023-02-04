@@ -17,9 +17,11 @@ abstract class FormBuilder {
     formGroup = _buildForm();
   }
 
-  FormGroup _buildForm() => throw UnimplementedError('_buildForm needs to be implemented');
+  FormGroup _buildForm() =>
+      throw UnimplementedError('_buildForm needs to be implemented');
 
-  Item formToItem() => throw UnimplementedError('formToItem needs to be implemented');
+  Item formToItem() =>
+      throw UnimplementedError('formToItem needs to be implemented');
 
   dynamic getFormValue(String name) => formGroup.control(name).value;
 }

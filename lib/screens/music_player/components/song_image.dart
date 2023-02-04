@@ -19,9 +19,11 @@ class SongImage extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5)),
           child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-            buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+            buildWhen: (previous, current) =>
+                previous.currentlyPlaying != current.currentlyPlaying,
             builder: (context, state) {
-              if (state.currentlyPlaying == null) return const SongImagePlaceholder();
+              if (state.currentlyPlaying == null)
+                return const SongImagePlaceholder();
               return const AlbumImage();
             },
           ),
@@ -42,7 +44,9 @@ class AlbumImage extends StatelessWidget {
           alignment: Alignment.center,
           children: const [
             AspectRatio(aspectRatio: 1, child: ImageFromByte()),
-            Positioned.fill(child: Align(alignment: Alignment.centerLeft, child: SongSlider())),
+            Positioned.fill(
+                child: Align(
+                    alignment: Alignment.centerLeft, child: SongSlider())),
           ],
         ));
   }
@@ -55,7 +59,8 @@ class AlbumImage extends StatelessWidget {
     final posx = localOffset.dx;
     final percentWidth = posx / widgetWidth!;
     final position = musicPlayerBloc.state.duration * percentWidth;
-    if (position.inMilliseconds > 0 && position < musicPlayerBloc.state.duration) {
+    if (position.inMilliseconds > 0 &&
+        position < musicPlayerBloc.state.duration) {
       musicPlayerBloc.add(SeekRequested(position: position));
     }
   }
@@ -70,7 +75,8 @@ class ImageFromByte extends StatelessWidget {
     if (musicPlayerBloc.state.currentlyPlaying == null) return const SizedBox();
 
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+        buildWhen: (previous, current) =>
+            previous.currentlyPlaying != current.currentlyPlaying,
         builder: (context, state) => OctoImage(
               image: MemoryImage(state.currentlyPlaying!.metadata.artworkByte),
               placeholderBuilder: (_) => const SongImagePlaceholder(),
@@ -88,8 +94,10 @@ class SongImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = ColorUtil.darken(Theme.of(context).colorScheme.background);
-    final iconColor = ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
+    final backgroundColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.background);
+    final iconColor =
+        ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
     return ColoredBox(
         color: backgroundColor,
         child: Center(

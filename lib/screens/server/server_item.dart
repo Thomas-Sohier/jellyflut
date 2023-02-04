@@ -8,7 +8,8 @@ import 'package:sqlite_database/sqlite_database.dart';
 class ServerItem extends StatelessWidget {
   final bool isInUse;
   final ServersWithUsers serverWithUser;
-  const ServerItem({super.key, required this.serverWithUser, this.isInUse = false});
+  const ServerItem(
+      {super.key, required this.serverWithUser, this.isInUse = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,9 @@ class ServerItem extends StatelessWidget {
                 enableDrag: true,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(4), topRight: Radius.circular(4)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4)),
                 ),
                 constraints: BoxConstraints(maxWidth: 600, maxHeight: 400),
                 builder: (_) => UserSelection(server: serverWithUser.server)),
@@ -41,7 +44,8 @@ class ServerItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(children: [
-                              Text('#${serverWithUser.server.id} - ${serverWithUser.server.name}',
+                              Text(
+                                  '#${serverWithUser.server.id} - ${serverWithUser.server.name}',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodyText1),
@@ -54,7 +58,9 @@ class ServerItem extends StatelessWidget {
                             nbUsers(context)
                           ]),
                     ),
-                    IconButton(onPressed: () => deleteServer(context), icon: Icon(Icons.remove_circle))
+                    IconButton(
+                        onPressed: () => deleteServer(context),
+                        icon: Icon(Icons.remove_circle))
                   ]),
             ),
           ),
@@ -64,25 +70,41 @@ class ServerItem extends StatelessWidget {
   Widget inUsedText(final BuildContext context) {
     if (isInUse) {
       return Text('In use',
-          style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Theme.of(context).colorScheme.secondary));
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2
+              ?.copyWith(color: Theme.of(context).colorScheme.secondary));
     }
     return const SizedBox();
   }
 
   Widget nbUsers(final BuildContext context) {
     return Text('${serverWithUser.users.length} users',
-        style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Theme.of(context).colorScheme.tertiary));
+        style: Theme.of(context)
+            .textTheme
+            .bodyText2
+            ?.copyWith(color: Theme.of(context).colorScheme.tertiary));
   }
 
   void deleteServer(BuildContext context) {
     final serverCompanion = serverWithUser.server.toCompanion(true);
-    AppDatabase().getDatabase.serversDao.deleteServer(serverCompanion).then((int nbRowsDeleted) {
+    AppDatabase()
+        .getDatabase
+        .serversDao
+        .deleteServer(serverCompanion)
+        .then((int nbRowsDeleted) {
       if (nbRowsDeleted == 0) {
         return SnackbarUtil.message(
-            messageTitle: 'Error, no server deleted', icon: Icons.error, color: Colors.red, context: context);
+            messageTitle: 'Error, no server deleted',
+            icon: Icons.error,
+            color: Colors.red,
+            context: context);
       }
       return SnackbarUtil.message(
-          messageTitle: 'Server deleted', icon: Icons.remove_done, color: Colors.green, context: context);
+          messageTitle: 'Server deleted',
+          icon: Icons.remove_done,
+          color: Colors.green,
+          context: context);
     }).catchError((error) {
       SnackbarUtil.message(
           messageTitle: 'Error, no server deleted, ${error.toString()}',

@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:jellyfin_authentication_api/src/models/subtitle_mode.dart';
 
-
 part 'configuration.freezed.dart';
 part 'configuration.g.dart';
 
@@ -40,5 +39,6 @@ class Configuration with _$Configuration {
       required bool enableNextEpisodeAutoPlay}) = _Configuration;
 
   /// Deserializes the given [JsonMap] into a [Configuration].
-  factory Configuration.fromJson(Map<String, Object?> json) => _$ConfigurationFromJson(json);
+  factory Configuration.fromJson(Map<String, Object?> json) =>
+      _$ConfigurationFromJson(json);
 }

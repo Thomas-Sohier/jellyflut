@@ -4,7 +4,11 @@ class FontSizeField extends StatelessWidget {
   final FormGroup form;
   final String fieldName;
   final String formKey;
-  const FontSizeField({super.key, required this.form, required this.fieldName, required this.formKey});
+  const FontSizeField(
+      {super.key,
+      required this.form,
+      required this.fieldName,
+      required this.formKey});
 
   @override
   Widget build(BuildContext context) {

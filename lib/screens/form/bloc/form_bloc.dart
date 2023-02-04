@@ -13,7 +13,8 @@ class FormBloc extends Bloc<FormEvent, FormState> {
 
   FormBloc({required ItemsRepository itemsRepository, required Item item})
       : _itemsRepository = itemsRepository,
-        super(FormState(formBuilder: InitialFormBuilder(item: item), item: item)) {
+        super(FormState(
+            formBuilder: InitialFormBuilder(item: item), item: item)) {
     on<InitForm>(_initForm);
     on<FormSubmitted>(_submitForm);
     on<ResetForm>(_resetForm);
@@ -29,11 +30,14 @@ class FormBloc extends Bloc<FormEvent, FormState> {
       default:
         formBuilder = InitialItemFormBuilder(item: state.item);
     }
-    emit(state.copyWith(formBuilder: formBuilder, formStatus: FormStatus.loaded));
+    emit(state.copyWith(
+        formBuilder: formBuilder, formStatus: FormStatus.loaded));
   }
 
   void _resetForm(ResetForm event, Emitter<FormState> emit) {
-    emit(state.copyWith(formBuilder: InitialFormBuilder(item: state.item), formStatus: FormStatus.loaded));
+    emit(state.copyWith(
+        formBuilder: InitialFormBuilder(item: state.item),
+        formStatus: FormStatus.loaded));
   }
 
   Future<void> _submitForm(FormSubmitted event, Emitter<FormState> emit) async {
@@ -47,6 +51,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     return _itemsRepository
         .updateItem(item: state.formBuilder.formToItem())
         .then((_) => emit(state.copyWith(formStatus: FormStatus.submitted)))
-        .onError((_, __) => emit(state.copyWith(formStatus: FormStatus.failure)));
+        .onError(
+            (_, __) => emit(state.copyWith(formStatus: FormStatus.failure)));
   }
 }

@@ -17,7 +17,8 @@ class PeoplesDetailsWidget extends StatelessWidget {
             sliver: SliverToBoxAdapter(
                 child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('item_cast'.tr(args: [state.item.name ?? '']), style: Theme.of(context).textTheme.headline5),
+              child: Text('item_cast'.tr(args: [state.item.name ?? '']),
+                  style: Theme.of(context).textTheme.headline5),
             ))),
         const SliverToBoxAdapter(child: SizedBox(height: 8)),
         SliverPadding(

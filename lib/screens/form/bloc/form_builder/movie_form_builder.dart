@@ -9,16 +9,25 @@ class MovieFormBuilder extends FormBuilder {
           value: item.name,
           validators: [Validators.required],
         ),
-        FieldsEnum.ORIGINALTITLE.fieldName: FormControl<String>(value: item.originalTitle),
-        FieldsEnum.COMMUNITYRATING.fieldName: FormControl<double>(value: item.communityRating),
-        FieldsEnum.DATECREATED.fieldName: FormControl<DateTime>(value: item.dateCreated),
-        FieldsEnum.OVERVIEW.fieldName: FormControl<String>(value: item.overview),
-        FieldsEnum.PREMIEREDATE.fieldName: FormControl<DateTime>(value: item.premiereDate),
-        FieldsEnum.PRODUCTIONYEAR.fieldName: FormControl<int>(value: item.productionYear),
-        FieldsEnum.PEOPLE.fieldName: FormControl<List<People>>(value: item.people),
-        FieldsEnum.STUDIOS.fieldName: FormControl<List<NamedGuidPair>>(value: item.studios),
+        FieldsEnum.ORIGINALTITLE.fieldName:
+            FormControl<String>(value: item.originalTitle),
+        FieldsEnum.COMMUNITYRATING.fieldName:
+            FormControl<double>(value: item.communityRating),
+        FieldsEnum.DATECREATED.fieldName:
+            FormControl<DateTime>(value: item.dateCreated),
+        FieldsEnum.OVERVIEW.fieldName:
+            FormControl<String>(value: item.overview),
+        FieldsEnum.PREMIEREDATE.fieldName:
+            FormControl<DateTime>(value: item.premiereDate),
+        FieldsEnum.PRODUCTIONYEAR.fieldName:
+            FormControl<int>(value: item.productionYear),
+        FieldsEnum.PEOPLE.fieldName:
+            FormControl<List<People>>(value: item.people),
+        FieldsEnum.STUDIOS.fieldName:
+            FormControl<List<NamedGuidPair>>(value: item.studios),
         FieldsEnum.TAGS.fieldName: FormControl<List<String>>(value: item.tags),
-        FieldsEnum.GENRES.fieldName: FormControl<List<String?>>(value: item.genres)
+        FieldsEnum.GENRES.fieldName:
+            FormControl<List<String?>>(value: item.genres)
       });
 
   @override

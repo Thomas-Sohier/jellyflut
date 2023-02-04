@@ -15,7 +15,8 @@ class CurrentDurationPlayer extends StatelessWidget {
       initialData: Duration.zero,
       builder: (context, snapshot) {
         return Text(printDuration(snapshot.data ?? Duration.zero),
-            style: theme.textTheme.bodyText1?.copyWith(color: theme.colorScheme.onBackground));
+            style: theme.textTheme.bodyText1
+                ?.copyWith(color: theme.colorScheme.onBackground));
       },
     );
   }

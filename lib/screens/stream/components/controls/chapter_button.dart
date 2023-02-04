@@ -74,7 +74,8 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   PopupMenuItem<Chapter> chapterItem(Chapter chapter) {
-    final chapterPosition = Duration(microseconds: (chapter.startPositionTicks / 10).round());
+    final chapterPosition =
+        Duration(microseconds: (chapter.startPositionTicks / 10).round());
     return PopupMenuItem<Chapter>(
       value: chapter,
       child: Column(
@@ -92,7 +93,8 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   void goToChapter(Chapter chapter) {
-    final chapterPosition = Duration(microseconds: (chapter.startPositionTicks / 10).round());
+    final chapterPosition =
+        Duration(microseconds: (chapter.startPositionTicks / 10).round());
     context.read<StreamCubit>().state.controller!.seekTo(chapterPosition);
   }
 }

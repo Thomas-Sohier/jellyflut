@@ -10,8 +10,12 @@ class TitleField extends StatelessWidget {
         validationMessages: {
           ValidationMessage.required: (_) => 'The title must not be empty',
         },
-        onSubmitted: (_) =>
-            context.read<FormBloc>().state.formBuilder.formGroup.focus(FieldsEnum.ORIGINALTITLE.fieldName),
+        onSubmitted: (_) => context
+            .read<FormBloc>()
+            .state
+            .formBuilder
+            .formGroup
+            .focus(FieldsEnum.ORIGINALTITLE.fieldName),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(labelText: 'Title'));
   }

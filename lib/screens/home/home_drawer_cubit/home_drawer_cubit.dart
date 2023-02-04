@@ -5,7 +5,9 @@ import 'package:jellyflut/components/layout_builder_screen.dart';
 part 'home_drawer_state.dart';
 
 class HomeDrawerCubit extends Cubit<HomeDrawerState> {
-  HomeDrawerCubit({DrawerLayout drawerLayout = DrawerLayout.desktop, int currentIndexSelected = 0})
+  HomeDrawerCubit(
+      {DrawerLayout drawerLayout = DrawerLayout.desktop,
+      int currentIndexSelected = 0})
       : super(HomeDrawerState(
             currentIndexSelected: currentIndexSelected,
             drawerLayout: drawerLayout,
@@ -14,7 +16,8 @@ class HomeDrawerCubit extends Cubit<HomeDrawerState> {
 
   void toggleDrawerSize() {
     if (!state.fixDrawerType) return;
-    final newDrawerType = state.isCompact ? DrawerType.large : DrawerType.compact;
+    final newDrawerType =
+        state.isCompact ? DrawerType.large : DrawerType.compact;
     emit(state.copyWith(drawerType: newDrawerType));
   }
 

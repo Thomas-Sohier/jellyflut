@@ -7,7 +7,9 @@ part 'image_tag.g.dart';
 
 @Freezed()
 class ImageTag with _$ImageTag {
-  factory ImageTag({required ImageType imageType, required String value}) = _ImageTag;
+  factory ImageTag({required ImageType imageType, required String value}) =
+      _ImageTag;
 
-  factory ImageTag.fromJson(Map<String, Object?> json) => _$ImageTagFromJson(json);
+  factory ImageTag.fromJson(Map<String, Object?> json) =>
+      _$ImageTagFromJson(json);
 }

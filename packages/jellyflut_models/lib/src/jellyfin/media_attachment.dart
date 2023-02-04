@@ -7,7 +7,6 @@ part 'media_attachment.g.dart';
 class MediaAttachment with _$MediaAttachment {
   factory MediaAttachment(
       {
-
       /// Gets or sets the codec.
       String? codec,
 
@@ -29,5 +28,6 @@ class MediaAttachment with _$MediaAttachment {
       /// Gets or sets the delivery URL
       String? deliveryUrl}) = _MediaAttachment;
 
-  factory MediaAttachment.fromJson(Map<String, Object?> json) => _$MediaAttachmentFromJson(json);
+  factory MediaAttachment.fromJson(Map<String, Object?> json) =>
+      _$MediaAttachmentFromJson(json);
 }

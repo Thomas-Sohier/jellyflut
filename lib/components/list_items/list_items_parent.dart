@@ -95,7 +95,8 @@ class ListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (collectionBloc != null) {
-      return BlocProvider<CollectionBloc>.value(value: collectionBloc!, child: ListItemsView());
+      return BlocProvider<CollectionBloc>.value(
+          value: collectionBloc!, child: ListItemsView());
     }
     return BlocProvider<CollectionBloc>(
         create: (_) => CollectionBloc(
@@ -130,7 +131,9 @@ class _ListItemsViewState extends State<ListItemsView> {
     super.initState();
     // scroll listener to add items on scroll only if loadmore function as been defined
     _scrollController.addListener(_scrollListener);
-    context.read<CollectionBloc>().add(SetScrollController(scrollController: _scrollController));
+    context
+        .read<CollectionBloc>()
+        .add(SetScrollController(scrollController: _scrollController));
   }
 
   void _scrollListener() {
@@ -158,7 +161,8 @@ class _ListItemsViewState extends State<ListItemsView> {
   Widget buildList() {
     return BlocBuilder<CollectionBloc, SeasonState>(
         buildWhen: (previous, current) =>
-            previous.collectionStatus != current.collectionStatus || previous.items != current.items,
+            previous.collectionStatus != current.collectionStatus ||
+            previous.items != current.items,
         builder: (_, state) {
           switch (state.collectionStatus) {
             case SeasonStatus.initial:
@@ -206,7 +210,8 @@ class VerticalListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
+    final items =
+        context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
     return ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 600),
         child: ListTitle(
@@ -227,7 +232,8 @@ class HorizontalListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
+    final items =
+        context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
     return ListTitle(
         item: items.first,
         showTitle: context.read<CollectionBloc>().state.showTitle,
@@ -244,7 +250,8 @@ class GridListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
+    final items =
+        context.select<CollectionBloc, List<Item>>((bloc) => bloc.state.items);
     return ListTitle(
         item: items.first,
         showTitle: context.read<CollectionBloc>().state.showTitle,

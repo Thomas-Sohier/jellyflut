@@ -12,11 +12,15 @@ abstract class AuthenticationApi {
   const AuthenticationApi();
 
   Future<User> logIn(
-      {required String serverName, required String serverUrl, required String username, required String password});
+      {required String serverName,
+      required String serverUrl,
+      required String username,
+      required String password});
 
   Future<void> logout({required String serverUrl});
 
-  Future<TokenInterceptor> generateToken({String? accessToken, String? refreshToken});
+  Future<TokenInterceptor> generateToken(
+      {String? accessToken, String? refreshToken});
 }
 
 /// Error thrown when login fail

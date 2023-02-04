@@ -40,7 +40,8 @@ class _CompactBookViewState extends State<CompactBookView> {
     listener = widget.listener;
     pageController = widget.pageController;
     streamPosition = widget.streamPosition;
-    streamPosition.first.then((value) => pageController.jumpToPage(value.keys.first));
+    streamPosition.first
+        .then((value) => pageController.jumpToPage(value.keys.first));
     scrollController = ScrollController();
     super.initState();
   }
@@ -58,7 +59,8 @@ class _CompactBookViewState extends State<CompactBookView> {
           title: Text(item.name ?? ''),
           actions: [
             SettingButton(),
-            PageCounterParent(streamPage: streamPosition, controller: pageController),
+            PageCounterParent(
+                streamPage: streamPosition, controller: pageController),
           ],
         ),
         backgroundColor: Colors.black,

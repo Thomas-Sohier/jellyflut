@@ -50,7 +50,8 @@ class MediaStream with _$MediaStream {
     String? localizedForced,
   }) = _MediaStream;
 
-  factory MediaStream.fromJson(Map<String, Object?> json) => _$MediaStreamFromJson(json);
+  factory MediaStream.fromJson(Map<String, Object?> json) =>
+      _$MediaStreamFromJson(json);
 
   bool isRemote() {
     if (isExternal != null) return isExternal!;

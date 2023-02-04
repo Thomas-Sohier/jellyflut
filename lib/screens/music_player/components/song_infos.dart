@@ -33,10 +33,16 @@ class SongTitleLabel extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(top: 12),
         child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-          buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
-          builder: (context, state) => Text(state.currentlyPlaying?.metadata.title ?? '',
+          buildWhen: (previous, current) =>
+              previous.currentlyPlaying.hashCode !=
+              current.currentlyPlaying.hashCode,
+          builder: (context, state) => Text(
+              state.currentlyPlaying?.metadata.title ?? '',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(fontWeight: FontWeight.bold)),
         ));
   }
 }
@@ -47,7 +53,9 @@ class SongArtistLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+        buildWhen: (previous, current) =>
+            previous.currentlyPlaying.hashCode !=
+            current.currentlyPlaying.hashCode,
         builder: (context, state) {
           final audioSource = state.currentlyPlaying;
 
@@ -55,7 +63,8 @@ class SongArtistLabel extends StatelessWidget {
             return GestureDetector(
               onTap: () async {
                 if (audioSource.metadata.artist.isNotEmpty) {
-                  await context.router.root.push(r.DetailsPage(item: audioSource.metadata.item, heroTag: ''));
+                  await context.router.root.push(r.DetailsPage(
+                      item: audioSource.metadata.item, heroTag: ''));
                 }
               },
               child: Text(
@@ -75,7 +84,9 @@ class SongFavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+        buildWhen: (previous, current) =>
+            previous.currentlyPlaying.hashCode !=
+            current.currentlyPlaying.hashCode,
         builder: (context, state) {
           if (state.currentlyPlaying != null) {
             return FavButton(

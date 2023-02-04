@@ -9,5 +9,6 @@ class ExternalUrl with _$ExternalUrl {
     String? name,
     String? url,
   }) = _ExternalUrl;
-  factory ExternalUrl.fromJson(Map<String, Object?> json) => _$ExternalUrlFromJson(json);
+  factory ExternalUrl.fromJson(Map<String, Object?> json) =>
+      _$ExternalUrlFromJson(json);
 }

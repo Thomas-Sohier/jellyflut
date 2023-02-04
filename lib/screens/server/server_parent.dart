@@ -53,11 +53,17 @@ class _ServerParentState extends State<ServerParent> {
                         controller: _scrollController,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (_, index) {
-                          final serverWithUser = snapshot.data!.elementAt(index);
-                          final currentServer = context.read<AuthenticationRepository>().currentServer;
-                          final isInUse = serverWithUser.server.id == currentServer.id;
+                          final serverWithUser =
+                              snapshot.data!.elementAt(index);
+                          final currentServer = context
+                              .read<AuthenticationRepository>()
+                              .currentServer;
+                          final isInUse =
+                              serverWithUser.server.id == currentServer.id;
                           return ServerItem(
-                              key: ValueKey(serverWithUser), serverWithUser: serverWithUser, isInUse: isInUse);
+                              key: ValueKey(serverWithUser),
+                              serverWithUser: serverWithUser,
+                              isInUse: isInUse);
                         });
                   } else if (snapshot.hasError) {
                     return Center(child: Text(snapshot.error.toString()));

@@ -9,12 +9,16 @@ class ViewButton extends StatelessWidget {
   final double size;
   final Item item;
 
-  const ViewButton({required this.item, this.padding = const EdgeInsets.all(10), this.size = 26});
+  const ViewButton(
+      {required this.item,
+      this.padding = const EdgeInsets.all(10),
+      this.size = 26});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ViewCubit(context.read<ItemsRepository>(), item: item),
+      create: (context) =>
+          ViewCubit(context.read<ItemsRepository>(), item: item),
       child: ViewButtonView(padding: padding, size: size),
     );
   }
@@ -76,7 +80,8 @@ class ViewButtonUnchecked extends StatelessWidget {
         onTap: context.read<ViewCubit>().toggleFavorite,
         child: Padding(
           padding: padding,
-          child: Icon(Icons.check_box, color: Colors.green.shade600, size: size),
+          child:
+              Icon(Icons.check_box, color: Colors.green.shade600, size: size),
         ));
   }
 }

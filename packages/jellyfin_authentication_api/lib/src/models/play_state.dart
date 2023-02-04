@@ -32,5 +32,6 @@ class PlayState with _$PlayState {
       String? liveStreamId}) = _PlayState;
 
   /// Deserializes the given [JsonMap] into a [Configuration].
-  factory PlayState.fromJson(Map<String, Object?> json) => _$PlayStateFromJson(json);
+  factory PlayState.fromJson(Map<String, Object?> json) =>
+      _$PlayStateFromJson(json);
 }

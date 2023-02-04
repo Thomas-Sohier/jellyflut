@@ -9,12 +9,16 @@ class FavButton extends StatelessWidget {
   final double size;
   final Item item;
 
-  const FavButton({required this.item, this.padding = const EdgeInsets.all(10), this.size = 26});
+  const FavButton(
+      {required this.item,
+      this.padding = const EdgeInsets.all(10),
+      this.size = 26});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FavCubit(context.read<ItemsRepository>(), item: item),
+      create: (context) =>
+          FavCubit(context.read<ItemsRepository>(), item: item),
       child: FavButtonView(padding: padding, size: size),
     );
   }

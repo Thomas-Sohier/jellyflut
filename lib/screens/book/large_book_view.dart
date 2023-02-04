@@ -44,7 +44,8 @@ class _LargeBookViewState extends State<LargeBookView> {
     pageController = widget.pageController;
     streamPosition = widget.streamPosition;
     scrollController = ScrollController();
-    streamPosition.first.then((value) => pageController.jumpToPage(value.keys.first));
+    streamPosition.first
+        .then((value) => pageController.jumpToPage(value.keys.first));
     super.initState();
   }
 
@@ -58,7 +59,8 @@ class _LargeBookViewState extends State<LargeBookView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(item.name ?? '', style: Theme.of(context).textTheme.headline5),
+          title: Text(item.name ?? '',
+              style: Theme.of(context).textTheme.headline5),
           actions: [SettingButton()],
         ),
         extendBodyBehindAppBar: false,
@@ -68,14 +70,18 @@ class _LargeBookViewState extends State<LargeBookView> {
           height: double.maxFinite,
           child: Row(children: [
             Container(
-              color: ColorUtil.lighten(Theme.of(context).colorScheme.background, 0.1),
+              color: ColorUtil.lighten(
+                  Theme.of(context).colorScheme.background, 0.1),
               width: 200,
               child: Column(
                 children: [
                   SizedBox(
                     height: 60,
                     width: 300,
-                    child: PageCounterParent(controller: pageController, streamPage: streamPosition, clickable: false),
+                    child: PageCounterParent(
+                        controller: pageController,
+                        streamPage: streamPosition,
+                        clickable: false),
                   ),
                   Expanded(child: pageButtonsBuilder())
                 ],
@@ -99,7 +105,8 @@ class _LargeBookViewState extends State<LargeBookView> {
 
   Widget pageButtonsBuilder() {
     return StreamBuilder<Map<int, int>>(
-        stream: streamPosition, builder: (context, snapshot) => pageButtons(snapshot.data));
+        stream: streamPosition,
+        builder: (context, snapshot) => pageButtons(snapshot.data));
   }
 
   Widget pageButtons(Map<int, int>? bookMap) {
@@ -113,23 +120,27 @@ class _LargeBookViewState extends State<LargeBookView> {
           scrollDirection: Axis.vertical,
           itemCount: nbPages,
           shrinkWrap: true,
-          itemBuilder: (context, index) => pageButton(listValues.elementAt(index), currentPage, context)),
+          itemBuilder: (context, index) =>
+              pageButton(listValues.elementAt(index), currentPage, context)),
     );
   }
 
   Widget pageButton(int pageNumber, int currentPage, BuildContext context) {
     return TextButton(
-        onPressed: () =>
-            pageController.animateToPage(pageNumber, duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
-        child:
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-          if (pageNumber == currentPage)
-            Padding(
-              padding: const EdgeInsets.only(left: 2, right: 2),
-              child: Icon(Icons.check, size: 24),
-            ),
-          if (pageNumber != currentPage) SizedBox(width: 28),
-          Text('page_number'.tr(args: [pageNumber.toString()]), style: Theme.of(context).textTheme.bodyText2)
-        ]));
+        onPressed: () => pageController.animateToPage(pageNumber,
+            duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (pageNumber == currentPage)
+                Padding(
+                  padding: const EdgeInsets.only(left: 2, right: 2),
+                  child: Icon(Icons.check, size: 24),
+                ),
+              if (pageNumber != currentPage) SizedBox(width: 28),
+              Text('page_number'.tr(args: [pageNumber.toString()]),
+                  style: Theme.of(context).textTheme.bodyText2)
+            ]));
   }
 }

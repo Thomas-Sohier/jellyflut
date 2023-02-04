@@ -11,7 +11,9 @@ class ItemParentTitle extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .headline6
-            ?.copyWith(foreground: Paint()..shader = CustomGradient(context).linearGradient)
+            ?.copyWith(
+                foreground: Paint()
+                  ..shader = CustomGradient(context).linearGradient)
             .copyWith(fontWeight: FontWeight.w600));
   }
 }

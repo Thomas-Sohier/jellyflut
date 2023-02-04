@@ -21,17 +21,21 @@ class LiveTvPage extends StatefulWidget {
   State<LiveTvPage> createState() => _LiveTvPageState();
 }
 
-class _LiveTvPageState extends State<LiveTvPage> with TickerProviderStateMixin, HomeTab {
+class _LiveTvPageState extends State<LiveTvPage>
+    with TickerProviderStateMixin, HomeTab {
   @override
-  List<Widget> get tabs => const <Tab>[Tab(text: 'Chaines'), Tab(text: 'Guide')];
+  List<Widget> get tabs =>
+      const <Tab>[Tab(text: 'Chaines'), Tab(text: 'Guide')];
 
   @override
-  TabController get tabController => TabController(length: tabs.length, vsync: this);
+  TabController get tabController =>
+      TabController(length: tabs.length, vsync: this);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LiveTvGuideCubit(liveTvRepository: context.read<LiveTvRepository>()),
+      create: (_) =>
+          LiveTvGuideCubit(liveTvRepository: context.read<LiveTvRepository>()),
       child: super.visibiltyBuilder(child: const LiveTvView()),
     );
   }
@@ -46,7 +50,8 @@ class LiveTvView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabControllers =
-        context.select<HomeTabsCubit, Map<Key, HomeTabController>>((cubit) => cubit.state.homeTabControllers);
+        context.select<HomeTabsCubit, Map<Key, HomeTabController>>(
+            (cubit) => cubit.state.homeTabControllers);
     return BlocBuilder<LiveTvGuideCubit, LiveTvGuideState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (_, state) {
@@ -75,8 +80,15 @@ class ChannelsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListItems.fromCustomRequest(
       fetchMethod: (startIndex, limit) async {
-        await context.read<LiveTvGuideCubit>().loadLiveTvGuide(startIndex: startIndex, limit: limit);
-        return context.read<LiveTvGuideCubit>().state.guide.map((e) => e.channel).toList();
+        await context
+            .read<LiveTvGuideCubit>()
+            .loadLiveTvGuide(startIndex: startIndex, limit: limit);
+        return context
+            .read<LiveTvGuideCubit>()
+            .state
+            .guide
+            .map((e) => e.channel)
+            .toList();
       },
       notFoundPlaceholder: const _ChannelPlaceholder(),
       verticalListPosterHeight: 150,
@@ -95,7 +107,8 @@ class _ChannelPlaceholder extends StatelessWidget {
     return Container(
       color: ColorUtil.darken(Theme.of(context).colorScheme.background),
       child: Center(
-        child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
+        child:
+            Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
       ),
     );
   }

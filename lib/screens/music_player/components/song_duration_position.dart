@@ -11,18 +11,22 @@ class SongDurationPosition extends StatelessWidget {
     return Row(
       children: [
         BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-            buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+            buildWhen: (previous, current) =>
+                previous.currentlyPlaying != current.currentlyPlaying,
             builder: (context, state) => StreamBuilder<Duration?>(
                 stream: state.postionStream,
                 builder: (context, snapshot) => Text(
-                      snapshot.data != null ? printDuration(snapshot.data!) : '0.00',
+                      snapshot.data != null
+                          ? printDuration(snapshot.data!)
+                          : '0.00',
                       style: Theme.of(context).textTheme.bodyText1,
                     ))),
         Spacer(),
         BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-            buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
-            builder: (context, state) =>
-                Text(printDuration(state.duration), style: Theme.of(context).textTheme.bodyText1))
+            buildWhen: (previous, current) =>
+                previous.currentlyPlaying != current.currentlyPlaying,
+            builder: (context, state) => Text(printDuration(state.duration),
+                style: Theme.of(context).textTheme.bodyText1))
       ],
     );
   }

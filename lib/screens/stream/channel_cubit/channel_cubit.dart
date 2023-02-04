@@ -28,7 +28,9 @@ class ChannelCubit extends Cubit<ChannelState> {
       emit(state.copyWith(failureMessage: e.message, status: Status.failure));
     } catch (e, s) {
       print(s);
-      emit(state.copyWith(failureMessage: (e as dynamic)?.message.toString() ?? e.toString(), status: Status.failure));
+      emit(state.copyWith(
+          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(),
+          status: Status.failure));
     }
   }
 

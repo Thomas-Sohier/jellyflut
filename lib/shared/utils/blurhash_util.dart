@@ -10,7 +10,8 @@ class BlurHashUtil {
     return compute(Palette.generatePalettefromBlurhash, hash);
   }
 
-  static String? fallBackBlurHash(ImageBlurHashes? imageBlurHashes, ImageType tag) {
+  static String? fallBackBlurHash(
+      ImageBlurHashes? imageBlurHashes, ImageType tag) {
     if (imageBlurHashes == null) {
       return null;
     } else if (tag == ImageType.Primary) {
@@ -30,13 +31,17 @@ class BlurHashUtil {
   }
 
   static String? _fallBackBlurHashPrimary(ImageBlurHashes imageBlurHashes) {
-    if (imageBlurHashes.primary != null && imageBlurHashes.primary!.values.isNotEmpty) {
+    if (imageBlurHashes.primary != null &&
+        imageBlurHashes.primary!.values.isNotEmpty) {
       return imageBlurHashes.primary!.values.first;
-    } else if (imageBlurHashes.backdrop != null && imageBlurHashes.backdrop!.values.isNotEmpty) {
+    } else if (imageBlurHashes.backdrop != null &&
+        imageBlurHashes.backdrop!.values.isNotEmpty) {
       return imageBlurHashes.backdrop!.values.first;
-    } else if (imageBlurHashes.art != null && imageBlurHashes.art!.values.isNotEmpty) {
+    } else if (imageBlurHashes.art != null &&
+        imageBlurHashes.art!.values.isNotEmpty) {
       return imageBlurHashes.art!.values.first;
-    } else if (imageBlurHashes.thumb != null && imageBlurHashes.thumb!.values.isNotEmpty) {
+    } else if (imageBlurHashes.thumb != null &&
+        imageBlurHashes.thumb!.values.isNotEmpty) {
       return imageBlurHashes.thumb!.values.first;
     }
     return null;

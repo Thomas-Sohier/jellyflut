@@ -13,7 +13,9 @@ class Controllerbuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.read<StreamCubit>().state.controller is VideoPlayerController) {
-      return VideoPlayer(context.read<StreamCubit>().state.controller as VideoPlayerController, key: UniqueKey());
+      return VideoPlayer(
+          context.read<StreamCubit>().state.controller as VideoPlayerController,
+          key: UniqueKey());
     } else {
       throw UnsupportedPlayerException('Unknow controller');
     }

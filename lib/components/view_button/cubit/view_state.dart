@@ -13,13 +13,15 @@ extension ViewStatusX on ViewStatus {
 class ViewState extends Equatable {
   ViewState({this.status = ViewStatus.initial, this.isViewed = false});
 
-  factory ViewState.fromJson(Map<String, dynamic> json) => _$ViewStateFromJson(json);
+  factory ViewState.fromJson(Map<String, dynamic> json) =>
+      _$ViewStateFromJson(json);
 
   final ViewStatus status;
   final bool isViewed;
 
   ViewState copyWith({ViewStatus? status, bool? isViewed}) {
-    return ViewState(status: status ?? this.status, isViewed: isViewed ?? this.isViewed);
+    return ViewState(
+        status: status ?? this.status, isViewed: isViewed ?? this.isViewed);
   }
 
   Map<String, dynamic> toJson() => _$ViewStateToJson(this);

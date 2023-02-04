@@ -10,7 +10,8 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => context.read<MusicPlayerBloc>().add(NextSongRequested()),
+        onPressed: () =>
+            context.read<MusicPlayerBloc>().add(NextSongRequested()),
         background: Theme.of(context).colorScheme.primary,
         shape: const RoundedRectangleBorder(
           borderRadius: borderRadiusButton,

@@ -34,7 +34,8 @@ class BookUtils {
   }
 
   static Future<String> _downloadItemOnStorage(Item item) async {
-    throw UnimplementedError('download of ebook not yet impelmented'); // if (Platform.isAndroid || Platform.isIOS) {
+    throw UnimplementedError(
+        'download of ebook not yet impelmented'); // if (Platform.isAndroid || Platform.isIOS) {
     //   // Check if we have rights
     //   // If we do not store epub
     //   var hasStorage = await FileService.requestStorage();

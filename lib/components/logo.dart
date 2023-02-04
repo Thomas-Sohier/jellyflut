@@ -21,7 +21,10 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (selectable) {
-      return OutlinedButtonSelector(padding: padding, onPressed: () => logoDialog(context), child: logo(context));
+      return OutlinedButtonSelector(
+          padding: padding,
+          onPressed: () => logoDialog(context),
+          child: logo(context));
     }
     return logo(context);
   }
@@ -42,7 +45,8 @@ class Logo extends StatelessWidget {
                     onInvoke: (Intent intent) => context.router.pop(),
                   ),
                 },
-                child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
+                child: Center(
+                    child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });
   }

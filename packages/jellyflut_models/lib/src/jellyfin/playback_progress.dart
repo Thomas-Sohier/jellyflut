@@ -81,7 +81,8 @@ class PlaybackProgress {
       isPaused: isPaused ?? this.isPaused,
       isMuted: isMuted ?? this.isMuted,
       positionTicks: positionTicks ?? this.positionTicks,
-      playbackStartTimeTicks: playbackStartTimeTicks ?? this.playbackStartTimeTicks,
+      playbackStartTimeTicks:
+          playbackStartTimeTicks ?? this.playbackStartTimeTicks,
       volumeLevel: volumeLevel ?? this.volumeLevel,
       brightness: brightness ?? this.brightness,
       aspectRatio: aspectRatio ?? this.aspectRatio,
@@ -139,14 +140,16 @@ class PlaybackProgress {
       liveStreamId: map['LiveStreamId'] ?? '',
       playSessionId: map['PlaySessionId'] ?? '',
       repeatMode: RepeatMode.fromString(map['RepeatMode']),
-      nowPlayingQueue: List<NowPlayingQueue>.from(map['NowPlayingQueue']?.map((x) => NowPlayingQueue.fromMap(x))),
+      nowPlayingQueue: List<NowPlayingQueue>.from(
+          map['NowPlayingQueue']?.map((x) => NowPlayingQueue.fromMap(x))),
       playlistItemId: map['PlaylistItemId'] ?? '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PlaybackProgress.fromJson(String source) => PlaybackProgress.fromMap(json.decode(source));
+  factory PlaybackProgress.fromJson(String source) =>
+      PlaybackProgress.fromMap(json.decode(source));
 
   @override
   String toString() {

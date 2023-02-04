@@ -24,7 +24,10 @@ class HomeCategoryState extends Equatable {
   final List<Item> items;
 
   HomeCategoryState copyWith(
-      {HomeCategoryStatus? status, List<Item>? items, Item? parentItem, HomeCategoryType? type}) {
+      {HomeCategoryStatus? status,
+      List<Item>? items,
+      Item? parentItem,
+      HomeCategoryType? type}) {
     return HomeCategoryState(
         status: status ?? this.status,
         items: items ?? this.items,

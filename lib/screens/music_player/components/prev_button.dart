@@ -11,7 +11,8 @@ class PrevButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => context.read<MusicPlayerBloc>().add(PreviousSongRequested()),
+        onPressed: () =>
+            context.read<MusicPlayerBloc>().add(PreviousSongRequested()),
         background: Theme.of(context).colorScheme.primary,
         shape: const RoundedRectangleBorder(
           borderRadius: borderRadiusButton,

@@ -13,9 +13,11 @@ class ShowChannelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StreamCubit, StreamState>(
-        buildWhen: (previous, current) => previous.streamItem != current.streamItem,
+        buildWhen: (previous, current) =>
+            previous.streamItem != current.streamItem,
         builder: (_, state) {
-          if (state.streamItem.item.type != ItemType.TvChannel) return const SizedBox();
+          if (state.streamItem.item.type != ItemType.TvChannel)
+            return const SizedBox();
           return OutlinedButtonSelector(
             onPressed: context.read<ChannelCubit>().toggleChannelsPanel,
             shape: CircleBorder(),

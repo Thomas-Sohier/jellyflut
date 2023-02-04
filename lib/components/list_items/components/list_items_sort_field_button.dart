@@ -9,7 +9,8 @@ class ListItemsSortFieldButton extends StatefulWidget {
   const ListItemsSortFieldButton({super.key});
 
   @override
-  State<ListItemsSortFieldButton> createState() => _ListItemsSortFieldButtonState();
+  State<ListItemsSortFieldButton> createState() =>
+      _ListItemsSortFieldButtonState();
 }
 
 class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
@@ -48,7 +49,9 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
         .map((field) => PopupMenuItem(
               value: field,
               child: ListTile(
-                leading: collectionBloc.state.sortField == field.fieldName ? _leadingListTile() : const SizedBox(),
+                leading: collectionBloc.state.sortField == field.fieldName
+                    ? _leadingListTile()
+                    : const SizedBox(),
                 title: Text(field.fullName),
               ),
             ))

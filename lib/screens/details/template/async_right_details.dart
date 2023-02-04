@@ -12,7 +12,8 @@ class AsyncRightDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: (previous, current) => previous.detailsStatus != current.detailsStatus,
+        buildWhen: (previous, current) =>
+            previous.detailsStatus != current.detailsStatus,
         builder: (_, detailsState) {
           switch (detailsState.detailsStatus) {
             case DetailsStatus.initial:
@@ -35,7 +36,9 @@ class RightDetailsShimmer extends StatelessWidget {
     return ListView(
       children: const [
         Header(),
-        Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: SkeletonRightDetails()),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: SkeletonRightDetails()),
       ],
     );
   }

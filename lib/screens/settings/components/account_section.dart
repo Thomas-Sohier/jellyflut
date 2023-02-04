@@ -15,7 +15,8 @@ class AccountSection extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward)),
         SettingsTile(
             title: 'deconnect'.tr(),
-            subtitle: context.read<AuthenticationRepository>().currentUser.username,
+            subtitle:
+                context.read<AuthenticationRepository>().currentUser.username,
             onPressed: (_) {
               context.read<AuthBloc>().add(LogoutRequested());
             },

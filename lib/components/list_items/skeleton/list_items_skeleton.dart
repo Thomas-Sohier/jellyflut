@@ -18,7 +18,9 @@ class ListItemsSkeleton extends StatelessWidget {
   final double gridPosterHeight;
 
   const ListItemsSkeleton(
-      {this.verticalListPosterHeight = 200, this.horizontalListPosterHeight = 200, this.gridPosterHeight = 200});
+      {this.verticalListPosterHeight = 200,
+      this.horizontalListPosterHeight = 200,
+      this.gridPosterHeight = 200});
 
   @override
   Widget build(BuildContext context) {

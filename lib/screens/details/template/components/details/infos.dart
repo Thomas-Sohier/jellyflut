@@ -33,15 +33,21 @@ class InfosDetailsWidget extends StatelessWidget {
     if (item.getDuration() == 0) return null;
 
     final formatter = DateFormat('HH:mm');
-    final timeEnd = formatter.format(DateTime.now().add(Duration(microseconds: item.getDuration())));
+    final timeEnd = formatter
+        .format(DateTime.now().add(Duration(microseconds: item.getDuration())));
     return 'item_ends'.tr(args: [timeEnd]);
   }
 
-  List<Widget> generateInfosWithSeparator(List<String?> listOfText, BuildContext context) {
+  List<Widget> generateInfosWithSeparator(
+      List<String?> listOfText, BuildContext context) {
     return listOfText
         .where((t) => t != null && t.isNotEmpty && t != 'null')
-        .map((e) => [Text(e!, style: Theme.of(context).textTheme.subtitle1), DetailsSeparator()])
-        .fold<List<Widget>>([const SizedBox()], (previousValue, element) => previousValue..addAll(element))
+        .map((e) => [
+              Text(e!, style: Theme.of(context).textTheme.subtitle1),
+              DetailsSeparator()
+            ])
+        .fold<List<Widget>>([const SizedBox()],
+            (previousValue, element) => previousValue..addAll(element))
       ..removeLast()
       ..toList();
   }

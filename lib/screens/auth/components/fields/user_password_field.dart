@@ -4,7 +4,8 @@ class UserPasswordField extends StatelessWidget {
   final FormGroup form;
   final Function(FormControl<String>)? onSubmitted;
 
-  const UserPasswordField({super.key, required this.form, required this.onSubmitted});
+  const UserPasswordField(
+      {super.key, required this.form, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,8 @@ class UserPasswordField extends StatelessWidget {
         onSubmitted: onSubmitted,
         keyboardType: TextInputType.text,
         obscureText: true,
-        decoration: InputDecoration(labelText: 'user_password_field_label'.tr(), prefixIcon: Icon(Icons.password)));
+        decoration: InputDecoration(
+            labelText: 'user_password_field_label'.tr(),
+            prefixIcon: Icon(Icons.password)));
   }
 }

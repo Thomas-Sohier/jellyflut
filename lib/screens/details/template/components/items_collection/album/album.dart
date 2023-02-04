@@ -64,7 +64,9 @@ class SongsView extends StatelessWidget {
       SliverList(
         delegate: SliverChildBuilderDelegate(
           (_, int index) {
-            return ConstrainedBox(constraints: BoxConstraints(maxHeight: 150), child: MusicItem(item: songs[index]));
+            return ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 150),
+                child: MusicItem(item: songs[index]));
           },
           childCount: songs.length,
           addAutomaticKeepAlives: false,
@@ -89,7 +91,9 @@ class AlbumError extends StatelessWidget {
           const SizedBox(height: 4),
           Text('error_loading_item'.tr(args: ['songs'])),
           const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<AlbumCubit>().retry())
+          PaletteButton('reload'.tr(),
+              borderRadius: 4,
+              onPressed: () => context.read<AlbumCubit>().retry())
         ],
       ),
     )));
@@ -110,8 +114,10 @@ class SongsShimmer extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Shimmer.fromColors(
-                baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-                highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
+                baseColor:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(150),
+                highlightColor:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(100),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: ListView.builder(
@@ -123,11 +129,15 @@ class SongsShimmer extends StatelessWidget {
                       itemBuilder: (_, __) => Padding(
                             padding: const EdgeInsets.only(top: padding),
                             child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
                                 child: Container(
                                   height: height,
                                   width: double.infinity,
-                                  color: Theme.of(context).colorScheme.background.withAlpha(150),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .background
+                                      .withAlpha(150),
                                 )),
                           )),
                 )),

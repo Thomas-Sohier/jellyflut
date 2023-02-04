@@ -11,17 +11,20 @@ class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
     if (controller.value.isInitialized) completer.complete();
   }
 
-  CommonStreamVideoPlayer.fromUri({required Uri uri, Duration? startAtPosition}) {
+  CommonStreamVideoPlayer.fromUri(
+      {required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static VideoPlayerController _initController({required Uri uri, Duration? startAtPosition}) {
+  static VideoPlayerController _initController(
+      {required Uri uri, Duration? startAtPosition}) {
     // Detect if media is available locdally or only remotely
     late final VideoPlayerController controller;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       controller = VideoPlayerController.network(uri.toString());
     } else {
-      throw UnsupportedError('No suitable player implementation was found to play local file.');
+      throw UnsupportedError(
+          'No suitable player implementation was found to play local file.');
     }
 
     return controller;
@@ -46,7 +49,8 @@ class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
     // final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds = 0;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN ||
+                currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
@@ -109,7 +113,8 @@ class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    controller.addListener(() => streamController.add(controller.value.isPlaying));
+    controller
+        .addListener(() => streamController.add(controller.value.isPlaying));
     return streamController;
   }
 

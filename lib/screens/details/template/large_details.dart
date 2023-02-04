@@ -18,9 +18,11 @@ class LargeDetails extends StatelessWidget {
       LayoutBuilderScreen(builder: ((_, constraints, type) {
         // Constraint emitter
         if (type.isMobile || type.isTablet) {
-          BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.mobile));
+          BlocProvider.of<DetailsBloc>(context)
+              .add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.mobile));
         } else {
-          BlocProvider.of<DetailsBloc>(context).add(DetailsScreenSizeChanged(screenLayout: ScreenLayout.desktop));
+          BlocProvider.of<DetailsBloc>(context).add(
+              DetailsScreenSizeChanged(screenLayout: ScreenLayout.desktop));
         }
 
         return SafeArea(
@@ -31,18 +33,25 @@ class LargeDetails extends StatelessWidget {
               children: [leftDetailsPart(type), rightDetailsPart()]),
           BlocBuilder<DetailsBloc, DetailsState>(
               buildWhen: (previous, current) =>
-                  previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
+                  previous.pinnedHeader != current.pinnedHeader ||
+                  previous.screenLayout != current.screenLayout,
               builder: (_, state) => AnimatedPositioned(
                   duration: Duration(milliseconds: 200),
                   left: 0,
-                  top: state.pinnedHeader && state.screenLayout.isMobile ? 15 : 0,
+                  top: state.pinnedHeader && state.screenLayout.isMobile
+                      ? 15
+                      : 0,
                   child: SizedBox(
                     height: 48,
                     child: Row(
                       children: [
                         const SelectableBackButton(),
-                        if (state.item.hasLogo() && !state.pinnedHeader && constraints.maxWidth < 960)
-                          Logo(item: context.read<DetailsBloc>().state.item, padding: EdgeInsets.symmetric(vertical: 8))
+                        if (state.item.hasLogo() &&
+                            !state.pinnedHeader &&
+                            constraints.maxWidth < 960)
+                          Logo(
+                              item: context.read<DetailsBloc>().state.item,
+                              padding: EdgeInsets.symmetric(vertical: 8))
                       ],
                     ),
                   )))
@@ -55,7 +64,11 @@ class LargeDetails extends StatelessWidget {
     return BlocBuilder<DetailsBloc, DetailsState>(builder: (_, state) {
       switch (state.screenLayout) {
         case ScreenLayout.desktop:
-          return const Expanded(flex: 4, child: Center(child: Padding(padding: EdgeInsets.all(16), child: Poster())));
+          return const Expanded(
+              flex: 4,
+              child: Center(
+                  child:
+                      Padding(padding: EdgeInsets.all(16), child: Poster())));
 
         default:
           return const SizedBox();

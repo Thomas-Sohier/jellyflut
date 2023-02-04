@@ -22,7 +22,8 @@ class StudiosField extends StatelessWidget {
             scrollDirection: Axis.vertical,
             itemCount: item.studios.length,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => studioItem(item.studios.elementAt(index).name, index, context),
+            itemBuilder: (context, index) =>
+                studioItem(item.studios.elementAt(index).name, index, context),
           ),
         ),
       ],
@@ -36,19 +37,29 @@ class StudiosField extends StatelessWidget {
       height: ITEM_HEIGHT,
       child: Padding(
         padding: const EdgeInsets.only(top: 4, bottom: 4),
-        child:
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-          Expanded(
-            child: Text(name,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: headlineColor!.withAlpha(210))),
-          ),
-          Spacer(),
-          IconButton(
-              onPressed: () => context.read<FormBloc>().state.item.studios.removeAt(index),
-              hoverColor: Colors.red.withOpacity(0.1),
-              icon: Icon(Icons.delete_outline, color: Colors.red))
-        ]),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(name,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1!
+                        .copyWith(color: headlineColor!.withAlpha(210))),
+              ),
+              Spacer(),
+              IconButton(
+                  onPressed: () => context
+                      .read<FormBloc>()
+                      .state
+                      .item
+                      .studios
+                      .removeAt(index),
+                  hoverColor: Colors.red.withOpacity(0.1),
+                  icon: Icon(Icons.delete_outline, color: Colors.red))
+            ]),
       ),
     );
   }

@@ -18,7 +18,8 @@ class Settings extends StatelessWidget {
           style: Theme.of(context).textTheme.headline5,
         )),
         body: BlocBuilder<SettingsBloc, SettingsState>(
-            buildWhen: (previous, current) => previous.settingsStatus != current.settingsStatus,
+            buildWhen: (previous, current) =>
+                previous.settingsStatus != current.settingsStatus,
             builder: (context, state) {
               switch (state.settingsStatus) {
                 case SettingsStatus.success:

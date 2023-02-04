@@ -30,7 +30,10 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
   })  : assert(parentItem != null || fetchMethod != null || items != null),
         super(SeasonState(
             fetchMethod: _initFetchMethod(
-                itemsRepository: itemsRepository, parentItem: parentItem, items: items, fetchMethod: fetchMethod),
+                itemsRepository: itemsRepository,
+                parentItem: parentItem,
+                items: items,
+                fetchMethod: fetchMethod),
             listType: listType,
             showTitle: showTitle,
             showIfEmpty: showIfEmpty,
@@ -48,24 +51,27 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
     on<SortByField>(_onSort);
   }
 
-  static Future<List<Item>> Function(int startIndex, int limit) _initFetchMethod(
-      {required ItemsRepository itemsRepository,
-      Item? parentItem,
-      List<Item>? items,
-      Future<List<Item>> Function(int startIndex, int limit)? fetchMethod}) {
+  static Future<List<Item>> Function(int startIndex, int limit)
+      _initFetchMethod(
+          {required ItemsRepository itemsRepository,
+          Item? parentItem,
+          List<Item>? items,
+          Future<List<Item>> Function(int startIndex, int limit)?
+              fetchMethod}) {
     ListItemsType findItemType() {
       if (parentItem != null) return ListItemsType.fromItem;
       if (fetchMethod != null) return ListItemsType.fromFunction;
       if (items != null) return ListItemsType.fromList;
-      throw Exception('CollectionBloc badly initialized, need to have a parentItem or an item list or a fetch method');
+      throw Exception(
+          'CollectionBloc badly initialized, need to have a parentItem or an item list or a fetch method');
     }
 
     final listItemsType = findItemType();
     switch (listItemsType) {
       case ListItemsType.fromItem:
         return (int startIndex, int limit) async {
-          final category =
-              await itemsRepository.getCategory(parentId: parentItem!.id, startIndex: startIndex, limit: limit);
+          final category = await itemsRepository.getCategory(
+              parentId: parentItem!.id, startIndex: startIndex, limit: limit);
           return category.items;
         };
       case ListItemsType.fromFunction:
@@ -79,33 +85,43 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
     }
   }
 
-  void _initCollectionList(InitCollectionRequested event, Emitter<SeasonState> emit) async {
+  void _initCollectionList(
+      InitCollectionRequested event, Emitter<SeasonState> emit) async {
     emit(state.copyWith(collectionStatus: SeasonStatus.loading));
     final items = await state.fetchMethod(state.items.length, 100);
     final canLoadMore = items.length >= 100;
-    emit(state.copyWith(items: items, canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
+    emit(state.copyWith(
+        items: items,
+        canLoadMore: canLoadMore,
+        collectionStatus: SeasonStatus.success));
   }
 
   void _onClearItems(ClearItemsRequested event, Emitter<SeasonState> emit) {
     emit(state.copyWith(items: [], carouselSliderItems: [], canLoadMore: true));
   }
 
-  void _onLoadMoreItems(LoadMoreItemsRequested event, Emitter<SeasonState> emit) async {
-    if (state.canLoadMore && state.collectionStatus != SeasonStatus.loadingMore) {
+  void _onLoadMoreItems(
+      LoadMoreItemsRequested event, Emitter<SeasonState> emit) async {
+    if (state.canLoadMore &&
+        state.collectionStatus != SeasonStatus.loadingMore) {
       emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
       final items = await state.fetchMethod(state.items.length, 100);
       final canLoadMore = items.length >= 100;
 
       emit(state.copyWith(
-          items: [...state.items, ...items], canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
+          items: [...state.items, ...items],
+          canLoadMore: canLoadMore,
+          collectionStatus: SeasonStatus.success));
     }
   }
 
-  void _onScrollControllerUpdate(SetScrollController event, Emitter<SeasonState> emit) async {
+  void _onScrollControllerUpdate(
+      SetScrollController event, Emitter<SeasonState> emit) async {
     emit(state.copyWith(scrollController: event.scrollController));
   }
 
-  void _onListTypeChange(ListTypeChangeRequested event, Emitter<SeasonState> emit) async {
+  void _onListTypeChange(
+      ListTypeChangeRequested event, Emitter<SeasonState> emit) async {
     if (event.listType == null) {
       emit(state.copyWith(listType: state.listType.getNextListType()));
     } else {
@@ -116,15 +132,22 @@ class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
   void _onSort(SortByField event, Emitter<SeasonState> emit) async {
     emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
     final items = await _sortByField(event.fieldEnum);
-    emit(state.copyWith(sortField: event.fieldEnum.fieldName, items: items, sortBy: state.sortBy.reverse()));
+    emit(state.copyWith(
+        sortField: event.fieldEnum.fieldName,
+        items: items,
+        sortBy: state.sortBy.reverse()));
   }
 
   void _replaceItems(ReplaceItem event, Emitter<SeasonState> emit) async {
     emit(state.copyWith(items: event.items));
   }
 
-  Future<List<Item>> _sortByField(FieldsEnum fieldEnum) async => (await compute(_sortItemByField,
-      {'items': state.items, 'field': fieldEnum.fieldName, 'sortBy': state.sortBy.reverse()}))['items'];
+  Future<List<Item>> _sortByField(FieldsEnum fieldEnum) async =>
+      (await compute(_sortItemByField, {
+        'items': state.items,
+        'field': fieldEnum.fieldName,
+        'sortBy': state.sortBy.reverse()
+      }))['items'];
 }
 
 Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {

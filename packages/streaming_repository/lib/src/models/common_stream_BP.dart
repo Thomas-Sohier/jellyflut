@@ -11,14 +11,16 @@ import '../models/index.dart';
 /// CommonStream Better Player specific code
 class CommonStreamBP extends CommonStream<BetterPlayerController> {
   void _isInitListener(BetterPlayerEvent event, Completer<void> completer) {
-    if (event.betterPlayerEventType == BetterPlayerEventType.initialized) return completer.complete();
+    if (event.betterPlayerEventType == BetterPlayerEventType.initialized)
+      return completer.complete();
   }
 
   CommonStreamBP.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static BetterPlayerController _initController({required Uri uri, Duration? startAtPosition}) {
+  static BetterPlayerController _initController(
+      {required Uri uri, Duration? startAtPosition}) {
     late final BetterPlayerDataSource dataSource;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       dataSource = BetterPlayerDataSource.network(uri.toString());
@@ -26,7 +28,8 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
       dataSource = BetterPlayerDataSource.file(uri.toFilePath());
     }
 
-    final controller = BetterPlayerController(_setupPlayerControllerConfiguration(
+    final controller =
+        BetterPlayerController(_setupPlayerControllerConfiguration(
       customConfiguration: _configuration(),
       startAt: startAtPosition,
     ));
@@ -44,7 +47,10 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
         autoPlay: true,
         looping: false,
         fullScreenByDefault: false,
-        deviceOrientationsOnFullScreen: [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+        deviceOrientationsOnFullScreen: [
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight
+        ],
         deviceOrientationsAfterFullScreen: [
           DeviceOrientation.portraitUp,
           DeviceOrientation.portraitDown,
@@ -53,7 +59,8 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
         ],
         autoDetectFullscreenDeviceOrientation: true,
         allowedScreenSleep: false,
-        subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(fontSize: 18),
+        subtitlesConfiguration:
+            BetterPlayerSubtitlesConfiguration(fontSize: 18),
         startAt: startAt,
         controlsConfiguration: customConfiguration);
   }
@@ -91,7 +98,8 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
   Duration? getBufferingDuration() {
     try {
       final duration = controller.videoPlayerController?.value.buffered
-          .map((element) => element.end.inMilliseconds - element.start.inMilliseconds)
+          .map((element) =>
+              element.end.inMilliseconds - element.start.inMilliseconds)
           .reduce((value, element) => value + element);
       if (duration == null) return Duration(seconds: 0);
       return Duration(milliseconds: duration);
@@ -123,7 +131,10 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = controller.betterPlayerSubtitlesSourceList;
     for (var i = 0; i < subtitles.length - 1; i++) {
-      parsedSubtitiles.add(Subtitle(index: i, mediaType: MediaType.local, name: subtitles[i].name ?? 'Default'));
+      parsedSubtitiles.add(Subtitle(
+          index: i,
+          mediaType: MediaType.local,
+          name: subtitles[i].name ?? 'Default'));
     }
     return parsedSubtitiles;
   }
@@ -136,7 +147,8 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
 
   @override
   Future<void> setSubtitle(Subtitle subtitle) {
-    return controller.setupSubtitleSource(controller.betterPlayerSubtitlesSourceList[subtitle.index]);
+    return controller.setupSubtitleSource(
+        controller.betterPlayerSubtitlesSourceList[subtitle.index]);
   }
 
   @override
@@ -160,15 +172,17 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
   @override
   BehaviorSubject<Duration> getDurationStream() {
     final streamController = BehaviorSubject<Duration>();
-    controller.addEventsListener(
-        (_) => streamController.add(controller.videoPlayerController!.value.duration ?? Duration(seconds: 0)));
+    controller.addEventsListener((_) => streamController.add(
+        controller.videoPlayerController!.value.duration ??
+            Duration(seconds: 0)));
     return streamController;
   }
 
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    controller.addEventsListener((_) => streamController.add(controller.isPlaying() ?? false));
+    controller.addEventsListener(
+        (_) => streamController.add(controller.isPlaying() ?? false));
     return streamController;
   }
 
@@ -193,10 +207,12 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
   }
 
   @override
-  Duration? getCurrentPosition() => controller.videoPlayerController?.value.position ?? Duration.zero;
+  Duration? getCurrentPosition() =>
+      controller.videoPlayerController?.value.position ?? Duration.zero;
 
   @override
-  Duration? getDuration() => controller.videoPlayerController?.value.duration ?? Duration.zero;
+  Duration? getDuration() =>
+      controller.videoPlayerController?.value.duration ?? Duration.zero;
 
   @override
   Future<bool> hasPip() => controller.isPictureInPictureSupported();
@@ -205,13 +221,15 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
   bool isInit() => controller.isVideoInitialized() ?? false;
 
   @override
-  bool isPlaying() => controller.videoPlayerController?.value.isPlaying ?? false;
+  bool isPlaying() =>
+      controller.videoPlayerController?.value.isPlaying ?? false;
 
   @override
   Future<void> pause() => controller.pause();
 
   @override
-  Future<void>? pip() => controller.enablePictureInPicture(controller.betterPlayerGlobalKey!);
+  Future<void>? pip() =>
+      controller.enablePictureInPicture(controller.betterPlayerGlobalKey!);
 
   @override
   Future<void> play() => controller.play();

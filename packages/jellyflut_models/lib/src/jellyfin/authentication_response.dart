@@ -6,9 +6,11 @@ import 'dart:convert';
 
 import 'index.dart';
 
-AuthenticationResponse authenticationResponseFromMap(String str) => AuthenticationResponse.fromMap(json.decode(str));
+AuthenticationResponse authenticationResponseFromMap(String str) =>
+    AuthenticationResponse.fromMap(json.decode(str));
 
-String authenticationResponseToMap(AuthenticationResponse data) => json.encode(data.toMap());
+String authenticationResponseToMap(AuthenticationResponse data) =>
+    json.encode(data.toMap());
 
 class AuthenticationResponse {
   AuthenticationResponse({
@@ -23,7 +25,8 @@ class AuthenticationResponse {
   String accessToken;
   String serverId;
 
-  factory AuthenticationResponse.fromMap(Map<String, dynamic> json) => AuthenticationResponse(
+  factory AuthenticationResponse.fromMap(Map<String, dynamic> json) =>
+      AuthenticationResponse(
         user: User.fromMap(json['User']),
         sessionInfo: SessionInfo.fromMap(json['SessionInfo']),
         accessToken: json['AccessToken'],

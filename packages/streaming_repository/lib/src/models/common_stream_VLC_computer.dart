@@ -11,13 +11,18 @@ import '../models/index.dart';
 class CommonStreamVLCComputer extends CommonStream<Player> {
   final List<Timer> timers;
 
-  CommonStreamVLCComputer.fromUri({required Uri uri, Duration? startAtPosition, this.timers = const <Timer>[]}) {
+  CommonStreamVLCComputer.fromUri(
+      {required Uri uri,
+      Duration? startAtPosition,
+      this.timers = const <Timer>[]}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
   static Player _initController({required Uri uri, Duration? startAtPosition}) {
-    final controller =
-        Player(id: 0, commandlineArguments: ['--start-time=${startAtPosition?.inSeconds ?? 0}', '--no-spu']);
+    final controller = Player(id: 0, commandlineArguments: [
+      '--start-time=${startAtPosition?.inSeconds ?? 0}',
+      '--no-spu'
+    ]);
 
     late final Media media;
     if (uri.isScheme('http') || uri.isScheme('https')) {
@@ -31,7 +36,8 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   }
 
   void addListener(void Function() listener) {
-    final timer = Timer.periodic(Duration(milliseconds: 100), (i) => listener());
+    final timer =
+        Timer.periodic(Duration(milliseconds: 100), (i) => listener());
     timers.add(timer);
   }
 
@@ -106,7 +112,8 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   Future<List<AudioTrack>> getAudioTracks() {
     final audioTracks = <AudioTrack>[];
     for (var i = 0; i < controller.audioTrackCount; i++) {
-      final audioTrack = AudioTrack(index: i, name: 'Audio track #$i', mediaType: MediaType.local);
+      final audioTrack = AudioTrack(
+          index: i, name: 'Audio track #$i', mediaType: MediaType.local);
       audioTracks.add(audioTrack);
     }
     return Future.value(audioTracks);
@@ -141,29 +148,31 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   @override
   void toggleFullscreen() async {
     final windowInstance = WindowManager.instance;
-    await windowInstance.isFullScreen().then((bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
+    await windowInstance.isFullScreen().then(
+        (bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
   }
 
   @override
   BehaviorSubject<Duration> getPositionStream() {
     final streamController = BehaviorSubject<Duration>();
-    controller.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.position ?? Duration(seconds: 0)));
+    controller.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.position ?? Duration(seconds: 0)));
     return streamController;
   }
 
   @override
   BehaviorSubject<Duration> getDurationStream() {
     final streamController = BehaviorSubject<Duration>();
-    controller.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.duration ?? Duration(seconds: 0)));
+    controller.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.duration ?? Duration(seconds: 0)));
     return streamController;
   }
 
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    controller.playbackStream.listen((PlaybackState event) => streamController.add(event.isPlaying));
+    controller.playbackStream
+        .listen((PlaybackState event) => streamController.add(event.isPlaying));
     return streamController;
   }
 

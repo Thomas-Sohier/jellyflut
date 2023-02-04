@@ -18,9 +18,12 @@ class LiveTvGuideCubit extends Cubit<LiveTvGuideState> {
   Future<void> loadLiveTvGuide({int? startIndex, int? limit}) async {
     emit(state.copyWith(status: LiveTvGuideStatus.loading));
     try {
-      final guide =
-          await _liveTvRepository.getGuide(startIndex: startIndex ?? state.guide.length, limit: limit ?? state.limit);
-      emit(state.copyWith(guide: [...state.guide, ...guide], status: LiveTvGuideStatus.success));
+      final guide = await _liveTvRepository.getGuide(
+          startIndex: startIndex ?? state.guide.length,
+          limit: limit ?? state.limit);
+      emit(state.copyWith(
+          guide: [...state.guide, ...guide],
+          status: LiveTvGuideStatus.success));
     } catch (_) {
       emit(state.copyWith(status: LiveTvGuideStatus.failure));
     }

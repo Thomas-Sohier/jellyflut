@@ -15,7 +15,8 @@ class FullscreenButton extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: BlocBuilder<StreamCubit, StreamState>(
-                buildWhen: (previous, current) => previous.fullscreen != current.fullscreen,
+                buildWhen: (previous, current) =>
+                    previous.fullscreen != current.fullscreen,
                 builder: (_, state) {
                   return Icon(
                     state.fullscreen ? Icons.fullscreen_exit : Icons.fullscreen,

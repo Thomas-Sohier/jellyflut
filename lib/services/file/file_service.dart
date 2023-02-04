@@ -14,7 +14,8 @@ class FileService {
   }
 
   /// Return the rowId of the download inserted
-  static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
+  static Future<int> saveDownloadToDatabase(
+      final String path, final Item item) async {
     final i = item;
     throw UnimplementedError();
     // TODO rework this in repository download
@@ -97,7 +98,8 @@ class FileService {
   }
 
   /// Download a file and save it to filesystem
-  static Future<Response<dynamic>> downloadFileAndSaveToPath(String url, String? path,
+  static Future<Response<dynamic>> downloadFileAndSaveToPath(
+      String url, String? path,
       {BehaviorSubject<int>? stateOfDownload, CancelToken? cancelToken}) async {
     if (stateOfDownload != null) {
       return Dio().download(
@@ -124,7 +126,8 @@ class FileService {
     Response<List<int>> rs;
     rs = await Dio().get<List<int>>(
       url,
-      options: Options(responseType: ResponseType.bytes), // set responseType to `bytes`
+      options: Options(
+          responseType: ResponseType.bytes), // set responseType to `bytes`
     );
     return rs.data;
   }

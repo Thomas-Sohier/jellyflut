@@ -16,7 +16,8 @@ class SeasonEpisode extends StatelessWidget {
     final collectionCubit = context.read<SeasonCubit>();
     return BlocBuilder<SeasonCubit, SeasonState>(
       buildWhen: (previous, current) =>
-          previous.epsiodesStatus != current.epsiodesStatus || previous.currentEpisodes != current.currentEpisodes,
+          previous.epsiodesStatus != current.epsiodesStatus ||
+          previous.currentEpisodes != current.currentEpisodes,
       builder: (context, state) {
         switch (state.epsiodesStatus) {
           case Status.failure:
@@ -26,12 +27,14 @@ class SeasonEpisode extends StatelessWidget {
           case Status.initial:
           case Status.success:
             if (collectionCubit.state.currentSeason.isNotEmpty) {
-              final episodes = context.read<SeasonCubit>().state.currentEpisodes;
+              final episodes =
+                  context.read<SeasonCubit>().state.currentEpisodes;
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (_, int index) {
                     return ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 250), child: EpisodeItem(item: episodes[index]));
+                        constraints: BoxConstraints(maxHeight: 250),
+                        child: EpisodeItem(item: episodes[index]));
                   },
                   childCount: episodes.length,
                   addAutomaticKeepAlives: false,
@@ -64,7 +67,9 @@ class SeasonEpisodeError extends StatelessWidget {
           const SizedBox(height: 4),
           Text('error_loading_item'.tr(args: ['episodes'])),
           const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<SeasonCubit>().retry())
+          PaletteButton('reload'.tr(),
+              borderRadius: 4,
+              onPressed: () => context.read<SeasonCubit>().retry())
         ],
       ),
     )));
@@ -86,7 +91,9 @@ class SeasonEpisodeEmpty extends StatelessWidget {
           const SizedBox(height: 4),
           Text('empty_collection'.tr()),
           const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<SeasonCubit>().retry())
+          PaletteButton('reload'.tr(),
+              borderRadius: 4,
+              onPressed: () => context.read<SeasonCubit>().retry())
         ],
       ),
     )));
@@ -107,8 +114,10 @@ class EpisodesShimmer extends StatelessWidget {
         child: SizedBox(
             height: (height + padding) * count,
             child: Shimmer.fromColors(
-                baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-                highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
+                baseColor:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(150),
+                highlightColor:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(100),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: ListView.builder(
@@ -120,11 +129,15 @@ class EpisodesShimmer extends StatelessWidget {
                       itemBuilder: (_, __) => Padding(
                             padding: const EdgeInsets.only(top: padding),
                             child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
                                 child: Container(
                                   height: height,
                                   width: double.infinity,
-                                  color: Theme.of(context).colorScheme.background.withAlpha(150),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .background
+                                      .withAlpha(150),
                                 )),
                           )),
                 ))),

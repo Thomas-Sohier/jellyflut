@@ -23,7 +23,8 @@ class ImageBlurHashes with _$ImageBlurHashes {
       Map<String, String>? boxrear,
       Map<String, String>? profile}) = _ImageBlurHashes;
 
-  factory ImageBlurHashes.fromJson(Map<String, Object?> json) => _$ImageBlurHashesFromJson(json);
+  factory ImageBlurHashes.fromJson(Map<String, Object?> json) =>
+      _$ImageBlurHashesFromJson(json);
 
   String? getBlurHashValueFromImageType(ImageType imageType) {
     final map = getBlurHashFromImageType(imageType);

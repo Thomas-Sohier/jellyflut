@@ -55,7 +55,8 @@ class AsyncImageState extends Equatable {
     return AsyncImageState(
         status: status ?? this.status,
         itemId: itemId ?? this.itemId,
-        zoomableImageController: zoomableImageController ?? this.zoomableImageController,
+        zoomableImageController:
+            zoomableImageController ?? this.zoomableImageController,
         notFoundPlaceholder: notFoundPlaceholder ?? this.notFoundPlaceholder,
         hash: hash ?? this.hash,
         image: image ?? this.image,

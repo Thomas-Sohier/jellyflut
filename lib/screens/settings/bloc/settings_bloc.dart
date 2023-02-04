@@ -24,7 +24,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SettingsInitRequested>(_onSettingsInitRequested);
     on<SettingsUpdateRequested>(_onSettingsUpdateRequested);
     on<DetailsPageContrastChangeRequested>(_onDetailsContrastUpdateRequested);
-    _authenticationRepository.user.listen((user) => user.isNotEmpty ? add(SettingsInitRequested()) : null);
+    _authenticationRepository.user.listen(
+        (user) => user.isNotEmpty ? add(SettingsInitRequested()) : null);
   }
 
   final SettingsRepository _settingsRepository;
@@ -34,7 +35,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   static const _contrastSpKey = 'details_page_contrasted';
 
-  void _onSettingsInitRequested(SettingsInitRequested event, Emitter<SettingsState> emit) async {
+  void _onSettingsInitRequested(
+      SettingsInitRequested event, Emitter<SettingsState> emit) async {
     emit(state.copyWith(settingsStatus: SettingsStatus.loading));
     try {
       final databaseSetting = await _settingsRepository.getcurrentSettings();
@@ -49,14 +51,18 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  void _onSettingsUpdateRequested(SettingsUpdateRequested event, Emitter<SettingsState> emit) async {
+  void _onSettingsUpdateRequested(
+      SettingsUpdateRequested event, Emitter<SettingsState> emit) async {
     await _settingsRepository.updateCurrentSettings(event.databaseSettingDto);
     final databaseSetting = await _settingsRepository.getcurrentSettings();
     emit(state.copyWith(databaseSetting: databaseSetting));
   }
 
-  void _onDetailsContrastUpdateRequested(DetailsPageContrastChangeRequested event, Emitter<SettingsState> emit) async {
-    await _sharedPreferences.setBool(_contrastSpKey, event.detailsPageContrasted);
+  void _onDetailsContrastUpdateRequested(
+      DetailsPageContrastChangeRequested event,
+      Emitter<SettingsState> emit) async {
+    await _sharedPreferences.setBool(
+        _contrastSpKey, event.detailsPageContrasted);
     emit(state.copyWith(detailsPageContrasted: event.detailsPageContrasted));
   }
 }

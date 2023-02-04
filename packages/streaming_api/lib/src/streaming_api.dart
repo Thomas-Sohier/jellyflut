@@ -62,10 +62,13 @@ class StreamingApi {
     queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
     queryParams['VideoBitrate'] = maxVideoBitrate;
     queryParams['AudioBitrate'] = maxAudioBitrate;
-    if (subtitleStreamIndex != null) queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
-    if (audioStreamIndex != null) queryParams['AudioStreamIndex'] = audioStreamIndex;
+    if (subtitleStreamIndex != null)
+      queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
+    if (audioStreamIndex != null)
+      queryParams['AudioStreamIndex'] = audioStreamIndex;
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams =
+        queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     profile ??= DeviceProfileParent();
     profile.deviceProfile ??= DeviceProfile();
@@ -85,7 +88,8 @@ class StreamingApi {
     final url = '$serverUrl/Items/$itemId/PlaybackInfo';
 
     try {
-      final response = await _dioClient.post(url, queryParameters: finalQueryParams, data: profile.toJson());
+      final response = await _dioClient.post(url,
+          queryParameters: finalQueryParams, data: profile.toJson());
       final playbackInfos = PlayBackInfos.fromJson(response.data);
 
       // If there is an error response from API then we throw an error
@@ -107,7 +111,9 @@ class StreamingApi {
   /// On api call error, throw [CannotSendProgress] with api call error
   /// On any other error, throw [CannotSendProgress]
   Future<int> deleteActiveEncoding(
-      {required String serverUrl, required String userId, required String playSessionId}) async {
+      {required String serverUrl,
+      required String userId,
+      required String playSessionId}) async {
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParam = <String, String>{};
     queryParam['deviceId'] = info.id;
@@ -116,12 +122,14 @@ class StreamingApi {
     final url = '$serverUrl/Videos/ActiveEncodings';
 
     try {
-      final response = await _dioClient.delete(url, queryParameters: queryParam);
+      final response =
+          await _dioClient.delete(url, queryParameters: queryParam);
       if (response.statusCode == 204) {
         print('Stream decoding successfully deleted');
         return response.statusCode!;
       } else {
-        throw StreamCannotBeDeleted('Stream encoding cannot be deleted, ${response.data}');
+        throw StreamCannotBeDeleted(
+            'Stream encoding cannot be deleted, ${response.data}');
       }
     } on DioError catch (e) {
       throw StreamCannotBeDeleted(e.message);
@@ -136,7 +144,9 @@ class StreamingApi {
   /// On api call error, throw [CannotSendProgress] with api call error
   /// On any other error, throw [CannotSendProgress]
   void streamingProgress(
-      {required String serverUrl, required String userId, required PlaybackProgress playbackProgress}) async {
+      {required String serverUrl,
+      required String userId,
+      required PlaybackProgress playbackProgress}) async {
     final url = '$serverUrl/Sessions/Playing/Progress';
     final playbackProgressJSON = playbackProgress.toMap();
     playbackProgressJSON.removeWhere((key, value) => value == null);
@@ -144,7 +154,8 @@ class StreamingApi {
     final json = convert.json.encode(playbackProgressJSON);
 
     try {
-      final response = await _dioClient.post(url, options: Options(contentType: ContentType.json.value), data: json);
+      final response = await _dioClient.post(url,
+          options: Options(contentType: ContentType.json.value), data: json);
       if (response.statusCode != 204) {
         throw CannotSendProgress('Error reporting streaming progress');
       }

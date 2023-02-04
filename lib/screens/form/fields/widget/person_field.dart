@@ -16,7 +16,9 @@ class PersonField extends StatelessWidget {
         Text('Persons', style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 24),
         SizedBox(
-          height: (ITEM_HEIGHT * (item.people.isNotEmpty ? item.people.length : 0)).toDouble(),
+          height:
+              (ITEM_HEIGHT * (item.people.isNotEmpty ? item.people.length : 0))
+                  .toDouble(),
           width: double.maxFinite,
           child: ListView.builder(
               scrollDirection: Axis.vertical,

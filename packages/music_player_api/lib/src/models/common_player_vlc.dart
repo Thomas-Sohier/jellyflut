@@ -15,21 +15,22 @@ class CommonPlayerVLC {
 
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
-    audioPlayer.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.position ?? Duration(seconds: 0)));
+    audioPlayer.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.position ?? Duration(seconds: 0)));
     return streamController;
   }
 
   BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
-    audioPlayer.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.duration ?? Duration(seconds: 0)));
+    audioPlayer.positionStream.listen((PositionState positionState) =>
+        streamController.add(positionState.duration ?? Duration(seconds: 0)));
     return streamController;
   }
 
   BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    audioPlayer.playbackStream.listen((PlaybackState event) => streamController.add(event.isPlaying));
+    audioPlayer.playbackStream
+        .listen((PlaybackState event) => streamController.add(event.isPlaying));
     return streamController;
   }
 

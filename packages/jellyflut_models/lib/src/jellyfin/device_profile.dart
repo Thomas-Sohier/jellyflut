@@ -140,8 +140,10 @@ class DeviceProfile {
       modelUrl: modelUrl ?? this.modelUrl,
       serialNumber: serialNumber ?? this.serialNumber,
       enableAlbumArtInDidl: enableAlbumArtInDidl ?? this.enableAlbumArtInDidl,
-      enableSingleAlbumArtLimit: enableSingleAlbumArtLimit ?? this.enableSingleAlbumArtLimit,
-      enableSingleSubtitleLimit: enableSingleSubtitleLimit ?? this.enableSingleSubtitleLimit,
+      enableSingleAlbumArtLimit:
+          enableSingleAlbumArtLimit ?? this.enableSingleAlbumArtLimit,
+      enableSingleSubtitleLimit:
+          enableSingleSubtitleLimit ?? this.enableSingleSubtitleLimit,
       supportedMediaTypes: supportedMediaTypes ?? this.supportedMediaTypes,
       userId: userId ?? this.userId,
       albumArtPn: albumArtPn ?? this.albumArtPn,
@@ -151,15 +153,21 @@ class DeviceProfile {
       maxIconHeight: maxIconHeight ?? this.maxIconHeight,
       maxStreamingBitrate: maxStreamingBitrate ?? this.maxStreamingBitrate,
       maxStaticBitrate: maxStaticBitrate ?? this.maxStaticBitrate,
-      musicStreamingTranscodingBitrate: musicStreamingTranscodingBitrate ?? this.musicStreamingTranscodingBitrate,
-      maxStaticMusicBitrate: maxStaticMusicBitrate ?? this.maxStaticMusicBitrate,
+      musicStreamingTranscodingBitrate: musicStreamingTranscodingBitrate ??
+          this.musicStreamingTranscodingBitrate,
+      maxStaticMusicBitrate:
+          maxStaticMusicBitrate ?? this.maxStaticMusicBitrate,
       sonyAggregationFlags: sonyAggregationFlags ?? this.sonyAggregationFlags,
       protocolInfo: protocolInfo ?? this.protocolInfo,
-      timelineOffsetSeconds: timelineOffsetSeconds ?? this.timelineOffsetSeconds,
-      requiresPlainVideoItems: requiresPlainVideoItems ?? this.requiresPlainVideoItems,
+      timelineOffsetSeconds:
+          timelineOffsetSeconds ?? this.timelineOffsetSeconds,
+      requiresPlainVideoItems:
+          requiresPlainVideoItems ?? this.requiresPlainVideoItems,
       requiresPlainFolders: requiresPlainFolders ?? this.requiresPlainFolders,
-      enableMSMediaReceiverRegistrar: enableMSMediaReceiverRegistrar ?? this.enableMSMediaReceiverRegistrar,
-      ignoreTranscodeByteRangeRequests: ignoreTranscodeByteRangeRequests ?? this.ignoreTranscodeByteRangeRequests,
+      enableMSMediaReceiverRegistrar:
+          enableMSMediaReceiverRegistrar ?? this.enableMSMediaReceiverRegistrar,
+      ignoreTranscodeByteRangeRequests: ignoreTranscodeByteRangeRequests ??
+          this.ignoreTranscodeByteRangeRequests,
       xmlRootAttributes: xmlRootAttributes ?? this.xmlRootAttributes,
       directPlayProfiles: directPlayProfiles ?? this.directPlayProfiles,
       transcodingProfiles: transcodingProfiles ?? this.transcodingProfiles,
@@ -206,19 +214,23 @@ class DeviceProfile {
       'ignoreTranscodeByteRangeRequests': ignoreTranscodeByteRangeRequests,
       'xmlRootAttributes': xmlRootAttributes,
       'directPlayProfiles': directPlayProfiles?.map((x) => x.toMap()).toList(),
-      'transcodingProfiles': transcodingProfiles?.map((x) => x.toMap()).toList(),
+      'transcodingProfiles':
+          transcodingProfiles?.map((x) => x.toMap()).toList(),
       'containerProfiles': containerProfiles,
       'codecProfiles': codecProfiles?.map((x) => x.toMap()).toList(),
       'responseProfiles': responseProfiles?.map((x) => x.toMap()).toList(),
       'subtitleProfiles': subtitleProfiles?.map((x) => x.toMap()).toList(),
-    }..removeWhere((dynamic key, dynamic value) => key == null || value == null);
+    }..removeWhere(
+        (dynamic key, dynamic value) => key == null || value == null);
   }
 
   factory DeviceProfile.fromMap(Map<String, dynamic> map) {
     return DeviceProfile(
       name: map['name'],
       id: map['id'],
-      identification: map['identification'] != null ? Identification.fromMap(map['identification']) : null,
+      identification: map['identification'] != null
+          ? Identification.fromMap(map['identification'])
+          : null,
       friendlyName: map['friendlyName'],
       manufacturer: map['manufacturer'],
       manufacturerUrl: map['manufacturerUrl'],
@@ -239,38 +251,47 @@ class DeviceProfile {
       maxIconHeight: map['maxIconHeight']?.toInt(),
       maxStreamingBitrate: map['maxStreamingBitrate']?.toInt(),
       maxStaticBitrate: map['maxStaticBitrate']?.toInt(),
-      musicStreamingTranscodingBitrate: map['musicStreamingTranscodingBitrate']?.toInt(),
+      musicStreamingTranscodingBitrate:
+          map['musicStreamingTranscodingBitrate']?.toInt(),
       maxStaticMusicBitrate: map['maxStaticMusicBitrate']?.toInt(),
       sonyAggregationFlags: map['sonyAggregationFlags'],
       protocolInfo: map['protocolInfo'],
       timelineOffsetSeconds: map['timelineOffsetSeconds']?.toInt() ?? 0,
       requiresPlainVideoItems: map['requiresPlainVideoItems'] ?? false,
       requiresPlainFolders: map['requiresPlainFolders'] ?? false,
-      enableMSMediaReceiverRegistrar: map['enableMSMediaReceiverRegistrar'] ?? false,
-      ignoreTranscodeByteRangeRequests: map['ignoreTranscodeByteRangeRequests'] ?? false,
+      enableMSMediaReceiverRegistrar:
+          map['enableMSMediaReceiverRegistrar'] ?? false,
+      ignoreTranscodeByteRangeRequests:
+          map['ignoreTranscodeByteRangeRequests'] ?? false,
       xmlRootAttributes: List<dynamic>.from(map['xmlRootAttributes']),
       directPlayProfiles: map['directPlayProfiles'] != null
-          ? List<DirectPlayProfile>.from(map['directPlayProfiles']?.map((x) => DirectPlayProfile.fromMap(x)))
+          ? List<DirectPlayProfile>.from(map['directPlayProfiles']
+              ?.map((x) => DirectPlayProfile.fromMap(x)))
           : null,
       transcodingProfiles: map['transcodingProfiles'] != null
-          ? List<TranscodingProfile>.from(map['transcodingProfiles']?.map((x) => TranscodingProfile.fromMap(x)))
+          ? List<TranscodingProfile>.from(map['transcodingProfiles']
+              ?.map((x) => TranscodingProfile.fromMap(x)))
           : null,
       containerProfiles: List<dynamic>.from(map['containerProfiles']),
       codecProfiles: map['codecProfiles'] != null
-          ? List<CodecProfile>.from(map['codecProfiles']?.map((x) => CodecProfile.fromMap(x)))
+          ? List<CodecProfile>.from(
+              map['codecProfiles']?.map((x) => CodecProfile.fromMap(x)))
           : null,
       responseProfiles: map['responseProfiles'] != null
-          ? List<ResponseProfile>.from(map['responseProfiles']?.map((x) => ResponseProfile.fromMap(x)))
+          ? List<ResponseProfile>.from(
+              map['responseProfiles']?.map((x) => ResponseProfile.fromMap(x)))
           : null,
       subtitleProfiles: map['subtitleProfiles'] != null
-          ? List<SubtitleProfile>.from(map['subtitleProfiles']?.map((x) => SubtitleProfile.fromMap(x)))
+          ? List<SubtitleProfile>.from(
+              map['subtitleProfiles']?.map((x) => SubtitleProfile.fromMap(x)))
           : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DeviceProfile.fromJson(String source) => DeviceProfile.fromMap(json.decode(source));
+  factory DeviceProfile.fromJson(String source) =>
+      DeviceProfile.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -305,15 +326,18 @@ class DeviceProfile {
         other.maxIconHeight == maxIconHeight &&
         other.maxStreamingBitrate == maxStreamingBitrate &&
         other.maxStaticBitrate == maxStaticBitrate &&
-        other.musicStreamingTranscodingBitrate == musicStreamingTranscodingBitrate &&
+        other.musicStreamingTranscodingBitrate ==
+            musicStreamingTranscodingBitrate &&
         other.maxStaticMusicBitrate == maxStaticMusicBitrate &&
         other.sonyAggregationFlags == sonyAggregationFlags &&
         other.protocolInfo == protocolInfo &&
         other.timelineOffsetSeconds == timelineOffsetSeconds &&
         other.requiresPlainVideoItems == requiresPlainVideoItems &&
         other.requiresPlainFolders == requiresPlainFolders &&
-        other.enableMSMediaReceiverRegistrar == enableMSMediaReceiverRegistrar &&
-        other.ignoreTranscodeByteRangeRequests == ignoreTranscodeByteRangeRequests &&
+        other.enableMSMediaReceiverRegistrar ==
+            enableMSMediaReceiverRegistrar &&
+        other.ignoreTranscodeByteRangeRequests ==
+            ignoreTranscodeByteRangeRequests &&
         listEquals(other.xmlRootAttributes, xmlRootAttributes) &&
         listEquals(other.directPlayProfiles, directPlayProfiles) &&
         listEquals(other.transcodingProfiles, transcodingProfiles) &&

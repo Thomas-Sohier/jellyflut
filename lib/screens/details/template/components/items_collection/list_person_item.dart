@@ -26,30 +26,33 @@ class ListPersonItem extends StatelessWidget {
   const ListPersonItem({super.key, required this.item});
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-      ListItems.fromItem(
-          parentItem: item,
-          listType: ListType.poster,
-          horizontalListPosterHeight: 250,
-          showTitle: true,
-          showIfEmpty: false,
-          showSorting: false),
-      const SizedBox(height: 24),
-      ListItems.fromItem(
-          parentItem: item,
-          listType: ListType.poster,
-          horizontalListPosterHeight: 250,
-          showTitle: true,
-          showIfEmpty: false,
-          showSorting: false),
-      const SizedBox(height: 24),
-      ListItems.fromItem(
-          parentItem: item,
-          listType: ListType.poster,
-          horizontalListPosterHeight: 250,
-          showTitle: true,
-          showIfEmpty: false,
-          showSorting: false)
-    ]);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListItems.fromItem(
+              parentItem: item,
+              listType: ListType.poster,
+              horizontalListPosterHeight: 250,
+              showTitle: true,
+              showIfEmpty: false,
+              showSorting: false),
+          const SizedBox(height: 24),
+          ListItems.fromItem(
+              parentItem: item,
+              listType: ListType.poster,
+              horizontalListPosterHeight: 250,
+              showTitle: true,
+              showIfEmpty: false,
+              showSorting: false),
+          const SizedBox(height: 24),
+          ListItems.fromItem(
+              parentItem: item,
+              listType: ListType.poster,
+              horizontalListPosterHeight: 250,
+              showTitle: true,
+              showIfEmpty: false,
+              showSorting: false)
+        ]);
   }
 }

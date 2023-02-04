@@ -52,4 +52,5 @@ extension ThemeDataExtensions on ThemeData {
   }
 }
 
-DetailsTheme ownDetailsTheme(BuildContext context) => Theme.of(context).ownDetailsTheme();
+DetailsTheme ownDetailsTheme(BuildContext context) =>
+    Theme.of(context).ownDetailsTheme();

@@ -9,7 +9,11 @@ class DialogStructure extends StatelessWidget {
   final void Function() onSubmit;
   final bool expanded;
 
-  const DialogStructure({super.key, this.expanded = false, required this.onClose, required this.onSubmit});
+  const DialogStructure(
+      {super.key,
+      this.expanded = false,
+      required this.onClose,
+      required this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,9 @@ class DialogStructure extends StatelessWidget {
           mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
           children: [
             DecoratedBox(
-                decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.black26))),
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.black26))),
                 child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Row(
@@ -38,17 +44,20 @@ class DialogStructure extends StatelessWidget {
                           child: Text('edit_infos'.tr(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).dialogTheme.titleTextStyle),
+                              style:
+                                  Theme.of(context).dialogTheme.titleTextStyle),
                         ),
                       ],
                     ))),
             Theme(
                 data: Theme.of(context).copyWith(
-                    textTheme:
-                        t.Theme.generateTextThemeFromColor(Theme.of(context).dialogTheme.contentTextStyle?.color)),
+                    textTheme: t.Theme.generateTextThemeFromColor(
+                        Theme.of(context).dialogTheme.contentTextStyle?.color)),
                 child: form()),
             DecoratedBox(
-                decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: Colors.black26))),
+                decoration: BoxDecoration(
+                    border: Border(
+                        top: BorderSide(width: 1, color: Colors.black26))),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Row(
@@ -58,14 +67,23 @@ class DialogStructure extends StatelessWidget {
                         TextButton(
                             onPressed: onClose,
                             style: TextButton.styleFrom(
-                                textStyle: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+                                textStyle: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary)),
                             child: Text('cancel'.tr())),
                         const SizedBox(width: 4),
                         TextButton(
                             onPressed: onSubmit,
                             style: TextButton.styleFrom(
-                                textStyle: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
-                            child: Text('edit'.tr(), style: TextStyle(color: Theme.of(context).colorScheme.primary)))
+                                textStyle: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiary)),
+                            child: Text('edit'.tr(),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary)))
                       ]),
                 )),
           ]),

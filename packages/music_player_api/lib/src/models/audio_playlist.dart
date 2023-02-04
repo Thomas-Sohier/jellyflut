@@ -13,7 +13,8 @@ class AudioPlaylist with _$AudioPlaylist {
     required List<AudioSource> playlist,
   }) = _AudioPlaylist;
 
-  factory AudioPlaylist.fromJson(Map<String, Object?> json) => _$AudioPlaylistFromJson(json);
+  factory AudioPlaylist.fromJson(Map<String, Object?> json) =>
+      _$AudioPlaylistFromJson(json);
 
   void add(AudioSource audioSource) => playlist.add(audioSource);
 

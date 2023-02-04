@@ -8,7 +8,8 @@ import 'package:rxdart/rxdart.dart';
 /// {@endtemplate}
 class MusicPlayerRepository {
   /// {@macro music_player_repository}
-  const MusicPlayerRepository({required MusicPlayerApi musicPlayerApi}) : _musicPlayerApi = musicPlayerApi;
+  const MusicPlayerRepository({required MusicPlayerApi musicPlayerApi})
+      : _musicPlayerApi = musicPlayerApi;
 
   final MusicPlayerApi _musicPlayerApi;
 
@@ -18,9 +19,11 @@ class MusicPlayerRepository {
 
   AudioSource? getCurrentMusic() => _musicPlayerApi.getCurrentMusic();
 
-  Stream<AudioSource> getCurrentMusicStream() => _musicPlayerApi.getCurrentMusicStream();
+  Stream<AudioSource> getCurrentMusicStream() =>
+      _musicPlayerApi.getCurrentMusicStream();
 
-  void moveMusicItem(int oldIndex, int newIndex) => _musicPlayerApi.moveMusicItem(oldIndex, newIndex);
+  void moveMusicItem(int oldIndex, int newIndex) =>
+      _musicPlayerApi.moveMusicItem(oldIndex, newIndex);
 
   void play() => _musicPlayerApi.play();
 
@@ -28,9 +31,11 @@ class MusicPlayerRepository {
 
   Duration get getDuration => _musicPlayerApi.getDuration();
 
-  BehaviorSubject<Duration?> getDurationStream() => _musicPlayerApi.getDurationStream();
+  BehaviorSubject<Duration?> getDurationStream() =>
+      _musicPlayerApi.getDurationStream();
 
-  BehaviorSubject<Duration?> get getPositionStream => _musicPlayerApi.getPositionStream();
+  BehaviorSubject<Duration?> get getPositionStream =>
+      _musicPlayerApi.getPositionStream();
 
   bool isPlaying() => _musicPlayerApi.isPlaying();
 
@@ -40,15 +45,20 @@ class MusicPlayerRepository {
 
   Future<void> playAtIndex(int index) => _musicPlayerApi.playAtIndex(index);
 
-  UnmodifiableListView<AudioSource> get getPlayList => UnmodifiableListView(_musicPlayerApi.getPlayList());
+  UnmodifiableListView<AudioSource> get getPlayList =>
+      UnmodifiableListView(_musicPlayerApi.getPlayList());
 
-  AudioSource getItemFromPlaylist(int index) => _musicPlayerApi.getItemFromPlaylist(index);
+  AudioSource getItemFromPlaylist(int index) =>
+      _musicPlayerApi.getItemFromPlaylist(index);
 
-  void addToPlaylist(AudioSource audioSource) => _musicPlayerApi.addToPlaylist(audioSource);
+  void addToPlaylist(AudioSource audioSource) =>
+      _musicPlayerApi.addToPlaylist(audioSource);
 
-  void addAllToPlaylist(List<AudioSource> audioSources) => _musicPlayerApi.addAllToPlaylist(audioSources);
+  void addAllToPlaylist(List<AudioSource> audioSources) =>
+      _musicPlayerApi.addAllToPlaylist(audioSources);
 
-  void deleteFromPlaylist(int index) => _musicPlayerApi.deleteFromPlaylist(index);
+  void deleteFromPlaylist(int index) =>
+      _musicPlayerApi.deleteFromPlaylist(index);
 
   Future<void> next() => _musicPlayerApi.next();
 
@@ -56,7 +66,9 @@ class MusicPlayerRepository {
 
   Future<void> reset() => _musicPlayerApi.reset();
 
-  Future<void> playRemoteAudio(AudioSource audioSource) => _musicPlayerApi.playRemoteAudio(audioSource);
+  Future<void> playRemoteAudio(AudioSource audioSource) =>
+      _musicPlayerApi.playRemoteAudio(audioSource);
 
-  Future<void> playPlaylist(List<AudioSource> audioSources) => _musicPlayerApi.playPlaylist(audioSources);
+  Future<void> playPlaylist(List<AudioSource> audioSources) =>
+      _musicPlayerApi.playPlaylist(audioSources);
 }

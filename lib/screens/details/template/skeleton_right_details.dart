@@ -56,7 +56,8 @@ class _Buttons extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
@@ -162,7 +163,8 @@ class _Overview extends StatelessWidget {
             itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.only(bottom: paddingBottom),
                 child: const ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: double.maxFinite,
@@ -189,7 +191,8 @@ class _Providers extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
@@ -218,7 +221,8 @@ class _Peoples extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: paddingRight),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,

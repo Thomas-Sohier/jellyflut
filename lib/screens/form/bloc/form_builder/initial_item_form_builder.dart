@@ -9,10 +9,14 @@ class InitialItemFormBuilder extends FormBuilder {
           value: item.name,
           validators: [Validators.required],
         ),
-        FieldsEnum.ORIGINALTITLE.fieldName: FormControl<String>(value: item.originalTitle),
-        FieldsEnum.PRODUCTIONYEAR.fieldName: FormControl<int>(value: item.productionYear),
-        FieldsEnum.OVERVIEW.fieldName: FormControl<String>(value: item.overview),
-        FieldsEnum.DATECREATED.fieldName: FormControl<DateTime>(value: item.dateCreated)
+        FieldsEnum.ORIGINALTITLE.fieldName:
+            FormControl<String>(value: item.originalTitle),
+        FieldsEnum.PRODUCTIONYEAR.fieldName:
+            FormControl<int>(value: item.productionYear),
+        FieldsEnum.OVERVIEW.fieldName:
+            FormControl<String>(value: item.overview),
+        FieldsEnum.DATECREATED.fieldName:
+            FormControl<DateTime>(value: item.dateCreated)
       });
 
   @override

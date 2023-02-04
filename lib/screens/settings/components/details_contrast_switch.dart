@@ -9,10 +9,12 @@ class DetailsContrastSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
-        buildWhen: (previous, current) => previous.detailsPageContrasted != current.detailsPageContrasted,
+        buildWhen: (previous, current) =>
+            previous.detailsPageContrasted != current.detailsPageContrasted,
         builder: (_, state) => Switch(
             value: state.detailsPageContrasted,
-            onChanged: (contrast) =>
-                context.read<SettingsBloc>().add(DetailsPageContrastChangeRequested(detailsPageContrasted: contrast))));
+            onChanged: (contrast) => context.read<SettingsBloc>().add(
+                DetailsPageContrastChangeRequested(
+                    detailsPageContrasted: contrast))));
   }
 }

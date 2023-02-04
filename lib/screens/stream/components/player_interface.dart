@@ -22,9 +22,11 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
     return Row(children: [
       const Expanded(child: _VideoBuilder()),
       BlocBuilder<StreamCubit, StreamState>(
-          buildWhen: (previous, current) => previous.streamItem != current.streamItem,
+          buildWhen: (previous, current) =>
+              previous.streamItem != current.streamItem,
           builder: (_, state) {
-            if (state.streamItem.item.type == ItemType.TvChannel) return const ChannelPicker();
+            if (state.streamItem.item.type == ItemType.TvChannel)
+              return const ChannelPicker();
             return const SizedBox();
           })
     ]);
@@ -96,7 +98,10 @@ class _VideoPlayerBuilder extends StatelessWidget {
                     alignment: Alignment.center,
                     clipBehavior: Clip.none,
                     fit: StackFit.expand,
-                    children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
+                    children: [
+                      const Controllerbuilder(),
+                      if (isLoaded) const CommonControls()
+                    ],
                   ))
             ],
           );

@@ -24,7 +24,11 @@ class AuthState extends Equatable {
       this.server = ServerDto.empty,
       this.user = UserDto.empty});
 
-  AuthState copyWith({AuthStatus? authStatus, AuthPage? authPage, ServerDto? server, UserDto? user}) {
+  AuthState copyWith(
+      {AuthStatus? authStatus,
+      AuthPage? authPage,
+      ServerDto? server,
+      UserDto? user}) {
     return AuthState(
         authPage: authPage ?? this.authPage,
         authStatus: authStatus ?? this.authStatus,

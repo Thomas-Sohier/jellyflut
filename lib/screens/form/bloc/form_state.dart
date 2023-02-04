@@ -8,9 +8,13 @@ class FormState extends Equatable {
   final FormStatus formStatus;
   final Item item;
 
-  const FormState({required this.formBuilder, required this.item, this.formStatus = FormStatus.loading});
+  const FormState(
+      {required this.formBuilder,
+      required this.item,
+      this.formStatus = FormStatus.loading});
 
-  FormState copyWith({FormBuilder? formBuilder, Item? item, FormStatus? formStatus}) {
+  FormState copyWith(
+      {FormBuilder? formBuilder, Item? item, FormStatus? formStatus}) {
     return FormState(
         item: item ?? this.item,
         formBuilder: formBuilder ?? this.formBuilder,

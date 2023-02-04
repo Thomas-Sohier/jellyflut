@@ -32,9 +32,14 @@ class MusicPlayerApi {
     }
 
     // Use audio player depending of current platform
-    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows || kIsWeb) {
+    if (Platform.isAndroid ||
+        Platform.isIOS ||
+        Platform.isMacOS ||
+        Platform.isWindows ||
+        kIsWeb) {
       final player = AudioPlayer();
-      _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
+      _commonPlayer =
+          CommonPlayer.parseJustAudioController(audioPlayer: player);
     } else if (Platform.isLinux) {
       final player = Player(id: 0);
       _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
@@ -66,7 +71,8 @@ class MusicPlayerApi {
   void moveMusicItem(int oldIndex, int newIndex) {
     _audioPlaylist.move(oldIndex, newIndex);
     if (_currentMusic != null) {
-      _currentlyPlayingIndex.add(_audioPlaylist.playlist.indexOf(_currentMusic!));
+      _currentlyPlayingIndex
+          .add(_audioPlaylist.playlist.indexOf(_currentMusic!));
     }
   }
 
@@ -81,7 +87,8 @@ class MusicPlayerApi {
   }
 
   BehaviorSubject<Duration?> getPositionStream() {
-    return _commonPlayer?.getPositionStream ?? BehaviorSubject.seeded(Duration.zero);
+    return _commonPlayer?.getPositionStream ??
+        BehaviorSubject.seeded(Duration.zero);
   }
 
   bool isPlaying() {

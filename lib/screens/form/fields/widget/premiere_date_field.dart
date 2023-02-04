@@ -7,8 +7,12 @@ class PremiereDateField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveTextField<DateTime>(
         formControlName: FieldsEnum.PREMIEREDATE.fieldName,
-        onSubmitted: (_) =>
-            context.read<FormBloc>().state.formBuilder.formGroup.focus(FieldsEnum.PRODUCTIONYEAR.fieldName),
+        onSubmitted: (_) => context
+            .read<FormBloc>()
+            .state
+            .formBuilder
+            .formGroup
+            .focus(FieldsEnum.PRODUCTIONYEAR.fieldName),
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           labelText: 'Premiere date',

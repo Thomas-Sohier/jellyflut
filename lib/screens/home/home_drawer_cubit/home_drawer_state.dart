@@ -19,7 +19,8 @@ enum DrawerLayout {
   const DrawerLayout(this.drawerType, this.width);
 
   static DrawerLayout fromLayoutType(LayoutType layoutType) {
-    return DrawerLayout.values.firstWhere((element) => element.name == layoutType.name);
+    return DrawerLayout.values
+        .firstWhere((element) => element.name == layoutType.name);
   }
 
   bool get isMobile => this == mobile;
@@ -78,5 +79,6 @@ class HomeDrawerState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [currentIndexSelected, name, drawerLayout, drawerType, fixDrawerType];
+  List<Object?> get props =>
+      [currentIndexSelected, name, drawerLayout, drawerType, fixDrawerType];
 }

@@ -5,7 +5,8 @@ class ItemTitlePhone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<StreamCubit>().state.streamItem.item.isEmpty) return SizedBox();
+    if (context.read<StreamCubit>().state.streamItem.item.isEmpty)
+      return SizedBox();
     return Text(
       context.read<StreamCubit>().state.streamItem.item.name ?? '',
       textAlign: TextAlign.left,

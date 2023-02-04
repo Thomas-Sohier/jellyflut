@@ -62,11 +62,19 @@ class _LoginFormState extends State<LoginForm> {
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
-              UserUsernameField(form: form, onSubmitted: (_) => form.focus(FieldsType.USER_PASSWORD.toString())),
+              UserUsernameField(
+                  form: form,
+                  onSubmitted: (_) =>
+                      form.focus(FieldsType.USER_PASSWORD.toString())),
               const SizedBox(height: 12),
-              UserPasswordField(form: form, onSubmitted: (_) => addUser(form, context)),
+              UserPasswordField(
+                  form: form, onSubmitted: (_) => addUser(form, context)),
               const SizedBox(height: 24),
-              actions(children: [backButton(form, context), const SizedBox(width: 12), loginButton(form, context)]),
+              actions(children: [
+                backButton(form, context),
+                const SizedBox(width: 12),
+                loginButton(form, context)
+              ]),
               const SizedBox(height: 24)
             ],
           );
@@ -87,7 +95,8 @@ class _LoginFormState extends State<LoginForm> {
       child: TextButton(
           onPressed: () => backToFirstForm(form, context),
           style: TextButton.styleFrom(
-                  padding: EdgeInsets.only(left: 6, right: 6), backgroundColor: Theme.of(context).colorScheme.primary)
+                  padding: EdgeInsets.only(left: 6, right: 6),
+                  backgroundColor: Theme.of(context).colorScheme.primary)
               .copyWith(side: buttonBorderSide(context))
               .copyWith(shape: buttonShape())
               .copyWith(elevation: buttonElevation()),
@@ -123,7 +132,8 @@ class _LoginFormState extends State<LoginForm> {
                 color1: Colors.grey.shade400.withAlpha(220),
                 color2: Colors.grey.shade500.withAlpha(230),
                 child: CircularProgressIndicator(
-                    backgroundColor: Colors.grey, color: Theme.of(context).colorScheme.secondary));
+                    backgroundColor: Colors.grey,
+                    color: Theme.of(context).colorScheme.secondary));
           } else {
             return GradienButton('login'.tr(), () => addUser(form, context),
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -146,10 +156,12 @@ class _LoginFormState extends State<LoginForm> {
       final regexp = RegExp(r'^[^_]+(?=_)');
       final errors = <String>[];
       form.errors.forEach((key, value) {
-        final fieldName = key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
+        final fieldName =
+            key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
         errors.add('field_required'.tr(args: [fieldName]));
       });
-      authBloc.add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
+      authBloc
+          .add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
     }
   }
 }

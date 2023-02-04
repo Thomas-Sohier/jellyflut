@@ -7,7 +7,8 @@ class StreamItem {
 
   const StreamItem({required this.url, this.playbackInfos, required this.item});
 
-  static const empty = StreamItem(url: '', playbackInfos: null, item: Item.empty);
+  static const empty =
+      StreamItem(url: '', playbackInfos: null, item: Item.empty);
 
   /// Convenience getter to determine whether the current stream item is empty.
   bool get isEmpty => this == StreamItem.empty;

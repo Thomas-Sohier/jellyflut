@@ -21,7 +21,12 @@ class _SubtitleBoxState extends State<SubtitleBox> {
   @override
   void initState() {
     super.initState();
-    positionstream = context.read<StreamCubit>().state.controller!.getPositionStream().listen((value) {});
+    positionstream = context
+        .read<StreamCubit>()
+        .state
+        .controller!
+        .getPositionStream()
+        .listen((value) {});
   }
 
   @override
@@ -45,10 +50,12 @@ class _SubtitleBoxState extends State<SubtitleBox> {
       return;
     }
 
-    positionstream.onData((position) => subtitlePositionListener(subtitleController, position));
+    positionstream.onData(
+        (position) => subtitlePositionListener(subtitleController, position));
   }
 
-  void subtitlePositionListener(SubtitleController subtitleController, Duration position) {
+  void subtitlePositionListener(
+      SubtitleController subtitleController, Duration position) {
     final sub = subtitleController.durationSearch(position);
     //  .subtitles.firstWhereOrNull((s) {
     //   return s.start <= position && s.end >= position;
@@ -64,7 +71,8 @@ class _SubtitleBoxState extends State<SubtitleBox> {
   Widget build(BuildContext context) {
     return BlocListener<StreamCubit, StreamState>(
       listener: (_, state) => streamingEventListener(),
-      listenWhen: (previous, current) => previous.selectedSubtitleTrack != current.selectedSubtitleTrack,
+      listenWhen: (previous, current) =>
+          previous.selectedSubtitleTrack != current.selectedSubtitleTrack,
       child: StreamBuilder<String?>(
           stream: subtitlesStream.stream,
           builder: (_, ss) {

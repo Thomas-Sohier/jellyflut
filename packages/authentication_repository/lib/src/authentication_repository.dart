@@ -46,7 +46,8 @@ class AuthenticationRepository {
 
   // Stream of user and server when state change
   final StreamController<User> _userStream = StreamController<User>.broadcast();
-  final StreamController<Server> _serverStream = StreamController<Server>.broadcast();
+  final StreamController<Server> _serverStream =
+      StreamController<Server>.broadcast();
 
   // Shared preferences key
   final String _spUserKey = 'authentication_repository_user';
@@ -82,9 +83,11 @@ class AuthenticationRepository {
   }
 
   Future<void> _setDioInterceptor(User user) async {
-    final tokenInterceptor = await _authenticationApi.generateToken(accessToken: user.token);
-    final dioInterceptor =
-        QueuedInterceptorsWrapper(onRequest: (RequestOptions requestOptions, RequestInterceptorHandler handler) async {
+    final tokenInterceptor =
+        await _authenticationApi.generateToken(accessToken: user.token);
+    final dioInterceptor = QueuedInterceptorsWrapper(onRequest:
+        (RequestOptions requestOptions,
+            RequestInterceptorHandler handler) async {
       requestOptions.queryParameters.addAll(tokenInterceptor.queryParameters);
       requestOptions.headers.addAll(tokenInterceptor.headers);
       handler.next(requestOptions);
@@ -152,9 +155,13 @@ class AuthenticationRepository {
   /// Try to get server with url, if it exist then return it's [id]. If it doesn't exist
   /// then it create it and return it"s [id]
   Future<int> _createOrGetServer(String serverUrl, String serverName) async {
-    return _database.serversDao.getServerByUrl(serverUrl).then((value) => value.id).catchError((e) {
+    return _database.serversDao
+        .getServerByUrl(serverUrl)
+        .then((value) => value.id)
+        .catchError((e) {
       // Create server if not present
-      final serverCompanion = ServersCompanion.insert(url: serverUrl, name: serverName);
+      final serverCompanion =
+          ServersCompanion.insert(url: serverUrl, name: serverName);
       return _database.serversDao.createServer(serverCompanion);
     });
   }
@@ -164,14 +171,16 @@ class AuthenticationRepository {
   /// - create default settings
   /// - create user
   /// - return user's [id]
-  Future<int> _createOrGetUser(String id, String name, String? token, String password, int serverId) async {
+  Future<int> _createOrGetUser(String id, String name, String? token,
+      String password, int serverId) async {
     return _database.userAppDao
         .getUserByNameAndServerId(name, serverId)
         .then((value) => value.id)
         .catchError((e) async {
       // Create default settings if not present
       final settingsCompanion = SettingsCompanion.insert();
-      final settingsId = await _database.settingsDao.createSettings(settingsCompanion);
+      final settingsId =
+          await _database.settingsDao.createSettings(settingsCompanion);
 
       // Create default user if not present
       final userCompanion = UserAppCompanion.insert(
@@ -193,7 +202,8 @@ class AuthenticationRepository {
     return User.fromJson(jsonDecode(userAsString));
   }
 
-  Future<void> _setSharedPrefUser(User user) => _sharedPreferences.setString(_spUserKey, json.encode(user.toJson()));
+  Future<void> _setSharedPrefUser(User user) =>
+      _sharedPreferences.setString(_spUserKey, json.encode(user.toJson()));
 
   Server _getSharedPreServer() {
     final serverAsString = _sharedPreferences.getString(_spServerKey);

@@ -11,7 +11,9 @@ part 'details_download_state.dart';
 
 class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
   DetailsDownloadCubit(
-      {required Item item, required ItemsRepository itemsRepository, required DownloadsRepository downloadsRepository})
+      {required Item item,
+      required ItemsRepository itemsRepository,
+      required DownloadsRepository downloadsRepository})
       : _itemsRepository = itemsRepository,
         _downloadsRepository = downloadsRepository,
         super(DetailsDownloadState(
@@ -41,8 +43,11 @@ class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
     emit(state.copyWith(status: DownloadStatus.downloading));
     try {
       final fileBytes = await _downloadsRepository.downloadItem(
-          itemId: state.item.id, stateOfDownload: state.stateOfDownload, cancelToken: state.cancelToken);
-      final file = _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
+          itemId: state.item.id,
+          stateOfDownload: state.stateOfDownload,
+          cancelToken: state.cancelToken);
+      final file =
+          _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
       state.stateOfDownload.add(0);
       try {
         emit(state.copyWith(status: DownloadStatus.downloaded));

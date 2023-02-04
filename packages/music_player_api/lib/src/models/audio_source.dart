@@ -25,5 +25,6 @@ class AudioSource with _$AudioSource {
     return AudioSource(resource: url.toString(), metadata: metadata);
   }
 
-  factory AudioSource.fromJson(Map<String, Object?> json) => _$AudioSourceFromJson(json);
+  factory AudioSource.fromJson(Map<String, Object?> json) =>
+      _$AudioSourceFromJson(json);
 }

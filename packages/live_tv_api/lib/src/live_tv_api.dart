@@ -84,10 +84,12 @@ class LiveTvApi {
     queryParams.putIfAbsent('enableUserData', () => enableUserData);
     queryParams.putIfAbsent('sortBy', () => sortBy);
     queryParams.putIfAbsent('sortOrder', () => sortOrder);
-    queryParams.putIfAbsent('enableFavoriteSorting', () => enableFavoriteSorting);
+    queryParams.putIfAbsent(
+        'enableFavoriteSorting', () => enableFavoriteSorting);
     queryParams.putIfAbsent('addCurrentProgram', () => addCurrentProgram);
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams =
+        queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
@@ -158,7 +160,8 @@ class LiveTvApi {
     queryParams.putIfAbsent('genres', () => genres);
     queryParams.putIfAbsent('genreIds', () => genreIds);
     queryParams.putIfAbsent('enableImages', () => enableImages);
-    queryParams.putIfAbsent('enableTotalRecordCount', () => enableTotalRecordCount);
+    queryParams.putIfAbsent(
+        'enableTotalRecordCount', () => enableTotalRecordCount);
     queryParams.putIfAbsent('imageTypeLimit', () => imageTypeLimit);
     queryParams.putIfAbsent('enableImageTypes', () => enableImageTypes);
     queryParams.putIfAbsent('enableUserData', () => enableUserData);
@@ -166,11 +169,13 @@ class LiveTvApi {
     queryParams.putIfAbsent('librarySeriesId', () => librarySeriesId);
     queryParams.putIfAbsent('fields', () => fields);
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams =
+        queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     try {
-      final response =
-          await _dioClient.get<Map<String, dynamic>>('$serverUrl/LiveTv/Programs', queryParameters: finalQueryParams);
+      final response = await _dioClient.get<Map<String, dynamic>>(
+          '$serverUrl/LiveTv/Programs',
+          queryParameters: finalQueryParams);
 
       if (response.statusCode != 200) {
         throw LiveTvProgramsRequestFailure();
@@ -197,11 +202,13 @@ class LiveTvApi {
     queryParams.putIfAbsent('limit', () => limit);
     queryParams.putIfAbsent('fields', () => fields);
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams =
+        queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     try {
-      final response =
-          await _dioClient.post<Map<String, dynamic>>('$serverUrl/LiveTv/GuideInfo', queryParameters: finalQueryParams);
+      final response = await _dioClient.post<Map<String, dynamic>>(
+          '$serverUrl/LiveTv/GuideInfo',
+          queryParameters: finalQueryParams);
 
       if (response.statusCode != 200) {
         throw LiveTvGuideRequestFailure();

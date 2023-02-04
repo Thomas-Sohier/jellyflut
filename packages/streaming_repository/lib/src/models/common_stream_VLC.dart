@@ -16,7 +16,8 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }
 
-  static VlcPlayerController _initController({required Uri uri, Duration? startAtPosition}) {
+  static VlcPlayerController _initController(
+      {required Uri uri, Duration? startAtPosition}) {
     late final VlcPlayerController controller;
     if (uri.isScheme('http') || uri.isScheme('https')) {
       controller = VlcPlayerController.network(
@@ -91,7 +92,9 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     if (controller.isReadyToInitialize ?? false) return controller.initialize();
     final completer = Completer<void>();
     final timer = Timer.periodic(const Duration(milliseconds: 50), (_) {
-      if ((controller.isReadyToInitialize ?? false) && !controller.value.isInitialized && !completer.isCompleted) {
+      if ((controller.isReadyToInitialize ?? false) &&
+          !controller.value.isInitialized &&
+          !completer.isCompleted) {
         completer.complete();
       }
     });
@@ -117,7 +120,8 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    controller.addListener(() => streamController.add(controller.value.isPlaying));
+    controller
+        .addListener(() => streamController.add(controller.value.isPlaying));
     return streamController;
   }
 
@@ -149,9 +153,11 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
   Duration? getBufferingDuration() {
     final durationCurrentFile = controller.value.duration;
     final totalMilliseconds = durationCurrentFile.inMilliseconds;
-    final currentBufferedMilliseconds = totalMilliseconds / controller.value.bufferPercent;
+    final currentBufferedMilliseconds =
+        totalMilliseconds / controller.value.bufferPercent;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN ||
+                currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
@@ -220,7 +226,8 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
   }
 
   @override
-  Future<void> setSubtitle(Subtitle subtitle) => controller.setSpuTrack(subtitle.index);
+  Future<void> setSubtitle(Subtitle subtitle) =>
+      controller.setSpuTrack(subtitle.index);
 
   @override
   Future<void> dispose() async {

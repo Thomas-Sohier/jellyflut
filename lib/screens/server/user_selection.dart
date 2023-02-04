@@ -1,4 +1,5 @@
-import 'package:authentication_repository/authentication_repository.dart' hide Server;
+import 'package:authentication_repository/authentication_repository.dart'
+    hide Server;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
@@ -13,7 +14,8 @@ class UserSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO add cubit here
-    final users = context.read<AuthenticationRepository>().getUsersForServerId(server.id);
+    final users =
+        context.read<AuthenticationRepository>().getUsersForServerId(server.id);
     return FutureBuilder<List<UserAppData>>(
         future: users,
         builder: (_, a) {
@@ -50,8 +52,10 @@ class UserSelection extends StatelessWidget {
                         user: u,
                         onUserSelection: (user) {
                           context.read<AuthBloc>().add(LogoutRequested());
-                          context.read<AuthBloc>().add(AuthServerAdded(ServerDto(url: server.url, name: server.name)));
-                          context.read<AuthBloc>().add(RequestAuth(username: user.name, password: user.password));
+                          context.read<AuthBloc>().add(AuthServerAdded(
+                              ServerDto(url: server.url, name: server.name)));
+                          context.read<AuthBloc>().add(RequestAuth(
+                              username: user.name, password: user.password));
                         });
                   },
                 ))

@@ -19,8 +19,11 @@ mixin AppThemeGrabber<T extends StatefulWidget> on State<T> {
   void didChangeDependencies() {
     if (useColorScheme) {
       // generate Theme Data from current colorScheme
-      final colorscheme = Theme.of(context).colorScheme.copyWith(brightness: _themeProvider.getThemeData.brightness);
-      _themedata = personnal_theme.Theme.generateThemeDataFromColorScheme(colorscheme);
+      final colorscheme = Theme.of(context)
+          .colorScheme
+          .copyWith(brightness: _themeProvider.getThemeData.brightness);
+      _themedata =
+          personnal_theme.Theme.generateThemeDataFromColorScheme(colorscheme);
     } else {
       _themedata = _themeProvider.getThemeData;
     }

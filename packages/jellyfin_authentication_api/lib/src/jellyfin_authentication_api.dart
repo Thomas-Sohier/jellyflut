@@ -11,7 +11,8 @@ import 'models/authentication_response.dart';
 /// {@endtemplate}
 class JellyfinAuthenticationApi extends AuthenticationApi {
   /// {@macro jellyfin_authentication_api}
-  JellyfinAuthenticationApi({required Dio? dioClient}) : _dioClient = dioClient ?? Dio();
+  JellyfinAuthenticationApi({required Dio? dioClient})
+      : _dioClient = dioClient ?? Dio();
 
   final Dio _dioClient;
 
@@ -31,11 +32,14 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
         data: AuthByName(username: username, password: password),
       );
 
-      if (response.statusCode != 200) throw AuthenticationFailure('Error while trying to authenticate');
+      if (response.statusCode != 200)
+        throw AuthenticationFailure('Error while trying to authenticate');
 
-      final authenticationResponse = await compute(AuthenticationResponse.fromJson, response.data!);
+      final authenticationResponse =
+          await compute(AuthenticationResponse.fromJson, response.data!);
 
-      if (authenticationResponse.user == null) throw AuthenticationFailure('Incomplete response from backend');
+      if (authenticationResponse.user == null)
+        throw AuthenticationFailure('Incomplete response from backend');
 
       return User(
           id: authenticationResponse.user!.id,
@@ -44,13 +48,17 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
     } on DioError catch (dioError) {
       switch (dioError.response?.statusCode ?? 500) {
         case 401:
-          throw AuthenticationFailure('Authentication error, check your login, password and server\'s url');
+          throw AuthenticationFailure(
+              'Authentication error, check your login, password and server\'s url');
         case 404:
-          throw AuthenticationFailure('Url error, check that youre using the correct url and/or subpath');
+          throw AuthenticationFailure(
+              'Url error, check that youre using the correct url and/or subpath');
         case 500:
-          throw AuthenticationFailure('Server error, check that you can connect to your server');
+          throw AuthenticationFailure(
+              'Server error, check that you can connect to your server');
         default:
-          throw AuthenticationFailure('Cannot access to the server, check your url and/or your server');
+          throw AuthenticationFailure(
+              'Cannot access to the server, check your url and/or your server');
       }
     } on Exception catch (e) {
       throw AuthenticationFailure('Unknow error : ${e.toString()}');
@@ -63,13 +71,16 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
   }
 
   @override
-  Future<TokenInterceptor> generateToken({String? accessToken, String? refreshToken}) async {
+  Future<TokenInterceptor> generateToken(
+      {String? accessToken, String? refreshToken}) async {
     final tokenInterceptor = TokenInterceptor(queryParameters: {}, headers: {});
     final authEmby = await TokenHelper.generateHeader(accessToken: accessToken);
     if (accessToken != null) {
-      tokenInterceptor.queryParameters.putIfAbsent('api_key', () => accessToken);
+      tokenInterceptor.queryParameters
+          .putIfAbsent('api_key', () => accessToken);
     }
-    tokenInterceptor.headers.putIfAbsent('X-Emby-Authorization', () => authEmby);
+    tokenInterceptor.headers
+        .putIfAbsent('X-Emby-Authorization', () => authEmby);
     return tokenInterceptor;
   }
 }

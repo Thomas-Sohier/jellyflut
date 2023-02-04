@@ -21,7 +21,8 @@ class GenresField extends StatelessWidget {
             scrollDirection: Axis.vertical,
             itemCount: item.genreItems.length,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => genreItem(item.genreItems.elementAt(index), index, context),
+            itemBuilder: (context, index) =>
+                genreItem(item.genreItems.elementAt(index), index, context),
           ),
         ),
       ],
@@ -35,19 +36,29 @@ class GenresField extends StatelessWidget {
       height: ITEM_HEIGHT,
       child: Padding(
         padding: const EdgeInsets.only(top: 4, bottom: 4),
-        child:
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start, children: [
-          Expanded(
-            child: Text(genreItem.name ?? '',
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(color: headlineColor!.withAlpha(210))),
-          ),
-          Spacer(),
-          IconButton(
-              onPressed: () => context.read<FormBloc>().state.item.genreItems.removeAt(index),
-              hoverColor: Colors.red.withOpacity(0.1),
-              icon: Icon(Icons.delete_outline, color: Colors.red))
-        ]),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(genreItem.name ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1!
+                        .copyWith(color: headlineColor!.withAlpha(210))),
+              ),
+              Spacer(),
+              IconButton(
+                  onPressed: () => context
+                      .read<FormBloc>()
+                      .state
+                      .item
+                      .genreItems
+                      .removeAt(index),
+                  hoverColor: Colors.red.withOpacity(0.1),
+                  icon: Icon(Icons.delete_outline, color: Colors.red))
+            ]),
       ),
     );
   }

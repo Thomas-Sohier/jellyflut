@@ -22,7 +22,10 @@ class DetailsDownloadState extends Equatable {
   final CancelToken cancelToken;
 
   DetailsDownloadState copyWith(
-      {DownloadStatus? status, Item? item, BehaviorSubject<int>? stateOfDownload, CancelToken? cancelToken}) {
+      {DownloadStatus? status,
+      Item? item,
+      BehaviorSubject<int>? stateOfDownload,
+      CancelToken? cancelToken}) {
     return DetailsDownloadState(
       status: status ?? this.status,
       item: item ?? this.item,

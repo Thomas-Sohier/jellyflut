@@ -1,9 +1,12 @@
 enum FieldsEnum {
   AIRDAYS('AirDays', 'Air days', true),
   AIRTIME('AirTime', 'Air time', true),
-  AIRSAFTERSEASONNUMBER('AirsAfterSeasonNumber', 'airsAfterSeasonNumber', false),
-  AIRSBEFOREEPISODENUMBER('AirsBeforeEpisodeNumber', 'airsBeforeEpisodeNumber', false),
-  AIRSBEFORESEASONNUMBER('AirsBeforeSeasonNumber', 'airsBeforeSeasonNumber', false),
+  AIRSAFTERSEASONNUMBER(
+      'AirsAfterSeasonNumber', 'airsAfterSeasonNumber', false),
+  AIRSBEFOREEPISODENUMBER(
+      'AirsBeforeEpisodeNumber', 'airsBeforeEpisodeNumber', false),
+  AIRSBEFORESEASONNUMBER(
+      'AirsBeforeSeasonNumber', 'airsBeforeSeasonNumber', false),
   ALBUM('Album', 'Album', true),
   ALBUMARTISTS('AlbumArtists', 'Alnum artists', false),
   ARTISTITEMS('ArtistItems', 'Artists', false),
@@ -31,8 +34,10 @@ enum FieldsEnum {
   OVERVIEW('Overview', 'Overview', false),
   PARENTINDEXNUMBER('ParentIndexNumber', 'Parent index number', false),
   PEOPLE('People', 'People', false),
-  PREFERREDMETADATACOUNTRYCODE('PreferredMetadataCountryCode', 'Preferred metadata country code', false),
-  PREFERREDMETADATALANGUAGE('PreferredMetadataLanguage', 'preferredMetadataLanguage', false),
+  PREFERREDMETADATACOUNTRYCODE(
+      'PreferredMetadataCountryCode', 'Preferred metadata country code', false),
+  PREFERREDMETADATALANGUAGE(
+      'PreferredMetadataLanguage', 'preferredMetadataLanguage', false),
   PREMIEREDATE('PremiereDate', 'Premiere date', true),
   PRODUCTIONYEAR('ProductionYear', 'Production year', true),
   PROVIDERIDS('ProviderIds', 'Provider Ids', false),

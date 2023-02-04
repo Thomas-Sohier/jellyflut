@@ -14,7 +14,8 @@ class DeviceInfo {
   static Future<DeviceInfo> getCurrentDeviceInfo() async {
     return loadCurrentDeviceInfo().catchError((error, stacktrace) {
       log('Cannot load device info', level: Level.WARNING.value, error: error);
-      return Future.value(DeviceInfo(host: 'Unknown', id: 'Unknown', model: 'Unknown'));
+      return Future.value(
+          DeviceInfo(host: 'Unknown', id: 'Unknown', model: 'Unknown'));
     });
   }
 

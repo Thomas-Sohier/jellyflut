@@ -27,7 +27,8 @@ class SelectableBackButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(
+            width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

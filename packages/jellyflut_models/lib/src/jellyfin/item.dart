@@ -216,7 +216,8 @@ class Item with _$Item {
   /// Return [true] if played
   /// Return [false] is is not played
   bool hasProgress() {
-    if (userData?.playbackPositionTicks != null && userData!.playbackPositionTicks > 0) {
+    if (userData?.playbackPositionTicks != null &&
+        userData!.playbackPositionTicks > 0) {
       return true;
     }
     return false;
@@ -323,7 +324,9 @@ class Item with _$Item {
   /// Else return [false] if it doesn't have any trailers
   bool hasTrailer() {
     if (remoteTrailers.isNotEmpty || localTrailerCount != null) {
-      return remoteTrailers.isNotEmpty ? remoteTrailers.isNotEmpty : localTrailerCount! > 0;
+      return remoteTrailers.isNotEmpty
+          ? remoteTrailers.isNotEmpty
+          : localTrailerCount! > 0;
     }
     return false;
   }
@@ -348,7 +351,8 @@ class Item with _$Item {
   /// Return [true] if is different
   /// Return [false] if same
   bool haveDifferentOriginalTitle() {
-    return originalTitle != null && originalTitle!.toLowerCase() != name?.toLowerCase();
+    return originalTitle != null &&
+        originalTitle!.toLowerCase() != name?.toLowerCase();
   }
 
   /// Duration in microseconds from the item
@@ -367,7 +371,8 @@ class Item with _$Item {
   double getAspectRatio() {
     MediaStream mediaStream;
     if (mediaStreams.isNotEmpty && mediaStreams.isNotEmpty) {
-      mediaStream = mediaStreams.firstWhere((element) => element.type == MediaStreamType.Video);
+      mediaStream = mediaStreams
+          .firstWhere((element) => element.type == MediaStreamType.Video);
 
       // If aspect ratio is specified then we use it
       // else we calculate it
@@ -387,7 +392,8 @@ class Item with _$Item {
     if (aspectRatio.isEmpty) return 0;
     var separatorIndex = aspectRatio.indexOf(':');
     var firstValue = double.parse(aspectRatio.substring(0, separatorIndex));
-    var secondValue = double.parse(aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
+    var secondValue = double.parse(
+        aspectRatio.substring(separatorIndex + 1, aspectRatio.length));
     return firstValue / secondValue;
   }
 
@@ -643,13 +649,15 @@ class Item with _$Item {
     if (searchType == ImageType.Backdrop && backdropImageTags.isNotEmpty) {
       return searchType;
     } else if (imageTags.isNotEmpty) {
-      return getImageTypeBySearchTypeOrBackup(searchType: searchType, backupSearchType: backupSearchType);
+      return getImageTypeBySearchTypeOrBackup(
+          searchType: searchType, backupSearchType: backupSearchType);
     }
     return searchType;
   }
 
   ImageType getImageTypeBySearchTypeOrBackup(
-      {ImageType searchType = ImageType.Primary, required ImageType backupSearchType}) {
+      {ImageType searchType = ImageType.Primary,
+      required ImageType backupSearchType}) {
     if (imageTags.containsKey(searchType)) {
       return searchType;
     }

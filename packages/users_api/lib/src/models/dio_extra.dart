@@ -16,5 +16,6 @@ class DioExtra {
     return val;
   }
 
-  static DioExtra fromJson(Map<String, dynamic> json) => DioExtra(jellyfinUserId: json['jellyfinUserId'] as String);
+  static DioExtra fromJson(Map<String, dynamic> json) =>
+      DioExtra(jellyfinUserId: json['jellyfinUserId'] as String);
 }

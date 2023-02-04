@@ -13,7 +13,8 @@ class UserIcon extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(24)),
       child: CachedNetworkImage(
-        imageUrl: '${authRepo.currentServer.url}/Users/${authRepo.currentUser.id}/Images/Primary?quality=90',
+        imageUrl:
+            '${authRepo.currentServer.url}/Users/${authRepo.currentUser.id}/Images/Primary?quality=90',
         width: size,
         errorWidget: (context, url, error) => Container(
           padding: EdgeInsets.all(2),

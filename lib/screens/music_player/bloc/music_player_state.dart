@@ -4,7 +4,8 @@ enum PlayingState {
   play,
   pause;
 
-  static PlayingState fromBool(bool value) => value ? PlayingState.play : PlayingState.pause;
+  static PlayingState fromBool(bool value) =>
+      value ? PlayingState.play : PlayingState.pause;
 }
 
 enum MusicPlayerStatus { stopped, loading, playing, failure }
@@ -52,6 +53,14 @@ class MusicPlayerState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [theme, postionStream, duration, currentlyPlaying, screenLayout, playlist, playingState, status];
+  List<Object?> get props => [
+        theme,
+        postionStream,
+        duration,
+        currentlyPlaying,
+        screenLayout,
+        playlist,
+        playingState,
+        status
+      ];
 }

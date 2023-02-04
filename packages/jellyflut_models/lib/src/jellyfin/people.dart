@@ -21,5 +21,9 @@ class People with _$People {
 
   factory People.fromJson(Map<String, Object?> json) => _$PeopleFromJson(json);
 
-  Item asItem() => Item(id: id, name: name, imageBlurHashes: imageBlurHashes, type: ItemType.Person);
+  Item asItem() => Item(
+      id: id,
+      name: name,
+      imageBlurHashes: imageBlurHashes,
+      type: ItemType.Person);
 }

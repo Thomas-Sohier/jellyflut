@@ -9,7 +9,10 @@ class VideoPlayerProgressBar extends StatelessWidget {
   final double thumbRadius;
   final BarCapShape barCapShape;
   const VideoPlayerProgressBar(
-      {super.key, this.barHeight = 6.0, this.thumbRadius = 4.5, this.barCapShape = BarCapShape.round});
+      {super.key,
+      this.barHeight = 6.0,
+      this.thumbRadius = 4.5,
+      this.barCapShape = BarCapShape.round});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +20,13 @@ class VideoPlayerProgressBar extends StatelessWidget {
       stream: context.read<StreamCubit>().state.controller!.getPositionStream(),
       builder: (context, snapshot) => ProgressBar(
           progress: snapshot.data ?? Duration(seconds: 0),
-          buffered: context.read<StreamCubit>().state.controller!.getBufferingDuration(),
-          total: context.read<StreamCubit>().state.controller!.getDuration() ?? Duration(seconds: 0),
+          buffered: context
+              .read<StreamCubit>()
+              .state
+              .controller!
+              .getBufferingDuration(),
+          total: context.read<StreamCubit>().state.controller!.getDuration() ??
+              Duration(seconds: 0),
           progressBarColor: Theme.of(context).colorScheme.primary,
           baseBarColor: Colors.white.withOpacity(0.24),
           bufferedBarColor: Colors.white.withOpacity(0.24),

@@ -29,16 +29,19 @@ class _SearchButtonState extends State<SearchButton> {
         openColor: guessButtonColor(context),
         middleColor: guessButtonColor(context),
         closedColor: Colors.transparent,
-        openBuilder: (BuildContext _, VoidCallback openContainer) => fullscreenSearch(),
+        openBuilder: (BuildContext _, VoidCallback openContainer) =>
+            fullscreenSearch(),
         tappable: true,
         closedShape: const RoundedRectangleBorder(),
         closedElevation: 0.0,
-        closedBuilder: (BuildContext _, VoidCallback openContainer) => fieldClosed(openContainer));
+        closedBuilder: (BuildContext _, VoidCallback openContainer) =>
+            fieldClosed(openContainer));
   }
 
   Color guessButtonColor(BuildContext context) {
     final currentTheme = Theme.of(context);
-    if (currentTheme.brightness == Brightness.dark) return currentTheme.colorScheme.secondaryContainer;
+    if (currentTheme.brightness == Brightness.dark)
+      return currentTheme.colorScheme.secondaryContainer;
     return currentTheme.colorScheme.primaryContainer;
   }
 
@@ -67,11 +70,16 @@ class _SearchButtonState extends State<SearchButton> {
 
   Widget fullscreenSearch() {
     return Scaffold(
-        appBar: AppBar(leading: const SizedBox(), backgroundColor: guessButtonColor(context), actions: [
-          const BackButton(),
-          Flexible(child: SearchField(textEditingController: textEditingController)),
-          SearchIcon(textEditingController: textEditingController)
-        ]),
+        appBar: AppBar(
+            leading: const SizedBox(),
+            backgroundColor: guessButtonColor(context),
+            actions: [
+              const BackButton(),
+              Flexible(
+                  child: SearchField(
+                      textEditingController: textEditingController)),
+              SearchIcon(textEditingController: textEditingController)
+            ]),
         body: const SearchResult());
   }
 }

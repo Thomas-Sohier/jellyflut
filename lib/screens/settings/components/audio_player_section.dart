@@ -2,7 +2,8 @@ part of 'sections.dart';
 
 class AudioPlayerSection extends StatelessWidget {
   final GlobalKey<PopupMenuButtonState<String>> _audioButton = GlobalKey();
-  final GlobalKey<_AudioBitrateValueEditorState> _bitrateEditorButton = GlobalKey();
+  final GlobalKey<_AudioBitrateValueEditorState> _bitrateEditorButton =
+      GlobalKey();
 
   AudioPlayerSection({super.key});
 
@@ -19,7 +20,8 @@ class AudioPlayerSection extends StatelessWidget {
         SettingsTile(
           title: 'max_bitrate'.tr(),
           subtitle: 'Edit max audio bitrate value',
-          onPressed: (c) => _bitrateEditorButton.currentState?.editBitrateValue(c),
+          onPressed: (c) =>
+              _bitrateEditorButton.currentState?.editBitrateValue(c),
           trailing: AudioBitrateValueEditor(key: _bitrateEditorButton),
         ),
       ],

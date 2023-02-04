@@ -10,7 +10,9 @@ import 'package:sqlite_database/sqlite_database.dart';
 /// {@endtemplate}
 class SettingsRepository {
   /// {@macro settings_repository}
-  const SettingsRepository({required AuthenticationRepository authenticationRepository, required Database database})
+  const SettingsRepository(
+      {required AuthenticationRepository authenticationRepository,
+      required Database database})
       : _database = database,
         _authenticationRepository = authenticationRepository;
 
@@ -20,12 +22,14 @@ class SettingsRepository {
   String get currentUserId => _authenticationRepository.currentUser.id;
 
   Future<DatabaseUser> getCurrentUser() async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
     return DatabaseUser.fromUserApp(userAppData);
   }
 
   Future<bool> updateCurrentUser(DatabaseUserDto databaseUser) async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
     final updatedUser = userAppData.copyWith(
       id: databaseUser.id,
       name: databaseUser.name,
@@ -39,18 +43,23 @@ class SettingsRepository {
   }
 
   Future<DatabaseSetting> getcurrentSettings() async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
-    final settings = await _database.settingsDao.getSettingsByUserId(userAppData.id);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final settings =
+        await _database.settingsDao.getSettingsByUserId(userAppData.id);
     return DatabaseSetting.fromUserApp(settings);
   }
 
   Future<bool> updateCurrentSettings(DatabaseSettingDto databaseSetting) async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
-    final settings = await _database.settingsDao.getSettingsByUserId(userAppData.id);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final settings =
+        await _database.settingsDao.getSettingsByUserId(userAppData.id);
     final updatedSettings = settings.copyWith(
       id: databaseSetting.id,
       preferredPlayer: databaseSetting.preferredPlayer,
-      preferredTranscodeAudioCodec: databaseSetting.preferredTranscodeAudioCodec,
+      preferredTranscodeAudioCodec:
+          databaseSetting.preferredTranscodeAudioCodec,
       maxVideoBitrate: databaseSetting.maxVideoBitrate,
       maxAudioBitrate: databaseSetting.maxAudioBitrate,
       downloadPath: databaseSetting.downloadPath,
@@ -60,14 +69,18 @@ class SettingsRepository {
   }
 
   Future<DatabaseSetting> getCurrentServer() async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
-    final settings = await _database.settingsDao.getSettingsByUserId(userAppData.id);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final settings =
+        await _database.settingsDao.getSettingsByUserId(userAppData.id);
     return DatabaseSetting.fromUserApp(settings);
   }
 
   Future<bool> updateCurrentServer(DatabaseSettingDto databaseSetting) async {
-    final userAppData = await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
-    final server = await _database.serversDao.getServerById(userAppData.serverId);
+    final userAppData =
+        await _database.userAppDao.getUserByJellyfinUserId(currentUserId);
+    final server =
+        await _database.serversDao.getServerById(userAppData.serverId);
     final updatedServer = server.copyWith(
       id: server.id,
       url: server.url,
