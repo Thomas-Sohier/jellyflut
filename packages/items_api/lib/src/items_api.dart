@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' hide Category;
@@ -269,8 +268,9 @@ class ItemsApi {
       required String seriesId,
       bool? isSpecialSeason}) async {
     final queryParams = <String, dynamic>{};
-    if (isSpecialSeason != null)
+    if (isSpecialSeason != null) {
       queryParams['isSpecialSeason'] = isSpecialSeason;
+    }
     queryParams['userId'] = userId;
     queryParams['fields'] =
         'ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete,MediaSourceCount,Overview,DateCreated,MediaStreams,Height,Width';
