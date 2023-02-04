@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -88,12 +89,6 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     // [isReadyToInitialize] is always null until we call play()...
 
     if (controller.isReadyToInitialize ?? false) return controller.initialize();
-    // final completer = Completer<void>();
-    // controller.addListener(() => _isInitListener(completer));
-    // return completer.future;
-    // try {
-    //   await controller.play();
-    // } catch (_) {}
     final completer = Completer<void>();
     final timer = Timer.periodic(const Duration(milliseconds: 50), (_) {
       if ((controller.isReadyToInitialize ?? false) && !controller.value.isInitialized && !completer.isCompleted) {
@@ -103,6 +98,15 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     await completer.future;
     timer.cancel();
     return controller.initialize();
+  }
+
+  @override
+  Widget createView() {
+    return VlcPlayer(
+      controller: controller,
+      aspectRatio: 16 / 9,
+      placeholder: Center(child: CircularProgressIndicator()),
+    );
   }
 
   @override

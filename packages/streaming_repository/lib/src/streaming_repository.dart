@@ -6,6 +6,7 @@ import 'package:jellyflut_models/jellyflut_models.dart' hide User, StreamingSoft
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
 import 'package:path/path.dart' as p;
+import 'package:streaming_repository/src/models/common_stream_media_kit.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import 'helper/profiles.dart';
@@ -37,6 +38,8 @@ class StreamingRepository {
     final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     switch (StreamingSoftware.fromString(settings.preferredPlayer)) {
+      case StreamingSoftware.MPV:
+        return CommonStreamMediaKit.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.VLC:
         if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
           return CommonStreamVLCComputer.fromUri(uri: uri, startAtPosition: startAtPosition);

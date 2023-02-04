@@ -83,6 +83,11 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
   }
 
   @override
+  Widget createView() {
+    return BetterPlayer(controller: controller);
+  }
+
+  @override
   Duration? getBufferingDuration() {
     try {
       final duration = controller.videoPlayerController?.value.buffered

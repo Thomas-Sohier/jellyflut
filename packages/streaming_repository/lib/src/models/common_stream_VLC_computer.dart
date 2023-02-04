@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/widgets.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dart_vlc/dart_vlc.dart' hide MediaType;
@@ -38,6 +39,14 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
     for (var t in timers) {
       t.cancel();
     }
+  }
+
+  @override
+  Widget createView() {
+    return Video(
+      player: controller,
+      showControls: false,
+    );
   }
 
   @override

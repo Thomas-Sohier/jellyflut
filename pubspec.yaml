@@ -19,13 +19,11 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   auto_route: ^5.0.4
-  better_player: ^0.0.83
   blurhash_dart: ^1.1.0
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
   community_material_icon: ^5.9.55
   cupertino_icons: ^1.0.5
-  dart_vlc: ^0.4.0
   database_downloads_api:
     path: packages/database_downloads_api
   device_info_plus: ^8.0.0
@@ -47,7 +45,6 @@ dependencies:
   flutter_native_splash: ^2.2.12
   flutter_settings_ui: ^2.0.1
   flutter_svg: ^1.1.6
-  flutter_vlc_player: ^7.1.5
   fluttertoast: ^8.1.1
   hydrated_bloc: ^8.1.0
   intl: ^0.17.0
@@ -109,7 +106,6 @@ dependencies:
   users_repository:
     path: packages/users_repository
   uuid: ^3.0.6
-  video_player: ^2.4.7
   wakelock: ^0.6.2
   window_manager: ^0.2.7
   youtube_explode_dart: ^1.12.1

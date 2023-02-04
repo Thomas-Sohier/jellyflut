@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -35,5 +36,6 @@ abstract class CommonStream<T> {
   BehaviorSubject<Duration> getPositionStream();
   BehaviorSubject<Duration> getDurationStream();
   BehaviorSubject<bool> getPlayingStateStream();
+  Widget createView();
   Future<void> dispose();
 }

@@ -26,6 +26,21 @@ dependencies:
   streaming_api:
     path: ../streaming_api
   video_player: ^2.4.10
+  media_kit:
+    git:
+      url: https://github.com/alexmercerind/media_kit.git
+      path: media_kit
+      ref: main
+  media_kit_video:
+    git:
+      url: https://github.com/alexmercerind/media_kit.git
+      path: media_kit_video
+      ref: main
+  media_kit_libs_windows_video:
+    git:
+      url: https://github.com/alexmercerind/media_kit.git
+      path: media_kit_libs_windows_video
+      ref: main
   window_manager: ^0.2.8
   youtube_explode_dart: ^1.12.3
 

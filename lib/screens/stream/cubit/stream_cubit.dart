@@ -46,12 +46,12 @@ class StreamCubit extends Cubit<StreamState> {
         streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
       }
 
+      await commonStream.initialize();
       emit(state.copyWith(
           controller: commonStream,
           streamItem: streamItem,
           hasPip: await commonStream.hasPip(),
           status: StreamStatus.loading));
-      await commonStream.initialize();
       emit(state.copyWith(status: StreamStatus.success));
       await play();
       emit(state.copyWith(audioTracks: await _getAudioTracks()));
