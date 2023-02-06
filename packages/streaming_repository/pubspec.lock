@@ -472,6 +472,15 @@ packages:
       url: "https://github.com/alexmercerind/media_kit.git"
     source: git
     version: "0.0.1"
+  media_kit_libs_linux:
+    dependency: "direct main"
+    description:
+      path: media_kit_libs_linux
+      ref: main
+      resolved-ref: "4b02f9caba41df042d59f44b2f65ce8fde2cf1c9"
+      url: "https://github.com/alexmercerind/media_kit.git"
+    source: git
+    version: "1.0.0"
   media_kit_libs_windows_video:
     dependency: "direct main"
     description:
