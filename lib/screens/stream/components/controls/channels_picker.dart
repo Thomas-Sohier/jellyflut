@@ -164,8 +164,7 @@ class _ChannelListElement extends StatelessWidget {
   final int index;
   final Item channel;
 
-  const _ChannelListElement(
-      {required this.index, required this.channel});
+  const _ChannelListElement({required this.index, required this.channel});
 
   @override
   Widget build(BuildContext context) {

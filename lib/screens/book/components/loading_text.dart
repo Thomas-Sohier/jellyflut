@@ -29,7 +29,9 @@ class LoadingText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text('loading_dots'.tr(),
         textAlign: TextAlign.center,
-        style:
-            Theme.of(context).textTheme.displayLarge!.copyWith(shadows: shadows));
+        style: Theme.of(context)
+            .textTheme
+            .displayLarge!
+            .copyWith(shadows: shadows));
   }
 }

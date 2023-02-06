@@ -9,8 +9,8 @@ class Playlist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title:
-                Text('Playlist', style: Theme.of(context).textTheme.headlineSmall)),
+            title: Text('Playlist',
+                style: Theme.of(context).textTheme.headlineSmall)),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: body);
   }

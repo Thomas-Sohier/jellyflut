@@ -9,8 +9,8 @@ void main() {
   final self = SharedWorkerGlobalScope.instance;
   self.importScripts('sql-wasm.js');
 
-  final db =
-      WebDatabase.withStorage(DriftWebStorage.indexedDb('worker', migrateFromLocalStorage: false, inWebWorker: true));
+  final db = WebDatabase.withStorage(DriftWebStorage.indexedDb('worker',
+      migrateFromLocalStorage: false, inWebWorker: true));
   final server = DriftServer(DatabaseConnection(db));
 
   self.onConnect.listen((event) {

@@ -43,8 +43,8 @@ class _AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-        builder: (_, state) =>
-            Text(state.name, style: Theme.of(context).textTheme.headlineMedium));
+        builder: (_, state) => Text(state.name,
+            style: Theme.of(context).textTheme.headlineMedium));
   }
 }
 

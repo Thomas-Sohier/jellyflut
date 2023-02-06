@@ -49,10 +49,7 @@ class _CustomSnackbarBody extends StatelessWidget {
   final Color? color;
 
   const _CustomSnackbarBody(
-      {required this.messageTitle,
-      this.messageDetails,
-      this.icon,
-      this.color});
+      {required this.messageTitle, this.messageDetails, this.icon, this.color});
 
   @override
   Widget build(BuildContext context) {
