@@ -22,7 +22,7 @@ class _HomeCategoryTitleState extends State<HomeCategoryTitle> {
               widget.categoryTitle.tr(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           )
         ]));

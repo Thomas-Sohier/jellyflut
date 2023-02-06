@@ -16,8 +16,9 @@ class ShowChannelButton extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.streamItem != current.streamItem,
         builder: (_, state) {
-          if (state.streamItem.item.type != ItemType.TvChannel)
+          if (state.streamItem.item.type != ItemType.TvChannel) {
             return const SizedBox();
+          }
           return OutlinedButtonSelector(
             onPressed: context.read<ChannelCubit>().toggleChannelsPanel,
             shape: CircleBorder(),

@@ -90,7 +90,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     list.add(listItemTitle(
         child: Text(
       'embeded_audio_tracks'.tr(),
-      style: Theme.of(context).textTheme.bodyText2,
+      style: Theme.of(context).textTheme.bodyMedium,
     )));
 
     if (localAudioTracks.isEmpty) {
@@ -120,7 +120,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       listItemTitle(
           child: Text(
         'remote_audio_tracks'.tr(),
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       )),
     );
 

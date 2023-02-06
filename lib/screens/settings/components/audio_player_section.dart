@@ -11,7 +11,7 @@ class AudioPlayerSection extends StatelessWidget {
   SettingsSection build(BuildContext context) {
     return SettingsSection(
       title: 'audio_player'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.headline6,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       tiles: [
         SettingsTile(
             title: 'preferred_audio_codec'.tr(),

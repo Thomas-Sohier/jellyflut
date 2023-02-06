@@ -15,7 +15,7 @@ class Settings extends StatelessWidget {
         appBar: AppBar(
             title: Text(
           'settings'.tr(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         )),
         body: BlocBuilder<SettingsBloc, SettingsState>(
             buildWhen: (previous, current) =>

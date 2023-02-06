@@ -31,7 +31,7 @@ class GenresField extends StatelessWidget {
 
   Widget genreItem(NamedGuidPair? genreItem, int index, BuildContext context) {
     if (genreItem == null) return SizedBox();
-    final headlineColor = Theme.of(context).textTheme.headline6!.color;
+    final headlineColor = Theme.of(context).textTheme.titleLarge!.color;
     return SizedBox(
       height: ITEM_HEIGHT,
       child: Padding(
@@ -45,7 +45,7 @@ class GenresField extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1!
+                        .titleMedium!
                         .copyWith(color: headlineColor!.withAlpha(210))),
               ),
               Spacer(),

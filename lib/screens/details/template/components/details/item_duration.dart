@@ -18,10 +18,10 @@ class ItemDuration extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(duration, style: Theme.of(context).textTheme.bodyText2),
+        Text(duration, style: Theme.of(context).textTheme.bodyMedium),
         const DetailsSeparator(),
         Text('item_ends'.tr(args: [timeEnd]),
-            style: Theme.of(context).textTheme.bodyText2),
+            style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

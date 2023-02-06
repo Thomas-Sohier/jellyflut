@@ -7,7 +7,7 @@ class DetailsSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
-      child: Text('|', style: Theme.of(context).textTheme.bodyText2),
+      child: Text('|', style: Theme.of(context).textTheme.bodyMedium),
     );
   }
 }

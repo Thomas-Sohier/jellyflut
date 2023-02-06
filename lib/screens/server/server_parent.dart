@@ -37,7 +37,7 @@ class _ServerParentState extends State<ServerParent> {
         appBar: AppBar(
             title: Text(
           'servers'.tr(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         )),
         body: Align(
           alignment: Alignment.topCenter,

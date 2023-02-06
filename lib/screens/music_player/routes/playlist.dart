@@ -10,7 +10,7 @@ class Playlist extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             title:
-                Text('Playlist', style: Theme.of(context).textTheme.headline5)),
+                Text('Playlist', style: Theme.of(context).textTheme.headlineSmall)),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: body);
   }

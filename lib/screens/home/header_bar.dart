@@ -38,18 +38,18 @@ class HeaderBar extends StatelessWidget {
 }
 
 class _AppBarTitle extends StatelessWidget {
-  const _AppBarTitle({super.key});
+  const _AppBarTitle();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
         builder: (_, state) =>
-            Text(state.name, style: Theme.of(context).textTheme.headline4));
+            Text(state.name, style: Theme.of(context).textTheme.headlineMedium));
   }
 }
 
 class _AppLogo extends StatelessWidget {
-  const _AppLogo({super.key});
+  const _AppLogo();
 
   @override
   Widget build(BuildContext context) {

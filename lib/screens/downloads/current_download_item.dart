@@ -155,7 +155,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
           maxLines: 2,
           style: Theme.of(context)
               .textTheme
-              .bodyText1!
+              .bodyLarge!
               .copyWith(fontSize: 20, fontWeight: FontWeight.bold)),
     );
   }
@@ -167,7 +167,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
                 microseconds: widget.ongoingDownload.item.getDuration())),
             maxLines: 1,
             style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18)));
+                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18)));
   }
 
   Widget overview() {
@@ -176,7 +176,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
         widget.ongoingDownload.item.overview!,
         textAlign: TextAlign.justify,
         maxLines: 4,
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
       ),
     );
   }

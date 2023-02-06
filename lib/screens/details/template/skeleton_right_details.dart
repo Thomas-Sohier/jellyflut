@@ -39,7 +39,7 @@ class SkeletonRightDetails extends StatelessWidget {
 }
 
 class _Buttons extends StatelessWidget {
-  const _Buttons({super.key});
+  const _Buttons();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _Buttons extends StatelessWidget {
 }
 
 class _Title extends StatelessWidget {
-  const _Title({super.key});
+  const _Title();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _Title extends StatelessWidget {
 }
 
 class _TagLine extends StatelessWidget {
-  const _TagLine({super.key});
+  const _TagLine();
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _TagLine extends StatelessWidget {
 }
 
 class _Infos extends StatelessWidget {
-  const _Infos({super.key});
+  const _Infos();
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class _Infos extends StatelessWidget {
 }
 
 class _Info extends StatelessWidget {
-  const _Info({super.key});
+  const _Info();
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _Info extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
-  const _Overview({super.key});
+  const _Overview();
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +174,7 @@ class _Overview extends StatelessWidget {
 }
 
 class _Providers extends StatelessWidget {
-  const _Providers({super.key});
+  const _Providers();
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +202,7 @@ class _Providers extends StatelessWidget {
 }
 
 class _Peoples extends StatelessWidget {
-  const _Peoples({super.key});
+  const _Peoples();
 
   @override
   Widget build(BuildContext context) {

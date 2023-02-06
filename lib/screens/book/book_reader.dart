@@ -1,7 +1,6 @@
 // ignore: unused_import
 import 'dart:async';
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:downloads_repository/downloads_repository.dart';

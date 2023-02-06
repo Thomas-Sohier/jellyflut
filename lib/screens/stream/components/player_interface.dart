@@ -25,8 +25,9 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
           buildWhen: (previous, current) =>
               previous.streamItem != current.streamItem,
           builder: (_, state) {
-            if (state.streamItem.item.type == ItemType.TvChannel)
+            if (state.streamItem.item.type == ItemType.TvChannel) {
               return const ChannelPicker();
+            }
             return const SizedBox();
           })
     ]);
@@ -41,7 +42,7 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
 /// Maybe we could male it look better to have a more debuggable view.
 /// Cross-platform video player make this a bit hard to understand
 class _VideoBuilder extends StatelessWidget {
-  const _VideoBuilder({super.key});
+  const _VideoBuilder();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,7 @@ class _VideoBuilder extends StatelessWidget {
 }
 
 class _VideoPlayerBuilder extends StatelessWidget {
-  const _VideoPlayerBuilder({super.key});
+  const _VideoPlayerBuilder();
 
   @override
   Widget build(BuildContext context) {

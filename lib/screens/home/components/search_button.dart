@@ -40,8 +40,9 @@ class _SearchButtonState extends State<SearchButton> {
 
   Color guessButtonColor(BuildContext context) {
     final currentTheme = Theme.of(context);
-    if (currentTheme.brightness == Brightness.dark)
+    if (currentTheme.brightness == Brightness.dark) {
       return currentTheme.colorScheme.secondaryContainer;
+    }
     return currentTheme.colorScheme.primaryContainer;
   }
 

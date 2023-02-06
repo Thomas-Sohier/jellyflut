@@ -100,7 +100,7 @@ class EpisodeItem extends StatelessWidget {
 class _Title extends StatelessWidget {
   final int? indexNumber;
   final String name;
-  const _Title({super.key, this.indexNumber, required this.name});
+  const _Title({this.indexNumber, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,7 @@ class _Title extends StatelessWidget {
       maxLines: 2,
       style: Theme.of(context)
           .textTheme
-          .bodyText1
+          .bodyLarge
           ?.copyWith(fontWeight: FontWeight.bold)
           .apply(fontSizeFactor: 1.2),
     );
@@ -122,7 +122,7 @@ class _Title extends StatelessWidget {
 
 class _Duration extends StatelessWidget {
   final int duration;
-  const _Duration({super.key, required this.duration});
+  const _Duration({required this.duration});
 
   @override
   Widget build(BuildContext context) {
@@ -130,14 +130,14 @@ class _Duration extends StatelessWidget {
         child: Text(
       printDuration(Duration(microseconds: duration)),
       maxLines: 1,
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 18),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
     ));
   }
 }
 
 class _Overview extends StatelessWidget {
   final String overview;
-  const _Overview({super.key, required this.overview});
+  const _Overview({required this.overview});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class _Overview extends StatelessWidget {
       child: Text(
         overview,
         textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }

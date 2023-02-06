@@ -32,14 +32,16 @@ class JellyfinAuthenticationApi extends AuthenticationApi {
         data: AuthByName(username: username, password: password),
       );
 
-      if (response.statusCode != 200)
+      if (response.statusCode != 200) {
         throw AuthenticationFailure('Error while trying to authenticate');
+      }
 
       final authenticationResponse =
           await compute(AuthenticationResponse.fromJson, response.data!);
 
-      if (authenticationResponse.user == null)
+      if (authenticationResponse.user == null) {
         throw AuthenticationFailure('Incomplete response from backend');
+      }
 
       return User(
           id: authenticationResponse.user!.id,

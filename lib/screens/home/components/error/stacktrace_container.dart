@@ -32,7 +32,7 @@ class StacktraceContainer extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(18, 8, 18, 8),
           child: Text(
             message,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
       ),

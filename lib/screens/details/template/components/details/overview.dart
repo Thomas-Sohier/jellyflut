@@ -6,8 +6,9 @@ class OverviewDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<DetailsBloc>().state;
-    if (state.item.overview == null || state.item.overview!.isEmpty)
+    if (state.item.overview == null || state.item.overview!.isEmpty) {
       return const SizedBox();
+    }
     return OutlinedButtonSelector(
       padding: EdgeInsets.all(4),
       onPressed: () => overviewDialog(context),
@@ -15,7 +16,7 @@ class OverviewDetailsWidget extends StatelessWidget {
       child: Text(
         state.item.overview!,
         textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }

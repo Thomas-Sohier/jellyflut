@@ -27,7 +27,7 @@ class ProgressBar extends StatelessWidget {
 
 class _ProgressBarForeground extends StatelessWidget {
   final Item item;
-  const _ProgressBarForeground({super.key, required this.item});
+  const _ProgressBarForeground({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _ProgressBarForeground extends StatelessWidget {
 
 class _ProgressBarDurationPercent extends StatelessWidget {
   final Item item;
-  const _ProgressBarDurationPercent({super.key, required this.item});
+  const _ProgressBarDurationPercent({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _ProgressBarDurationPercent extends StatelessWidget {
 }
 
 class _ProgressBarBackground extends StatelessWidget {
-  const _ProgressBarBackground({super.key});
+  const _ProgressBarBackground();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _ProgressBarBackground extends StatelessWidget {
 }
 
 class _ProgressBarShadow extends StatelessWidget {
-  const _ProgressBarShadow({super.key});
+  const _ProgressBarShadow();
 
   @override
   Widget build(BuildContext context) {

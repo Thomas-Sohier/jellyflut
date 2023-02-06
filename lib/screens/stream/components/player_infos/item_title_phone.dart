@@ -5,8 +5,9 @@ class ItemTitlePhone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<StreamCubit>().state.streamItem.item.isEmpty)
+    if (context.read<StreamCubit>().state.streamItem.item.isEmpty) {
       return SizedBox();
+    }
     return Text(
       context.read<StreamCubit>().state.streamItem.item.name ?? '',
       textAlign: TextAlign.left,
@@ -14,7 +15,7 @@ class ItemTitlePhone extends StatelessWidget {
       maxLines: 2,
       style: Theme.of(context)
           .textTheme
-          .headline6
+          .titleLarge
           ?.copyWith(color: Theme.of(context).colorScheme.onBackground)
           .copyWith(fontSize: 20),
     );

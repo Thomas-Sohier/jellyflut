@@ -11,8 +11,9 @@ import '../models/index.dart';
 /// CommonStream Better Player specific code
 class CommonStreamBP extends CommonStream<BetterPlayerController> {
   void _isInitListener(BetterPlayerEvent event, Completer<void> completer) {
-    if (event.betterPlayerEventType == BetterPlayerEventType.initialized)
+    if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
       return completer.complete();
+    }
   }
 
   CommonStreamBP.fromUri({required Uri uri, Duration? startAtPosition}) {

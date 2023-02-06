@@ -204,8 +204,9 @@ class StreamCubit extends Cubit<StreamState> {
     final audioTracks = <AudioTrack>[];
 
     // For now we can change remote audio source if already transcoding
-    if (!(state.streamItem.playbackInfos?.isTranscoding() ?? false))
+    if (!(state.streamItem.playbackInfos?.isTranscoding() ?? false)) {
       return audioTracks;
+    }
 
     final remoteAudioTracksMediaStream = state.streamItem.item.mediaStreams
         .where((e) => e.type == MediaStreamType.Audio)

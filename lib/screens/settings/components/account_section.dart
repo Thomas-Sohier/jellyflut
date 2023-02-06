@@ -7,7 +7,7 @@ class AccountSection extends StatelessWidget {
   SettingsSection build(BuildContext context) {
     return SettingsSection(
       title: 'account'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.headline6,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       tiles: [
         SettingsTile(
             title: 'change_server'.tr(),

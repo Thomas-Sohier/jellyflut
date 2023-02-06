@@ -22,7 +22,7 @@ class ListTitle extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8),
               child: Text(
                 item.type.name,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             const SizedBox(height: 12),

@@ -54,7 +54,7 @@ class PlaylistListItem extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onError),
                   Text(
                     'Delete',
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onError),
                   )
                 ],
@@ -97,7 +97,7 @@ class PlaylistItem extends StatelessWidget {
             index.toString(),
             style: Theme.of(context)
                 .textTheme
-                .headline6
+                .titleLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -112,21 +112,21 @@ class PlaylistItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
               Text(audioSource.metadata.artist,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyLarge
                       ?.copyWith(fontSize: 14)),
               if (audioSource.metadata.album != null)
                 Text(audioSource.metadata.album!,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyLarge
                         ?.copyWith(fontSize: 14))
             ],
           ),

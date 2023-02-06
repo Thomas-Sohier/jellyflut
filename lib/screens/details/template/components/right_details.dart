@@ -54,7 +54,7 @@ class RightDetails extends StatelessWidget {
 class _BoxAdaptater extends StatelessWidget {
   final Widget? child;
 
-  const _BoxAdaptater(this.child, {super.key});
+  const _BoxAdaptater(this.child);
 
   @override
   Widget build(BuildContext context) {

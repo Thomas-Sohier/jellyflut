@@ -74,7 +74,7 @@ class GuideChannelRow extends StatelessWidget {
                                     channel.channelNumber ?? '',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2
+                                        .bodyMedium
                                         ?.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -141,14 +141,14 @@ class ProgramListElement extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Expanded(
                         child: Text(
                       '${formatter.format(program.startAt)} - ${formatter.format(program.endAt)}',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )),

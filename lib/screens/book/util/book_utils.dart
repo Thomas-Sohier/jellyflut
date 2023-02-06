@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart' as io;
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:easy_localization/easy_localization.dart';

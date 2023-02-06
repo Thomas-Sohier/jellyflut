@@ -30,7 +30,7 @@ class ChannelPicker extends StatelessWidget {
 }
 
 class _ChannelsPickerView extends StatelessWidget {
-  const _ChannelsPickerView({super.key});
+  const _ChannelsPickerView();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _ChannelsPickerView extends StatelessWidget {
 }
 
 class _PinnedHeaderChannelList extends StatelessWidget {
-  const _PinnedHeaderChannelList({super.key});
+  const _PinnedHeaderChannelList();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _PinnedHeaderChannelList extends StatelessWidget {
                 'Channels',
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .titleLarge
                     ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 8),
@@ -165,7 +165,7 @@ class _ChannelListElement extends StatelessWidget {
   final Item channel;
 
   const _ChannelListElement(
-      {super.key, required this.index, required this.channel});
+      {required this.index, required this.channel});
 
   @override
   Widget build(BuildContext context) {
@@ -182,10 +182,10 @@ class _ChannelListElement extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text('#${channel.channelNumber} - ${channel.name}',
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               if (channel.overview != null)
                 Text('Currently : ${channel.overview}',
-                    style: Theme.of(context).textTheme.bodyText2),
+                    style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),

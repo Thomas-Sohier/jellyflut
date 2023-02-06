@@ -41,7 +41,7 @@ class SongTitleLabel extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
-                  .headline5
+                  .headlineSmall
                   ?.copyWith(fontWeight: FontWeight.bold)),
         ));
   }
@@ -69,7 +69,7 @@ class SongArtistLabel extends StatelessWidget {
               },
               child: Text(
                 audioSource.metadata.artist,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             );
           }

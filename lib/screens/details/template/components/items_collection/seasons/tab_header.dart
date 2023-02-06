@@ -147,7 +147,7 @@ class HeaderBar extends StatelessWidget {
 }
 
 class _HeaderSeasonsButtons extends StatelessWidget {
-  const _HeaderSeasonsButtons({super.key});
+  const _HeaderSeasonsButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +168,7 @@ class _HeaderBlur extends StatelessWidget {
   final Widget child;
   final bool pinnedHeader;
   const _HeaderBlur(
-      {super.key, required this.child, required this.pinnedHeader});
+      {required this.child, required this.pinnedHeader});
 
   @override
   Widget build(BuildContext context) {

@@ -30,6 +30,6 @@ class LoadingText extends StatelessWidget {
     return Text('loading_dots'.tr(),
         textAlign: TextAlign.center,
         style:
-            Theme.of(context).textTheme.headline1!.copyWith(shadows: shadows));
+            Theme.of(context).textTheme.displayLarge!.copyWith(shadows: shadows));
   }
 }

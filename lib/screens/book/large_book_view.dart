@@ -60,7 +60,7 @@ class _LargeBookViewState extends State<LargeBookView> {
     return Scaffold(
         appBar: AppBar(
           title: Text(item.name ?? '',
-              style: Theme.of(context).textTheme.headline5),
+              style: Theme.of(context).textTheme.headlineSmall),
           actions: [SettingButton()],
         ),
         extendBodyBehindAppBar: false,
@@ -140,7 +140,7 @@ class _LargeBookViewState extends State<LargeBookView> {
                 ),
               if (pageNumber != currentPage) SizedBox(width: 28),
               Text('page_number'.tr(args: [pageNumber.toString()]),
-                  style: Theme.of(context).textTheme.bodyText2)
+                  style: Theme.of(context).textTheme.bodyMedium)
             ]));
   }
 }

@@ -74,7 +74,7 @@ class _AudioBitrateValueEditorState extends State<AudioBitrateValueEditor> {
                             controller.value.text.isNotEmpty
                                 ? '${int.parse(s.data!) / 1000000} Mbps'
                                 : '0 Mbps',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           );
                         })
                   ]));

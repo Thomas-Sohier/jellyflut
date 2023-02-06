@@ -49,8 +49,7 @@ class _CustomSnackbarBody extends StatelessWidget {
   final Color? color;
 
   const _CustomSnackbarBody(
-      {super.key,
-      required this.messageTitle,
+      {required this.messageTitle,
       this.messageDetails,
       this.icon,
       this.color});
@@ -73,7 +72,7 @@ class _CustomSnackbarBody extends StatelessWidget {
                             maxLines: 1,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1
+                                .bodyLarge
                                 ?.apply(fontSizeFactor: 1.2)
                                 .copyWith(
                                     color: ownDetailsTheme(context)
@@ -87,7 +86,7 @@ class _CustomSnackbarBody extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                       color: ownDetailsTheme(context)
                                           .onBackground),

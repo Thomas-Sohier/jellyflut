@@ -43,7 +43,7 @@ class DiscTitle extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             title,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ],
       ),

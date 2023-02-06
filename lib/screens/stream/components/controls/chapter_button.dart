@@ -84,7 +84,7 @@ class _ChapterButtonState extends State<ChapterButton> {
         children: [
           Text(
             chapter.name,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           Text(printDuration(chapterPosition))
         ],

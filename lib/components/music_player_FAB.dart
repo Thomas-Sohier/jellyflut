@@ -172,7 +172,7 @@ class CenterPart extends StatelessWidget {
                   state.currentlyPlaying?.metadata.title ?? '',
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary),
                 )),
                 Expanded(

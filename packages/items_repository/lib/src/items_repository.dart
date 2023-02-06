@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:items_api/items_api.dart';
@@ -482,8 +481,9 @@ class ItemsRepository {
     queryParams['deviceId'] = info.id;
     queryParams['videoBitrate'] = settings.maxVideoBitrate;
     queryParams['audioBitrate'] = settings.maxAudioBitrate;
-    if (playBackInfos.mediaSources.isNotEmpty)
+    if (playBackInfos.mediaSources.isNotEmpty) {
       queryParams['tag'] = playBackInfos.mediaSources.first.eTag;
+    }
     queryParams['subtitleStreamIndex'] = subtitleStreamIndex;
     queryParams['audioStreamIndex'] = audioStreamIndex;
     queryParams['api_key'] = user.apiKey;

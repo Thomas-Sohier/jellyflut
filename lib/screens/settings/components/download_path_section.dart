@@ -7,7 +7,7 @@ class DownloadPathSection extends StatelessWidget {
   SettingsSection build(BuildContext context) {
     return SettingsSection(
         title: 'download'.tr(),
-        titleTextStyle: Theme.of(context).textTheme.headline6,
+        titleTextStyle: Theme.of(context).textTheme.titleLarge,
         tiles: [
           SettingsTile(
             title: 'download_path'.tr(),

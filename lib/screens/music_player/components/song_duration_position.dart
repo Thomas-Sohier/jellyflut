@@ -19,14 +19,14 @@ class SongDurationPosition extends StatelessWidget {
                       snapshot.data != null
                           ? printDuration(snapshot.data!)
                           : '0.00',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ))),
         Spacer(),
         BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
             buildWhen: (previous, current) =>
                 previous.currentlyPlaying != current.currentlyPlaying,
             builder: (context, state) => Text(printDuration(state.duration),
-                style: Theme.of(context).textTheme.bodyText1))
+                style: Theme.of(context).textTheme.bodyLarge))
       ],
     );
   }

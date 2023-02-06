@@ -85,7 +85,7 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
           textAlign: TextAlign.left,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.headline3),
+          style: Theme.of(context).textTheme.displaySmall),
     );
   }
 

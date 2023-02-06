@@ -66,7 +66,7 @@ class _AuthParentState extends State<AuthParent> {
                     tag: 'logo_text',
                     child: Text(
                       'Jellyfin',
-                      style: Theme.of(context).textTheme.headline2,
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ),
                 ],

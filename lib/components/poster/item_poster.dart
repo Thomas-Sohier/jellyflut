@@ -162,8 +162,7 @@ class _PosterTitle extends StatelessWidget {
   final bool showParent;
   final bool hasSubTitle;
   const _PosterTitle(
-      {super.key,
-      required this.item,
+      {required this.item,
       required this.showParent,
       required this.hasSubTitle});
 
@@ -180,7 +179,7 @@ class _PosterTitle extends StatelessWidget {
             softWrap: false,
             maxLines: 1,
             style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16),
+                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
           ),
         ),
         if (hasSubTitle)
@@ -188,7 +187,7 @@ class _PosterTitle extends StatelessWidget {
             'Season ${item.parentIndexNumber}, Episode ${item.indexNumber}',
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 12,
                 ),
             textAlign: TextAlign.center,
@@ -200,7 +199,7 @@ class _PosterTitle extends StatelessWidget {
 
 class _ProgressBar extends StatelessWidget {
   final Item item;
-  const _ProgressBar({super.key, required this.item});
+  const _ProgressBar({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +213,7 @@ class _ProgressBar extends StatelessWidget {
 }
 
 class _NewBanner extends StatelessWidget {
-  const _NewBanner({super.key});
+  const _NewBanner();
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +235,7 @@ class _NewBanner extends StatelessWidget {
 }
 
 class _PlayedBanner extends StatelessWidget {
-  const _PlayedBanner({super.key});
+  const _PlayedBanner();
 
   @override
   Widget build(BuildContext context) {

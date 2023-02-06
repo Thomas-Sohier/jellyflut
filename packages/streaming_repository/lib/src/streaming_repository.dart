@@ -273,8 +273,9 @@ class StreamingRepository {
     queryParams['deviceId'] = info.id;
     queryParams['videoBitrate'] = settings.maxVideoBitrate;
     queryParams['audioBitrate'] = settings.maxAudioBitrate;
-    if (playBackInfos.mediaSources.isNotEmpty)
+    if (playBackInfos.mediaSources.isNotEmpty) {
       queryParams['tag'] = playBackInfos.mediaSources.first.eTag;
+    }
     queryParams['subtitleStreamIndex'] = subtitleStreamIndex;
     queryParams['audioStreamIndex'] = audioStreamIndex;
     queryParams['api_key'] = user.apiKey;

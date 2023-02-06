@@ -60,7 +60,7 @@ class _ServerFormState extends State<ServerForm> {
                 Expanded(
                   child: Text(
                     'server_configuration'.tr(),
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.left,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

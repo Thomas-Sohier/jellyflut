@@ -10,7 +10,7 @@ class ItemParentTitlePhone extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
             .textTheme
-            .bodyText1
+            .bodyLarge
             ?.copyWith(
                 foreground: Paint()
                   ..shader = CustomGradient(context).linearGradient)

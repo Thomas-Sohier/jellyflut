@@ -13,7 +13,7 @@ class TitleDetailsWidget extends StatelessWidget {
       child: SelectableText(
         state.item.name!,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.headline4,
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     ));
   }

@@ -17,7 +17,7 @@ class RatingDetailsWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(4))),
       child: Text(state.item.officialRating!,
           textAlign: TextAlign.justify,
-          style: Theme.of(context).textTheme.subtitle1),
+          style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }

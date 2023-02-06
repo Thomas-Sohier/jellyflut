@@ -17,7 +17,7 @@ class PersonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (person == null) return SizedBox();
-    final headlineColor = Theme.of(context).textTheme.headline6!.color;
+    final headlineColor = Theme.of(context).textTheme.titleLarge!.color;
     return SizedBox(
       height: height,
       child: Padding(
@@ -37,14 +37,14 @@ class PersonItem extends StatelessWidget {
                   children: [
                     Text(person?.name ?? '',
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.subtitle1),
+                        style: Theme.of(context).textTheme.titleMedium),
                     if (person?.role != null)
                       Text(
                         person!.role!,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .titleLarge!
                             .copyWith(fontSize: 16)
                             .copyWith(color: headlineColor!.withAlpha(180)),
                       ),

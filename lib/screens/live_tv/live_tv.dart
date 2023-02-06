@@ -100,7 +100,7 @@ class ChannelsView extends StatelessWidget {
 }
 
 class _ChannelPlaceholder extends StatelessWidget {
-  const _ChannelPlaceholder({super.key});
+  const _ChannelPlaceholder();
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +115,7 @@ class _ChannelPlaceholder extends StatelessWidget {
 }
 
 class _ChannelFailure extends StatelessWidget {
-  const _ChannelFailure({super.key});
+  const _ChannelFailure();
 
   @override
   Widget build(BuildContext context) {

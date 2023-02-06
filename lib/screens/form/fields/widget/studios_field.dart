@@ -32,7 +32,7 @@ class StudiosField extends StatelessWidget {
 
   Widget studioItem(String? name, int index, BuildContext context) {
     if (name == null) return SizedBox();
-    final headlineColor = Theme.of(context).textTheme.headline6!.color;
+    final headlineColor = Theme.of(context).textTheme.titleLarge!.color;
     return SizedBox(
       height: ITEM_HEIGHT,
       child: Padding(
@@ -46,7 +46,7 @@ class StudiosField extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1!
+                        .titleMedium!
                         .copyWith(color: headlineColor!.withAlpha(210))),
               ),
               Spacer(),

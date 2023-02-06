@@ -29,7 +29,7 @@ class SongPlaylistCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text('playlist'.tr(),
                         textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headline5),
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                   Expanded(child: child)
                 ])));

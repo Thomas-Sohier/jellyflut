@@ -50,7 +50,7 @@ class TagsField extends StatelessWidget {
                 Flexible(
                     child: Text(
                   tag.capitalize(),
-                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSecondary),
                 )),
                 IconButton(

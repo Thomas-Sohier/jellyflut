@@ -43,7 +43,7 @@ class OffLineScreen extends StatelessWidget {
                     Text(
                         'You seems to not be able to access your server or to have internet',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText1),
+                        style: Theme.of(context).textTheme.bodyLarge),
                     const SizedBox(height: 12),
                     PaletteButton('Go to my offline library',
                         borderRadius: 4,

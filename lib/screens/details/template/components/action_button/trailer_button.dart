@@ -114,7 +114,7 @@ class TrailerDialogButton extends StatelessWidget {
               children: [
                 Text(trailer.name ?? 'Trailer #$index',
                     maxLines: 2,
-                    style: theme.textTheme.bodyText1,
+                    style: theme.textTheme.bodyLarge,
                     overflow: TextOverflow.ellipsis),
                 Text(trailer.url ?? '',
                     style: TextStyle(color: theme.colorScheme.secondary),

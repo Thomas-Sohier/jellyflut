@@ -62,10 +62,12 @@ class StreamingApi {
     queryParams['MaxStreamingBitrate'] = maxStreamingBitrate;
     queryParams['VideoBitrate'] = maxVideoBitrate;
     queryParams['AudioBitrate'] = maxAudioBitrate;
-    if (subtitleStreamIndex != null)
+    if (subtitleStreamIndex != null) {
       queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
-    if (audioStreamIndex != null)
+    }
+    if (audioStreamIndex != null) {
       queryParams['AudioStreamIndex'] = audioStreamIndex;
+    }
     queryParams.removeWhere((_, value) => value == null);
     final finalQueryParams =
         queryParams.map((key, value) => MapEntry(key, value.toString()));

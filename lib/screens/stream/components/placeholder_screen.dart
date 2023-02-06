@@ -24,7 +24,7 @@ class PlaceholderScreen extends StatelessWidget {
 }
 
 class _Background extends StatelessWidget {
-  const _Background({super.key});
+  const _Background();
 
   @override
   Widget build(BuildContext context) {

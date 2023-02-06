@@ -94,7 +94,7 @@ class _MusicItemState extends State<MusicItem> {
       children: [
         Text(printDuration(Duration(microseconds: widget.item.getDuration())),
             style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16))
+                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
       ],
     );
   }
@@ -106,7 +106,7 @@ class _MusicItemState extends State<MusicItem> {
         children: [
           Text('Contains $numberOfTitle titles',
               style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16))
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
         ],
       );
     }
@@ -119,7 +119,7 @@ class _MusicItemState extends State<MusicItem> {
         children: [
           Text(widget.item.concatenateArtists().toString(),
               style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18))
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18))
         ],
       );
     }
@@ -133,7 +133,7 @@ class _MusicItemState extends State<MusicItem> {
           maxLines: 2,
           style: Theme.of(context)
               .textTheme
-              .bodyText1!
+              .bodyLarge!
               .copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }

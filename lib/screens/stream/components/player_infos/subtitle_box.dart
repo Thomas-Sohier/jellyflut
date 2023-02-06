@@ -100,7 +100,7 @@ class SubtitleContainer extends StatelessWidget {
             Text(text!,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(color: Colors.white)
                     .copyWith(fontSize: constraints.maxHeight * 0.1)
                     .copyWith(
@@ -112,7 +112,7 @@ class SubtitleContainer extends StatelessWidget {
             Text(text!,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyLarge
                     ?.copyWith(color: Colors.white)
                     .copyWith(fontSize: constraints.maxHeight * 0.1))
           ]),

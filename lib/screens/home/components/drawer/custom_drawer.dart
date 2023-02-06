@@ -18,9 +18,10 @@ class CustomDrawer extends StatelessWidget {
     return FocusableActionDetector(
         enabled: false,
         onFocusChange: (value) {
-          if (isAndroidTv)
+          if (isAndroidTv) {
             homeDrawerCubit
                 .changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
+          }
         },
         child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
           buildWhen: (previous, current) =>
@@ -52,15 +53,16 @@ class CustomDrawer extends StatelessWidget {
       case DrawerLayout.tablet:
       case DrawerLayout.desktop:
       default:
-        if (currentTheme.brightness == Brightness.dark)
+        if (currentTheme.brightness == Brightness.dark) {
           return currentTheme.colorScheme.secondaryContainer;
+        }
         return currentTheme.colorScheme.primaryContainer;
     }
   }
 }
 
 class _DrawerButtons extends StatelessWidget {
-  const _DrawerButtons({super.key});
+  const _DrawerButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +99,9 @@ class _DrawerButtons extends StatelessWidget {
       case DrawerLayout.tablet:
       case DrawerLayout.desktop:
       default:
-        if (currentTheme.brightness == Brightness.dark)
+        if (currentTheme.brightness == Brightness.dark) {
           return currentTheme.colorScheme.secondary;
+        }
         return currentTheme.colorScheme.primary;
     }
   }
@@ -111,8 +114,9 @@ class _DrawerButtons extends StatelessWidget {
       case DrawerLayout.tablet:
       case DrawerLayout.desktop:
       default:
-        if (currentTheme.brightness == Brightness.dark)
+        if (currentTheme.brightness == Brightness.dark) {
           return currentTheme.colorScheme.onSecondaryContainer;
+        }
         return currentTheme.colorScheme.onPrimaryContainer;
     }
   }
@@ -142,7 +146,7 @@ class _DrawerButtons extends StatelessWidget {
 }
 
 class _BottomActions extends StatelessWidget {
-  const _BottomActions({super.key});
+  const _BottomActions();
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +201,7 @@ class _BottomActions extends StatelessWidget {
 }
 
 class _DrawerDivider extends StatelessWidget {
-  const _DrawerDivider({super.key});
+  const _DrawerDivider();
 
   @override
   Widget build(BuildContext context) {

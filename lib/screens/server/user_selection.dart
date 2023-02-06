@@ -66,7 +66,7 @@ class UserSelection extends StatelessWidget {
 }
 
 class _NoUsers extends StatelessWidget {
-  const _NoUsers({super.key});
+  const _NoUsers();
 
   @override
   Widget build(BuildContext context) {

@@ -88,7 +88,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     list.add(listItemTitle(
         child: Text(
       'embeded_subtitles'.tr(),
-      style: Theme.of(context).textTheme.bodyText2,
+      style: Theme.of(context).textTheme.bodyMedium,
     )));
 
     if (localSubtitles.isEmpty) {
@@ -116,7 +116,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       listItemTitle(
           child: Text(
         'remote_subtitles'.tr(),
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       )),
     );
 

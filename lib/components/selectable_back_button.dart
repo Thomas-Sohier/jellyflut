@@ -10,9 +10,8 @@ class SelectableBackButton extends StatelessWidget {
         autofocus: false,
         onPressed: context.router.root.pop,
         style: TextButton.styleFrom(
-                minimumSize: Size(24, 24),
+                foregroundColor: Theme.of(context).colorScheme.onBackground, minimumSize: Size(24, 24),
                 padding: EdgeInsets.all(12),
-                primary: Theme.of(context).colorScheme.onBackground,
                 shape: const CircleBorder())
             .copyWith(side: _buttonBorderSide(context)),
         child: Icon(Icons.arrow_back));

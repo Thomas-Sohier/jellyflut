@@ -22,8 +22,9 @@ class SongImage extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.currentlyPlaying != current.currentlyPlaying,
             builder: (context, state) {
-              if (state.currentlyPlaying == null)
+              if (state.currentlyPlaying == null) {
                 return const SongImagePlaceholder();
+              }
               return const AlbumImage();
             },
           ),

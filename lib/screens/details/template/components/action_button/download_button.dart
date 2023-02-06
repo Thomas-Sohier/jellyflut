@@ -60,17 +60,17 @@ class DownloadButton extends StatelessWidget {
                           text: state.item.name,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
+                              .bodyLarge
                               ?.copyWith(fontStyle: FontStyle.italic)),
                       TextSpan(
                           text:
                               ' seems to be already downloaded would you like to downlodad it again ?',
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyLarge),
                       TextSpan(text: '\n\n'),
                       TextSpan(
                           text:
                               ' It will overwrite any files with the name ${FileService.getItemStorageName(state.item)}',
-                          style: Theme.of(context).textTheme.bodyText1),
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ]))),
             actions: [
               TextButton(
@@ -96,7 +96,7 @@ class DownloadButton extends StatelessWidget {
 }
 
 class _DownloadTrailingState extends StatelessWidget {
-  const _DownloadTrailingState({super.key});
+  const _DownloadTrailingState();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class _DownloadTrailingState extends StatelessWidget {
 }
 
 class _DownloadedIcon extends StatelessWidget {
-  const _DownloadedIcon({super.key});
+  const _DownloadedIcon();
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class _DownloadedIcon extends StatelessWidget {
 }
 
 class _DownloadIcon extends StatelessWidget {
-  const _DownloadIcon({super.key});
+  const _DownloadIcon();
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +146,7 @@ class _DownloadIcon extends StatelessWidget {
 }
 
 class _DownloadingProgressIcon extends StatelessWidget {
-  const _DownloadingProgressIcon({super.key});
+  const _DownloadingProgressIcon();
 
   @override
   Widget build(BuildContext context) {

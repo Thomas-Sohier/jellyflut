@@ -7,7 +7,7 @@ class InfosSection extends StatelessWidget {
   SettingsSection build(BuildContext context) {
     return SettingsSection(
       title: 'infos'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.headline6,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       tiles: [
         SettingsTile(
             title: 'version'.tr(),

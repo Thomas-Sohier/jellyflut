@@ -48,12 +48,12 @@ class ServerItem extends StatelessWidget {
                                   '#${serverWithUser.server.id} - ${serverWithUser.server.name}',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1),
+                                  style: Theme.of(context).textTheme.bodyLarge),
                             ]),
                             Text(serverWithUser.server.url,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             inUsedText(context),
                             nbUsers(context)
                           ]),
@@ -72,7 +72,7 @@ class ServerItem extends StatelessWidget {
       return Text('In use',
           style: Theme.of(context)
               .textTheme
-              .bodyText2
+              .bodyMedium
               ?.copyWith(color: Theme.of(context).colorScheme.secondary));
     }
     return const SizedBox();
@@ -82,7 +82,7 @@ class ServerItem extends StatelessWidget {
     return Text('${serverWithUser.users.length} users',
         style: Theme.of(context)
             .textTheme
-            .bodyText2
+            .bodyMedium
             ?.copyWith(color: Theme.of(context).colorScheme.tertiary));
   }
 
