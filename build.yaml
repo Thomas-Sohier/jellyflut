@@ -10,6 +10,9 @@ targets:
       - lib/$lib$
       - $package$
     builders:
+      json_serializable|json_serializable:
+        generate_for:
+          - "packages/**/**.dart"
       drift_dev:
         options:
           sql:
@@ -17,8 +20,6 @@ targets:
             options:
               version: "3.38"
               modules: [fts5]
-          # This allows us to share a drift database across isolates (or different tabs on the web)
-          generate_connect_constructor: true
           apply_converters_on_variables: true
           generate_values_in_copy_with: true
           # new_sql_code_generation: true

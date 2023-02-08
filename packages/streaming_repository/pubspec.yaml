@@ -14,39 +14,39 @@ dependencies:
   dio: ^4.0.6
   flutter:
     sdk: flutter
-  flutter_vlc_player: ^7.1.5
+  flutter_vlc_player: ^7.2.0
   freezed_annotation: ^2.0.3
   items_api:
     path: ../items_api
   jellyflut_models:
     path: ../jellyflut_models
   json_annotation: ^4.6.0
-  sqlite_database:
-    path: ../sqlite_database
-  streaming_api:
-    path: ../streaming_api
-  video_player: ^2.4.10
   media_kit:
     git:
       url: https://github.com/alexmercerind/media_kit.git
       path: media_kit
-      ref: main
-  media_kit_video:
-    git:
-      url: https://github.com/alexmercerind/media_kit.git
-      path: media_kit_video
-      ref: main
-  media_kit_libs_windows_video:
-    git:
-      url: https://github.com/alexmercerind/media_kit.git
-      path: media_kit_libs_windows_video
       ref: main
   media_kit_libs_linux:
     git:
       url: https://github.com/alexmercerind/media_kit.git
       path: media_kit_libs_linux
       ref: main
-  window_manager: ^0.2.8
+  media_kit_libs_windows_video:
+    git:
+      url: https://github.com/alexmercerind/media_kit.git
+      path: media_kit_libs_windows_video
+      ref: main
+  media_kit_video:
+    git:
+      url: https://github.com/alexmercerind/media_kit.git
+      path: media_kit_video
+      ref: main
+  sqlite_database:
+    path: ../sqlite_database
+  streaming_api:
+    path: ../streaming_api
+  video_player: ^2.5.1
+  window_manager: ^0.3.0
   youtube_explode_dart: ^1.12.3
 
 dev_dependencies:
