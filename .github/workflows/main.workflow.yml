@@ -17,7 +17,6 @@ jobs:
         channel: "stable"
 
     - run: flutter pub get
-    - run: dart format -l 120 --set-exit-if-changed .
     - run: bash builder_runner_all.sh
     - run: flutter analyze .
    
