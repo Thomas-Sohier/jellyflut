@@ -16,6 +16,7 @@ metrics/
 lib/generated_plugin_registrant.dart
 **/*.freezed.dart
 **/*.g.dart
+**/*.gr.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
