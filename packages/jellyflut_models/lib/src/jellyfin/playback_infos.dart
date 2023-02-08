@@ -10,18 +10,13 @@ part 'playback_infos.g.dart';
 class PlayBackInfos with _$PlayBackInfos {
   PlayBackInfos._();
 
-  factory PlayBackInfos(
-      {required List<MediaSource> mediaSources,
-      String? playSessionId,
-      String? errorCode}) = _PlayBackInfos;
+  factory PlayBackInfos({required List<MediaSource> mediaSources, String? playSessionId, String? errorCode}) =
+      _PlayBackInfos;
 
-  factory PlayBackInfos.fromJson(Map<String, Object?> json) =>
-      _$PlayBackInfosFromJson(json);
+  factory PlayBackInfos.fromJson(Map<String, Object?> json) => _$PlayBackInfosFromJson(json);
 
   List<MediaStream> getSubtitles() {
-    return mediaSources.first.mediaStreams
-        .where((element) => element.type == MediaStreamType.Subtitle)
-        .toList();
+    return mediaSources.first.mediaStreams.where((element) => element.type == MediaStreamType.Subtitle).toList();
   }
 
   bool hasError() {

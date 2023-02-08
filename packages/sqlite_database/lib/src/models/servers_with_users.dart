@@ -40,15 +40,13 @@ class ServersWithUsers {
   factory ServersWithUsers.fromMap(Map<String, dynamic> map) {
     return ServersWithUsers(
       server: Server.fromJson(map['server']),
-      users: List<UserAppData>.from(
-          map['users']?.map((x) => UserAppData.fromJson(x))),
+      users: List<UserAppData>.from(map['users']?.map((x) => UserAppData.fromJson(x))),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ServersWithUsers.fromJson(String source) =>
-      ServersWithUsers.fromMap(json.decode(source));
+  factory ServersWithUsers.fromJson(String source) => ServersWithUsers.fromMap(json.decode(source));
 
   @override
   String toString() => 'ServersWithUsers(server: $server, users: $users)';
@@ -57,9 +55,7 @@ class ServersWithUsers {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ServersWithUsers &&
-        other.server == server &&
-        listEquals(other.users, users);
+    return other is ServersWithUsers && other.server == server && listEquals(other.users, users);
   }
 
   @override

@@ -47,8 +47,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
     // final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds = 0;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN ||
-                currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
@@ -145,8 +144,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   Future<void> play() => Future.value(controller.play());
 
   @override
-  Future<void> seekTo(Duration duration) =>
-      Future.value(controller.seek(duration));
+  Future<void> seekTo(Duration duration) => Future.value(controller.seek(duration));
 
   @override
   void enterFullscreen() {

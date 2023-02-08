@@ -14,6 +14,5 @@ class RemoteImage with _$RemoteImage {
       required int totalRecordCount,
       required List<String> providers}) = _RemoteImage;
 
-  factory RemoteImage.fromJson(Map<String, Object?> json) =>
-      _$RemoteImageFromJson(json);
+  factory RemoteImage.fromJson(Map<String, Object?> json) => _$RemoteImageFromJson(json);
 }

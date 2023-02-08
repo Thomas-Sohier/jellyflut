@@ -20,6 +20,5 @@ class AudioMetadata with _$AudioMetadata {
       @Uint8ListConverter() required Uint8List artworkByte,
       required Item item}) = _AudioMetadata;
 
-  factory AudioMetadata.fromJson(Map<String, Object?> json) =>
-      _$AudioMetadataFromJson(json);
+  factory AudioMetadata.fromJson(Map<String, Object?> json) => _$AudioMetadataFromJson(json);
 }

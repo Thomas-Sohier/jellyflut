@@ -23,7 +23,6 @@ enum TargetPlatformExtended {
   web;
 
   static TargetPlatformExtended? fromTargetPlatform(TargetPlatform target) {
-    return TargetPlatformExtended.values
-        .firstWhere((e) => e.name == target.name);
+    return TargetPlatformExtended.values.firstWhere((e) => e.name == target.name);
   }
 }

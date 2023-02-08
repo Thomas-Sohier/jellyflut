@@ -6,8 +6,7 @@ import 'dart:convert';
 
 import 'device_profile.dart';
 
-TranscodeInfos transcodeInfosFromMap(String str) =>
-    TranscodeInfos.fromMap(json.decode(str));
+TranscodeInfos transcodeInfosFromMap(String str) => TranscodeInfos.fromMap(json.decode(str));
 
 String transcodeInfosToMap(TranscodeInfos data) => json.encode(data.toMap());
 

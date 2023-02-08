@@ -16,12 +16,10 @@ class AudioTrack with _$AudioTrack {
       required MediaType mediaType,
       required String name}) = _AudioTrack;
 
-  factory AudioTrack.fromJson(Map<String, Object?> json) =>
-      _$AudioTrackFromJson(json);
+  factory AudioTrack.fromJson(Map<String, Object?> json) => _$AudioTrackFromJson(json);
 
   /// Empty audio track which represents an empty audio track.
-  static const empty =
-      AudioTrack(index: -1, mediaType: MediaType.local, name: '');
+  static const empty = AudioTrack(index: -1, mediaType: MediaType.local, name: '');
 
   /// Convenience getter to determine whether the current audio track is empty.
   bool get isEmpty => this == AudioTrack.empty;

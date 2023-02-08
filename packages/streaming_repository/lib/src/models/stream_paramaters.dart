@@ -3,8 +3,7 @@ class StreamParameters {
   final int? audioStreamIndex;
   final Duration? startAt;
 
-  const StreamParameters(
-      {this.startAt, this.subtitleStreamIndex, this.audioStreamIndex});
+  const StreamParameters({this.startAt, this.subtitleStreamIndex, this.audioStreamIndex});
 
   static const empty = StreamParameters();
 

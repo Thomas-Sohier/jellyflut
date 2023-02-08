@@ -21,8 +21,7 @@ class TranscodingProfile {
   final bool? breakOnNonKeyFrames;
   final String? videoCodec;
 
-  factory TranscodingProfile.fromMap(Map<String, dynamic> json) =>
-      TranscodingProfile(
+  factory TranscodingProfile.fromMap(Map<String, dynamic> json) => TranscodingProfile(
         container: json['Container'],
         type: json['Type'],
         audioCodec: json['AudioCodec'],
@@ -42,8 +41,7 @@ class TranscodingProfile {
         if (protocol != null) 'Protocol': protocol,
         if (maxAudioChannels != null) 'MaxAudioChannels': maxAudioChannels,
         if (minSegments != null) 'MinSegments': minSegments,
-        if (breakOnNonKeyFrames != null)
-          'BreakOnNonKeyFrames': breakOnNonKeyFrames,
+        if (breakOnNonKeyFrames != null) 'BreakOnNonKeyFrames': breakOnNonKeyFrames,
         if (videoCodec != null) 'VideoCodec': videoCodec,
       };
 }

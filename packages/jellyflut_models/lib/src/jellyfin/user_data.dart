@@ -19,9 +19,7 @@ class UserData {
         playbackPositionTicks: json['PlaybackPositionTicks'],
         playCount: json['PlayCount'],
         isFavorite: json['IsFavorite'],
-        lastPlayedDate: json['LastPlayedDate'] == null
-            ? null
-            : DateTime.parse(json['LastPlayedDate']),
+        lastPlayedDate: json['LastPlayedDate'] == null ? null : DateTime.parse(json['LastPlayedDate']),
         played: json['Played'],
         key: json['Key'],
       );

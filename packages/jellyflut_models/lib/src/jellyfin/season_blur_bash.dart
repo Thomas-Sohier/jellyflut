@@ -15,8 +15,7 @@ class SeasonImageBlurHashes {
   Map<String, dynamic>? logo;
   Map<String, dynamic>? thumb;
 
-  factory SeasonImageBlurHashes.fromMap(Map<String, dynamic> json) =>
-      SeasonImageBlurHashes(
+  factory SeasonImageBlurHashes.fromMap(Map<String, dynamic> json) => SeasonImageBlurHashes(
         backdrop: json['Backdrop'],
         primary: json['Primary'],
         art: json['Art'],
@@ -25,12 +24,6 @@ class SeasonImageBlurHashes {
         thumb: json['Thumb'],
       );
 
-  Map<String, dynamic> toMap() => {
-        'Backdrop': backdrop,
-        'Primary': primary,
-        'Art': art,
-        'Banner': banner,
-        'Logo': logo,
-        'Thumb': thumb
-      };
+  Map<String, dynamic> toMap() =>
+      {'Backdrop': backdrop, 'Primary': primary, 'Art': art, 'Banner': banner, 'Logo': logo, 'Thumb': thumb};
 }

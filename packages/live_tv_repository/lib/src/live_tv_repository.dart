@@ -10,9 +10,7 @@ import 'package:live_tv_repository/src/models/parse_channel_from_jellyfin.dart';
 /// {@endtemplate}
 class LiveTvRepository {
   /// {@macro live_tv_repository}
-  const LiveTvRepository(
-      {required LiveTvApi liveTvApi,
-      required AuthenticationRepository authenticationRepository})
+  const LiveTvRepository({required LiveTvApi liveTvApi, required AuthenticationRepository authenticationRepository})
       : _liveTvApi = liveTvApi,
         _authenticationRepository = authenticationRepository;
 
@@ -137,21 +135,15 @@ class LiveTvRepository {
   ///
   /// Can throw [LiveTvGuideRequestFailure] on API error
   Future<List<Item>> getGuideInfo(
-      {int startIndex = 0,
-      String fields = 'PrimaryImageAspectRatio',
-      int limit = 100}) async {
+      {int startIndex = 0, String fields = 'PrimaryImageAspectRatio', int limit = 100}) async {
     final category = await _liveTvApi.getGuideInfo(
-        serverUrl: currentServerUrl,
-        startIndex: startIndex,
-        fields: fields,
-        limit: limit);
+        serverUrl: currentServerUrl, startIndex: startIndex, fields: fields, limit: limit);
     return category.items;
   }
 
   Future<List<Channel>> getGuide({int startIndex = 0, int limit = 100}) async {
-    final channels = (await _liveTvApi.getChannels(
-            serverUrl: currentServerUrl, startIndex: startIndex, limit: limit))
-        .items;
+    final channels =
+        (await _liveTvApi.getChannels(serverUrl: currentServerUrl, startIndex: startIndex, limit: limit)).items;
     final programs = (await _liveTvApi.getPrograms(
             serverUrl: currentServerUrl,
             startIndex: startIndex,
@@ -159,7 +151,6 @@ class LiveTvRepository {
             channelIds: channels.map((i) => i.id).toList()))
         .items;
 
-    return compute(Channel.parseChannels,
-        ParseChannelFromJellyfin(channels: channels, programs: programs));
+    return compute(Channel.parseChannels, ParseChannelFromJellyfin(channels: channels, programs: programs));
   }
 }

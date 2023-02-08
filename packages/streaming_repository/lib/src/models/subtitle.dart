@@ -11,17 +11,12 @@ class Subtitle with _$Subtitle {
   const Subtitle._();
 
   const factory Subtitle(
-      {required int index,
-      int? jellyfinSubtitleIndex,
-      required MediaType mediaType,
-      required String name}) = _Subtitle;
+      {required int index, int? jellyfinSubtitleIndex, required MediaType mediaType, required String name}) = _Subtitle;
 
-  factory Subtitle.fromJson(Map<String, Object?> json) =>
-      _$SubtitleFromJson(json);
+  factory Subtitle.fromJson(Map<String, Object?> json) => _$SubtitleFromJson(json);
 
   /// Empty subtitle which represents an empty subtitle.
-  static const empty =
-      Subtitle(index: -5, mediaType: MediaType.local, name: '');
+  static const empty = Subtitle(index: -5, mediaType: MediaType.local, name: '');
 
   /// Convenience getter to determine whether the current subtitle is empty.
   bool get isEmpty => this == Subtitle.empty;

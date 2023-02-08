@@ -73,10 +73,8 @@ class CommonPlayer {
   BehaviorSubject<bool?> get getPlayingStateStream => _isPlayingStream;
   Future<void> dispose() => _dispose();
 
-  static CommonPlayer parseJustAudioController(
-      {required AudioPlayer audioPlayer}) {
-    final commonPlayerJustAudio =
-        CommonPlayerJustAudio(audioPlayer: audioPlayer);
+  static CommonPlayer parseJustAudioController({required AudioPlayer audioPlayer}) {
+    final commonPlayerJustAudio = CommonPlayerJustAudio(audioPlayer: audioPlayer);
     return CommonPlayer._(
         pause: audioPlayer.pause,
         play: audioPlayer.play,

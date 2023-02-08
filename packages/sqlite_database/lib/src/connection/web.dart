@@ -16,8 +16,7 @@ const _databaseName = 'db';
 /// Obtains a database connection for running drift on the web.
 DatabaseConnection connect({bool isInWebWorker = false}) {
   if (_useWorker && !isInWebWorker) {
-    final worker = SharedWorker(
-        kReleaseMode ? 'worker.dart.min.js' : 'worker.dart.js', _databaseName);
+    final worker = SharedWorker(kReleaseMode ? 'worker.dart.min.js' : 'worker.dart.js', _databaseName);
     return remote(worker.port!.channel());
   } else {
     return DatabaseConnection.delayed(Future.sync(() async {

@@ -17,11 +17,9 @@ class UsersApi {
   /// Get user by his ID
   ///
   /// Can throw [UserNotFound]
-  Future<User> getUserById(
-      {required String serverUrl, required String userId}) async {
+  Future<User> getUserById({required String serverUrl, required String userId}) async {
     try {
-      final response = await _dioClient
-          .get<Map<String, dynamic>>('$serverUrl/Users/$userId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -36,11 +34,9 @@ class UsersApi {
   /// Get current User based on current used userid
   ///
   /// Can throw [UserNotFound]
-  Future<User> getCurrentUser(
-      {required String serverUrl, required String userId}) async {
+  Future<User> getCurrentUser({required String serverUrl, required String userId}) async {
     try {
-      final response = await _dioClient
-          .get<Map<String, dynamic>>('$serverUrl/Users/$userId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -57,8 +53,7 @@ class UsersApi {
   /// Can throw [UserNotFound]
   Future<User> getCurrentUserFromToken({required String serverUrl}) async {
     try {
-      final response =
-          await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/Me');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/Me');
 
       if (response.statusCode != 200) {
         throw UserNotFound();
@@ -81,8 +76,7 @@ class UsersApi {
         throw UserNotFound();
       }
 
-      List<User> parseUsers(List<dynamic> list) =>
-          list.map((user) => User.fromMap(user)).toList();
+      List<User> parseUsers(List<dynamic> list) => list.map((user) => User.fromMap(user)).toList();
 
       return compute(parseUsers, response.data!);
     } catch (_) {

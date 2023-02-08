@@ -83,12 +83,9 @@ class Policy {
         isDisabled: json['IsDisabled'],
         blockedTags: List<dynamic>.from(json['BlockedTags'].map((x) => x)),
         enableUserPreferenceAccess: json['EnableUserPreferenceAccess'],
-        accessSchedules:
-            List<dynamic>.from(json['AccessSchedules'].map((x) => x)),
-        blockUnratedItems:
-            List<dynamic>.from(json['BlockUnratedItems'].map((x) => x)),
-        enableRemoteControlOfOtherUsers:
-            json['EnableRemoteControlOfOtherUsers'],
+        accessSchedules: List<dynamic>.from(json['AccessSchedules'].map((x) => x)),
+        blockUnratedItems: List<dynamic>.from(json['BlockUnratedItems'].map((x) => x)),
+        enableRemoteControlOfOtherUsers: json['EnableRemoteControlOfOtherUsers'],
         enableSharedDeviceControl: json['EnableSharedDeviceControl'],
         enableRemoteAccess: json['EnableRemoteAccess'],
         enableLiveTvManagement: json['EnableLiveTvManagement'],
@@ -99,27 +96,21 @@ class Policy {
         enablePlaybackRemuxing: json['EnablePlaybackRemuxing'],
         forceRemoteSourceTranscoding: json['ForceRemoteSourceTranscoding'],
         enableContentDeletion: json['EnableContentDeletion'],
-        enableContentDeletionFromFolders: List<dynamic>.from(
-            json['EnableContentDeletionFromFolders'].map((x) => x)),
+        enableContentDeletionFromFolders: List<dynamic>.from(json['EnableContentDeletionFromFolders'].map((x) => x)),
         enableContentDownloading: json['EnableContentDownloading'],
         enableSyncTranscoding: json['EnableSyncTranscoding'],
         enableMediaConversion: json['EnableMediaConversion'],
-        enabledDevices:
-            List<dynamic>.from(json['EnabledDevices'].map((x) => x)),
+        enabledDevices: List<dynamic>.from(json['EnabledDevices'].map((x) => x)),
         enableAllDevices: json['EnableAllDevices'],
-        enabledChannels:
-            List<dynamic>.from(json['EnabledChannels'].map((x) => x)),
+        enabledChannels: List<dynamic>.from(json['EnabledChannels'].map((x) => x)),
         enableAllChannels: json['EnableAllChannels'],
-        enabledFolders:
-            List<dynamic>.from(json['EnabledFolders'].map((x) => x)),
+        enabledFolders: List<dynamic>.from(json['EnabledFolders'].map((x) => x)),
         enableAllFolders: json['EnableAllFolders'],
         invalidLoginAttemptCount: json['InvalidLoginAttemptCount'],
         loginAttemptsBeforeLockout: json['LoginAttemptsBeforeLockout'],
         enablePublicSharing: json['EnablePublicSharing'],
-        blockedMediaFolders:
-            List<dynamic>.from(json['BlockedMediaFolders'].map((x) => x)),
-        blockedChannels:
-            List<dynamic>.from(json['BlockedChannels'].map((x) => x)),
+        blockedMediaFolders: List<dynamic>.from(json['BlockedMediaFolders'].map((x) => x)),
+        blockedChannels: List<dynamic>.from(json['BlockedChannels'].map((x) => x)),
         remoteClientBitrateLimit: json['RemoteClientBitrateLimit'],
         authenticationProviderId: json['AuthenticationProviderId'],
         passwordResetProviderId: json['PasswordResetProviderId'],
@@ -130,16 +121,10 @@ class Policy {
         'IsAdministrator': isAdministrator,
         'IsHidden': isHidden,
         'IsDisabled': isDisabled,
-        'BlockedTags': blockedTags != null
-            ? List<dynamic>.from(blockedTags!.map((x) => x))
-            : null,
+        'BlockedTags': blockedTags != null ? List<dynamic>.from(blockedTags!.map((x) => x)) : null,
         'EnableUserPreferenceAccess': enableUserPreferenceAccess,
-        'AccessSchedules': accessSchedules != null
-            ? List<dynamic>.from(accessSchedules!.map((x) => x))
-            : null,
-        'BlockUnratedItems': blockUnratedItems != null
-            ? List<dynamic>.from(blockUnratedItems!.map((x) => x))
-            : null,
+        'AccessSchedules': accessSchedules != null ? List<dynamic>.from(accessSchedules!.map((x) => x)) : null,
+        'BlockUnratedItems': blockUnratedItems != null ? List<dynamic>.from(blockUnratedItems!.map((x) => x)) : null,
         'EnableRemoteControlOfOtherUsers': enableRemoteControlOfOtherUsers,
         'EnableSharedDeviceControl': enableSharedDeviceControl,
         'EnableRemoteAccess': enableRemoteAccess,
@@ -151,35 +136,24 @@ class Policy {
         'EnablePlaybackRemuxing': enablePlaybackRemuxing,
         'ForceRemoteSourceTranscoding': forceRemoteSourceTranscoding,
         'EnableContentDeletion': enableContentDeletion,
-        'EnableContentDeletionFromFolders':
-            enableContentDeletionFromFolders != null
-                ? List<dynamic>.from(
-                    enableContentDeletionFromFolders!.map((x) => x))
-                : null,
+        'EnableContentDeletionFromFolders': enableContentDeletionFromFolders != null
+            ? List<dynamic>.from(enableContentDeletionFromFolders!.map((x) => x))
+            : null,
         'EnableContentDownloading': enableContentDownloading,
         'EnableSyncTranscoding': enableSyncTranscoding,
         'EnableMediaConversion': enableMediaConversion,
-        'EnabledDevices': enabledDevices != null
-            ? List<dynamic>.from(enabledDevices!.map((x) => x))
-            : null,
+        'EnabledDevices': enabledDevices != null ? List<dynamic>.from(enabledDevices!.map((x) => x)) : null,
         'EnableAllDevices': enableAllDevices,
-        'EnabledChannels': enabledChannels != null
-            ? List<dynamic>.from(enabledChannels!.map((x) => x))
-            : null,
+        'EnabledChannels': enabledChannels != null ? List<dynamic>.from(enabledChannels!.map((x) => x)) : null,
         'EnableAllChannels': enableAllChannels,
-        'EnabledFolders': enabledFolders != null
-            ? List<dynamic>.from(enabledFolders!.map((x) => x))
-            : null,
+        'EnabledFolders': enabledFolders != null ? List<dynamic>.from(enabledFolders!.map((x) => x)) : null,
         'EnableAllFolders': enableAllFolders,
         'InvalidLoginAttemptCount': invalidLoginAttemptCount,
         'LoginAttemptsBeforeLockout': loginAttemptsBeforeLockout,
         'EnablePublicSharing': enablePublicSharing,
-        'BlockedMediaFolders': blockedMediaFolders != null
-            ? List<dynamic>.from(blockedMediaFolders!.map((x) => x))
-            : null,
-        'BlockedChannels': blockedChannels != null
-            ? List<dynamic>.from(blockedChannels!.map((x) => x))
-            : null,
+        'BlockedMediaFolders':
+            blockedMediaFolders != null ? List<dynamic>.from(blockedMediaFolders!.map((x) => x)) : null,
+        'BlockedChannels': blockedChannels != null ? List<dynamic>.from(blockedChannels!.map((x) => x)) : null,
         'RemoteClientBitrateLimit': remoteClientBitrateLimit,
         'AuthenticationProviderId': authenticationProviderId,
         'PasswordResetProviderId': passwordResetProviderId,

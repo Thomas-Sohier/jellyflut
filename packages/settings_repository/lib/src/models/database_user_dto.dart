@@ -8,11 +8,5 @@ class DatabaseUserDto {
   final int? serverId;
 
   const DatabaseUserDto(
-      {this.id,
-      this.name,
-      this.password,
-      this.apiKey,
-      this.jellyfinUserId,
-      this.settingsId,
-      this.serverId});
+      {this.id, this.name, this.password, this.apiKey, this.jellyfinUserId, this.settingsId, this.serverId});
 }

@@ -21,6 +21,5 @@ class RemoteImageInfo with _$RemoteImageInfo {
       required ImageType type,
       required RatingType ratingType}) = _RemoteImageInfo;
 
-  factory RemoteImageInfo.fromJson(Map<String, Object?> json) =>
-      _$RemoteImageInfoFromJson(json);
+  factory RemoteImageInfo.fromJson(Map<String, Object?> json) => _$RemoteImageInfoFromJson(json);
 }

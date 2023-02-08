@@ -22,8 +22,7 @@ DatabaseConnection connect() {
     final dbPath = p.join(appDir.path, 'db.sqlite');
 
     final receiveDriftIsolate = ReceivePort();
-    await Isolate.spawn(_entrypointForDriftIsolate,
-        _IsolateStartRequest(receiveDriftIsolate.sendPort, dbPath));
+    await Isolate.spawn(_entrypointForDriftIsolate, _IsolateStartRequest(receiveDriftIsolate.sendPort, dbPath));
 
     final driftIsolate = await receiveDriftIsolate.first as DriftIsolate;
     return driftIsolate.connect();
@@ -52,8 +51,7 @@ void _entrypointForDriftIsolate(_IsolateStartRequest request) {
 
   // We can use DriftIsolate.inCurrent because this function is the entrypoint
   // of a background isolate itself.
-  final driftServer =
-      DriftIsolate.inCurrent(() => DatabaseConnection(databaseImpl));
+  final driftServer = DriftIsolate.inCurrent(() => DatabaseConnection(databaseImpl));
 
   // Inform the main isolate about the server we just created.
   request.talkToMain.send(driftServer);

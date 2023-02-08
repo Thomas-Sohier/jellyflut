@@ -2,8 +2,7 @@ import 'dart:io';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:items_api/items_api.dart';
-import 'package:jellyflut_models/jellyflut_models.dart'
-    hide User, StreamingSoftware;
+import 'package:jellyflut_models/jellyflut_models.dart' hide User, StreamingSoftware;
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
 import 'package:path/path.dart' as p;
@@ -35,29 +34,22 @@ class StreamingRepository {
   User get currentUser => _authenticationRepository.currentUser;
   Server get currentServer => _authenticationRepository.currentServer;
 
-  Future<CommonStream> createController(
-      {required Uri uri, Duration? startAtPosition}) async {
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+  Future<CommonStream> createController({required Uri uri, Duration? startAtPosition}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     switch (StreamingSoftware.fromString(settings.preferredPlayer)) {
       case StreamingSoftware.MPV:
-        return CommonStreamMediaKit.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
+        return CommonStreamMediaKit.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.VLC:
         if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-          return CommonStreamVLCComputer.fromUri(
-              uri: uri, startAtPosition: startAtPosition);
+          return CommonStreamVLCComputer.fromUri(uri: uri, startAtPosition: startAtPosition);
         }
-        return CommonStreamVLC.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
+        return CommonStreamVLC.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.AVPLAYER:
       case StreamingSoftware.EXOPLAYER:
-        return CommonStreamBP.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
+        return CommonStreamBP.fromUri(uri: uri, startAtPosition: startAtPosition);
       case StreamingSoftware.HTMLPlayer:
-        return CommonStreamVideoPlayer.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
+        return CommonStreamVideoPlayer.fromUri(uri: uri, startAtPosition: startAtPosition);
       default:
         throw UnsupportedError('Platform video streaming is unsuportted');
     }
@@ -74,19 +66,14 @@ class StreamingRepository {
     return streamInfo.url;
   }
 
-  Future<void> deleteActiveEncoding({required String playSessionId}) =>
-      _streamingApi.deleteActiveEncoding(
+  Future<void> deleteActiveEncoding({required String playSessionId}) => _streamingApi.deleteActiveEncoding(
         serverUrl: currentServer.url,
         userId: currentUser.id,
         playSessionId: playSessionId,
       );
 
-  Future<PlayBackInfos> getPlaybackInfos(
-      {required Uri uri,
-      required int startTimeTick,
-      required String itemId}) async {
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+  Future<PlayBackInfos> getPlaybackInfos({required Uri uri, required int startTimeTick, required String itemId}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final data = await _isCodecSupported();
 
@@ -105,9 +92,7 @@ class StreamingRepository {
   /// about streaming.
   /// It can be used latr to create a video controller for example
   Future<StreamItem> getStreamItem(
-      {required Item item,
-      StreamParameters streamParameters = StreamParameters.empty,
-      bool directPlay = false}) async {
+      {required Item item, StreamParameters streamParameters = StreamParameters.empty, bool directPlay = false}) async {
     // if (directPlay == false && offlineMode == false) {
     //   await StreamingService.bitrateTest(size: 500000);
     //   await StreamingService.bitrateTest(size: 1000000);
@@ -115,16 +100,11 @@ class StreamingRepository {
     // }
     // First we try to fetch from databae
     try {
-      final databaseItem =
-          await _database.downloadsDao.getDownloadById(item.id);
-      return StreamItem(
-          url: databaseItem.path,
-          item: databaseItem.item!,
-          playbackInfos: null);
+      final databaseItem = await _database.downloadsDao.getDownloadById(item.id);
+      return StreamItem(url: databaseItem.path, item: databaseItem.item!, playbackInfos: null);
     } on StateError catch (_) {}
 
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final directPlaySettingsOverride = settings.directPlay;
     // If direct play if forced by parameters or settings we direct play
@@ -183,11 +163,9 @@ class StreamingRepository {
         serverUrl: currentServer.url,
         userId: currentUser.id);
     // remove all item without an index to avoid sort error
-    category.items.removeWhere(
-        (item) => item.indexNumber == null || item.userData == null);
+    category.items.removeWhere((item) => item.indexNumber == null || item.userData == null);
     category.items.sort(sortItem);
-    return category.items.firstWhere((item) => !item.userData!.played,
-        orElse: () => category.items.first);
+    return category.items.firstWhere((item) => !item.userData!.played, orElse: () => category.items.first);
   }
 
   Future<StreamItem> getStreamURL(Item item, bool directPlay,
@@ -196,14 +174,12 @@ class StreamingRepository {
     //  final itemExist = await _database.downloadsDao.doesExist(item.id);
     //  if (itemExist) return await FileService.getStoragePathItem(item);
     // If item do not exist locally the we fetch it from remote server
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final data = await _isCodecSupported();
     final playbackInfos = await _streamingApi.getPlaybackInfos(
         profile: data,
-        startTimeTick: streamParameters.startAt?.inMilliseconds ??
-            item.userData?.playbackPositionTicks,
+        startTimeTick: streamParameters.startAt?.inMilliseconds ?? item.userData?.playbackPositionTicks,
         subtitleStreamIndex: streamParameters.subtitleStreamIndex,
         audioStreamIndex: streamParameters.audioStreamIndex,
         maxVideoBitrate: settings.maxVideoBitrate,
@@ -216,11 +192,9 @@ class StreamingRepository {
     // Check if we have a transcide url or we create it
     late final String url;
     if (playbackInfos.isTranscoding() && !directPlay) {
-      url =
-          '${currentServer.url}${playbackInfos.mediaSources.first.transcodingUrl}';
+      url = '${currentServer.url}${playbackInfos.mediaSources.first.transcodingUrl}';
     } else {
-      url = await createURL(item, playbackInfos,
-          startTick: item.userData!.playbackPositionTicks);
+      url = await createURL(item, playbackInfos, startTick: item.userData!.playbackPositionTicks);
     }
     return StreamItem(url: url, item: item, playbackInfos: playbackInfos);
   }
@@ -232,23 +206,17 @@ class StreamingRepository {
       final playerProfile = profiles.webOs;
       return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     } else if (Platform.isAndroid) {
-      final user =
-          await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
-      final streamingSoftwareDB =
-          await _database.settingsDao.getSettingsById(user.settingsId);
-      final streamingSoftware =
-          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+      final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+      final streamingSoftwareDB = await _database.settingsDao.getSettingsById(user.settingsId);
+      final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:
           final playerProfile = profiles.vlcPhone;
-          return DeviceProfileParent(
-              deviceProfile: playerProfile.deviceProfile);
+          return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
-          final deviceProfile =
-              await Profiles(database: _database, userId: currentUser.id)
-                  .getExoplayerProfile();
+          final deviceProfile = await Profiles(database: _database, userId: currentUser.id).getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
@@ -259,11 +227,8 @@ class StreamingRepository {
   }
 
   Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-      {int startTick = 0,
-      int? audioStreamIndex,
-      int? subtitleStreamIndex}) async {
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+      {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParams = <String, dynamic>{};
@@ -280,8 +245,7 @@ class StreamingRepository {
     queryParams['audioStreamIndex'] = audioStreamIndex;
     queryParams['api_key'] = user.apiKey;
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams =
-        queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
     late final path;
     switch (item.type) {
       case ItemType.TvChannel:
@@ -297,16 +261,13 @@ class StreamingRepository {
   }
 
   Future<StreamItem> createMusicURL(Item item) async {
-    final user =
-        await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
-    final streamingSoftware =
-        TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
+    final streamingSoftware = TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(itemId);
     //  if (itemExist) return await FileService.getStoragePathItem(this);
-    final url =
-        '${currentServer.url}/Audio/${item.id}/stream.${streamingSoftware.codecName}';
+    final url = '${currentServer.url}/Audio/${item.id}/stream.${streamingSoftware.codecName}';
     return StreamItem(url: url, item: item);
   }
 }

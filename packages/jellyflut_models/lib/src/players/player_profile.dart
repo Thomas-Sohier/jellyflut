@@ -50,20 +50,16 @@ class PlayerProfile {
 
   String toJson() => json.encode(toMap());
 
-  factory PlayerProfile.fromJson(String source) =>
-      PlayerProfile.fromMap(json.decode(source));
+  factory PlayerProfile.fromJson(String source) => PlayerProfile.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'PlayerProfile(name: $name, deviceProfile: $deviceProfile)';
+  String toString() => 'PlayerProfile(name: $name, deviceProfile: $deviceProfile)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is PlayerProfile &&
-        other.name == name &&
-        other.deviceProfile == deviceProfile;
+    return other is PlayerProfile && other.name == name && other.deviceProfile == deviceProfile;
   }
 
   @override

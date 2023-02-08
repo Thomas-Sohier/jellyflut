@@ -17,30 +17,18 @@ PlayerProfile get vlcComputerPlayerProfile => PlayerProfile(
               protocol: 'hls',
               breakOnNonKeyFrames: false),
           TranscodingProfile(
-              container: 'aac',
-              audioCodec: 'aac',
-              type: 'Audio',
-              context: 'Streaming',
-              maxAudioChannels: '5'),
+              container: 'aac', audioCodec: 'aac', type: 'Audio', context: 'Streaming', maxAudioChannels: '5'),
           TranscodingProfile(
-              container: 'mp3',
-              audioCodec: 'mp3',
-              type: 'Audio',
-              context: 'Streaming',
-              maxAudioChannels: '5')
+              container: 'mp3', audioCodec: 'mp3', type: 'Audio', context: 'Streaming', maxAudioChannels: '5')
         ],
         codecProfiles: [],
         containerProfiles: [],
         directPlayProfiles: [
           DirectPlayProfile(
-              container:
-                  'm4v,3gp,ts,mpegts,mov,xvid,vob,mkv,wmv,asf,ogm,ogv,m2v,avi,mpg,mpeg,mp4,webm,wtv',
-              audioCodec:
-                  'aac,mp3,mp2,ac3,eac3,wma,wmav2,dca,dts,pcm,pcm_s16le,pcm_s24le,opus,flac,truehd',
+              container: 'm4v,3gp,ts,mpegts,mov,xvid,vob,mkv,wmv,asf,ogm,ogv,m2v,avi,mpg,mpeg,mp4,webm,wtv',
+              audioCodec: 'aac,mp3,mp2,ac3,eac3,wma,wmav2,dca,dts,pcm,pcm_s16le,pcm_s24le,opus,flac,truehd',
               type: 'Video'),
-          DirectPlayProfile(
-              container: 'flac,aac,mp3,mpa,wav,wma,mp2,ogg,oga,webma,ape',
-              type: 'Audio'),
+          DirectPlayProfile(container: 'flac,aac,mp3,mpa,wav,wma,mp2,ogg,oga,webma,ape', type: 'Audio'),
           DirectPlayProfile(container: 'jpg,jpeg,png,gif,webp', type: 'Photo'),
         ],
         subtitleProfiles: [

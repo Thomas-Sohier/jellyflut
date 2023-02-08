@@ -34,20 +34,16 @@ class NowPlayingQueue {
 
   String toJson() => json.encode(toMap());
 
-  factory NowPlayingQueue.fromJson(String source) =>
-      NowPlayingQueue.fromMap(json.decode(source));
+  factory NowPlayingQueue.fromJson(String source) => NowPlayingQueue.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'NowPlayingQueue(Id: $id, PlaylistItemId: $playlistItemId)';
+  String toString() => 'NowPlayingQueue(Id: $id, PlaylistItemId: $playlistItemId)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is NowPlayingQueue &&
-        other.id == id &&
-        other.playlistItemId == playlistItemId;
+    return other is NowPlayingQueue && other.id == id && other.playlistItemId == playlistItemId;
   }
 
   @override
