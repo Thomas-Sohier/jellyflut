@@ -8,10 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import '../models/index.dart';
 
 class CommonStreamVLC extends CommonStream<VlcPlayerController> {
-  void _isInitListener(Completer<void> completer) {
-    if (controller.isReadyToInitialize ?? false) completer.complete();
-  }
-
   CommonStreamVLC.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
   }

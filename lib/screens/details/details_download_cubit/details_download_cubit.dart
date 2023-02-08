@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
@@ -11,11 +10,8 @@ part 'details_download_state.dart';
 
 class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
   DetailsDownloadCubit(
-      {required Item item,
-      required ItemsRepository itemsRepository,
-      required DownloadsRepository downloadsRepository})
-      : _itemsRepository = itemsRepository,
-        _downloadsRepository = downloadsRepository,
+      {required Item item, required DownloadsRepository downloadsRepository})
+      : _downloadsRepository = downloadsRepository,
         super(DetailsDownloadState(
             status: DownloadStatus.initial,
             item: item,
@@ -24,7 +20,6 @@ class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
     _init();
   }
 
-  final ItemsRepository _itemsRepository;
   final DownloadsRepository _downloadsRepository;
 
   void _init() async {

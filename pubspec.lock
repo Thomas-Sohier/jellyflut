@@ -295,14 +295,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
-  cli_util:
-    dependency: transitive
-    description:
-      name: cli_util
-      sha256: "66f86e916d285c1a93d3b79587d94bd71984a66aac4ff74e524cfa7877f1395c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.5"
   clock:
     dependency: transitive
     description:
@@ -509,21 +501,13 @@ packages:
     source: path
     version: "1.0.0"
   drift:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: drift
       sha256: "2a16754641485ca4eaf31bb7961f3ec26bcddad1ce4869a37f238791e164c073"
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
-  drift_dev:
-    dependency: "direct dev"
-    description:
-      name: drift_dev
-      sha256: "5a0842b4bfa62f66ec149b55f00d8b1902114fa8ffed76fc1776ea3b2064974f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.1"
   drop_shadow:
     dependency: "direct main"
     description:
@@ -1315,14 +1299,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.2.0"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   remote_downloads_api:
     dependency: "direct main"
     description:
@@ -1550,14 +1526,6 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
-  sqlparser:
-    dependency: transitive
-    description:
-      name: sqlparser
-      sha256: "91f47610aa54d8abf9d795a7b4e49b2a788f65d7493d5a68fbf180c3cbcc6f38"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.27.0"
   stack_trace:
     dependency: transitive
     description:

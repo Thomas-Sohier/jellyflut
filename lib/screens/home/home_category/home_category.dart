@@ -12,6 +12,7 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeCategory extends StatelessWidget {
+  // ignore: unused_element
   const HomeCategory._(this.item, this.itemType);
 
   const HomeCategory.fromItem({required this.item}) : itemType = null;

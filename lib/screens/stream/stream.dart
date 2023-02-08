@@ -1,4 +1,3 @@
-import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/stream/channel_cubit/channel_cubit.dart';
@@ -25,7 +24,6 @@ class StreamPage extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider(
         create: (_) => StreamCubit(
-          downloadsRepository: context.read<DownloadsRepository>(),
           streamingRepository: context.read<StreamingRepository>(),
           item: item,
           url: url,

@@ -43,8 +43,8 @@ class _SearchResultState extends State<SearchResult> {
           controller: scrollController,
           scrollDirection: Axis.vertical,
           itemBuilder: (_, index) {
-            final category =
-                search.searchResult.values.toList().elementAt(index);
+            // final category =
+            //     search.searchResult.values.toList().elementAt(index);
             return const SizedBox();
             // return Padding(
             //   padding: const EdgeInsets.only(bottom: 12),

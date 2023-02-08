@@ -43,24 +43,6 @@ class _ProgressBarForeground extends StatelessWidget {
   }
 }
 
-class _ProgressBarDurationPercent extends StatelessWidget {
-  final Item item;
-  const _ProgressBarDurationPercent({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '${(item.getPercentPlayed() * 100).round()} %',
-      textAlign: TextAlign.left,
-      style: TextStyle(color: Colors.white, shadows: [
-        Shadow(offset: Offset(0, -2), blurRadius: 4, color: Colors.black),
-        Shadow(offset: Offset(-2, 0), blurRadius: 6, color: Colors.black),
-        Shadow(offset: Offset(2, 0), blurRadius: 8, color: Colors.black)
-      ]),
-    );
-  }
-}
-
 class _ProgressBarBackground extends StatelessWidget {
   const _ProgressBarBackground();
 

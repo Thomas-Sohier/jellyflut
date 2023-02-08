@@ -10,6 +10,8 @@ import 'home_cubit/home_cubit.dart';
 import 'home_category/cubit/home_category_cubit.dart';
 
 class HomePage extends StatefulWidget {
+  // This property is there to generate key property with build_runner and allow to use it in [HomeTab] mixin
+  // ignore: unused_field
   final String? _blank;
 
   const HomePage({super.key, String? blank}) : _blank = blank;

@@ -30,7 +30,6 @@ class DetailsPage extends StatelessWidget {
         BlocProvider<DetailsDownloadCubit>(
             create: (blocContext) => DetailsDownloadCubit(
                 item: item,
-                itemsRepository: context.read<ItemsRepository>(),
                 downloadsRepository: context.read<DownloadsRepository>())),
         BlocProvider<DetailsBloc>(
             create: (blocContext) => DetailsBloc(

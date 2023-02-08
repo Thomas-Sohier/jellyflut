@@ -1,3 +1,6 @@
+// ignore_for_file: unused_field, null_argument_to_non_null_type
+// TODO finish thisn beta state
+
 import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';

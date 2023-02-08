@@ -1,7 +1,5 @@
 targets:
   $default:
-    # Reducing sources makes the build slightly faster (some of these are required
-    # to exist in the default target).
     sources:
       - lib/**
       - web/**
@@ -17,12 +15,6 @@ targets:
             options:
               version: "3.38"
               modules: [fts5]
-          # This allows us to share a drift database across isolates (or different tabs on the web)
-          generate_connect_constructor: true
-          apply_converters_on_variables: true
-          generate_values_in_copy_with: true
-          scoped_dart_components: true
-          named_parameters: true
       build_web_compilers|entrypoint:
         generate_for:
           - web/**.dart

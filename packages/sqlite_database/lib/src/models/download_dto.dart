@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:typed_data';
 
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -10,7 +12,6 @@ class DownloadDto {
   final Uint8List? backdrop;
   final Item? item;
 
-  // ignore: unused_element
   const DownloadDto._(
       {required this.id,
       this.name,

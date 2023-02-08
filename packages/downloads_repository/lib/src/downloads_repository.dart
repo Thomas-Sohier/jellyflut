@@ -33,6 +33,7 @@ class DownloadsRepository {
         _authenticationRepository = authenticationRepository,
         _database = database;
 
+  // ignore: unused_field
   final DownloadsApi _downloadsApi;
   final RemoteDownloadsApi _remoteDownloadsApi;
   final AuthenticationRepository _authenticationRepository;

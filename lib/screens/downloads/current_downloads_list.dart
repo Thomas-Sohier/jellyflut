@@ -71,14 +71,7 @@ class _CurrentDownloadListState extends State<CurrentDownloadList> {
         duration: Duration(milliseconds: 400));
   }
 
-  Future<void> _insertItem(OngoingDownload download) async {
-    final index =
-        context.read<DownloadsRepository>().addOngoingDownload(download);
-    _key.currentState?.insertItem(index, duration: Duration(milliseconds: 400));
-  }
-
-  AnimatedListRemovedItemBuilder _itemBuilder(
-      OngoingDownload download, int index) {
+  AnimatedRemovedItemBuilder _itemBuilder(OngoingDownload download, int index) {
     return (context, animation) {
       return _buildItem(download, animation, index);
     };

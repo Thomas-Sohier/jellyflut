@@ -16,7 +16,6 @@ class FileService {
   /// Return the rowId of the download inserted
   static Future<int> saveDownloadToDatabase(
       final String path, final Item item) async {
-    final i = item;
     throw UnimplementedError();
     // TODO rework this in repository download
     // final context = context.router.root.navigatorKey.currentContext!;

@@ -12,6 +12,7 @@ targets:
     builders:
       json_serializable|json_serializable:
         generate_for:
+          - "lib/**/**.dart"
           - "packages/**/**.dart"
       drift_dev:
         options:
@@ -22,9 +23,7 @@ targets:
               modules: [fts5]
           apply_converters_on_variables: true
           generate_values_in_copy_with: true
-          # new_sql_code_generation: true
           scoped_dart_components: true
-          # compact_query_methods: true
           named_parameters: true
       build_web_compilers|entrypoint:
         generate_for:

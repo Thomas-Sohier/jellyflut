@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:downloads_repository/downloads_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -15,19 +14,16 @@ part 'stream_state.dart';
 class StreamCubit extends Cubit<StreamState> {
   StreamCubit(
       {required StreamingRepository streamingRepository,
-      required DownloadsRepository downloadsRepository,
       Item? item,
       String? url})
       : assert(item != null || url != null, 'At least one param must be given'),
         _streamingRepository = streamingRepository,
-        _downloadsRepository = downloadsRepository,
         super(StreamState(
           parentItem: item,
           url: url,
           controlsVisibilityTimer: Timer(Duration.zero, () {}),
         ));
 
-  final DownloadsRepository _downloadsRepository;
   final StreamingRepository _streamingRepository;
   final Duration _fastForwardStep = const Duration(seconds: 10);
 

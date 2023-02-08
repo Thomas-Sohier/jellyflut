@@ -32,7 +32,6 @@ dependencies:
     path: packages/downloads_api
   downloads_repository:
     path: packages/downloads_repository
-  drift: ^2.5.0
   drop_shadow: ^0.0.2+1
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.1+1
@@ -123,7 +122,6 @@ dev_dependencies:
   build_runner: ^2.3.2
   build_web_compilers: ^3.2.7
   dart_code_metrics: ^4.21.3
-  drift_dev: ^2.2.0+1
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
