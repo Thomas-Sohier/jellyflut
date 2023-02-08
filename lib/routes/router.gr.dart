@@ -41,7 +41,8 @@ class AppRouter extends _i14.RootStackRouter {
   @override
   final Map<String, _i14.PageFactory> pagesMap = {
     LoginPage.name: (routeData) {
-      final args = routeData.argsAs<LoginPageArgs>(orElse: () => const LoginPageArgs());
+      final args =
+          routeData.argsAs<LoginPageArgs>(orElse: () => const LoginPageArgs());
       return _i14.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i1.AuthParent(
@@ -80,7 +81,8 @@ class AppRouter extends _i14.RootStackRouter {
       );
     },
     DownloadsPage.name: (routeData) {
-      final args = routeData.argsAs<DownloadsPageArgs>(orElse: () => const DownloadsPageArgs());
+      final args = routeData.argsAs<DownloadsPageArgs>(
+          orElse: () => const DownloadsPageArgs());
       return _i14.CustomPage<dynamic>(
         routeData: routeData,
         child: _i5.DownloadsParent(key: args.key),
@@ -105,7 +107,8 @@ class AppRouter extends _i14.RootStackRouter {
       );
     },
     ServersPage.name: (routeData) {
-      final args = routeData.argsAs<ServersPageArgs>(orElse: () => const ServersPageArgs());
+      final args = routeData.argsAs<ServersPageArgs>(
+          orElse: () => const ServersPageArgs());
       return _i14.CustomPage<dynamic>(
         routeData: routeData,
         child: _i8.ServerParent(key: args.key),
@@ -128,7 +131,8 @@ class AppRouter extends _i14.RootStackRouter {
       );
     },
     StreamPage.name: (routeData) {
-      final args = routeData.argsAs<StreamPageArgs>(orElse: () => const StreamPageArgs());
+      final args = routeData.argsAs<StreamPageArgs>(
+          orElse: () => const StreamPageArgs());
       return _i14.CustomPage<dynamic>(
         routeData: routeData,
         child: _i10.StreamPage(
@@ -152,7 +156,8 @@ class AppRouter extends _i14.RootStackRouter {
       );
     },
     HomePage.name: (routeData) {
-      final args = routeData.argsAs<HomePageArgs>(orElse: () => const HomePageArgs());
+      final args =
+          routeData.argsAs<HomePageArgs>(orElse: () => const HomePageArgs());
       return _i14.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i12.HomePage(
@@ -162,7 +167,8 @@ class AppRouter extends _i14.RootStackRouter {
       );
     },
     LiveTvPage.name: (routeData) {
-      final args = routeData.argsAs<LiveTvPageArgs>(orElse: () => const LiveTvPageArgs());
+      final args = routeData.argsAs<LiveTvPageArgs>(
+          orElse: () => const LiveTvPageArgs());
       return _i14.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i13.LiveTvPage(

@@ -39,10 +39,9 @@ class AppDatabase {
   daos: [ServersDao, UserAppDao, SettingsDao, DownloadsDao],
 )
 class Database extends _$Database {
-  // we tell the database where to store the data with this constructor
-  Database() : super.connect(impl.connect());
+  Database() : super(impl.connect());
 
-  Database.forTesting(super.connection) : super.connect();
+  Database.forTesting(DatabaseConnection super.connection);
 
   // you should bump this number whenever you change or add a table definition
   @override

@@ -2,7 +2,6 @@ part of 'fav_cubit.dart';
 
 enum FavStatus { initial, loading, success, failure }
 
-@JsonSerializable()
 class FavState extends Equatable {
   FavState({this.status = FavStatus.initial, this.isFav = false});
 

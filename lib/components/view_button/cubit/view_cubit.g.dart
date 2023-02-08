@@ -7,7 +7,8 @@ part of 'view_cubit.dart';
 // **************************************************************************
 
 ViewState _$ViewStateFromJson(Map<String, dynamic> json) => ViewState(
-      status: $enumDecodeNullable(_$ViewStatusEnumMap, json['status']) ?? ViewStatus.initial,
+      status: $enumDecodeNullable(_$ViewStatusEnumMap, json['status']) ??
+          ViewStatus.initial,
       isViewed: json['isViewed'] as bool? ?? false,
     );
 

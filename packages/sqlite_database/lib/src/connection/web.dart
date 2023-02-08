@@ -13,11 +13,10 @@ import 'package:sqlite3/wasm.dart';
 const _useWorker = true;
 const _databaseName = 'db';
 
-/// Obtains a database connection for running drift on the web.
 DatabaseConnection connect({bool isInWebWorker = false}) {
   if (_useWorker && !isInWebWorker) {
     final worker = SharedWorker(kReleaseMode ? 'worker.dart.min.js' : 'worker.dart.js', _databaseName);
-    return remote(worker.port!.channel());
+    return DatabaseConnection.delayed(connectToRemoteAndInitialize(worker.port!.channel()));
   } else {
     return DatabaseConnection.delayed(Future.sync(() async {
       // We're using the experimental wasm support in Drift because this gives
