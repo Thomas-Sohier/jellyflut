@@ -16,10 +16,8 @@ class Capabilities {
   bool supportsSync;
 
   factory Capabilities.fromMap(Map<String, dynamic> json) => Capabilities(
-        playableMediaTypes:
-            List<dynamic>.from(json['PlayableMediaTypes'].map((x) => x)),
-        supportedCommands:
-            List<dynamic>.from(json['SupportedCommands'].map((x) => x)),
+        playableMediaTypes: List<dynamic>.from(json['PlayableMediaTypes'].map((x) => x)),
+        supportedCommands: List<dynamic>.from(json['SupportedCommands'].map((x) => x)),
         supportsMediaControl: json['SupportsMediaControl'],
         supportsContentUploading: json['SupportsContentUploading'],
         supportsPersistentIdentifier: json['SupportsPersistentIdentifier'],
@@ -27,10 +25,8 @@ class Capabilities {
       );
 
   Map<String, dynamic> toMap() => {
-        'PlayableMediaTypes':
-            List<dynamic>.from(playableMediaTypes.map((x) => x)),
-        'SupportedCommands':
-            List<dynamic>.from(supportedCommands.map((x) => x)),
+        'PlayableMediaTypes': List<dynamic>.from(playableMediaTypes.map((x) => x)),
+        'SupportedCommands': List<dynamic>.from(supportedCommands.map((x) => x)),
         'SupportsMediaControl': supportsMediaControl,
         'SupportsContentUploading': supportsContentUploading,
         'SupportsPersistentIdentifier': supportsPersistentIdentifier,

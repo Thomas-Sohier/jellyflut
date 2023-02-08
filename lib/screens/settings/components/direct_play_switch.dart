@@ -10,14 +10,11 @@ class DirectPlaySwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
-        buildWhen: (previous, current) =>
-            previous.databaseSetting.directPlay !=
-            current.databaseSetting.directPlay,
+        buildWhen: (previous, current) => previous.databaseSetting.directPlay != current.databaseSetting.directPlay,
         builder: (_, state) => Switch(
             value: state.databaseSetting.directPlay,
-            onChanged: (directPlay) => context.read<SettingsBloc>().add(
-                SettingsUpdateRequested(
-                    databaseSettingDto:
-                        DatabaseSettingDto(directPlay: directPlay)))));
+            onChanged: (directPlay) => context
+                .read<SettingsBloc>()
+                .add(SettingsUpdateRequested(databaseSettingDto: DatabaseSettingDto(directPlay: directPlay)))));
   }
 }

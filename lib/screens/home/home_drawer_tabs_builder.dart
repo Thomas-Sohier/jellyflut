@@ -33,8 +33,7 @@ class HomeTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeDrawerCubit>(
-        create: (_) => HomeDrawerCubit(), child: const HomeTabsView());
+    return BlocProvider<HomeDrawerCubit>(create: (_) => HomeDrawerCubit(), child: const HomeTabsView());
   }
 }
 
@@ -90,9 +89,7 @@ class BottomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeTabsCubit, HomeTabsState>(
         buildWhen: (previous, current) =>
-            previous.currentHomeTabController !=
-                current.currentHomeTabController ||
-            previous.status != current.status,
+            previous.currentHomeTabController != current.currentHomeTabController || previous.status != current.status,
         builder: (_, state) {
           switch (state.status) {
             case Status.initial:

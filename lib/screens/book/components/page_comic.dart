@@ -18,8 +18,7 @@ class PageComic extends StatelessWidget {
           fadeInDuration: Duration(milliseconds: 300),
           fit: BoxFit.contain,
           gaplessPlayback: true,
-          errorBuilder: (context, _, stacktrace) =>
-              Center(child: Text('cannot_load_page'.tr())),
+          errorBuilder: (context, _, stacktrace) => Center(child: Text('cannot_load_page'.tr())),
           alignment: Alignment.center);
     }
     return Text(archive.name);

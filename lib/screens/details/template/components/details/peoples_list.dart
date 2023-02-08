@@ -28,16 +28,14 @@ class PeoplesList extends StatelessWidget {
                   bigPoster: true,
                   clickable: true,
                   notFoundPlaceholder: const NotFoundActorPlaceholder(),
-                  onPressed: (heroTag) =>
-                      onTap(peoples[index], heroTag, context),
+                  onPressed: (heroTag) => onTap(peoples[index], heroTag, context),
                 ),
               )),
     );
   }
 
   Future<void> onTap(People person, String heroTag, BuildContext context) {
-    return context.router.root
-        .push(r.DetailsPage(item: person.asItem(), heroTag: heroTag));
+    return context.router.root.push(r.DetailsPage(item: person.asItem(), heroTag: heroTag));
   }
 }
 

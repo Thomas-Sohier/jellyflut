@@ -23,17 +23,14 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-        borderSide: BorderSide(
-            width: 0, color: Colors.transparent, style: BorderStyle.none),
+        borderSide: BorderSide(width: 0, color: Colors.transparent, style: BorderStyle.none),
         borderRadius: BorderRadius.all(Radius.circular(4)));
 
     return RawKeyboardListener(
       focusNode: FocusNode(),
       onKey: (RawKeyEvent event) {
-        if (event.runtimeType == RawKeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.enter) {
-          searchItemsFuture(
-              textEditingController.text, context.read<ItemsRepository>());
+        if (event.runtimeType == RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+          searchItemsFuture(textEditingController.text, context.read<ItemsRepository>());
         }
       },
       child: TextFormField(

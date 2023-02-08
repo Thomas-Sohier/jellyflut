@@ -11,8 +11,7 @@ class ItemDuration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeEnd = formatter
-        .format(DateTime.now().add(Duration(microseconds: item.getDuration())));
+    final timeEnd = formatter.format(DateTime.now().add(Duration(microseconds: item.getDuration())));
     final duration = printDuration(Duration(microseconds: item.getDuration()));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -20,8 +19,7 @@ class ItemDuration extends StatelessWidget {
       children: [
         Text(duration, style: Theme.of(context).textTheme.bodyMedium),
         const DetailsSeparator(),
-        Text('item_ends'.tr(args: [timeEnd]),
-            style: Theme.of(context).textTheme.bodyMedium),
+        Text('item_ends'.tr(args: [timeEnd]), style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

@@ -31,9 +31,7 @@ class StreamPage extends StatelessWidget {
       ),
       if (item?.type == ItemType.TvChannel)
         BlocProvider(
-          create: (_) =>
-              ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())
-                ..init(),
+          create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init(),
         )
     ], child: const StreamView());
   }
@@ -59,8 +57,7 @@ class _StreamViewState extends State<StreamView> {
 
     // Hide device overlays
     // device orientation
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
@@ -79,8 +76,7 @@ class _StreamViewState extends State<StreamView> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
@@ -89,10 +85,7 @@ class _StreamViewState extends State<StreamView> {
     final theme = context.read<ThemeProvider>().getThemeData;
     return Theme(
         // We force white controls on player controls to have better contrast
-        data: theme.copyWith(
-            colorScheme:
-                theme.colorScheme.copyWith(onBackground: Colors.white)),
-        child: Scaffold(
-            backgroundColor: Colors.black, body: const PlayerInterface()));
+        data: theme.copyWith(colorScheme: theme.colorScheme.copyWith(onBackground: Colors.white)),
+        child: Scaffold(backgroundColor: Colors.black, body: const PlayerInterface()));
   }
 }

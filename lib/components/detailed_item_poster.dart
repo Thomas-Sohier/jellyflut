@@ -14,8 +14,7 @@ class DetailedItemPoster extends StatefulWidget {
   final Color textColor;
   final String heroTag;
 
-  const DetailedItemPoster(
-      {required this.item, required this.textColor, required this.heroTag});
+  const DetailedItemPoster({required this.item, required this.textColor, required this.heroTag});
 
   @override
   State<DetailedItemPoster> createState() => _DetailedItemPosterState();
@@ -25,57 +24,44 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilderScreen(
-        builder: (_, constraints, __) => Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ItemPoster(widget.item, showOverlay: false, showName: false),
-                  MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                          onTap: () => context.router.root.push(r.DetailsPage(
-                              item: widget.item, heroTag: widget.heroTag)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(4),
-                                bottomRight: Radius.circular(4)),
-                            child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                    minWidth: 100,
-                                    maxWidth: 600,
-                                    maxHeight: constraints.maxHeight * 0.9),
-                                child: Stack(children: [
-                                  AsyncImage(
-                                      item: widget.item,
-                                      boxFit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      imageType: ImageType.Backdrop),
-                                  Container(color: Colors.black87),
-                                  Padding(
-                                      padding: EdgeInsets.all(8),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            title(),
-                                            Row(children: [
-                                              Critics(item: widget.item),
-                                              Spacer(),
-                                              if (widget.item.runTimeTicks !=
-                                                  null)
-                                                duration()
-                                            ]),
-                                            if (widget.item.overview != null)
-                                              Divider(),
-                                            if (widget.item.overview != null)
-                                              overview()
-                                          ]))
-                                ])),
-                          )))
-                ]));
+        builder: (_, constraints, __) =>
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+              ItemPoster(widget.item, showOverlay: false, showName: false),
+              MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                      onTap: () => context.router.root.push(r.DetailsPage(item: widget.item, heroTag: widget.heroTag)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
+                        child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minWidth: 100, maxWidth: 600, maxHeight: constraints.maxHeight * 0.9),
+                            child: Stack(children: [
+                              AsyncImage(
+                                  item: widget.item,
+                                  boxFit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  imageType: ImageType.Backdrop),
+                              Container(color: Colors.black87),
+                              Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        title(),
+                                        Row(children: [
+                                          Critics(item: widget.item),
+                                          Spacer(),
+                                          if (widget.item.runTimeTicks != null) duration()
+                                        ]),
+                                        if (widget.item.overview != null) Divider(),
+                                        if (widget.item.overview != null) overview()
+                                      ]))
+                            ])),
+                      )))
+            ]));
   }
 
   Widget title() {
@@ -99,7 +85,6 @@ class _DetailedItemPosterState extends State<DetailedItemPoster> {
   }
 
   Widget duration() {
-    return Text(
-        printDuration(Duration(microseconds: widget.item.getDuration())));
+    return Text(printDuration(Duration(microseconds: widget.item.getDuration())));
   }
 }

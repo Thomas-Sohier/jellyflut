@@ -6,8 +6,7 @@ class ListItemsVerticalSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemHeight =
-        context.read<CollectionBloc>().state.verticalListPosterHeight;
+    final itemHeight = context.read<CollectionBloc>().state.verticalListPosterHeight;
     return Shimmer.fromColors(
         baseColor: shimmerColor1,
         highlightColor: shimmerColor2,

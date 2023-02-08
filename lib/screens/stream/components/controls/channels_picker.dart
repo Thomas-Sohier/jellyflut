@@ -15,8 +15,7 @@ class ChannelPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChannelCubit, ChannelState>(
-        buildWhen: (previous, current) =>
-            previous.showPanel != current.showPanel,
+        buildWhen: (previous, current) => previous.showPanel != current.showPanel,
         builder: (_, state) => AnimatedContainer(
               duration: Duration(milliseconds: 200),
               height: double.infinity,
@@ -39,19 +38,15 @@ class _ChannelsPickerView extends StatelessWidget {
       BlocConsumer<ChannelCubit, ChannelState>(
           listener: (_, state) {
             if (state.status == Status.failure) {
-              SnackbarUtil.message(
-                  messageTitle: state.failureMessage, context: context);
+              SnackbarUtil.message(messageTitle: state.failureMessage, context: context);
             }
           },
-          buildWhen: (previous, current) =>
-              previous.channels != current.channels ||
-              previous.status != current.status,
+          buildWhen: (previous, current) => previous.channels != current.channels || previous.status != current.status,
           builder: (_, state) {
             switch (state.status) {
               case Status.initial:
               case Status.loading:
-                return const SliverToBoxAdapter(
-                    child: CircularProgressIndicator());
+                return const SliverToBoxAdapter(child: CircularProgressIndicator());
               case Status.success:
                 return SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -59,9 +54,7 @@ class _ChannelsPickerView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  _ChannelListElement(
-                                      index: index,
-                                      channel: state.channels[index]),
+                                  _ChannelListElement(index: index, channel: state.channels[index]),
                                   if (index != 100) Divider()
                                 ]),
                         childCount: state.channels.length));
@@ -89,10 +82,7 @@ class _PinnedHeaderChannelList extends StatelessWidget {
             children: [
               Text(
                 'Channels',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 8),
               ExcludeFocus(
@@ -102,36 +92,26 @@ class _PinnedHeaderChannelList extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   onSubmitted: (value) => changeChannel(value, context),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                   cursorColor: Theme.of(context).colorScheme.onPrimary,
-                  controller: TextEditingController(
-                      text: currentChannel.item.channelNumber ?? '0'),
+                  controller: TextEditingController(text: currentChannel.item.channelNumber ?? '0'),
                   decoration: InputDecoration(
                       isDense: true,
                       focusColor: Theme.of(context).colorScheme.onPrimary,
-                      label: Text('Channel number',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary)),
+                      label: Text('Channel number', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                       fillColor: Theme.of(context).colorScheme.onPrimary,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
                           borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                              color: Theme.of(context).colorScheme.onPrimary)),
+                              width: 2, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onPrimary)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
                           borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                              color: Theme.of(context).colorScheme.onPrimary)),
+                              width: 2, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onPrimary)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
                           borderSide: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
-                              color: Theme.of(context).colorScheme.onPrimary))),
+                              width: 2, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onPrimary))),
                 ),
               ),
             ],
@@ -144,17 +124,16 @@ class _PinnedHeaderChannelList extends StatelessWidget {
   void changeChannel(String? channelNumber, BuildContext context) {
     // We check first that channel number is correctly setup
     if (channelNumber == null || int.tryParse(channelNumber) == null) {
-      return SnackbarUtil.message(
-          messageTitle: 'Input is not valid', context: context);
+      return SnackbarUtil.message(messageTitle: 'Input is not valid', context: context);
     }
-    final channel = context.read<ChannelCubit>().state.channels.firstWhere(
-        (element) => element.channelNumber == channelNumber,
-        orElse: () => Item.empty);
+    final channel = context
+        .read<ChannelCubit>()
+        .state
+        .channels
+        .firstWhere((element) => element.channelNumber == channelNumber, orElse: () => Item.empty);
 
     if (channel.isEmpty) {
-      return SnackbarUtil.message(
-          messageTitle: 'No channel match channel number : $channelNumber',
-          context: context);
+      return SnackbarUtil.message(messageTitle: 'No channel match channel number : $channelNumber', context: context);
     }
     context.read<StreamCubit>().changeDataSource(item: channel);
   }
@@ -169,8 +148,7 @@ class _ChannelListElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      onPressed: () =>
-          context.read<StreamCubit>().changeDataSource(item: channel),
+      onPressed: () => context.read<StreamCubit>().changeDataSource(item: channel),
       alignment: Alignment.centerLeft,
       child: SizedBox(
         width: double.infinity,
@@ -180,11 +158,9 @@ class _ChannelListElement extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('#${channel.channelNumber} - ${channel.name}',
-                  style: Theme.of(context).textTheme.bodyLarge),
+              Text('#${channel.channelNumber} - ${channel.name}', style: Theme.of(context).textTheme.bodyLarge),
               if (channel.overview != null)
-                Text('Currently : ${channel.overview}',
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text('Currently : ${channel.overview}', style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),

@@ -26,13 +26,11 @@ part 'session_infos.g.dart';
 class SessionInfo with _$SessionInfo {
   const factory SessionInfo(
       {PlayState? playState,
-      @Default([])
-          List<dynamic> additionalUsers,
+      @Default([]) List<dynamic> additionalUsers,
 
       /// Capabilities capabilities, // TODO later if needed
       String? remoteEndPoint,
-      @Default(<String>[])
-          List<String> playableMediaTypes,
+      @Default(<String>[]) List<String> playableMediaTypes,
       String? id,
       required String userId,
       String? userName,
@@ -53,10 +51,8 @@ class SessionInfo with _$SessionInfo {
       required bool hasCustomDeviceName,
       String? serverId,
       String? userPrimaryImageTag,
-      @Default(<SupportedCommands>[])
-          List<SupportedCommands> supportedCommands}) = _SessionInfo;
+      @Default(<SupportedCommands>[]) List<SupportedCommands> supportedCommands}) = _SessionInfo;
 
   /// Deserializes the given [JsonMap] into a [SessionInfo].
-  factory SessionInfo.fromJson(Map<String, Object?> json) =>
-      _$SessionInfoFromJson(json);
+  factory SessionInfo.fromJson(Map<String, Object?> json) => _$SessionInfoFromJson(json);
 }

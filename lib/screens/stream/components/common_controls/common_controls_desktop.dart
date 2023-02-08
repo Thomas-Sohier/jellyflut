@@ -21,20 +21,14 @@ class _CommonControlsDesktopState extends State<CommonControlsDesktop> {
               controls(),
               Positioned.fill(
                 top: cc.maxHeight * 0.6,
-                child: Align(
-                    alignment: Alignment.bottomCenter, child: SubtitleBox()),
+                child: Align(alignment: Alignment.bottomCenter, child: SubtitleBox()),
               ),
             ]));
   }
 
   Widget controls() {
     return Column(
-      children: const [
-        SizedBox(height: 12),
-        TopRow(),
-        Spacer(),
-        BottomRowPlayerControls()
-      ],
+      children: const [SizedBox(height: 12), TopRow(), Spacer(), BottomRowPlayerControls()],
     );
   }
 }
@@ -44,23 +38,20 @@ class TopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SelectableBackButton(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [ItemTitle(), ItemParentTitlePhone()],
-              ),
-            ),
+    return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const SelectableBackButton(),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [ItemTitle(), ItemParentTitlePhone()],
           ),
-          const Spacer(),
-          const ShowChannelButton()
-        ]);
+        ),
+      ),
+      const Spacer(),
+      const ShowChannelButton()
+    ]);
   }
 }

@@ -17,12 +17,10 @@ class SeasonCubit extends Cubit<SeasonState> {
   /// First method to be called
   /// Init seasons and episode from given item
   Future<void> _initFromItem() async {
-    emit(state.copyWith(
-        epsiodesStatus: Status.loading, seasonStatus: Status.loading));
+    emit(state.copyWith(epsiodesStatus: Status.loading, seasonStatus: Status.loading));
 
     try {
-      final seasons =
-          (await _itemsRepository.getSeasons(state.parentItem.id)).items;
+      final seasons = (await _itemsRepository.getSeasons(state.parentItem.id)).items;
       emit(state.copyWith(seasonStatus: Status.success, seasons: seasons));
 
       final episodes = <String, Future<List<Item>>>{};
@@ -39,8 +37,7 @@ class SeasonCubit extends Cubit<SeasonState> {
             currentEpisodes: currentEpisodes),
       );
     } on Exception catch (_) {
-      emit(state.copyWith(
-          epsiodesStatus: Status.failure, seasonStatus: Status.failure));
+      emit(state.copyWith(epsiodesStatus: Status.failure, seasonStatus: Status.failure));
     }
   }
 
@@ -53,8 +50,7 @@ class SeasonCubit extends Cubit<SeasonState> {
   void changeSeason(String seasonId) async {
     emit(state.copyWith(epsiodesStatus: Status.loading));
     try {
-      final currentSeason =
-          state.seasons.firstWhere((season) => season.id == seasonId);
+      final currentSeason = state.seasons.firstWhere((season) => season.id == seasonId);
 
       emit(
         state.copyWith(
@@ -71,9 +67,7 @@ class SeasonCubit extends Cubit<SeasonState> {
   /// Get all episodes for a given season
   /// Utility function to return only items list
   Future<List<Item>> _getEpisodes(Item season) async {
-    return (await _itemsRepository.getEpsiodes(state.parentItem.id,
-            seasonId: season.id))
-        .items;
+    return (await _itemsRepository.getEpsiodes(state.parentItem.id, seasonId: season.id)).items;
   }
 
   void goToSeason(Item season) async {

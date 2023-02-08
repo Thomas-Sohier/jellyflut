@@ -8,6 +8,5 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
   // Used to fix issue : https://github.com/flutter/flutter/issues/83359
   // So we can drag horizontally again on desktop
   @override
-  Set<PointerDeviceKind> get dragDevices =>
-      {PointerDeviceKind.touch, PointerDeviceKind.mouse};
+  Set<PointerDeviceKind> get dragDevices => {PointerDeviceKind.touch, PointerDeviceKind.mouse};
 }

@@ -17,8 +17,7 @@ class DatabaseDownloadsApi extends DownloadsApi {
   }
 
   late final Database _databaseController;
-  final _downloadStreamController =
-      BehaviorSubject<List<Download>>.seeded(const []);
+  final _downloadStreamController = BehaviorSubject<List<Download>>.seeded(const []);
 
   void _init() {
     // Add downloads from database to the current stream
@@ -30,8 +29,7 @@ class DatabaseDownloadsApi extends DownloadsApi {
   }
 
   @override
-  Stream<List<Download>> getDownloads() =>
-      _downloadStreamController.asBroadcastStream();
+  Stream<List<Download>> getDownloads() => _downloadStreamController.asBroadcastStream();
 
   @override
   Future<void> saveDownload(Download download) {

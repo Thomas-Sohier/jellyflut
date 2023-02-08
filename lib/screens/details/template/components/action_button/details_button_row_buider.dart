@@ -22,12 +22,9 @@ class DetailsButtonRowBuilder extends StatelessWidget {
         delegate: SliverChildListDelegate(
           [
             // if (state.item.isPlayableOrCanHavePlayableChilren()) const PlayButton(maxWidth: double.infinity),
-            if (state.item.hasTrailer())
-              const TrailerButton(maxWidth: double.infinity),
-            if (state.item.isViewable())
-              const ViewedButton(maxWidth: double.infinity),
-            if (state.item.isDownloable())
-              DownloadButton(maxWidth: double.infinity),
+            if (state.item.hasTrailer()) const TrailerButton(maxWidth: double.infinity),
+            if (state.item.isViewable()) const ViewedButton(maxWidth: double.infinity),
+            if (state.item.isDownloable()) DownloadButton(maxWidth: double.infinity),
             const LikeButton(maxWidth: double.infinity),
             const ManageButton(maxWidth: double.infinity)
           ],

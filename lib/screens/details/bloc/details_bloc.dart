@@ -58,55 +58,42 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   String get currentUserId => _authenticationRepository.currentUser.id;
 
-  void _onDetailsInitRequested(
-      DetailsInitRequested event, Emitter<DetailsState> emit) async {
-    emit(
-        state.copyWith(item: event.item, detailsStatus: DetailsStatus.loading));
+  void _onDetailsInitRequested(DetailsInitRequested event, Emitter<DetailsState> emit) async {
+    emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.loading));
     unawaited(_getItemBackgroundColor(event.item));
-    final item =
-        await _downloadsRepository.getItemFromStorage(itemId: event.item.id);
+    final item = await _downloadsRepository.getItemFromStorage(itemId: event.item.id);
     if (item.isNotEmpty || offlineMode) {
       if (item.isEmpty) {
-        return emit(
-            state.copyWith(item: item, detailsStatus: DetailsStatus.failure));
+        return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.failure));
       }
-      return emit(
-          state.copyWith(item: item, detailsStatus: DetailsStatus.success));
+      return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
     } else {
       final item = await _itemsRepository.getItem(event.item.id);
-      return emit(
-          state.copyWith(item: item, detailsStatus: DetailsStatus.success));
+      return emit(state.copyWith(item: item, detailsStatus: DetailsStatus.success));
     }
   }
 
   void _onItemUpdate(DetailsItemUpdate event, Emitter<DetailsState> emit) {
-    emit(
-        state.copyWith(item: event.item, detailsStatus: DetailsStatus.success));
+    emit(state.copyWith(item: event.item, detailsStatus: DetailsStatus.success));
   }
 
-  void _onScreenLayoutChanged(
-      DetailsScreenSizeChanged event, Emitter<DetailsState> emit) {
+  void _onScreenLayoutChanged(DetailsScreenSizeChanged event, Emitter<DetailsState> emit) {
     if (event.screenLayout == state.screenLayout) return;
     if (event.screenLayout == ScreenLayout.desktop) {
-      emit(state.copyWith(
-          pinnedHeader: false, screenLayout: event.screenLayout));
+      emit(state.copyWith(pinnedHeader: false, screenLayout: event.screenLayout));
     } else {
       emit(state.copyWith(screenLayout: event.screenLayout));
     }
   }
 
   /// Update the theme of current details
-  void _onSeedColorUpdate(
-      DetailsUpdateSeedColor event, Emitter<DetailsState> emit) {
+  void _onSeedColorUpdate(DetailsUpdateSeedColor event, Emitter<DetailsState> emit) {
     final detailsTheme = t.Theme.generateDetailsThemeDataFromPaletteColor(
-        event.colors,
-        state.contrastedPage,
-        _themeProvider.getThemeData.brightness);
+        event.colors, state.contrastedPage, _themeProvider.getThemeData.brightness);
     emit(state.copyWith(theme: detailsTheme));
   }
 
-  void _shrinkOffsetChanged(
-      PinnedHeaderChangeRequested event, Emitter<DetailsState> emit) {
+  void _shrinkOffsetChanged(PinnedHeaderChangeRequested event, Emitter<DetailsState> emit) {
     if (event.shrinkOffset > 0) {
       emit(state.copyWith(pinnedHeader: true));
     } else {
@@ -117,8 +104,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   Future<bool> cacheSeedColor(final List<Color> colors) async {
     final item = state.item;
     final colorsAsInt = colors.map((c) => c.value.toString());
-    return _sharedPreferences.setStringList(
-        spKey(item.id), colorsAsInt.toList());
+    return _sharedPreferences.setStringList(spKey(item.id), colorsAsInt.toList());
   }
 
   bool isSeedColorCached() {
@@ -132,8 +118,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     return colorsAsString.map((c) => Color(int.parse(c))).toList();
   }
 
-  Future<void> _getItemBackgroundColor(final Item item,
-      {final bool cache = true}) async {
+  Future<void> _getItemBackgroundColor(final Item item, {final bool cache = true}) async {
     // get seed color from sharedPref to prevent computation on remote image
     // to load faster and prevent future API call
     if (cache && isSeedColorCached()) {
@@ -146,10 +131,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         type: item.correctImageType(searchType: ImageType.Primary),
         quality: 40);
 
-    return NetworkAssetBundle(Uri.parse(url))
-        .load(url)
-        .then(_computePalette)
-        .then((colors) async {
+    return NetworkAssetBundle(Uri.parse(url)).load(url).then(_computePalette).then((colors) async {
       // save binary in sharedpref to load faster and prevent future API call
       if (cache) {
         await cacheSeedColor(colors);
@@ -162,10 +144,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   /// colors
   Future<List<Color>> _computePalette(ByteData byteData) async {
     // We resize the image first to avoid too much computation from palette generator
-    final resizedImage = ResizeImage(
-        Image.memory(byteData.buffer.asUint8List()).image,
-        height: 240,
-        width: 240);
+    final resizedImage = ResizeImage(Image.memory(byteData.buffer.asUint8List()).image, height: 240, width: 240);
     final palette = await PaletteGenerator.fromImageProvider(
       resizedImage,
       maximumColorCount: 6,

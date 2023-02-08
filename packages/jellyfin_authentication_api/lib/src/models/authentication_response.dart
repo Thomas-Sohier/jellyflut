@@ -20,13 +20,9 @@ part 'authentication_response.g.dart';
 @immutable
 @Freezed()
 class AuthenticationResponse with _$AuthenticationResponse {
-  const factory AuthenticationResponse(
-      {User? user,
-      SessionInfo? sessionInfo,
-      String? accessToken,
-      String? serverId}) = _AuthenticationResponse;
+  const factory AuthenticationResponse({User? user, SessionInfo? sessionInfo, String? accessToken, String? serverId}) =
+      _AuthenticationResponse;
 
   /// Deserializes the given [JsonMap] into a [AuthByName].
-  factory AuthenticationResponse.fromJson(Map<String, Object?> json) =>
-      _$AuthenticationResponseFromJson(json);
+  factory AuthenticationResponse.fromJson(Map<String, Object?> json) => _$AuthenticationResponseFromJson(json);
 }

@@ -69,13 +69,7 @@ class Download extends Equatable {
   /// Returns a copy of this todo with the given values updated.
   ///
   /// {@macro download}
-  Download copyWith(
-      {String? id,
-      String? name,
-      String? path,
-      Uint8List? primary,
-      Uint8List? backdrop,
-      Item? item}) {
+  Download copyWith({String? id, String? name, String? path, Uint8List? primary, Uint8List? backdrop, Item? item}) {
     return Download(
         id: id ?? this.id,
         name: name ?? this.name,

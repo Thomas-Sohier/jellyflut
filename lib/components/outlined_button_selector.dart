@@ -26,8 +26,7 @@ class OutlinedButtonSelector extends StatefulWidget {
   State<OutlinedButtonSelector> createState() => _OutlinedButtonSelectorState();
 }
 
-class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
-    with AbsordAction {
+class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector> with AbsordAction {
   Widget get child => widget.child;
   VoidCallback get onPressed => widget.onPressed;
   OutlinedBorder get shape => widget.shape;
@@ -43,11 +42,7 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
         onPressed: () => action(onPressed),
         style: OutlinedButton.styleFrom(
                 minimumSize: Size(24, 24),
-                foregroundColor: primary ??
-                    Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.05),
+                foregroundColor: primary ?? Theme.of(context).colorScheme.onBackground.withOpacity(0.05),
                 alignment: alignment,
                 padding: padding,
                 shape: shape)
@@ -64,8 +59,7 @@ class _OutlinedButtonSelectorState extends State<OutlinedButtonSelector>
             color: primary ?? Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

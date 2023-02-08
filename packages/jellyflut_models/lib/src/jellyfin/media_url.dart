@@ -7,6 +7,5 @@ part 'media_url.g.dart';
 class MediaUrl with _$MediaUrl {
   factory MediaUrl({String? url, String? name}) = _MediaUrl;
 
-  factory MediaUrl.fromJson(Map<String, Object?> json) =>
-      _$MediaUrlFromJson(json);
+  factory MediaUrl.fromJson(Map<String, Object?> json) => _$MediaUrlFromJson(json);
 }

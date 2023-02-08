@@ -32,8 +32,7 @@ class DownloadedItemsView extends StatelessWidget {
     return MultiBlocListener(
         listeners: [
           BlocListener<DownloadsBloc, DownloadsState>(
-            listenWhen: (previous, current) =>
-                previous.status != current.status,
+            listenWhen: (previous, current) => previous.status != current.status,
             listener: (_, state) {
               if (state.status == DownloadsStatus.failure) {
                 SnackbarUtil.message(
@@ -46,8 +45,7 @@ class DownloadedItemsView extends StatelessWidget {
           ),
           BlocListener<DownloadsBloc, DownloadsState>(
             listenWhen: (previous, current) =>
-                previous.lastDeletedDownload != current.lastDeletedDownload &&
-                current.lastDeletedDownload != null,
+                previous.lastDeletedDownload != current.lastDeletedDownload && current.lastDeletedDownload != null,
             listener: (_, state) {
               final deletedDownload = state.lastDeletedDownload!;
               SnackbarUtil.message(
@@ -58,8 +56,7 @@ class DownloadedItemsView extends StatelessWidget {
             },
           ),
           BlocListener<DownloadsBloc, DownloadsState>(
-            listenWhen: (previous, current) =>
-                previous.downloads != current.downloads,
+            listenWhen: (previous, current) => previous.downloads != current.downloads,
             listener: (_, state) {
               final downloads = state.downloads.map((e) => e.item).toList();
               bloc.add(ReplaceItem(items: downloads));

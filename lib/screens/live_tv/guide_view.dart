@@ -14,22 +14,19 @@ class GuideView extends StatelessWidget {
   const GuideView({super.key});
   @override
   Widget build(BuildContext context) {
-    final guide = context
-        .select<LiveTvGuideCubit, List<Channel>>((cubit) => cubit.state.guide);
+    final guide = context.select<LiveTvGuideCubit, List<Channel>>((cubit) => cubit.state.guide);
     return ListView.builder(
         itemCount: guide.length,
         padding: EdgeInsets.zero,
         itemBuilder: ((context, index) {
           final guideElement = guide.elementAt(index);
-          return GuideChannelRow(
-              channel: guideElement.channel, programs: guideElement.programs);
+          return GuideChannelRow(channel: guideElement.channel, programs: guideElement.programs);
         }));
   }
 }
 
 class GuideChannelRow extends StatelessWidget {
-  const GuideChannelRow(
-      {super.key, required this.channel, required this.programs});
+  const GuideChannelRow({super.key, required this.channel, required this.programs});
 
   final Item channel;
   final List<Program> programs;
@@ -43,46 +40,38 @@ class GuideChannelRow extends StatelessWidget {
           child: Row(
             children: [
               OutlinedButtonSelector(
-                onPressed: () => context.router.root
-                    .push(r.DetailsPage(item: channel, heroTag: channel.id)),
+                onPressed: () => context.router.root.push(r.DetailsPage(item: channel, heroTag: channel.id)),
                 child: SizedBox(
                   width: 80,
-                  child: Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, right: 4),
-                          child: Poster(
-                              imageType: ImageType.Primary,
-                              heroTag: channel.id,
-                              clickable: false,
-                              boxFit: BoxFit.contain,
-                              item: channel),
-                        ),
-                        Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Card(
-                                elevation: 2,
-                                margin: EdgeInsets.zero,
-                                color: Theme.of(context).colorScheme.primary,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                  child: Text(
-                                    channel.channelNumber ?? '',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary)
-                                        .copyWith(fontSize: 12),
-                                  ),
-                                ))),
-                      ]),
+                  child: Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, right: 4),
+                      child: Poster(
+                          imageType: ImageType.Primary,
+                          heroTag: channel.id,
+                          clickable: false,
+                          boxFit: BoxFit.contain,
+                          item: channel),
+                    ),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Card(
+                            elevation: 2,
+                            margin: EdgeInsets.zero,
+                            color: Theme.of(context).colorScheme.primary,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                              child: Text(
+                                channel.channelNumber ?? '',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)
+                                    .copyWith(fontSize: 12),
+                              ),
+                            ))),
+                  ]),
                 ),
               ),
               const SizedBox(width: 12),
@@ -104,8 +93,7 @@ class ProgramList extends StatelessWidget {
         itemCount: programs.length,
         controller: ScrollController(),
         scrollDirection: Axis.horizontal,
-        itemBuilder: (_, index) =>
-            ProgramListElement(program: programs.elementAt(index)));
+        itemBuilder: (_, index) => ProgramListElement(program: programs.elementAt(index)));
   }
 }
 
@@ -117,11 +105,9 @@ class ProgramListElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat('HH:mm');
-    final width =
-        (program.endAt.difference(program.startAt).inMinutes * 10).toDouble();
+    final width = (program.endAt.difference(program.startAt).inMinutes * 10).toDouble();
     return OutlinedButtonSelector(
-      onPressed: () =>
-          {}, //context.router.root.push(r.DetailsPage(item: program, heroTag: program.id)),
+      onPressed: () => {}, //context.router.root.push(r.DetailsPage(item: program, heroTag: program.id)),
       child: Card(
           elevation: 0,
           margin: EdgeInsets.symmetric(horizontal: 4),
@@ -139,10 +125,7 @@ class ProgramListElement extends StatelessWidget {
                         program.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Expanded(

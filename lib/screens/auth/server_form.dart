@@ -31,11 +31,7 @@ class _ServerFormState extends State<ServerForm> {
         ),
         FieldsType.SERVER_URL.value: FormControl<String>(
           value: authBloc.state.server.url,
-          validators: [
-            Validators.required,
-            Validators.pattern(urlPattern,
-                validationMessage: 'url_not_correct'.tr())
-          ],
+          validators: [Validators.required, Validators.pattern(urlPattern, validationMessage: 'url_not_correct'.tr())],
         )
       });
 
@@ -69,10 +65,7 @@ class _ServerFormState extends State<ServerForm> {
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
-              ServerNameField(
-                  form: form,
-                  onSubmitted: (_) =>
-                      form.focus(FieldsType.SERVER_URL.toString())),
+              ServerNameField(form: form, onSubmitted: (_) => form.focus(FieldsType.SERVER_URL.toString())),
               const SizedBox(height: 12),
               ServerUrlField(form: form, onSubmitted: (_) => addServer(form)),
               const SizedBox(height: 24),
@@ -98,12 +91,10 @@ class _ServerFormState extends State<ServerForm> {
       final regexp = RegExp(r'^[^_]+(?=_)');
       final errors = <String>[];
       form.errors.forEach((key, value) {
-        final fieldName =
-            key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
+        final fieldName = key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
         errors.add('field_required'.tr(args: [fieldName]));
       });
-      authBloc
-          .add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
+      authBloc.add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
     }
   }
 }

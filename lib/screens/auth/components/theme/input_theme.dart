@@ -12,8 +12,7 @@ MaterialStateProperty<EdgeInsetsGeometry> buttonPadding() {
 MaterialStateProperty<double> buttonElevation() {
   return MaterialStateProperty.resolveWith<double>(
     (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.focused)) {
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
         return 6;
       }
       return 0; // defer to the default
@@ -24,20 +23,16 @@ MaterialStateProperty<double> buttonElevation() {
 MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
   return MaterialStateProperty.resolveWith<BorderSide>(
     (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.focused)) {
-        return BorderSide(
-            width: 2, color: Theme.of(context).colorScheme.onBackground);
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
+        return BorderSide(width: 2, color: Theme.of(context).colorScheme.onBackground);
       }
-      return BorderSide(
-          width: 0, color: Colors.transparent); // defer to the default
+      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
     },
   );
 }
 
 MaterialStateProperty<OutlinedBorder> buttonShape() {
-  return MaterialStateProperty.resolveWith<OutlinedBorder>(
-      (Set<MaterialState> states) {
+  return MaterialStateProperty.resolveWith<OutlinedBorder>((Set<MaterialState> states) {
     return RoundedRectangleBorder(borderRadius: BorderRadius.circular(4));
   });
 }

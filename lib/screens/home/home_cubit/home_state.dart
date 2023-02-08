@@ -14,11 +14,7 @@ class HomeState extends Equatable {
   final List<Item> items;
   final List<PageRouteInfo<dynamic>> routes;
 
-  HomeState copyWith(
-      {HomeStatus? status,
-      List<Item>? items,
-      Item? parentItem,
-      List<PageRouteInfo<dynamic>>? routes}) {
+  HomeState copyWith({HomeStatus? status, List<Item>? items, Item? parentItem, List<PageRouteInfo<dynamic>>? routes}) {
     return HomeState(
       status: status ?? this.status,
       items: items ?? this.items,

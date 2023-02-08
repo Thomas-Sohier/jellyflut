@@ -15,8 +15,7 @@ class SongPlaylistCard extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(14)),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).cardTheme.shadowColor ??
-                        Colors.black38,
+                    color: Theme.of(context).cardTheme.shadowColor ?? Colors.black38,
                     blurRadius: 6,
                     spreadRadius: 2,
                   )
@@ -28,8 +27,7 @@ class SongPlaylistCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text('playlist'.tr(),
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.headlineSmall),
+                        textAlign: TextAlign.left, style: Theme.of(context).textTheme.headlineSmall),
                   ),
                   Expanded(child: child)
                 ])));

@@ -2,8 +2,7 @@ part of 'sections.dart';
 
 class VideoPlayerSection extends StatelessWidget {
   final GlobalKey<PopupMenuButtonState<String>> _playerButton = GlobalKey();
-  final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton =
-      GlobalKey();
+  final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton = GlobalKey();
 
   VideoPlayerSection({super.key});
 
@@ -15,14 +14,12 @@ class VideoPlayerSection extends StatelessWidget {
       tiles: [
         SettingsTile(
             title: 'preferred_player'.tr(),
-            onPressed: (context) =>
-                _playerButton.currentState?.showButtonMenu(),
+            onPressed: (context) => _playerButton.currentState?.showButtonMenu(),
             trailing: VideoPlayerPopupButton(popupButtonKey: _playerButton)),
         SettingsTile(
           title: 'max_bitrate'.tr(),
           subtitle: 'Edit max video bitrate value',
-          onPressed: (c) =>
-              _bitrateEditorButton.currentState?.editBitrateValue(c),
+          onPressed: (c) => _bitrateEditorButton.currentState?.editBitrateValue(c),
           trailing: VideoBitrateValueEditor(key: _bitrateEditorButton),
         ),
         SettingsTile(

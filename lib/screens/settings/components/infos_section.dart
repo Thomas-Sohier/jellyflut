@@ -8,11 +8,7 @@ class InfosSection extends StatelessWidget {
     return SettingsSection(
       title: 'infos'.tr(),
       titleTextStyle: Theme.of(context).textTheme.titleLarge,
-      tiles: [
-        SettingsTile(
-            title: 'version'.tr(),
-            trailing: Text(context.read<SettingsBloc>().state.version))
-      ],
+      tiles: [SettingsTile(title: 'version'.tr(), trailing: Text(context.read<SettingsBloc>().state.version))],
     );
   }
 }

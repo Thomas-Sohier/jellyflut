@@ -39,12 +39,10 @@ class DownloadsRepository {
   final AuthenticationRepository _authenticationRepository;
   final database.Database _database;
   final List<OngoingDownload> _onGoingDownloads = <OngoingDownload>[];
-  final BehaviorSubject<List<OngoingDownload>> _onGoingDownloadsStream =
-      BehaviorSubject.seeded(const []);
+  final BehaviorSubject<List<OngoingDownload>> _onGoingDownloadsStream = BehaviorSubject.seeded(const []);
 
   /// Provides a [Stream] of all ongoing downloads.
-  Stream<List<OngoingDownload>> getOnGoingsDownloads() =>
-      _onGoingDownloadsStream.shareValue();
+  Stream<List<OngoingDownload>> getOnGoingsDownloads() => _onGoingDownloadsStream.shareValue();
 
   int addOngoingDownload(OngoingDownload download) {
     _onGoingDownloads.add(download);
@@ -61,10 +59,8 @@ class DownloadsRepository {
 
   /// Provides a [Stream] of all downloads.
   Stream<List<Download>> getDownloads() {
-    final BehaviorSubject<List<Download>> downloadsStream =
-        BehaviorSubject.seeded(const []);
-    final streamListener =
-        _database.downloadsDao.watchAllDownloads.listen((event) {});
+    final BehaviorSubject<List<Download>> downloadsStream = BehaviorSubject.seeded(const []);
+    final streamListener = _database.downloadsDao.watchAllDownloads.listen((event) {});
     streamListener.onData((dbDownloads) {
       final downloads = dbDownloads.map(_parseDatabaseDownloads).toList();
       downloadsStream.add(downloads);
@@ -86,8 +82,7 @@ class DownloadsRepository {
   // ///
   // /// If no download with the given id exists, a [DownloadNotFoundException] error is
   // /// thrown.
-  Future<void> deleteDownload(String id) =>
-      _database.downloadsDao.deleteDownloadFromId(id);
+  Future<void> deleteDownload(String id) => _database.downloadsDao.deleteDownloadFromId(id);
 
   /// Download an item from it's Id
   /// If item is already downloaded then return the one from filesystem instead
@@ -110,11 +105,7 @@ class DownloadsRepository {
     }
 
     final ongoingDownload = OngoingDownload(
-        cancelToken: cancelToken!,
-        id: itemId,
-        item: Item.empty,
-        path: '',
-        stateOfDownload: stateOfDownload!);
+        cancelToken: cancelToken!, id: itemId, item: Item.empty, path: '', stateOfDownload: stateOfDownload!);
     addOngoingDownload(ongoingDownload);
 
     return _remoteDownloadsApi.downloadItem(
@@ -127,10 +118,7 @@ class DownloadsRepository {
   /// Return the rowId of the download inserted
   /// If [downloadName] is null then use item name as download name. No real use case
   /// right now, but can help identify row.
-  Future<File> saveFile(
-      {required Uint8List bytes,
-      String? downloadName,
-      required Item item}) async {
+  Future<File> saveFile({required Uint8List bytes, String? downloadName, required Item item}) async {
     final hasAccess = await _requestStorage();
     if (!hasAccess) throw NotAllowedToSaveToFileSystem();
 
@@ -155,8 +143,7 @@ class DownloadsRepository {
   }
 
   /// Save file to storage
-  Future<File> _saveInStorage(
-      {required Uint8List bytes, required String itemId}) async {
+  Future<File> _saveInStorage({required Uint8List bytes, required String itemId}) async {
     // If file is already downloaded and present at the specified path then return it
     final isDownloaded = await isItemDownloaded(itemId);
     if (isDownloaded) {
@@ -174,8 +161,7 @@ class DownloadsRepository {
   /// download entry
   Future<File> getFileFromStorage({required String itemId}) async {
     try {
-      final downloadDatabase =
-          await _database.downloadsDao.getDownloadById(itemId);
+      final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
       final file = File(downloadDatabase.path);
       if (await file.exists()) {
         return file;
@@ -196,8 +182,7 @@ class DownloadsRepository {
   /// Don't throw any error and return Item.empty if no item found
   Future<Item> getItemFromStorage({required String itemId}) async {
     try {
-      final downloadDatabase =
-          await _database.downloadsDao.getDownloadById(itemId);
+      final downloadDatabase = await _database.downloadsDao.getDownloadById(itemId);
       final file = File(downloadDatabase.path);
       if (await file.exists()) {
         return downloadDatabase.item ?? Item.empty;
@@ -213,8 +198,7 @@ class DownloadsRepository {
   /// Return user's download path
   /// If not set then return default one
   Future<String> getUserStoragePath() async {
-    final user = await _database.userAppDao
-        .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsByUserId(user.id);
     if (settings.downloadPath.isNotEmpty) {
       return settings.downloadPath;

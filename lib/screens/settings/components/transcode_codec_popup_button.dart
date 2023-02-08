@@ -9,15 +9,10 @@ class TranscodeCodecPopupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       key: popupButtonKey,
-      initialValue: context
+      initialValue: context.read<SettingsBloc>().state.databaseSetting.preferredTranscodeAudioCodec,
+      onSelected: (String? codec) => context
           .read<SettingsBloc>()
-          .state
-          .databaseSetting
-          .preferredTranscodeAudioCodec,
-      onSelected: (String? codec) => context.read<SettingsBloc>().add(
-          SettingsUpdateRequested(
-              databaseSettingDto:
-                  DatabaseSettingDto(preferredTranscodeAudioCodec: codec))),
+          .add(SettingsUpdateRequested(databaseSettingDto: DatabaseSettingDto(preferredTranscodeAudioCodec: codec))),
       itemBuilder: (BuildContext c) => _playerListTile(c),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         BlocBuilder<SettingsBloc, SettingsState>(
@@ -25,8 +20,7 @@ class TranscodeCodecPopupButton extends StatelessWidget {
                 previous.databaseSetting.preferredTranscodeAudioCodec !=
                 current.databaseSetting.preferredTranscodeAudioCodec,
             builder: (_, state) {
-              return Text(state.databaseSetting.preferredTranscodeAudioCodec,
-                  style: TextStyle());
+              return Text(state.databaseSetting.preferredTranscodeAudioCodec, style: TextStyle());
             }),
         const Icon(Icons.arrow_drop_down),
       ]),
@@ -35,17 +29,11 @@ class TranscodeCodecPopupButton extends StatelessWidget {
 
   List<PopupMenuEntry<String>> _playerListTile(BuildContext context) {
     final languageItems = <PopupMenuEntry<String>>[];
-    getTranscodeAudioCodecOptions()
-        .forEach((String codec) => languageItems.add(CheckedPopupMenuItem(
-              value: codec,
-              checked: context
-                      .read<SettingsBloc>()
-                      .state
-                      .databaseSetting
-                      .preferredTranscodeAudioCodec ==
-                  codec,
-              child: Text(codec),
-            )));
+    getTranscodeAudioCodecOptions().forEach((String codec) => languageItems.add(CheckedPopupMenuItem(
+          value: codec,
+          checked: context.read<SettingsBloc>().state.databaseSetting.preferredTranscodeAudioCodec == codec,
+          child: Text(codec),
+        )));
     return languageItems;
   }
 

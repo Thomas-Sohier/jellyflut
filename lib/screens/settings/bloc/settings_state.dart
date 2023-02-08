@@ -22,13 +22,11 @@ class SettingsState extends Equatable {
       bool? detailsPageContrasted}) {
     return SettingsState(
         version: version ?? this.version,
-        detailsPageContrasted:
-            detailsPageContrasted ?? this.detailsPageContrasted,
+        detailsPageContrasted: detailsPageContrasted ?? this.detailsPageContrasted,
         settingsStatus: settingsStatus ?? this.settingsStatus,
         databaseSetting: databaseSetting ?? this.databaseSetting);
   }
 
   @override
-  List<Object?> get props =>
-      [settingsStatus, databaseSetting, detailsPageContrasted];
+  List<Object?> get props => [settingsStatus, databaseSetting, detailsPageContrasted];
 }

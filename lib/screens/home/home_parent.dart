@@ -19,8 +19,7 @@ class _HomeParentState extends State<HomeParent> {
     return Scaffold(
         floatingActionButton: const MusicPlayerFAB(),
         body: BlocProvider<HomeCubit>(
-          create: (_) =>
-              HomeCubit(itemsRepository: context.read<ItemsRepository>()),
+          create: (_) => HomeCubit(itemsRepository: context.read<ItemsRepository>()),
           child: const HomeDrawerTabsBuilder(),
         ));
   }

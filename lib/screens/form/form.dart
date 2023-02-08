@@ -17,17 +17,11 @@ class FormBuilder<T extends Object> extends StatelessWidget {
       switch (state.formStatus) {
         case FormStatus.submitted:
           SnackbarUtil.message(
-              messageTitle: 'form_submit_success'.tr(),
-              icon: Icons.check,
-              color: Colors.green,
-              context: context);
+              messageTitle: 'form_submit_success'.tr(), icon: Icons.check, color: Colors.green, context: context);
           break;
         case FormStatus.failure:
           SnackbarUtil.message(
-              messageTitle: 'form_submit_error'.tr(),
-              icon: Icons.error,
-              color: Colors.red,
-              context: context);
+              messageTitle: 'form_submit_error'.tr(), icon: Icons.error, color: Colors.red, context: context);
           break;
         default:
       }
@@ -35,9 +29,7 @@ class FormBuilder<T extends Object> extends StatelessWidget {
       switch (state.formStatus) {
         case FormStatus.loading:
           return const Center(
-            child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator()),
+            child: Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
           );
         case FormStatus.failure:
         case FormStatus.loaded:

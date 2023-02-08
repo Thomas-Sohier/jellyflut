@@ -15,26 +15,19 @@ class EpisodeItem extends StatelessWidget {
   final Widget? notFoundPlaceholder;
 
   const EpisodeItem(
-      {super.key,
-      required this.item,
-      this.notFoundPlaceholder,
-      this.clickable = true,
-      this.boxFit = BoxFit.cover});
+      {super.key, required this.item, this.notFoundPlaceholder, this.clickable = true, this.boxFit = BoxFit.cover});
 
   Future<void> _onTap(BuildContext context) {
-    return context.router.root
-        .push(r.DetailsPage(item: item, heroTag: ValueKey(item).toString()));
+    return context.router.root.push(r.DetailsPage(item: item, heroTag: ValueKey(item).toString()));
   }
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         onPressed: () => _onTap(context),
-        child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          final rightPartPadding = constraints.maxWidth < 350
-              ? const EdgeInsets.only(left: 0)
-              : const EdgeInsets.only(left: 8);
+        child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+          final rightPartPadding =
+              constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
           return Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -43,9 +36,7 @@ class EpisodeItem extends StatelessWidget {
               children: [
                 if (constraints.maxWidth > 350)
                   ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
-                      child: poster()),
+                      constraints: BoxConstraints(minWidth: 20, maxWidth: constraints.maxWidth * 0.4), child: poster()),
                 Expanded(
                   child: Padding(
                       padding: rightPartPadding,
@@ -54,9 +45,7 @@ class EpisodeItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _Title(
-                              indexNumber: item.indexNumber,
-                              name: item.name ?? ''),
+                          _Title(indexNumber: item.indexNumber, name: item.name ?? ''),
                           Padding(
                             padding: const EdgeInsets.only(top: 4, bottom: 4),
                             child: Row(
@@ -69,8 +58,7 @@ class EpisodeItem extends StatelessWidget {
                               ],
                             ),
                           ),
-                          if (item.overview != null)
-                            _Overview(overview: item.overview!)
+                          if (item.overview != null) _Overview(overview: item.overview!)
                         ],
                       )),
                 ),
@@ -111,11 +99,7 @@ class _Title extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,
       maxLines: 2,
-      style: Theme.of(context)
-          .textTheme
-          .bodyLarge
-          ?.copyWith(fontWeight: FontWeight.bold)
-          .apply(fontSizeFactor: 1.2),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold).apply(fontSizeFactor: 1.2),
     );
   }
 }

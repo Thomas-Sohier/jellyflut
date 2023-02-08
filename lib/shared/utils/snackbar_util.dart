@@ -30,13 +30,9 @@ abstract class SnackbarUtil {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
             width: 600,
             content: Theme(
-              data: Theme.of(
-                  context), // context.read<ThemeProvider>().getThemeData,
+              data: Theme.of(context), // context.read<ThemeProvider>().getThemeData,
               child: _CustomSnackbarBody(
-                  messageTitle: messageTitle,
-                  messageDetails: messageDetails,
-                  icon: icon,
-                  color: color),
+                  messageTitle: messageTitle, messageDetails: messageDetails, icon: icon, color: color),
             )),
       );
   }
@@ -48,8 +44,7 @@ class _CustomSnackbarBody extends StatelessWidget {
   final IconData? icon;
   final Color? color;
 
-  const _CustomSnackbarBody(
-      {required this.messageTitle, this.messageDetails, this.icon, this.color});
+  const _CustomSnackbarBody({required this.messageTitle, this.messageDetails, this.icon, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +66,7 @@ class _CustomSnackbarBody extends StatelessWidget {
                                 .textTheme
                                 .bodyLarge
                                 ?.apply(fontSizeFactor: 1.2)
-                                .copyWith(
-                                    color: ownDetailsTheme(context)
-                                        .onBackground))),
+                                .copyWith(color: ownDetailsTheme(context).onBackground))),
                     messageDetails != null
                         ? Padding(
                             padding: const EdgeInsets.only(top: 4),
@@ -84,9 +77,7 @@ class _CustomSnackbarBody extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(
-                                      color: ownDetailsTheme(context)
-                                          .onBackground),
+                                  ?.copyWith(color: ownDetailsTheme(context).onBackground),
                               textAlign: TextAlign.justify,
                             ),
                           )

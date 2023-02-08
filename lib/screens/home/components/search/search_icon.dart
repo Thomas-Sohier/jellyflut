@@ -11,8 +11,7 @@ class SearchIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.search),
-      onPressed: () => searchItemsFuture(
-          textEditingController.text, context.read<ItemsRepository>()),
+      onPressed: () => searchItemsFuture(textEditingController.text, context.read<ItemsRepository>()),
     );
   }
 }

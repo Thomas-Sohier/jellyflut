@@ -31,15 +31,9 @@ class OverviewDetailsWidget extends StatelessWidget {
               data: state.theme,
               child: AlertDialog(
                 title: Text('overview'.tr()),
-                titlePadding:
-                    const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
                 contentPadding: const EdgeInsets.all(8.0),
-                actions: [
-                  TextButton(
-                      autofocus: true,
-                      onPressed: context.router.root.pop,
-                      child: Text('ok'.tr()))
-                ],
+                actions: [TextButton(autofocus: true, onPressed: context.router.root.pop, child: Text('ok'.tr()))],
                 content: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 600),
                   child: SelectableText(

@@ -33,11 +33,7 @@ class BottomRowPlayerControls extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox(height: 16),
-                          Row(children: [
-                            const CurrentPositionPlayer(),
-                            const Spacer(),
-                            const CurrentDurationPlayer()
-                          ]),
+                          Row(children: [const CurrentPositionPlayer(), const Spacer(), const CurrentDurationPlayer()]),
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,8 +47,7 @@ class BottomRowPlayerControls extends StatelessWidget {
                                 flex: 1,
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const BackwardButton(),
                                       const PlayPauseButton(),
@@ -63,8 +58,7 @@ class BottomRowPlayerControls extends StatelessWidget {
                                 flex: 1,
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const PipButton(),
                                       const ChapterButton(),

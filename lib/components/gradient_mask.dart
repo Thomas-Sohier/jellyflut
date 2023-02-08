@@ -13,10 +13,7 @@ class GradientMask extends StatelessWidget {
         return RadialGradient(
           center: Alignment.topLeft,
           radius: radius,
-          colors: <Color>[
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary
-          ],
+          colors: <Color>[Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.secondary],
           tileMode: TileMode.mirror,
         ).createShader(bounds);
       },

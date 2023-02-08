@@ -7,11 +7,7 @@ class EpubView extends StatelessWidget {
   final PageController controller;
   final EpubDetails epubDetails;
   final Function(int currentPage, int nbPage) listener;
-  const EpubView(
-      {super.key,
-      required this.controller,
-      required this.epubDetails,
-      required this.listener});
+  const EpubView({super.key, required this.controller, required this.epubDetails, required this.listener});
 
   @override
   Widget build(BuildContext context) {

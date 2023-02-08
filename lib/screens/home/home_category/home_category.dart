@@ -27,10 +27,8 @@ class HomeCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeCategoryCubit>(
-      create: (_) => HomeCategoryCubit(
-          itemsRepository: context.read<ItemsRepository>(),
-          parentItem: item,
-          type: itemType),
+      create: (_) =>
+          HomeCategoryCubit(itemsRepository: context.read<ItemsRepository>(), parentItem: item, type: itemType),
       child: const HomeCategoryView(),
     );
   }
@@ -41,8 +39,7 @@ class HomeCategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCategoryCubit, HomeCategoryState>(
-        builder: (_, state) {
+    return BlocBuilder<HomeCategoryCubit, HomeCategoryState>(builder: (_, state) {
       switch (state.status) {
         case HomeCategoryStatus.success:
           if (state.items.isEmpty) return const SizedBox();
@@ -69,18 +66,14 @@ class HomeCategoryLoaded extends StatelessWidget {
         children: [
           HomeCategoryTitle(cubit.state.categoryName,
               onTap: () => cubit.state.parentItem != null
-                  ? context.router.root
-                      .push(r.CollectionPage(item: cubit.state.parentItem!))
+                  ? context.router.root.push(r.CollectionPage(item: cubit.state.parentItem!))
                   : {}),
           SizedBox(
               height: itemPosterHeight + itemPosterLabelHeight,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: cubit.state.items.length,
-                  itemExtent: (itemPosterHeight *
-                          cubit.state.items.first
-                              .getPrimaryAspectRatio(showParent: true)) +
-                      20,
+                  itemExtent: (itemPosterHeight * cubit.state.items.first.getPrimaryAspectRatio(showParent: true)) + 20,
                   itemBuilder: (context, index) => ItemPoster(
                         cubit.state.items[index],
                         width: double.infinity,
@@ -102,56 +95,52 @@ class HomeCategoryShimmer extends StatelessWidget {
         enabled: shimmerAnimation,
         baseColor: shimmerColor1,
         highlightColor: shimmerColor2,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                        height: 30,
-                        width: 70,
-                        color: Colors.white30,
-                      )),
-                  Spacer(),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            color: Colors.white30,
-                          ))),
-                ],
-              ),
               Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: SizedBox(
-                              height: itemPosterHeight,
-                              child: ListView.builder(
-                                  itemCount: 3,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) => Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5)),
-                                          child: Container(
-                                            height: height,
-                                            width: height * (2 / 3),
-                                            color: Colors.white30,
-                                          )))))),
-                    ],
-                  ))
-            ]));
+                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                    height: 30,
+                    width: 70,
+                    color: Colors.white30,
+                  )),
+              Spacer(),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        color: Colors.white30,
+                      ))),
+            ],
+          ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SizedBox(
+                          height: itemPosterHeight,
+                          child: ListView.builder(
+                              itemCount: 3,
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      child: Container(
+                                        height: height,
+                                        width: height * (2 / 3),
+                                        color: Colors.white30,
+                                      )))))),
+                ],
+              ))
+        ]));
   }
 }

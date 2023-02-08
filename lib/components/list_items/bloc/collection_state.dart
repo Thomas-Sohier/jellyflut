@@ -9,8 +9,7 @@ enum ListType {
 
   const ListType();
 
-  ListType getNextListType() =>
-      ListType.values[(index + 1) >= ListType.values.length ? 0 : index + 1];
+  ListType getNextListType() => ListType.values[(index + 1) >= ListType.values.length ? 0 : index + 1];
 }
 
 enum SortBy {
@@ -82,10 +81,8 @@ class SeasonState extends Equatable {
         showIfEmpty: showIfEmpty ?? this.showIfEmpty,
         showSorting: showSorting ?? this.showSorting,
         sortBy: sortBy ?? this.sortBy,
-        horizontalListPosterHeight:
-            horizontalListPosterHeight ?? this.horizontalListPosterHeight,
-        verticalListPosterHeight:
-            verticalListPosterHeight ?? this.verticalListPosterHeight,
+        horizontalListPosterHeight: horizontalListPosterHeight ?? this.horizontalListPosterHeight,
+        verticalListPosterHeight: verticalListPosterHeight ?? this.verticalListPosterHeight,
         gridPosterHeight: gridPosterHeight ?? this.gridPosterHeight,
         sortField: sortField ?? this.sortField,
         scrollController: scrollController ?? this.scrollController,

@@ -71,8 +71,7 @@ class _PosterState extends State<Poster> with AbsordAction {
   }
 
   Future<void> redirection() {
-    return context.router.root
-        .push(r.DetailsPage(item: widget.item, heroTag: widget.heroTag));
+    return context.router.root.push(r.DetailsPage(item: widget.item, heroTag: widget.heroTag));
   }
 
   @override
@@ -84,8 +83,7 @@ class _PosterState extends State<Poster> with AbsordAction {
         focusNode: node,
         style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
                 backgroundColor: Colors.transparent)
             .copyWith(shadowColor: buttonShadow())
             .copyWith(side: buttonBorderSide())
@@ -114,16 +112,12 @@ class _PosterState extends State<Poster> with AbsordAction {
       );
     }
     return dropShadowBuilder(AsyncImage(
-        item: widget.item,
-        imageType: widget.imageType,
-        boxFit: widget.boxFit,
-        showParent: widget.showParent));
+        item: widget.item, imageType: widget.imageType, boxFit: widget.boxFit, showParent: widget.showParent));
   }
 
   Widget dropShadowBuilder(Widget child) {
     if (widget.dropShadow) {
-      return DropShadow(
-          blurRadius: 6, spread: 1, offset: const Offset(0, 0), child: child);
+      return DropShadow(blurRadius: 6, spread: 1, offset: const Offset(0, 0), child: child);
     }
     return child;
   }
@@ -131,8 +125,7 @@ class _PosterState extends State<Poster> with AbsordAction {
   MaterialStateProperty<Color> buttonShadow() {
     return MaterialStateProperty.resolveWith<Color>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return Theme.of(context).colorScheme.secondary;
         }
         return Colors.transparent; // defer to the default
@@ -143,8 +136,7 @@ class _PosterState extends State<Poster> with AbsordAction {
   MaterialStateProperty<double> buttonElevation() {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return 8;
         }
         return 0; // defer to the default
@@ -155,22 +147,19 @@ class _PosterState extends State<Poster> with AbsordAction {
   MaterialStateProperty<BorderSide> buttonBorderSide() {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return BorderSide(
             width: 3,
             color: Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(
-            width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }
 
   MaterialStateProperty<EdgeInsetsGeometry> buttonPadding() {
-    return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-        (Set<MaterialState> states) {
+    return MaterialStateProperty.resolveWith<EdgeInsetsGeometry>((Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
         return EdgeInsets.all(3);
       }

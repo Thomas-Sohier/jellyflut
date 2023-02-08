@@ -6,10 +6,7 @@ class SkeletonItemPoster extends StatelessWidget {
   final EdgeInsets padding;
 
   const SkeletonItemPoster(
-      {super.key,
-      this.height = double.infinity,
-      this.aspectRatio = 2 / 3,
-      this.padding = EdgeInsets.zero});
+      {super.key, this.height = double.infinity, this.aspectRatio = 2 / 3, this.padding = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {

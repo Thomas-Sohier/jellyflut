@@ -5,8 +5,7 @@ class BlurHashBackdrop {
 
   Map<String, String> backdrop;
 
-  factory BlurHashBackdrop.fromMap(Map<String, dynamic> json) =>
-      BlurHashBackdrop(
+  factory BlurHashBackdrop.fromMap(Map<String, dynamic> json) => BlurHashBackdrop(
         backdrop: json['Backdrop'],
       );
 

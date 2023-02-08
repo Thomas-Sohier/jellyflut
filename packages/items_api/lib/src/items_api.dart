@@ -72,13 +72,9 @@ class ItemsApi {
   /// Get an item from jellyfin API from it's id
   ///
   /// Can throw [ItemNotFoundFailure]
-  Future<Item> getItem(
-      {required String serverUrl,
-      required String userId,
-      required String itemId}) async {
+  Future<Item> getItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient
-          .get<Map<String, dynamic>>('$serverUrl/Users/$userId/Items/$itemId');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId/Items/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemNotFoundFailure();
@@ -121,8 +117,7 @@ class ItemsApi {
     queryParams.putIfAbsent('personIds', () => personIds);
     queryParams.putIfAbsent('filters', () => filter);
     queryParams.putIfAbsent('recursive', () => recursive);
-    queryParams.putIfAbsent(
-        'sortBy', () => sortBy?.map((e) => e.name).join(','));
+    queryParams.putIfAbsent('sortBy', () => sortBy?.map((e) => e.name).join(','));
     queryParams.putIfAbsent('sortOrder', () => sortOrder);
     queryParams.putIfAbsent('includeItemTypes', () => includeItemTypes);
     queryParams.putIfAbsent('imageTypeLimit', () => imageTypeLimit);
@@ -132,12 +127,10 @@ class ItemsApi {
     queryParams.putIfAbsent('limit', () => limit);
     queryParams.putIfAbsent('fields', () => fields);
     queryParams.putIfAbsent('excludeLocationTypes', () => excludeLocationTypes);
-    queryParams.putIfAbsent(
-        'enableTotalRecordCount', () => enableTotalRecordCount);
+    queryParams.putIfAbsent('enableTotalRecordCount', () => enableTotalRecordCount);
     queryParams.putIfAbsent('collapseBoxSetItems', () => collapseBoxSetItems);
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams =
-        queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     try {
       final response = await _dioClient.get<Map<String, dynamic>>(
@@ -158,11 +151,7 @@ class ItemsApi {
   /// Delete an item from his ID
   ///
   /// Can throw [ItemNotFoundFailure]
-  Future<int> deleteItem(
-      {required String serverUrl,
-      required String userId,
-      required,
-      required String itemId}) async {
+  Future<int> deleteItem({required String serverUrl, required String userId, required, required String itemId}) async {
     final url = '$serverUrl/Items/$itemId';
 
     try {
@@ -190,8 +179,7 @@ class ItemsApi {
       int limit = 12,
       int startIndex = 0,
       int imageTypeLimit = 1,
-      String fields =
-          'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
+      String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
       String excludeLocationTypes = '',
       bool enableTotalRecordCount = false,
       bool collapseBoxSetItems = false}) async {
@@ -233,10 +221,7 @@ class ItemsApi {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getEpsiodes(
-      {required String serverUrl,
-      required String userId,
-      required String seriesId,
-      String? seasonId}) async {
+      {required String serverUrl, required String userId, required String seriesId, String? seasonId}) async {
     final queryParams = <String, dynamic>{};
     if (seasonId != null) queryParams['seasonId'] = seasonId;
     queryParams['userId'] = userId;
@@ -263,10 +248,7 @@ class ItemsApi {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getSeasons(
-      {required String serverUrl,
-      required String userId,
-      required String seriesId,
-      bool? isSpecialSeason}) async {
+      {required String serverUrl, required String userId, required String seriesId, bool? isSpecialSeason}) async {
     final queryParams = <String, dynamic>{};
     if (isSpecialSeason != null) {
       queryParams['isSpecialSeason'] = isSpecialSeason;
@@ -307,8 +289,7 @@ class ItemsApi {
       String includeItemTypes = '',
       String excludeItemTypes = '',
       int limit = 24,
-      String fields =
-          'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
+      String fields = 'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
       bool recursive = true,
       bool enableTotalRecordCount = false,
       int imageTypeLimit = 1,
@@ -348,10 +329,7 @@ class ItemsApi {
   /// Update item an return updated object
   ///
   /// Can throw [ItemUpdateFailure]
-  Future<void> updateItem(
-      {required String serverUrl,
-      required String userId,
-      required Item item}) async {
+  Future<void> updateItem({required String serverUrl, required String userId, required Item item}) async {
     try {
       // final payload = item.toJson();
       final response = await _dioClient.post<void>(
@@ -370,10 +348,7 @@ class ItemsApi {
   /// Mark item as viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> viewItem(
-      {required String serverUrl,
-      required String userId,
-      required String itemId}) async {
+  Future<UserData> viewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
         '$serverUrl/Users/$userId/PlayedItems/$itemId',
@@ -392,10 +367,7 @@ class ItemsApi {
   /// Mark item as not viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> unviewItem(
-      {required String serverUrl,
-      required String userId,
-      required String itemId}) async {
+  Future<UserData> unviewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
         '$serverUrl/Users/$userId/PlayedItems/$itemId',
@@ -414,10 +386,7 @@ class ItemsApi {
   /// Mark item as favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> favItem(
-      {required String serverUrl,
-      required String userId,
-      required String itemId}) async {
+  Future<UserData> favItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.post<Map<String, dynamic>>(
         '$serverUrl/Users/$userId/FavoriteItems/$itemId',
@@ -436,10 +405,7 @@ class ItemsApi {
   /// Mark item as not favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> unfavItem(
-      {required String serverUrl,
-      required String userId,
-      required String itemId}) async {
+  Future<UserData> unfavItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
       final response = await _dioClient.delete<Map<String, dynamic>>(
         '$serverUrl/Users/$userId/FavoriteItems/$itemId',
@@ -485,8 +451,7 @@ class ItemsApi {
         throw ItemRequestFailure();
       }
 
-      List<Item> parseItems(List<dynamic> list) =>
-          list.map((item) => Item.fromJson(item)).toList();
+      List<Item> parseItems(List<dynamic> list) => list.map((item) => Item.fromJson(item)).toList();
 
       return compute(parseItems, response.data!);
     } catch (_) {
@@ -502,8 +467,7 @@ class ItemsApi {
     required String userId,
   }) async {
     try {
-      final response = await _dioClient
-          .get<Map<String, dynamic>>('$serverUrl/Users/$userId/Views');
+      final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId/Views');
 
       if (response.statusCode != 200) {
         throw ViewRequestFailure();
@@ -574,8 +538,7 @@ class ItemsApi {
     queryParams.putIfAbsent('foregroundLayer', () => foregroundLayer);
     queryParams.putIfAbsent('imageIndex', () => imageIndex);
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams =
-        queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     return uri.replace(queryParameters: finalQueryParams).toString();
   }
@@ -615,13 +578,10 @@ class ItemsApi {
 
   /// Download an image for a given itemId
   Future<Uint8List> downloadRemoteImage(
-      {required String serverUrl,
-      required String itemId,
-      ImageType type = ImageType.Primary}) async {
+      {required String serverUrl, required String itemId, ImageType type = ImageType.Primary}) async {
     try {
       final response = await _dioClient.get<Uint8List>(
-          getItemImageUrl(
-              serverUrl: serverUrl, itemId: itemId, type: type, quality: 100),
+          getItemImageUrl(serverUrl: serverUrl, itemId: itemId, type: type, quality: 100),
           options: Options(responseType: ResponseType.bytes));
       if (response.statusCode != 200) {
         throw IamgeRequestFailure();
@@ -655,8 +615,7 @@ class ItemsApi {
     queryParams['SubtitleStreamIndex'] = subtitleStreamIndex;
     queryParams['AudioStreamIndex'] = audioStreamIndex;
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams =
-        queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     profile ??= DeviceProfileParent();
     profile.userId ??= userId;
@@ -675,8 +634,7 @@ class ItemsApi {
     final url = '$serverUrl/Items/$itemId/PlaybackInfo';
 
     try {
-      final response = await _dioClient.post(url,
-          queryParameters: finalQueryParams, data: profile.toJson());
+      final response = await _dioClient.post(url, queryParameters: finalQueryParams, data: profile.toJson());
       final playbackInfos = PlayBackInfos.fromJson(response.data);
 
       // If there is an error response from API then we throw an error

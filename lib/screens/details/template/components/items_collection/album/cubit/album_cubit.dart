@@ -20,9 +20,7 @@ class AlbumCubit extends Cubit<AlbumState> {
     emit(state.copyWith(status: Status.loading));
 
     try {
-      final songs =
-          (await _itemsRepository.getCategory(parentId: state.parentItem.id))
-              .items;
+      final songs = (await _itemsRepository.getCategory(parentId: state.parentItem.id)).items;
       emit(state.copyWith(songs: songs, status: Status.success));
     } on Exception catch (_) {
       emit(state.copyWith(status: Status.failure));

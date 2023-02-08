@@ -55,6 +55,5 @@ class MediaSource with _$MediaSource {
     int? defaultSubtitleStreamIndex,
   }) = _MediaSource;
 
-  factory MediaSource.fromJson(Map<String, Object?> json) =>
-      _$MediaSourceFromJson(json);
+  factory MediaSource.fromJson(Map<String, Object?> json) => _$MediaSourceFromJson(json);
 }

@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'device_profile.dart';
 
-DeviceProfileParent deviceCodecsFromMap(String str) =>
-    DeviceProfileParent.fromMap(json.decode(str));
+DeviceProfileParent deviceCodecsFromMap(String str) => DeviceProfileParent.fromMap(json.decode(str));
 
 String deviceCodecsToMap(DeviceProfileParent data) => json.encode(data.toMap());
 
@@ -58,8 +57,7 @@ class DeviceProfileParent {
       'allowVideoStreamCopy': allowVideoStreamCopy,
       'allowAudioStreamCopy': allowAudioStreamCopy,
       'autoOpenLiveStream': autoOpenLiveStream,
-    }..removeWhere(
-        (dynamic key, dynamic value) => key == null || value == null);
+    }..removeWhere((dynamic key, dynamic value) => key == null || value == null);
   }
 
   DeviceProfileParent copyWith({
@@ -108,9 +106,7 @@ class DeviceProfileParent {
       maxAudioChannels: map['maxAudioChannels']?.toInt(),
       mediaSourceId: map['mediaSourceId'],
       liveStreamId: map['liveStreamId'],
-      deviceProfile: map['deviceProfile'] != null
-          ? DeviceProfile.fromMap(map['deviceProfile'])
-          : null,
+      deviceProfile: map['deviceProfile'] != null ? DeviceProfile.fromMap(map['deviceProfile']) : null,
       enableDirectPlay: map['enableDirectPlay'],
       enableDirectStream: map['enableDirectStream'],
       enableTranscoding: map['enableTranscoding'],
@@ -121,8 +117,7 @@ class DeviceProfileParent {
   }
   String toJson() => json.encode(toMap());
 
-  factory DeviceProfileParent.fromJson(String source) =>
-      DeviceProfileParent.fromMap(json.decode(source));
+  factory DeviceProfileParent.fromJson(String source) => DeviceProfileParent.fromMap(json.decode(source));
 
   @override
   String toString() {

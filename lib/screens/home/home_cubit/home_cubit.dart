@@ -21,10 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(status: HomeStatus.loading));
     final libraryCategory = await _itemsRepository.getLibraryViews();
     final routes = generateRouteFromItems(libraryCategory.items);
-    emit(state.copyWith(
-        items: libraryCategory.items,
-        routes: routes,
-        status: HomeStatus.success));
+    emit(state.copyWith(items: libraryCategory.items, routes: routes, status: HomeStatus.success));
   }
 
   List<PageRouteInfo<dynamic>> generateRouteFromItems(final List<Item>? items) {

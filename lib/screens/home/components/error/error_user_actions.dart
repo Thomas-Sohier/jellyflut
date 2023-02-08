@@ -7,8 +7,7 @@ import 'stacktrace_container.dart';
 class ErrorUserActions extends StatefulWidget {
   final void Function() reloadFunction;
   final String errorMessage;
-  ErrorUserActions(
-      {super.key, required this.reloadFunction, required this.errorMessage});
+  ErrorUserActions({super.key, required this.reloadFunction, required this.errorMessage});
 
   @override
   State<ErrorUserActions> createState() => _ErrorUserActionsState();
@@ -27,12 +26,9 @@ class _ErrorUserActionsState extends State<ErrorUserActions> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ErrorActionsbuttons(
-            togglestream: _toggleContainerMessage,
-            reloadFunction: widget.reloadFunction),
+        ErrorActionsbuttons(togglestream: _toggleContainerMessage, reloadFunction: widget.reloadFunction),
         const SizedBox(height: 12),
-        StacktraceContainer(
-            togglestream: _toggleContainerMessage, message: widget.errorMessage)
+        StacktraceContainer(togglestream: _toggleContainerMessage, message: widget.errorMessage)
       ],
     );
   }

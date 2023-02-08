@@ -21,6 +21,5 @@ class SettingsUpdateRequested extends SettingsEvent {
 class DetailsPageContrastChangeRequested extends SettingsEvent {
   final bool detailsPageContrasted;
 
-  const DetailsPageContrastChangeRequested(
-      {required this.detailsPageContrasted});
+  const DetailsPageContrastChangeRequested({required this.detailsPageContrasted});
 }

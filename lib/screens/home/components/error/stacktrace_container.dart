@@ -5,8 +5,7 @@ import 'package:rxdart/rxdart.dart';
 class StacktraceContainer extends StatelessWidget {
   final BehaviorSubject<bool> togglestream;
   final String message;
-  StacktraceContainer(
-      {super.key, required this.togglestream, required this.message});
+  StacktraceContainer({super.key, required this.togglestream, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +22,7 @@ class StacktraceContainer extends StatelessWidget {
   Widget errorContainer(final BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color:
-              ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05),
+          color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       constraints: BoxConstraints(maxHeight: 400),
       child: SingleChildScrollView(

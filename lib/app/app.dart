@@ -63,8 +63,7 @@ class App extends StatelessWidget {
         providers: [
           Provider<Database>.value(value: database),
           ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
-          ChangeNotifierProvider<SearchProvider>(
-              create: (_) => SearchProvider()),
+          ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -110,16 +109,11 @@ class App extends StatelessWidget {
                 RepositoryProvider.value(value: streamingRepository)
               ],
               child: EasyLocalization(
-                  supportedLocales: [
-                    Locale('en', 'US'),
-                    Locale('fr', 'FR'),
-                    Locale('de', 'DE')
-                  ],
+                  supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
                   path: 'translations',
                   assetLoader: YamlAssetLoader(),
                   fallbackLocale: Locale('en', 'US'),
-                  child:
-                      ShortcutsWrapper(child: AppView(appRouter: appRouter))),
+                  child: ShortcutsWrapper(child: AppView(appRouter: appRouter))),
             )));
   }
 }
@@ -145,8 +139,7 @@ class AppView extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-        builder: (context, ThemeProvider themeNotifier, child) {
+    return Consumer<ThemeProvider>(builder: (context, ThemeProvider themeNotifier, child) {
       FlutterNativeSplash.remove();
       return MaterialApp.router(
         title: 'JellyFlut',
@@ -182,16 +175,12 @@ final shortcuts = <LogicalKeySet, Intent>{
     LogicalKeyboardKey.mediaPlayPause,
     LogicalKeyboardKey.mediaPlay,
   }): const ActivateIntent(),
-  LogicalKeySet(LogicalKeyboardKey.arrowDown): const DirectionalFocusIntent(
-      TraversalDirection.down,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowUp): const DirectionalFocusIntent(
-      TraversalDirection.up,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowLeft): const DirectionalFocusIntent(
-      TraversalDirection.left,
-      ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowRight): const DirectionalFocusIntent(
-      TraversalDirection.right,
-      ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowDown):
+      const DirectionalFocusIntent(TraversalDirection.down, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowUp):
+      const DirectionalFocusIntent(TraversalDirection.up, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+      const DirectionalFocusIntent(TraversalDirection.left, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowRight):
+      const DirectionalFocusIntent(TraversalDirection.right, ignoreTextFields: false),
 };

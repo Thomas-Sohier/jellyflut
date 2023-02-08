@@ -54,14 +54,6 @@ class DetailsState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        theme,
-        item,
-        contentPadding,
-        contrastedPage,
-        heroTag,
-        detailsStatus,
-        pinnedHeader,
-        screenLayout
-      ];
+  List<Object?> get props =>
+      [theme, item, contentPadding, contrastedPage, heroTag, detailsStatus, pinnedHeader, screenLayout];
 }

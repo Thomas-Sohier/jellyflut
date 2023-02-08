@@ -9,7 +9,6 @@ enum PersonType {
   const PersonType(this.value);
 
   static PersonType fromString(String value) {
-    return PersonType.values
-        .firstWhere((type) => type.value.toLowerCase() == value.toLowerCase());
+    return PersonType.values.firstWhere((type) => type.value.toLowerCase() == value.toLowerCase());
   }
 }

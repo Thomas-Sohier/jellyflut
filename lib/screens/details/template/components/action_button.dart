@@ -9,8 +9,7 @@ import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/dialog_structure.dart';
 import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
-import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart'
-    hide ScreenLayout;
+import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart' hide ScreenLayout;
 import 'package:jellyflut/services/file/file_service.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut/theme/theme_extend_own.dart';

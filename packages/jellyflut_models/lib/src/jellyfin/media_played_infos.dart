@@ -6,11 +6,9 @@ import 'dart:convert';
 
 import 'buffered_range.dart';
 
-MediaPlayedInfos mediaPlayedInfosFromJson(String str) =>
-    MediaPlayedInfos.fromJson(json.decode(str));
+MediaPlayedInfos mediaPlayedInfosFromJson(String str) => MediaPlayedInfos.fromJson(json.decode(str));
 
-String mediaPlayedInfosToJson(MediaPlayedInfos data) =>
-    json.encode(data.toJson());
+String mediaPlayedInfosToJson(MediaPlayedInfos data) => json.encode(data.toJson());
 
 class MediaPlayedInfos {
   MediaPlayedInfos({
@@ -53,8 +51,7 @@ class MediaPlayedInfos {
   String? itemId;
   String? eventName;
 
-  factory MediaPlayedInfos.fromJson(Map<String, dynamic> json) =>
-      MediaPlayedInfos(
+  factory MediaPlayedInfos.fromJson(Map<String, dynamic> json) => MediaPlayedInfos(
         volumeLevel: json['VolumeLevel'],
         isMuted: json['IsMuted'],
         isPaused: json['IsPaused'],
@@ -67,8 +64,7 @@ class MediaPlayedInfos {
         audioStreamIndex: json['AudioStreamIndex'],
         bufferedRanges: json['BufferedRanges'] == null
             ? null
-            : List<BufferedRange>.from(
-                json['BufferedRanges'].map((x) => BufferedRange.fromJson(x))),
+            : List<BufferedRange>.from(json['BufferedRanges'].map((x) => BufferedRange.fromJson(x))),
         playMethod: json['PlayMethod'],
         playSessionId: json['PlaySessionId'],
         playlistItemId: json['PlaylistItemId'],
@@ -89,9 +85,7 @@ class MediaPlayedInfos {
         'PlaybackStartTimeTicks': playbackStartTimeTicks,
         'SubtitleStreamIndex': subtitleStreamIndex,
         'AudioStreamIndex': audioStreamIndex,
-        'BufferedRanges': bufferedRanges == null
-            ? null
-            : List<dynamic>.from(bufferedRanges!.map((x) => x.toJson())),
+        'BufferedRanges': bufferedRanges == null ? null : List<dynamic>.from(bufferedRanges!.map((x) => x.toJson())),
         'PlayMethod': playMethod,
         'PlaySessionId': playSessionId,
         'PlaylistItemId': playlistItemId,

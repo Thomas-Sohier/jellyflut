@@ -37,8 +37,7 @@ class MusicPlayerFABView extends StatelessWidget {
         tag: 'musicPlayerFAB',
         child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
             buildWhen: (previous, current) => previous.theme != current.theme,
-            builder: (context, state) =>
-                Theme(data: state.theme, child: FabButtonBody())));
+            builder: (context, state) => Theme(data: state.theme, child: FabButtonBody())));
   }
 }
 
@@ -52,23 +51,18 @@ class FabButtonBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-            blurRadius: 8,
-            color: Theme.of(context).colorScheme.primary.withAlpha(120),
-            spreadRadius: 2)
+        BoxShadow(blurRadius: 8, color: Theme.of(context).colorScheme.primary.withAlpha(120), spreadRadius: 2)
       ]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Material(
           color: Colors.transparent,
           child: ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: maxHeight, maxWidth: maxWidth),
+            constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxWidth),
             child: Stack(
               children: [
                 BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-                    buildWhen: (previous, current) =>
-                        previous.playingState != current.playingState,
+                    buildWhen: (previous, current) => previous.playingState != current.playingState,
                     builder: (context, state) {
                       if (state.currentlyPlaying != null) {
                         return Align(
@@ -76,8 +70,7 @@ class FabButtonBody extends StatelessWidget {
                             child: Image.memory(
                               state.currentlyPlaying!.metadata.artworkByte,
                               alignment: Alignment.center,
-                              width: maxWidth *
-                                  0.3, // 30% of width to prevent blank space with gradient
+                              width: maxWidth * 0.3, // 30% of width to prevent blank space with gradient
                               height: maxHeight,
                               fit: BoxFit.cover,
                             ));
@@ -106,17 +99,14 @@ class FabButtonBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () =>
-                            context.router.root.push(r.MusicPlayerPage()),
+                        onPressed: () => context.router.root.push(r.MusicPlayerPage()),
                         iconSize: 28,
                         icon: Icon(
                           Icons.more_vert,
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
-                      const ExcludeFocus(
-                          excluding: true,
-                          child: Expanded(child: CenterPart())),
+                      const ExcludeFocus(excluding: true, child: Expanded(child: CenterPart())),
                       const SizedBox(width: 8),
                       const PlayPausebutton(),
                       const SizedBox(width: 8),
@@ -138,12 +128,9 @@ class PlayPausebutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) =>
-            previous.playingState != current.playingState,
+        buildWhen: (previous, current) => previous.playingState != current.playingState,
         builder: (context, state) => IconButton(
-              onPressed: () => context
-                  .read<MusicPlayerBloc>()
-                  .add(TogglePlayPauseRequested()),
+              onPressed: () => context.read<MusicPlayerBloc>().add(TogglePlayPauseRequested()),
               iconSize: 28,
               icon: Icon(
                 state.playingState == PlayingState.pause
@@ -161,8 +148,7 @@ class CenterPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) =>
-            previous.currentlyPlaying != current.currentlyPlaying,
+        buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
         builder: (context, state) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -172,28 +158,22 @@ class CenterPart extends StatelessWidget {
                   state.currentlyPlaying?.metadata.title ?? '',
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary),
+                  style:
+                      Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 )),
                 Expanded(
                     child: StreamBuilder<Duration?>(
                         stream: state.postionStream,
                         builder: (context, snapshot) => Slider(
-                              activeColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              inactiveColor: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimary
-                                  .withAlpha(32),
+                              activeColor: Theme.of(context).colorScheme.onPrimary,
+                              inactiveColor: Theme.of(context).colorScheme.onPrimary.withAlpha(32),
                               value: getSliderSize(snapshot.data),
                               min: 0.0,
-                              max: getSliderMaxSize(
-                                  state.duration, snapshot.data),
+                              max: getSliderMaxSize(state.duration, snapshot.data),
                               onChanged: (value) {
-                                context.read<MusicPlayerBloc>().add(
-                                    SeekRequested(
-                                        position: Duration(
-                                            milliseconds: value.toInt())));
+                                context
+                                    .read<MusicPlayerBloc>()
+                                    .add(SeekRequested(position: Duration(milliseconds: value.toInt())));
                               },
                             )))
               ],

@@ -19,8 +19,7 @@ class CustomDrawer extends StatelessWidget {
         enabled: false,
         onFocusChange: (value) {
           if (isAndroidTv) {
-            homeDrawerCubit
-                .changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
+            homeDrawerCubit.changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
           }
         },
         child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
@@ -31,8 +30,7 @@ class CustomDrawer extends StatelessWidget {
           builder: (_, state) => AnimatedContainer(
               width: state.getDrawerWidth,
               alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  color: guessDrawerColor(state.drawerLayout, context)),
+              decoration: BoxDecoration(color: guessDrawerColor(state.drawerLayout, context)),
               duration: Duration(milliseconds: 200),
               child: Column(
                 children: [
@@ -66,13 +64,10 @@ class _DrawerButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items =
-        context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
+    final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-        buildWhen: (previous, current) =>
-            previous.drawerLayout != current.drawerLayout,
-        builder: (_, state) =>
-            ListView(controller: ScrollController(), children: [
+        buildWhen: (previous, current) => previous.drawerLayout != current.drawerLayout,
+        builder: (_, state) => ListView(controller: ScrollController(), children: [
               DrawerLargeButton(
                 index: 0,
                 name: 'Home',
@@ -84,8 +79,7 @@ class _DrawerButtons extends StatelessWidget {
                     index: items.indexOf(i) + 1,
                     name: i.name ?? '',
                     activeColor: guessActiveColor(state.drawerLayout, context),
-                    inactiveColor:
-                        guessInactiveColor(state.drawerLayout, context),
+                    inactiveColor: guessInactiveColor(state.drawerLayout, context),
                     icon: _getRightIconForCollectionType(i.collectionType),
                   ))
             ]));
@@ -153,12 +147,9 @@ class _BottomActions extends StatelessWidget {
     final cubit = context.read<HomeDrawerCubit>();
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
         buildWhen: (previous, current) =>
-            previous.fixDrawerType != current.fixDrawerType ||
-            previous.drawerType != current.drawerType,
+            previous.fixDrawerType != current.fixDrawerType || previous.drawerType != current.drawerType,
         builder: (_, state) {
-          if (Platform.isAndroid ||
-              Platform.isIOS ||
-              state.drawerLayout.isMobile) return const SizedBox();
+          if (Platform.isAndroid || Platform.isIOS || state.drawerLayout.isMobile) return const SizedBox();
           return Column(
             children: [
               const _DrawerDivider(),
@@ -170,11 +161,8 @@ class _BottomActions extends StatelessWidget {
                         child: ExcludeFocus(
                       child: IconButton(
                         onPressed: () {},
-                        icon: Icon(
-                            state.fixDrawerType ? Icons.lock : Icons.lock_open,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer),
+                        icon: Icon(state.fixDrawerType ? Icons.lock : Icons.lock_open,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer),
                       ),
                     ))),
                 if (state.fixDrawerType)
@@ -189,9 +177,7 @@ class _BottomActions extends StatelessWidget {
                                     state.isCompact
                                         ? Icons.keyboard_double_arrow_right
                                         : Icons.keyboard_double_arrow_left,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer))),
+                                    color: Theme.of(context).colorScheme.onPrimaryContainer))),
                       ))
               ]),
             ],

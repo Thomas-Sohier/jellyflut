@@ -14,15 +14,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.read<SettingsBloc>().state;
     return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: ((previous, current) =>
-            previous.screenLayout != current.screenLayout),
+        buildWhen: ((previous, current) => previous.screenLayout != current.screenLayout),
         builder: ((context, state) {
           switch (state.screenLayout) {
             case ScreenLayout.desktop:
               if (settings.detailsPageContrasted) {
-                return Padding(
-                    padding: state.contentPadding,
-                    child: const DesktopHeader());
+                return Padding(padding: state.contentPadding, child: const DesktopHeader());
               } else {
                 return Column(
                   children: [
@@ -32,8 +29,7 @@ class Header extends StatelessWidget {
                     Padding(
                         padding: state.contentPadding.copyWith(bottom: 10),
                         child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxHeight: 50, maxWidth: double.infinity),
+                            constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
                             child: PlayButton(maxWidth: double.infinity))),
                   ],
                 );
@@ -68,10 +64,7 @@ class MobileHeader extends StatelessWidget {
                           begin: Alignment.topCenter,
                           stops: [0.7, 1],
                           end: Alignment.bottomCenter,
-                          colors: [
-                            Theme.of(context).colorScheme.background,
-                            Colors.transparent
-                          ],
+                          colors: [Theme.of(context).colorScheme.background, Colors.transparent],
                         ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
                       },
                       blendMode: BlendMode.dstIn,
@@ -117,8 +110,7 @@ class DesktopHeader extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 16, bottom: 10),
         child: ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
+            constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
             child: PlayButton(
               maxWidth: double.infinity,
             )),
@@ -137,9 +129,7 @@ class DesktopHeader extends StatelessWidget {
                     imageType: ImageType.Backdrop,
                     boxFit: BoxFit.cover,
                     notFoundPlaceholder: const SizedBox(),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(4),
-                        bottomRight: Radius.circular(4)),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
                     width: double.infinity,
                     height: 250,
                     showOverlay: true,

@@ -22,8 +22,7 @@ class Critics extends StatelessWidget {
             SizedBox(
               width: 4,
             ),
-            Text(item.communityRating.toString(),
-                style: Theme.of(context).textTheme.titleMedium)
+            Text(item.communityRating.toString(), style: Theme.of(context).textTheme.titleMedium)
           ]),
         ),
       if (item.criticRating != null)
@@ -34,8 +33,7 @@ class Critics extends StatelessWidget {
             SizedBox(
               width: 4,
             ),
-            Text(item.criticRating.toString(),
-                style: Theme.of(context).textTheme.titleMedium)
+            Text(item.criticRating.toString(), style: Theme.of(context).textTheme.titleMedium)
           ]),
         )
     ]);

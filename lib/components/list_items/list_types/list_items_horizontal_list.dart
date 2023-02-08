@@ -15,8 +15,7 @@ class ListItemsHorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemHeight =
-        context.read<CollectionBloc>().state.horizontalListPosterHeight;
+    final itemHeight = context.read<CollectionBloc>().state.horizontalListPosterHeight;
     return SizedBox(
       height: itemHeight,
       child: ListView.builder(

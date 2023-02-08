@@ -11,8 +11,7 @@ class DownloadsBloc extends Bloc<DownloadsEvent, DownloadsState> {
     required DownloadsRepository downloadsRepository,
   })  : _downloadsRepository = downloadsRepository,
         super(const DownloadsState()) {
-    final streamListner =
-        _downloadsRepository.getDownloads().listen((downloads) {});
+    final streamListner = _downloadsRepository.getDownloads().listen((downloads) {});
     streamListner.onData((downloads) => add(_AddDownloads(downloads)));
     on<DownloadsSubscriptionRequested>(_onSubscriptionRequested);
     on<_AddDownloads>(_addDownloads);

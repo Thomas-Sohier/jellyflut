@@ -36,9 +36,7 @@ class _GradienButtonState extends State<GradienButton> with AbsordAction {
     return TextButton(
         onPressed: () => widget.enabled ? action(widget.onPressed) : null,
         style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(widget.borderRadius))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius))),
                 padding: EdgeInsets.zero,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -53,9 +51,7 @@ class _GradienButtonState extends State<GradienButton> with AbsordAction {
       key: ValueKey<int>(1),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [widget.color1, widget.color2],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight),
+            colors: [widget.color1, widget.color2], begin: Alignment.topLeft, end: Alignment.bottomRight),
         borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
       ),
       child: Container(
@@ -87,8 +83,7 @@ class _GradienButtonState extends State<GradienButton> with AbsordAction {
   MaterialStateProperty<BorderSide> buttonBorderSide() {
     return MaterialStateProperty.resolveWith<BorderSide>(
       (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           if (!widget.enabled) {
             return BorderSide(width: 0, color: Colors.transparent);
           }
@@ -107,8 +102,7 @@ class _GradienButtonState extends State<GradienButton> with AbsordAction {
     return MaterialStateProperty.resolveWith<double>(
       (Set<MaterialState> states) {
         if (!widget.enabled) return 0;
-        if (states.contains(MaterialState.hovered) ||
-            states.contains(MaterialState.focused)) {
+        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
           return 6;
         }
         return 0;

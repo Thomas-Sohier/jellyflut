@@ -18,10 +18,8 @@ part 'auth_by_name.g.dart';
 @Freezed()
 class AuthByName with _$AuthByName {
   const factory AuthByName(
-      {@JsonKey(name: 'Username') final String? username,
-      @JsonKey(name: 'Pw') final String? password}) = _AuthByName;
+      {@JsonKey(name: 'Username') final String? username, @JsonKey(name: 'Pw') final String? password}) = _AuthByName;
 
   /// Deserializes the given [JsonMap] into a [AuthByName].
-  factory AuthByName.fromJson(Map<String, Object?> json) =>
-      _$AuthByNameFromJson(json);
+  factory AuthByName.fromJson(Map<String, Object?> json) => _$AuthByNameFromJson(json);
 }

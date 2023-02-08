@@ -31,9 +31,7 @@ class _CurrentDownloadListState extends State<CurrentDownloadList> {
           return AnimatedList(
               key: _key,
               controller: ScrollController(),
-              initialItemCount: downloads.isNotEmpty
-                  ? downloads.length - 1
-                  : 0, // why ? i don't know
+              initialItemCount: downloads.isNotEmpty ? downloads.length - 1 : 0, // why ? i don't know
               scrollDirection: Axis.vertical,
               itemBuilder: (_, i, a) {
                 final download = downloads.elementAt(i);
@@ -44,31 +42,23 @@ class _CurrentDownloadListState extends State<CurrentDownloadList> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              Icon(Icons.download),
-              Text('empty_collection'.tr())
-            ]));
+                children: [Icon(Icons.download), Text('empty_collection'.tr())]));
       },
     );
   }
 
-  Widget _buildItem(
-      OngoingDownload download, Animation<double> animation, int index) {
+  Widget _buildItem(OngoingDownload download, Animation<double> animation, int index) {
     return SizeTransition(
       sizeFactor: animation,
       child: ConstrainedBox(
           constraints: BoxConstraints(maxHeight: 200),
-          child: CurrentDownloadItem(
-              ongoingDownload: download,
-              callbackOnDelete: () => _removeItem(download))),
+          child: CurrentDownloadItem(ongoingDownload: download, callbackOnDelete: () => _removeItem(download))),
     );
   }
 
   Future<void> _removeItem(OngoingDownload download) async {
-    final index =
-        context.read<DownloadsRepository>().removeOngoingDownload(download);
-    _key.currentState?.removeItem(index, _itemBuilder(download, index),
-        duration: Duration(milliseconds: 400));
+    final index = context.read<DownloadsRepository>().removeOngoingDownload(download);
+    _key.currentState?.removeItem(index, _itemBuilder(download, index), duration: Duration(milliseconds: 400));
   }
 
   AnimatedRemovedItemBuilder _itemBuilder(OngoingDownload download, int index) {

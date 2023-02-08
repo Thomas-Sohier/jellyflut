@@ -15,8 +15,7 @@ class PlaceholderScreen extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: const [
-        Positioned.fill(
-            child: Align(alignment: Alignment.center, child: _Background())),
+        Positioned.fill(child: Align(alignment: Alignment.center, child: _Background())),
         Positioned(top: 10, left: 10, child: SelectableBackButton())
       ],
     );
@@ -40,11 +39,6 @@ class _Background extends StatelessWidget {
           showParent: true,
           backup: item.type == ItemType.TvChannel ? true : false);
     }
-    return AsyncImage(
-        item: item,
-        width: 300,
-        height: 300,
-        boxFit: BoxFit.contain,
-        imageType: ImageType.Primary);
+    return AsyncImage(item: item, width: 300, height: 300, boxFit: BoxFit.contain, imageType: ImageType.Primary);
   }
 }

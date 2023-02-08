@@ -53,8 +53,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     );
   }
 
-  List<PopupMenuEntry<Subtitle>> _audioTracksListTile(
-      List<Subtitle> subtitlesTracks) {
+  List<PopupMenuEntry<Subtitle>> _audioTracksListTile(List<Subtitle> subtitlesTracks) {
     final list = <PopupMenuEntry<Subtitle>>[];
 
     // TITLE
@@ -66,14 +65,11 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     }
 
     // If subtitles list is not empty the we show disabled button at start of list
-    final disabledSubtitle =
-        Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.local);
+    final disabledSubtitle = Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.local);
     list.add(
       CheckedPopupMenuItem(
         value: disabledSubtitle,
-        checked:
-            context.read<StreamCubit>().state.selectedSubtitleTrack.index ==
-                disabledSubtitle.index,
+        checked: context.read<StreamCubit>().state.selectedSubtitleTrack.index == disabledSubtitle.index,
         child: Text(
           'disabled'.tr(),
         ),
@@ -81,9 +77,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     );
 
     // LOCAL SUBTITLES
-    final localSubtitles = subtitlesTracks
-        .where((element) => element.mediaType == MediaType.local)
-        .toList();
+    final localSubtitles = subtitlesTracks.where((element) => element.mediaType == MediaType.local).toList();
     list.add(PopupMenuDivider(height: 10));
     list.add(listItemTitle(
         child: Text(
@@ -92,18 +86,15 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     )));
 
     if (localSubtitles.isEmpty) {
-      list.add(PopupMenuItem(
-          enabled: false,
-          child: Align(
-              alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
+      list.add(
+          PopupMenuItem(enabled: false, child: Align(alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
     } else {
       for (var index = 0; index < localSubtitles.length; index++) {
         final subtitle = localSubtitles[index];
         list.add(
           CheckedPopupMenuItem(
             value: subtitle,
-            checked: subtitle.index ==
-                context.read<StreamCubit>().state.selectedSubtitleTrack.index,
+            checked: subtitle.index == context.read<StreamCubit>().state.selectedSubtitleTrack.index,
             child: Text(subtitle.name),
           ),
         );
@@ -120,9 +111,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       )),
     );
 
-    final remoteSubtitles = subtitlesTracks
-        .where((element) => element.mediaType == MediaType.remote)
-        .toList();
+    final remoteSubtitles = subtitlesTracks.where((element) => element.mediaType == MediaType.remote).toList();
     if (remoteSubtitles.isEmpty) {
       list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
     } else {
@@ -130,8 +119,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         final subtitle = remoteSubtitles[index];
         list.add(CheckedPopupMenuItem(
           value: subtitle,
-          checked: subtitle.index ==
-              context.read<StreamCubit>().state.selectedSubtitleTrack.index,
+          checked: subtitle.index == context.read<StreamCubit>().state.selectedSubtitleTrack.index,
           child: Text(subtitle.name),
         ));
       }
@@ -150,8 +138,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
             padding: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: ColorUtil.darken(
-                    Theme.of(context).colorScheme.background, 0.1)),
+                color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.1)),
             child: child));
   }
 }

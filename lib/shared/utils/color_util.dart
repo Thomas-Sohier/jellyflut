@@ -34,8 +34,7 @@ abstract class ColorUtil {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(color);
-    final hslLight =
-        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
 
     return hslLight.toColor();
   }
@@ -48,8 +47,7 @@ abstract class ColorUtil {
     return Color.fromARGB((color.opacity * 255).round(), r, g, b);
   }
 
-  static Color changeColorHue(Color color, double hue) =>
-      HSLColor.fromColor(color).withHue(hue).toColor();
+  static Color changeColorHue(Color color, double hue) => HSLColor.fromColor(color).withHue(hue).toColor();
 
   static Color changeColorSaturation(Color color, double saturation) =>
       HSLColor.fromColor(color).withSaturation(saturation).toColor();
@@ -60,18 +58,14 @@ abstract class ColorUtil {
   static Color applyColorSaturation(Color color, double saturation) {
     final hslColor = HSLColor.fromColor(color);
     final tempSaturation = hslColor.saturation + saturation;
-    final s = tempSaturation < 0 || tempSaturation > 1
-        ? hslColor.saturation
-        : tempSaturation;
+    final s = tempSaturation < 0 || tempSaturation > 1 ? hslColor.saturation : tempSaturation;
     return hslColor.withSaturation(s).toColor();
   }
 
   static Color applyColorLightness(Color color, double lightness) {
     final hslColor = HSLColor.fromColor(color);
     final tempLightness = hslColor.lightness + lightness;
-    final l = tempLightness < 0 || tempLightness > 1
-        ? hslColor.lightness
-        : tempLightness;
+    final l = tempLightness < 0 || tempLightness > 1 ? hslColor.lightness : tempLightness;
     return hslColor.withLightness(l).toColor();
   }
 
@@ -80,14 +74,12 @@ abstract class ColorUtil {
 
     sorted.addAll(colors);
     sorted.sort((a, b) => a.computeLuminance().compareTo(b.computeLuminance()));
-    sorted.removeWhere(
-        (c) => c.computeLuminance() < 0.05 || c.computeLuminance() > 0.95);
+    sorted.removeWhere((c) => c.computeLuminance() < 0.05 || c.computeLuminance() > 0.95);
 
     return sorted;
   }
 
-  static List<Color> extractPixelsColors(Uint8List bytes,
-      {int noOfPixelsPerAxis = 2}) {
+  static List<Color> extractPixelsColors(Uint8List bytes, {int noOfPixelsPerAxis = 2}) {
     final colors = <Color>[];
 
     final values = bytes.buffer.asUint8List();
@@ -104,8 +96,7 @@ abstract class ColorUtil {
     for (var j = 1; j < noOfPixelsPerAxis + 1; j++) {
       for (var i = 1; i < noOfPixelsPerAxis + 1; i++) {
         final pixel = image.getPixel(xChunk * i, yChunk * j);
-        colors.add(Color.fromARGB(pixel.a.toInt(), pixel.r.toInt(),
-            pixel.g.toInt(), pixel.b.toInt()));
+        colors.add(Color.fromARGB(pixel.a.toInt(), pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt()));
       }
     }
 

@@ -45,14 +45,8 @@ class _PeoplePosterState extends State<PeoplePoster> {
   @override
   Widget build(BuildContext context) {
     final finalPoster = widget.bigPoster
-        ? BigPersonPoster(
-            heroTag: heroTag,
-            person: widget.person,
-            notFoundPlaceholder: widget.notFoundPlaceholder)
-        : PersonPoster(
-            heroTag: heroTag,
-            person: widget.person,
-            notFoundPlaceholder: widget.notFoundPlaceholder);
+        ? BigPersonPoster(heroTag: heroTag, person: widget.person, notFoundPlaceholder: widget.notFoundPlaceholder)
+        : PersonPoster(heroTag: heroTag, person: widget.person, notFoundPlaceholder: widget.notFoundPlaceholder);
     if (widget.clickable) {
       return OutlinedButtonSelector(onPressed: onTap, child: finalPoster);
     }
@@ -64,11 +58,7 @@ class PersonPoster extends StatelessWidget {
   final String heroTag;
   final People person;
   final Widget? notFoundPlaceholder;
-  const PersonPoster(
-      {super.key,
-      required this.heroTag,
-      required this.person,
-      this.notFoundPlaceholder});
+  const PersonPoster({super.key, required this.heroTag, required this.person, this.notFoundPlaceholder});
   @override
   Widget build(BuildContext context) {
     return Hero(
@@ -87,11 +77,7 @@ class BigPersonPoster extends StatelessWidget {
   final String heroTag;
   final People person;
   final Widget? notFoundPlaceholder;
-  const BigPersonPoster(
-      {super.key,
-      required this.heroTag,
-      required this.person,
-      this.notFoundPlaceholder});
+  const BigPersonPoster({super.key, required this.heroTag, required this.person, this.notFoundPlaceholder});
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +128,7 @@ class BigPersonPoster extends StatelessWidget {
                               person.role!,
                               overflow: TextOverflow.clip,
                               softWrap: false,
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 12),
+                              style: TextStyle(color: Colors.white70, fontSize: 12),
                             )
                         ],
                       ),
@@ -158,8 +143,7 @@ class BigPersonPoster extends StatelessWidget {
 MaterialStateProperty<double> buttonElevation() {
   return MaterialStateProperty.resolveWith<double>(
     (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.focused)) {
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
         return 2;
       }
       return 0; // defer to the default
@@ -176,8 +160,7 @@ MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
           color: Theme.of(context).colorScheme.onBackground,
         );
       }
-      return BorderSide(
-          width: 0, color: Colors.transparent); // defer to the default
+      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
     },
   );
 }

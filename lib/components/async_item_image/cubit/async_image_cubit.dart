@@ -46,8 +46,7 @@ class AsyncImageCubit extends Cubit<AsyncImageState> {
     emit(state.copyWith(status: AsyncImageStatus.loading));
 
     try {
-      final url = _itemsRepository.getItemImageUrl(
-          itemId: state.itemId, tag: state.imageTag, type: state.imageType);
+      final url = _itemsRepository.getItemImageUrl(itemId: state.itemId, tag: state.imageTag, type: state.imageType);
       final image = CachedNetworkImageProvider(url);
       emit(
         state.copyWith(status: AsyncImageStatus.success, image: image),

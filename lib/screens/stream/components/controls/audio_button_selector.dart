@@ -55,27 +55,23 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     ));
   }
 
-  List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(
-      List<AudioTrack> audioTracks) {
+  List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(List<AudioTrack> audioTracks) {
     final list = <PopupMenuEntry<AudioTrack>>[];
 
     // TITLE
     list.add(PopupMenuItem(child: Text('select_audio_source'.tr())));
 
     if (audioTracks.isEmpty) {
-      list.add(
-          PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
+      list.add(PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
       return list;
     }
 
     // If audio tracks list is not empty the we show disabled button at start of list
-    final disabledAudioTrack =
-        AudioTrack(index: -1, name: 'default'.tr(), mediaType: MediaType.local);
+    final disabledAudioTrack = AudioTrack(index: -1, name: 'default'.tr(), mediaType: MediaType.local);
     list.add(
       CheckedPopupMenuItem(
         value: disabledAudioTrack,
-        checked: context.read<StreamCubit>().state.selectedAudioTrack.index ==
-            disabledAudioTrack.index,
+        checked: context.read<StreamCubit>().state.selectedAudioTrack.index == disabledAudioTrack.index,
         child: Text(
           'default'.tr(),
         ),
@@ -83,9 +79,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     );
 
     // LOCAL AUDIO TRACKS
-    final localAudioTracks = audioTracks
-        .where((element) => element.mediaType == MediaType.local)
-        .toList();
+    final localAudioTracks = audioTracks.where((element) => element.mediaType == MediaType.local).toList();
     list.add(PopupMenuDivider(height: 10));
     list.add(listItemTitle(
         child: Text(
@@ -106,8 +100,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
         list.add(
           CheckedPopupMenuItem(
             value: audioTrack,
-            checked: audioTrack.index ==
-                context.read<StreamCubit>().state.selectedAudioTrack.index,
+            checked: audioTrack.index == context.read<StreamCubit>().state.selectedAudioTrack.index,
             child: Text(audioTrack.name),
           ),
         );
@@ -124,19 +117,15 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       )),
     );
 
-    final remoteAudioTracks = audioTracks
-        .where((element) => element.mediaType == MediaType.remote)
-        .toList();
+    final remoteAudioTracks = audioTracks.where((element) => element.mediaType == MediaType.remote).toList();
     if (remoteAudioTracks.isEmpty) {
-      list.add(
-          PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
+      list.add(PopupMenuItem(enabled: false, child: Text('no_audio_source'.tr())));
     } else {
       for (var index = 0; index < remoteAudioTracks.length; index++) {
         final audioTrack = remoteAudioTracks.elementAt(index);
         list.add(CheckedPopupMenuItem(
           value: audioTrack,
-          checked: audioTrack.index ==
-              context.read<StreamCubit>().state.selectedAudioTrack.index,
+          checked: audioTrack.index == context.read<StreamCubit>().state.selectedAudioTrack.index,
           child: Text(audioTrack.name),
         ));
       }
@@ -155,8 +144,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
             padding: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: ColorUtil.darken(
-                    Theme.of(context).colorScheme.background, 0.1)),
+                color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.1)),
             child: child));
   }
 }

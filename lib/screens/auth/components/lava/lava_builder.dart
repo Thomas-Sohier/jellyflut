@@ -17,8 +17,7 @@ class LavaBuilder extends StatefulWidget {
   State<LavaBuilder> createState() => _LavaBuilderState();
 }
 
-class _LavaBuilderState extends State<LavaBuilder>
-    with TickerProviderStateMixin {
+class _LavaBuilderState extends State<LavaBuilder> with TickerProviderStateMixin {
   late Lava lava;
   late AnimationController _animation;
   late List<Color> colors;
@@ -28,8 +27,7 @@ class _LavaBuilderState extends State<LavaBuilder>
   void initState() {
     super.initState();
     lava = Lava(6);
-    _animation = widget.animationController ??
-        AnimationController(duration: Duration(minutes: 5), vsync: this);
+    _animation = widget.animationController ?? AnimationController(duration: Duration(minutes: 5), vsync: this);
     _animation.repeat();
   }
 
@@ -75,10 +73,7 @@ class _LavaBuilderState extends State<LavaBuilder>
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        Theme.of(context).colorScheme.brightness == Brightness.light
-            ? Colors.white
-            : Colors.black;
+    final backgroundColor = Theme.of(context).colorScheme.brightness == Brightness.light ? Colors.white : Colors.black;
     return LayoutBuilder(
         builder: (context, constraints) => AnimatedContainer(
               duration: Duration(seconds: 1),
@@ -87,13 +82,10 @@ class _LavaBuilderState extends State<LavaBuilder>
                   animation: _animation,
                   child: widget.child,
                   builder: (BuildContext context, child) {
-                    final color = tweenColors
-                        .evaluate(AlwaysStoppedAnimation(_animation.value));
+                    final color = tweenColors.evaluate(AlwaysStoppedAnimation(_animation.value));
                     return Container(
                         color: color!.withOpacity(0.6),
-                        child: CustomPaint(
-                            painter: LavaPainter(lava, color: color),
-                            child: child));
+                        child: CustomPaint(painter: LavaPainter(lava, color: color), child: child));
                   }),
             ));
   }

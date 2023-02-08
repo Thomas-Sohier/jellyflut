@@ -17,8 +17,7 @@ class CodecProfile {
         type: json['Type'],
         codec: json['Codec'],
         container: json['Container'],
-        conditions: List<Condition>.from(
-            json['Conditions'].map((x) => Condition.fromMap(x))),
+        conditions: List<Condition>.from(json['Conditions'].map((x) => Condition.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {

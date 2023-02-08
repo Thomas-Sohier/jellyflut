@@ -10,8 +10,7 @@ class AlbumHeader extends SliverPersistentHeaderDelegate {
   const AlbumHeader({Key? key});
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     final title = context.read<AlbumCubit>().state.songs.first.name;
     return DiscTitle(title: title ?? 'Title here');
   }
@@ -60,8 +59,7 @@ class ShimmerHeaderBar extends StatelessWidget {
         height: _height,
         child: Shimmer.fromColors(
             baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-            highlightColor:
-                Theme.of(context).colorScheme.background.withAlpha(100),
+            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
             child: const SizedBox.expand()));
   }
 }

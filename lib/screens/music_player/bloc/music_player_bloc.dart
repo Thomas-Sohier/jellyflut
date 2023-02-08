@@ -26,9 +26,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
         _musicPlayerRepository = musicPlayerRepository,
         _streamingRepository = streamingRepository,
         _database = database,
-        super(MusicPlayerState(
-            theme: theme,
-            postionStream: BehaviorSubject.seeded(Duration.zero))) {
+        super(MusicPlayerState(theme: theme, postionStream: BehaviorSubject.seeded(Duration.zero))) {
     on<LayoutChanged>(_onLayoutChange);
     on<SeekRequested>(_onSeek);
     on<ReoderList>(_onReoder);
@@ -47,8 +45,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
   final MusicPlayerRepository _musicPlayerRepository;
   final StreamingRepository _streamingRepository;
 
-  Future<void> _onPlaySong(
-      PlaySongRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onPlaySong(PlaySongRequested event, Emitter<MusicPlayerState> emit) async {
     final streamURL = await _itemsRepository.createMusicURL(event.item.id);
     final audioSource = await _parseItemToAudioSource(streamURL, event.item);
     await _musicPlayerRepository.playRemoteAudio(audioSource);
@@ -62,13 +59,10 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     await _setAlbumPrimaryColor(emit);
   }
 
-  Future<void> _onPlayPlaylist(
-      PlayPlaylistRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onPlayPlaylist(PlayPlaylistRequested event, Emitter<MusicPlayerState> emit) async {
     final audioSources = <AudioSource>[];
-    final category =
-        await _itemsRepository.getCategory(parentId: event.item.id);
-    final items =
-        category.items.where((item) => item.isFolder == false).toList();
+    final category = await _itemsRepository.getCategory(parentId: event.item.id);
+    final items = category.items.where((item) => item.isFolder == false).toList();
     items.sort(sortMusic);
 
     for (var index = 0; index < items.length; index++) {
@@ -103,19 +97,16 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     return 0;
   }
 
-  Future<void> _onStop(
-      StopRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onStop(StopRequested event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.reset();
     emit(state.copyWith(status: MusicPlayerStatus.stopped));
   }
 
-  Future<void> _onSeek(
-      SeekRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onSeek(SeekRequested event, Emitter<MusicPlayerState> emit) async {
     _musicPlayerRepository.seekTo(event.position);
   }
 
-  Future<void> _onNextSong(
-      NextSongRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onNextSong(NextSongRequested event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.next();
     emit(state.copyWith(
         currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
@@ -126,14 +117,12 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     await _setAlbumPrimaryColor(emit);
   }
 
-  Future<void> _onReoder(
-      ReoderList event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onReoder(ReoderList event, Emitter<MusicPlayerState> emit) async {
     _musicPlayerRepository.moveMusicItem(event.oldIndex, event.newIndex);
     emit(state.copyWith(playlist: _musicPlayerRepository.getPlayList));
   }
 
-  Future<void> _onPlayAtIndex(
-      PlayAtIndex event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onPlayAtIndex(PlayAtIndex event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.playAtIndex(event.index);
     emit(state.copyWith(
         currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
@@ -144,14 +133,12 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     await _setAlbumPrimaryColor(emit);
   }
 
-  Future<void> _onDeleteFromPlaylist(
-      DeleteAudioFromPlaylist event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onDeleteFromPlaylist(DeleteAudioFromPlaylist event, Emitter<MusicPlayerState> emit) async {
     _musicPlayerRepository.deleteFromPlaylist(event.index);
     emit(state.copyWith(playlist: _musicPlayerRepository.getPlayList));
   }
 
-  Future<void> _onTogglePlayPause(
-      TogglePlayPauseRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onTogglePlayPause(TogglePlayPauseRequested event, Emitter<MusicPlayerState> emit) async {
     if (state.playingState == PlayingState.pause) {
       _musicPlayerRepository.play();
       emit(state.copyWith(playingState: PlayingState.play));
@@ -161,8 +148,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     }
   }
 
-  Future<void> _onPreviousSong(
-      PreviousSongRequested event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onPreviousSong(PreviousSongRequested event, Emitter<MusicPlayerState> emit) async {
     await _musicPlayerRepository.previous();
     emit(state.copyWith(
         currentlyPlaying: _musicPlayerRepository.getCurrentMusic(),
@@ -174,8 +160,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
   }
 
   // Yield screen layout change
-  Future<void> _onLayoutChange(
-      LayoutChanged event, Emitter<MusicPlayerState> emit) async {
+  Future<void> _onLayoutChange(LayoutChanged event, Emitter<MusicPlayerState> emit) async {
     emit(state.copyWith(screenLayout: event.screenLayout));
   }
 
@@ -183,8 +168,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
     // Detect if media is available locally or only remotely
     late final Uint8List artwork;
     if (url.startsWith(RegExp('^(http|https)://'))) {
-      artwork =
-          await _itemsRepository.downloadRemoteImage(item.correctImageId());
+      artwork = await _itemsRepository.downloadRemoteImage(item.correctImageId());
       // artwork = (await NetworkAssetBundle(Uri.parse(urlImage)).load(urlImage)).buffer.asUint8List();
     } else {
       final download = await _database.downloadsDao.getDownloadById(item.id);
@@ -195,9 +179,7 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
             item: item,
             album: item.album,
             title: item.name ?? '',
-            artist: item.artists.isNotEmpty
-                ? item.artists.join(', ').toString()
-                : '',
+            artist: item.artists.isNotEmpty ? item.artists.join(', ').toString() : '',
             artworkUrl: null,
             artworkByte: artwork));
   }
@@ -205,11 +187,9 @@ class MusicPlayerBloc extends Bloc<MusicPlayerEvent, MusicPlayerState> {
   Future<void> _setAlbumPrimaryColor(Emitter<MusicPlayerState> emit) async {
     if (state.currentlyPlaying != null) {
       final metadata = state.currentlyPlaying!.metadata;
-      final colors =
-          await compute(ColorUtil.extractPixelsColors, metadata.artworkByte);
+      final colors = await compute(ColorUtil.extractPixelsColors, metadata.artworkByte);
       final brightness = state.theme.brightness;
-      final newTheme = personnal_theme.Theme.generateThemeDataFromSeedColor(
-          brightness, colors[0]);
+      final newTheme = personnal_theme.Theme.generateThemeDataFromSeedColor(brightness, colors[0]);
       emit(state.copyWith(theme: newTheme));
     }
   }

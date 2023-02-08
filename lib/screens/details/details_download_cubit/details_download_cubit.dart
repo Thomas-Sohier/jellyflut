@@ -9,8 +9,7 @@ import 'package:universal_io/io.dart';
 part 'details_download_state.dart';
 
 class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
-  DetailsDownloadCubit(
-      {required Item item, required DownloadsRepository downloadsRepository})
+  DetailsDownloadCubit({required Item item, required DownloadsRepository downloadsRepository})
       : _downloadsRepository = downloadsRepository,
         super(DetailsDownloadState(
             status: DownloadStatus.initial,
@@ -38,11 +37,8 @@ class DetailsDownloadCubit extends Cubit<DetailsDownloadState> {
     emit(state.copyWith(status: DownloadStatus.downloading));
     try {
       final fileBytes = await _downloadsRepository.downloadItem(
-          itemId: state.item.id,
-          stateOfDownload: state.stateOfDownload,
-          cancelToken: state.cancelToken);
-      final file =
-          _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
+          itemId: state.item.id, stateOfDownload: state.stateOfDownload, cancelToken: state.cancelToken);
+      final file = _downloadsRepository.saveFile(bytes: fileBytes, item: state.item);
       state.stateOfDownload.add(0);
       try {
         emit(state.copyWith(status: DownloadStatus.downloaded));

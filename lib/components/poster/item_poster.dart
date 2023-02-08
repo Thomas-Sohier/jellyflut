@@ -61,8 +61,7 @@ class _ItemPosterState extends State<ItemPoster> {
   @override
   void initState() {
     posterHeroTag = widget.heroTag ?? widget.item.id + Uuid().v4();
-    aspectRatio = widget.widgetAspectRatio ??
-        widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
+    aspectRatio = widget.widgetAspectRatio ?? widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
     super.initState();
   }
 
@@ -108,11 +107,8 @@ class _ItemPosterState extends State<ItemPoster> {
                 IgnorePointer(
                     child: Stack(
                   children: [
-                    if (widget.item.isNew())
-                      const Positioned(top: 8, left: 8, child: _NewBanner()),
-                    if (widget.item.isPlayed())
-                      const Positioned(
-                          top: 8, right: 8, child: _PlayedBanner()),
+                    if (widget.item.isNew()) const Positioned(top: 8, left: 8, child: _NewBanner()),
+                    if (widget.item.isPlayed()) const Positioned(top: 8, right: 8, child: _PlayedBanner()),
                   ],
                 )),
               if (widget.showLogo && widget.showOverlay)
@@ -131,18 +127,13 @@ class _ItemPosterState extends State<ItemPoster> {
                         )))),
             ]),
           )),
-      if (hasTitle)
-        _PosterTitle(
-            item: widget.item,
-            hasSubTitle: hasSubTitle,
-            showParent: widget.showParent)
+      if (hasTitle) _PosterTitle(item: widget.item, hasSubTitle: hasSubTitle, showParent: widget.showParent)
     ]);
   }
 
   void updatePosterProperties() {
     hasTitle = widget.showName;
-    hasSubTitle =
-        widget.item.isFolder != null && widget.item.parentIndexNumber != null;
+    hasSubTitle = widget.item.isFolder != null && widget.item.parentIndexNumber != null;
 
     if (hasTitle && hasSubTitle) {
       posterFlexSize = 8;
@@ -161,10 +152,7 @@ class _PosterTitle extends StatelessWidget {
   final Item item;
   final bool showParent;
   final bool hasSubTitle;
-  const _PosterTitle(
-      {required this.item,
-      required this.showParent,
-      required this.hasSubTitle});
+  const _PosterTitle({required this.item, required this.showParent, required this.hasSubTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +166,7 @@ class _PosterTitle extends StatelessWidget {
             textAlign: TextAlign.center,
             softWrap: false,
             maxLines: 1,
-            style:
-                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16),
           ),
         ),
         if (hasSubTitle)
@@ -206,9 +193,7 @@ class _ProgressBar extends StatelessWidget {
     return FractionallySizedBox(
         widthFactor: 0.9,
         heightFactor: 0.2,
-        child: Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: ProgressBar(item: item)));
+        child: Padding(padding: const EdgeInsets.only(bottom: 8.0), child: ProgressBar(item: item)));
   }
 }
 
@@ -222,9 +207,7 @@ class _NewBanner extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.blue.shade700,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
-          ]),
+          boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)]),
       child: Icon(
         Icons.new_releases,
         size: 20,
@@ -244,9 +227,7 @@ class _PlayedBanner extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.green.shade700,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)
-          ]),
+          boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black54, spreadRadius: 2)]),
       child: Icon(
         Icons.check,
         size: 20,

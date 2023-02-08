@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 class SearchProvider extends ChangeNotifier {
-  final Map<String, Future<Category>> _searchResult =
-      <String, Future<Category>>{};
+  final Map<String, Future<Category>> _searchResult = <String, Future<Category>>{};
 
-  UnmodifiableMapView<String, Future<Category>> get searchResult =>
-      UnmodifiableMapView(_searchResult);
+  UnmodifiableMapView<String, Future<Category>> get searchResult => UnmodifiableMapView(_searchResult);
 
   // Singleton
   static final SearchProvider _searchProvider = SearchProvider._internal();

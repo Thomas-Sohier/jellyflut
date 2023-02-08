@@ -8,7 +8,6 @@ enum TranscodeAudioCodec {
   const TranscodeAudioCodec(this.codecName);
 
   static TranscodeAudioCodec fromString(String codecName) {
-    return TranscodeAudioCodec.values.firstWhere(
-        (codec) => codec.codecName.toLowerCase() == codecName.toLowerCase());
+    return TranscodeAudioCodec.values.firstWhere((codec) => codec.codecName.toLowerCase() == codecName.toLowerCase());
   }
 }

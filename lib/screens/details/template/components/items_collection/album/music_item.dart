@@ -24,11 +24,9 @@ class _MusicItemState extends State<MusicItem> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      final rightPartPadding = constraints.maxWidth < 350
-          ? const EdgeInsets.only(left: 0)
-          : const EdgeInsets.only(left: 8);
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final rightPartPadding =
+          constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
       return Padding(
           padding: const EdgeInsets.all(10),
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -40,13 +38,10 @@ class _MusicItemState extends State<MusicItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (constraints.maxWidth > 350)
-                        Flexible(flex: 3, child: poster()),
+                      if (constraints.maxWidth > 350) Flexible(flex: 3, child: poster()),
                       Expanded(
                         flex: 6,
-                        child: Padding(
-                            padding: rightPartPadding,
-                            child: listItem(widget.item)),
+                        child: Padding(padding: rightPartPadding, child: listItem(widget.item)),
                       ),
                     ],
                   )),
@@ -94,8 +89,7 @@ class _MusicItemState extends State<MusicItem> {
     return Row(
       children: [
         Text(printDuration(Duration(microseconds: widget.item.getDuration())),
-            style:
-                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
       ],
     );
   }
@@ -105,9 +99,7 @@ class _MusicItemState extends State<MusicItem> {
       final numberOfTitle = widget.item.childCount ?? 0;
       return Row(
         children: [
-          Text('Contains $numberOfTitle titles',
-              style:
-                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
+          Text('Contains $numberOfTitle titles', style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
         ],
       );
     }
@@ -119,8 +111,7 @@ class _MusicItemState extends State<MusicItem> {
       return Row(
         children: [
           Text(widget.item.concatenateArtists().toString(),
-              style:
-                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18))
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18))
         ],
       );
     }
@@ -132,10 +123,7 @@ class _MusicItemState extends State<MusicItem> {
       child: Text(widget.item.name ?? '',
           textAlign: TextAlign.left,
           maxLines: 2,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }
 }

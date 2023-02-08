@@ -39,13 +39,6 @@ class SeasonState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        seasonStatus,
-        epsiodesStatus,
-        currentSeason,
-        currentEpisodes,
-        parentItem,
-        seasons,
-        episodes
-      ];
+  List<Object?> get props =>
+      [seasonStatus, epsiodesStatus, currentSeason, currentEpisodes, parentItem, seasons, episodes];
 }

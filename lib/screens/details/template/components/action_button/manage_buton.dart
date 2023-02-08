@@ -22,8 +22,7 @@ class ManageButton extends StatelessWidget {
         BlocProvider.value(value: superContext.read<DetailsBloc>()),
         BlocProvider(
             create: (_) => FormBloc(
-                itemsRepository: context.read<ItemsRepository>(),
-                item: superContext.read<DetailsBloc>().state.item)
+                itemsRepository: context.read<ItemsRepository>(), item: superContext.read<DetailsBloc>().state.item)
               ..add(InitForm())),
       ], child: const Dialog()),
       context: superContext,
@@ -48,17 +47,14 @@ class Dialog extends StatelessWidget {
   Widget dialogBuilder(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
         bloc: context.read<DetailsBloc>(),
-        buildWhen: (previous, current) =>
-            previous.screenLayout != current.screenLayout,
+        buildWhen: (previous, current) => previous.screenLayout != current.screenLayout,
         builder: (_, state) {
           if (state.screenLayout == ScreenLayout.desktop) {
             return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 600, maxHeight: 800),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                      child: dialogBody()),
+                  child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(4)), child: dialogBody()),
                 ));
           }
           return dialogBody(expanded: true);

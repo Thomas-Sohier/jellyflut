@@ -11,8 +11,7 @@ class DirectPlayProfile {
   final String? videoCodec;
   final String? audioCodec;
 
-  factory DirectPlayProfile.fromMap(Map<String, dynamic> json) =>
-      DirectPlayProfile(
+  factory DirectPlayProfile.fromMap(Map<String, dynamic> json) => DirectPlayProfile(
         container: json['Container'],
         type: json['Type'],
         videoCodec: json['VideoCodec'],

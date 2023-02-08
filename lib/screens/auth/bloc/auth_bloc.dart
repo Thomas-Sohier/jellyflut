@@ -16,13 +16,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final BehaviorSubject<String> errors = BehaviorSubject<String>();
   final AuthenticationRepository _authenticationRepository;
 
-  AuthBloc(
-      {required AuthenticationRepository authenticationRepository,
-      required bool authenticated})
+  AuthBloc({required AuthenticationRepository authenticationRepository, required bool authenticated})
       : _authenticationRepository = authenticationRepository,
-        super(authenticated
-            ? AuthState(authStatus: AuthStatus.authenticated)
-            : AuthState()) {
+        super(authenticated ? AuthState(authStatus: AuthStatus.authenticated) : AuthState()) {
     on<RequestAuth>(_login);
     on<AuthServerAdded>(_authServerAdded);
     on<BackToFirstForm>(_onFirstPageRequested);
@@ -31,8 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onFirstPageRequested(BackToFirstForm event, Emitter<AuthState> emit) {
-    emit(state.copyWith(
-        user: UserDto(username: event.username, password: event.password)));
+    emit(state.copyWith(user: UserDto(username: event.username, password: event.password)));
     emit(state.copyWith(authPage: AuthPage.serverPage));
   }
 
@@ -59,14 +54,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onLogoutRequested(
-      LogoutRequested event, Emitter<AuthState> emit) async {
+  void _onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) async {
     emit(state.copyWith(authStatus: AuthStatus.authenticationInProgress));
     await _authenticationRepository.logout();
     emit(state.copyWith(
-        user: UserDto.empty,
-        server: ServerDto.empty,
-        authPage: AuthPage.serverPage,
-        authStatus: AuthStatus.initial));
+        user: UserDto.empty, server: ServerDto.empty, authPage: AuthPage.serverPage, authStatus: AuthStatus.initial));
   }
 }

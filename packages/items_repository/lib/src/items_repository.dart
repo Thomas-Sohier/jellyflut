@@ -33,8 +33,8 @@ class ItemsRepository {
   /// Can add other parameter (already good defaults for most queries)
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Item> getItem(String itemId) => _itemsApi.getItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<Item> getItem(String itemId) =>
+      _itemsApi.getItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Get an item from jellyfin API with an ID
   /// Can add other parameter (already good defaults for most queries)
@@ -48,9 +48,7 @@ class ItemsRepository {
           String? personIds,
           String? filter,
           bool? recursive = true,
-          List<HttpRequestSortBy>? sortBy = const [
-            HttpRequestSortBy.DateCreated
-          ],
+          List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
           String? sortOrder = 'Descending',
           String? mediaTypes,
           String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
@@ -58,8 +56,7 @@ class ItemsRepository {
           int? limit = 300,
           int? startIndex = 0,
           int? imageTypeLimit = 1,
-          String? fields =
-              'Chapters,People,Height,Width,PrimaryImageAspectRatio',
+          String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
           String? excludeLocationTypes,
           bool? enableTotalRecordCount = false,
           bool? collapseBoxSetItems = false}) =>
@@ -87,8 +84,8 @@ class ItemsRepository {
   /// Delete an item from his ID
   ///
   /// Can throw [ItemNotFoundFailure]
-  Future<int> deleteItem(String itemId) => _itemsApi.deleteItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<int> deleteItem(String itemId) =>
+      _itemsApi.deleteItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Get items that can be resumed for a user
   /// Can add other parameter (already good defaults for most queries)
@@ -105,8 +102,7 @@ class ItemsRepository {
     int limit = 12,
     int startIndex = 0,
     int imageTypeLimit = 1,
-    String fields =
-        'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
     String excludeLocationTypes = '',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false,
@@ -134,21 +130,13 @@ class ItemsRepository {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getEpsiodes(String seriesId, {String? seasonId}) =>
-      _itemsApi.getEpsiodes(
-          serverUrl: currentServerUrl,
-          userId: currentUserId,
-          seriesId: seriesId,
-          seasonId: seasonId);
+      _itemsApi.getEpsiodes(serverUrl: currentServerUrl, userId: currentUserId, seriesId: seriesId, seasonId: seasonId);
 
   /// Get seasons from series ID
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) =>
-      _itemsApi.getSeasons(
-          serverUrl: currentServerUrl,
-          userId: currentUserId,
-          seriesId: seriesId,
-          isSpecialSeason: isSpecialSeason);
+  Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) => _itemsApi.getSeasons(
+      serverUrl: currentServerUrl, userId: currentUserId, seriesId: seriesId, isSpecialSeason: isSpecialSeason);
 
   /// Search an item based on search terms
   /// Can add other parameter (already good defaults for most queries)
@@ -164,8 +152,7 @@ class ItemsRepository {
     String includeItemTypes = '',
     String excludeItemTypes = '',
     int limit = 24,
-    String fields =
-        'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
+    String fields = 'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
     bool recursive = true,
     bool enableTotalRecordCount = false,
     int imageTypeLimit = 1,
@@ -193,32 +180,32 @@ class ItemsRepository {
   /// Update item from Item object
   ///
   /// Can throw [ItemUpdateFailure]
-  Future<void> updateItem({required Item item}) => _itemsApi.updateItem(
-      serverUrl: currentServerUrl, userId: currentUserId, item: item);
+  Future<void> updateItem({required Item item}) =>
+      _itemsApi.updateItem(serverUrl: currentServerUrl, userId: currentUserId, item: item);
 
   /// Mark item as viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> viewItem(String itemId) => _itemsApi.viewItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<UserData> viewItem(String itemId) =>
+      _itemsApi.viewItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Mark item as not viewed
   ///
   /// Can throw [ItemViewRequestFailure]
-  Future<UserData> unviewItem(String itemId) => _itemsApi.unviewItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<UserData> unviewItem(String itemId) =>
+      _itemsApi.unviewItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Mark item as favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> favItem(String itemId) => _itemsApi.favItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<UserData> favItem(String itemId) =>
+      _itemsApi.favItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Mark item as not favorite
   ///
   /// Can throw [ItemFavoriteRequestFailure]
-  Future<UserData> unfavItem(String itemId) => _itemsApi.unfavItem(
-      serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
+  Future<UserData> unfavItem(String itemId) =>
+      _itemsApi.unfavItem(serverUrl: currentServerUrl, userId: currentUserId, itemId: itemId);
 
   /// Get latest medias added from Jellyfin
   /// Can add other parameter (already good defaults for most queries)
@@ -244,8 +231,7 @@ class ItemsRepository {
   /// Return a Category with all Views
   ///
   /// Can throw [ViewRequestFailure]
-  Future<Category> getLibraryViews() => _itemsApi.getLibraryViews(
-      serverUrl: currentServerUrl, userId: currentUserId);
+  Future<Category> getLibraryViews() => _itemsApi.getLibraryViews(serverUrl: currentServerUrl, userId: currentUserId);
 
   /// Helper method to generate an URL to get Item image
   ///
@@ -325,20 +311,16 @@ class ItemsRepository {
           includeAllLanguages: includeAllLanguages);
 
   /// Get all availables images for an item
-  Future<Uint8List> downloadRemoteImage(String itemId,
-          {ImageType type = ImageType.Primary}) =>
-      _itemsApi.downloadRemoteImage(
-          serverUrl: currentServerUrl, itemId: itemId, type: type);
+  Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
+      _itemsApi.downloadRemoteImage(serverUrl: currentServerUrl, itemId: itemId, type: type);
 
-  Future<String> getItemURL(
-      {required Item item, bool directPlay = false}) async {
+  Future<String> getItemURL({required Item item, bool directPlay = false}) async {
     // if (directPlay == false && offlineMode == false) {
     //   await StreamingService.bitrateTest(size: 500000);
     //   await StreamingService.bitrateTest(size: 1000000);
     //   await StreamingService.bitrateTest(size: 3000000);
     // }
-    final user = await _database.userAppDao
-        .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final directPlaySettingsOverride = settings.directPlay;
 
@@ -352,8 +334,7 @@ class ItemsRepository {
         item.type == ItemType.Audio) {
       return getStreamURL(item, directPlay);
     } else if (item.type == ItemType.Season || item.type == ItemType.Series) {
-      return getStreamURL(
-          await getPlayableItemOrLastUnplayed(item: item), directPlay);
+      return getStreamURL(await getPlayableItemOrLastUnplayed(item: item), directPlay);
     } else if (item.type == ItemType.Audio) {
       return createMusicURL(item.id);
     } else {
@@ -390,22 +371,18 @@ class ItemsRepository {
       return 0;
     }
 
-    final category = await getCategory(
-        parentId: itemId, filter: 'IsNotFolder', fields: 'MediaStreams');
+    final category = await getCategory(parentId: itemId, filter: 'IsNotFolder', fields: 'MediaStreams');
     // remove all item without an index to avoid sort error
-    category.items.removeWhere(
-        (item) => item.indexNumber == null || item.userData == null);
+    category.items.removeWhere((item) => item.indexNumber == null || item.userData == null);
     category.items.sort(sortItem);
-    return category.items.firstWhere((item) => !item.userData!.played,
-        orElse: () => category.items.first);
+    return category.items.firstWhere((item) => !item.userData!.played, orElse: () => category.items.first);
   }
 
   Future<String> getStreamURL(Item item, bool directPlay) async {
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(item.id);
     //  if (itemExist) return await FileService.getStoragePathItem(item);
-    final user = await _database.userAppDao
-        .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
 
     // If item do not exist locally the we fetch it from remote server
@@ -421,12 +398,10 @@ class ItemsRepository {
     var completeTranscodeUrl;
     // Check if we have a transcide url or we create it
     if (backInfos.isTranscoding() && !directPlay) {
-      completeTranscodeUrl =
-          '$currentServerUrl${backInfos.mediaSources.first.transcodingUrl}';
+      completeTranscodeUrl = '$currentServerUrl${backInfos.mediaSources.first.transcodingUrl}';
     }
-    final finalUrl = completeTranscodeUrl ??
-        await createURL(item, backInfos,
-            startTick: item.userData!.playbackPositionTicks);
+    final finalUrl =
+        completeTranscodeUrl ?? await createURL(item, backInfos, startTick: item.userData!.playbackPositionTicks);
 
     return finalUrl;
   }
@@ -438,24 +413,18 @@ class ItemsRepository {
       final playerProfile = profiles.webOs;
       return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     } else if (Platform.isAndroid) {
-      final user = await _database.userAppDao
-          .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
-      final streamingSoftwareDB =
-          await _database.settingsDao.getSettingsById(user.settingsId);
-      final streamingSoftware =
-          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
+      final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+      final streamingSoftwareDB = await _database.settingsDao.getSettingsById(user.settingsId);
+      final streamingSoftware = StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
 
       switch (streamingSoftware) {
         case StreamingSoftware.VLC:
           final playerProfile = profiles.vlcPhone;
-          return DeviceProfileParent(
-              deviceProfile: playerProfile.deviceProfile);
+          return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
-          final deviceProfile = await Profiles(
-                  database: _database,
-                  userId: _authenticationRepository.currentUser.id)
+          final deviceProfile = await Profiles(database: _database, userId: _authenticationRepository.currentUser.id)
               .getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
@@ -467,11 +436,8 @@ class ItemsRepository {
   }
 
   Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-      {int startTick = 0,
-      int? audioStreamIndex,
-      int? subtitleStreamIndex}) async {
-    final user = await _database.userAppDao
-        .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+      {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) async {
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParams = <String, dynamic>{};
@@ -488,8 +454,7 @@ class ItemsRepository {
     queryParams['audioStreamIndex'] = audioStreamIndex;
     queryParams['api_key'] = user.apiKey;
     queryParams.removeWhere((_, value) => value == null);
-    final finalQueryParams =
-        queryParams.map((key, value) => MapEntry(key, value.toString()));
+    final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
     late final path;
     switch (item.type) {
@@ -501,17 +466,14 @@ class ItemsRepository {
         final ext = p.extension(playBackInfos.mediaSources.first.path!);
         path = 'Videos/${item.id}/stream$ext';
     }
-    final uri =
-        Uri.parse('${_authenticationRepository.currentServer.url}/$path');
+    final uri = Uri.parse('${_authenticationRepository.currentServer.url}/$path');
     return uri.replace(queryParameters: finalQueryParams).toString();
   }
 
   Future<String> createMusicURL(String itemId) async {
-    final user = await _database.userAppDao
-        .getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
+    final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
-    final streamingSoftware =
-        TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
+    final streamingSoftware = TranscodeAudioCodec.fromString(settings.preferredTranscodeAudioCodec);
     // First we try to fetch item locally to play it
     //  final itemExist = await _database.downloadsDao.doesExist(itemId);
     //  if (itemExist) return await FileService.getStoragePathItem(this);
@@ -537,8 +499,7 @@ class ItemsRepository {
         queryParams['enableRedirection'] = true;
         queryParams['api_key'] = user.apiKey;
         queryParams.removeWhere((_, value) => value == null);
-        final finalQueryParams =
-            queryParams.map((key, value) => MapEntry(key, value.toString()));
+        final finalQueryParams = queryParams.map((key, value) => MapEntry(key, value.toString()));
 
         final uri = Uri.parse('$currentServerUrl/Audio/$itemId/universal');
         return uri.replace(queryParameters: finalQueryParams).toString();

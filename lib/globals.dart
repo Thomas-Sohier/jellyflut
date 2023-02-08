@@ -15,8 +15,7 @@ Future setUpAndroidTv() async {
   if (Platform.isAndroid) {
     final deviceInfo = DeviceInfoPlugin();
     final androidInfo = await deviceInfo.androidInfo;
-    _isAndroidTv =
-        androidInfo.systemFeatures.contains('android.software.leanback_only');
+    _isAndroidTv = androidInfo.systemFeatures.contains('android.software.leanback_only');
   } else {
     _isAndroidTv = false;
   }

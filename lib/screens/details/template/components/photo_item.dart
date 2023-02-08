@@ -17,14 +17,10 @@ class PhotoItem extends StatelessWidget {
     final items = <Item>[];
     if (items.isEmpty) {
       return PhotoView(
-        heroAttributes:
-            heroTag != null ? PhotoViewHeroAttributes(tag: heroTag) : null,
+        heroAttributes: heroTag != null ? PhotoViewHeroAttributes(tag: heroTag) : null,
         imageProvider: NetworkImage(context
             .read<ItemsRepository>()
-            .getItemImageUrl(
-                itemId: item.correctImageId(),
-                type: ImageType.Primary,
-                tag: item.correctImageTags()!)),
+            .getItemImageUrl(itemId: item.correctImageId(), type: ImageType.Primary, tag: item.correctImageTags()!)),
       );
     }
     return listOfPhoto(items);
@@ -40,10 +36,7 @@ class PhotoItem extends StatelessWidget {
         return PhotoViewGalleryPageOptions(
           imageProvider: NetworkImage(context
               .read<ItemsRepository>()
-              .getItemImageUrl(
-                  itemId: item.correctImageId(),
-                  type: ImageType.Primary,
-                  tag: item.correctImageTags()!)),
+              .getItemImageUrl(itemId: item.correctImageId(), type: ImageType.Primary, tag: item.correctImageTags()!)),
           initialScale: PhotoViewComputedScale.contained,
         );
       },
@@ -53,9 +46,7 @@ class PhotoItem extends StatelessWidget {
           width: 20.0,
           height: 20.0,
           child: CircularProgressIndicator(
-            value: event == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            value: event == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       ),

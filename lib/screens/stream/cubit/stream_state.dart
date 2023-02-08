@@ -64,12 +64,10 @@ class StreamState extends Equatable {
         fullscreen: fullscreen ?? this.fullscreen,
         hasPip: hasPip ?? this.hasPip,
         showChannelPanel: showChannelPanel ?? this.showChannelPanel,
-        controlsVisibilityTimer:
-            controlsVisibilityTimer ?? this.controlsVisibilityTimer,
+        controlsVisibilityTimer: controlsVisibilityTimer ?? this.controlsVisibilityTimer,
         selectedAudioTrack: selectedAudioTrack ?? this.selectedAudioTrack,
         audioTracks: audioTracks ?? this.audioTracks,
-        selectedSubtitleTrack:
-            selectedSubtitleTrack ?? this.selectedSubtitleTrack,
+        selectedSubtitleTrack: selectedSubtitleTrack ?? this.selectedSubtitleTrack,
         failureMessage: failureMessage ?? this.failureMessage);
   }
 

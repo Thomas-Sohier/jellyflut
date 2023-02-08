@@ -7,8 +7,7 @@ class ProviderButton extends StatelessWidget {
   final String providerName;
   final String providerUrl;
 
-  const ProviderButton(
-      {super.key, required this.providerUrl, required this.providerName});
+  const ProviderButton({super.key, required this.providerUrl, required this.providerName});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +16,7 @@ class ProviderButton extends StatelessWidget {
       style: TextButton.styleFrom(
               padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
               alignment: Alignment.center,
-              side: BorderSide(
-                  width: 1,
-                  style: BorderStyle.solid,
-                  color: Theme.of(context).colorScheme.onBackground))
+              side: BorderSide(width: 1, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onBackground))
           .copyWith(backgroundColor: buttonBackground(context))
           .copyWith(foregroundColor: buttonForeground(context))
           .copyWith(overlayColor: buttonBackground(context)),
@@ -31,15 +27,12 @@ class ProviderButton extends StatelessWidget {
     );
   }
 
-  void _launchURL(String url) async => await canLaunchUrlString(url)
-      ? await launchUrlString(url)
-      : throw 'cannot_open.'.tr(args: [url]);
+  void _launchURL(String url) async =>
+      await canLaunchUrlString(url) ? await launchUrlString(url) : throw 'cannot_open.'.tr(args: [url]);
 
   MaterialStateProperty<Color> buttonBackground(BuildContext context) {
-    return MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.focused)) {
+    return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
         return Theme.of(context).colorScheme.onBackground;
       } else if (states.contains(MaterialState.pressed)) {
         return Theme.of(context).colorScheme.onBackground.withOpacity(0.1);
@@ -49,10 +42,8 @@ class ProviderButton extends StatelessWidget {
   }
 
   MaterialStateProperty<Color> buttonForeground(BuildContext context) {
-    return MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) ||
-          states.contains(MaterialState.focused)) {
+    return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
         return ColorUtil.invert(Theme.of(context).colorScheme.onBackground);
       }
       return Theme.of(context).colorScheme.onBackground;

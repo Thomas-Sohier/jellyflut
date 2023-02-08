@@ -18,8 +18,8 @@ class SongPlaylist extends StatelessWidget {
             key: ValueKey(musicPlayerbloc.state.playlist[index]),
             index: index,
             audioSource: musicPlayerbloc.state.playlist[index]),
-        onReorder: (int oldIndex, int newIndex) => musicPlayerbloc
-            .add(ReoderList(oldIndex: oldIndex, newIndex: newIndex)),
+        onReorder: (int oldIndex, int newIndex) =>
+            musicPlayerbloc.add(ReoderList(oldIndex: oldIndex, newIndex: newIndex)),
       ),
     );
   }
@@ -28,38 +28,31 @@ class SongPlaylist extends StatelessWidget {
 class PlaylistListItem extends StatelessWidget {
   final AudioSource audioSource;
   final int index;
-  const PlaylistListItem(
-      {super.key, required this.index, required this.audioSource});
+  const PlaylistListItem({super.key, required this.index, required this.audioSource});
 
   @override
   Widget build(BuildContext context) {
     final musicPlayerbloc = context.read<MusicPlayerBloc>();
     return Dismissible(
       key: ValueKey(musicPlayerbloc.state.playlist[index]),
-      onDismissed: (_) =>
-          musicPlayerbloc.add(DeleteAudioFromPlaylist(index: index)),
+      onDismissed: (_) => musicPlayerbloc.add(DeleteAudioFromPlaylist(index: index)),
       direction: DismissDirection.endToStart,
       background: Container(
         padding: EdgeInsets.only(right: 48),
         color: Theme.of(context).colorScheme.error,
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
+        child: Row(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.end, children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.delete,
-                      color: Theme.of(context).colorScheme.onError),
-                  Text(
-                    'Delete',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onError),
-                  )
-                ],
+              Icon(Icons.delete, color: Theme.of(context).colorScheme.onError),
+              Text(
+                'Delete',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onError),
               )
-            ]),
+            ],
+          )
+        ]),
       ),
       dismissThresholds: {DismissDirection.horizontal: 0.3},
       child: Column(
@@ -84,8 +77,7 @@ class PlaylistListItem extends StatelessWidget {
 class PlaylistItem extends StatelessWidget {
   final AudioSource audioSource;
   final int index;
-  const PlaylistItem(
-      {super.key, required this.index, required this.audioSource});
+  const PlaylistItem({super.key, required this.index, required this.audioSource});
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +87,7 @@ class PlaylistItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
           child: Text(
             index.toString(),
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
@@ -110,24 +99,15 @@ class PlaylistItem extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(audioSource.metadata.title,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
               ),
               Text(audioSource.metadata.artist,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 14)),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14)),
               if (audioSource.metadata.album != null)
                 Text(audioSource.metadata.album!,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontSize: 14))
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14))
             ],
           ),
         )

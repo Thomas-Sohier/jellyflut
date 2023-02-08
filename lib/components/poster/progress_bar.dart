@@ -9,17 +9,9 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Positioned(
-            child: Align(
-                alignment: Alignment.bottomLeft, child: _ProgressBarShadow())),
-        const Positioned(
-            child: Align(
-                alignment: Alignment.bottomLeft,
-                child: _ProgressBarBackground())),
-        Positioned(
-            child: Align(
-                alignment: Alignment.bottomLeft,
-                child: _ProgressBarForeground(item: item))),
+        const Positioned(child: Align(alignment: Alignment.bottomLeft, child: _ProgressBarShadow())),
+        const Positioned(child: Align(alignment: Alignment.bottomLeft, child: _ProgressBarBackground())),
+        Positioned(child: Align(alignment: Alignment.bottomLeft, child: _ProgressBarForeground(item: item))),
       ],
     );
   }
@@ -34,9 +26,7 @@ class _ProgressBarForeground extends StatelessWidget {
     return FractionallySizedBox(
         widthFactor: item.getPercentPlayed(),
         child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(80.0)),
-              color: Colors.white),
+          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(80.0)), color: Colors.white),
           width: double.maxFinite,
           height: 3,
         ));
@@ -67,9 +57,7 @@ class _ProgressBarShadow extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(80.0)),
-          boxShadow: [
-            BoxShadow(blurRadius: 0, color: Colors.black87, spreadRadius: 1.5)
-          ]),
+          boxShadow: [BoxShadow(blurRadius: 0, color: Colors.black87, spreadRadius: 1.5)]),
       width: double.maxFinite,
       height: 3,
     );

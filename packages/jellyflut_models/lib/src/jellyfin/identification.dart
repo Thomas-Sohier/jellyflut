@@ -60,8 +60,7 @@ class Identification {
       'manufacturer': manufacturer,
       'manufacturerUrl': manufacturerUrl,
       'headers': headers,
-    }..removeWhere(
-        (dynamic key, dynamic value) => key == null || value == null);
+    }..removeWhere((dynamic key, dynamic value) => key == null || value == null);
   }
 
   factory Identification.fromMap(Map<String, dynamic> map) {
@@ -80,8 +79,7 @@ class Identification {
 
   String toJson() => json.encode(toMap());
 
-  factory Identification.fromJson(String source) =>
-      Identification.fromMap(json.decode(source));
+  factory Identification.fromJson(String source) => Identification.fromMap(json.decode(source));
 
   @override
   String toString() {

@@ -10,6 +10,5 @@ class NamedGuidPair with _$NamedGuidPair {
     String? id,
   }) = _NamedGuidPair;
 
-  factory NamedGuidPair.fromJson(Map<String, Object?> json) =>
-      _$NamedGuidPairFromJson(json);
+  factory NamedGuidPair.fromJson(Map<String, Object?> json) => _$NamedGuidPairFromJson(json);
 }

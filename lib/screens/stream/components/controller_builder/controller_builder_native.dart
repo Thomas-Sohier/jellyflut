@@ -13,8 +13,7 @@ class Controllerbuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StreamCubit, StreamState>(
         buildWhen: (previous, current) =>
-            (previous.controller != current.controller) &&
-            current.status == StreamStatus.success,
+            (previous.controller != current.controller) && current.status == StreamStatus.success,
         builder: (_, state) {
           return state.controller?.createView() ?? const SizedBox();
         });

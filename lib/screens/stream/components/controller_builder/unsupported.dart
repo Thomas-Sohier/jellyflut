@@ -11,11 +11,7 @@ class Controllerbuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SnackbarUtil.message(
-        messageTitle: 'Unsupported platform',
-        icon: Icons.error,
-        color: Colors.red,
-        context: context);
+    SnackbarUtil.message(messageTitle: 'Unsupported platform', icon: Icons.error, color: Colors.red, context: context);
     context.router.root.pop();
     return const SizedBox();
   }

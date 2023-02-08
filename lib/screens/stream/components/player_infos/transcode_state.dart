@@ -8,17 +8,10 @@ class TranscodeState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isTranscoding = context
-            .read<StreamCubit>()
-            .state
-            .streamItem
-            .playbackInfos
-            ?.isTranscoding() ??
-        false;
+    final isTranscoding = context.read<StreamCubit>().state.streamItem.playbackInfos?.isTranscoding() ?? false;
     return DecoratedBox(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
-            borderRadius: BorderRadius.all(Radius.circular(4))),
+            color: Theme.of(context).colorScheme.secondary, borderRadius: BorderRadius.all(Radius.circular(4))),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: isTranscoding ? const TranscodeIcon() : const DirectPlayIcon(),
@@ -74,9 +67,7 @@ class TranscodeIcon extends StatelessWidget {
     final color = Theme.of(context).colorScheme.onSecondary;
     return Tooltip(
         enableFeedback: false,
-        richMessage: generateTranscodeReasons(
-                context.read<StreamCubit>().state.streamItem.url)
-            .textSpan,
+        richMessage: generateTranscodeReasons(context.read<StreamCubit>().state.streamItem.url).textSpan,
         child: Row(
           children: [
             Icon(
@@ -96,14 +87,12 @@ class TranscodeIcon extends StatelessWidget {
     // We parse query params to detect and get transcoding reasons
     // Reasons are split by ',' such as :
     // reason1,reason2,...
-    final transcodeReasons =
-        Uri.parse(url).queryParameters['TranscodeReasons']?.split(',');
+    final transcodeReasons = Uri.parse(url).queryParameters['TranscodeReasons']?.split(',');
 
     return Text.rich(TextSpan(
       text: 'Transcode reasons : ',
       children: <TextSpan>[
-        ...transcodeReasons?.map((tr) => TextSpan(text: '\n - $tr')) ??
-            <TextSpan>[],
+        ...transcodeReasons?.map((tr) => TextSpan(text: '\n - $tr')) ?? <TextSpan>[],
       ],
     ));
   }

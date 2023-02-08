@@ -58,13 +58,9 @@ class DownloadButton extends StatelessWidget {
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
                           text: state.item.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(fontStyle: FontStyle.italic)),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic)),
                       TextSpan(
-                          text:
-                              ' seems to be already downloaded would you like to downlodad it again ?',
+                          text: ' seems to be already downloaded would you like to downlodad it again ?',
                           style: Theme.of(context).textTheme.bodyLarge),
                       TextSpan(text: '\n\n'),
                       TextSpan(
@@ -73,9 +69,7 @@ class DownloadButton extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge),
                     ]))),
             actions: [
-              TextButton(
-                  onPressed: () => context.router.root.pop<bool>(false),
-                  child: Text('cancel'.tr())),
+              TextButton(onPressed: () => context.router.root.pop<bool>(false), child: Text('cancel'.tr())),
               TextButton(
                   onPressed: () {
                     // AppDatabase()
@@ -86,9 +80,7 @@ class DownloadButton extends StatelessWidget {
                     // context.router.root.pop<bool>(false);
                   },
                   child: Text('delete'.tr())),
-              TextButton(
-                  onPressed: () => context.router.root.pop<bool>(true),
-                  child: Text('download'.tr()))
+              TextButton(onPressed: () => context.router.root.pop<bool>(true), child: Text('download'.tr()))
             ],
           );
         });
@@ -100,9 +92,7 @@ class _DownloadTrailingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: trailingBuilder(context));
+    return Padding(padding: const EdgeInsets.only(left: 4), child: trailingBuilder(context));
   }
 
   Widget trailingBuilder(BuildContext context) {
@@ -129,8 +119,7 @@ class _DownloadedIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: Icon(Icons.download_done, color: Colors.green.shade900));
+        padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download_done, color: Colors.green.shade900));
   }
 }
 
@@ -139,9 +128,7 @@ class _DownloadIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: Icon(Icons.download, color: Colors.black87));
+    return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
   }
 }
 
@@ -158,13 +145,10 @@ class _DownloadingProgressIcon extends StatelessWidget {
           child: StreamBuilder<int>(
               stream: state.stateOfDownload,
               builder: (_, snapshot) {
-                final progress =
-                    snapshot.hasData ? (snapshot.data! / 100) : 0.0;
+                final progress = snapshot.hasData ? (snapshot.data! / 100) : 0.0;
                 return CircularProgressIndicator(
                   color: Colors.green.shade700,
-                  value: progress == 1
-                      ? null
-                      : progress, // If at 100% we show undeterminate progress indicator
+                  value: progress == 1 ? null : progress, // If at 100% we show undeterminate progress indicator
                   backgroundColor: Colors.transparent.withOpacity(0.4),
                   strokeWidth: 6,
                 );

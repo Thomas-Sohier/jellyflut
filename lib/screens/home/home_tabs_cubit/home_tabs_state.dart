@@ -12,26 +12,21 @@ class HomeTabsState extends Equatable {
   final Map<Key, HomeTabController> homeTabControllers;
   final Key currentHomeTabControllerKey;
 
-  HomeTabController? get currentHomeTabController =>
-      homeTabControllers[currentHomeTabControllerKey];
+  HomeTabController? get currentHomeTabController => homeTabControllers[currentHomeTabControllerKey];
 
   List<Widget> get currentHomeTabControllerTabs =>
       homeTabControllers[currentHomeTabControllerKey]?.tabs ?? const <Tab>[];
 
   HomeTabsState copyWith(
-      {Status? status,
-      Map<Key, HomeTabController>? homeTabControllers,
-      Key? currentHomeTabControllerKey}) {
+      {Status? status, Map<Key, HomeTabController>? homeTabControllers, Key? currentHomeTabControllerKey}) {
     return HomeTabsState(
         status: status ?? this.status,
         homeTabControllers: homeTabControllers ?? this.homeTabControllers,
-        currentHomeTabControllerKey:
-            currentHomeTabControllerKey ?? this.currentHomeTabControllerKey);
+        currentHomeTabControllerKey: currentHomeTabControllerKey ?? this.currentHomeTabControllerKey);
   }
 
   @override
-  List<Object?> get props =>
-      [status, currentHomeTabControllerKey, homeTabControllers];
+  List<Object?> get props => [status, currentHomeTabControllerKey, homeTabControllers];
 }
 
 class HomeTabController {
@@ -40,8 +35,7 @@ class HomeTabController {
 
   const HomeTabController({required this.tabs, required this.tabController});
 
-  static const HomeTabController empty =
-      HomeTabController(tabController: null, tabs: []);
+  static const HomeTabController empty = HomeTabController(tabController: null, tabs: []);
 
   /// Convenience getter to determine whether the current controller is empty.
   bool get isEmpty => this == HomeTabController.empty;

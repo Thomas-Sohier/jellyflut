@@ -4,11 +4,7 @@ class ColorPickerField extends StatelessWidget {
   final FormGroup form;
   final String fieldName;
   final String formKey;
-  const ColorPickerField(
-      {super.key,
-      required this.form,
-      required this.fieldName,
-      required this.formKey});
+  const ColorPickerField({super.key, required this.form, required this.fieldName, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +16,7 @@ class ColorPickerField extends StatelessWidget {
         Text(fieldName),
         BlockPicker(
             pickerColor: form.value[formKey] as Color,
-            onColorChanged: (Color selectedColor) =>
-                form.patchValue({formKey: selectedColor})),
+            onColorChanged: (Color selectedColor) => form.patchValue({formKey: selectedColor})),
       ],
     );
   }

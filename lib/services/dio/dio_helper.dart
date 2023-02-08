@@ -10,16 +10,10 @@ import 'package:universal_io/io.dart';
 final dio = DioHelper.generateDioClient();
 
 class DioHelper {
-  static BaseOptions _generateOptions(
-          String defaultContentType, DioExtra? extra) =>
-      BaseOptions(
-          connectTimeout: 15000,
-          receiveTimeout: 15000,
-          contentType: defaultContentType,
-          extra: extra?.toJson());
+  static BaseOptions _generateOptions(String defaultContentType, DioExtra? extra) => BaseOptions(
+      connectTimeout: 15000, receiveTimeout: 15000, contentType: defaultContentType, extra: extra?.toJson());
 
-  static Dio generateDioClient(
-          {String defaultContentType = 'application/json', DioExtra? extra}) =>
+  static Dio generateDioClient({String defaultContentType = 'application/json', DioExtra? extra}) =>
       Dio(_generateOptions(defaultContentType, extra));
 }
 
@@ -41,6 +35,5 @@ class DioExtra {
     return val;
   }
 
-  DioExtra fromJson(Map<String, dynamic> json) =>
-      DioExtra(jellyfinUserId: json['jellyfinUserId'] as String);
+  DioExtra fromJson(Map<String, dynamic> json) => DioExtra(jellyfinUserId: json['jellyfinUserId'] as String);
 }

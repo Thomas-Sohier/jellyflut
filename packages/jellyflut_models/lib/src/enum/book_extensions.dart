@@ -10,7 +10,6 @@ enum BookExtensions {
   const BookExtensions(this.fileExtension);
 
   static BookExtensions fromString(String extension) {
-    return BookExtensions.values.firstWhere(
-        (ext) => ext.fileExtension.toLowerCase() == extension.toLowerCase());
+    return BookExtensions.values.firstWhere((ext) => ext.fileExtension.toLowerCase() == extension.toLowerCase());
   }
 }

@@ -48,13 +48,10 @@ class _CommonControlsState extends State<CommonControls> {
           child: MouseRegion(
               opaque: false,
               onHover: (PointerHoverEvent event) =>
-                  event.kind == PointerDeviceKind.mouse
-                      ? context.read<StreamCubit>().autoHideControlTimer()
-                      : {},
+                  event.kind == PointerDeviceKind.mouse ? context.read<StreamCubit>().autoHideControlTimer() : {},
               child: SubtreeBuilder(
                   builder: (_, child) => BlocBuilder<StreamCubit, StreamState>(
-                        buildWhen: (previous, current) =>
-                            previous.visible != current.visible,
+                        buildWhen: (previous, current) => previous.visible != current.visible,
                         builder: (_, state) => Visibility(
                             maintainSize: false,
                             maintainAnimation: false,

@@ -31,21 +31,14 @@ class _SettingButtonState extends State<SettingButton> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: TextButton(
-                    onPressed: context.router.root.pop,
-                    child: Text('cancel'.tr())),
+                child: TextButton(onPressed: context.router.root.pop, child: Text('cancel'.tr())),
               ),
               Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child:
-                      TextButton(onPressed: () => {}, child: Text('save'.tr())))
+                  child: TextButton(onPressed: () => {}, child: Text('save'.tr())))
             ],
             content: ConstrainedBox(
-                constraints: BoxConstraints(
-                    minHeight: 300,
-                    maxHeight: 700,
-                    minWidth: 350,
-                    maxWidth: 500),
+                constraints: BoxConstraints(minHeight: 300, maxHeight: 700, minWidth: 350, maxWidth: 500),
                 child: EpubForm(
                   backgroundColor: Colors.yellow.shade100,
                   fontColor: Colors.grey.shade900,

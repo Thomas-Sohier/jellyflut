@@ -38,16 +38,13 @@ class Configuration {
         playDefaultAudioTrack: json['PlayDefaultAudioTrack'],
         subtitleLanguagePreference: json['SubtitleLanguagePreference'],
         displayMissingEpisodes: json['DisplayMissingEpisodes'],
-        groupedFolders:
-            List<dynamic>.from(json['GroupedFolders'].map((x) => x)),
+        groupedFolders: List<dynamic>.from(json['GroupedFolders'].map((x) => x)),
         subtitleMode: json['SubtitleMode'],
         displayCollectionsView: json['DisplayCollectionsView'],
         enableLocalPassword: json['EnableLocalPassword'],
         orderedViews: List<String>.from(json['OrderedViews'].map((x) => x)),
-        latestItemsExcludes:
-            List<dynamic>.from(json['LatestItemsExcludes'].map((x) => x)),
-        myMediaExcludes:
-            List<dynamic>.from(json['MyMediaExcludes'].map((x) => x)),
+        latestItemsExcludes: List<dynamic>.from(json['LatestItemsExcludes'].map((x) => x)),
+        myMediaExcludes: List<dynamic>.from(json['MyMediaExcludes'].map((x) => x)),
         hidePlayedInLatest: json['HidePlayedInLatest'],
         rememberAudioSelections: json['RememberAudioSelections'],
         rememberSubtitleSelections: json['RememberSubtitleSelections'],
@@ -62,18 +59,11 @@ class Configuration {
         'SubtitleMode': subtitleMode,
         'DisplayCollectionsView': displayCollectionsView,
         'EnableLocalPassword': enableLocalPassword,
-        'GroupedFolders': groupedFolders != null
-            ? List<dynamic>.from(groupedFolders!.map((x) => x))
-            : null,
-        'OrderedViews': orderedViews != null
-            ? List<dynamic>.from(orderedViews!.map((x) => x))
-            : null,
-        'LatestItemsExcludes': latestItemsExcludes != null
-            ? List<dynamic>.from(latestItemsExcludes!.map((x) => x))
-            : null,
-        'MyMediaExcludes': myMediaExcludes != null
-            ? List<dynamic>.from(myMediaExcludes!.map((x) => x))
-            : null,
+        'GroupedFolders': groupedFolders != null ? List<dynamic>.from(groupedFolders!.map((x) => x)) : null,
+        'OrderedViews': orderedViews != null ? List<dynamic>.from(orderedViews!.map((x) => x)) : null,
+        'LatestItemsExcludes':
+            latestItemsExcludes != null ? List<dynamic>.from(latestItemsExcludes!.map((x) => x)) : null,
+        'MyMediaExcludes': myMediaExcludes != null ? List<dynamic>.from(myMediaExcludes!.map((x) => x)) : null,
         'HidePlayedInLatest': hidePlayedInLatest,
         'RememberAudioSelections': rememberAudioSelections,
         'RememberSubtitleSelections': rememberSubtitleSelections,
