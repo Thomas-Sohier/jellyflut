@@ -1,29 +1,29 @@
 part of '../details_widgets.dart';
 
 class PeoplesDetailsWidget extends StatelessWidget {
-  final Item item;
-  final EdgeInsets padding;
-  const PeoplesDetailsWidget(
-      {super.key,
-      required this.item,
-      this.padding = const EdgeInsets.only(left: 12)});
+  const PeoplesDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!item.hasPeople()) return SizedBox();
-    return Column(
+    final state = context.read<DetailsBloc>().state;
+    if (state.item.type != ItemType.Person && !state.item.hasPeople()) {
+      return const SliverToBoxAdapter(child: SizedBox());
+    }
+    return MultiSliver(
       children: [
-        const SizedBox(height: 24),
-        Padding(
-            padding: padding,
-            child: Align(
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverPadding(
+            padding: state.contentPadding,
+            sliver: SliverToBoxAdapter(
+                child: Align(
               alignment: Alignment.centerLeft,
-              child: Text('item_cast'.tr(args: [item.name]),
-                  style: Theme.of(context).textTheme.headline5),
-            )),
-        const SizedBox(height: 8),
-        SizedBox(
-            height: 230, child: PeoplesList(item.people, padding: padding)),
+              child:
+                  Text('item_cast'.tr(args: [state.item.name ?? '']), style: Theme.of(context).textTheme.headlineSmall),
+            ))),
+        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        SliverPadding(
+            padding: EdgeInsets.only(left: state.contentPadding.left),
+            sliver: const SliverToBoxAdapter(child: PeoplesList()))
       ],
     );
   }

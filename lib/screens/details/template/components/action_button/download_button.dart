@@ -1,94 +1,48 @@
 part of '../action_button.dart';
 
-class DownloadButton extends StatefulWidget {
-  final Item item;
+class DownloadButton extends StatelessWidget {
   final double maxWidth;
+  final buttonEnable = ValueNotifier(true);
 
-  const DownloadButton({super.key, required this.item, this.maxWidth = 150});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _DownloadButtonState();
-  }
-}
-
-class _DownloadButtonState extends State<DownloadButton> {
-  late var fToast;
-  late final BehaviorSubject<int> percentDownload;
-  late final Future<bool> isDownloaded;
-  late final DownloadProvider downloadProvider;
-  bool buttonEnabled = true;
-
-  @override
-  void initState() {
-    downloadProvider = DownloadProvider();
-    final isItemDownload =
-        downloadProvider.isItemDownloadPresent(widget.item.id);
-    if (isItemDownload) {
-      percentDownload =
-          downloadProvider.getItemDownloadProgress(widget.item.id);
-      buttonEnabled = false;
-    } else {
-      percentDownload = BehaviorSubject<int>();
-    }
-    isDownloaded = FileService.isItemDownloaded(widget.item.id);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  DownloadButton({super.key, this.maxWidth = 150});
 
   @override
   Widget build(BuildContext context) {
     // TODO have a better handling of removal of items downloaded (show agan download icon on delete)
-    return PaletteButton('download'.tr(), onPressed: () {
-      setState(() => buttonEnabled = false);
-      downloadProvider
-          .downloadItem(widget.item, percentDownload, dialogRedownload)
-          // ignore: invalid_return_type_for_catch_error
-          .catchError((e) => SnackbarUtil.message(
-              'Error while downloading. ${e.toString()}',
-              Icons.file_download_off,
-              Colors.red))
-          .whenComplete(
-              () => mounted ? setState(() => buttonEnabled = true) : {});
-    },
-        minWidth: 40,
-        maxWidth: widget.maxWidth,
-        borderRadius: 4,
-        enabled: buttonEnabled,
-        trailing: trailing());
+    final item = context.read<DetailsBloc>().state.item;
+    return BlocBuilder<DetailsDownloadCubit, DetailsDownloadState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) => PaletteButton(
+              'download'.tr(),
+              minWidth: 40,
+              maxWidth: maxWidth,
+              borderRadius: 4,
+              enabled: !state.status.isDownloading,
+              trailing: const _DownloadTrailingState(),
+              onPressed: () => downloadItem(context, item),
+            ));
   }
 
-  Widget trailing() {
-    return FutureBuilder<bool>(
-        future: isDownloaded,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return trailingBuilder(snapshot.data!);
-          }
-          return const SizedBox();
-        });
-  }
-
-  Widget trailingBuilder(bool isDownloaded) {
-    if (isDownloaded) {
-      return Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: DownloadAnimation(
-              percentDownload: percentDownload,
-              child: Icon(Icons.download_done, color: Colors.green.shade900)));
+  Future<void> downloadItem(BuildContext context, Item item) async {
+    final navigatorKey = context.router.navigatorKey;
+    try {
+      final file = await context.read<DetailsDownloadCubit>().downloadItem();
+      SnackbarUtil.message(
+          messageTitle: 'File "${item.name}" successfully downloaded',
+          messageDetails: 'Path : ${file.path}',
+          icon: Icons.download_done,
+          context: navigatorKey.currentContext ?? context);
+    } catch (e) {
+      SnackbarUtil.message(
+          messageTitle: 'Error while downloading file : "${item.name}"',
+          messageDetails: e.toString(),
+          icon: Icons.file_download_off,
+          context: navigatorKey.currentContext ?? context);
     }
-    return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: DownloadAnimation(
-            percentDownload: percentDownload,
-            child: Icon(Icons.download, color: Colors.black87)));
   }
 
-  Future<bool?> dialogRedownload() async {
+  Future<bool?> dialogRedownload(BuildContext context) async {
+    final state = context.read<DetailsBloc>().state;
     return showDialog<bool?>(
         context: context,
         barrierDismissible: false,
@@ -103,40 +57,102 @@ class _DownloadButtonState extends State<DownloadButton> {
                     textAlign: TextAlign.left,
                     text: TextSpan(children: <TextSpan>[
                       TextSpan(
-                          text: widget.item.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              ?.copyWith(fontStyle: FontStyle.italic)),
+                          text: state.item.name,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic)),
                       TextSpan(
-                          text:
-                              ' seems to be already downloaded would you like to downlodad it again ?',
-                          style: Theme.of(context).textTheme.bodyText1),
+                          text: ' seems to be already downloaded would you like to downlodad it again ?',
+                          style: Theme.of(context).textTheme.bodyLarge),
                       TextSpan(text: '\n\n'),
                       TextSpan(
                           text:
-                              ' It will overwrite any files with the name ${FileService.getItemStorageName(widget.item)}',
-                          style: Theme.of(context).textTheme.bodyText1),
+                              ' It will overwrite any files with the name ${FileService.getItemStorageName(state.item)}',
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ]))),
             actions: [
-              TextButton(
-                  onPressed: () => customRouter.pop<bool>(false),
-                  child: Text('cancel'.tr())),
+              TextButton(onPressed: () => context.router.root.pop<bool>(false), child: Text('cancel'.tr())),
               TextButton(
                   onPressed: () {
-                    AppDatabase()
-                        .getDatabase
-                        .downloadsDao
-                        .getDownloadById(widget.item.id)
-                        .then(downloadProvider.deleteDownloadedFile);
-                    customRouter.pop<bool>(false);
+                    // AppDatabase()
+                    //     .getDatabase
+                    //     .downloadsDao
+                    //     .getDownloadById(state.item.id)
+                    //     .then(downloadProvider.deleteDownloadedFile);
+                    // context.router.root.pop<bool>(false);
                   },
                   child: Text('delete'.tr())),
-              TextButton(
-                  onPressed: () => customRouter.pop<bool>(true),
-                  child: Text('download'.tr()))
+              TextButton(onPressed: () => context.router.root.pop<bool>(true), child: Text('download'.tr()))
             ],
           );
         });
+  }
+}
+
+class _DownloadTrailingState extends StatelessWidget {
+  const _DownloadTrailingState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(padding: const EdgeInsets.only(left: 4), child: trailingBuilder(context));
+  }
+
+  Widget trailingBuilder(BuildContext context) {
+    return BlocBuilder<DetailsDownloadCubit, DetailsDownloadState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (_, state) {
+          switch (state.status) {
+            case DownloadStatus.downloading:
+              return const _DownloadingProgressIcon();
+            case DownloadStatus.downloaded:
+              return const _DownloadedIcon();
+            case DownloadStatus.initial:
+            case DownloadStatus.notDownloaded:
+            default:
+              return const _DownloadIcon();
+          }
+        });
+  }
+}
+
+class _DownloadedIcon extends StatelessWidget {
+  const _DownloadedIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download_done, color: Colors.green.shade900));
+  }
+}
+
+class _DownloadIcon extends StatelessWidget {
+  const _DownloadIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(padding: const EdgeInsets.only(left: 4), child: Icon(Icons.download, color: Colors.black87));
+  }
+}
+
+class _DownloadingProgressIcon extends StatelessWidget {
+  const _DownloadingProgressIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.read<DetailsDownloadCubit>().state;
+    return Padding(
+        padding: const EdgeInsets.only(left: 4, top: 8, bottom: 8),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: StreamBuilder<int>(
+              stream: state.stateOfDownload,
+              builder: (_, snapshot) {
+                final progress = snapshot.hasData ? (snapshot.data! / 100) : 0.0;
+                return CircularProgressIndicator(
+                  color: Colors.green.shade700,
+                  value: progress == 1 ? null : progress, // If at 100% we show undeterminate progress indicator
+                  backgroundColor: Colors.transparent.withOpacity(0.4),
+                  strokeWidth: 6,
+                );
+              }),
+        ));
   }
 }

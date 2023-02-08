@@ -12,11 +12,7 @@ class ComicView extends StatelessWidget {
   final Archive archive;
   final Function(int currentPage, int nbPage) listener;
 
-  ComicView(
-      {super.key,
-      required this.controller,
-      required this.archive,
-      required this.listener});
+  ComicView({super.key, required this.controller, required this.archive, required this.listener});
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +22,10 @@ class ComicView extends StatelessWidget {
         onPointerSignal: (pointerSignal) {
           if (pointerSignal is PointerScrollEvent) {
             if (pointerSignal.scrollDelta.dy.isNegative) {
-              final s =
-                  defaultScaleValue((_photoViewController.scale ?? 1) + 0.1);
+              final s = defaultScaleValue((_photoViewController.scale ?? 1) + 0.1);
               _photoViewController.updateMultiple(scale: s);
             } else {
-              final s =
-                  defaultScaleValue((_photoViewController.scale ?? 1) - 0.1);
+              final s = defaultScaleValue((_photoViewController.scale ?? 1) - 0.1);
               _photoViewController.updateMultiple(scale: s);
             }
           }
@@ -44,8 +38,7 @@ class ComicView extends StatelessWidget {
             onPageChanged: (index) => listener(index, nbPages),
             pageController: controller,
             builder: (context, index) {
-              final content =
-                  archive.files.elementAt(index).rawContent as InputStream;
+              final content = archive.files.elementAt(index).rawContent as InputStream;
               return PhotoViewGalleryPageOptions(
                 controller: _photoViewController,
                 imageProvider: MemoryImage(content.toUint8List()),
@@ -55,8 +48,7 @@ class ComicView extends StatelessWidget {
             }));
   }
 
-  double defaultScaleValue(final double value,
-      {final double minScaleValue = 0.05, final double maxScaleValue = 4}) {
+  double defaultScaleValue(final double value, {final double minScaleValue = 0.05, final double maxScaleValue = 4}) {
     if (value < minScaleValue) return minScaleValue;
     if (value > maxScaleValue) return maxScaleValue;
     return value;

@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:jellyflut/models/jellyfin/chapter.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+
+import '../../cubit/stream_cubit.dart';
 
 class ChapterButton extends StatefulWidget {
   const ChapterButton({super.key});
@@ -14,22 +16,12 @@ class ChapterButton extends StatefulWidget {
 }
 
 class _ChapterButtonState extends State<ChapterButton> {
-  late final FocusNode _node;
-  late final StreamingProvider streamingProvider;
   late final GlobalKey<PopupMenuButtonState<Chapter>> _popupMenuButtonKey;
 
   @override
   void initState() {
-    _node = FocusNode(canRequestFocus: false, descendantsAreFocusable: false);
-    streamingProvider = StreamingProvider();
     _popupMenuButtonKey = GlobalKey();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
   }
 
   @override
@@ -52,13 +44,13 @@ class _ChapterButtonState extends State<ChapterButton> {
             ),
             tooltip: 'select_chapter'.tr(),
             onSelected: (Chapter value) => goToChapter(value),
-            itemBuilder: (context) =>
-                chapterList(streamingProvider.item?.chapters)),
+            itemBuilder: (_) => chapterList()),
       ),
     );
   }
 
-  List<PopupMenuEntry<Chapter>> chapterList(List<Chapter>? chapters) {
+  List<PopupMenuEntry<Chapter>> chapterList() {
+    final chapters = context.read<StreamCubit>().state.streamItem.item.chapters;
     final list = <PopupMenuEntry<Chapter>>[];
     list.add(
       PopupMenuItem(
@@ -70,7 +62,7 @@ class _ChapterButtonState extends State<ChapterButton> {
         height: 10,
       ),
     );
-    if (chapters == null || chapters.isEmpty) {
+    if (chapters.isEmpty) {
       list.add(PopupMenuItem(enabled: false, child: Text('no_chapters'.tr())));
       return list;
     }
@@ -82,8 +74,7 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   PopupMenuItem<Chapter> chapterItem(Chapter chapter) {
-    final chapterPosition =
-        Duration(microseconds: (chapter.startPositionTicks / 10).round());
+    final chapterPosition = Duration(microseconds: (chapter.startPositionTicks / 10).round());
     return PopupMenuItem<Chapter>(
       value: chapter,
       child: Column(
@@ -92,7 +83,7 @@ class _ChapterButtonState extends State<ChapterButton> {
         children: [
           Text(
             chapter.name,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           Text(printDuration(chapterPosition))
         ],
@@ -101,8 +92,7 @@ class _ChapterButtonState extends State<ChapterButton> {
   }
 
   void goToChapter(Chapter chapter) {
-    final chapterPosition =
-        Duration(microseconds: (chapter.startPositionTicks / 10).round());
-    streamingProvider.commonStream!.seekTo(chapterPosition);
+    final chapterPosition = Duration(microseconds: (chapter.startPositionTicks / 10).round());
+    context.read<StreamCubit>().state.controller!.seekTo(chapterPosition);
   }
 }

@@ -1,60 +1,58 @@
-import 'dart:convert';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:dio/dio.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/services/item/item_image_service.dart';
-import 'package:drift/drift.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FileService {
   static String getDownloadFileUrl(final String itemId) {
-    return '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+    // return '${server.url}/Items/$itemId/Download?api_key=$apiKey';
+    throw UnimplementedError('Downloads not implemented yet');
   }
 
   /// Return the rowId of the download inserted
-  static Future<int> saveDownloadToDatabase(
-      final String path, final Item item) async {
-    final i = item;
+  static Future<int> saveDownloadToDatabase(final String path, final Item item) async {
+    throw UnimplementedError();
+    // TODO rework this in repository download
+    // final context = context.router.root.navigatorKey.currentContext!;
 
-    final primaryUrl = ItemImageService.getItemImageUrl(
-        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
-        type: item.correctImageType(searchType: ImageType.PRIMARY));
+    // final primaryUrl = context.read<ItemsRepository>().getItemImageUrl(
+    //     itemId: item.id,
+    //     tag: item.correctImageTags(searchType: ImageType.Primary),
+    //     type: item.correctImageType(searchType: ImageType.Primary));
 
-    final backdropUrl = ItemImageService.getItemImageUrl(
-        item.id, item.correctImageTags(searchType: ImageType.PRIMARY),
-        type: item.correctImageType(searchType: ImageType.PRIMARY));
+    // final backdropUrl = context.read<ItemsRepository>().getItemImageUrl(
+    //     itemId: item.id,
+    //     tag: item.correctImageTags(searchType: ImageType.Primary),
+    //     type: item.correctImageType(searchType: ImageType.Primary));
 
-    final primaryImage = await Dio().get<String>(primaryUrl);
-    final primaryImageByte =
-        Uint8List.fromList(utf8.encode(primaryImage.data!));
-    final backdropImage = await Dio().get<String>(backdropUrl);
-    final backdropImageByte =
-        Uint8List.fromList(utf8.encode(backdropImage.data!));
+    // final primaryImage = await Dio().get<String>(primaryUrl);
+    // final primaryImageByte = Uint8List.fromList(utf8.encode(primaryImage.data!));
+    // final backdropImage = await Dio().get<String>(backdropUrl);
+    // final backdropImageByte = Uint8List.fromList(utf8.encode(backdropImage.data!));
 
-    final db = AppDatabase().getDatabase;
-    final dc = DownloadsCompanion(
-        id: Value(i.id),
-        primary: Value(primaryImageByte),
-        backdrop: Value(backdropImageByte),
-        name: Value.ofNullable(i.name),
-        item: Value.ofNullable(i.toMap()),
-        path: Value.ofNullable(path));
-    return db.downloadsDao.createDownload(dc);
+    // final db = AppDatabase().getDatabase;
+    // final dc = DownloadsCompanion(
+    //     id: Value(i.id),
+    //     // primary: Value(primaryImageByte),
+    //     // backdrop: Value(backdropImageByte),
+    //     name: Value.ofNullable(i.name),
+    //     item: Value.ofNullable(i),
+    //     path: Value.ofNullable(path));
+    // return db.downloadsDao.createDownload(dc);
   }
 
   static Future<String> getUserStoragePath() async {
-    final db = AppDatabase().getDatabase;
-    final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
-    if (settings.downloadPath != null && settings.downloadPath!.isNotEmpty) {
-      return settings.downloadPath!;
-    }
-    return getStoragePath();
+    throw UnimplementedError('Downloads not implemented yet');
+    // final db = AppDatabase().getDatabase;
+    // final settings = await db.settingsDao.getSettingsById(userApp!.settingsId);
+    // if (settings.downloadPath.isNotEmpty) {
+    //   return settings.downloadPath;
+    // }
+    // return getStoragePath();
   }
 
   static Future<String> getStoragePath() async {
@@ -98,8 +96,7 @@ class FileService {
   }
 
   /// Download a file and save it to filesystem
-  static Future<Response<dynamic>> downloadFileAndSaveToPath(
-      String url, String? path,
+  static Future<Response<dynamic>> downloadFileAndSaveToPath(String url, String? path,
       {BehaviorSubject<int>? stateOfDownload, CancelToken? cancelToken}) async {
     if (stateOfDownload != null) {
       return Dio().download(
@@ -126,8 +123,7 @@ class FileService {
     Response<List<int>> rs;
     rs = await Dio().get<List<int>>(
       url,
-      options: Options(
-          responseType: ResponseType.bytes), // set responseType to `bytes`
+      options: Options(responseType: ResponseType.bytes), // set responseType to `bytes`
     );
     return rs.data;
   }

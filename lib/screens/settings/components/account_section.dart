@@ -7,16 +7,18 @@ class AccountSection extends StatelessWidget {
   SettingsSection build(BuildContext context) {
     return SettingsSection(
       title: 'account'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.headline6,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       tiles: [
         SettingsTile(
             title: 'change_server'.tr(),
-            onPressed: (_) => customRouter.navigate(ServersRoute()),
+            onPressed: (_) => context.router.root.navigate(r.ServersPage()),
             trailing: Icon(Icons.arrow_forward)),
         SettingsTile(
             title: 'deconnect'.tr(),
-            subtitle: userApp?.name ?? 'Unknown'.tr(),
-            onPressed: (_) async => await AuthService.logout(),
+            subtitle: context.read<AuthenticationRepository>().currentUser.username,
+            onPressed: (_) {
+              context.read<AuthBloc>().add(LogoutRequested());
+            },
             trailing: UserIcon()),
       ],
     );

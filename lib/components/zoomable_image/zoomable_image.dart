@@ -6,20 +6,14 @@ class ZoomableImage extends StatefulWidget {
   final ZoomableImageController? zoomableImageController;
   final Color? overlay;
 
-  const ZoomableImage(
-      {super.key,
-      required this.imageWidget,
-      this.zoomableImageController,
-      this.overlay});
+  const ZoomableImage({super.key, required this.imageWidget, this.zoomableImageController, this.overlay});
 
   @override
   State<ZoomableImage> createState() => _ZoomableImageState();
 }
 
 class _ZoomableImageState extends State<ZoomableImage>
-    with
-        SingleTickerProviderStateMixin,
-        AutomaticKeepAliveClientMixin<ZoomableImage> {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late AnimationController _animationController;
   double scale = 1.0;
 
@@ -50,7 +44,7 @@ class _ZoomableImageState extends State<ZoomableImage>
 
   void updateScaleAnimation() {
     if (mounted) {
-      setState(() => scale = _animationController.value);
+      scale = _animationController.value;
     }
   }
 
@@ -60,15 +54,16 @@ class _ZoomableImageState extends State<ZoomableImage>
     return Stack(children: [
       scaleImage(),
       if (widget.overlay != null)
-        IgnorePointer(
-            child: SizedBox.expand(
-                child: ColoredBox(color: Colors.black.withAlpha(100)))),
+        IgnorePointer(child: SizedBox.expand(child: ColoredBox(color: Colors.black.withAlpha(100)))),
     ]);
   }
 
   Widget scaleImage() {
     if (widget.zoomableImageController != null) {
-      return Transform.scale(scale: scale, child: widget.imageWidget);
+      return AnimatedBuilder(
+          animation: _animationController,
+          builder: (_, child) => Transform.scale(scale: scale, child: child),
+          child: widget.imageWidget);
     } else {
       return widget.imageWidget;
     }

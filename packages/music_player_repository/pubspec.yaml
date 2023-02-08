@@ -1,0 +1,23 @@
+name: music_player_repository
+description: A repository that handle music player
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  jellyflut_models:
+    path: ../jellyflut_models
+  music_player_api:
+    path: ../music_player_api
+  rxdart: ^0.27.4
+  sqlite_database:
+    path: ../sqlite_database
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic: ^1.11.1

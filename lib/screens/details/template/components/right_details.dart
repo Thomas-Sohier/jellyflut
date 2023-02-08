@@ -1,129 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/details/template/components/action_button/details_button_row_buider.dart';
-import 'package:jellyflut/screens/details/template/components/collection.dart';
-import 'package:jellyflut/screens/details/template/components/details/quick_infos.dart';
-import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
-import 'package:jellyflut/screens/details/template/components/items_collection/tab_header.dart';
-import 'package:jellyflut/services/item/item_service.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/album/album.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
-class RightDetails extends StatefulWidget {
-  final Item item;
-  final Widget? posterAndLogoWidget;
-  RightDetails({super.key, required this.item, this.posterAndLogoWidget});
+import 'action_button/details_button_row_buider.dart';
+import 'details/header.dart';
+import 'details/quick_infos.dart';
+import 'details_widgets.dart';
+import 'items_collection/seasons/seasons.dart';
 
-  @override
-  State<RightDetails> createState() => _RightDetailsState();
-}
-
-class _RightDetailsState extends State<RightDetails>
-    with SingleTickerProviderStateMixin {
-  TabController? _tabController;
-  bool isHeaderPinned = false;
-  late Item item;
-  late final BehaviorSubject<int> _indexStream;
-  late final ScrollController _scrollController;
-  late final Future<Category> seasons;
-  static const contentPadding = EdgeInsets.symmetric(horizontal: 12);
-  static const horizotalScrollbaleWidgetPadding = EdgeInsets.only(left: 12);
-
-  @override
-  void initState() {
-    super.initState();
-    item = widget.item;
-    _scrollController = ScrollController();
-    _indexStream = BehaviorSubject.seeded(0);
-    seasons = ItemService.getItems(
-        parentId: item.id,
-        limit: 100,
-        fields: 'ImageTags, RecursiveItemCount',
-        filter: 'IsFolder');
-    _tabController = TabController(length: item.childCount ?? 0, vsync: this);
-    _tabController!.addListener(() {
-      _indexStream.add(_tabController!.index);
-    });
-  }
-
-  @override
-  void didUpdateWidget(RightDetails oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    item = widget.item;
-  }
-
-  @override
-  void dispose() {
-    _tabController?.dispose();
-    super.dispose();
-  }
+class RightDetails extends StatelessWidget {
+  const RightDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SliverPadding boxAdapter(Widget? child) {
-      return SliverPadding(
-          padding: contentPadding,
-          sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
-    }
-
-    return CustomScrollView(
-        controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        slivers: [
-          boxAdapter(const SizedBox(height: 48)),
-          boxAdapter(widget.posterAndLogoWidget),
-          boxAdapter(const SizedBox(height: 24)),
-          boxAdapter(Align(
-              alignment: Alignment.centerLeft,
-              child: DetailsButtonRowBuilder(item: item))),
-          boxAdapter(const SizedBox(height: 36)),
-          boxAdapter(TaglineDetailsWidget(item: item)),
-          boxAdapter(const SizedBox(height: 24)),
-          boxAdapter(Row(children: [
-            TitleDetailsWidget(title: item.name),
-            const SizedBox(width: 8),
-            RatingDetailsWidget(rating: item.officialRating),
-          ])),
-          if (item.haveDifferentOriginalTitle())
-            boxAdapter(OriginalTitleDetailsWidget(title: item.originalTitle)),
-          boxAdapter(const SizedBox(height: 8)),
-          boxAdapter(QuickInfos(item: item)),
-          boxAdapter(const SizedBox(height: 12)),
-          boxAdapter(OverviewDetailsWidget(overview: item.overview)),
-          boxAdapter(const SizedBox(height: 24)),
-          boxAdapter(ProvidersDetailsWidget(item: item)),
-          boxAdapter(const SizedBox(height: 12)),
-          SliverToBoxAdapter(
-              child: PeoplesDetailsWidget(
-            item: item,
-            padding: horizotalScrollbaleWidgetPadding,
-          )),
-          // Shown only if current item is a series (because it contains seasons)
-          if (item.type == ItemType.SERIES)
-            SliverPersistentHeader(
-              pinned: true,
-              floating: false,
-              delegate: TabHeader(
-                  seasons: seasons,
-                  tabController: _tabController,
-                  padding: horizotalScrollbaleWidgetPadding),
-            ),
-          boxAdapter(SeasonEpisode()),
-          boxAdapter(const SizedBox(height: 24)),
-        ]);
+    return BlocBuilder<DetailsBloc, DetailsState>(
+      buildWhen: (previous, current) => previous.item != current.item,
+      builder: (context, state) => scrollView(state.item),
+    );
   }
 
-  Widget SeasonEpisode() {
-    return FutureBuilder<Category>(
-        future: seasons,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Collection(item,
-                indexStream: _indexStream,
-                seasons: snapshot.data?.items ?? <Item>[]);
-          }
-          return const SizedBox();
-        });
+  Widget scrollView(final Item item) {
+    return CustomScrollView(
+      scrollDirection: Axis.vertical,
+      slivers: [
+        const SliverToBoxAdapter(child: Header()),
+        const DetailsButtonRowBuilder(),
+        const _BoxAdaptater(TaglineDetailsWidget()),
+        const _BoxAdaptater(SizedBox(height: 24)),
+        _BoxAdaptater(Row(children: const [
+          TitleDetailsWidget(),
+          SizedBox(width: 8),
+          RatingDetailsWidget(),
+        ])),
+        const _BoxAdaptater(OriginalTitleDetailsWidget()),
+        const _BoxAdaptater(SizedBox(height: 8)),
+        const _BoxAdaptater(QuickInfos()),
+        const _BoxAdaptater(SizedBox(height: 12)),
+        const _BoxAdaptater(OverviewDetailsWidget()),
+        const _BoxAdaptater(SizedBox(height: 24)),
+        const _BoxAdaptater(ProvidersDetailsWidget()),
+        const _BoxAdaptater(SizedBox(height: 12)),
+        const PeoplesDetailsWidget(), // Shown only if current item is a not a person
+        const Seasons(), // Shown only if current item is a series (because it contains seasons)
+        const Album(), // Shown only if current item is an album (because it contains songs and discs)
+        const _BoxAdaptater(SizedBox(height: 24)),
+      ],
+    );
+  }
+}
+
+class _BoxAdaptater extends StatelessWidget {
+  final Widget? child;
+
+  const _BoxAdaptater(this.child);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+        padding: context.read<DetailsBloc>().state.contentPadding,
+        sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
   }
 }

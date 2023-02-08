@@ -1,51 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/mixins/details_mixin.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/details/header.dart';
-import 'package:jellyflut/screens/details/template/components/right_details.dart';
 import 'package:jellyflut/screens/details/template/skeleton_right_details.dart';
 
-class AsyncRightDetails extends StatefulWidget {
-  final Item item;
-  final BoxConstraints constraints;
+import 'components/right_details.dart';
 
-  AsyncRightDetails({super.key, required this.item, required this.constraints});
+class AsyncRightDetails extends StatelessWidget {
+  const AsyncRightDetails({super.key});
 
-  @override
-  State<AsyncRightDetails> createState() => _AsyncRightDetailsState();
-}
-
-class _AsyncRightDetailsState extends State<AsyncRightDetails>
-    with DetailsMixin {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DetailsBloc, DetailsState>(
-        bloc: getDetailsBloc,
-        listener: (_, detailsState) => {},
+    return BlocBuilder<DetailsBloc, DetailsState>(
+        buildWhen: (previous, current) => previous.detailsStatus != current.detailsStatus,
         builder: (_, detailsState) {
-          return FutureBuilder<Item>(
-              future: detailsState.detailsInfosFuture.item,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return RightDetails(
-                      item: snapshot.data!,
-                      posterAndLogoWidget: Header(
-                          item: widget.item, constraints: widget.constraints));
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ListView(
-                    children: [
-                      const SizedBox(height: 48),
-                      Header(
-                          item: widget.item, constraints: widget.constraints),
-                      const SkeletonRightDetails(),
-                    ],
-                  ),
-                );
-              });
+          switch (detailsState.detailsStatus) {
+            case DetailsStatus.initial:
+            case DetailsStatus.loading:
+              return const RightDetailsShimmer();
+            case DetailsStatus.success:
+              return const RightDetails();
+            default:
+              return const SizedBox();
+          }
         });
+  }
+}
+
+class RightDetailsShimmer extends StatelessWidget {
+  const RightDetailsShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: const [
+        Header(),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: SkeletonRightDetails()),
+      ],
+    );
   }
 }

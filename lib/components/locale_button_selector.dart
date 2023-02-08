@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 class LocaleButtonSelector extends StatelessWidget {
   final bool showCurrentValue;
   final GlobalKey<PopupMenuButtonState<Locale>>? localeKey;
-  const LocaleButtonSelector(
-      {super.key, this.localeKey, this.showCurrentValue = false});
+  const LocaleButtonSelector({super.key, this.localeKey, this.showCurrentValue = false});
 
   @override
   Widget build(BuildContext context) {

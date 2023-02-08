@@ -53,8 +53,7 @@ class Lava {
 
   void updateSize(Size size) {
     this.size = size;
-    sRect = Rect.fromCenter(
-        center: Offset.zero, width: sx.toDouble(), height: sy.toDouble());
+    sRect = Rect.fromCenter(center: Offset.zero, width: sx.toDouble(), height: sy.toDouble());
 
     matrix = {};
     print(sx);
@@ -62,8 +61,7 @@ class Lava {
     for (var i = (sRect.left - step).toInt(); i < sRect.right + step; i++) {
       matrix[i] = {};
       for (var j = (sRect.top - step).toInt(); j < sRect.bottom + step; j++) {
-        matrix[i]?[j] = ForcePoint(
-            (i + sx ~/ 2).toDouble() * step, (j + sy ~/ 2).toDouble() * step);
+        matrix[i]?[j] = ForcePoint((i + sx ~/ 2).toDouble() * step, (j + sy ~/ 2).toDouble() * step);
       }
     }
     balls = List.filled(ballsLength, null);
@@ -82,10 +80,7 @@ class Lava {
       for (final ball in balls) {
         force += ball!.size *
             ball.size /
-            (-2 * point.x * ball.pos.x -
-                2 * point.y * ball.pos.y +
-                ball.pos.magnitude +
-                point.magnitude);
+            (-2 * point.x * ball.pos.x - 2 * point.y * ball.pos.y + ball.pos.magnitude + point.magnitude);
       }
       force *= sign;
     }
@@ -111,10 +106,9 @@ class Lava {
       final dx = ix[a + 12];
       final dy = ix[a + 16];
       var force = matrix[sx + dx]?[sy + dy]?.force;
-      if (force == null ||
-          force > 0 && sign < 0 ||
-          force < 0 && sign > 0 ||
-          force == 0) force = computeForce(sx + dx, sy + dy);
+      if (force == null || force > 0 && sign < 0 || force < 0 && sign > 0 || force == 0) {
+        force = computeForce(sx + dx, sy + dy);
+      }
       if (force.abs() > 1) mscase += pow(2, a).toInt();
     }
 
@@ -136,8 +130,7 @@ class Lava {
     final dx2 = plx[4 * dir + 3];
     final dy2 = ply[4 * dir + 3];
     final pForce2 = matrix[sx + dx2]?[sy + dy2]?.force;
-    final p =
-        step / ((pForce1!.abs() - 1).abs() / (pForce2!.abs() - 1).abs() + 1.0);
+    final p = step / ((pForce1!.abs() - 1).abs() / (pForce2!.abs() - 1).abs() + 1.0);
 
     final dxX = plx[4 * dir];
     final dyX = ply[4 * dir];
@@ -168,11 +161,7 @@ class Lava {
 
       for (final ball in balls) {
         var path = Path();
-        List<int?>? params = [
-          (ball!.pos.x / step - sx / 2).round(),
-          (ball.pos.y / step - sy / 2).round(),
-          null
-        ];
+        List<int?>? params = [(ball!.pos.x / step - sx / 2).round(), (ball.pos.y / step - sy / 2).round(), null];
         do {
           params = marchingSquares(params!, path);
         } while (params != null);
@@ -192,8 +181,8 @@ class Lava {
 
     if (debug) {
       for (var ball in balls) {
-        canvas.drawCircle(Offset(ball!.pos.x.toDouble(), ball.pos.y.toDouble()),
-            ball.size, Paint()..color = Colors.black.withOpacity(0.5));
+        canvas.drawCircle(Offset(ball!.pos.x.toDouble(), ball.pos.y.toDouble()), ball.size,
+            Paint()..color = Colors.black.withOpacity(0.5));
       }
 
       matrix.forEach((_, item) => item.forEach((_, point) => canvas.drawCircle(

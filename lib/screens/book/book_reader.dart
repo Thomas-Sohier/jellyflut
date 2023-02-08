@@ -1,22 +1,20 @@
 // ignore: unused_import
 import 'dart:async';
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:downloads_repository/downloads_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:logging/logging.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/models/enum/book_extensions.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
 import 'package:jellyflut/screens/book/compact_book_view.dart';
 import 'package:jellyflut/screens/book/components/comic_view.dart';
 import 'package:jellyflut/screens/book/components/epub_view.dart';
-import 'package:jellyflut/screens/book/large_book_view.dart';
 import 'package:jellyflut/screens/book/util/book_utils.dart';
-import 'package:jellyflut/shared/responsive_builder.dart';
 
 import 'package:rxdart/subjects.dart';
 import 'package:shu_epub/shu_epub.dart';
@@ -43,10 +41,10 @@ class _BookReaderPageState extends State<BookReaderPage> {
     item = widget.item;
     bookBloc = BookBloc();
     bookBloc.add(BookLoading());
-    final book = BookUtils.loadItemBook(widget.item);
+    final book = context.read<DownloadsRepository>().downloadItem(itemId: item.id);
+    // BookUtils.loadItemBook(widget.item);
     constructView(book).catchError((error) {
-      log('cannot_open_file'.tr(args: [widget.item.name]),
-          level: 3, error: 'error_unzip_file'.tr());
+      log('cannot_open_file'.tr(args: [widget.item.name ?? '']), level: 3, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
     });
     super.initState();
@@ -60,7 +58,9 @@ class _BookReaderPageState extends State<BookReaderPage> {
     super.dispose();
   }
 
-  Future<void> constructView(Future<Uint8List> book) async {
+  Future<void> constructView(Future<Uint8List> bookFuture) async {
+    final book = await bookFuture;
+    await context.read<DownloadsRepository>().saveFile(bytes: book, item: item);
     final fileExtension = item.getFileExtension();
     final bookExtension = BookExtensions.fromString(fileExtension);
     switch (bookExtension) {
@@ -75,8 +75,7 @@ class _BookReaderPageState extends State<BookReaderPage> {
         break;
       case BookExtensions.EPUB:
       default:
-        final epubController =
-            EpubArchiveController(await book, enableCache: true);
+        final epubController = EpubArchiveController(book, enableCache: true);
         final bookView = await constructEpubView(epubController);
         bookBloc.add(BookLoaded(bookView: bookView));
         RawKeyboard.instance.addListener(_onKey);
@@ -87,14 +86,10 @@ class _BookReaderPageState extends State<BookReaderPage> {
     if (e.runtimeType.toString() == 'RawKeyDownEvent') {
       switch (e.logicalKey.debugName) {
         case 'Arrow Right':
-          await _controller.nextPage(
-              duration: Duration(milliseconds: 400),
-              curve: Curves.fastLinearToSlowEaseIn);
+          await _controller.nextPage(duration: Duration(milliseconds: 400), curve: Curves.fastLinearToSlowEaseIn);
           break;
         case 'Arrow Left':
-          await _controller.previousPage(
-              duration: Duration(milliseconds: 400),
-              curve: Curves.fastLinearToSlowEaseIn);
+          await _controller.previousPage(duration: Duration(milliseconds: 400), curve: Curves.fastLinearToSlowEaseIn);
           break;
       }
     }
@@ -104,13 +99,12 @@ class _BookReaderPageState extends State<BookReaderPage> {
     try {
       final comicView = ComicView(
           archive: archive,
-          listener: (currentPage, nbPage) =>
-              _pageListener.add({currentPage: nbPage}),
+          listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}),
           controller: _controller);
       bookBloc.add(BookLoaded(bookView: comicView));
       _pageListener.add({0: archive.length});
     } catch (error) {
-      log('cannot_open_file'.tr(args: [widget.item.name]),
+      log('cannot_open_file'.tr(args: [widget.item.name ?? '']),
           level: Level.SEVERE.value, error: 'error_unzip_file'.tr());
       bookBloc.add(BookLoadingError(error.toString()));
     }
@@ -122,33 +116,16 @@ class _BookReaderPageState extends State<BookReaderPage> {
     return EpubView(
         controller: _controller,
         epubDetails: epubDetails!,
-        listener: (currentPage, nbPage) =>
-            _pageListener.add({currentPage: nbPage}));
+        listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder.builder(
-        mobile: () => CompactBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})),
-        tablet: () => CompactBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})),
-        desktop: () => LargeBookView(
-            item: item,
-            bookBloc: bookBloc,
-            pageController: _controller,
-            streamPosition: _pageListener,
-            listener: (currentPage, nbPage) =>
-                _pageListener.add({currentPage: nbPage})));
+    return CompactBookView(
+        item: item,
+        bookBloc: bookBloc,
+        pageController: _controller,
+        streamPosition: _pageListener,
+        listener: (currentPage, nbPage) => _pageListener.add({currentPage: nbPage}));
   }
 }

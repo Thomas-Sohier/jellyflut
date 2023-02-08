@@ -1,22 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/async_image.dart';
+import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Logo extends StatelessWidget {
   final Item item;
   final bool selectable;
   final EdgeInsets padding;
   final BoxConstraints constraints;
-  final actions = <Type, Action<Intent>>{
-    ActivateIntent: CallbackAction<Intent>(
-      onInvoke: (Intent intent) => customRouter.pop(),
-    ),
-  };
 
-  Logo({
+  const Logo({
     super.key,
     required this.item,
     this.selectable = true,
@@ -27,10 +21,7 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (selectable) {
-      return OutlinedButtonSelector(
-          padding: padding,
-          onPressed: () => logoDialog(context),
-          child: logo(context));
+      return OutlinedButtonSelector(padding: padding, onPressed: () => logoDialog(context), child: logo(context));
     }
     return logo(context);
   }
@@ -41,14 +32,17 @@ class Logo extends StatelessWidget {
         barrierColor: Colors.black.withOpacity(0.64),
         builder: (_) {
           return GestureDetector(
-            onTap: () => customRouter.pop(),
+            onTap: () => context.router.root.pop(),
             child: FocusableActionDetector(
                 autofocus: true,
                 descendantsAreFocusable: false,
                 mouseCursor: SystemMouseCursors.click,
-                actions: actions,
-                child: Center(
-                    child: logo(context, BoxConstraints(maxWidth: 960)))),
+                actions: <Type, Action<Intent>>{
+                  ActivateIntent: CallbackAction<Intent>(
+                    onInvoke: (Intent intent) => context.router.pop(),
+                  ),
+                },
+                child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });
   }
@@ -60,9 +54,7 @@ class Logo extends StatelessWidget {
           item: item,
           showParent: true,
           boxFit: BoxFit.contain,
-          errorWidget: (_, __, ___) => const SizedBox(),
-          placeholder: (_) => const SizedBox(),
-          tag: ImageType.LOGO,
+          imageType: ImageType.Logo,
         ));
   }
 }

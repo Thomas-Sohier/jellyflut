@@ -1,102 +1,90 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/components/fav_button.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart';
-import 'package:jellyflut/screens/music_player/models/audio_metadata.dart';
-import 'package:jellyflut/screens/music_player/models/audio_source.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/fav_button/fav_button.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
+import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 
-class SongInfos extends StatefulWidget {
+class SongInfos extends StatelessWidget {
   const SongInfos({super.key});
 
   @override
-  State<SongInfos> createState() => _SongInfosState();
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [SongTitleLabel(), SongArtistLabel()],
+        ),
+        const SongFavButton()
+      ],
+    );
+  }
 }
 
-class _SongInfosState extends State<SongInfos> {
-  late MusicProvider musicProvider;
-  AudioMetadata? audioMetadata;
+class SongTitleLabel extends StatelessWidget {
+  const SongTitleLabel({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MusicProvider>(builder: (context, mp, child) {
-      musicProvider = mp;
-      setAudioMetadata();
-      return infos();
-    });
+    return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+          buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+          builder: (context, state) => Text(state.currentlyPlaying?.metadata.title ?? '',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+        ));
   }
+}
 
-  Widget infos() {
-    return StreamBuilder<AudioSource>(
-        stream: musicProvider.getCurrentMusicStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            final metadata = snapshot.data!.metadata;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    songTitleLabel(metadata),
-                    songArtistLabel(metadata)
-                  ],
-                ),
-                songFavButton(metadata)
-              ],
+class SongArtistLabel extends StatelessWidget {
+  const SongArtistLabel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+        buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+        builder: (context, state) {
+          final audioSource = state.currentlyPlaying;
+
+          if (audioSource != null && audioSource.metadata.artist.isNotEmpty) {
+            return GestureDetector(
+              onTap: () async {
+                if (audioSource.metadata.artist.isNotEmpty) {
+                  await context.router.root.push(r.DetailsPage(item: audioSource.metadata.item, heroTag: ''));
+                }
+              },
+              child: Text(
+                audioSource.metadata.artist,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             );
           }
           return SizedBox();
         });
   }
+}
 
-  Widget songTitleLabel(AudioMetadata metadata) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Text(metadata.title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              ?.copyWith(fontWeight: FontWeight.bold)),
-    );
-  }
+class SongFavButton extends StatelessWidget {
+  const SongFavButton({super.key});
 
-  Widget songArtistLabel(AudioMetadata metadata) {
-    if (metadata.artist.isNotEmpty) {
-      return GestureDetector(
-        onTap: () async {
-          if (metadata.artist.isNotEmpty) {
-            await customRouter
-                .push(DetailsRoute(item: audioMetadata!.item, heroTag: ''));
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+        buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+        builder: (context, state) {
+          if (state.currentlyPlaying != null) {
+            return FavButton(
+              item: state.currentlyPlaying!.metadata.item,
+              size: 36,
+              padding: const EdgeInsets.all(10),
+            );
           }
-        },
-        child: Text(
-          metadata.artist,
-          style: Theme.of(context).textTheme.headline6,
-        ),
-      );
-    }
-    return SizedBox();
-  }
-
-  Widget songFavButton(AudioMetadata metadata) {
-    return FittedBox(
-      child: FavButton(
-        metadata.item,
-        size: 36,
-        padding: EdgeInsets.all(10),
-      ),
-    );
-  }
-
-  void setAudioMetadata() {
-    final currentMusic = musicProvider.getCurrentMusic();
-    if (currentMusic != null) {
-      audioMetadata = currentMusic.metadata;
-    }
+          return const SizedBox();
+        });
   }
 }

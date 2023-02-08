@@ -1,68 +1,52 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/services/item/item_service.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/screens/form/bloc/form_builder/form_builder.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 part 'form_event.dart';
 part 'form_state.dart';
 
-class FormBloc<T extends Object> extends Bloc<FormEvent<T>, FormState<T>> {
-  late FormGroup formGroup;
-  late T value;
+class FormBloc extends Bloc<FormEvent, FormState> {
+  final ItemsRepository _itemsRepository;
 
-  FormBloc() : super(RefreshedState(form: FormGroup({}))) {
-    on<FormEvent<T>>(_onEvent);
+  FormBloc({required ItemsRepository itemsRepository, required Item item})
+      : _itemsRepository = itemsRepository,
+        super(FormState(formBuilder: InitialFormBuilder(item: item), item: item)) {
+    on<InitForm>(_initForm);
+    on<FormSubmitted>(_submitForm);
+    on<ResetForm>(_resetForm);
   }
 
-  void _onEvent(FormEvent<T> event, Emitter<FormState<T>> emit) async {
-    if (event is CurrentForm<T>) {
-      formGroup = event.formGroup;
-      value = event.value;
-    } else if (event is FormSubmitted && value is Item) {
-      await _updateItem(value, emit);
-    } else if (event is RefreshForm) {
-      emit(RefreshedState(form: FormGroup({})));
+  void _initForm(InitForm event, Emitter<FormState> emit) {
+    emit(state.copyWith(formStatus: FormStatus.loading));
+    late final FormBuilder formBuilder;
+    switch (state.item.type) {
+      case ItemType.Movie:
+        formBuilder = MovieFormBuilder(item: state.item);
+        break;
+      default:
+        formBuilder = InitialItemFormBuilder(item: state.item);
+    }
+    emit(state.copyWith(formBuilder: formBuilder, formStatus: FormStatus.loaded));
+  }
+
+  void _resetForm(ResetForm event, Emitter<FormState> emit) {
+    emit(state.copyWith(formBuilder: InitialFormBuilder(item: state.item), formStatus: FormStatus.loaded));
+  }
+
+  Future<void> _submitForm(FormSubmitted event, Emitter<FormState> emit) async {
+    state.formBuilder.formGroup.markAllAsTouched();
+    if (state.formBuilder.formGroup.valid) {
+      return _submitItemForm(emit);
     }
   }
 
-  Future<void> _updateItem(final T item, Emitter<FormState<T>> emit) async {
-    formGroup.markAllAsTouched();
-    if (formGroup.valid) {
-      // Add necesary data to the item to update it
-      final form = Map<String, Object?>.from(formGroup.value);
-      item as Item;
-
-      _parseFormToValue(form, item);
-      _defaultRequiredValue(form, item);
-
-      // Update item
-      await ItemService.updateItemFromForm(id: item.id, form: form)
-          .then((_) => emit(FormSubmittedState<T>(
-              message: 'Item updated', value: value, form: formGroup)))
-          .onError((e, s) =>
-              emit(FormErrorState(form: formGroup, error: e.toString())));
-    }
-  }
-
-  void _defaultRequiredValue(final Map<String, Object?> form, final Item item) {
-    form.putIfAbsent(FieldsEnum.ALBUMARTISTS.name, () => item.albumArtist);
-    form.putIfAbsent(FieldsEnum.ARTISTITEMS.name, () => item.artistItems);
-    form.putIfAbsent(FieldsEnum.PEOPLE.name, () => item.people);
-    form.putIfAbsent(FieldsEnum.AIRDAYS.name, () => []);
-    form.putIfAbsent(FieldsEnum.GENRES.name, () => item.genres);
-    form.putIfAbsent(FieldsEnum.TAGS.name, () => item.tags);
-    form.putIfAbsent(FieldsEnum.LOCKEDFIELDS.name, () => item.lockedFields);
-    form.putIfAbsent(FieldsEnum.PROVIDERIDS.name, () => item.providerIds);
-  }
-
-  void _parseFormToValue(final Map<String, Object?> form, final Item item) {
-    final form = Map<String, Object?>.from(formGroup.value);
-    form.forEach((key, value) {
-      item[key] = value;
-    });
-    value = item as T;
+  Future<void> _submitItemForm(Emitter<FormState> emit) {
+    return _itemsRepository
+        .updateItem(item: state.formBuilder.formToItem())
+        .then((_) => emit(state.copyWith(formStatus: FormStatus.submitted)))
+        .onError((_, __) => emit(state.copyWith(formStatus: FormStatus.failure)));
   }
 }

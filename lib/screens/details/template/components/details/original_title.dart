@@ -1,18 +1,18 @@
 part of '../details_widgets.dart';
 
 class OriginalTitleDetailsWidget extends StatelessWidget {
-  final String? title;
-  const OriginalTitleDetailsWidget({super.key, required this.title});
+  const OriginalTitleDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (title == null) return SizedBox();
+    final state = context.read<DetailsBloc>().state;
+    if (!state.item.haveDifferentOriginalTitle()) return const SizedBox();
     return Align(
         alignment: Alignment.centerLeft,
         child: SelectableText(
-          title!,
+          state.item.originalTitle!,
           textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ));
   }
 }

@@ -1,9 +1,9 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/class/servers_with_users.dart';
-import 'package:jellyflut/database/database.dart';
-import 'package:jellyflut/globals.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/server/server_item.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class ServerParent extends StatefulWidget {
   ServerParent({super.key});
@@ -22,7 +22,7 @@ class _ServerParentState extends State<ServerParent> {
     super.initState();
     _database = AppDatabase().getDatabase;
     _scrollController = ScrollController();
-    _serversWithUsers = _database.serversDao.watchAllServersWithUsers;
+    _serversWithUsers = _database.serversDao.watchAllServersWithUserApp;
   }
 
   @override
@@ -37,7 +37,7 @@ class _ServerParentState extends State<ServerParent> {
         appBar: AppBar(
             title: Text(
           'servers'.tr(),
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         )),
         body: Align(
           alignment: Alignment.topCenter,
@@ -53,14 +53,11 @@ class _ServerParentState extends State<ServerParent> {
                         controller: _scrollController,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (_, index) {
-                          final serverWithUser =
-                              snapshot.data!.elementAt(index);
-                          final isInUse =
-                              serverWithUser.server.id == userApp!.serverId;
+                          final serverWithUser = snapshot.data!.elementAt(index);
+                          final currentServer = context.read<AuthenticationRepository>().currentServer;
+                          final isInUse = serverWithUser.server.id == currentServer.id;
                           return ServerItem(
-                              key: ValueKey(serverWithUser),
-                              serverWithUser: serverWithUser,
-                              isInUse: isInUse);
+                              key: ValueKey(serverWithUser), serverWithUser: serverWithUser, isInUse: isInUse);
                         });
                   } else if (snapshot.hasError) {
                     return Center(child: Text(snapshot.error.toString()));

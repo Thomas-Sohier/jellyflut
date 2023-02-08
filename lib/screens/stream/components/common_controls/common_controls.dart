@@ -1,52 +1,39 @@
-import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/components/layout_builder_screen.dart';
+import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_desktop.dart';
 import 'package:jellyflut/screens/stream/components/common_controls/common_controls_phone.dart';
+import 'package:jellyflut/screens/stream/cubit/stream_cubit.dart';
 
 class CommonControls extends StatefulWidget {
-  final bool isComputer;
-
-  const CommonControls({super.key, this.isComputer = false});
+  const CommonControls({super.key});
 
   @override
   State<CommonControls> createState() => _CommonControlsState();
 }
 
 class _CommonControlsState extends State<CommonControls> {
-  final ValueNotifier<bool> _visible = ValueNotifier(false);
-  late final StreamingProvider streamingProvider;
-  late Timer _timer;
-
   @override
   void initState() {
     super.initState();
-    streamingProvider = StreamingProvider();
-    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
     RawKeyboard.instance.addListener(_onKey);
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    streamingProvider.timer?.cancel();
     RawKeyboard.instance.removeListener(_onKey);
     super.dispose();
   }
 
   void _onKey(RawKeyEvent e) {
     if (e.runtimeType.toString() == 'RawKeyDownEvent') {
-      autoHideControlHover();
+      context.read<StreamCubit>().autoHideControlTimer();
       switch (e.logicalKey.debugName) {
         case 'Media Play Pause':
-          if (streamingProvider.commonStream!.isPlaying()) {
-            streamingProvider.commonStream!.pause();
-          } else {
-            streamingProvider.commonStream!.play();
-          }
+          context.read<StreamCubit>().togglePlay();
           break;
       }
     }
@@ -54,40 +41,28 @@ class _CommonControlsState extends State<CommonControls> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return SizedBox.expand(
-        child: GestureDetector(
-            onTap: autoHideControl,
-            behavior: HitTestBehavior.translucent,
-            child: MouseRegion(
-                opaque: false,
-                onHover: (PointerHoverEvent event) =>
-                    event.kind == PointerDeviceKind.mouse
-                        ? autoHideControlHover()
-                        : {},
-                child: ValueListenableBuilder<bool>(
-                    builder: (context, value, child) {
-                      return Visibility(
-                          visible: value, child: child ?? const SizedBox());
-                    },
-                    valueListenable: _visible,
-                    child: const Controls()))),
-      );
-    });
-  }
-
-  Future<void> autoHideControl() async {
-    _timer.cancel();
-    _visible.value = !_visible.value;
-    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
-  }
-
-  Future<void> autoHideControlHover() async {
-    _timer.cancel();
-    if (_visible.value == false) {
-      _visible.value = true;
-    }
-    _timer = Timer(Duration(seconds: 5), () => _visible.value = false);
+    return SizedBox.expand(
+      child: GestureDetector(
+          onTap: context.read<StreamCubit>().toggleControl,
+          behavior: HitTestBehavior.translucent,
+          child: MouseRegion(
+              opaque: false,
+              onHover: (PointerHoverEvent event) =>
+                  event.kind == PointerDeviceKind.mouse ? context.read<StreamCubit>().autoHideControlTimer() : {},
+              child: SubtreeBuilder(
+                  builder: (_, child) => BlocBuilder<StreamCubit, StreamState>(
+                        buildWhen: (previous, current) => previous.visible != current.visible,
+                        builder: (_, state) => Visibility(
+                            maintainSize: false,
+                            maintainAnimation: false,
+                            maintainState: true,
+                            maintainSemantics: false,
+                            maintainInteractivity: false,
+                            visible: state.visible,
+                            child: child ?? const SizedBox()),
+                      ),
+                  child: const Controls()))),
+    );
   }
 }
 
@@ -96,11 +71,12 @@ class Controls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilderScreen(builder: (_, constraints, type) {
+      if (type.isAndroidTv) return const CommonControlsPhone();
       if (constraints.maxWidth > 960) {
-        return CommonControlsDesktop();
+        return const CommonControlsDesktop();
       }
-      return CommonControlsPhone();
+      return const CommonControlsPhone();
     });
   }
 }

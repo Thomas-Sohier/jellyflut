@@ -15,8 +15,7 @@ class ForcePoint<T extends double> {
   double computed = 0;
   double force = 0;
 
-  ForcePoint<T> add(ForcePoint<T> point) =>
-      ForcePoint(point.x + x, point.y + y);
+  ForcePoint<T> add(ForcePoint<T> point) => ForcePoint(point.x + x, point.y + y);
 
   ForcePoint copyWith({T? x, T? y}) => ForcePoint(x ?? this.x, y ?? this.y);
 }
@@ -27,21 +26,16 @@ class Ball {
   late double size;
 
   Ball(Size size) {
-    double vel({double ratio = 1}) =>
-        (Random().nextDouble() > .5 ? 1 : -1) *
-        (.2 + .25 * Random().nextDouble());
+    double vel({double ratio = 1}) => (Random().nextDouble() > .5 ? 1 : -1) * (.2 + .25 * Random().nextDouble());
     velocity = ForcePoint(vel(ratio: 0.25), vel());
 
     var i = .1;
     var h = 1.5;
 
-    double calculatePosition(double fullSize) =>
-        Random().nextDouble() * fullSize;
-    pos = ForcePoint(
-        calculatePosition(size.width), calculatePosition(size.height));
+    double calculatePosition(double fullSize) => Random().nextDouble() * fullSize;
+    pos = ForcePoint(calculatePosition(size.width), calculatePosition(size.height));
 
-    this.size = size.shortestSide / 15 +
-        (Random().nextDouble() * (h - i) + i) * (size.shortestSide / 15);
+    this.size = size.shortestSide / 15 + (Random().nextDouble() * (h - i) + i) * (size.shortestSide / 15);
   }
 
   void moveIn(Size size) {

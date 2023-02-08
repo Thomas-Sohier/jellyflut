@@ -1,21 +1,20 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthEvent {}
-
-///Check auth state.
-class CheckAuthState extends AuthEvent {}
+abstract class AuthEvent {
+  const AuthEvent();
+}
 
 // Server form is filled
 class AuthServerAdded extends AuthEvent {
-  final Server server;
+  final ServerDto server;
 
   AuthServerAdded(this.server);
 }
 
 // User form is filled
 class AuthUserAdded extends AuthEvent {
-  final User user;
+  final UserDto user;
 
   AuthUserAdded(this.user);
 }
@@ -25,16 +24,21 @@ class RequestAuth extends AuthEvent {
   final String username;
   final String password;
 
-  RequestAuth({required this.username, required this.password});
+  const RequestAuth({required this.username, required this.password});
 }
 
 /// Error handling.
 class AuthError extends AuthEvent {
-  AuthError(this.error);
+  const AuthError(this.error);
   final String error;
 }
 
-class BackToFirstForm extends AuthEvent {}
+class BackToFirstForm extends AuthEvent {
+  final String username;
+  final String password;
+
+  const BackToFirstForm({required this.username, required this.password});
+}
 
 /// Reset states to unauthenticated.
 /// To be used when the timer runs out or user cancels authentication, for
@@ -49,4 +53,4 @@ class AuthSuccessful extends AuthEvent {
 }
 
 /// LogOut the user.
-class LogOut extends AuthEvent {}
+class LogoutRequested extends AuthEvent {}

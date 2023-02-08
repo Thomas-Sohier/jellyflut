@@ -15,11 +15,8 @@ void showToast(String msg, FToast fToast, {Duration? duration}) {
       child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: borderRadius,
-                color: Colors.grey.shade200.withOpacity(0.5)),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            decoration: BoxDecoration(borderRadius: borderRadius, color: Colors.grey.shade200.withOpacity(0.5)),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
             child: Text(
               msg,
               style: TextStyle(color: Colors.black),

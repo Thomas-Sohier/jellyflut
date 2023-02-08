@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
 import '../action_button.dart';
 
 class DetailsButtonRowBuilder extends StatelessWidget {
-  final Item item;
-  const DetailsButtonRowBuilder({super.key, required this.item});
+  const DetailsButtonRowBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return buttonsLayout();
-  }
-
-  Widget buttonsLayout() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final buttonExpanded = constraints.maxWidth < 600;
-        late final maxWidth;
-        if (buttonExpanded) {
-          maxWidth = (constraints.maxWidth - 10) / 2;
-        } else {
-          maxWidth = 150.0;
-        }
-
-        return Wrap(
-          direction: Axis.horizontal,
-          spacing: 10,
-          runSpacing: 10,
-          children: [
-            if (item.isPlayableOrCanHavePlayableChilren() && buttonExpanded)
-              PlayButton(item: item, maxWidth: double.infinity),
-            if (item.isPlayableOrCanHavePlayableChilren() && !buttonExpanded)
-              PlayButton(item: item),
-            if (item.hasTrailer())
-              TrailerButton(item: item, maxWidth: maxWidth),
-            if (item.isViewable()) ViewedButton(item: item, maxWidth: maxWidth),
-            if (item.isDownloable())
-              DownloadButton(item: item, maxWidth: maxWidth),
-            LikeButton(item: item, maxWidth: maxWidth),
-            ManageButton(item: item, maxWidth: maxWidth)
+    final state = context.read<DetailsBloc>().state;
+    return SliverPadding(
+      padding: state.contentPadding,
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 250.0,
+          mainAxisExtent: 45,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+        ),
+        delegate: SliverChildListDelegate(
+          [
+            // if (state.item.isPlayableOrCanHavePlayableChilren()) const PlayButton(maxWidth: double.infinity),
+            if (state.item.hasTrailer()) const TrailerButton(maxWidth: double.infinity),
+            if (state.item.isViewable()) const ViewedButton(maxWidth: double.infinity),
+            if (state.item.isDownloable()) DownloadButton(maxWidth: double.infinity),
+            const LikeButton(maxWidth: double.infinity),
+            const ManageButton(maxWidth: double.infinity)
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

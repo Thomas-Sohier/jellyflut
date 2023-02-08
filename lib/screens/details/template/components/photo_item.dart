@@ -1,53 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/services/item/item_image_service.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class PhotoItem extends StatefulWidget {
-  final Item item;
-  final List<Item>? items;
-  final String? heroTag;
-
-  PhotoItem({super.key, required this.item, required this.heroTag, this.items});
-
-  @override
-  State<PhotoItem> createState() => _PhotoItemState();
-}
-
-class _PhotoItemState extends State<PhotoItem> {
-  late final PageController pageController;
-  @override
-  void initState() {
-    pageController = PageController();
-    super.initState();
-  }
+class PhotoItem extends StatelessWidget {
+  const PhotoItem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (widget.items != null && widget.items!.isEmpty) {
+    final heroTag = context.read<DetailsBloc>().state.heroTag;
+    final item = context.read<DetailsBloc>().state.item;
+    final items = <Item>[];
+    if (items.isEmpty) {
       return PhotoView(
-        heroAttributes: widget.heroTag != null
-            ? PhotoViewHeroAttributes(tag: widget.heroTag!)
-            : null,
-        imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
-            widget.item.correctImageId(), widget.item.correctImageTags()!)),
+        heroAttributes: heroTag != null ? PhotoViewHeroAttributes(tag: heroTag) : null,
+        imageProvider: NetworkImage(context
+            .read<ItemsRepository>()
+            .getItemImageUrl(itemId: item.correctImageId(), type: ImageType.Primary, tag: item.correctImageTags()!)),
       );
     }
-    return listOfPhoto(widget.items!);
+    return listOfPhoto(items);
   }
 
   Widget listOfPhoto(List<Item> items) {
-    var startAt = items.indexOf(widget.item);
-    pageController = PageController(initialPage: startAt);
+    const startAt = 0;
+    final pageController = PageController(initialPage: startAt);
     return PhotoViewGallery.builder(
       scrollPhysics: const BouncingScrollPhysics(),
       builder: (BuildContext context, int index) {
         var item = items[index];
         return PhotoViewGalleryPageOptions(
-          imageProvider: NetworkImage(ItemImageService.getItemImageUrl(
-              item.correctImageId(), item.correctImageTags()!)),
+          imageProvider: NetworkImage(context
+              .read<ItemsRepository>()
+              .getItemImageUrl(itemId: item.correctImageId(), type: ImageType.Primary, tag: item.correctImageTags()!)),
           initialScale: PhotoViewComputedScale.contained,
         );
       },
@@ -57,9 +46,7 @@ class _PhotoItemState extends State<PhotoItem> {
           width: 20.0,
           height: 20.0,
           child: CircularProgressIndicator(
-            value: event == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            value: event == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       ),

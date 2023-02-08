@@ -1,50 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
-import 'package:jellyflut/models/jellyfin/category.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/home/home_drawer_tabs_builder.dart';
-import 'package:jellyflut/screens/home/offline_screen.dart';
-import 'package:jellyflut/services/user/user_service.dart';
+
+import 'home_cubit/home_cubit.dart';
 
 class HomeParent extends StatefulWidget {
-  HomeParent({super.key});
+  const HomeParent({super.key});
 
   @override
   State<HomeParent> createState() => _HomeParentState();
 }
 
 class _HomeParentState extends State<HomeParent> {
-  late Future<Category> categoryFuture;
-
-  @override
-  void initState() {
-    categoryFuture = UserService.getLibraryViews();
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: MusicPlayerFAB(),
-      body: FutureBuilder<Category>(
-        future: categoryFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final items = snapshot.data?.items ?? <Item>[];
-            return HomeDrawerTabsBuilder(items: items);
-          } else if (snapshot.hasError) {
-            return OffLineScreen(
-                error: snapshot.error as Error?,
-                reloadFunction: () {
-                  setState(() {
-                    categoryFuture = UserService.getLibraryViews();
-                  });
-                });
-          }
-          return const SizedBox();
-        },
-      ),
-    );
+        floatingActionButton: const MusicPlayerFAB(),
+        body: BlocProvider<HomeCubit>(
+          create: (_) => HomeCubit(itemsRepository: context.read<ItemsRepository>()),
+          child: const HomeDrawerTabsBuilder(),
+        ));
   }
 }

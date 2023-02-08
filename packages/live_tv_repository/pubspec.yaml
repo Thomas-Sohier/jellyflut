@@ -1,0 +1,27 @@
+name: live_tv_repository
+description: A repository that handles liveTv related requests
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  live_tv_api:
+    path: ../live_tv_api
+  authentication_repository:
+    path: ../authentication_repository
+  jellyflut_models:
+      path: ../jellyflut_models
+  flutter:
+    sdk: flutter
+  freezed_annotation: ^2.0.3
+  json_annotation: ^4.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.3.2
+  freezed: ^2.0.4
+  json_serializable: ^6.2.0
+  pedantic: ^1.11.1

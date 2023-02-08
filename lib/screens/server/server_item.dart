@@ -1,16 +1,14 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/database/class/servers_with_users.dart';
-import 'package:jellyflut/database/database.dart';
 import 'package:jellyflut/screens/server/user_selection.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
+import 'package:sqlite_database/sqlite_database.dart';
 
 class ServerItem extends StatelessWidget {
   final bool isInUse;
   final ServersWithUsers serverWithUser;
-  const ServerItem(
-      {super.key, required this.serverWithUser, this.isInUse = false});
+  const ServerItem({super.key, required this.serverWithUser, this.isInUse = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +21,7 @@ class ServerItem extends StatelessWidget {
                 enableDrag: true,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(4),
-                      topRight: Radius.circular(4)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(4), topRight: Radius.circular(4)),
                 ),
                 constraints: BoxConstraints(maxWidth: 600, maxHeight: 400),
                 builder: (_) => UserSelection(server: serverWithUser.server)),
@@ -45,23 +41,20 @@ class ServerItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(children: [
-                              Text(
-                                  '#${serverWithUser.server.id} - ${serverWithUser.server.name}',
+                              Text('#${serverWithUser.server.id} - ${serverWithUser.server.name}',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyText1),
+                                  style: Theme.of(context).textTheme.bodyLarge),
                             ]),
                             Text(serverWithUser.server.url,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             inUsedText(context),
                             nbUsers(context)
                           ]),
                     ),
-                    IconButton(
-                        onPressed: deleteServer,
-                        icon: Icon(Icons.remove_circle))
+                    IconButton(onPressed: () => deleteServer(context), icon: Icon(Icons.remove_circle))
                   ]),
             ),
           ),
@@ -71,38 +64,31 @@ class ServerItem extends StatelessWidget {
   Widget inUsedText(final BuildContext context) {
     if (isInUse) {
       return Text('In use',
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.copyWith(color: Theme.of(context).colorScheme.secondary));
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.secondary));
     }
     return const SizedBox();
   }
 
   Widget nbUsers(final BuildContext context) {
     return Text('${serverWithUser.users.length} users',
-        style: Theme.of(context)
-            .textTheme
-            .bodyText2
-            ?.copyWith(color: Theme.of(context).colorScheme.tertiary));
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.tertiary));
   }
 
-  void deleteServer() {
+  void deleteServer(BuildContext context) {
     final serverCompanion = serverWithUser.server.toCompanion(true);
-    AppDatabase()
-        .getDatabase
-        .serversDao
-        .deleteServer(serverCompanion)
-        .then((int nbRowsDeleted) {
+    AppDatabase().getDatabase.serversDao.deleteServer(serverCompanion).then((int nbRowsDeleted) {
       if (nbRowsDeleted == 0) {
         return SnackbarUtil.message(
-            'Error, no server deleted', Icons.error, Colors.red);
+            messageTitle: 'Error, no server deleted', icon: Icons.error, color: Colors.red, context: context);
       }
       return SnackbarUtil.message(
-          'Server deleted', Icons.remove_done, Colors.green);
+          messageTitle: 'Server deleted', icon: Icons.remove_done, color: Colors.green, context: context);
     }).catchError((error) {
-      SnackbarUtil.message('Error, no server deleted, ${error.toString()}',
-          Icons.error, Colors.red);
+      SnackbarUtil.message(
+          messageTitle: 'Error, no server deleted, ${error.toString()}',
+          icon: Icons.error,
+          color: Colors.red,
+          context: context);
     });
   }
 }

@@ -1,77 +1,47 @@
 part of '../details_widgets.dart';
 
-class OverviewDetailsWidget extends StatefulWidget {
-  final String? overview;
-
-  const OverviewDetailsWidget({super.key, required this.overview});
-
-  @override
-  State<OverviewDetailsWidget> createState() => _OverviewDetailsWidgetState();
-}
-
-class _OverviewDetailsWidgetState extends State<OverviewDetailsWidget>
-    with AppThemeGrabber {
-  late String? overview;
-
-  @override
-  bool get useColorScheme => true;
-
-  @override
-  void initState() {
-    overview = widget.overview;
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(OverviewDetailsWidget oldWidget) {
-    overview = widget.overview;
-    super.didUpdateWidget(oldWidget);
-  }
+class OverviewDetailsWidget extends StatelessWidget {
+  const OverviewDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (overview == null || overview!.isEmpty) return const SizedBox();
+    final state = context.read<DetailsBloc>().state;
+    if (state.item.overview == null || state.item.overview!.isEmpty) {
+      return const SizedBox();
+    }
     return OutlinedButtonSelector(
       padding: EdgeInsets.all(4),
       onPressed: () => overviewDialog(context),
       alignment: Alignment.centerLeft,
       child: Text(
-        overview!,
+        state.item.overview!,
         textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }
 
   void overviewDialog(BuildContext context) {
+    final state = context.read<DetailsBloc>().state;
     showDialog(
         barrierDismissible: true,
         context: context,
         builder: (_) {
           return Theme(
-              data: getThemeData,
-              child: Builder(
-                  // Create an inner BuildContext so that we can refer to
-                  // the Theme with Theme.of().
-                  builder: (BuildContext dialogContext) => AlertDialog(
-                        title: Text('overview'.tr()),
-                        titlePadding:
-                            const EdgeInsets.only(left: 8, top: 16, bottom: 12),
-                        contentPadding: const EdgeInsets.all(8.0),
-                        actions: [
-                          TextButton(
-                              autofocus: true,
-                              onPressed: customRouter.pop,
-                              child: Text('ok'.tr()))
-                        ],
-                        content: ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: 600),
-                          child: SelectableText(
-                            overview!,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      )));
+              data: state.theme,
+              child: AlertDialog(
+                title: Text('overview'.tr()),
+                titlePadding: const EdgeInsets.only(left: 8, top: 16, bottom: 12),
+                contentPadding: const EdgeInsets.all(8.0),
+                actions: [TextButton(autofocus: true, onPressed: context.router.root.pop, child: Text('ok'.tr()))],
+                content: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 600),
+                  child: SelectableText(
+                    state.item.overview!,
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+              ));
         });
   }
 }

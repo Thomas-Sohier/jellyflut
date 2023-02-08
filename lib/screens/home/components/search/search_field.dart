@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/home/components/search/search_rest_call.dart';
 
 class SearchField extends StatelessWidget {
@@ -21,16 +23,14 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
-        borderSide: BorderSide(
-            width: 0, color: Colors.transparent, style: BorderStyle.none),
+        borderSide: BorderSide(width: 0, color: Colors.transparent, style: BorderStyle.none),
         borderRadius: BorderRadius.all(Radius.circular(4)));
 
     return RawKeyboardListener(
       focusNode: FocusNode(),
       onKey: (RawKeyEvent event) {
-        if (event.runtimeType == RawKeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.enter) {
-          searchItemsFuture(textEditingController.text);
+        if (event.runtimeType == RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+          searchItemsFuture(textEditingController.text, context.read<ItemsRepository>());
         }
       },
       child: TextFormField(

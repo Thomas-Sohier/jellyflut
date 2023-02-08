@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
-import 'package:jellyflut/screens/stream/components/controls/curren_duration_player.dart';
+import 'package:jellyflut/screens/stream/components/controls/current_duration_player.dart';
 import 'package:jellyflut/screens/stream/components/controls/current_position_player.dart';
 import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
@@ -14,13 +14,12 @@ import '../controls/audio_button_selector.dart';
 import '../controls/backward_button.dart';
 import '../controls/chapter_button.dart';
 import '../controls/forward_button.dart';
+import '../controls/show_channel_button.dart';
 import '../controls/subtitle_button_selector.dart';
 import '../player_infos/subtitle_box.dart';
 
 class CommonControlsPhone extends StatefulWidget {
-  final bool isComputer;
-
-  const CommonControlsPhone({super.key, this.isComputer = false});
+  const CommonControlsPhone({super.key});
 
   @override
   State<CommonControlsPhone> createState() => _CommonControlsPhoneState();
@@ -30,39 +29,23 @@ class _CommonControlsPhoneState extends State<CommonControlsPhone> {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.black38,
-      child: LayoutBuilder(
-          builder: (c, cc) => Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned.fill(child: body()),
-                  Positioned.fill(
-                    top: cc.maxHeight * 0.6,
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SubtitleBox()),
-                  ),
-                ],
-              )),
-    );
-  }
-
-  Widget body() {
-    return Column(
-      children: [
-        const SizedBox(height: 12),
-        const Expanded(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: TopRow())),
-        const Expanded(child: Controls()),
-        const Expanded(
-            child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: BottomRow(),
-        ))
-      ],
-    );
+        color: Colors.black38,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(
+                child: Column(
+              children: const [
+                SizedBox(height: 12),
+                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: TopRow())),
+                Expanded(child: Controls()),
+                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: BottomRow())),
+                SizedBox(height: 24),
+              ],
+            )),
+            Positioned.fill(child: const Align(alignment: Alignment.bottomCenter, child: SubtitleBox())),
+          ],
+        ));
   }
 }
 
@@ -71,37 +54,37 @@ class TopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+      const BackButton(),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [ItemTitlePhone(), ItemParentTitlePhone()],
+        ),
+      ),
+      Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          backButton(),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [const ItemTitle(), const ItemParentTitle()],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const PipButton(),
-              const ChapterButton(),
-              const SubtitleButtonSelector(),
-              const AudioButtonSelector(),
-              const TranscodeState()
-            ],
-          )
-        ]);
+        children: const [
+          PipButton(),
+          ChapterButton(),
+          SubtitleButtonSelector(),
+          AudioButtonSelector(),
+          ShowChannelButton(),
+          TranscodeState()
+        ],
+      )
+    ]);
   }
+}
 
-  Widget backButton() {
+class BackButton extends StatelessWidget {
+  const BackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      return Row(children: [
-        const SelectableBackButton(shadow: true),
-        const SizedBox(width: 12)
-      ]);
+      return Row(children: const [SelectableBackButton(), SizedBox(width: 12)]);
     }
     return const SizedBox();
   }
@@ -115,12 +98,12 @@ class Controls extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const BackwardButton(size: 42),
-        const SizedBox(width: 12),
-        const PlayPauseButton(size: 42),
-        const SizedBox(width: 12),
-        const ForwardButton(size: 42),
+      children: const [
+        BackwardButton(size: 42),
+        SizedBox(width: 12),
+        PlayPauseButton(size: 42),
+        SizedBox(width: 12),
+        ForwardButton(size: 42),
       ],
     );
   }
@@ -135,17 +118,13 @@ class BottomRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const CurrentPositionPlayer(),
-              const Text('/'),
-              const CurrentDurationPlayer(),
-              const Spacer(),
-              if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
-                const FullscreenButton()
-            ]),
+        Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: [
+          const CurrentPositionPlayer(),
+          const Text('/'),
+          const CurrentDurationPlayer(),
+          const Spacer(),
+          if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) const FullscreenButton()
+        ]),
         const VideoPlayerProgressBar(barHeight: 4, thumbRadius: 8),
         const SizedBox(height: 24),
       ],

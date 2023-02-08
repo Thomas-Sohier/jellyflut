@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SkeletonRightDetails extends StatelessWidget {
@@ -9,37 +8,41 @@ class SkeletonRightDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: shimmerColor1,
-      highlightColor: shimmerColor2,
+      baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
+      highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 64),
-            buttons(),
-            const SizedBox(height: 36),
-            Center(child: tagline()),
-            const SizedBox(height: 36),
-            title(),
-            const SizedBox(height: 24),
-            infos(),
-            const SizedBox(height: 24),
-            overview(),
-            const SizedBox(height: 24),
-            providers(),
-            const SizedBox(height: 36),
-            title(),
-            const SizedBox(height: 24),
-            peoples()
+          children: const [
+            _Buttons(),
+            SizedBox(height: 36),
+            Center(child: _TagLine()),
+            SizedBox(height: 36),
+            _Title(),
+            SizedBox(height: 24),
+            _Infos(),
+            SizedBox(height: 24),
+            _Overview(),
+            SizedBox(height: 24),
+            _Providers(),
+            SizedBox(height: 36),
+            _Title(),
+            SizedBox(height: 24),
+            _Peoples()
           ],
         ),
       ),
     );
   }
+}
 
-  Widget buttons() {
+class _Buttons extends StatelessWidget {
+  const _Buttons();
+
+  @override
+  Widget build(BuildContext context) {
     const height = 40.0;
     const borderRadius = 5.0;
     const width = 150.0;
@@ -53,16 +56,20 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
                       child: ColoredBox(color: Colors.white30),
                     )))));
   }
+}
 
-  Widget title() {
+class _Title extends StatelessWidget {
+  const _Title();
+
+  @override
+  Widget build(BuildContext context) {
     const height = 40.0;
     const borderRadius = 5.0;
     const width = 250.0;
@@ -74,8 +81,13 @@ class SkeletonRightDetails extends StatelessWidget {
           child: ColoredBox(color: Colors.white30),
         ));
   }
+}
 
-  Widget tagline() {
+class _TagLine extends StatelessWidget {
+  const _TagLine();
+
+  @override
+  Widget build(BuildContext context) {
     const height = 40.0;
     const borderRadius = 5.0;
     const width = 250.0;
@@ -87,40 +99,54 @@ class SkeletonRightDetails extends StatelessWidget {
           child: ColoredBox(color: Colors.white30),
         ));
   }
+}
 
-  Widget infos() {
+class _Infos extends StatelessWidget {
+  const _Infos();
+
+  @override
+  Widget build(BuildContext context) {
     const height = 40.0;
     return SizedBox(
       height: height,
       child: Row(
-        children: [
-          info(),
-          info(),
-          info(),
-          const Spacer(),
-          info(),
-          info(),
+        children: const [
+          _Info(),
+          _Info(),
+          _Info(),
+          Spacer(),
+          _Info(),
+          _Info(),
         ],
       ),
     );
   }
+}
 
-  Padding info() {
+class _Info extends StatelessWidget {
+  const _Info();
+
+  @override
+  Widget build(BuildContext context) {
     const padding = 10.0;
     const borderRadius = 5.0;
     return const Padding(
-      padding: EdgeInsets.only(right: padding),
-      child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-          child: SizedBox(
-            height: 40,
-            width: 40,
-            child: ColoredBox(color: Colors.white30),
-          )),
-    );
+        padding: EdgeInsets.only(right: padding),
+        child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: ColoredBox(color: Colors.white30),
+            )));
   }
+}
 
-  Widget overview() {
+class _Overview extends StatelessWidget {
+  const _Overview();
+
+  @override
+  Widget build(BuildContext context) {
     const paddingBottom = 10.0;
     const height = 40.0;
     const borderRadius = 5.0;
@@ -136,16 +162,20 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.only(bottom: paddingBottom),
                 child: const ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: double.maxFinite,
                       child: ColoredBox(color: Colors.white30),
                     )))));
   }
+}
 
-  Widget providers() {
+class _Providers extends StatelessWidget {
+  const _Providers();
+
+  @override
+  Widget build(BuildContext context) {
     const height = 40.0;
     const borderRadius = 24.0;
     const width = 150.0;
@@ -159,16 +189,20 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: 20),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,
                       child: ColoredBox(color: Colors.white30),
                     )))));
   }
+}
 
-  Widget peoples() {
+class _Peoples extends StatelessWidget {
+  const _Peoples();
+
+  @override
+  Widget build(BuildContext context) {
     const paddingRight = 10.0;
     const height = 180.0;
     const width = 140.0;
@@ -184,8 +218,7 @@ class SkeletonRightDetails extends StatelessWidget {
             itemBuilder: (context, index) => const Padding(
                 padding: EdgeInsets.only(right: paddingRight),
                 child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(borderRadius)),
+                    borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                     child: SizedBox(
                       height: height,
                       width: width,

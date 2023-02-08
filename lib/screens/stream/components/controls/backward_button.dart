@@ -1,33 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class BackwardButton extends StatefulWidget {
-  final Duration duration;
+import '../../cubit/stream_cubit.dart';
+
+class BackwardButton extends StatelessWidget {
   final double? size;
-  const BackwardButton(
-      {super.key, this.duration = const Duration(seconds: 10), this.size});
-
-  @override
-  State<BackwardButton> createState() => _BackwardButtonState();
-}
-
-class _BackwardButtonState extends State<BackwardButton> {
-  late final StreamingProvider streamingProvider;
-
-  double? get size => widget.size;
-
-  @override
-  void initState() {
-    streamingProvider = StreamingProvider();
-    super.initState();
-  }
+  const BackwardButton({super.key, this.size});
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-      onPressed: backward,
+      onPressed: context.read<StreamCubit>().goBackward,
       shape: CircleBorder(),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -38,13 +23,5 @@ class _BackwardButtonState extends State<BackwardButton> {
         ),
       ),
     );
-  }
-
-  void backward() {
-    final currentDuration =
-        streamingProvider.commonStream!.getCurrentPosition();
-    final seekToDuration =
-        (currentDuration ?? widget.duration) - widget.duration;
-    streamingProvider.commonStream!.seekTo(seekToDuration);
   }
 }

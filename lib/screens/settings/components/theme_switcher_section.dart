@@ -1,22 +1,20 @@
 part of 'sections.dart';
 
-class ThemeSwitcherSection extends StatelessWidget {
-  ThemeSwitcherSection({super.key});
+class ThemeSection extends StatelessWidget {
+  ThemeSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
       title: 'theme'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.headline6,
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
       tiles: [
         SettingsTile(
             title: 'theme'.tr(),
             onPressed: (context) => ThemeProvider().toggleTheme(),
             trailing: Consumer<ThemeProvider>(
                 builder: (context, ThemeProvider themeNotifier, child) =>
-                    themeNotifier.isDarkMode
-                        ? Icon(Icons.dark_mode)
-                        : Icon(Icons.light_mode))),
+                    themeNotifier.isDarkMode ? Icon(Icons.dark_mode) : Icon(Icons.light_mode))),
         SettingsTile(
             title: 'primary_color'.tr(),
             onPressed: editPrimaryColor,
@@ -24,7 +22,12 @@ class ThemeSwitcherSection extends StatelessWidget {
                 builder: (context, ThemeProvider themeNotifier, child) => Icon(
                       Icons.circle,
                       color: ThemeProvider().getThemeData.colorScheme.primary,
-                    )))
+                    ))),
+        SettingsTile(
+          title: 'contrast_details'.tr(),
+          subtitle: 'Use a different details page theme with proper background/foreground contrast',
+          trailing: const DetailsContrastSwitch(),
+        ),
       ],
     );
   }
@@ -37,8 +40,7 @@ class ThemeSwitcherSection extends StatelessWidget {
             actions: [
               Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: TextButton(
-                      onPressed: customRouter.pop, child: Text('save'.tr())))
+                  child: TextButton(onPressed: context.router.root.pop, child: Text('save'.tr())))
             ],
             content: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 350, maxHeight: 150),
@@ -53,8 +55,7 @@ class ThemeSwitcherSection extends StatelessWidget {
                   pickerAreaHeightPercent: 0,
                   paletteType: PaletteType.hsl,
                   pickerColor: ThemeProvider().getThemeData.colorScheme.primary,
-                  onColorChanged: (Color selectedColor) =>
-                      ThemeProvider().editSeedColorTheme(selectedColor)),
+                  onColorChanged: (Color selectedColor) => ThemeProvider().editSeedColorTheme(selectedColor)),
             )));
   }
 }

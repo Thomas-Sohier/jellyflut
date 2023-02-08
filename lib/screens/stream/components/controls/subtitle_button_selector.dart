@@ -1,10 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/model/media_type.dart';
-import 'package:jellyflut/screens/stream/model/subtitle.dart';
 import 'package:jellyflut/shared/utils/color_util.dart';
+import 'package:streaming_repository/streaming_repository.dart';
+
+import '../../cubit/stream_cubit.dart';
 
 class SubtitleButtonSelector extends StatefulWidget {
   const SubtitleButtonSelector({super.key});
@@ -14,16 +15,10 @@ class SubtitleButtonSelector extends StatefulWidget {
 }
 
 class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
-  late final StreamingProvider streamingProvider;
   late final GlobalKey<PopupMenuButtonState<Subtitle>> _popupMenuButtonKey;
-  late int subtitleSelectedIndex;
-
   @override
   void initState() {
     super.initState();
-    streamingProvider = StreamingProvider();
-    subtitleSelectedIndex =
-        streamingProvider.selectedSubtitleTrack?.index ?? -1;
     _popupMenuButtonKey = GlobalKey();
   }
 
@@ -39,7 +34,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     return ExcludeFocus(
       child: IgnorePointer(
           child: FutureBuilder<List<Subtitle>>(
-        future: streamingProvider.getSubtitles(),
+        future: context.read<StreamCubit>().getSubtitles(),
         builder: (context, snapshot) => PopupMenuButton<Subtitle>(
             key: _popupMenuButtonKey,
             icon: Icon(
@@ -47,7 +42,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
               color: Colors.white,
             ),
             tooltip: 'select_subtitle'.tr(),
-            onSelected: (Subtitle subtitle) => setSubtitle(subtitle),
+            onSelected: context.read<StreamCubit>().setSubtitleStreamIndex,
             itemBuilder: (context) {
               if (snapshot.hasData) {
                 return _audioTracksListTile(snapshot.data!);
@@ -58,8 +53,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     );
   }
 
-  List<PopupMenuEntry<Subtitle>> _audioTracksListTile(
-      List<Subtitle> subtitlesTracks) {
+  List<PopupMenuEntry<Subtitle>> _audioTracksListTile(List<Subtitle> subtitlesTracks) {
     final list = <PopupMenuEntry<Subtitle>>[];
 
     // TITLE
@@ -71,12 +65,11 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     }
 
     // If subtitles list is not empty the we show disabled button at start of list
-    final disabledSubtitle =
-        Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.LOCAL);
+    final disabledSubtitle = Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.local);
     list.add(
       CheckedPopupMenuItem(
         value: disabledSubtitle,
-        checked: isSelected(disabledSubtitle),
+        checked: context.read<StreamCubit>().state.selectedSubtitleTrack.index == disabledSubtitle.index,
         child: Text(
           'disabled'.tr(),
         ),
@@ -84,28 +77,24 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     );
 
     // LOCAL SUBTITLES
-    final localSubtitles = subtitlesTracks
-        .where((element) => element.mediaType == MediaType.LOCAL)
-        .toList();
+    final localSubtitles = subtitlesTracks.where((element) => element.mediaType == MediaType.local).toList();
     list.add(PopupMenuDivider(height: 10));
     list.add(listItemTitle(
         child: Text(
       'embeded_subtitles'.tr(),
-      style: Theme.of(context).textTheme.bodyText2,
+      style: Theme.of(context).textTheme.bodyMedium,
     )));
 
     if (localSubtitles.isEmpty) {
-      list.add(PopupMenuItem(
-          enabled: false,
-          child: Align(
-              alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
+      list.add(
+          PopupMenuItem(enabled: false, child: Align(alignment: Alignment.center, child: Text('no_subtitles'.tr()))));
     } else {
       for (var index = 0; index < localSubtitles.length; index++) {
         final subtitle = localSubtitles[index];
         list.add(
           CheckedPopupMenuItem(
             value: subtitle,
-            checked: subtitle.index == subtitleSelectedIndex,
+            checked: subtitle.index == context.read<StreamCubit>().state.selectedSubtitleTrack.index,
             child: Text(subtitle.name),
           ),
         );
@@ -118,13 +107,11 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
       listItemTitle(
           child: Text(
         'remote_subtitles'.tr(),
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       )),
     );
 
-    final remoteSubtitles = subtitlesTracks
-        .where((element) => element.mediaType == MediaType.REMOTE)
-        .toList();
+    final remoteSubtitles = subtitlesTracks.where((element) => element.mediaType == MediaType.remote).toList();
     if (remoteSubtitles.isEmpty) {
       list.add(PopupMenuItem(enabled: false, child: Text('no_subtitles'.tr())));
     } else {
@@ -132,7 +119,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
         final subtitle = remoteSubtitles[index];
         list.add(CheckedPopupMenuItem(
           value: subtitle,
-          checked: subtitle.index == subtitleSelectedIndex,
+          checked: subtitle.index == context.read<StreamCubit>().state.selectedSubtitleTrack.index,
           child: Text(subtitle.name),
         ));
       }
@@ -151,32 +138,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
             padding: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: ColorUtil.darken(
-                    Theme.of(context).colorScheme.background, 0.1)),
+                color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.1)),
             child: child));
-  }
-
-  bool isSelected(Subtitle subtitle) {
-    return subtitleSelectedIndex == subtitle.index;
-  }
-
-  void disableSubtitles(Subtitle subtitle) {
-    subtitleSelectedIndex = subtitle.index;
-
-    // We tell the player to hide subtitles only if it's local
-    if (subtitle.mediaType == MediaType.LOCAL) {
-      streamingProvider.commonStream!.disableSubtitles();
-    }
-  }
-
-  void setSubtitle(Subtitle subtitle) async {
-    subtitleSelectedIndex = subtitle.index;
-    streamingProvider.setSubtitleStreamIndex(subtitle);
-
-    // We tell the player to show subtitles only if it's local
-    // Via remote we use our own code for compatitbility
-    if (subtitle.mediaType == MediaType.LOCAL) {
-      await streamingProvider.commonStream?.setSubtitle(subtitle);
-    }
   }
 }

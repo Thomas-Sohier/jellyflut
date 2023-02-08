@@ -4,6 +4,5 @@ extension StringExtension on String? {
   }
 
   bool equalsIgnoreCase(String? a) =>
-      (a == null && this == null) ||
-      (a != null && this != null && a.toLowerCase() == this!.toLowerCase());
+      (a == null && this == null) || (a != null && this != null && a.toLowerCase() == this!.toLowerCase());
 }

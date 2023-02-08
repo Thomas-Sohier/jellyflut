@@ -1,21 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/routes/router.gr.dart';
+import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
 
-class SettingsButton extends StatefulWidget {
-  @override
-  State<SettingsButton> createState() => _SettingsButtonState();
-}
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({super.key});
 
-class _SettingsButtonState extends State<SettingsButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
         shape: CircleBorder(),
         padding: EdgeInsets.all(8),
-        onPressed: () => customRouter.push(SettingsRoute()),
+        onPressed: () => context.router.root.push(r.SettingsPage()),
         child: Icon(
           Icons.settings,
           size: 26,

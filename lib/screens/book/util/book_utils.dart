@@ -1,15 +1,11 @@
 import 'dart:async';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:universal_io/io.dart' as io;
-import 'package:universal_io/io.dart';
-import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/services/file/file_service.dart';
-import 'package:jellyflut/services/item/ebook_service.dart';
 
 class BookUtils {
   static Future<Archive> unarchive(FutureOr<List<int>> bytes) async {
@@ -37,26 +33,26 @@ class BookUtils {
   }
 
   static Future<String> _downloadItemOnStorage(Item item) async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      // Check if we have rights
-      // If we do not store epub
-      var hasStorage = await FileService.requestStorage();
-      if (!hasStorage) {
-        throw ('cannot_access_storage'.tr());
-      }
-    }
+    throw UnimplementedError('download of ebook not yet impelmented'); // if (Platform.isAndroid || Platform.isIOS) {
+    //   // Check if we have rights
+    //   // If we do not store epub
+    //   var hasStorage = await FileService.requestStorage();
+    //   if (!hasStorage) {
+    //     throw ('cannot_access_storage'.tr());
+    //   }
+    // }
 
-    // Check if ebook is already present
-    if (await EbookService.isEbookDownloaded(item)) {
-      return FileService.getStoragePathItem(item);
-    }
+    // // Check if ebook is already present
+    // if (await EbookService.isEbookDownloaded(item)) {
+    //   return FileService.getStoragePathItem(item);
+    // }
 
-    final queryParams = <String, dynamic>{};
-    queryParams['api_key'] = apiKey;
-    final url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
-    final dowloadPath = await FileService.getStoragePathItem(item);
-    await FileService.downloadFileAndSaveToPath(url, dowloadPath);
-    return dowloadPath;
+    // final queryParams = <String, dynamic>{};
+    // queryParams['api_key'] = apiKey;
+    // final url = '${server.url}/Items/${item.id}/Download?api_key=$apiKey';
+    // final dowloadPath = await FileService.getStoragePathItem(item);
+    // await FileService.downloadFileAndSaveToPath(url, dowloadPath);
+    // return dowloadPath;
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class Critics extends StatelessWidget {
   const Critics({required this.item, this.iconSize = 20});
@@ -22,8 +22,7 @@ class Critics extends StatelessWidget {
             SizedBox(
               width: 4,
             ),
-            Text(item.communityRating.toString(),
-                style: Theme.of(context).textTheme.subtitle1)
+            Text(item.communityRating.toString(), style: Theme.of(context).textTheme.titleMedium)
           ]),
         ),
       if (item.criticRating != null)
@@ -34,8 +33,7 @@ class Critics extends StatelessWidget {
             SizedBox(
               width: 4,
             ),
-            Text(item.criticRating.toString(),
-                style: Theme.of(context).textTheme.subtitle1)
+            Text(item.criticRating.toString(), style: Theme.of(context).textTheme.titleMedium)
           ]),
         )
     ]);

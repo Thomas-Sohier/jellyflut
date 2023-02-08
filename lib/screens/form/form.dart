@@ -1,70 +1,68 @@
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart' hide FormState;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/form/bloc/form_bloc.dart' as form;
+import 'package:jellyflut/screens/form/bloc/form_bloc.dart';
+import 'package:jellyflut/screens/form/forms/default_form.dart';
+import 'package:jellyflut/screens/form/forms/movie_form.dart';
+import 'package:jellyflut/shared/utils/snackbar_util.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'forms/movie_form.dart';
-import 'forms/default_form.dart';
-
-class FormBuilder<T extends Object> extends StatefulWidget {
-  final form.FormBloc<T> formBloc;
-
-  FormBuilder({super.key, required this.formBloc});
-
-  @override
-  FormBuilderState<T> createState() => FormBuilderState<T>();
-}
-
-class FormBuilderState<T extends Object> extends State<FormBuilder> {
-  late final form.FormBloc<T> formBloc;
-
-  @override
-  void initState() {
-    formBloc = widget.formBloc as form.FormBloc<T>;
-    super.initState();
-  }
+class FormBuilder<T extends Object> extends StatelessWidget {
+  const FormBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<form.FormBloc<T>>.value(
-        value: formBloc,
-        child: BlocListener<form.FormBloc<T>, form.FormState<T>>(
-            bloc: formBloc,
-            listener: (context, state) {
-              if (state is form.FormSubmittedState<T>) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(SnackBar(
-                      content: Row(children: [
-                        Flexible(child: Text(state.message)),
-                        Icon(Icons.check, color: Colors.green)
-                      ]),
-                      width: 600));
-              } else if (state is form.FormErrorState<T>) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(SnackBar(
-                      content: Row(children: [
-                        Flexible(child: Text(state.error)),
-                        Icon(Icons.error, color: Colors.red)
-                      ]),
-                      width: 600));
-              }
-            },
-            child: formSelector(formBloc.value)));
-  }
-
-  Widget formSelector(T value) {
-    if (value is Item) {
-      switch (value.type) {
-        case ItemType.MOVIE:
-          return MovieForm(item: value);
+    return BlocConsumer<FormBloc, FormState>(listener: (context, state) {
+      switch (state.formStatus) {
+        case FormStatus.submitted:
+          SnackbarUtil.message(
+              messageTitle: 'form_submit_success'.tr(), icon: Icons.check, color: Colors.green, context: context);
+          break;
+        case FormStatus.failure:
+          SnackbarUtil.message(
+              messageTitle: 'form_submit_error'.tr(), icon: Icons.error, color: Colors.red, context: context);
+          break;
         default:
-          return DefaultForm(item: value);
       }
+    }, builder: (_, state) {
+      switch (state.formStatus) {
+        case FormStatus.loading:
+          return const Center(
+            child: Padding(padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+          );
+        case FormStatus.failure:
+        case FormStatus.loaded:
+          return const FormLoader();
+        default:
+          return const NoForm();
+      }
+    });
+  }
+}
+
+class FormLoader extends StatelessWidget {
+  const FormLoader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final item = context.read<FormBloc>().state.item;
+    switch (item.type) {
+      case ItemType.Movie:
+        return const MovieForm();
+      default:
+        return const DefaultForm();
     }
-    return SizedBox();
+  }
+}
+
+class NoForm extends StatelessWidget {
+  const NoForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('No form found to edit this'),
+    );
   }
 }

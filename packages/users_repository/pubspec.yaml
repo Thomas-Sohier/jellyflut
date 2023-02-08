@@ -1,0 +1,22 @@
+name: users_repository
+description: A repository that handles items related requests
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  jellyflut_models:
+    path: ../jellyflut_models
+  users_api:
+    path: ../users_api
+  authentication_repository:
+    path: ../authentication_repository
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  pedantic: ^1.11.1
+  flutter_test:
+    sdk: flutter

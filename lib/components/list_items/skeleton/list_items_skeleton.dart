@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
 import 'package:jellyflut/shared/shared.dart';
-import 'package:jellyflut/theme.dart';
+import 'package:jellyflut/theme/theme.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../bloc/collection_bloc.dart';
 
 part 'list_items_grid_skeleton.dart';
 part 'list_items_horizontal_list.dart';
@@ -11,29 +13,24 @@ part 'list_items_vertical_list_skeleton.dart';
 part 'skeleton_poster_item.dart';
 
 class ListItemsSkeleton extends StatelessWidget {
-  final listType;
   final double verticalListPosterHeight;
   final double horizontalListPosterHeight;
   final double gridPosterHeight;
-  ListItemsSkeleton(
-      {required this.listType,
-      required this.verticalListPosterHeight,
-      required this.horizontalListPosterHeight,
-      required this.gridPosterHeight});
+
+  const ListItemsSkeleton(
+      {this.verticalListPosterHeight = 200, this.horizontalListPosterHeight = 200, this.gridPosterHeight = 200});
 
   @override
   Widget build(BuildContext context) {
-    switch (listType) {
-      case ListType.LIST:
-        return ListItemsVerticalSkeleton(
-            verticalListPosterHeight: verticalListPosterHeight);
-      case ListType.POSTER:
-        return ListItemsHorizontalSkeleton(
-            horizontalListPosterHeight: horizontalListPosterHeight);
-      case ListType.GRID:
-        return ListItemsGridSkeleton(gridPosterHeight: gridPosterHeight);
+    switch (context.read<CollectionBloc>().state.listType) {
+      case ListType.list:
+        return const ListItemsVerticalSkeleton();
+      case ListType.poster:
+        return const ListItemsHorizontalSkeleton();
+      case ListType.grid:
+        return const ListItemsGridSkeleton();
       default:
-        return ListItemsGridSkeleton(gridPosterHeight: gridPosterHeight);
+        return const ListItemsGridSkeleton();
     }
   }
 }

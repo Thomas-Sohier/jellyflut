@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:jellyflut/components/fav_button.dart';
+import 'package:jellyflut/components/fav_button/fav_button.dart';
 import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/models/enum/image_type.dart';
-import 'package:jellyflut/models/enum/item_type.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/components/outlined_button_selector.dart';
+import 'package:jellyflut/screens/music_player/bloc/music_player_bloc.dart';
 import 'package:jellyflut/shared/shared.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
 
 class MusicItem extends StatefulWidget {
@@ -19,16 +19,14 @@ class MusicItem extends StatefulWidget {
 
 class _MusicItemState extends State<MusicItem> {
   void _onTap() {
-    widget.item.playItem();
+    context.read<MusicPlayerBloc>().add(PlaySongRequested(item: widget.item));
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      final rightPartPadding = constraints.maxWidth < 350
-          ? const EdgeInsets.only(left: 0)
-          : const EdgeInsets.only(left: 8);
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      final rightPartPadding =
+          constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
       return Padding(
           padding: const EdgeInsets.all(10),
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -39,22 +37,15 @@ class _MusicItemState extends State<MusicItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (constraints.maxWidth > 350)
-                        Flexible(flex: 3, child: poster()),
+                      if (constraints.maxWidth > 350) Flexible(flex: 3, child: poster()),
                       Expanded(
                         flex: 6,
-                        child: Padding(
-                            padding: rightPartPadding,
-                            child: listItem(widget.item)),
+                        child: Padding(padding: rightPartPadding, child: listItem(widget.item)),
                       ),
                     ],
                   )),
             ),
-            FavButton(
-              widget.item,
-              color: Colors.red.shade800,
-              backgroundFocusColor: Colors.white10,
-            ),
+            FavButton(item: widget.item),
           ]));
     });
   }
@@ -82,7 +73,7 @@ class _MusicItemState extends State<MusicItem> {
       aspectRatio: widget.item.primaryImageAspectRatio ?? 1,
       child: Poster(
           key: ValueKey(widget.item),
-          tag: ImageType.PRIMARY,
+          imageType: ImageType.Primary,
           heroTag: '${widget.item.id}-${Uuid().v1()}-${widget.item.name}',
           clickable: false,
           dropShadow: false,
@@ -97,20 +88,17 @@ class _MusicItemState extends State<MusicItem> {
     return Row(
       children: [
         Text(printDuration(Duration(microseconds: widget.item.getDuration())),
-            style:
-                Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16))
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
       ],
     );
   }
 
   Widget titlesInAlbum() {
-    if (widget.item.type == ItemType.MUSICALBUM) {
+    if (widget.item.type == ItemType.MusicAlbum) {
       final numberOfTitle = widget.item.childCount ?? 0;
       return Row(
         children: [
-          Text('Contains $numberOfTitle titles',
-              style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 16))
+          Text('Contains $numberOfTitle titles', style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 16))
         ],
       );
     }
@@ -122,8 +110,7 @@ class _MusicItemState extends State<MusicItem> {
       return Row(
         children: [
           Text(widget.item.concatenateArtists().toString(),
-              style:
-                  Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18))
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18))
         ],
       );
     }
@@ -132,13 +119,10 @@ class _MusicItemState extends State<MusicItem> {
 
   Widget title() {
     return Flexible(
-      child: Text(widget.item.name,
+      child: Text(widget.item.name ?? '',
           textAlign: TextAlign.left,
           maxLines: 2,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1!
-              .copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }
 }

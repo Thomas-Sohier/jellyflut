@@ -5,11 +5,7 @@ class ListTitle extends StatelessWidget {
   final Item item;
   final bool showTitle;
 
-  const ListTitle(
-      {super.key,
-      required this.child,
-      required this.item,
-      this.showTitle = false});
+  const ListTitle({super.key, required this.child, required this.item, this.showTitle = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +17,12 @@ class ListTitle extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
-                item.type.value,
-                style: Theme.of(context).textTheme.headline4,
+                item.type.name,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
-            SizedBox(height: 12),
-            child
+            const SizedBox(height: 12),
+            Expanded(child: child)
           ]);
     }
     return child;

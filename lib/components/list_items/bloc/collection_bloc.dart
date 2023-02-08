@@ -1,120 +1,130 @@
-import 'dart:collection';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jellyflut/models/enum/list_type.dart';
-import 'package:jellyflut/models/jellyfin/category.dart' as model;
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/screens/form/forms/fields/fields_enum.dart';
-import 'package:jellyflut/services/item/item_service.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:items_repository/items_repository.dart';
+import 'package:jellyflut/screens/form/fields/fields_enum.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 part 'collection_event.dart';
 part 'collection_state.dart';
 
+enum ListItemsType { fromItem, fromList, fromFunction }
+
 /// A `CollectionBloc` which manages an `List<Item>` as its state.
-class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
-  late Item parentItem;
-  final List<Item> carouselSliderItems = <Item>[];
-  final List<Item> _items = <Item>[];
-  final BehaviorSubject<ListType> listType = BehaviorSubject<ListType>();
-  late final Future<model.Category> Function(
-      int startIndex, int numberOfItemsToLoad) loadMoreFunction;
-
-  // Used to know if we should load another async method to fetch items
-  // prevent from calling 1000 times API
-  bool _blockItemsLoading = false;
-  SortBy _sortBy = SortBy.ASC;
-  final ValueNotifier<FieldsEnum?> _currentSortedValue =
-      ValueNotifier<FieldsEnum?>(null);
-
-  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
-  SortBy get getSortOrder => _sortBy;
-  ValueNotifier<FieldsEnum?> get getCurrentSortedValue => _currentSortedValue;
-
-  CollectionBloc(
-      {final ListType listType = ListType.GRID, required this.loadMoreFunction})
-      : super(CollectionLoadingState()) {
-    this.listType.add(listType);
-    on<AddItem>(addItems);
-    on<ClearItem>(removeItems);
-    on<LoadMoreItems>(showMoreItem);
-    on<SortByField>(sortByField);
+class CollectionBloc extends Bloc<CollectionEvent, SeasonState> {
+  CollectionBloc({
+    required ItemsRepository itemsRepository,
+    Item? parentItem,
+    List<Item>? items,
+    Future<List<Item>> Function(int startIndex, int limit)? fetchMethod,
+    bool showTitle = false,
+    bool showIfEmpty = true,
+    bool showSorting = true,
+    double verticalListPosterHeight = double.infinity,
+    double horizontalListPosterHeight = 150,
+    double gridPosterHeight = 100,
+    ListType listType = ListType.grid,
+  })  : assert(parentItem != null || fetchMethod != null || items != null),
+        super(SeasonState(
+            fetchMethod: _initFetchMethod(
+                itemsRepository: itemsRepository, parentItem: parentItem, items: items, fetchMethod: fetchMethod),
+            listType: listType,
+            showTitle: showTitle,
+            showIfEmpty: showIfEmpty,
+            showSorting: showSorting,
+            horizontalListPosterHeight: horizontalListPosterHeight,
+            verticalListPosterHeight: verticalListPosterHeight,
+            gridPosterHeight: gridPosterHeight,
+            scrollController: ScrollController())) {
+    on<InitCollectionRequested>(_initCollectionList);
+    on<ReplaceItem>(_replaceItems);
+    on<ClearItemsRequested>(_onClearItems);
+    on<SetScrollController>(_onScrollControllerUpdate);
+    on<LoadMoreItemsRequested>(_onLoadMoreItems);
+    on<ListTypeChangeRequested>(_onListTypeChange);
+    on<SortByField>(_onSort);
   }
 
-  void initialize(Item item) {
-    parentItem = item;
-    getItems(item: item)
-        .then((model.Category category) => add(AddItem(items: category.items)));
-  }
+  static Future<List<Item>> Function(int startIndex, int limit) _initFetchMethod(
+      {required ItemsRepository itemsRepository,
+      Item? parentItem,
+      List<Item>? items,
+      Future<List<Item>> Function(int startIndex, int limit)? fetchMethod}) {
+    ListItemsType findItemType() {
+      if (parentItem != null) return ListItemsType.fromItem;
+      if (fetchMethod != null) return ListItemsType.fromFunction;
+      if (items != null) return ListItemsType.fromList;
+      throw Exception('CollectionBloc badly initialized, need to have a parentItem or an item list or a fetch method');
+    }
 
-  void removeItems(ClearItem event, Emitter<CollectionState> emit) {
-    _items.clear();
-    emit(CollectionLoadedState());
-  }
-
-  void addItems(AddItem event, Emitter<CollectionState> emit) {
-    emit(CollectionLoadingState());
-    _items.addAll(event.items);
-    // Filter only unplayed items
-    final unplayedItems =
-        _items.where((element) => !element.isPlayed()).toList();
-    unplayedItems.shuffle();
-    carouselSliderItems.addAll(event.items);
-    emit(CollectionLoadedState());
-  }
-
-  void showMoreItem(LoadMoreItems event, Emitter<CollectionState> emit) async {
-    if (!_blockItemsLoading && items.isNotEmpty) {
-      _blockItemsLoading = true;
-      final category = await loadMoreFunction(items.length, 100);
-      if (category.items.isNotEmpty) {
-        _blockItemsLoading = false;
-        _items.addAll(category.items);
-        emit(CollectionLoadedState());
-      }
+    final listItemsType = findItemType();
+    switch (listItemsType) {
+      case ListItemsType.fromItem:
+        return (int startIndex, int limit) async {
+          final category =
+              await itemsRepository.getCategory(parentId: parentItem!.id, startIndex: startIndex, limit: limit);
+          return category.items;
+        };
+      case ListItemsType.fromFunction:
+        return fetchMethod!;
+      case ListItemsType.fromList:
+        return (int startIndex, int limit) async {
+          return items?.sublist(startIndex, min(items.length, limit)) ?? [];
+        };
+      default:
+        return (int startIndex, int limit) => Future.value(const <Item>[]);
     }
   }
 
-  void sortByField(SortByField event, Emitter<CollectionState> emit) async {
-    emit(CollectionLoadingState());
-    final items = await _sortByField(event.fieldEnum, _sortBy);
-    _items.clear();
-    _items.addAll(items);
-    emit(CollectionLoadedState());
+  void _initCollectionList(InitCollectionRequested event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(collectionStatus: SeasonStatus.loading));
+    final items = await state.fetchMethod(state.items.length, 100);
+    final canLoadMore = items.length >= 100;
+    emit(state.copyWith(items: items, canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
   }
 
-  Future<List<Item>> _sortByField(FieldsEnum fieldEnum, SortBy sortBy) async {
-    final i = await compute(_sortItemByField,
-        {'items': _items, 'field': fieldEnum.fieldName, 'sortBy': sortBy});
-    _sortBy = sortBy.reverse();
-    _currentSortedValue.value = fieldEnum;
-    return i['items'];
+  void _onClearItems(ClearItemsRequested event, Emitter<SeasonState> emit) {
+    emit(state.copyWith(items: [], carouselSliderItems: [], canLoadMore: true));
   }
 
-  Future<model.Category> getItems(
-      {required Item item, int startIndex = 0}) async {
-    return ItemService.getItems(
-        parentId: item.id,
-        sortBy: 'SortName',
-        fields:
-            'PrimaryImageAspectRatio,SortName,PrimaryImageAspectRatio,DateCreated,DateAdded,Overview',
-        imageTypeLimit: 1,
-        recursive: false,
-        startIndex: startIndex,
-        includeItemTypes:
-            item.getCollectionType().map((e) => e.value).toList().join(','),
-        limit: 100);
+  void _onLoadMoreItems(LoadMoreItemsRequested event, Emitter<SeasonState> emit) async {
+    if (state.canLoadMore && state.collectionStatus != SeasonStatus.loadingMore) {
+      emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
+      final items = await state.fetchMethod(state.items.length, 100);
+      final canLoadMore = items.length >= 100;
+
+      emit(state.copyWith(
+          items: [...state.items, ...items], canLoadMore: canLoadMore, collectionStatus: SeasonStatus.success));
+    }
   }
-}
 
-enum SortBy {
-  ASC,
-  DESC;
+  void _onScrollControllerUpdate(SetScrollController event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(scrollController: event.scrollController));
+  }
 
-  const SortBy();
+  void _onListTypeChange(ListTypeChangeRequested event, Emitter<SeasonState> emit) async {
+    if (event.listType == null) {
+      emit(state.copyWith(listType: state.listType.getNextListType()));
+    } else {
+      emit(state.copyWith(listType: event.listType));
+    }
+  }
 
-  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
+  void _onSort(SortByField event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(collectionStatus: SeasonStatus.loadingMore));
+    final items = await _sortByField(event.fieldEnum);
+    emit(state.copyWith(sortField: event.fieldEnum.fieldName, items: items, sortBy: state.sortBy.reverse()));
+  }
+
+  void _replaceItems(ReplaceItem event, Emitter<SeasonState> emit) async {
+    emit(state.copyWith(items: event.items));
+  }
+
+  Future<List<Item>> _sortByField(FieldsEnum fieldEnum) async => (await compute(_sortItemByField,
+      {'items': state.items, 'field': fieldEnum.fieldName, 'sortBy': state.sortBy.reverse()}))['items'];
 }
 
 Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
@@ -130,8 +140,8 @@ Map<String, dynamic> _sortItemByField(Map<String, dynamic> arg) {
   }
 
   items.sort((a, b) {
-    final aField = a[fieldToSort];
-    final bField = b[fieldToSort];
+    final aField = a.toJson()[fieldToSort];
+    final bField = b.toJson()[fieldToSort];
     return sortingFunction(aField, bField);
   });
 

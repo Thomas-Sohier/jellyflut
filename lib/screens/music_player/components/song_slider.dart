@@ -1,47 +1,28 @@
-import 'package:animated_fractionally_sized_box/animated_fractionally_sized_box.dart';
 import 'package:flutter/material.dart';
-import 'package:jellyflut/providers/music/music_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SongSlider extends StatefulWidget {
+import '../bloc/music_player_bloc.dart';
+
+class SongSlider extends StatelessWidget {
   const SongSlider({super.key});
 
   @override
-  State<SongSlider> createState() => _SongSliderState();
-}
-
-class _SongSliderState extends State<SongSlider> {
-  late MusicProvider musicProvider;
-  late Duration musicDuration;
-  late ThemeData theme;
-
-  @override
-  void initState() {
-    super.initState();
-    musicProvider = MusicProvider();
-  }
-
-  @override
-  void didChangeDependencies() {
-    theme = Theme.of(context);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Duration?>(
-      stream: musicProvider.getPositionStream(),
-      builder: (context, snapshotPosition) => AnimatedFractionallySizedBox(
-          duration: Duration(seconds: 1),
-          widthFactor: getSliderSize(snapshotPosition.data),
-          child: Container(color: theme.colorScheme.secondary.withAlpha(190))),
+    return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
+      buildWhen: (previous, current) => previous.currentlyPlaying.hashCode != current.currentlyPlaying.hashCode,
+      builder: (context, state) => StreamBuilder<Duration?>(
+          stream: state.postionStream,
+          builder: (context, snapshotPosition) => AnimatedFractionallySizedBox(
+              duration: Duration(seconds: 1),
+              widthFactor: getSliderSize(snapshotPosition.data, state.duration),
+              child: Container(color: Theme.of(context).colorScheme.secondary.withAlpha(190)))),
     );
   }
 
-  double getSliderSize(Duration? currentPosition) {
+  double getSliderSize(Duration? currentPosition, Duration duration) {
     if (currentPosition == null) return 0;
 
-    final pos = currentPosition.inMilliseconds.toDouble() /
-        musicProvider.getDuration().inMilliseconds.toDouble();
+    final pos = currentPosition.inMilliseconds.toDouble() / duration.inMilliseconds.toDouble();
 
     if (pos.isNaN || pos.isInfinite) return 0.0;
     return pos;

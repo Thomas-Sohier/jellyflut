@@ -1,0 +1,24 @@
+name: streaming_api
+description: A dart API client for the Jellyfin Streaming API
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  dio: ^4.0.6
+  flutter:
+    sdk: flutter
+  jellyflut_models:
+    path: ../jellyflut_models
+  sqlite_database:
+    path: ../sqlite_database
+  freezed_annotation: ^2.0.3
+  json_annotation: ^4.5.0
+
+dev_dependencies:
+  pedantic: ^1.11.1
+  freezed: ^2.0.4
+  build_runner: ^2.3.2
+  json_serializable: ^6.2.0

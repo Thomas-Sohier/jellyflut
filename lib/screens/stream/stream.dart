@@ -1,77 +1,72 @@
-import 'dart:developer';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jellyflut/providers/theme/theme_provider.dart';
+import 'package:jellyflut/screens/stream/channel_cubit/channel_cubit.dart';
+import 'package:jellyflut/screens/stream/components/player_interface.dart';
+import 'package:jellyflut/screens/stream/cubit/stream_cubit.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:live_tv_repository/live_tv_repository.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 import 'package:universal_io/io.dart';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jellyflut/globals.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
-import 'package:jellyflut/providers/streaming/streaming_provider.dart';
-import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
-import 'package:jellyflut/services/streaming/streaming_service.dart';
-import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:wakelock/wakelock.dart';
-import './init_stream/init_stream.dart';
 
-class Stream extends StatefulWidget {
+class StreamPage extends StatelessWidget {
   final Item? item;
   final String? url;
 
-  const Stream({this.item, this.url});
+  const StreamPage({super.key, this.item, this.url})
+      : assert(item != null || url != null, 'At least one param must be given');
 
   @override
-  State<Stream> createState() => _StreamState();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => StreamCubit(
+          streamingRepository: context.read<StreamingRepository>(),
+          item: item,
+          url: url,
+        )..init(),
+      ),
+      if (item?.type == ItemType.TvChannel)
+        BlocProvider(
+          create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init(),
+        )
+    ], child: const StreamView());
+  }
 }
 
-class _StreamState extends State<Stream> {
-  late final StreamingProvider streamingProvider;
-  late final Future<Widget> videoFuture;
+class StreamView extends StatefulWidget {
+  const StreamView();
+
+  @override
+  State<StreamView> createState() => _StreamViewState();
+}
+
+class _StreamViewState extends State<StreamView> {
+  late final StreamCubit streamCubit;
 
   @override
   void initState() {
     super.initState();
-
-    // if we have an item but no url then we strem from item
-    // else we use the url if there is one to stream from it
-    if (widget.item != null && widget.url == null) {
-      videoFuture = InitStreamingItemUtil.initFromItem(item: widget.item!);
-    } else if (widget.url != null) {
-      videoFuture = InitStreamingUrlUtil.initFromUrl(
-          url: widget.url!, streamName: widget.item?.name ?? '');
-    }
-
-    videoFuture.catchError((error, stackTrace) {
-      customRouter.pop();
-      var msg = error.toString();
-      log(error.toString());
-      log(stackTrace.toString());
-      if (error is DioError) msg = error.message;
-
-      SnackbarUtil.message(msg, Icons.play_disabled, Colors.red);
-      return Future.value(Text(msg));
-    });
-
+    streamCubit = context.read<StreamCubit>();
     if (!Platform.isLinux) {
       Wakelock.enable();
     }
 
-    streamingProvider = StreamingProvider();
     // Hide device overlays
     // device orientation
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
   @override
   void dispose() {
+    streamCubit.disposePlayer();
     if (!Platform.isLinux) {
       Wakelock.disable();
     }
-    // Disable and stop every service
-    StreamingService.deleteActiveEncoding();
-    streamingProvider.commonStream?.dispose();
-    streamingProvider.timer?.cancel();
 
     // Show device overlays
     // device orientation
@@ -81,26 +76,16 @@ class _StreamState extends State<Stream> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: FutureBuilder<Widget>(
-        future: videoFuture,
-        builder: (context, snapshot) {
-          // TODO add init stream/provider implementation that works
-          //final isInit = streamingProvider.commonStream?.isInit() ?? false;
-          if (snapshot.hasData) {
-            return Center(child: snapshot.data);
-          }
-          return PlaceholderScreen(item: widget.item);
-        },
-      ),
-    );
+    final theme = context.read<ThemeProvider>().getThemeData;
+    return Theme(
+        // We force white controls on player controls to have better contrast
+        data: theme.copyWith(colorScheme: theme.colorScheme.copyWith(onBackground: Colors.white)),
+        child: Scaffold(backgroundColor: Colors.black, body: const PlayerInterface()));
   }
 }

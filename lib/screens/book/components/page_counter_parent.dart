@@ -9,11 +9,7 @@ class PageCounterParent extends StatelessWidget {
   final Stream<Map<int, int>> streamPage;
   final PageController controller;
   final bool clickable;
-  const PageCounterParent(
-      {super.key,
-      required this.streamPage,
-      required this.controller,
-      this.clickable = true});
+  const PageCounterParent({super.key, required this.streamPage, required this.controller, this.clickable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +18,10 @@ class PageCounterParent extends StatelessWidget {
       builder: (context, snapshot) => PopupMenuButton(
           enabled: clickable,
           initialValue: snapshot.data?.values.first ?? 0,
-          onSelected: (int pageSelected) => controller.animateToPage(
-              pageSelected,
-              duration: Duration(milliseconds: 400),
-              curve: Curves.easeInOut),
-          itemBuilder: (context) => _pagesListTile(
-              snapshot.data?.keys.first ?? 0, snapshot.data?.values.first ?? 0),
-          child: PageCounter(
-              currentPage: snapshot.data?.keys.first,
-              nbPages: snapshot.data?.values.first)),
+          onSelected: (int pageSelected) =>
+              controller.animateToPage(pageSelected, duration: Duration(milliseconds: 400), curve: Curves.easeInOut),
+          itemBuilder: (context) => _pagesListTile(snapshot.data?.keys.first ?? 0, snapshot.data?.values.first ?? 0),
+          child: PageCounter(currentPage: snapshot.data?.keys.first, nbPages: snapshot.data?.values.first)),
     );
   }
 

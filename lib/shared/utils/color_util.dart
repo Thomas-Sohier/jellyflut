@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image_lib;
 
-class ColorUtil {
+abstract class ColorUtil {
   static Map<int, Color> generateColorSwatch(Color color) => <int, Color>{
         50: ColorUtil.lighten(color, 0.45),
         100: ColorUtil.lighten(color, 0.4),
@@ -34,8 +34,7 @@ class ColorUtil {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(color);
-    final hslLight =
-        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
 
     return hslLight.toColor();
   }
@@ -48,8 +47,7 @@ class ColorUtil {
     return Color.fromARGB((color.opacity * 255).round(), r, g, b);
   }
 
-  static Color changeColorHue(Color color, double hue) =>
-      HSLColor.fromColor(color).withHue(hue).toColor();
+  static Color changeColorHue(Color color, double hue) => HSLColor.fromColor(color).withHue(hue).toColor();
 
   static Color changeColorSaturation(Color color, double saturation) =>
       HSLColor.fromColor(color).withSaturation(saturation).toColor();
@@ -57,25 +55,37 @@ class ColorUtil {
   static Color changeColorLightness(Color color, double lightness) =>
       HSLColor.fromColor(color).withLightness(lightness).toColor();
 
+  static Color applyColorSaturation(Color color, double saturation) {
+    final hslColor = HSLColor.fromColor(color);
+    final tempSaturation = hslColor.saturation + saturation;
+    final s = tempSaturation < 0 || tempSaturation > 1 ? hslColor.saturation : tempSaturation;
+    return hslColor.withSaturation(s).toColor();
+  }
+
+  static Color applyColorLightness(Color color, double lightness) {
+    final hslColor = HSLColor.fromColor(color);
+    final tempLightness = hslColor.lightness + lightness;
+    final l = tempLightness < 0 || tempLightness > 1 ? hslColor.lightness : tempLightness;
+    return hslColor.withLightness(l).toColor();
+  }
+
   static List<Color> sortColors(List<Color> colors) {
     final sorted = <Color>[];
 
     sorted.addAll(colors);
-    sorted.sort((a, b) => b.computeLuminance().compareTo(a.computeLuminance()));
+    sorted.sort((a, b) => a.computeLuminance().compareTo(b.computeLuminance()));
+    sorted.removeWhere((c) => c.computeLuminance() < 0.05 || c.computeLuminance() > 0.95);
 
     return sorted;
   }
 
-  static List<Color> extractPixelsColors(Uint8List bytes,
-      {int noOfPixelsPerAxis = 2}) {
+  static List<Color> extractPixelsColors(Uint8List bytes, {int noOfPixelsPerAxis = 2}) {
     final colors = <Color>[];
 
-    final List<int> values = bytes.buffer.asUint8List();
+    final values = bytes.buffer.asUint8List();
     final image = image_lib.decodeImage(values);
 
     if (image == null) return <Color>[];
-
-    final pixels = <int>[];
 
     final width = image.width;
     final height = image.height;
@@ -86,19 +96,11 @@ class ColorUtil {
     for (var j = 1; j < noOfPixelsPerAxis + 1; j++) {
       for (var i = 1; i < noOfPixelsPerAxis + 1; i++) {
         final pixel = image.getPixel(xChunk * i, yChunk * j);
-        pixels.add(pixel);
-        colors.add(abgrToColor(pixel));
+        colors.add(Color.fromARGB(pixel.a.toInt(), pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt()));
       }
     }
 
     return colors;
-  }
-
-  static Color abgrToColor(int argbColor) {
-    final r = (argbColor >> 16) & 0xFF;
-    final b = argbColor & 0xFF;
-    final hex = (argbColor & 0xFF00FF00) | (b << 16) | r;
-    return Color(hex);
   }
 
   static Color getAverageColor(List<Color> colors) {

@@ -13,10 +13,7 @@ class LoadingText extends StatelessWidget {
       blurRadius: 10.0,
       color: Color.fromARGB(255, 0, 0, 0),
     ),
-    Shadow(
-        offset: Offset(-1.0, -1.0),
-        blurRadius: 8.0,
-        color: Color.fromARGB(125, 0, 0, 255)),
+    Shadow(offset: Offset(-1.0, -1.0), blurRadius: 8.0, color: Color.fromARGB(125, 0, 0, 255)),
     Shadow(
       offset: Offset(-4.0, -4.0),
       blurRadius: 10.0,
@@ -28,8 +25,6 @@ class LoadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text('loading_dots'.tr(),
-        textAlign: TextAlign.center,
-        style:
-            Theme.of(context).textTheme.headline1!.copyWith(shadows: shadows));
+        textAlign: TextAlign.center, style: Theme.of(context).textTheme.displayLarge!.copyWith(shadows: shadows));
   }
 }

@@ -1,0 +1,24 @@
+name: live_tv_api
+description: A dart API client for the Jellyfin Live TV API
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  dio: ^4.0.6
+  flutter:
+    sdk: flutter
+  freezed_annotation: ^2.0.3
+  jellyflut_models:
+    path: ../jellyflut_models
+  json_annotation: ^4.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.3.2
+  freezed: ^2.0.4
+  json_serializable: ^6.2.0
+  pedantic: ^1.11.1

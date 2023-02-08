@@ -8,13 +8,10 @@ abstract class DetailsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DetailsUpdateItem extends DetailsEvent {
+class DetailsInitRequested extends DetailsEvent {
   final Item item;
 
-  DetailsUpdateItem({required this.item});
-
-  @override
-  List<Object> get props => [item];
+  DetailsInitRequested({required this.item});
 }
 
 class DetailsUpdateSeedColor extends DetailsEvent {
@@ -23,19 +20,22 @@ class DetailsUpdateSeedColor extends DetailsEvent {
   DetailsUpdateSeedColor({required this.colors});
 }
 
-class DetailsUpdateTheme extends DetailsEvent {
-  final ThemeData theme;
+class DetailsItemUpdate extends DetailsEvent {
+  final Item item;
 
-  DetailsUpdateTheme({required this.theme});
-}
-
-class DetailsUpdateDetailsInfos extends DetailsEvent {
-  final DetailsInfosFuture detailsInfos;
-
-  DetailsUpdateDetailsInfos({required this.detailsInfos});
+  DetailsItemUpdate({required this.item});
 
   @override
-  List<Object> get props => [detailsInfos];
+  List<Object> get props => [item];
+}
+
+class PinnedHeaderChangeRequested extends DetailsEvent {
+  final double shrinkOffset;
+
+  PinnedHeaderChangeRequested({required this.shrinkOffset});
+
+  @override
+  List<Object> get props => [shrinkOffset];
 }
 
 class DetailsScreenSizeChanged extends DetailsEvent {
@@ -48,8 +48,3 @@ class DetailsScreenSizeChanged extends DetailsEvent {
 }
 
 class ResetStates extends DetailsEvent {}
-
-enum ScreenLayout {
-  mobile,
-  desktop;
-}

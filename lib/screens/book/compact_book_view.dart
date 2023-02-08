@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jellyflut/models/jellyfin/item.dart';
 import 'package:jellyflut/screens/book/bloc/book_bloc.dart';
 import 'package:jellyflut/screens/book/components/setting_buton.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 import 'components/book_placeholder.dart';
 import 'components/page_counter_parent.dart';
 
@@ -40,8 +40,7 @@ class _CompactBookViewState extends State<CompactBookView> {
     listener = widget.listener;
     pageController = widget.pageController;
     streamPosition = widget.streamPosition;
-    streamPosition.first
-        .then((value) => pageController.jumpToPage(value.keys.first));
+    streamPosition.first.then((value) => pageController.jumpToPage(value.keys.first));
     scrollController = ScrollController();
     super.initState();
   }
@@ -56,11 +55,10 @@ class _CompactBookViewState extends State<CompactBookView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(item.name),
+          title: Text(item.name ?? ''),
           actions: [
             SettingButton(),
-            PageCounterParent(
-                streamPage: streamPosition, controller: pageController),
+            PageCounterParent(streamPage: streamPosition, controller: pageController),
           ],
         ),
         backgroundColor: Colors.black,

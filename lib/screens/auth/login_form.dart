@@ -15,7 +15,7 @@ import 'enum/fields_enum.dart';
 class LoginForm extends StatefulWidget {
   final VoidCallback? onAuthenticated;
 
-  LoginForm({super.key, this.onAuthenticated});
+  const LoginForm({super.key, this.onAuthenticated});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -25,11 +25,11 @@ class _LoginFormState extends State<LoginForm> {
   late final AuthBloc authBloc;
   FormGroup buildForm() => fb.group(<String, Object>{
         FieldsType.USER_USERNAME.value: FormControl<String>(
-          value: authBloc.username ?? '',
+          value: authBloc.state.user.username,
           validators: [Validators.required],
         ),
         FieldsType.USER_PASSWORD.value: FormControl<String>(
-          value: authBloc.userPassword ?? '',
+          value: authBloc.state.user.password,
           validators: [],
         )
       });
@@ -54,7 +54,7 @@ class _LoginFormState extends State<LoginForm> {
               Row(children: [
                 Expanded(
                   child: Text('connection'.tr(),
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.left,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
@@ -62,19 +62,11 @@ class _LoginFormState extends State<LoginForm> {
                 LocaleButtonSelector(showCurrentValue: true)
               ]),
               const SizedBox(height: 24),
-              UserUsernameField(
-                  form: form,
-                  onSubmitted: () =>
-                      form.focus(FieldsType.USER_PASSWORD.toString())),
+              UserUsernameField(form: form, onSubmitted: (_) => form.focus(FieldsType.USER_PASSWORD.toString())),
               const SizedBox(height: 12),
-              UserPasswordField(
-                  form: form, onSubmitted: () => addUser(form, context)),
+              UserPasswordField(form: form, onSubmitted: (_) => addUser(form, context)),
               const SizedBox(height: 24),
-              actions(children: [
-                backButton(form, context),
-                const SizedBox(width: 12),
-                loginButton(form, context)
-              ]),
+              actions(children: [backButton(form, context), const SizedBox(width: 12), loginButton(form, context)]),
               const SizedBox(height: 24)
             ],
           );
@@ -95,9 +87,9 @@ class _LoginFormState extends State<LoginForm> {
       child: TextButton(
           onPressed: () => backToFirstForm(form, context),
           style: TextButton.styleFrom(
-                  padding: EdgeInsets.only(left: 6, right: 6),
-                  backgroundColor: Theme.of(context).colorScheme.primary)
+                  padding: EdgeInsets.only(left: 6, right: 6), backgroundColor: Theme.of(context).colorScheme.primary)
               .copyWith(side: buttonBorderSide(context))
+              .copyWith(shape: buttonShape())
               .copyWith(elevation: buttonElevation()),
           child: Row(children: [
             Icon(
@@ -115,9 +107,7 @@ class _LoginFormState extends State<LoginForm> {
   void backToFirstForm(FormGroup form, BuildContext context) {
     final username = form.value[FieldsType.USER_USERNAME.value].toString();
     final password = form.value[FieldsType.USER_PASSWORD.value].toString();
-    authBloc.userPassword = password;
-    authBloc.username = username;
-    authBloc.add(BackToFirstForm());
+    authBloc.add(BackToFirstForm(username: username, password: password));
   }
 
   Widget loginButton(FormGroup form, BuildContext context) {
@@ -126,15 +116,14 @@ class _LoginFormState extends State<LoginForm> {
         bloc: authBloc,
         listener: (c, a) => {},
         builder: (context, state) {
-          if (state is AuthenticationInProgress) {
+          if (state.authStatus == AuthStatus.authenticationInProgress) {
             return GradienButton('', () => {},
                 borderRadius: 4,
                 enabled: false,
                 color1: Colors.grey.shade400.withAlpha(220),
                 color2: Colors.grey.shade500.withAlpha(230),
                 child: CircularProgressIndicator(
-                    backgroundColor: Colors.grey,
-                    color: Theme.of(context).colorScheme.secondary));
+                    backgroundColor: Colors.grey, color: Theme.of(context).colorScheme.secondary));
           } else {
             return GradienButton('login'.tr(), () => addUser(form, context),
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -157,12 +146,10 @@ class _LoginFormState extends State<LoginForm> {
       final regexp = RegExp(r'^[^_]+(?=_)');
       final errors = <String>[];
       form.errors.forEach((key, value) {
-        final fieldName =
-            key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
+        final fieldName = key.replaceAll(regexp, '').replaceAll('_', '').capitalize();
         errors.add('field_required'.tr(args: [fieldName]));
       });
-      authBloc
-          .add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
+      authBloc.add(AuthError('${'form_not_valid'.tr()}\n${errors.join(',\n')}'));
     }
   }
 }

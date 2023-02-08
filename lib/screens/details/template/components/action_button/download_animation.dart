@@ -4,8 +4,7 @@ import 'package:rxdart/rxdart.dart';
 class DownloadAnimation extends StatefulWidget {
   final BehaviorSubject<int> percentDownload;
   final Widget child;
-  DownloadAnimation(
-      {super.key, required this.percentDownload, required this.child});
+  DownloadAnimation({super.key, required this.percentDownload, required this.child});
 
   @override
   State<DownloadAnimation> createState() => _DownloadAnimationState();
@@ -17,8 +16,7 @@ class _DownloadAnimationState extends State<DownloadAnimation> {
     return StreamBuilder<int>(
         stream: widget.percentDownload,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              snapshot.connectionState == ConnectionState.none) {
+          if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.none) {
             return widget.child;
           } else if (snapshot.hasError) {
             return Icon(Icons.file_download_off, color: Colors.red);
