@@ -52,11 +52,18 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         manifestPlaceholders = [applicationName:"io.flutter.app.FlutterApplication", applicationLabel:"jellyflut"]
-        applicationId "com.example.jellyflut"
+        applicationId "com.jellyflut"
         multiDexEnabled true
         minSdkVersion 21
         targetSdkVersion 33
@@ -76,12 +83,8 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            shrinkResources false
-            useProguard true
-            proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
         }
     }
 }
