@@ -124,6 +124,7 @@ jobs:
           ANDROID_KEYS: ${{ secrets.ANDROID_KEYS }}
 
       - run: flutter pub get
+      - run: bash builder_runner_all.sh
       - run: flutter build apk --split-per-abi
       - run: cp build/app/outputs/flutter-apk/app*.apk .
 
