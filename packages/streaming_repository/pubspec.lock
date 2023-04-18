@@ -131,10 +131,10 @@ packages:
     dependency: transitive
     description:
       name: characters
-      sha256: "04a925763edad70e8443c99234dc3328f442e811f1d8fd1a72f1c8ad0f69a605"
+      sha256: e6a326c8af69605aec75ed6c187d06b349707a27fbff8222ca9cc2cff167975c
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.2.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -155,10 +155,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
+      sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.1"
+    version: "1.17.0"
   convert:
     dependency: transitive
     description:
@@ -419,10 +419,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      sha256: "5528c2f391ededb7775ec1daa69e65a2d61276f7552de2b5f7b8d34ee9fd4ab7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.7"
+    version: "0.6.5"
   json_annotation:
     dependency: "direct main"
     description:
@@ -466,12 +466,11 @@ packages:
   media_kit:
     dependency: "direct main"
     description:
-      path: media_kit
-      ref: main
-      resolved-ref: "487ce8c690c0abc48937e70e79fadfc623f9dff8"
-      url: "https://github.com/alexmercerind/media_kit.git"
-    source: git
-    version: "0.0.1"
+      name: media_kit
+      sha256: "4c2b3bb600c063ad194934ea7439bce3135cc6b4f9555222c3dc12ca1aa1d85c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5+1"
   media_kit_libs_linux:
     dependency: "direct main"
     description:
@@ -481,6 +480,14 @@ packages:
       url: "https://github.com/alexmercerind/media_kit.git"
     source: git
     version: "1.0.0"
+  media_kit_libs_macos_video:
+    dependency: "direct main"
+    description:
+      name: media_kit_libs_macos_video
+      sha256: ab1cbdf51400e30a9087bd7d6e10c6130d17296e76313fedd0ef0c57dae8c0f4
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   media_kit_libs_windows_video:
     dependency: "direct main"
     description:
@@ -493,20 +500,19 @@ packages:
   media_kit_video:
     dependency: "direct main"
     description:
-      path: media_kit_video
-      ref: main
-      resolved-ref: "487ce8c690c0abc48937e70e79fadfc623f9dff8"
-      url: "https://github.com/alexmercerind/media_kit.git"
-    source: git
-    version: "0.0.1"
+      name: media_kit_video
+      sha256: "3860b1e8b2779a5702ecea7e6e3d8b16a79407ad478234008550cca660ac52ad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   meta:
     dependency: transitive
     description:
       name: meta
-      sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"
+      sha256: "6c268b42ed578a53088d834796959e4a1814b5e9e164f147f580a386e5decf42"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+    version: "1.8.0"
   mime:
     dependency: transitive
     description:
@@ -655,10 +661,10 @@ packages:
     dependency: transitive
     description:
       name: safe_local_storage
-      sha256: "7ca14be87040e6badfcdb9c71e963846c4e7d827dbc9f62cab7496497352f8d8"
+      sha256: ede4eb6cb7d88a116b3d3bf1df70790b9e2038bc37cb19112e381217c74d9440
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.2"
   screen_retriever:
     dependency: transitive
     description:
@@ -866,10 +872,10 @@ packages:
     dependency: transitive
     description:
       name: uri_parser
-      sha256: f47b97479d6c818f739135e3abdd64d629804ea4fff7a5e394a37ca6fe8dce0a
+      sha256: "6543c9fd86d2862fac55d800a43e67c0dcd1a41677cb69c2f8edfe73bbcf1835"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   vector_math:
     dependency: transitive
     description:
@@ -1031,5 +1037,5 @@ packages:
     source: hosted
     version: "1.12.3"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
-  flutter: ">=3.1.0-0"
+  dart: ">=2.19.0 <4.0.0"
+  flutter: ">=3.7.0"

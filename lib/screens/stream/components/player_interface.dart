@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/stream/components/placeholder_screen.dart';
 import 'package:jellyflut/shared/utils/snackbar_util.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+
 import '../cubit/stream_cubit.dart';
 import 'common_controls/common_controls.dart';
 import 'controller_builder/controller_builder.dart';
@@ -22,7 +23,8 @@ class _PlayerInterfaceState extends State<PlayerInterface> {
     return Row(children: [
       const Expanded(child: _VideoBuilder()),
       BlocBuilder<StreamCubit, StreamState>(
-          buildWhen: (previous, current) => previous.streamItem != current.streamItem,
+          buildWhen: (previous, current) =>
+              previous.streamItem != current.streamItem,
           builder: (_, state) {
             if (state.streamItem.item.type == ItemType.TvChannel) {
               return const ChannelPicker();
@@ -98,7 +100,10 @@ class _VideoPlayerBuilder extends StatelessWidget {
                     alignment: Alignment.center,
                     clipBehavior: Clip.none,
                     fit: StackFit.expand,
-                    children: [const Controllerbuilder(), if (isLoaded) const CommonControls()],
+                    children: [
+                      const Controllerbuilder(),
+                      if (isLoaded) const CommonControls()
+                    ],
                   ))
             ],
           );

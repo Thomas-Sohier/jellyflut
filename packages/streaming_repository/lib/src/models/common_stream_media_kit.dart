@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:media_kit/media_kit.dart' hide AudioTrack;
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:media_kit/media_kit.dart';
 
 import '../models/index.dart';
 
@@ -15,17 +15,19 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   }
 
   static Player _initController({required Uri uri, Duration? startAtPosition}) {
-    // Detect if media is available locdally or only remotely
+    // Detect if media is available locally or only remotely
+    MediaKit.ensureInitialized();
     final player = Player();
-    final media = Media(uri.toString());
-    player.add(media);
+    var media = Media(uri.toString());
+    player.open(media);
     return player;
   }
 
   @override
   Future<void> initialize() async {
     return Future.microtask(() async {
-      _videoController = await VideoController.create(controller.handle);
+      _videoController = await VideoController.create(controller);
+      await _videoController!.player.play();
     });
   }
 
@@ -47,7 +49,8 @@ class CommonStreamMediaKit extends CommonStream<Player> {
     // final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds = 0;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN ||
+                currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
@@ -112,7 +115,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    final subscription = controller.streams.isPlaying.listen((event) {});
+    final subscription = controller.streams.playing.listen((event) {});
     subscription.onData((data) {
       streamController.add(data);
     });
@@ -132,7 +135,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   bool isInit() => true;
 
   @override
-  bool isPlaying() => controller.state.isPlaying;
+  bool isPlaying() => controller.state.playing;
 
   @override
   Future<void> pause() => Future.value(controller.pause());
@@ -144,7 +147,8 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   Future<void> play() => Future.value(controller.play());
 
   @override
-  Future<void> seekTo(Duration duration) => Future.value(controller.seek(duration));
+  Future<void> seekTo(Duration duration) =>
+      Future.value(controller.seek(duration));
 
   @override
   void enterFullscreen() {
