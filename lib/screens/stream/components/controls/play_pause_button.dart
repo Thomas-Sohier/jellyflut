@@ -18,7 +18,7 @@ class PlayPauseButton extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(
-              state.playing ? Icons.play_arrow : Icons.pause,
+              state.playing ? Icons.pause : Icons.play_arrow,
               color: Colors.white,
               size: size,
             ),
