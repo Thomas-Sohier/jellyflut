@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'target_platform_extended.dart';
 
 enum StreamingSoftware {
@@ -13,7 +14,11 @@ enum StreamingSoftware {
   HTMLPlayer('HTMLPlayer', [TargetPlatformExtended.web]),
   EXOPLAYER('Exoplayer', [TargetPlatformExtended.android]),
   AVPLAYER('AVPlayer', [TargetPlatformExtended.iOS]),
-  MPV('MPV', [TargetPlatformExtended.windows, TargetPlatformExtended.linux]);
+  MPV('MPV', [
+    TargetPlatformExtended.windows,
+    TargetPlatformExtended.linux,
+    TargetPlatformExtended.macOS,
+  ]);
 
   final List<TargetPlatformExtended> _supportedPlatforms;
   final String _name;
@@ -27,14 +32,18 @@ enum StreamingSoftware {
   /// You can provide a BuildContext or let function get it from global navigatorKey
   /// return [List<StreamingSoftware>], empty if no player available
   static List<StreamingSoftware> getVideoPlayerOptions(BuildContext context) {
-    final currentPlatform =
-        kIsWeb ? TargetPlatformExtended.web : TargetPlatformExtended.fromTargetPlatform(Theme.of(context).platform);
+    final currentPlatform = kIsWeb
+        ? TargetPlatformExtended.web
+        : TargetPlatformExtended.fromTargetPlatform(Theme.of(context).platform);
 
-    return StreamingSoftware.values.where((soft) => soft._supportedPlatforms.contains(currentPlatform)).toList();
+    return StreamingSoftware.values
+        .where((soft) => soft._supportedPlatforms.contains(currentPlatform))
+        .toList();
   }
 
   /// Get [StreamingSoftware] from name value
   static StreamingSoftware fromString(String name) {
-    return StreamingSoftware.values.firstWhere((soft) => soft.name.toLowerCase() == name.toLowerCase());
+    return StreamingSoftware.values
+        .firstWhere((soft) => soft.name.toLowerCase() == name.toLowerCase());
   }
 }

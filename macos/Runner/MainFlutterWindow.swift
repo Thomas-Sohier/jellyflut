@@ -1,5 +1,5 @@
 import Cocoa
-// import FlutterMacOS
+import FlutterMacOS
 // import bitsdojo_window_macos 
 
 class MainFlutterWindow: NSWindow {

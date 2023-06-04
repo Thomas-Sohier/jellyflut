@@ -964,12 +964,11 @@ packages:
   media_kit:
     dependency: transitive
     description:
-      path: media_kit
-      ref: main
-      resolved-ref: "4b02f9caba41df042d59f44b2f65ce8fde2cf1c9"
-      url: "https://github.com/alexmercerind/media_kit.git"
-    source: git
-    version: "0.0.1"
+      name: media_kit
+      sha256: "4c2b3bb600c063ad194934ea7439bce3135cc6b4f9555222c3dc12ca1aa1d85c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5+1"
   media_kit_libs_linux:
     dependency: transitive
     description:
@@ -979,6 +978,14 @@ packages:
       url: "https://github.com/alexmercerind/media_kit.git"
     source: git
     version: "1.0.0"
+  media_kit_libs_macos_video:
+    dependency: transitive
+    description:
+      name: media_kit_libs_macos_video
+      sha256: ab1cbdf51400e30a9087bd7d6e10c6130d17296e76313fedd0ef0c57dae8c0f4
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   media_kit_libs_windows_video:
     dependency: transitive
     description:
@@ -991,12 +998,11 @@ packages:
   media_kit_video:
     dependency: transitive
     description:
-      path: media_kit_video
-      ref: main
-      resolved-ref: "4b02f9caba41df042d59f44b2f65ce8fde2cf1c9"
-      url: "https://github.com/alexmercerind/media_kit.git"
-    source: git
-    version: "0.0.1"
+      name: media_kit_video
+      sha256: "3860b1e8b2779a5702ecea7e6e3d8b16a79407ad478234008550cca660ac52ad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   meta:
     dependency: transitive
     description:
@@ -1326,10 +1332,10 @@ packages:
     dependency: transitive
     description:
       name: safe_local_storage
-      sha256: "7ca14be87040e6badfcdb9c71e963846c4e7d827dbc9f62cab7496497352f8d8"
+      sha256: ede4eb6cb7d88a116b3d3bf1df70790b9e2038bc37cb19112e381217c74d9440
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.2"
   scratch_space:
     dependency: transitive
     description:
@@ -1641,10 +1647,10 @@ packages:
     dependency: transitive
     description:
       name: uri_parser
-      sha256: f47b97479d6c818f739135e3abdd64d629804ea4fff7a5e394a37ca6fe8dce0a
+      sha256: "6543c9fd86d2862fac55d800a43e67c0dcd1a41677cb69c2f8edfe73bbcf1835"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1916,5 +1922,5 @@ packages:
     source: hosted
     version: "1.12.3"
 sdks:
-  dart: ">=2.19.0 <3.0.0"
-  flutter: ">=3.7.0-0"
+  dart: ">=2.19.0 <4.0.0"
+  flutter: ">=3.7.0"

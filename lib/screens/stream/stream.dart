@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/stream/channel_cubit/channel_cubit.dart';
@@ -7,9 +9,6 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 import 'package:universal_io/io.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 
 class StreamPage extends StatelessWidget {
@@ -31,7 +30,9 @@ class StreamPage extends StatelessWidget {
       ),
       if (item?.type == ItemType.TvChannel)
         BlocProvider(
-          create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init(),
+          create: (_) =>
+              ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())
+                ..init(),
         )
     ], child: const StreamView());
   }
@@ -57,7 +58,8 @@ class _StreamViewState extends State<StreamView> {
 
     // Hide device overlays
     // device orientation
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 
@@ -76,7 +78,8 @@ class _StreamViewState extends State<StreamView> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
@@ -85,7 +88,10 @@ class _StreamViewState extends State<StreamView> {
     final theme = context.read<ThemeProvider>().getThemeData;
     return Theme(
         // We force white controls on player controls to have better contrast
-        data: theme.copyWith(colorScheme: theme.colorScheme.copyWith(onBackground: Colors.white)),
-        child: Scaffold(backgroundColor: Colors.black, body: const PlayerInterface()));
+        data: theme.copyWith(
+            colorScheme:
+                theme.colorScheme.copyWith(onBackground: Colors.white)),
+        child: Scaffold(
+            backgroundColor: Colors.black, body: const PlayerInterface()));
   }
 }

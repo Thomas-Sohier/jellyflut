@@ -21,11 +21,7 @@ dependencies:
   jellyflut_models:
     path: ../jellyflut_models
   json_annotation: ^4.6.0
-  media_kit:
-    git:
-      url: https://github.com/alexmercerind/media_kit.git
-      path: media_kit
-      ref: main
+  media_kit: ^0.0.5+1
   media_kit_libs_linux:
     git:
       url: https://github.com/alexmercerind/media_kit.git
@@ -36,11 +32,8 @@ dependencies:
       url: https://github.com/alexmercerind/media_kit.git
       path: media_kit_libs_windows_video
       ref: main
-  media_kit_video:
-    git:
-      url: https://github.com/alexmercerind/media_kit.git
-      path: media_kit_video
-      ref: main
+  media_kit_libs_macos_video: ^1.0.4
+  media_kit_video: ^0.0.6
   sqlite_database:
     path: ../sqlite_database
   streaming_api:
