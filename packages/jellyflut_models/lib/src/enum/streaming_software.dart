@@ -18,6 +18,8 @@ enum StreamingSoftware {
     TargetPlatformExtended.windows,
     TargetPlatformExtended.linux,
     TargetPlatformExtended.macOS,
+    TargetPlatformExtended.android,
+    TargetPlatformExtended.iOS
   ]);
 
   final List<TargetPlatformExtended> _supportedPlatforms;
@@ -32,18 +34,14 @@ enum StreamingSoftware {
   /// You can provide a BuildContext or let function get it from global navigatorKey
   /// return [List<StreamingSoftware>], empty if no player available
   static List<StreamingSoftware> getVideoPlayerOptions(BuildContext context) {
-    final currentPlatform = kIsWeb
-        ? TargetPlatformExtended.web
-        : TargetPlatformExtended.fromTargetPlatform(Theme.of(context).platform);
+    final currentPlatform =
+        kIsWeb ? TargetPlatformExtended.web : TargetPlatformExtended.fromTargetPlatform(Theme.of(context).platform);
 
-    return StreamingSoftware.values
-        .where((soft) => soft._supportedPlatforms.contains(currentPlatform))
-        .toList();
+    return StreamingSoftware.values.where((soft) => soft._supportedPlatforms.contains(currentPlatform)).toList();
   }
 
   /// Get [StreamingSoftware] from name value
   static StreamingSoftware fromString(String name) {
-    return StreamingSoftware.values
-        .firstWhere((soft) => soft.name.toLowerCase() == name.toLowerCase());
+    return StreamingSoftware.values.firstWhere((soft) => soft.name.toLowerCase() == name.toLowerCase());
   }
 }
