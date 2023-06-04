@@ -65,7 +65,7 @@ class _SubtitleButtonSelectorState extends State<SubtitleButtonSelector> {
     }
 
     // If subtitles list is not empty the we show disabled button at start of list
-    final disabledSubtitle = Subtitle(index: -1, name: 'disabled'.tr(), mediaType: MediaType.local);
+    const disabledSubtitle = Subtitle.empty;
     list.add(
       CheckedPopupMenuItem(
         value: disabledSubtitle,

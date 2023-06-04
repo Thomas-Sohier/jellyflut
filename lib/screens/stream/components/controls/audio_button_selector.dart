@@ -67,7 +67,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     }
 
     // If audio tracks list is not empty the we show disabled button at start of list
-    final disabledAudioTrack = AudioTrack(index: -1, name: 'default'.tr(), mediaType: MediaType.local);
+    const disabledAudioTrack = AudioTrack.empty;
     list.add(
       CheckedPopupMenuItem(
         value: disabledAudioTrack,

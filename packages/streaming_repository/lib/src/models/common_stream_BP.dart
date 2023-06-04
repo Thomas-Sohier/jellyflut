@@ -125,7 +125,8 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
     final List<Subtitle> parsedSubtitiles = [];
     final subtitles = controller.betterPlayerSubtitlesSourceList;
     for (var i = 0; i < subtitles.length - 1; i++) {
-      parsedSubtitiles.add(Subtitle(index: i, mediaType: MediaType.local, name: subtitles[i].name ?? 'Default'));
+      parsedSubtitiles
+          .add(Subtitle(index: i.toString(), mediaType: MediaType.local, name: subtitles[i].name ?? 'Default'));
     }
     return parsedSubtitiles;
   }
@@ -138,7 +139,7 @@ class CommonStreamBP extends CommonStream<BetterPlayerController> {
 
   @override
   Future<void> setSubtitle(Subtitle subtitle) {
-    return controller.setupSubtitleSource(controller.betterPlayerSubtitlesSourceList[subtitle.index]);
+    return controller.setupSubtitleSource(controller.betterPlayerSubtitlesSourceList[int.parse(subtitle.index)]);
   }
 
   @override

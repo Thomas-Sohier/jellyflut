@@ -26,8 +26,8 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   Future<void> initialize() async {
     return Future.microtask(() async {
-      _videoController = await VideoController.create(controller);
-      await _videoController!.player.play();
+      _videoController = VideoController(controller);
+      await controller.play();
     });
   }
 
@@ -37,7 +37,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
       throw Exception('VideoController is null');
     }
     return Video(
-      controller: _videoController,
+      controller: _videoController!,
       width: 1920,
       height: 1080,
     );
@@ -49,8 +49,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
     // final totalMilliseconds = durationCurrentFile.inMilliseconds;
     final currentBufferedMilliseconds = 0;
     return Duration(
-        milliseconds: currentBufferedMilliseconds.isNaN ||
-                currentBufferedMilliseconds.isInfinite
+        milliseconds: currentBufferedMilliseconds.isNaN || currentBufferedMilliseconds.isInfinite
             ? 0
             : currentBufferedMilliseconds.toInt());
   }
@@ -59,29 +58,18 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   /// Only there to comply to common stream interface
   @override
   Future<List<Subtitle>> getSubtitles() async {
-    final parsedSubtitiles = <Subtitle>[];
+    final parsedSubtitiles = controller.state.tracks.audio
+        .map((e) => Subtitle(index: e.id, mediaType: MediaType.local, name: e.title ?? e.id))
+        .toList();
     return parsedSubtitiles;
   }
 
   /// No implemented, do nothing
   /// Only there to comply to common stream interface
   @override
-  Future<List<AudioTrack>> getAudioTracks() async {
-    final parsedAudioTracks = <AudioTrack>[];
-    return parsedAudioTracks;
-  }
-
-  /// No implemented, do nothing
-  /// Only there to comply to common stream interface
-  @override
-  Future<void> setAudioTrack(AudioTrack trackIndex) {
-    return Future.value();
-  }
-
-  /// No implemented, do nothing
-  /// Only there to comply to common stream interface
-  @override
   Future<void> setSubtitle(Subtitle subtitle) {
+    final track = controller.state.tracks.subtitle.firstWhere((e) => e.id == subtitle.index);
+    controller.setSubtitleTrack(track);
     return Future.value();
   }
 
@@ -89,6 +77,25 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   /// Only there to comply to common stream interface
   @override
   Future<void> disableSubtitles() {
+    return Future.value();
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  @override
+  Future<List<AudioTrack>> getAudioTracks() async {
+    final parsedAudioTracks = controller.state.tracks.audio
+        .map((e) => AudioTrack(index: e.id, mediaType: MediaType.local, name: e.title ?? e.id))
+        .toList();
+    return Future.value(parsedAudioTracks);
+  }
+
+  /// No implemented, do nothing
+  /// Only there to comply to common stream interface
+  @override
+  Future<void> setAudioTrack(AudioTrack audioTrack) {
+    final track = controller.state.tracks.audio.firstWhere((e) => e.id == audioTrack.index);
+    controller.setAudioTrack(track);
     return Future.value();
   }
 
@@ -138,44 +145,22 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   bool isPlaying() => controller.state.playing;
 
   @override
-  Future<void> pause() => Future.value(controller.pause());
+  Future<void> pause() => controller.pause();
 
   @override
   Future<void>? pip() => Future.value(false);
 
   @override
-  Future<void> play() => Future.value(controller.play());
+  Future<void> play() => controller.play();
 
   @override
-  Future<void> seekTo(Duration duration) =>
-      Future.value(controller.seek(duration));
-
-  @override
-  void enterFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void exitFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void toggleFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  Future<bool> isFullscreen() async {
-    return Future.value(true);
-  }
+  Future<void> seekTo(Duration duration) => controller.seek(duration);
 
   @override
   Future<void> dispose() async {
     return Future.microtask(() async {
       // Release allocated resources back to the system.
       await controller.pause();
-      await _videoController?.dispose();
       await controller.dispose();
     });
   }

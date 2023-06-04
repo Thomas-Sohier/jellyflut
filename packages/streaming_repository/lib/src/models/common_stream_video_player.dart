@@ -141,26 +141,6 @@ class CommonStreamVideoPlayer extends CommonStream<VideoPlayerController> {
   Future<void> seekTo(Duration duration) => controller.seekTo(duration);
 
   @override
-  void enterFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void exitFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void toggleFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  Future<bool> isFullscreen() async {
-    return Future.value(true);
-  }
-
-  @override
   Future<void> dispose() async {
     await controller.pause();
     return controller.dispose();

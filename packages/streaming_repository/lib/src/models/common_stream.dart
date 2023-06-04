@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'audio_track.dart';
 import 'subtitle.dart';
@@ -8,6 +11,7 @@ import 'subtitle.dart';
 @Immutable()
 abstract class CommonStream<T> {
   late final T controller;
+  final bool _isComputer = Platform.isLinux || Platform.isWindows || Platform.isMacOS;
 
   CommonStream();
 
@@ -23,11 +27,7 @@ abstract class CommonStream<T> {
   bool isInit();
   Future<bool> hasPip();
   Future<void>? pip();
-  void enterFullscreen();
-  void exitFullscreen();
-  void toggleFullscreen();
   Future<void> initialize();
-  Future<bool> isFullscreen();
   Future<List<Subtitle>> getSubtitles();
   Future<void> setSubtitle(Subtitle subtitle);
   Future<void> disableSubtitles();
@@ -38,4 +38,28 @@ abstract class CommonStream<T> {
   BehaviorSubject<bool> getPlayingStateStream();
   Widget createView();
   Future<void> dispose();
+
+  Future<bool> isFullscreen() async {
+    if (!_isComputer) return Future.value(true); // fullscreen by default on handled devices
+    final windowInstance = WindowManager.instance;
+    return windowInstance.isFullScreen();
+  }
+
+  void enterFullscreen() async {
+    if (!_isComputer) return; // fullscreen by default on handled devices
+    final windowInstance = WindowManager.instance;
+    await windowInstance.setFullScreen(true);
+  }
+
+  void exitFullscreen() async {
+    if (!_isComputer) return; // fullscreen by default on handled devices
+    final windowInstance = WindowManager.instance;
+    await windowInstance.setFullScreen(false);
+  }
+
+  void toggleFullscreen() async {
+    if (!_isComputer) return; // fullscreen by default on handled devices
+    final windowInstance = WindowManager.instance;
+    await windowInstance.isFullScreen().then((bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
+  }
 }

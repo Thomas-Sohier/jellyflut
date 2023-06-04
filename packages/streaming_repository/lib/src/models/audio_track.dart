@@ -11,7 +11,7 @@ class AudioTrack with _$AudioTrack {
   const AudioTrack._();
 
   const factory AudioTrack(
-      {required int index,
+      {required String index,
       int? jellyfinSubtitleIndex,
       required MediaType mediaType,
       required String name}) = _AudioTrack;
@@ -19,7 +19,7 @@ class AudioTrack with _$AudioTrack {
   factory AudioTrack.fromJson(Map<String, Object?> json) => _$AudioTrackFromJson(json);
 
   /// Empty audio track which represents an empty audio track.
-  static const empty = AudioTrack(index: -1, mediaType: MediaType.local, name: '');
+  static const empty = AudioTrack(index: 'none', mediaType: MediaType.local, name: 'default');
 
   /// Convenience getter to determine whether the current audio track is empty.
   bool get isEmpty => this == AudioTrack.empty;

@@ -12,10 +12,7 @@ import 'package:streaming_repository/streaming_repository.dart';
 part 'stream_state.dart';
 
 class StreamCubit extends Cubit<StreamState> {
-  StreamCubit(
-      {required StreamingRepository streamingRepository,
-      Item? item,
-      String? url})
+  StreamCubit({required StreamingRepository streamingRepository, Item? item, String? url})
       : assert(item != null || url != null, 'At least one param must be given'),
         _streamingRepository = streamingRepository,
         super(StreamState(
@@ -35,15 +32,12 @@ class StreamCubit extends Cubit<StreamState> {
     try {
       if (state.parentItem != null) {
         print('parent item is not null');
-        final streamController =
-            await _generateController(item: state.parentItem);
+        final streamController = await _generateController(item: state.parentItem);
         commonStream = streamController.controller;
         streamItem = streamController.streamItem;
       } else if (state.url != null) {
-        commonStream = await _streamingRepository.createController(
-            uri: Uri.parse(state.url!));
-        streamItem = StreamItem(
-            url: state.url!, item: Item(id: '0', type: ItemType.Video));
+        commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
+        streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
       }
 
       await commonStream.initialize();
@@ -56,16 +50,12 @@ class StreamCubit extends Cubit<StreamState> {
       await play();
       emit(state.copyWith(audioTracks: await _getAudioTracks()));
     } on StreamingException catch (e, _) {
-      emit(state.copyWith(
-          failureMessage: e.message, status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } on DioError catch (e, _) {
-      emit(state.copyWith(
-          failureMessage: e.message, status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } catch (e, s) {
       print(s);
-      emit(state.copyWith(
-          failureMessage: (e as dynamic).toString(),
-          status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: (e as dynamic).toString(), status: StreamStatus.failure));
     }
   }
 
@@ -73,8 +63,7 @@ class StreamCubit extends Cubit<StreamState> {
     if (state.controller == null) return;
     await state.controller?.play();
     return emit(state.copyWith(
-        playing: state.controller?.isPlaying() ?? false,
-        fullscreen: await state.controller?.isFullscreen()));
+        playing: state.controller?.isPlaying() ?? false, fullscreen: await state.controller?.isFullscreen()));
   }
 
   void togglePlay() async {
@@ -90,8 +79,7 @@ class StreamCubit extends Cubit<StreamState> {
 
   void disposePlayer() {
     if (state.streamItem.playbackInfos?.playSessionId != null) {
-      _streamingRepository.deleteActiveEncoding(
-          playSessionId: state.streamItem.playbackInfos!.playSessionId!);
+      _streamingRepository.deleteActiveEncoding(playSessionId: state.streamItem.playbackInfos!.playSessionId!);
     }
     state.controlsVisibilityTimer.cancel();
     state.controller?.dispose();
@@ -109,24 +97,21 @@ class StreamCubit extends Cubit<StreamState> {
       emit(state.copyWith(visible: false));
     } else {
       state.controlsVisibilityTimer.cancel();
-      final newTimer = Timer(
-          Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
+      final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
       emit(state.copyWith(visible: true, controlsVisibilityTimer: newTimer));
     }
   }
 
   void autoHideControlTimer() {
     state.controlsVisibilityTimer.cancel();
-    final newTimer =
-        Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
+    final newTimer = Timer(Duration(seconds: 5), () => emit(state.copyWith(visible: false)));
     emit(state.copyWith(visible: true, controlsVisibilityTimer: newTimer));
   }
 
   void setAudioStreamIndex(AudioTrack audioTrack) async {
     if (audioTrack.mediaType == MediaType.remote) {
       final streamParamters = StreamParameters(
-          startAt: state.controller?.getCurrentPosition(),
-          audioStreamIndex: audioTrack.jellyfinSubtitleIndex);
+          startAt: state.controller?.getCurrentPosition(), audioStreamIndex: audioTrack.jellyfinSubtitleIndex);
       await changeDataSource(
         item: state.streamItem.item,
         streamParameters: streamParamters,
@@ -139,29 +124,25 @@ class StreamCubit extends Cubit<StreamState> {
 
   void goForward() {
     final currentDuration = state.controller?.getCurrentPosition();
-    final seekToDuration =
-        (currentDuration ?? _fastForwardStep) + _fastForwardStep;
+    final seekToDuration = (currentDuration ?? _fastForwardStep) + _fastForwardStep;
     state.controller?.seekTo(seekToDuration);
   }
 
   void goBackward() {
     final currentDuration = state.controller?.getCurrentPosition();
-    final seekToDuration =
-        (currentDuration ?? _fastForwardStep) - _fastForwardStep;
+    final seekToDuration = (currentDuration ?? _fastForwardStep) - _fastForwardStep;
     state.controller?.seekTo(seekToDuration);
   }
 
   Future<void> changeDataSource(
-      {required Item item,
-      StreamParameters streamParameters = StreamParameters.empty}) async {
+      {required Item item, StreamParameters streamParameters = StreamParameters.empty}) async {
     emit(state.copyWith(status: StreamStatus.loading));
     final playSessionId = state.streamItem.playbackInfos?.playSessionId;
     if (playSessionId == null) return;
     await state.controller?.pause();
     await state.controller?.dispose();
     try {
-      await _streamingRepository.deleteActiveEncoding(
-          playSessionId: playSessionId);
+      await _streamingRepository.deleteActiveEncoding(playSessionId: playSessionId);
     } catch (e, s) {
       print(e);
       print(s);
@@ -174,16 +155,13 @@ class StreamCubit extends Cubit<StreamState> {
           streamItem: streamController.streamItem,
           status: StreamStatus.success));
     } on StreamingException catch (e, _) {
-      emit(state.copyWith(
-          failureMessage: e.message, status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } on DioError catch (e, _) {
-      emit(state.copyWith(
-          failureMessage: e.message, status: StreamStatus.failure));
+      emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } catch (e, s) {
       print(s);
       emit(state.copyWith(
-          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(),
-          status: StreamStatus.failure));
+          failureMessage: (e as dynamic)?.message.toString() ?? e.toString(), status: StreamStatus.failure));
     }
   }
 
@@ -191,35 +169,35 @@ class StreamCubit extends Cubit<StreamState> {
     final audioTracks = <AudioTrack>[];
     final localAudioTracks = await state.controller?.getAudioTracks() ?? [];
     audioTracks.addAll(localAudioTracks);
-    final lastIndex = audioTracks.map((e) => e.index).fold(0, max);
-    audioTracks.addAll(_getRemoteAudiotracks(lastIndex + 1));
+    // final lastIndex = audioTracks.map((e) => e.index).fold(0, max);
+    // audioTracks.addAll(_getRemoteAudiotracks(lastIndex + 1));
+    audioTracks.addAll([]);
 
     return audioTracks;
   }
 
-  List<AudioTrack> _getRemoteAudiotracks([final int startIndex = 0]) {
+  List<AudioTrack> _getRemoteAudiotracks() {
     final audioTracks = <AudioTrack>[];
 
     // For now we can change remote audio source if already transcoding
-    if (!(state.streamItem.playbackInfos?.isTranscoding() ?? false)) {
-      return audioTracks;
-    }
+    // if (!(state.streamItem.playbackInfos?.isTranscoding() ?? false)) {
+    //   return audioTracks;
+    // }
 
-    final remoteAudioTracksMediaStream = state.streamItem.item.mediaStreams
-        .where((e) => e.type == MediaStreamType.Audio)
-        .toList();
+    // final remoteAudioTracksMediaStream =
+    //     state.streamItem.item.mediaStreams.where((e) => e.type == MediaStreamType.Audio).toList();
 
-    if (remoteAudioTracksMediaStream.isNotEmpty) {
-      for (var i = 0; i < remoteAudioTracksMediaStream.length; i++) {
-        final at = remoteAudioTracksMediaStream[i];
-        final remoteAudioTrack = AudioTrack(
-            index: audioTracks.length + startIndex,
-            name: at.displayTitle ?? '',
-            mediaType: MediaType.remote,
-            jellyfinSubtitleIndex: at.index);
-        audioTracks.add(remoteAudioTrack);
-      }
-    }
+    // if (remoteAudioTracksMediaStream.isNotEmpty) {
+    //   for (var i = 0; i < remoteAudioTracksMediaStream.length; i++) {
+    //     final at = remoteAudioTracksMediaStream[i];
+    //     final remoteAudioTrack = AudioTrack(
+    //         index: audioTracks.length + startIndex,
+    //         name: at.displayTitle ?? '',
+    //         mediaType: MediaType.remote,
+    //         jellyfinSubtitleIndex: at.index);
+    //     audioTracks.add(remoteAudioTrack);
+    //   }
+    // }
     return audioTracks;
   }
 
@@ -229,8 +207,9 @@ class StreamCubit extends Cubit<StreamState> {
     final subtitles = <Subtitle>[];
     final localSubtitles = await state.controller?.getSubtitles() ?? [];
     subtitles.addAll(localSubtitles);
-    final lastIndex = subtitles.map((e) => e.index).fold(0, max);
-    subtitles.addAll(_getRemoteSubtitles(lastIndex + 1));
+    // final lastIndex = subtitles.map((e) => e.index).fold(0, max);
+    // subtitles.addAll(_getRemoteSubtitles(lastIndex + 1).toString()));
+    subtitles.addAll([]);
 
     return subtitles;
   }
@@ -238,23 +217,22 @@ class StreamCubit extends Cubit<StreamState> {
   /// Method to fetch remote subtitles
   /// Can set [startIndex] a number to count from, useful if need to mix
   /// muliple subitles sources
-  List<Subtitle> _getRemoteSubtitles([final int startIndex = 0]) {
+  List<Subtitle> _getRemoteSubtitles() {
     final subtitles = <Subtitle>[];
-    final remoteSubtitlesMediaStream = state.streamItem.item.mediaStreams
-        .where((e) => e.type == MediaStreamType.Subtitle)
-        .toList();
+    // final remoteSubtitlesMediaStream =
+    //     state.streamItem.item.mediaStreams.where((e) => e.type == MediaStreamType.Subtitle).toList();
 
-    if (remoteSubtitlesMediaStream.isNotEmpty) {
-      for (var i = 0; i < remoteSubtitlesMediaStream.length; i++) {
-        final ls = remoteSubtitlesMediaStream[i];
-        final remoteSubtitle = Subtitle(
-            index: subtitles.length + startIndex,
-            name: ls.displayTitle ?? '',
-            mediaType: MediaType.remote,
-            jellyfinSubtitleIndex: ls.index);
-        subtitles.add(remoteSubtitle);
-      }
-    }
+    // if (remoteSubtitlesMediaStream.isNotEmpty) {
+    //   for (var i = 0; i < remoteSubtitlesMediaStream.length; i++) {
+    //     final ls = remoteSubtitlesMediaStream[i];
+    //     final remoteSubtitle = Subtitle(
+    //         index: subtitles.length + startIndex,
+    //         name: ls.displayTitle ?? '',
+    //         mediaType: MediaType.remote,
+    //         jellyfinSubtitleIndex: ls.index);
+    //     subtitles.add(remoteSubtitle);
+    //   }
+    // }
     return subtitles;
   }
 
@@ -264,14 +242,10 @@ class StreamCubit extends Cubit<StreamState> {
     final finalItem = item ?? state.parentItem;
     assert(finalItem != null);
 
-    final streamItem =
-        await _streamingRepository.getStreamItem(item: finalItem!);
+    final streamItem = await _streamingRepository.getStreamItem(item: finalItem!);
     final controller = await _streamingRepository.createController(
       uri: Uri.parse(streamItem.url),
-      startAtPosition: Duration(
-          microseconds:
-              ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10)
-                  .round()),
+      startAtPosition: Duration(microseconds: ((streamItem.item.userData?.playbackPositionTicks ?? 0) / 10).round()),
     );
 
     return _StreamController(controller: controller, streamItem: streamItem);

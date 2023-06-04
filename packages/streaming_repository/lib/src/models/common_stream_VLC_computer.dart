@@ -4,7 +4,6 @@ import 'package:universal_io/io.dart';
 
 import 'package:dart_vlc/dart_vlc.dart' hide MediaType;
 import 'package:rxdart/rxdart.dart';
-import 'package:window_manager/window_manager.dart';
 
 import '../models/index.dart';
 
@@ -106,7 +105,7 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   Future<List<AudioTrack>> getAudioTracks() {
     final audioTracks = <AudioTrack>[];
     for (var i = 0; i < controller.audioTrackCount; i++) {
-      final audioTrack = AudioTrack(index: i, name: 'Audio track #$i', mediaType: MediaType.local);
+      final audioTrack = AudioTrack(index: i.toString(), name: 'Audio track #$i', mediaType: MediaType.local);
       audioTracks.add(audioTrack);
     }
     return Future.value(audioTracks);
@@ -116,32 +115,8 @@ class CommonStreamVLCComputer extends CommonStream<Player> {
   /// Only there to comply to common stream interface
   @override
   Future<void> setAudioTrack(AudioTrack audioTrack) {
-    controller.setAudioTrack(audioTrack.index);
+    controller.setAudioTrack(int.parse(audioTrack.index));
     return Future.value();
-  }
-
-  @override
-  Future<bool> isFullscreen() async {
-    final windowInstance = WindowManager.instance;
-    return windowInstance.isFullScreen();
-  }
-
-  @override
-  void enterFullscreen() async {
-    final windowInstance = WindowManager.instance;
-    await windowInstance.setFullScreen(true);
-  }
-
-  @override
-  void exitFullscreen() async {
-    final windowInstance = WindowManager.instance;
-    await windowInstance.setFullScreen(false);
-  }
-
-  @override
-  void toggleFullscreen() async {
-    final windowInstance = WindowManager.instance;
-    await windowInstance.isFullScreen().then((bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));
   }
 
   @override

@@ -56,21 +56,6 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
         ]);
   }
 
-  @override
-  void enterFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void exitFullscreen() {
-    // already in fullscreen by default
-  }
-
-  @override
-  void toggleFullscreen() {
-    // already in fullscreen by default
-  }
-
   void listener() async {
     controller.addOnInitListener(() async {
       await controller.startRendererScanning();
@@ -181,7 +166,7 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     for (var i = 0; i < audioTracks.length; i++) {
       final audioTrackKey = audioTracks.keys.elementAt(i);
       parsedAudioTracks.add(AudioTrack(
-        index: i,
+        index: i.toString(),
         mediaType: MediaType.local,
         jellyfinSubtitleIndex: audioTrackKey,
         name: audioTracks[audioTrackKey] ?? 'Track $i',
@@ -206,7 +191,7 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
     for (var i = 0; i < subtitles.length; i++) {
       final subtitleKey = subtitles.keys.elementAt(i);
       parsedSubtitiles.add(Subtitle(
-        index: subtitleKey,
+        index: subtitleKey.toString(),
         mediaType: MediaType.local,
         jellyfinSubtitleIndex: null,
         name: subtitles[subtitleKey] ?? 'Track $i',
@@ -216,7 +201,7 @@ class CommonStreamVLC extends CommonStream<VlcPlayerController> {
   }
 
   @override
-  Future<void> setSubtitle(Subtitle subtitle) => controller.setSpuTrack(subtitle.index);
+  Future<void> setSubtitle(Subtitle subtitle) => controller.setSpuTrack(int.parse(subtitle.index));
 
   @override
   Future<void> dispose() async {
