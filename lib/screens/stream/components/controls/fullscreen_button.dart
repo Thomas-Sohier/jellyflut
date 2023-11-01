@@ -10,7 +10,7 @@ class FullscreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: context.read<StreamCubit>().toggleFullscreen,
+        onPressed: () {},
         shape: CircleBorder(),
         child: Padding(
             padding: const EdgeInsets.all(8.0),

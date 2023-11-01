@@ -28,7 +28,7 @@ DatabaseConnection connect({bool isInWebWorker = false}) {
       final fs = await IndexedDbFileSystem.open(dbName: _databaseName);
       final sqlite3 = await WasmSqlite3.load(
         response.bodyBytes,
-        SqliteEnvironment(fileSystem: fs),
+        //SqliteEnvironment(fileSystem: fs),
       );
 
       final databaseImpl = WasmDatabase(sqlite3: sqlite3, path: 'app.db');

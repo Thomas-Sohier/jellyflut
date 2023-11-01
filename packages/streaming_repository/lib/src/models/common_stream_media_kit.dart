@@ -37,10 +37,11 @@ class CommonStreamMediaKit extends CommonStream<Player> {
       throw Exception('VideoController is null');
     }
     return Video(
-      controller: _videoController!,
-      width: 1920,
-      height: 1080,
-    );
+        controller: _videoController!,
+        wakelock: true,
+        fit: BoxFit.contain,
+        alignment: Alignment.center,
+        controls: NoVideoControls);
   }
 
   @override
@@ -127,6 +128,26 @@ class CommonStreamMediaKit extends CommonStream<Player> {
       streamController.add(data);
     });
     return streamController;
+  }
+
+  @override
+  void enterFullscreen(BuildContext context) async {
+    enterFullscreen(context);
+  }
+
+  @override
+  void exitFullscreen(BuildContext context) async {
+    exitFullscreen(context);
+  }
+
+  @override
+  void toggleFullscreen(BuildContext context) async {
+    toggleFullscreen(context);
+  }
+
+  @override
+  Future<bool> isFullscreen(BuildContext context) async {
+    return isFullscreen(context);
   }
 
   @override

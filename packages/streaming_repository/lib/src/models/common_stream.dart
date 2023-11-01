@@ -39,25 +39,25 @@ abstract class CommonStream<T> {
   Widget createView();
   Future<void> dispose();
 
-  Future<bool> isFullscreen() async {
+  Future<bool> isFullscreen(BuildContext context) async {
     if (!_isComputer) return Future.value(true); // fullscreen by default on handled devices
     final windowInstance = WindowManager.instance;
     return windowInstance.isFullScreen();
   }
 
-  void enterFullscreen() async {
+  void enterFullscreen(BuildContext context) async {
     if (!_isComputer) return; // fullscreen by default on handled devices
     final windowInstance = WindowManager.instance;
     await windowInstance.setFullScreen(true);
   }
 
-  void exitFullscreen() async {
+  void exitFullscreen(BuildContext context) async {
     if (!_isComputer) return; // fullscreen by default on handled devices
     final windowInstance = WindowManager.instance;
     await windowInstance.setFullScreen(false);
   }
 
-  void toggleFullscreen() async {
+  void toggleFullscreen(BuildContext context) async {
     if (!_isComputer) return; // fullscreen by default on handled devices
     final windowInstance = WindowManager.instance;
     await windowInstance.isFullScreen().then((bool isFullscreen) => windowInstance.setFullScreen(!isFullscreen));

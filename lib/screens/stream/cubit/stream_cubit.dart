@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -31,7 +30,6 @@ class StreamCubit extends Cubit<StreamState> {
 
     try {
       if (state.parentItem != null) {
-        print('parent item is not null');
         final streamController = await _generateController(item: state.parentItem);
         commonStream = streamController.controller;
         streamItem = streamController.streamItem;
@@ -62,8 +60,7 @@ class StreamCubit extends Cubit<StreamState> {
   Future<void> play() async {
     if (state.controller == null) return;
     await state.controller?.play();
-    return emit(state.copyWith(
-        playing: state.controller?.isPlaying() ?? false, fullscreen: await state.controller?.isFullscreen()));
+    return emit(state.copyWith(playing: state.controller?.isPlaying() ?? false));
   }
 
   void togglePlay() async {
@@ -83,12 +80,6 @@ class StreamCubit extends Cubit<StreamState> {
     }
     state.controlsVisibilityTimer.cancel();
     state.controller?.dispose();
-  }
-
-  void toggleFullscreen() async {
-    if (state.controller == null) return;
-    state.controller!.toggleFullscreen();
-    emit(state.copyWith(fullscreen: await state.controller?.isFullscreen()));
   }
 
   void toggleControl() {
