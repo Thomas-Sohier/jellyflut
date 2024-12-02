@@ -5,6 +5,7 @@ import 'package:jellyflut/components/async_item_image/cubit/async_image_cubit.da
 import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:blurhash_ffi/blurhash_ffi.dart';
 
 import '../zoomable_image/zoomable_image.dart';
 
@@ -48,7 +49,9 @@ class AsyncImage extends StatelessWidget {
       create: (_) => AsyncImageCubit(context.read<ItemsRepository>(),
           itemId: item.id,
           zoomableImageController: zoomableImageController,
-          hash: imageType != ImageType.Logo ? item.imageBlurHashes?.getBlurHashValueFromImageType(imageType) : null,
+          hash: imageType != ImageType.Logo
+              ? item.imageBlurHashes?.getBlurHashValueFromImageType(imageType)
+              : null,
           width: width,
           height: height,
           showOverlay: showOverlay,
@@ -97,11 +100,16 @@ class AsyncImageLoaded extends StatelessWidget {
         child: OctoImage(
             image: asyncImageCubit.state.image!,
             placeholderBuilder: (_) => const AsyncImagePlaceholder(),
-            errorBuilder: (_, __, ___) => asyncImageCubit.state.notFoundPlaceholder ?? const AsyncImagePlaceholder(),
+            errorBuilder: (_, __, ___) =>
+                asyncImageCubit.state.notFoundPlaceholder ??
+                const AsyncImagePlaceholder(),
             imageBuilder: (_, image) => ZoomableImage(
-                zoomableImageController: asyncImageCubit.state.zoomableImageController,
+                zoomableImageController:
+                    asyncImageCubit.state.zoomableImageController,
                 imageWidget: image,
-                overlay: asyncImageCubit.state.showOverlay ? Colors.black.withAlpha(100) : null),
+                overlay: asyncImageCubit.state.showOverlay
+                    ? Colors.black.withAlpha(100)
+                    : null),
             fadeInDuration: Duration(milliseconds: 100),
             fit: asyncImageCubit.state.boxFit,
             width: asyncImageCubit.state.width,
@@ -116,8 +124,23 @@ class AsyncImagePlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final asyncImageCubit = context.read<AsyncImageCubit>();
     if (asyncImageCubit.state.hash != null) {
-      return OctoPlaceholder.blurHash(asyncImageCubit.state.hash!).call(context);
+      return Blurhash(hash: asyncImageCubit.state.hash!);
     }
     return const SizedBox();
+  }
+}
+
+class Blurhash extends StatelessWidget {
+  final String hash;
+
+  const Blurhash({required this.hash, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlurhashFfi(
+      hash: hash,
+      imageFit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => SizedBox(),
+    );
   }
 }

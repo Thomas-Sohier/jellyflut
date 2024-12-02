@@ -4,20 +4,20 @@ version: 1.0.0
 publish_to: none
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: '>=3.2.0-0 <4.0.0'
 
 dependencies:
-  equatable: ^2.0.3
+  equatable: ^2.0.7
   flutter:
     sdk: flutter
   jellyflut_models:
     path: ../jellyflut_models
-  json_annotation: ^4.5.0
-  meta: ^1.7.0
-  rxdart: ^0.27.4
+  json_annotation: ^4.9.0
+  meta: 1.15.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
-  build_runner: ^2.3.2
+  build_runner: ^2.4.13
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.2.0
+  json_serializable: ^6.9.0

@@ -53,17 +53,23 @@ Future<void> bootstrap(
       database: database,
       sharedPreferences: SharedPrefs.sharedPrefs,
       dioClient: dioClient);
-  final settingsRepository = SettingsRepository(database: database, authenticationRepository: authenticationRepository);
+  final settingsRepository = SettingsRepository(
+      database: database, authenticationRepository: authenticationRepository);
   final downloadsRepository = DownloadsRepository(
       downloadsApi: downloadsApi,
       remoteDownloadsApi: remoteDownloadsApi,
       authenticationRepository: authenticationRepository,
       database: database);
-  final itemsRepository =
-      ItemsRepository(itemsApi: itemsApi, database: database, authenticationRepository: authenticationRepository);
-  final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);
-  final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
-  final liveTvRepository = LiveTvRepository(liveTvApi: liveTvApi, authenticationRepository: authenticationRepository);
+  final itemsRepository = ItemsRepository(
+      itemsApi: itemsApi,
+      database: database,
+      authenticationRepository: authenticationRepository);
+  final usersRepository = UsersRepository(
+      usersApi: usersApi, authenticationRepository: authenticationRepository);
+  final musicPlayerRepository =
+      MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
+  final liveTvRepository = LiveTvRepository(
+      liveTvApi: liveTvApi, authenticationRepository: authenticationRepository);
   final streamingRepository = StreamingRepository(
       streamingApi: streamingApi,
       itemsApi: itemsApi,
@@ -76,7 +82,7 @@ Future<void> bootstrap(
       authenticationRepository: authenticationRepository,
       authenticated: authenticationRepository.currentUser.isNotEmpty);
 
-  final appRouter = AppRouter(authGuard: AuthGuard(authBloc: authBloc));
+  final appRouter = AppRouter(authBloc: authBloc);
 
   Bloc.observer = AppBlocObserver();
   runApp(

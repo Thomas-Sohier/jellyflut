@@ -1,45 +1,42 @@
-import 'package:dart_vlc/dart_vlc.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'audio_source.dart';
 
-class CommonPlayerVLC {
+class MediaKitAudio {
   final Player audioPlayer;
-  const CommonPlayerVLC({required this.audioPlayer});
+  const MediaKitAudio({required this.audioPlayer});
 
-  void init() {
-    audioPlayer.playbackStream.listen((event) {
-      if (event.isCompleted) audioPlayer.next();
-    });
-  }
+  void init() {}
 
   BehaviorSubject<Duration> positionStream() {
     final streamController = BehaviorSubject<Duration>();
-    audioPlayer.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.position ?? Duration(seconds: 0)));
+    audioPlayer.stream.position
+        .listen((Duration duration) => streamController.add(duration));
     return streamController;
   }
 
   BehaviorSubject<Duration> durationStream() {
     final streamController = BehaviorSubject<Duration>();
-    audioPlayer.positionStream
-        .listen((PositionState positionState) => streamController.add(positionState.duration ?? Duration(seconds: 0)));
+    audioPlayer.stream.duration
+        .listen((Duration duration) => streamController.add(duration));
     return streamController;
   }
 
   BehaviorSubject<bool> playingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    audioPlayer.playbackStream.listen((PlaybackState event) => streamController.add(event.isPlaying));
+    audioPlayer.stream.playing
+        .listen((bool isPlaying) => streamController.add(isPlaying));
     return streamController;
   }
 
   Future<void> dispose() async {
-    audioPlayer.stop();
+    await audioPlayer.stop();
     return audioPlayer.dispose();
   }
 
   Future<void> playRemote(AudioSource audioSource) async {
-    final media = Media.network(audioSource.resource);
-    audioPlayer.open(media);
+    final media = Media(audioSource.resource);
+    return audioPlayer.open(media);
   }
 }

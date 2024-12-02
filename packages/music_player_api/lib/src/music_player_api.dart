@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:dart_vlc/dart_vlc.dart';
-import 'package:flutter/foundation.dart';
-import 'package:just_audio/just_audio.dart' hide AudioSource;
+import 'package:media_kit/media_kit.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'models/audio_playlist.dart';
@@ -25,6 +21,11 @@ class MusicPlayerApi {
   final _currentlyPlayingIndex = BehaviorSubject<int>();
   final _audioPlaylist = AudioPlaylist(playlist: <AudioSource>[]);
 
+  static Future<void> init() {
+    MediaKit.ensureInitialized();
+    return Future.value(null);
+  }
+
   Future<CommonPlayer> initPlayer() async {
     // If player already instanciated, return current instance
     if (_commonPlayer != null) {
@@ -32,15 +33,8 @@ class MusicPlayerApi {
     }
 
     // Use audio player depending of current platform
-    if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows || kIsWeb) {
-      final player = AudioPlayer();
-      _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
-    } else if (Platform.isLinux) {
-      final player = Player(id: 0);
-      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
-    } else {
-      throw UnimplementedError('No audio player on this platform');
-    }
+    final player = Player(configuration: PlayerConfiguration());
+    _commonPlayer = CommonPlayer.parseMediaKitController(audioPlayer: player);
 
     if (_commonPlayer == null) {
       throw InitFailure();
@@ -66,7 +60,8 @@ class MusicPlayerApi {
   void moveMusicItem(int oldIndex, int newIndex) {
     _audioPlaylist.move(oldIndex, newIndex);
     if (_currentMusic != null) {
-      _currentlyPlayingIndex.add(_audioPlaylist.playlist.indexOf(_currentMusic!));
+      _currentlyPlayingIndex
+          .add(_audioPlaylist.playlist.indexOf(_currentMusic!));
     }
   }
 
@@ -81,7 +76,8 @@ class MusicPlayerApi {
   }
 
   BehaviorSubject<Duration?> getPositionStream() {
-    return _commonPlayer?.getPositionStream ?? BehaviorSubject.seeded(Duration.zero);
+    return _commonPlayer?.getPositionStream ??
+        BehaviorSubject.seeded(Duration.zero);
   }
 
   bool isPlaying() {

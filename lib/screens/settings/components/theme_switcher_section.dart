@@ -6,17 +6,19 @@ class ThemeSection extends StatelessWidget {
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
-      title: 'theme'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.titleLarge,
+      title: Text('theme'.tr(), style: Theme.of(context).textTheme.titleLarge),
       tiles: [
         SettingsTile(
-            title: 'theme'.tr(),
+            title: Text('theme'.tr(),
+                style: Theme.of(context).textTheme.titleLarge),
             onPressed: (context) => ThemeProvider().toggleTheme(),
             trailing: Consumer<ThemeProvider>(
                 builder: (context, ThemeProvider themeNotifier, child) =>
-                    themeNotifier.isDarkMode ? Icon(Icons.dark_mode) : Icon(Icons.light_mode))),
+                    themeNotifier.isDarkMode
+                        ? Icon(Icons.dark_mode)
+                        : Icon(Icons.light_mode))),
         SettingsTile(
-            title: 'primary_color'.tr(),
+            title: Text('primary_color'.tr()),
             onPressed: editPrimaryColor,
             trailing: Consumer<ThemeProvider>(
                 builder: (context, ThemeProvider themeNotifier, child) => Icon(
@@ -24,8 +26,7 @@ class ThemeSection extends StatelessWidget {
                       color: ThemeProvider().getThemeData.colorScheme.primary,
                     ))),
         SettingsTile(
-          title: 'contrast_details'.tr(),
-          subtitle: 'Use a different details page theme with proper background/foreground contrast',
+          title: Text('contrast_details'.tr()),
           trailing: const DetailsContrastSwitch(),
         ),
       ],
@@ -40,7 +41,9 @@ class ThemeSection extends StatelessWidget {
             actions: [
               Padding(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: TextButton(onPressed: context.router.root.pop, child: Text('save'.tr())))
+                  child: TextButton(
+                      onPressed: context.router.root.back,
+                      child: Text('save'.tr())))
             ],
             content: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 350, maxHeight: 150),
@@ -55,7 +58,8 @@ class ThemeSection extends StatelessWidget {
                   pickerAreaHeightPercent: 0,
                   paletteType: PaletteType.hsl,
                   pickerColor: ThemeProvider().getThemeData.colorScheme.primary,
-                  onColorChanged: (Color selectedColor) => ThemeProvider().editSeedColorTheme(selectedColor)),
+                  onColorChanged: (Color selectedColor) =>
+                      ThemeProvider().editSeedColorTheme(selectedColor)),
             )));
   }
 }

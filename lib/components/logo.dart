@@ -21,7 +21,10 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (selectable) {
-      return OutlinedButtonSelector(padding: padding, onPressed: () => logoDialog(context), child: logo(context));
+      return OutlinedButtonSelector(
+          padding: padding,
+          onPressed: () => logoDialog(context),
+          child: logo(context));
     }
     return logo(context);
   }
@@ -32,17 +35,18 @@ class Logo extends StatelessWidget {
         barrierColor: Colors.black.withOpacity(0.64),
         builder: (_) {
           return GestureDetector(
-            onTap: () => context.router.root.pop(),
+            onTap: context.router.root.back,
             child: FocusableActionDetector(
                 autofocus: true,
                 descendantsAreFocusable: false,
                 mouseCursor: SystemMouseCursors.click,
                 actions: <Type, Action<Intent>>{
                   ActivateIntent: CallbackAction<Intent>(
-                    onInvoke: (Intent intent) => context.router.pop(),
+                    onInvoke: (Intent intent) => context.router.back(),
                   ),
                 },
-                child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
+                child: Center(
+                    child: logo(context, BoxConstraints(maxWidth: 960)))),
           );
         });
   }

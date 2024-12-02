@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:items_api/items_api.dart';
 import 'package:jellyflut_models/jellyflut_models.dart'
     hide User, StreamingSoftware;
+import 'package:media_kit/media_kit.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlite_database/sqlite_database.dart' hide Server;
 import 'package:streaming_api/streaming_api.dart';
@@ -36,6 +37,11 @@ class StreamingRepository {
   User get currentUser => _authenticationRepository.currentUser;
   Server get currentServer => _authenticationRepository.currentServer;
 
+  static Future<void> init() {
+    MediaKit.ensureInitialized();
+    return Future.value(null);
+  }
+
   Future<CommonStream> createController(
       {required Uri uri, Duration? startAtPosition}) async {
     final user =
@@ -45,20 +51,6 @@ class StreamingRepository {
       case StreamingSoftware.MPV:
         print(uri);
         return CommonStreamMediaKit.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
-      case StreamingSoftware.VLC:
-        if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-          return CommonStreamVLCComputer.fromUri(
-              uri: uri, startAtPosition: startAtPosition);
-        }
-        return CommonStreamVLC.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
-      case StreamingSoftware.AVPLAYER:
-      case StreamingSoftware.EXOPLAYER:
-        return CommonStreamBP.fromUri(
-            uri: uri, startAtPosition: startAtPosition);
-      case StreamingSoftware.HTMLPlayer:
-        return CommonStreamVideoPlayer.fromUri(
             uri: uri, startAtPosition: startAtPosition);
       default:
         throw UnsupportedError('Platform video streaming is unsuportted');
@@ -229,30 +221,15 @@ class StreamingRepository {
 
   Future<DeviceProfileParent?> _isCodecSupported() async {
     final profiles = PlayersProfile();
-    // TODO make IOS
+
     if (kIsWeb) {
       final playerProfile = profiles.webOs;
       return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);
     } else if (Platform.isAndroid) {
-      final user =
-          await _database.userAppDao.getUserByJellyfinUserId(currentUser.id);
-      final streamingSoftwareDB =
-          await _database.settingsDao.getSettingsById(user.settingsId);
-      final streamingSoftware =
-          StreamingSoftware.fromString(streamingSoftwareDB.preferredPlayer);
-      switch (streamingSoftware) {
-        case StreamingSoftware.VLC:
-          final playerProfile = profiles.vlcPhone;
-          return DeviceProfileParent(
-              deviceProfile: playerProfile.deviceProfile);
-        case StreamingSoftware.EXOPLAYER:
-        case StreamingSoftware.AVPLAYER:
-        default:
-          final deviceProfile =
-              await Profiles(database: _database, userId: currentUser.id)
-                  .getExoplayerProfile();
-          return DeviceProfileParent(deviceProfile: deviceProfile);
-      }
+      final deviceProfile =
+          await Profiles(database: _database, userId: currentUser.id)
+              .getExoplayerProfile();
+      return DeviceProfileParent(deviceProfile: deviceProfile);
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
       final playerProfile = profiles.vlcComputer;
       return DeviceProfileParent(deviceProfile: playerProfile.deviceProfile);

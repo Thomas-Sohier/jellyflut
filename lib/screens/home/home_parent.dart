@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
@@ -6,6 +7,7 @@ import 'package:jellyflut/screens/home/home_drawer_tabs_builder.dart';
 
 import 'home_cubit/home_cubit.dart';
 
+@RoutePage(name: 'HomeRouter')
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
 
@@ -19,7 +21,8 @@ class _HomeParentState extends State<HomeParent> {
     return Scaffold(
         floatingActionButton: const MusicPlayerFAB(),
         body: BlocProvider<HomeCubit>(
-          create: (_) => HomeCubit(itemsRepository: context.read<ItemsRepository>()),
+          create: (_) =>
+              HomeCubit(itemsRepository: context.read<ItemsRepository>()),
           child: const HomeDrawerTabsBuilder(),
         ));
   }

@@ -1,9 +1,7 @@
-import 'package:dart_vlc/dart_vlc.dart';
-import 'package:just_audio/just_audio.dart' hide AudioSource;
+import 'package:media_kit/media_kit.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'audio_source.dart';
-import 'common_player_just_audio.dart';
 import 'common_player_vlc.dart';
 
 class CommonPlayer {
@@ -73,41 +71,20 @@ class CommonPlayer {
   BehaviorSubject<bool?> get getPlayingStateStream => _isPlayingStream;
   Future<void> dispose() => _dispose();
 
-  static CommonPlayer parseJustAudioController({required AudioPlayer audioPlayer}) {
-    final commonPlayerJustAudio = CommonPlayerJustAudio(audioPlayer: audioPlayer);
+  static CommonPlayer parseMediaKitController({required Player audioPlayer}) {
+    final commonPlayerVLC = MediaKitAudio(audioPlayer: audioPlayer);
     return CommonPlayer._(
         pause: audioPlayer.pause,
         play: audioPlayer.play,
-        isPlaying: () => audioPlayer.playerState.playing,
+        isPlaying: () => audioPlayer.state.playing,
         seekTo: audioPlayer.seek,
-        duration: () => audioPlayer.duration,
-        init: commonPlayerJustAudio.init,
-        nextTrack: audioPlayer.seekToNext,
-        previousTrack: audioPlayer.seekToPrevious,
-        bufferingDuration: audioPlayer.durationStream,
-        playRemote: commonPlayerJustAudio.playRemote,
-        currentPosition: () => audioPlayer.position,
-        positionStream: commonPlayerJustAudio.positionStream(),
-        durationStream: commonPlayerJustAudio.durationStream(),
-        isPlayingStream: commonPlayerJustAudio.playingStateStream(),
-        dispose: commonPlayerJustAudio.dispose,
-        controller: audioPlayer);
-  }
-
-  static CommonPlayer parseVLCController({required Player audioPlayer}) {
-    final commonPlayerVLC = CommonPlayerVLC(audioPlayer: audioPlayer);
-    return CommonPlayer._(
-        pause: audioPlayer.pause,
-        play: audioPlayer.play,
-        isPlaying: () => audioPlayer.playback.isPlaying,
-        seekTo: audioPlayer.seek,
-        duration: () => audioPlayer.position.duration,
+        duration: () => audioPlayer.state.duration,
         init: commonPlayerVLC.init,
         nextTrack: audioPlayer.next,
         previousTrack: audioPlayer.previous,
-        bufferingDuration: Stream.value(Duration(seconds: 0)),
+        bufferingDuration: audioPlayer.stream.buffer,
         playRemote: commonPlayerVLC.playRemote,
-        currentPosition: () => audioPlayer.position.position,
+        currentPosition: () => audioPlayer.state.position,
         positionStream: commonPlayerVLC.positionStream(),
         durationStream: commonPlayerVLC.durationStream(),
         isPlayingStream: commonPlayerVLC.playingStateStream(),

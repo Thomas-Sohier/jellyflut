@@ -15,42 +15,55 @@ class DrawerLargeButton extends StatelessWidget {
   final Color? inactiveColor;
 
   const DrawerLargeButton(
-      {super.key, required this.index, required this.icon, required this.name, this.activeColor, this.inactiveColor});
+      {super.key,
+      required this.index,
+      required this.icon,
+      required this.name,
+      this.activeColor,
+      this.inactiveColor});
 
   @override
   Widget build(BuildContext context) {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
-    final finalActiveColor = activeColor ?? Theme.of(context).colorScheme.secondary;
-    final finalInactiveColor = inactiveColor ?? Theme.of(context).colorScheme.onSecondaryContainer;
+    final finalActiveColor =
+        activeColor ?? Theme.of(context).colorScheme.secondary;
+    final finalInactiveColor =
+        inactiveColor ?? Theme.of(context).colorScheme.onSecondaryContainer;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: OutlinedButtonSelector(
           onPressed: () {
             context.tabsRouter
               ..setActiveIndex(index)
-              ..innerRouterOf<StackRouter>(r.HomeRouter.name)?.push(r.HomeRouter());
+              ..innerRouterOf<StackRouter>(r.HomeRouter.name)
+                  ?.push(r.HomeRouter());
             homeDrawerCubit.changeCurrentDrawerSelection(index, name);
-            context.router.root.pop();
+            context.router.root.back();
           },
           child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-              buildWhen: (previous, current) => previous.currentIndexSelected != current.currentIndexSelected,
+              buildWhen: (previous, current) =>
+                  previous.currentIndexSelected != current.currentIndexSelected,
               builder: (_, state) {
                 final isActive = index == state.currentIndexSelected;
                 return Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: isActive ? finalActiveColor.withAlpha(50) : Colors.transparent,
+                      color: isActive
+                          ? finalActiveColor.withAlpha(50)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                       shape: BoxShape.rectangle),
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: buttonBody(context, finalActiveColor, finalInactiveColor, isActive)),
+                      child: buttonBody(context, finalActiveColor,
+                          finalInactiveColor, isActive)),
                 );
               })),
     );
   }
 
-  Widget buttonBody(BuildContext context, Color activeColor, Color inactiveColor, bool isActive) {
+  Widget buttonBody(BuildContext context, Color activeColor,
+      Color inactiveColor, bool isActive) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +83,8 @@ class DrawerLargeButton extends StatelessWidget {
                 child: Text(name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: isActive ? activeColor : inactiveColor)),
+                    style: TextStyle(
+                        color: isActive ? activeColor : inactiveColor)),
               ));
             })
       ],

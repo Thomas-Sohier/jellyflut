@@ -7,11 +7,11 @@ class InterfaceSection extends StatelessWidget {
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
-      title: 'interface'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.titleLarge,
+      title:
+          Text('interface'.tr(), style: Theme.of(context).textTheme.titleLarge),
       tiles: [
         SettingsTile(
-            title: 'language'.tr(),
+            title: Text('language'.tr()),
             onPressed: (context) => _localeKey.currentState?.showButtonMenu(),
             trailing: LocaleButtonSelector(localeKey: _localeKey)),
       ],

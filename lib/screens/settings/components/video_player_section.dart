@@ -2,29 +2,30 @@ part of 'sections.dart';
 
 class VideoPlayerSection extends StatelessWidget {
   final GlobalKey<PopupMenuButtonState<String>> _playerButton = GlobalKey();
-  final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton = GlobalKey();
+  final GlobalKey<_VideoBitrateValueEditorState> _bitrateEditorButton =
+      GlobalKey();
 
   VideoPlayerSection({super.key});
 
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
-      title: 'video_player'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.titleLarge,
+      title: Text('video_player'.tr(),
+          style: Theme.of(context).textTheme.titleLarge),
       tiles: [
         SettingsTile(
-            title: 'preferred_player'.tr(),
-            onPressed: (context) => _playerButton.currentState?.showButtonMenu(),
+            title: Text('preferred_player'.tr()),
+            onPressed: (context) =>
+                _playerButton.currentState?.showButtonMenu(),
             trailing: VideoPlayerPopupButton(popupButtonKey: _playerButton)),
         SettingsTile(
-          title: 'max_bitrate'.tr(),
-          subtitle: 'Edit max video bitrate value',
-          onPressed: (c) => _bitrateEditorButton.currentState?.editBitrateValue(c),
+          title: Text('max_bitrate'.tr()),
+          onPressed: (c) =>
+              _bitrateEditorButton.currentState?.editBitrateValue(c),
           trailing: VideoBitrateValueEditor(key: _bitrateEditorButton),
         ),
         SettingsTile(
-          title: 'direct_play'.tr(),
-          subtitle: 'Force playing directly without transcoding',
+          title: Text('direct_play'.tr()),
           trailing: const DirectPlaySwitch(),
         ),
       ],

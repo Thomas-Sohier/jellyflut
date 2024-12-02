@@ -9,6 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/providers/search/search_provider.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
+import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/downloads/downloads_bloc/downloads_bloc.dart';
@@ -44,7 +45,7 @@ class App extends StatelessWidget {
       required this.musicPlayerRepository});
 
   final Database database;
-  final r.AppRouter appRouter;
+  final AppRouter appRouter;
   final AuthBloc authBloc;
   final PackageInfo packageInfo;
   final AuthenticationRepository authenticationRepository;
@@ -63,7 +64,8 @@ class App extends StatelessWidget {
         providers: [
           Provider<Database>.value(value: database),
           ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
-          ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
+          ChangeNotifierProvider<SearchProvider>(
+              create: (_) => SearchProvider()),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -109,11 +111,16 @@ class App extends StatelessWidget {
                 RepositoryProvider.value(value: streamingRepository)
               ],
               child: EasyLocalization(
-                  supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
+                  supportedLocales: [
+                    Locale('en', 'US'),
+                    Locale('fr', 'FR'),
+                    Locale('de', 'DE')
+                  ],
                   path: 'translations',
                   assetLoader: YamlAssetLoader(),
                   fallbackLocale: Locale('en', 'US'),
-                  child: ShortcutsWrapper(child: AppView(appRouter: appRouter))),
+                  child:
+                      ShortcutsWrapper(child: AppView(appRouter: appRouter))),
             )));
   }
 }
@@ -132,14 +139,15 @@ class ShortcutsWrapper extends StatelessWidget {
 }
 
 class AppView extends StatelessWidget {
-  final r.AppRouter appRouter;
+  final AppRouter appRouter;
 
   const AppView({super.key, required this.appRouter});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(builder: (context, ThemeProvider themeNotifier, child) {
+    return Consumer<ThemeProvider>(
+        builder: (context, ThemeProvider themeNotifier, child) {
       FlutterNativeSplash.remove();
       return MaterialApp.router(
         title: 'JellyFlut',
@@ -149,15 +157,7 @@ class AppView extends StatelessWidget {
         supportedLocales: context.supportedLocales,
         theme: themeNotifier.getThemeData,
         localizationsDelegates: context.localizationDelegates,
-        routeInformationParser: appRouter.defaultRouteParser(),
-        routerDelegate: appRouter.delegate(initialRoutes: [r.HomeRouter()]),
-        builder: (contextRouter, router) => BlocListener<AuthBloc, AuthState>(
-            listener: (_, state) {
-              if (!state.authStatus.isAuthenticated) {
-                appRouter.replace(r.LoginPage());
-              }
-            },
-            child: router),
+        routerConfig: appRouter.config(),
       );
     });
   }
@@ -175,12 +175,16 @@ final shortcuts = <LogicalKeySet, Intent>{
     LogicalKeyboardKey.mediaPlayPause,
     LogicalKeyboardKey.mediaPlay,
   }): const ActivateIntent(),
-  LogicalKeySet(LogicalKeyboardKey.arrowDown):
-      const DirectionalFocusIntent(TraversalDirection.down, ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowUp):
-      const DirectionalFocusIntent(TraversalDirection.up, ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-      const DirectionalFocusIntent(TraversalDirection.left, ignoreTextFields: false),
-  LogicalKeySet(LogicalKeyboardKey.arrowRight):
-      const DirectionalFocusIntent(TraversalDirection.right, ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowDown): const DirectionalFocusIntent(
+      TraversalDirection.down,
+      ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowUp): const DirectionalFocusIntent(
+      TraversalDirection.up,
+      ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowLeft): const DirectionalFocusIntent(
+      TraversalDirection.left,
+      ignoreTextFields: false),
+  LogicalKeySet(LogicalKeyboardKey.arrowRight): const DirectionalFocusIntent(
+      TraversalDirection.right,
+      ignoreTextFields: false),
 };

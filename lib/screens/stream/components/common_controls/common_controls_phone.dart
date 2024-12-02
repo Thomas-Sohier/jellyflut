@@ -16,7 +16,6 @@ import '../controls/chapter_button.dart';
 import '../controls/forward_button.dart';
 import '../controls/show_channel_button.dart';
 import '../controls/subtitle_button_selector.dart';
-import '../player_infos/subtitle_box.dart';
 
 class CommonControlsPhone extends StatefulWidget {
   const CommonControlsPhone({super.key});
@@ -37,13 +36,20 @@ class _CommonControlsPhoneState extends State<CommonControlsPhone> {
                 child: Column(
               children: const [
                 SizedBox(height: 12),
-                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: TopRow())),
+                Expanded(
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        child: TopRow())),
                 Expanded(child: Controls()),
-                Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: BottomRow())),
+                Expanded(
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        child: BottomRow())),
                 SizedBox(height: 24),
               ],
             )),
-            Positioned.fill(child: const Align(alignment: Alignment.bottomCenter, child: SubtitleBox())),
+            Positioned.fill(
+                child: const Align(alignment: Alignment.bottomCenter)),
           ],
         ));
   }
@@ -54,27 +60,30 @@ class TopRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const BackButton(),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: const [ItemTitlePhone(), ItemParentTitlePhone()],
-        ),
-      ),
-      Row(
+    return Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
-          PipButton(),
-          ChapterButton(),
-          SubtitleButtonSelector(),
-          AudioButtonSelector(),
-          ShowChannelButton(),
-          TranscodeState()
-        ],
-      )
-    ]);
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const BackButton(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [ItemTitlePhone(), ItemParentTitlePhone()],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              PipButton(),
+              ChapterButton(),
+              SubtitleButtonSelector(),
+              AudioButtonSelector(),
+              ShowChannelButton(),
+              TranscodeState()
+            ],
+          )
+        ]);
   }
 }
 
@@ -118,13 +127,17 @@ class BottomRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: [
-          const CurrentPositionPlayer(),
-          const Text('/'),
-          const CurrentDurationPlayer(),
-          const Spacer(),
-          if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) const FullscreenButton()
-        ]),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CurrentPositionPlayer(),
+              const Text('/'),
+              const CurrentDurationPlayer(),
+              const Spacer(),
+              if (Platform.isLinux || Platform.isWindows || Platform.isMacOS)
+                const FullscreenButton()
+            ]),
         const VideoPlayerProgressBar(barHeight: 4, thumbRadius: 8),
         const SizedBox(height: 24),
       ],

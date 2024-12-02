@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +10,9 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 import 'package:universal_io/io.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
+@RoutePage(name: 'StreamPage')
 class StreamPage extends StatelessWidget {
   final Item? item;
   final String? url;
@@ -53,7 +55,7 @@ class _StreamViewState extends State<StreamView> {
     super.initState();
     streamCubit = context.read<StreamCubit>();
     if (!Platform.isLinux) {
-      Wakelock.enable();
+      WakelockPlus.enable();
     }
 
     // Hide device overlays
@@ -67,7 +69,7 @@ class _StreamViewState extends State<StreamView> {
   void dispose() {
     streamCubit.disposePlayer();
     if (!Platform.isLinux) {
-      Wakelock.disable();
+      WakelockPlus.disable();
     }
 
     // Show device overlays

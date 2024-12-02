@@ -6,9 +6,12 @@ class InfosSection extends StatelessWidget {
   @override
   SettingsSection build(BuildContext context) {
     return SettingsSection(
-      title: 'infos'.tr(),
-      titleTextStyle: Theme.of(context).textTheme.titleLarge,
-      tiles: [SettingsTile(title: 'version'.tr(), trailing: Text(context.read<SettingsBloc>().state.version))],
+      title: Text('infos'.tr()),
+      tiles: [
+        SettingsTile(
+            title: Text('version'.tr()),
+            trailing: Text(context.read<SettingsBloc>().state.version))
+      ],
     );
   }
 }

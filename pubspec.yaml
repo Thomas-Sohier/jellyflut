@@ -6,47 +6,47 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 2.0.0
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: '>=3.2.0-0 <4.0.0'
 
 module:
   androidX: true
 
 dependencies:
   animated_fractionally_sized_box: ^2.0.1
-  animations: ^2.0.7
-  archive: ^3.3.6
-  audio_video_progress_bar: ^1.0.0
+  animations: ^2.0.11
+  archive: ^3.6.1
+  audio_video_progress_bar: ^2.0.3
   authentication_repository:
     path: packages/authentication_repository
-  auto_route: ^5.0.4
+  auto_route: ^9.2.2
   blurhash_dart: ^1.2.1
-  cached_network_image: ^3.2.3
-  carousel_slider: ^4.2.1
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
   community_material_icon: ^5.9.55
-  cupertino_icons: ^1.0.5
+  cupertino_icons: ^1.0.8
   database_downloads_api:
     path: packages/database_downloads_api
-  device_info_plus: ^8.1.0
-  dio: ^4.0.6
+  device_info_plus: ^10.1.2
+  dio: ^5.7.0
   downloads_api:
     path: packages/downloads_api
   downloads_repository:
     path: packages/downloads_repository
-  drop_shadow: ^0.0.2+1
-  easy_localization: ^3.0.1
-  easy_localization_loader: ^1.0.1+1
-  equatable: ^2.0.5
-  file_picker: ^5.2.5
+  drop_shadow: ^0.1.0
+  easy_localization: ^3.0.7
+  easy_localization_loader: ^2.0.2
+  equatable: ^2.0.7
+  file_picker: ^8.1.4
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.1
-  flutter_colorpicker: ^1.0.3
-  flutter_native_splash: ^2.2.17
-  flutter_settings_ui: ^2.0.1
-  flutter_svg: ^2.0.0+1
-  fluttertoast: ^8.1.2
-  hydrated_bloc: ^9.0.0
-  intl: ^0.18.0
+  flutter_bloc: ^8.1.6
+  flutter_colorpicker: ^1.1.0
+  flutter_native_splash: ^2.4.3
+  flutter_settings_ui: ^3.0.1
+  flutter_svg: ^2.0.16
+  fluttertoast: ^8.2.8
+  hydrated_bloc: ^9.1.5
+  intl: 0.19.0
   items_api:
     path: packages/items_api
   items_repository:
@@ -57,8 +57,8 @@ dependencies:
     path: packages/jellyfin_downloads_api
   jellyflut_models:
     path: packages/jellyflut_models
-  json_serializable: ^6.5.4
-  just_audio: ^0.9.30
+  json_serializable: ^6.9.0
+  just_audio: ^0.9.42
   live_tv_api:
     path: packages/live_tv_api
   live_tv_repository:
@@ -67,67 +67,65 @@ dependencies:
     path: packages/music_player_api
   music_player_repository:
     path: packages/music_player_repository
-  octo_image: ^1.0.2
-  package_info_plus: ^3.0.2
-  palette_generator: ^0.3.3+2
-  path: ^1.8.2
-  path_provider: ^2.0.12
-  permission_handler: ^10.2.0
-  photo_view: ^0.14.0
-  provider: ^6.0.5
-  reactive_forms: ^14.2.0
+  octo_image: ^2.1.0
+  package_info_plus: ^8.1.1
+  palette_generator: ^0.3.3
+  blurhash_ffi: ^1.2.6
+  path: ^1.9.0
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
+  photo_view: ^0.15.0
+  provider: ^6.1.2
+  reactive_forms: ^17.0.1
   remote_downloads_api:
     path: packages/remote_downloads_api
-  responsive_builder: ^0.5.0+1
-  rxdart: ^0.27.7
+  responsive_builder: ^0.7.1
+  rxdart: ^0.28.0
   settings_repository:
     path: packages/settings_repository
-  shared_preferences: ^2.0.17
-  shimmer: ^2.0.0
+  shared_preferences: ^2.3.3
+  shimmer: ^3.0.0
   shu_epub:
     git:
       url: https://github.com/getBoolean/shu_epub.git
       ref: main
-  sliver_tools: ^0.2.9
-  sqlite3_flutter_libs: ^0.5.12
+  sliver_tools: ^0.2.12
+  sqlite3_flutter_libs: ^0.5.26
   sqlite_database:
     path: packages/sqlite_database
   streaming_api:
     path: packages/streaming_api
   streaming_repository:
     path: packages/streaming_repository
-  subtitle: ^0.1.0-beta.3
-  universal_io: ^2.0.4
-  url_launcher: ^6.1.8
+  universal_io: ^2.2.2
+  url_launcher: ^6.3.1
   users_api:
     path: packages/users_api
   users_repository:
     path: packages/users_repository
-  uuid: ^3.0.6
-  wakelock: ^0.6.2
+  uuid: ^4.5.1
+  wakelock_plus: ^1.2.8
 
-dependency_overrides:
-  audio_video_progress_bar: ^1.0.0
-  image: ^4.0.13
-  intl: ^0.18.0
-  analyzer: ^5.2.0
-  ffi: ^2.0.1
-  universal_html:
-    git:
-      url: https://github.com/juancastillo0/universal_html.git
-      ref: 5a079ea
+# dependency_overrides:
+#   audio_video_progress_bar: ^1.0.0
+#   image: ^4.1.0
+#   intl: ^0.18.1
+#   analyzer: ^5.2.0
+#   ffi: ^2.0.1
+#   universal_html:
+#     git:
+#       url: https://github.com/juancastillo0/universal_html.git
+#       ref: 5a079ea
 
 dev_dependencies:
-  auto_route_generator: ^5.0.3
-  build_runner: ^2.3.2
-  build_web_compilers: ^3.2.7
-  dart_code_metrics: ^4.21.3
-  flutter_lints: ^2.0.1
+  auto_route_generator: ^9.0.0
+  build_runner: ^2.4.13
+  build_web_compilers: ^4.0.11
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  icons_launcher: ^2.0.5
+  icons_launcher: ^3.0.0
 
-# The following section is specific to Flutter.
 flutter:
   assets:
     - img/
@@ -150,7 +148,4 @@ flutter:
         - asset: fonts/Quicksand-Regular.ttf
           style: normal
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true

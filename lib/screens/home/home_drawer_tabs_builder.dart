@@ -33,7 +33,8 @@ class HomeTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeDrawerCubit>(create: (_) => HomeDrawerCubit(), child: const HomeTabsView());
+    return BlocProvider<HomeDrawerCubit>(
+        create: (_) => HomeDrawerCubit(), child: const HomeTabsView());
   }
 }
 
@@ -51,7 +52,7 @@ class HomeTabsView extends StatelessWidget {
           drawerEnableOpenDragGesture: true,
           drawerEdgeDragWidth: 300,
           routes: homeCubit.state.routes,
-          builder: (context, child, animation) {
+          transitionBuilder: (context, child, animation) {
             return Row(children: [
               if (!type.isMobile) const CustomDrawer(),
               Expanded(
@@ -89,7 +90,9 @@ class BottomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeTabsCubit, HomeTabsState>(
         buildWhen: (previous, current) =>
-            previous.currentHomeTabController != current.currentHomeTabController || previous.status != current.status,
+            previous.currentHomeTabController !=
+                current.currentHomeTabController ||
+            previous.status != current.status,
         builder: (_, state) {
           switch (state.status) {
             case Status.initial:

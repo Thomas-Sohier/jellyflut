@@ -52,7 +52,7 @@ class _VideoBuilder extends StatelessWidget {
         listener: (c, state) {
           switch (state.status) {
             case StreamStatus.failure:
-              context.router.pop();
+              context.router.back();
               SnackbarUtil.message(
                   messageTitle: 'Failed to play item',
                   messageDetails: state.failureMessage,

@@ -10,7 +10,8 @@ import 'package:universal_io/io.dart';
 /// {@endtemplate}
 class JellyfinDownloadsApi extends RemoteDownloadsApi {
   /// {@macro jellyfin_downloads_api}
-  JellyfinDownloadsApi({required Dio? dioClient}) : _dioClient = dioClient ?? Dio();
+  JellyfinDownloadsApi({required Dio? dioClient})
+      : _dioClient = dioClient ?? Dio();
 
   final Dio _dioClient;
 
@@ -58,12 +59,13 @@ class JellyfinDownloadsApi extends RemoteDownloadsApi {
       }
 
       if (response.statusCode != 200) {
-        throw DownloadFailed('Download of item failed with status code ${response.statusCode}');
+        throw DownloadFailed(
+            'Download of item failed with status code ${response.statusCode}');
       }
 
       return response.data ?? Uint8List.fromList([]);
-    } on DioError catch (e) {
-      throw DownloadFailed(e.message);
+    } on DioException catch (e) {
+      throw DownloadFailed(e.message ?? 'No reponse');
     } catch (_) {
       throw DownloadFailed('Failed to download item');
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/screens/stream/exception/unsupported_player_exception.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../cubit/stream_cubit.dart';
 
@@ -12,10 +11,12 @@ class Controllerbuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<StreamCubit>().state.controller is VideoPlayerController) {
-      return VideoPlayer(context.read<StreamCubit>().state.controller as VideoPlayerController, key: UniqueKey());
-    } else {
-      throw UnsupportedPlayerException('Unknow controller');
-    }
+    return BlocBuilder<StreamCubit, StreamState>(
+        buildWhen: (previous, current) =>
+            (previous.controller != current.controller) &&
+            current.status == StreamStatus.success,
+        builder: (_, state) {
+          return state.controller?.createView() ?? const SizedBox();
+        });
   }
 }

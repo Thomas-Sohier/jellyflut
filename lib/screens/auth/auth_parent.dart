@@ -11,6 +11,7 @@ import 'package:jellyflut/screens/auth/server_form.dart';
 
 import 'components/lava/lava_painter.dart';
 
+@RoutePage(name: "LoginPage")
 class AuthParent extends StatefulWidget {
   final VoidCallback? onAuthenticated;
 
@@ -32,7 +33,10 @@ class _AuthParentState extends State<AuthParent> {
     authBloc.errors.listen((String error) => ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
-          content: Row(children: [Expanded(child: Text(error, maxLines: 3)), Icon(Icons.error, color: Colors.red)]),
+          content: Row(children: [
+            Expanded(child: Text(error, maxLines: 3)),
+            Icon(Icons.error, color: Colors.red)
+          ]),
           width: 600)));
     super.initState();
   }
@@ -128,7 +132,8 @@ class SecondFormView extends StatelessWidget {
           top: 0,
           child: Align(
               alignment: Alignment.topCenter,
-              child: AuthBubbleIndicator(value: context.read<AuthBloc>().state.server.name))),
+              child: AuthBubbleIndicator(
+                  value: context.read<AuthBloc>().state.server.name))),
     ]);
   }
 }

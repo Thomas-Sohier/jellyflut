@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/downloads/current_downloads_list.dart';
 import 'package:jellyflut/screens/downloads/downloaded_items.dart';
 
+@RoutePage(name: "DownloadsPage")
 class DownloadsParent extends StatefulWidget {
   DownloadsParent({super.key});
 

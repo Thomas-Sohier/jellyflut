@@ -8,7 +8,7 @@ class SelectableBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
         autofocus: false,
-        onPressed: context.router.root.pop,
+        onPressed: context.router.root.back,
         style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onBackground,
                 minimumSize: Size(24, 24),
@@ -27,7 +27,8 @@ class SelectableBackButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.onBackground,
           );
         }
-        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+        return BorderSide(
+            width: 0, color: Colors.transparent); // defer to the default
       },
     );
   }

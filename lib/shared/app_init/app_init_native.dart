@@ -1,10 +1,8 @@
-import 'dart:io';
+import 'package:music_player_api/music_player_api.dart';
+import 'package:streaming_repository/streaming_repository.dart';
 
-import 'package:dart_vlc/dart_vlc.dart';
-
-Future<void> init() {
-  if (!Platform.isMacOS) {
-    DartVLC.initialize();
-  }
+Future<void> init() async {
+  await StreamingRepository.init();
+  await MusicPlayerApi.init();
   return Future.value(null);
 }
