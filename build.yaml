@@ -25,3 +25,6 @@ targets:
         release_options:
           dart2js_args:
             - -O4
+      auto_route_generator:
+        options:
+          replace_in_route_name: 'Page,Route'

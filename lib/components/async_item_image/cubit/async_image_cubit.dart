@@ -1,57 +1,57 @@
+import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:items_repository/items_repository.dart';
-import 'package:jellyflut/components/zoomable_image/zommable_image_controller.dart';
+import 'package:jellyflut/shared/blurhash_service.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
-
 part 'async_image_state.dart';
 
 class AsyncImageCubit extends Cubit<AsyncImageState> {
-  AsyncImageCubit(this._itemsRepository,
-      {required String itemId,
-      required BorderRadius borderRadius,
-      ZoomableImageController? zoomableImageController,
-      String? imageTag,
-      String? hash,
-      ImageType? imageType,
-      double? width,
-      Widget? notFoundPlaceholder,
-      double? height,
-      bool? backup,
-      bool? showOverlay,
-      bool? showParent,
-      BoxFit? boxFit})
-      : super(AsyncImageState(
-            hash: hash,
-            imageTag: imageTag,
-            zoomableImageController: zoomableImageController,
-            imageType: imageType ?? ImageType.Primary,
-            notFoundPlaceholder: notFoundPlaceholder,
-            borderRadius: borderRadius,
-            itemId: itemId,
-            width: width,
-            height: height,
-            backup: backup ?? true,
-            showOverlay: showOverlay ?? false,
-            showParent: showParent ?? false,
-            boxFit: boxFit ?? BoxFit.cover)) {
-    _init();
-  }
+  AsyncImageCubit({
+    required ItemsRepository itemsRepository,
+    required String itemId,
+    required ImageType imageType,
+    String? tag,
+    String? hash,
+  }) : _itemsRepository = itemsRepository,
+       _blurhashService = BlurHashService(),
+       _itemId = itemId,
+       _imageType = imageType,
+       _tag = tag,
+       _hash = hash,
+       super(const AsyncImageState());
 
   final ItemsRepository _itemsRepository;
+  final BlurHashService _blurhashService;
+  final String _itemId;
+  final ImageType _imageType;
+  final String? _tag;
+  final String? _hash;
 
-  Future<void> _init() async {
+  Future<void> init() async {
+    await Future.wait([_loadPlaceholder(), _loadImage()]);
+  }
+
+  Future<void> _loadPlaceholder() async {
+    if (_hash == null) return;
+    final placeholder = await _blurhashService.decode(_hash);
+    if (isClosed) return;
+    if (placeholder != null) {
+      emit(state.copyWith(placeholderImage: placeholder));
+    }
+  }
+
+  Future<void> _loadImage() async {
     emit(state.copyWith(status: AsyncImageStatus.loading));
-
     try {
-      final url = _itemsRepository.getItemImageUrl(itemId: state.itemId, tag: state.imageTag, type: state.imageType);
-      final image = CachedNetworkImageProvider(url);
-      emit(
-        state.copyWith(status: AsyncImageStatus.success, image: image),
-      );
-    } on Exception {
+      final url = _itemsRepository.getItemImageUrl(itemId: _itemId, type: _imageType, tag: _tag);
+      final provider = CachedNetworkImageProvider(url);
+      if (isClosed) return;
+      emit(state.copyWith(status: AsyncImageStatus.success, imageProvider: provider));
+    } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(status: AsyncImageStatus.failure));
     }
   }

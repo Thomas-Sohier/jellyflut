@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:jellyflut/components/critics.dart';
-import 'package:jellyflut/components/poster/poster.dart';
-import 'package:jellyflut/routes/router.gr.dart' as r;
 import 'package:jellyflut/components/outlined_button_selector.dart';
+import 'package:jellyflut/components/poster/item_poster.dart';
+import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/shared/shared.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
@@ -14,20 +14,27 @@ class EpisodeItem extends StatelessWidget {
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
 
-  const EpisodeItem(
-      {super.key, required this.item, this.notFoundPlaceholder, this.clickable = true, this.boxFit = BoxFit.cover});
+  const EpisodeItem({
+    super.key,
+    required this.item,
+    this.notFoundPlaceholder,
+    this.clickable = true,
+    this.boxFit = BoxFit.cover,
+  });
 
   Future<void> _onTap(BuildContext context) {
-    return context.router.root.push(r.DetailsPage(item: item, heroTag: ValueKey(item).toString()));
+    return context.router.root.push(DetailsRoute(item: item, heroTag: ValueKey(item).toString()));
   }
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => _onTap(context),
-        child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-          final rightPartPadding =
-              constraints.maxWidth < 350 ? const EdgeInsets.only(left: 0) : const EdgeInsets.only(left: 8);
+      onPressed: () => _onTap(context),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final rightPartPadding = constraints.maxWidth < 350
+              ? const EdgeInsets.only(left: 0)
+              : const EdgeInsets.only(left: 8);
           return Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -36,51 +43,53 @@ class EpisodeItem extends StatelessWidget {
               children: [
                 if (constraints.maxWidth > 350)
                   ConstrainedBox(
-                      constraints: BoxConstraints(minWidth: 20, maxWidth: constraints.maxWidth * 0.4), child: poster()),
+                    constraints: BoxConstraints(minWidth: 20, maxWidth: constraints.maxWidth * 0.4),
+                    child: poster(),
+                  ),
                 Expanded(
                   child: Padding(
-                      padding: rightPartPadding,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _Title(indexNumber: item.indexNumber, name: item.name ?? ''),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4, bottom: 4),
-                            child: Row(
-                              children: [
-                                if (item.hasRatings()) Critics(item: item),
-                                if (item.getDuration() != 0)
-                                  _Duration(
-                                    duration: item.getDuration(),
-                                  )
-                              ],
-                            ),
+                    padding: rightPartPadding,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _Title(indexNumber: item.indexNumber, name: item.name ?? ''),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, bottom: 4),
+                          child: Row(
+                            children: [
+                              if (item.hasRatings()) Critics(item: item),
+                              if (item.getDuration() != 0) _Duration(duration: item.getDuration()),
+                            ],
                           ),
-                          if (item.overview != null) _Overview(overview: item.overview!)
-                        ],
-                      )),
+                        ),
+                        if (item.overview != null) _Overview(overview: item.overview!),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 
   Widget poster() {
     return AspectRatio(
       aspectRatio: item.getPrimaryAspectRatio(),
-      child: Poster(
-          key: ValueKey(item),
-          imageType: ImageType.Primary,
-          heroTag: ValueKey(item).toString(),
-          clickable: false,
-          notFoundPlaceholder: notFoundPlaceholder,
-          width: double.infinity,
-          height: double.infinity,
-          boxFit: boxFit,
-          item: item),
+      child: ItemPoster(
+        item,
+        key: ValueKey(item),
+        tag: ImageType.Primary,
+        heroTag: ValueKey(item).toString(),
+        clickable: false,
+        width: double.infinity,
+        height: double.infinity,
+        boxFit: boxFit,
+      ),
     );
   }
 }
@@ -111,11 +120,12 @@ class _Duration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        child: Text(
-      printDuration(Duration(microseconds: duration)),
-      maxLines: 1,
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
-    ));
+      child: Text(
+        printDuration(Duration(microseconds: duration)),
+        maxLines: 1,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
+      ),
+    );
   }
 }
 
@@ -126,11 +136,7 @@ class _Overview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: Text(
-        overview,
-        textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
+      child: Text(overview, textAlign: TextAlign.justify, style: Theme.of(context).textTheme.bodyLarge),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:subtitle/subtitle.dart' hide Subtitle;
 
 import '../../cubit/stream_cubit.dart';
 
@@ -32,32 +31,6 @@ class _SubtitleBoxState extends State<SubtitleBox> {
 
   void streamingEventListener() {
     subtitlesStream.add(null);
-    // This works now try to make it faster
-    // final subtitleControllerFuture =
-    //     context.read<StreamCubit>().get(context.read<StreamCubit>().state.selectedSubtitleTrack);
-    // subtitleControllerFuture.then(streamingPositionListener);
-  }
-
-  void streamingPositionListener(SubtitleController? subtitleController) {
-    if (subtitleController == null) {
-      subtitlesStream.add(null);
-      positionstream.cancel();
-      return;
-    }
-
-    positionstream.onData((position) => subtitlePositionListener(subtitleController, position));
-  }
-
-  void subtitlePositionListener(SubtitleController subtitleController, Duration position) {
-    final sub = subtitleController.durationSearch(position);
-    //  .subtitles.firstWhereOrNull((s) {
-    //   return s.start <= position && s.end >= position;
-    // });
-    if (sub != null) {
-      subtitlesStream.add(sub.data);
-    } else {
-      subtitlesStream.add(null);
-    }
   }
 
   @override
@@ -66,13 +39,14 @@ class _SubtitleBoxState extends State<SubtitleBox> {
       listener: (_, state) => streamingEventListener(),
       listenWhen: (previous, current) => previous.selectedSubtitleTrack != current.selectedSubtitleTrack,
       child: StreamBuilder<String?>(
-          stream: subtitlesStream.stream,
-          builder: (_, ss) {
-            if (ss.hasData && ss.data != null) {
-              return SubtitleContainer(text: ss.data);
-            }
-            return const SizedBox();
-          }),
+        stream: subtitlesStream.stream,
+        builder: (_, ss) {
+          if (ss.hasData && ss.data != null) {
+            return SubtitleContainer(text: ss.data);
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }
@@ -88,11 +62,12 @@ class SubtitleContainer extends StatelessWidget {
       builder: (_, constraints) {
         return Align(
           alignment: Alignment.center,
-          child: Stack(alignment: Alignment.center, children: <Widget>[
-            Text(text!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Text(
+                text!,
+                style: Theme.of(context).textTheme.bodyLarge
                     ?.copyWith(color: Colors.white)
                     .copyWith(fontSize: constraints.maxHeight * 0.1)
                     .copyWith(
@@ -100,14 +75,16 @@ class SubtitleContainer extends StatelessWidget {
                         ..style = PaintingStyle.stroke
                         ..strokeWidth = 4
                         ..color = Colors.black,
-                    )),
-            Text(text!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(color: Colors.white)
-                    .copyWith(fontSize: constraints.maxHeight * 0.1))
-          ]),
+                    ),
+              ),
+              Text(
+                text!,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.white).copyWith(fontSize: constraints.maxHeight * 0.1),
+              ),
+            ],
+          ),
         );
       },
     );

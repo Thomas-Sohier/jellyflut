@@ -42,17 +42,18 @@ class StreamingApi {
   /// If response contains error message throw [DevicePlaybackCapabilities] with response error message
   /// On api call error, throw [CannotGetDevicePlaybackCapabilities] with api call error
   /// On any other error, throw [CannotGetDevicePlaybackCapabilities]
-  Future<PlayBackInfos> getPlaybackInfos(
-      {required String serverUrl,
-      required String userId,
-      required String itemId,
-      DeviceProfileParent? profile,
-      int? startTimeTick,
-      int? maxVideoBitrate,
-      int? subtitleStreamIndex,
-      int? maxAudioBitrate,
-      int? audioStreamIndex,
-      int? maxStreamingBitrate}) async {
+  Future<PlayBackInfos> getPlaybackInfos({
+    required String serverUrl,
+    required String userId,
+    required String itemId,
+    DeviceProfileParent? profile,
+    int? startTimeTick,
+    int? maxVideoBitrate,
+    int? subtitleStreamIndex,
+    int? maxAudioBitrate,
+    int? audioStreamIndex,
+    int? maxStreamingBitrate,
+  }) async {
     // Query params are deprecated but still used for older version of jellyfin server
     final queryParams = <String, dynamic>{};
     queryParams['UserId'] = userId;
@@ -98,8 +99,8 @@ class StreamingApi {
       }
 
       return playbackInfos;
-    } on DioError catch (e) {
-      throw CannotGetDevicePlaybackCapabilities(e.message);
+    } on DioException catch (e) {
+      throw CannotGetDevicePlaybackCapabilities(e.message ?? 'Error getting playback infos');
     } catch (_) {
       throw CannotGetDevicePlaybackCapabilities('Unknown Error');
     }
@@ -110,8 +111,11 @@ class StreamingApi {
   /// On status code different than 204, throw [CannotSendProgress] with default message
   /// On api call error, throw [CannotSendProgress] with api call error
   /// On any other error, throw [CannotSendProgress]
-  Future<int> deleteActiveEncoding(
-      {required String serverUrl, required String userId, required String playSessionId}) async {
+  Future<int> deleteActiveEncoding({
+    required String serverUrl,
+    required String userId,
+    required String playSessionId,
+  }) async {
     final info = await DeviceInfo.getCurrentDeviceInfo();
     final queryParam = <String, String>{};
     queryParam['deviceId'] = info.id;
@@ -127,8 +131,8 @@ class StreamingApi {
       } else {
         throw StreamCannotBeDeleted('Stream encoding cannot be deleted, ${response.data}');
       }
-    } on DioError catch (e) {
-      throw StreamCannotBeDeleted(e.message);
+    } on DioException catch (e) {
+      throw StreamCannotBeDeleted(e.message ?? 'Error deleting stream encoding');
     } catch (_) {
       throw StreamCannotBeDeleted('Unknown Error');
     }
@@ -139,8 +143,11 @@ class StreamingApi {
   /// On status code different than 204, throw [CannotSendProgress] with default message
   /// On api call error, throw [CannotSendProgress] with api call error
   /// On any other error, throw [CannotSendProgress]
-  void streamingProgress(
-      {required String serverUrl, required String userId, required PlaybackProgress playbackProgress}) async {
+  void streamingProgress({
+    required String serverUrl,
+    required String userId,
+    required PlaybackProgress playbackProgress,
+  }) async {
     final url = '$serverUrl/Sessions/Playing/Progress';
     final playbackProgressJSON = playbackProgress.toMap();
     playbackProgressJSON.removeWhere((key, value) => value == null);
@@ -148,12 +155,16 @@ class StreamingApi {
     final json = convert.json.encode(playbackProgressJSON);
 
     try {
-      final response = await _dioClient.post(url, options: Options(contentType: ContentType.json.value), data: json);
+      final response = await _dioClient.post(
+        url,
+        options: Options(contentType: ContentType.json.value),
+        data: json,
+      );
       if (response.statusCode != 204) {
         throw CannotSendProgress('Error reporting streaming progress');
       }
-    } on DioError catch (e) {
-      throw CannotSendProgress(e.message);
+    } on DioException catch (e) {
+      throw CannotSendProgress(e.message ?? 'Error reporting streaming progress');
     } catch (_) {
       throw CannotSendProgress('Unknown Error');
     }

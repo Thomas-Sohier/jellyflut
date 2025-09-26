@@ -1,41 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/selectable_back_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/backward_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/chapter_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/current_duration_player.dart';
 import 'package:jellyflut/screens/stream/components/controls/current_position_player.dart';
+import 'package:jellyflut/screens/stream/components/controls/forward_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/fullscreen_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/pip_button.dart';
 import 'package:jellyflut/screens/stream/components/controls/play_pause_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/show_channel_button.dart';
+import 'package:jellyflut/screens/stream/components/controls/subtitle_button_selector.dart';
 import 'package:jellyflut/screens/stream/components/controls/video_player_progress_bar.dart';
 import 'package:jellyflut/screens/stream/components/player_infos/player_infos.dart';
+import 'package:jellyflut/screens/stream/components/player_infos/subtitle_box.dart';
 import 'package:jellyflut/screens/stream/components/player_infos/transcode_state.dart';
 import 'package:universal_io/io.dart';
 
 import '../controls/audio_button_selector.dart';
-import '../controls/backward_button.dart';
-import '../controls/chapter_button.dart';
-import '../controls/forward_button.dart';
-import '../controls/show_channel_button.dart';
-import '../controls/subtitle_button_selector.dart';
-import '../player_infos/subtitle_box.dart';
 
-class CommonControlsPhone extends StatefulWidget {
+class CommonControlsPhone extends StatelessWidget {
   const CommonControlsPhone({super.key});
 
   @override
-  State<CommonControlsPhone> createState() => _CommonControlsPhoneState();
-}
-
-class _CommonControlsPhoneState extends State<CommonControlsPhone> {
-  @override
   Widget build(BuildContext context) {
-    return ColoredBox(
+    return const ColoredBox(
+        // Ajout de 'const' ici et dans les enfants si possible
         color: Colors.black38,
         child: Stack(
           alignment: Alignment.center,
           children: [
             Positioned.fill(
                 child: Column(
-              children: const [
+              children: [
                 SizedBox(height: 12),
                 Expanded(child: Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: TopRow())),
                 Expanded(child: Controls()),
@@ -43,7 +39,7 @@ class _CommonControlsPhoneState extends State<CommonControlsPhone> {
                 SizedBox(height: 24),
               ],
             )),
-            Positioned.fill(child: const Align(alignment: Alignment.bottomCenter, child: SubtitleBox())),
+            Positioned.fill(child: Align(alignment: Alignment.bottomCenter, child: SubtitleBox())),
           ],
         ));
   }
@@ -55,7 +51,8 @@ class TopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const BackButton(),
+      // Utilisation du nouveau nom pour plus de clarté
+      const PlatformBackButton(),
       Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,15 +75,16 @@ class TopRow extends StatelessWidget {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({super.key});
+// 2. Renommé pour plus de clarté (ce n'est pas le BackButton par défaut de Flutter)
+class PlatformBackButton extends StatelessWidget {
+  const PlatformBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      return Row(children: const [SelectableBackButton(), SizedBox(width: 12)]);
+      return const Row(children: [SelectableBackButton(), SizedBox(width: 12)]);
     }
-    return const SizedBox();
+    return const SizedBox.shrink(); // Utilisation de SizedBox.shrink() pour un widget vide
   }
 }
 
@@ -95,10 +93,11 @@ class Controls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
+      // Ajout de const
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
+      children: [
         BackwardButton(size: 42),
         SizedBox(width: 12),
         PlayPauseButton(size: 42),

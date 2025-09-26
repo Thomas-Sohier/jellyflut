@@ -27,7 +27,7 @@ class SongImage extends StatelessWidget {
               return const AlbumImage();
             },
           ),
-        )
+        ),
       ],
     );
   }
@@ -39,14 +39,17 @@ class AlbumImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTapDown: (TapDownDetails details) => onTapDown(context, details),
-        child: Stack(
-          alignment: Alignment.center,
-          children: const [
-            AspectRatio(aspectRatio: 1, child: ImageFromByte()),
-            Positioned.fill(child: Align(alignment: Alignment.centerLeft, child: SongSlider())),
-          ],
-        ));
+      onTapDown: (TapDownDetails details) => onTapDown(context, details),
+      child: Stack(
+        alignment: Alignment.center,
+        children: const [
+          AspectRatio(aspectRatio: 1, child: ImageFromByte()),
+          Positioned.fill(
+            child: Align(alignment: Alignment.centerLeft, child: SongSlider()),
+          ),
+        ],
+      ),
+    );
   }
 
   void onTapDown(BuildContext context, TapDownDetails details) {
@@ -72,16 +75,17 @@ class ImageFromByte extends StatelessWidget {
     if (musicPlayerBloc.state.currentlyPlaying == null) return const SizedBox();
 
     return BlocBuilder<MusicPlayerBloc, MusicPlayerState>(
-        buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
-        builder: (context, state) => OctoImage(
-              image: MemoryImage(state.currentlyPlaying!.metadata.artworkByte),
-              placeholderBuilder: (_) => const SongImagePlaceholder(),
-              errorBuilder: (context, error, e) => const SongImagePlaceholder(),
-              fadeInDuration: const Duration(milliseconds: 300),
-              fit: BoxFit.cover,
-              gaplessPlayback: true,
-              alignment: Alignment.center,
-            ));
+      buildWhen: (previous, current) => previous.currentlyPlaying != current.currentlyPlaying,
+      builder: (context, state) => OctoImage(
+        image: MemoryImage(state.currentlyPlaying!.metadata.artworkByte),
+        placeholderBuilder: (_) => const SongImagePlaceholder(),
+        errorBuilder: (context, error, e) => const SongImagePlaceholder(),
+        fadeInDuration: const Duration(milliseconds: 300),
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+        alignment: Alignment.center,
+      ),
+    );
   }
 }
 
@@ -90,16 +94,11 @@ class SongImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = ColorUtil.darken(Theme.of(context).colorScheme.background);
-    final iconColor = ColorUtil.darken(Theme.of(context).colorScheme.onBackground);
+    final backgroundColor = ColorUtil.darken(Theme.of(context).colorScheme.surface);
+    final iconColor = ColorUtil.darken(Theme.of(context).colorScheme.onSurface);
     return ColoredBox(
-        color: backgroundColor,
-        child: Center(
-          child: Icon(
-            Icons.album,
-            color: iconColor,
-            size: 70,
-          ),
-        ));
+      color: backgroundColor,
+      child: Center(child: Icon(Icons.album, color: iconColor, size: 70)),
+    );
   }
 }

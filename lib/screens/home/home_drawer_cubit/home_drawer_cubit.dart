@@ -6,11 +6,14 @@ part 'home_drawer_state.dart';
 
 class HomeDrawerCubit extends Cubit<HomeDrawerState> {
   HomeDrawerCubit({DrawerLayout drawerLayout = DrawerLayout.desktop, int currentIndexSelected = 0})
-      : super(HomeDrawerState(
-            currentIndexSelected: currentIndexSelected,
-            drawerLayout: drawerLayout,
-            drawerType: drawerLayout.drawerType,
-            fixDrawerType: false));
+    : super(
+        HomeDrawerState(
+          currentIndexSelected: currentIndexSelected,
+          drawerLayout: drawerLayout,
+          drawerType: drawerLayout.drawerType,
+          fixDrawerType: false,
+        ),
+      );
 
   void toggleDrawerSize() {
     if (!state.fixDrawerType) return;

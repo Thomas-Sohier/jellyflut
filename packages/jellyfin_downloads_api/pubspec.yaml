@@ -4,15 +4,17 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.9.0-0
+  
+resolution: workspace
 
 dependencies:
-  dio: ^4.0.6
+  dio: ^5.9.0
   flutter:
     sdk: flutter
   remote_downloads_api:
     path: ../remote_downloads_api
-  rxdart: ^0.27.5
+  rxdart: ^0.28.0
   universal_io: ^2.0.4
 
 dev_dependencies:

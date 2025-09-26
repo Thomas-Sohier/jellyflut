@@ -13,11 +13,9 @@ class ItemTitlePhone extends StatelessWidget {
       textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
-      style: Theme.of(context)
-          .textTheme
-          .titleLarge
-          ?.copyWith(color: Theme.of(context).colorScheme.onBackground)
-          .copyWith(fontSize: 20),
+      style: Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface).copyWith(fontSize: 20),
     );
   }
 }

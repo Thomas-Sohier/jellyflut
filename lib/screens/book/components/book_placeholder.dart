@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/logo.dart';
+import 'package:jellyflut/components/poster/item_poster.dart';
 
-import 'package:jellyflut/components/poster/poster.dart';
 import 'package:jellyflut/screens/book/components/loading_text.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:uuid/uuid.dart';
@@ -16,21 +16,23 @@ class BookPlaceholder extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Center(
-            child: SizedBox(
-          height: double.maxFinite,
-          child: AspectRatio(
-            aspectRatio: item.getPrimaryAspectRatio(),
-            child: Poster(
+          child: SizedBox(
+            height: double.maxFinite,
+            child: AspectRatio(
+              aspectRatio: item.getPrimaryAspectRatio(),
+              child: ItemPoster(
+                item,
                 key: ValueKey(item),
-                imageType: ImageType.Primary,
+                tag: ImageType.Primary,
                 heroTag: '${item.id}-${Uuid().v1()}',
                 clickable: false,
                 width: double.infinity,
                 height: double.infinity,
                 boxFit: BoxFit.contain,
-                item: item),
+              ),
+            ),
           ),
-        )),
+        ),
         Container(color: Colors.black38),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,7 +42,7 @@ class BookPlaceholder extends StatelessWidget {
             const SizedBox(height: 24),
             Logo(item: item),
           ],
-        )
+        ),
       ],
     );
   }

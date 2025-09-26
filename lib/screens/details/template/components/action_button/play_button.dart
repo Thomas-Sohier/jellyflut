@@ -17,7 +17,7 @@ class PlayButton extends StatelessWidget {
       gradient: [
         ownDetailsTheme(context).primary,
         ownDetailsTheme(context).secondary,
-        ownDetailsTheme(context).tertiary
+        ownDetailsTheme(context).tertiary,
       ],
     );
   }
@@ -33,10 +33,10 @@ class PlayButton extends StatelessWidget {
         context.read<MusicPlayerBloc>().add(PlaySongRequested(item: item));
         break;
       case ItemType.Book:
-        context.router.push(r.EpubPage(item: item));
+        context.router.push(BookReaderRoute(item: item));
         break;
       default:
-        context.router.push(r.StreamPage(item: item));
+        context.router.push(StreamRoute(item: item));
     }
   }
 }

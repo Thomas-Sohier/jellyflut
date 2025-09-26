@@ -16,38 +16,40 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final homeDrawerCubit = context.read<HomeDrawerCubit>();
     return FocusableActionDetector(
-        enabled: false,
-        onFocusChange: (value) {
-          if (isAndroidTv) {
-            homeDrawerCubit.changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
-          }
-        },
-        child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-          buildWhen: (previous, current) =>
-              previous.drawerLayout != current.drawerLayout ||
-              previous.drawerType != current.drawerType ||
-              previous.fixDrawerType != current.fixDrawerType,
-          builder: (_, state) => AnimatedContainer(
-              width: state.getDrawerWidth,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(color: guessDrawerColor(state.drawerLayout, context)),
-              duration: Duration(milliseconds: 200),
-              child: Column(
-                children: [
-                  const Expanded(child: _DrawerButtons()),
-                  const SizedBox(height: 4),
-                  const _BottomActions(),
-                  const SizedBox(height: 4),
-                ],
-              )),
-        ));
+      enabled: false,
+      onFocusChange: (value) {
+        if (isAndroidTv) {
+          homeDrawerCubit.changeViewMode(value ? LayoutType.desktop : LayoutType.tablet);
+        }
+      },
+      child: BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
+        buildWhen: (previous, current) =>
+            previous.drawerLayout != current.drawerLayout ||
+            previous.drawerType != current.drawerType ||
+            previous.fixDrawerType != current.fixDrawerType,
+        builder: (_, state) => AnimatedContainer(
+          width: state.getDrawerWidth,
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(color: guessDrawerColor(state.drawerLayout, context)),
+          duration: Duration(milliseconds: 200),
+          child: Column(
+            children: [
+              const Expanded(child: _DrawerButtons()),
+              const SizedBox(height: 4),
+              const _BottomActions(),
+              const SizedBox(height: 4),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Color guessDrawerColor(DrawerLayout layoutType, BuildContext context) {
     final currentTheme = Theme.of(context);
     switch (layoutType) {
       case DrawerLayout.mobile:
-        return currentTheme.colorScheme.background;
+        return currentTheme.colorScheme.surface;
       case DrawerLayout.tablet:
       case DrawerLayout.desktop:
       default:
@@ -66,23 +68,29 @@ class _DrawerButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = context.select<HomeCubit, List<Item>>((cubit) => cubit.state.items);
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-        buildWhen: (previous, current) => previous.drawerLayout != current.drawerLayout,
-        builder: (_, state) => ListView(controller: ScrollController(), children: [
-              DrawerLargeButton(
-                index: 0,
-                name: 'Home',
-                activeColor: guessActiveColor(state.drawerLayout, context),
-                inactiveColor: guessInactiveColor(state.drawerLayout, context),
-                icon: Icons.home_outlined,
-              ),
-              ...items.map((i) => DrawerLargeButton(
-                    index: items.indexOf(i) + 1,
-                    name: i.name ?? '',
-                    activeColor: guessActiveColor(state.drawerLayout, context),
-                    inactiveColor: guessInactiveColor(state.drawerLayout, context),
-                    icon: _getRightIconForCollectionType(i.collectionType),
-                  ))
-            ]));
+      buildWhen: (previous, current) => previous.drawerLayout != current.drawerLayout,
+      builder: (_, state) => ListView(
+        controller: ScrollController(),
+        children: [
+          DrawerLargeButton(
+            index: 0,
+            name: 'Home',
+            activeColor: guessActiveColor(state.drawerLayout, context),
+            inactiveColor: guessInactiveColor(state.drawerLayout, context),
+            icon: Icons.home_outlined,
+          ),
+          ...items.map(
+            (i) => DrawerLargeButton(
+              index: items.indexOf(i) + 1,
+              name: i.name ?? '',
+              activeColor: guessActiveColor(state.drawerLayout, context),
+              inactiveColor: guessInactiveColor(state.drawerLayout, context),
+              icon: _getRightIconForCollectionType(i.collectionType),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Color guessActiveColor(DrawerLayout layoutType, BuildContext context) {
@@ -104,7 +112,7 @@ class _DrawerButtons extends StatelessWidget {
     final currentTheme = Theme.of(context);
     switch (layoutType) {
       case DrawerLayout.mobile:
-        return currentTheme.colorScheme.onBackground;
+        return currentTheme.colorScheme.onSurface;
       case DrawerLayout.tablet:
       case DrawerLayout.desktop:
       default:
@@ -146,43 +154,53 @@ class _BottomActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<HomeDrawerCubit>();
     return BlocBuilder<HomeDrawerCubit, HomeDrawerState>(
-        buildWhen: (previous, current) =>
-            previous.fixDrawerType != current.fixDrawerType || previous.drawerType != current.drawerType,
-        builder: (_, state) {
-          if (Platform.isAndroid || Platform.isIOS || state.drawerLayout.isMobile) return const SizedBox();
-          return Column(
-            children: [
-              const _DrawerDivider(),
-              Wrap(crossAxisAlignment: WrapCrossAlignment.center, children: [
+      buildWhen: (previous, current) =>
+          previous.fixDrawerType != current.fixDrawerType || previous.drawerType != current.drawerType,
+      builder: (_, state) {
+        if (Platform.isAndroid || Platform.isIOS || state.drawerLayout.isMobile) return const SizedBox();
+        return Column(
+          children: [
+            const _DrawerDivider(),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
                 OutlinedButtonSelector(
-                    onPressed: cubit.toggleFixDrawerSize,
-                    shape: CircleBorder(),
-                    child: IgnorePointer(
-                        child: ExcludeFocus(
+                  onPressed: cubit.toggleFixDrawerSize,
+                  shape: CircleBorder(),
+                  child: IgnorePointer(
+                    child: ExcludeFocus(
                       child: IconButton(
                         onPressed: () {},
-                        icon: Icon(state.fixDrawerType ? Icons.lock : Icons.lock_open,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer),
+                        icon: Icon(
+                          state.fixDrawerType ? Icons.lock : Icons.lock_open,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
-                    ))),
+                    ),
+                  ),
+                ),
                 if (state.fixDrawerType)
                   OutlinedButtonSelector(
-                      onPressed: cubit.toggleDrawerSize,
-                      shape: CircleBorder(),
-                      child: IgnorePointer(
-                        child: ExcludeFocus(
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                    state.isCompact
-                                        ? Icons.keyboard_double_arrow_right
-                                        : Icons.keyboard_double_arrow_left,
-                                    color: Theme.of(context).colorScheme.onPrimaryContainer))),
-                      ))
-              ]),
-            ],
-          );
-        });
+                    onPressed: cubit.toggleDrawerSize,
+                    shape: CircleBorder(),
+                    child: IgnorePointer(
+                      child: ExcludeFocus(
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            state.isCompact ? Icons.keyboard_double_arrow_right : Icons.keyboard_double_arrow_left,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -191,11 +209,6 @@ class _DrawerDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      color: Theme.of(context).colorScheme.onPrimaryContainer,
-      height: 2,
-      endIndent: 4,
-      indent: 4,
-    );
+    return Divider(color: Theme.of(context).colorScheme.onPrimaryContainer, height: 2, endIndent: 4, indent: 4);
   }
 }

@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/auth/auth_parent.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
+import 'package:jellyflut/screens/book/components/page_epub.dart';
 import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/downloads/downloads_parent.dart';
@@ -13,130 +15,99 @@ import 'package:jellyflut/screens/music_player/routes/playlist.dart';
 import 'package:jellyflut/screens/server/server_parent.dart';
 import 'package:jellyflut/screens/settings/settings.dart';
 import 'package:jellyflut/screens/stream/stream.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
-import 'router.gr.dart' as r;
+part 'router.gr.dart';
 
-// Generate files
-// flutter packages pub run build_runner watch
+@AutoRouterConfig(replaceInRouteName: 'Screen|Page|Parent,Route')
+class AppRouter extends RootStackRouter {
+  late final AuthGuard authGuard;
 
-// Delete conflicts
-// flutter packages pub run build_runner watch --delete-conflicting-outputs
+  AppRouter({required authBloc, super.navigatorKey}) {
+    authGuard = AuthGuard(authBloc: authBloc);
+  }
 
-@MaterialAutoRouter(
-  replaceInRouteName: 'Page,Route',
-  routes: [
-    ...authRouter,
-    ...mainRouter,
-  ],
-)
-class $AppRouter {}
+  @override
+  RouteType get defaultRouteType => RouteType.material();
 
-const authRouter = [
-  AutoRoute(page: AuthParent, path: 'login', name: 'LoginPage'),
-];
-
-const mainRouter = [
-  AutoRoute(
-      page: HomeParent,
-      guards: [AuthGuard],
-      path: 'home',
-      name: 'HomeRouter',
+  @override
+  List<AutoRoute> get routes => [
+    AutoRoute(page: AuthRoute.page, path: '/login'),
+    AutoRoute(
+      page: RouteHomeRoute.page,
+      path: '/',
       initial: true,
+      guards: [authGuard],
       children: [
-        AutoRoute(
-          page: HomePage,
-          guards: [AuthGuard],
-          path: '',
-          initial: true,
-          name: 'HomePage',
-        ),
-        AutoRoute(
-          page: CollectionParent,
-          guards: [AuthGuard],
-          path: 'collection',
-          name: 'CollectionPage',
-        ),
-        AutoRoute(
-          page: LiveTvPage,
-          guards: [AuthGuard],
-          path: 'live_tv',
-          name: 'liveTvPage',
-        ),
-      ]),
-  CustomRoute(
-      page: CollectionParent,
-      guards: [AuthGuard],
-      path: 'collection',
-      name: 'collectionPage',
-      transitionsBuilder: TransitionsBuilders.slideLeft),
-  CustomRoute(
-      page: DetailsPage,
-      guards: [AuthGuard],
-      path: 'details',
-      name: 'DetailsPage',
-      transitionsBuilder: TransitionsBuilders.slideLeftWithFade),
-  CustomRoute(
-      page: DownloadsParent,
-      guards: [AuthGuard],
-      path: 'downloads',
-      name: 'DownloadsPage',
-      transitionsBuilder: TransitionsBuilders.slideLeft),
-  CustomRoute(
-    page: Settings,
-    guards: [AuthGuard],
-    path: 'settings',
-    name: 'SettingsPage',
-    transitionsBuilder: TransitionsBuilders.slideLeft,
-  ),
-  AutoRoute(
-    page: MusicPlayer,
-    guards: [AuthGuard],
-    path: 'music_player',
-    name: 'MusicPlayerPage',
-  ),
-  CustomRoute(
-    page: ServerParent,
-    guards: [AuthGuard],
-    path: 'servers',
-    name: 'ServersPage',
-    transitionsBuilder: TransitionsBuilders.slideLeft,
-  ),
-  CustomRoute(
-    page: Playlist,
-    guards: [AuthGuard],
-    path: 'playlist',
-    name: 'PlaylistPage',
-    transitionsBuilder: TransitionsBuilders.slideLeft,
-  ),
-  CustomRoute(
-    page: StreamPage,
-    guards: [AuthGuard],
-    path: 'stream',
-    name: 'StreamPage',
-    transitionsBuilder: TransitionsBuilders.fadeIn,
-  ),
-  AutoRoute(
-    page: BookReaderPage,
-    guards: [AuthGuard],
-    path: 'epub',
-    name: 'EpubPage',
-  ),
-  RedirectRoute(path: '*', redirectTo: 'home'),
-];
+        AutoRoute(maintainState: false, page: HomeRoute.page, path: '', guards: [authGuard]),
+        AutoRoute(maintainState: false, page: CollectionRoute.page, path: 'collection', guards: [authGuard]),
+        AutoRoute(maintainState: false, page: LiveTvRoute.page, path: 'live_tv', guards: [authGuard]),
+      ],
+    ),
+    CustomRoute(
+      page: CollectionRoute.page,
+      path: '/collection',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: DetailsRoute.page,
+      path: '/details',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeftWithFade,
+    ),
+    CustomRoute(
+      page: DownloadsRoute.page,
+      path: '/downloads',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: SettingsRoute.page,
+      path: '/settings',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    AutoRoute(page: MusicPlayerRoute.page, path: '/music_player', guards: [authGuard]),
+    CustomRoute(
+      page: ServerRoute.page,
+      path: '/servers',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: PlaylistRoute.page,
+      path: '/playlist',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+    ),
+    CustomRoute(
+      page: StreamRoute.page,
+      path: '/stream',
+      guards: [authGuard],
+      transitionsBuilder: TransitionsBuilders.fadeIn,
+    ),
+    AutoRoute(page: BookReaderRoute.page, path: '/epub', guards: [authGuard]),
+    RedirectRoute(path: '*', redirectTo: '/'),
+  ];
+}
 
 class AuthGuard extends AutoRouteGuard {
-  AuthBloc authBloc;
+  final AuthBloc authBloc;
 
   AuthGuard({required this.authBloc});
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
     if (authBloc.state.authStatus != AuthStatus.authenticated) {
+      // 3. Utilisation de la nouvelle classe de route générée (AuthRoute).
       await router.replaceAll([
-        r.LoginPage(onAuthenticated: () {
-          router.removeLast();
-          resolver.next(true);
-        }),
+        AuthRoute(
+          onAuthenticated: () {
+            router.removeLast();
+            resolver.next(true);
+          },
+        ),
       ]);
     } else {
       resolver.next(true);

@@ -24,13 +24,14 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    // TODO listen to tabs router and check tab key to know if current widget is on top
     excluding = ValueNotifier(false);
     _tabsRouter = context.tabsRouter;
     _tabsRouter.addListener(_excludeWatcher);
     _homeTabsCubit = context.read<HomeTabsCubit>();
     _homeTabsCubit.addHomeTabController(
-        tabControllerUniqueKey, HomeTabController(tabs: tabs, tabController: tabController));
+      tabControllerUniqueKey,
+      HomeTabController(tabs: tabs, tabController: tabController),
+    );
     _homeTabsCubit.setCurrentHomeTabController(tabControllerUniqueKey);
   }
 
@@ -39,12 +40,13 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
       valueListenable: excluding,
       builder: (BuildContext context, bool value, Widget? child) {
         return Visibility(
-            visible: !value,
-            maintainInteractivity: false,
-            maintainAnimation: false,
-            maintainSize: false,
-            maintainState: true,
-            child: ExcludeFocus(excluding: value, child: child ?? const SizedBox()));
+          visible: !value,
+          maintainInteractivity: false,
+          maintainAnimation: false,
+          maintainSize: false,
+          maintainState: true,
+          child: ExcludeFocus(excluding: value, child: child ?? const SizedBox()),
+        );
       },
       child: child,
     );
@@ -52,12 +54,15 @@ mixin HomeTab<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    super.dispose();
     _tabsRouter.removeListener(_excludeWatcher);
     tabController.dispose();
+    excluding.dispose();
+    super.dispose();
   }
 
   void _excludeWatcher() {
+    if (!mounted) return;
+
     final index = _tabsRouter.activeIndex;
     final activeChildArgs = _tabsRouter.stack[index].arguments as dynamic;
     if (activeChildArgs?.key == widget.key) {

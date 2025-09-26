@@ -11,7 +11,11 @@ final dio = DioHelper.generateDioClient();
 
 class DioHelper {
   static BaseOptions _generateOptions(String defaultContentType, DioExtra? extra) => BaseOptions(
-      connectTimeout: 15000, receiveTimeout: 15000, contentType: defaultContentType, extra: extra?.toJson());
+    connectTimeout: Duration(milliseconds: 15000),
+    receiveTimeout: Duration(milliseconds: 15000),
+    contentType: defaultContentType,
+    extra: extra?.toJson(),
+  );
 
   static Dio generateDioClient({String defaultContentType = 'application/json', DioExtra? extra}) =>
       Dio(_generateOptions(defaultContentType, extra));

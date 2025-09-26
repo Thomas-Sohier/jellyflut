@@ -19,50 +19,53 @@ class UserItem extends StatelessWidget {
       children: [
         Expanded(
           child: Card(
-              color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.05),
-              child: Ink(
-                  child: InkWell(
-                      onTap: () => onUserSelection(user),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minHeight: 32),
-                        child: Row(
+            color: ColorUtil.darken(Theme.of(context).colorScheme.surface, 0.05),
+            child: Ink(
+              child: InkWell(
+                onTap: () => onUserSelection(user),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: 32),
+                  child: Row(
+                    children: [
+                      Padding(padding: const EdgeInsets.fromLTRB(12, 4, 24, 4), child: Icon(Icons.person, size: 16)),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12, 4, 24, 4),
-                              child: Icon(Icons.person, size: 16),
+                            Text(
+                              user.name.capitalize(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            Expanded(
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      user.name.capitalize(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.titleMedium,
-                                    ),
-                                    if (inUse)
-                                      Text('in use',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall
-                                              ?.copyWith(color: Theme.of(context).colorScheme.tertiary)),
-                                  ]),
-                            ),
+                            if (inUse)
+                              Text(
+                                'in use',
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                              ),
                           ],
                         ),
-                      )))),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
         IconButton(
-            onPressed: () async {
-              // TODO add this to auth bloc or somehing else
-              // final u = UserAppCompanion(id: Value(userApp!.id));
-              // await AppDatabase().getDatabase.userAppDao.deleteUser(u);
-              // if (inUse) context.read<AuthBloc>().add(LogoutRequested());
-            },
-            icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary))
+          onPressed: () async {
+            // TODO add this to auth bloc or somehing else
+            // final u = UserAppCompanion(id: Value(userApp!.id));
+            // await AppDatabase().getDatabase.userAppDao.deleteUser(u);
+            // if (inUse) context.read<AuthBloc>().add(LogoutRequested());
+          },
+          icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary),
+        ),
       ],
     );
   }

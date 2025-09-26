@@ -3,16 +3,17 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  dart_vlc
   media_kit_libs_linux
   media_kit_video
   screen_retriever
   sqlite3_flutter_libs
   url_launcher_linux
+  volume_controller
   window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  blurhash_ffi
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

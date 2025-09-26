@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/list_items/bloc/collection_bloc.dart';
@@ -12,6 +13,7 @@ import 'guide_view.dart';
 
 const Key _tabControllerKey = ValueKey('LiveTvKey');
 
+@RoutePage()
 class LiveTvPage extends StatefulWidget {
   // This property is there to generate key property with build_runner and allow to use it in [HomeTab] mixin
   // ignore: unused_field
@@ -47,8 +49,9 @@ class LiveTvView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabControllers =
-        context.select<HomeTabsCubit, Map<Key, HomeTabController>>((cubit) => cubit.state.homeTabControllers);
+    final tabControllers = context.select<HomeTabsCubit, Map<Key, HomeTabController>>(
+      (cubit) => cubit.state.homeTabControllers,
+    );
     return BlocBuilder<LiveTvGuideCubit, LiveTvGuideState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (_, state) {
@@ -95,10 +98,8 @@ class _ChannelPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorUtil.darken(Theme.of(context).colorScheme.background),
-      child: Center(
-        child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onBackground),
-      ),
+      color: ColorUtil.darken(Theme.of(context).colorScheme.surface),
+      child: Center(child: Icon(Icons.tv, color: Theme.of(context).colorScheme.onSurface)),
     );
   }
 }
@@ -114,10 +115,7 @@ class _ChannelFailure extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('Failed to load TV channels'),
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => context.read<LiveTvGuideCubit>().loadLiveTvGuide(),
-          ),
+          IconButton(icon: Icon(Icons.refresh), onPressed: () => context.read<LiveTvGuideCubit>().loadLiveTvGuide()),
         ],
       ),
     );

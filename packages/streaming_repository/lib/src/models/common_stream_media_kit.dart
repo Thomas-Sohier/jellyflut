@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:media_kit/media_kit.dart' hide AudioTrack;
-import 'package:media_kit_video/media_kit_video.dart';
+import 'package:media_kit_video/media_kit_video.dart' as media_kit;
 import 'package:rxdart/rxdart.dart';
 
 import '../models/index.dart';
 
 class CommonStreamMediaKit extends CommonStream<Player> {
-  VideoController? _videoController;
+  media_kit.VideoController? _videoController;
 
   CommonStreamMediaKit.fromUri({required Uri uri, Duration? startAtPosition}) {
     controller = _initController(uri: uri, startAtPosition: startAtPosition);
@@ -26,7 +26,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   Future<void> initialize() async {
     return Future.microtask(() async {
-      _videoController = VideoController(controller);
+      _videoController = media_kit.VideoController(controller);
       await controller.play();
     });
   }
@@ -36,12 +36,12 @@ class CommonStreamMediaKit extends CommonStream<Player> {
     if (_videoController == null) {
       throw Exception('VideoController is null');
     }
-    return Video(
+    return media_kit.Video(
         controller: _videoController!,
         wakelock: true,
         fit: BoxFit.contain,
         alignment: Alignment.center,
-        controls: NoVideoControls);
+        controls: media_kit.AdaptiveVideoControls);
   }
 
   @override
@@ -103,7 +103,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   BehaviorSubject<Duration> getPositionStream() {
     final streamController = BehaviorSubject<Duration>();
-    final subscription = controller.streams.position.listen((event) {});
+    final subscription = controller.stream.position.listen((event) {});
     subscription.onData((data) {
       streamController.add(data);
     });
@@ -113,7 +113,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   BehaviorSubject<Duration> getDurationStream() {
     final streamController = BehaviorSubject<Duration>();
-    final subscription = controller.streams.duration.listen((event) {});
+    final subscription = controller.stream.duration.listen((event) {});
     subscription.onData((data) {
       streamController.add(data);
     });
@@ -123,7 +123,7 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   @override
   BehaviorSubject<bool> getPlayingStateStream() {
     final streamController = BehaviorSubject<bool>();
-    final subscription = controller.streams.playing.listen((event) {});
+    final subscription = controller.stream.playing.listen((event) {});
     subscription.onData((data) {
       streamController.add(data);
     });
@@ -131,23 +131,23 @@ class CommonStreamMediaKit extends CommonStream<Player> {
   }
 
   @override
-  void enterFullscreen(BuildContext context) async {
-    enterFullscreen(context);
+  void enterFullscreen(BuildContext context) {
+    media_kit.enterFullscreen(context);
   }
 
   @override
-  void exitFullscreen(BuildContext context) async {
-    exitFullscreen(context);
+  void exitFullscreen(BuildContext context) {
+    media_kit.exitFullscreen(context);
   }
 
   @override
-  void toggleFullscreen(BuildContext context) async {
-    toggleFullscreen(context);
+  void toggleFullscreen(BuildContext context) {
+    media_kit.toggleFullscreen(context);
   }
 
   @override
   Future<bool> isFullscreen(BuildContext context) async {
-    return isFullscreen(context);
+    return media_kit.isFullscreen(context);
   }
 
   @override

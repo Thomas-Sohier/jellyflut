@@ -38,12 +38,9 @@ class DiscTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Row(
         children: [
-          Icon(Icons.album, color: Theme.of(context).colorScheme.onBackground),
+          Icon(Icons.album, color: Theme.of(context).colorScheme.onSurface),
           const SizedBox(width: 4),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+          Text(title, style: Theme.of(context).textTheme.headlineSmall),
         ],
       ),
     );
@@ -56,10 +53,12 @@ class ShimmerHeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: _height,
-        child: Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background.withAlpha(150),
-            highlightColor: Theme.of(context).colorScheme.background.withAlpha(100),
-            child: const SizedBox.expand()));
+      height: _height,
+      child: Shimmer.fromColors(
+        baseColor: Theme.of(context).colorScheme.surface.withAlpha(150),
+        highlightColor: Theme.of(context).colorScheme.surface.withAlpha(100),
+        child: const SizedBox.expand(),
+      ),
+    );
   }
 }

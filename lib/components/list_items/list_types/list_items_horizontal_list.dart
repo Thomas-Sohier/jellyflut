@@ -6,12 +6,13 @@ class ListItemsHorizontalList extends StatelessWidget {
   final BoxFit boxFit;
   final Widget? notFoundPlaceholder;
 
-  const ListItemsHorizontalList(
-      {super.key,
-      this.boxFit = BoxFit.cover,
-      this.notFoundPlaceholder,
-      required this.items,
-      required this.scrollPhysics});
+  const ListItemsHorizontalList({
+    super.key,
+    this.boxFit = BoxFit.cover,
+    this.notFoundPlaceholder,
+    required this.items,
+    required this.scrollPhysics,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +20,13 @@ class ListItemsHorizontalList extends StatelessWidget {
     return SizedBox(
       height: itemHeight,
       child: ListView.builder(
-          itemCount: items.length,
-          scrollDirection: Axis.horizontal,
-          controller: ScrollController(),
-          physics: scrollPhysics,
-          itemBuilder: (context, index) => ItemPoster(
-                items.elementAt(index),
-                boxFit: boxFit,
-                notFoundPlaceholder: notFoundPlaceholder,
-                width: double.infinity,
-                height: double.infinity,
-              )),
+        itemCount: items.length,
+        scrollDirection: Axis.horizontal,
+        controller: ScrollController(),
+        physics: scrollPhysics,
+        itemBuilder: (context, index) =>
+            ItemPoster(items.elementAt(index), boxFit: boxFit, width: double.infinity, height: double.infinity),
+      ),
     );
   }
 }

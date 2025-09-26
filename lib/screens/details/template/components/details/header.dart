@@ -14,35 +14,34 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.read<SettingsBloc>().state;
     return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: ((previous, current) =>
-            previous.screenLayout != current.screenLayout),
-        builder: ((context, state) {
-          switch (state.screenLayout) {
-            case ScreenLayout.desktop:
-              if (settings.detailsPageContrasted) {
-                return Padding(
-                    padding: state.contentPadding,
-                    child: const DesktopHeader());
-              } else {
-                return Column(
-                  children: [
-                    const SizedBox(height: 24),
-                    if (state.item.hasLogo()) Logo(item: state.item),
-                    const SizedBox(height: 16),
-                    Padding(
-                        padding: state.contentPadding.copyWith(bottom: 10),
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxHeight: 50, maxWidth: double.infinity),
-                            child: PlayButton(maxWidth: double.infinity))),
-                  ],
-                );
-              }
-            case ScreenLayout.mobile:
-            default:
-              return const MobileHeader();
-          }
-        }));
+      buildWhen: ((previous, current) => previous.screenLayout != current.screenLayout),
+      builder: ((context, state) {
+        switch (state.screenLayout) {
+          case ScreenLayout.desktop:
+            if (settings.detailsPageContrasted) {
+              return Padding(padding: state.contentPadding, child: const DesktopHeader());
+            } else {
+              return Column(
+                children: [
+                  const SizedBox(height: 24),
+                  if (state.item.hasLogo()) Logo(item: state.item),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: state.contentPadding.copyWith(bottom: 10),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
+                      child: PlayButton(maxWidth: double.infinity),
+                    ),
+                  ),
+                ],
+              );
+            }
+          case ScreenLayout.mobile:
+          default:
+            return const MobileHeader();
+        }
+      }),
+    );
   }
 }
 
@@ -61,32 +60,29 @@ class MobileHeader extends StatelessWidget {
             Column(
               children: [
                 Hero(
-                    tag: state.heroTag ?? '',
-                    child: ShaderMask(
-                      shaderCallback: (rect) {
-                        return LinearGradient(
-                          begin: Alignment.topCenter,
-                          stops: [0.7, 1],
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Theme.of(context).colorScheme.background,
-                            Colors.transparent
-                          ],
-                        ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
-                      },
-                      blendMode: BlendMode.dstIn,
-                      child: AsyncImage(
-                        item: state.item,
-                        imageType: ImageType.Primary,
-                        boxFit: BoxFit.cover,
-                        notFoundPlaceholder: const SizedBox(),
-                        width: double.infinity,
-                        borderRadius: BorderRadius.zero,
-                        height: 250,
-                        showOverlay: true,
-                      ),
-                    )),
-                SizedBox(height: controlsOverflowSize)
+                  tag: state.heroTag ?? '',
+                  child: ShaderMask(
+                    shaderCallback: (rect) {
+                      return LinearGradient(
+                        begin: Alignment.topCenter,
+                        stops: [0.7, 1],
+                        end: Alignment.bottomCenter,
+                        colors: [Theme.of(context).colorScheme.surface, Colors.transparent],
+                      ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
+                    },
+                    blendMode: BlendMode.dstIn,
+                    child: AsyncImage(
+                      item: state.item,
+                      imageType: ImageType.Primary,
+                      boxFit: BoxFit.cover,
+                      width: double.infinity,
+                      borderRadius: BorderRadius.zero,
+                      height: 250,
+                      showOverlay: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: controlsOverflowSize),
               ],
             ),
             Positioned(
@@ -100,7 +96,7 @@ class MobileHeader extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 10)
+        const SizedBox(height: 10),
       ],
     );
   }
@@ -117,11 +113,9 @@ class DesktopHeader extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 16, bottom: 10),
         child: ConstrainedBox(
-            constraints:
-                BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
-            child: PlayButton(
-              maxWidth: double.infinity,
-            )),
+          constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
+          child: PlayButton(maxWidth: double.infinity),
+        ),
       );
     }
     return Column(
@@ -136,28 +130,26 @@ class DesktopHeader extends StatelessWidget {
                     item: state.item,
                     imageType: ImageType.Backdrop,
                     boxFit: BoxFit.cover,
-                    notFoundPlaceholder: const SizedBox(),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(4),
-                        bottomRight: Radius.circular(4)),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
                     width: double.infinity,
                     height: 250,
                     showOverlay: true,
                   ),
-                SizedBox(height: controlsOverflowSize)
+                SizedBox(height: controlsOverflowSize),
               ],
             ),
             if (state.item.hasLogo()) Logo(item: state.item),
             Positioned(
-                bottom: 0,
-                left: 15,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 50, maxWidth: 200),
-                  child: PlayButton(maxWidth: double.infinity),
-                )),
+              bottom: 0,
+              left: 15,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 50, maxWidth: 200),
+                child: PlayButton(maxWidth: double.infinity),
+              ),
+            ),
           ],
         ),
-        const SizedBox(height: 24)
+        const SizedBox(height: 24),
       ],
     );
   }

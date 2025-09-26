@@ -7,29 +7,32 @@ class DetailsTheme {
   final Color onBackground;
   final Color onGradientBackground;
 
-  const DetailsTheme(
-      {required this.primary,
-      required this.secondary,
-      required this.tertiary,
-      required this.onBackground,
-      required this.onGradientBackground});
+  const DetailsTheme({
+    required this.primary,
+    required this.secondary,
+    required this.tertiary,
+    required this.onBackground,
+    required this.onGradientBackground,
+  });
 
   factory DetailsTheme.empty() {
     return DetailsTheme(
-        primary: Colors.black,
-        secondary: Colors.black,
-        tertiary: Colors.black,
-        onBackground: Colors.white,
-        onGradientBackground: Colors.white);
+      primary: Colors.black,
+      secondary: Colors.black,
+      tertiary: Colors.black,
+      onBackground: Colors.white,
+      onGradientBackground: Colors.white,
+    );
   }
 
   factory DetailsTheme.fromColorScheme({required ColorScheme colorScheme}) {
     return DetailsTheme(
-        primary: colorScheme.primary,
-        secondary: colorScheme.secondary,
-        tertiary: colorScheme.tertiary,
-        onBackground: colorScheme.onBackground,
-        onGradientBackground: colorScheme.onSecondary);
+      primary: colorScheme.primary,
+      secondary: colorScheme.secondary,
+      tertiary: colorScheme.tertiary,
+      onBackground: colorScheme.onSurface,
+      onGradientBackground: colorScheme.onSecondary,
+    );
   }
 }
 

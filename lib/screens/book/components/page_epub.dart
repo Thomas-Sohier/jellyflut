@@ -1,8 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-class PageEpub extends StatelessWidget {
+class Epub extends StatelessWidget {
   final String? content;
-  const PageEpub({super.key, required this.content});
+  const Epub({super.key, required this.content});
 
   @override
   Widget build(BuildContext context) {

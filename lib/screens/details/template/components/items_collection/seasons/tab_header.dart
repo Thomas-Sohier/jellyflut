@@ -70,38 +70,45 @@ class ShimmerHeaderBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SubtreeBuilder(
       builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
-          buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
-          builder: (_, state) => _HeaderBlur(
-              pinnedHeader: state.pinnedHeader,
-              child: SizedBox(
-                  height: _height,
-                  child: Shimmer.fromColors(
-                      baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-                      highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
-                      child: AnimatedPadding(
-                          padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
-                          duration: Duration(milliseconds: 200),
-                          child: child ?? const SizedBox()))))),
+        buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
+        builder: (_, state) => _HeaderBlur(
+          pinnedHeader: state.pinnedHeader,
+          child: SizedBox(
+            height: _height,
+            child: Shimmer.fromColors(
+              baseColor: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+              highlightColor: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              child: AnimatedPadding(
+                padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
+                duration: Duration(milliseconds: 200),
+                child: child ?? const SizedBox(),
+              ),
+            ),
+          ),
+        ),
+      ),
       child: ListView.builder(
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.horizontal,
-          itemCount: count,
-          itemExtent: (width + buttonPadding.right),
-          itemBuilder: (context, index) {
-            return Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: buttonPadding,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                      child: SizedBox(
-                          height: height,
-                          width: double.infinity,
-                          child: ColoredBox(
-                            color: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-                          ))),
-                ));
-          }),
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.horizontal,
+        itemCount: count,
+        itemExtent: (width + buttonPadding.right),
+        itemBuilder: (context, index) {
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: buttonPadding,
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                child: SizedBox(
+                  height: height,
+                  width: double.infinity,
+                  child: ColoredBox(color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -114,18 +121,22 @@ class HeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: (previous, current) =>
-            previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
-        builder: (_, state) => _HeaderBlur(
-            pinnedHeader: state.pinnedHeader,
-            child: SizedBox(
-                height: _height,
-                child: AnimatedPadding(
-                    padding: state.pinnedHeader && state.screenLayout.isMobile
-                        ? padding.copyWith(left: padding.left + 40)
-                        : padding,
-                    duration: Duration(milliseconds: 200),
-                    child: _HeaderSeasonsButtons()))));
+      buildWhen: (previous, current) =>
+          previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
+      builder: (_, state) => _HeaderBlur(
+        pinnedHeader: state.pinnedHeader,
+        child: SizedBox(
+          height: _height,
+          child: AnimatedPadding(
+            padding: state.pinnedHeader && state.screenLayout.isMobile
+                ? padding.copyWith(left: padding.left + 40)
+                : padding,
+            duration: Duration(milliseconds: 200),
+            child: _HeaderSeasonsButtons(),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -136,13 +147,15 @@ class _HeaderSeasonsButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final seasons = context.read<SeasonCubit>().state.seasons;
     return BlocBuilder<SeasonCubit, SeasonState>(
-        buildWhen: (previous, current) => previous.currentSeason != current.currentSeason,
-        builder: (_, state) => ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: seasons.length,
-            itemBuilder: (context, index) {
-              return HeaderButton(item: seasons[index]);
-            }));
+      buildWhen: (previous, current) => previous.currentSeason != current.currentSeason,
+      builder: (_, state) => ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: seasons.length,
+        itemBuilder: (context, index) {
+          return HeaderButton(item: seasons[index]);
+        },
+      ),
+    );
   }
 }
 
@@ -155,8 +168,9 @@ class _HeaderBlur extends StatelessWidget {
   Widget build(BuildContext context) {
     if (pinnedHeader) {
       return ClipRRect(
-          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
-          child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: child));
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
+        child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: child),
+      );
     }
     return child;
   }

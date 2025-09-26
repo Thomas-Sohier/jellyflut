@@ -14,8 +14,10 @@ class CurrentDurationPlayer extends StatelessWidget {
       stream: context.read<StreamCubit>().state.controller?.getDurationStream(),
       initialData: Duration.zero,
       builder: (context, snapshot) {
-        return Text(printDuration(snapshot.data ?? Duration.zero),
-            style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onBackground));
+        return Text(
+          printDuration(snapshot.data ?? Duration.zero),
+          style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
+        );
       },
     );
   }

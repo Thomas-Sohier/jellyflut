@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,28 +10,27 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:live_tv_repository/live_tv_repository.dart';
 import 'package:streaming_repository/streaming_repository.dart';
 
+@RoutePage()
 class StreamPage extends StatelessWidget {
   final Item? item;
   final String? url;
 
   const StreamPage({super.key, this.item, this.url})
-      : assert(item != null || url != null, 'At least one param must be given');
+    : assert(item != null || url != null, 'At least one param must be given');
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (_) => StreamCubit(
-          streamingRepository: context.read<StreamingRepository>(),
-          item: item,
-          url: url,
-        )..init(),
-      ),
-      if (item?.type == ItemType.TvChannel)
+    return MultiBlocProvider(
+      providers: [
         BlocProvider(
-          create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init(),
-        )
-    ], child: const StreamView());
+          create: (_) =>
+              StreamCubit(streamingRepository: context.read<StreamingRepository>(), item: item, url: url)..init(),
+        ),
+        if (item?.type == ItemType.TvChannel)
+          BlocProvider(create: (_) => ChannelCubit(liveTvRepository: context.read<LiveTvRepository>())..init()),
+      ],
+      child: const StreamView(),
+    );
   }
 }
 
@@ -65,7 +65,7 @@ class _StreamViewState extends State<StreamView> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight
+      DeviceOrientation.landscapeRight,
     ]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
@@ -75,8 +75,9 @@ class _StreamViewState extends State<StreamView> {
   Widget build(BuildContext context) {
     final theme = context.read<ThemeProvider>().getThemeData;
     return Theme(
-        // We force white controls on player controls to have better contrast
-        data: theme.copyWith(colorScheme: theme.colorScheme.copyWith(onBackground: Colors.white)),
-        child: Scaffold(backgroundColor: Colors.black, body: const PlayerInterface()));
+      // We force white controls on player controls to have better contrast
+      data: theme.copyWith(colorScheme: theme.colorScheme.copyWith(onSurface: Colors.white)),
+      child: Scaffold(backgroundColor: Colors.black, body: const PlayerInterface()),
+    );
   }
 }

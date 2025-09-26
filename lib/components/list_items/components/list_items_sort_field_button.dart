@@ -24,34 +24,33 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => popupButtonKey.currentState?.showButtonMenu(),
-        padding: EdgeInsets.all(8),
-        shape: CircleBorder(),
-        child: IgnorePointer(
-          child: PopupMenuButton<FieldsEnum>(
-            key: popupButtonKey,
-            initialValue: FieldsEnum.AIRDAYS,
-            onSelected: sortByField,
-            itemBuilder: (BuildContext c) => _fieldTile(),
-            child: Icon(
-              CommunityMaterialIcons.dots_horizontal,
-              size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-          ),
-        ));
+      onPressed: () => popupButtonKey.currentState?.showButtonMenu(),
+      padding: EdgeInsets.all(8),
+      shape: CircleBorder(),
+      child: IgnorePointer(
+        child: PopupMenuButton<FieldsEnum>(
+          key: popupButtonKey,
+          initialValue: FieldsEnum.AIRDAYS,
+          onSelected: sortByField,
+          itemBuilder: (BuildContext c) => _fieldTile(),
+          child: Icon(CommunityMaterialIcons.dots_horizontal, size: 26, color: Theme.of(context).colorScheme.onSurface),
+        ),
+      ),
+    );
   }
 
   List<PopupMenuEntry<FieldsEnum>> _fieldTile() {
     final collectionBloc = context.read<CollectionBloc>();
     return FieldsEnum.getSortable()
-        .map((field) => PopupMenuItem(
-              value: field,
-              child: ListTile(
-                leading: collectionBloc.state.sortField == field.fieldName ? _leadingListTile() : const SizedBox(),
-                title: Text(field.fullName),
-              ),
-            ))
+        .map(
+          (field) => PopupMenuItem(
+            value: field,
+            child: ListTile(
+              leading: collectionBloc.state.sortField == field.fieldName ? _leadingListTile() : const SizedBox(),
+              title: Text(field.fullName),
+            ),
+          ),
+        )
         .toList();
   }
 

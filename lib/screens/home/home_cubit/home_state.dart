@@ -1,13 +1,14 @@
 part of 'home_cubit.dart';
 
-enum HomeStatus { initial, loading, success, failure }
+enum HomeStatus { initial, loading, success, failure, unauthorized }
 
 class HomeState extends Equatable {
-  HomeState(
-      {this.status = HomeStatus.initial,
-      this.parentItem,
-      this.items = const <Item>[],
-      this.routes = const <PageRouteInfo<dynamic>>[]});
+  HomeState({
+    this.status = HomeStatus.initial,
+    this.parentItem,
+    this.items = const <Item>[],
+    this.routes = const <PageRouteInfo<dynamic>>[],
+  });
 
   final HomeStatus status;
   final Item? parentItem;

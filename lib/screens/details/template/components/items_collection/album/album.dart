@@ -19,11 +19,10 @@ class Album extends StatelessWidget {
     final item = context.read<DetailsBloc>().state.item;
     if (item.type != ItemType.MusicAlbum) return const SliverToBoxAdapter();
     return BlocProvider(
-        create: (context) => AlbumCubit(
-              itemsRepository: context.read<ItemsRepository>(),
-              item: context.read<DetailsBloc>().state.item,
-            ),
-        child: const AlbumView());
+      create: (context) =>
+          AlbumCubit(itemsRepository: context.read<ItemsRepository>(), item: context.read<DetailsBloc>().state.item),
+      child: const AlbumView(),
+    );
   }
 }
 
@@ -33,19 +32,20 @@ class AlbumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AlbumCubit, AlbumState>(
-        buildWhen: (previous, current) => previous.status != current.status,
-        builder: (_, state) {
-          switch (state.status) {
-            case Status.initial:
-            case Status.loading:
-              return const SongsShimmer();
-            case Status.success:
-              return const SongsView();
-            case Status.failure:
-            default:
-              return const SliverToBoxAdapter();
-          }
-        });
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (_, state) {
+        switch (state.status) {
+          case Status.initial:
+          case Status.loading:
+            return const SongsShimmer();
+          case Status.success:
+            return const SongsView();
+          case Status.failure:
+          default:
+            return const SliverToBoxAdapter();
+        }
+      },
+    );
   }
 }
 
@@ -55,22 +55,24 @@ class SongsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final songs = context.read<AlbumCubit>().state.songs;
-    return MultiSliver(pushPinnedChildren: true, children: [
-      const SliverPersistentHeader(
-        pinned: true,
-        floating: false,
-        delegate: AlbumHeader(),
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (_, int index) {
-            return ConstrainedBox(constraints: BoxConstraints(maxHeight: 150), child: MusicItem(item: songs[index]));
-          },
-          childCount: songs.length,
-          addAutomaticKeepAlives: false,
+    return MultiSliver(
+      pushPinnedChildren: true,
+      children: [
+        const SliverPersistentHeader(pinned: true, floating: false, delegate: AlbumHeader()),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (_, int index) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 150),
+                child: MusicItem(item: songs[index]),
+              );
+            },
+            childCount: songs.length,
+            addAutomaticKeepAlives: false,
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -80,19 +82,21 @@ class AlbumError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
-        child: Center(
-            child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          const Icon(Icons.error_outline),
-          const SizedBox(height: 4),
-          Text('error_loading_item'.tr(args: ['songs'])),
-          const SizedBox(height: 8),
-          PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<AlbumCubit>().retry())
-        ],
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              const Icon(Icons.error_outline),
+              const SizedBox(height: 4),
+              Text('error_loading_item'.tr(args: ['songs'])),
+              const SizedBox(height: 8),
+              PaletteButton('reload'.tr(), borderRadius: 4, onPressed: () => context.read<AlbumCubit>().retry()),
+            ],
+          ),
+        ),
       ),
-    )));
+    );
   }
 }
 
@@ -106,32 +110,36 @@ class SongsShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: SizedBox(
-          height: (height + padding) * count,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Shimmer.fromColors(
-                baseColor: Theme.of(context).colorScheme.onBackground.withAlpha(150),
-                highlightColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemExtent: height + padding,
-                      itemCount: count,
-                      itemBuilder: (_, __) => Padding(
-                            padding: const EdgeInsets.only(top: padding),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                child: Container(
-                                  height: height,
-                                  width: double.infinity,
-                                  color: Theme.of(context).colorScheme.background.withAlpha(150),
-                                )),
-                          )),
-                )),
-          )),
+        height: (height + padding) * count,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            highlightColor: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemExtent: height + padding,
+                itemCount: count,
+                itemBuilder: (_, __) => Padding(
+                  padding: const EdgeInsets.only(top: padding),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    child: Container(
+                      height: height,
+                      width: double.infinity,
+                      color: Theme.of(context).colorScheme.surface.withAlpha(150),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

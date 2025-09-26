@@ -4,11 +4,13 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.9.0-0
+  
+resolution: workspace
 
 dependencies:
-  dio: ^4.0.6
-  rxdart: ^0.27.5
+  dio: ^5.9.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   pedantic: ^1.11.1

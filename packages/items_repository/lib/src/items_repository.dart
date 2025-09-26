@@ -14,13 +14,13 @@ import 'helper/profiles.dart';
 /// {@endtemplate}
 class ItemsRepository {
   /// {@macro items_repository}
-  const ItemsRepository(
-      {required ItemsApi itemsApi,
-      required AuthenticationRepository authenticationRepository,
-      required Database database})
-      : _itemsApi = itemsApi,
-        _authenticationRepository = authenticationRepository,
-        _database = database;
+  const ItemsRepository({
+    required ItemsApi itemsApi,
+    required AuthenticationRepository authenticationRepository,
+    required Database database,
+  }) : _itemsApi = itemsApi,
+       _authenticationRepository = authenticationRepository,
+       _database = database;
 
   final ItemsApi _itemsApi;
   final Database _database;
@@ -42,44 +42,44 @@ class ItemsRepository {
   /// [recursive] => When searching within folders, this determines whether or not the search will be recursive. true/false
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getCategory(
-          {String? parentId,
-          String? albumArtistIds,
-          String? personIds,
-          String? filter,
-          bool? recursive = true,
-          List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
-          String? sortOrder = 'Descending',
-          String? mediaTypes,
-          String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
-          String? includeItemTypes,
-          int? limit = 300,
-          int? startIndex = 0,
-          int? imageTypeLimit = 1,
-          String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
-          String? excludeLocationTypes,
-          bool? enableTotalRecordCount = false,
-          bool? collapseBoxSetItems = false}) =>
-      _itemsApi.getCategory(
-        serverUrl: currentServerUrl,
-        userId: currentUserId,
-        parentId: parentId,
-        albumArtistIds: albumArtistIds,
-        filter: filter,
-        recursive: recursive,
-        sortBy: sortBy,
-        sortOrder: sortOrder,
-        mediaTypes: mediaTypes,
-        enableImageTypes: enableImageTypes,
-        includeItemTypes: includeItemTypes,
-        limit: limit,
-        startIndex: startIndex,
-        imageTypeLimit: imageTypeLimit,
-        fields: fields,
-        excludeLocationTypes: excludeLocationTypes,
-        enableTotalRecordCount: enableTotalRecordCount,
-        collapseBoxSetItems: collapseBoxSetItems,
-      );
+  Future<Category> getCategory({
+    String? parentId,
+    String? albumArtistIds,
+    String? personIds,
+    String? filter,
+    bool? recursive = true,
+    List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
+    String? sortOrder = 'Descending',
+    String? mediaTypes,
+    String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
+    String? includeItemTypes,
+    int? limit = 300,
+    int? startIndex = 0,
+    int? imageTypeLimit = 1,
+    String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
+    String? excludeLocationTypes,
+    bool? enableTotalRecordCount = false,
+    bool? collapseBoxSetItems = false,
+  }) => _itemsApi.getCategory(
+    serverUrl: currentServerUrl,
+    userId: currentUserId,
+    parentId: parentId,
+    albumArtistIds: albumArtistIds,
+    filter: filter,
+    recursive: recursive,
+    sortBy: sortBy,
+    sortOrder: sortOrder,
+    mediaTypes: mediaTypes,
+    enableImageTypes: enableImageTypes,
+    includeItemTypes: includeItemTypes,
+    limit: limit,
+    startIndex: startIndex,
+    imageTypeLimit: imageTypeLimit,
+    fields: fields,
+    excludeLocationTypes: excludeLocationTypes,
+    enableTotalRecordCount: enableTotalRecordCount,
+    collapseBoxSetItems: collapseBoxSetItems,
+  );
 
   /// Delete an item from his ID
   ///
@@ -106,25 +106,24 @@ class ItemsRepository {
     String excludeLocationTypes = '',
     bool enableTotalRecordCount = false,
     bool collapseBoxSetItems = false,
-  }) =>
-      _itemsApi.getResumeItems(
-        serverUrl: currentServerUrl,
-        userId: currentUserId,
-        filter: filter,
-        recursive: recursive,
-        sortBy: sortBy,
-        sortOrder: sortOrder,
-        mediaType: mediaType,
-        enableImageTypes: enableImageTypes,
-        includeItemTypes: includeItemTypes,
-        limit: limit,
-        startIndex: startIndex,
-        imageTypeLimit: imageTypeLimit,
-        fields: fields,
-        excludeLocationTypes: excludeLocationTypes,
-        enableTotalRecordCount: enableTotalRecordCount,
-        collapseBoxSetItems: collapseBoxSetItems,
-      );
+  }) => _itemsApi.getResumeItems(
+    serverUrl: currentServerUrl,
+    userId: currentUserId,
+    filter: filter,
+    recursive: recursive,
+    sortBy: sortBy,
+    sortOrder: sortOrder,
+    mediaType: mediaType,
+    enableImageTypes: enableImageTypes,
+    includeItemTypes: includeItemTypes,
+    limit: limit,
+    startIndex: startIndex,
+    imageTypeLimit: imageTypeLimit,
+    fields: fields,
+    excludeLocationTypes: excludeLocationTypes,
+    enableTotalRecordCount: enableTotalRecordCount,
+    collapseBoxSetItems: collapseBoxSetItems,
+  );
 
   /// Get epsiodes from series ID, can filter by season id if needed
   ///
@@ -136,7 +135,11 @@ class ItemsRepository {
   ///
   /// Can throw [ItemRequestFailure]
   Future<Category> getSeasons(String seriesId, {bool? isSpecialSeason}) => _itemsApi.getSeasons(
-      serverUrl: currentServerUrl, userId: currentUserId, seriesId: seriesId, isSpecialSeason: isSpecialSeason);
+    serverUrl: currentServerUrl,
+    userId: currentUserId,
+    seriesId: seriesId,
+    isSpecialSeason: isSpecialSeason,
+  );
 
   /// Search an item based on search terms
   /// Can add other parameter (already good defaults for most queries)
@@ -157,25 +160,24 @@ class ItemsRepository {
     bool enableTotalRecordCount = false,
     int imageTypeLimit = 1,
     String? mediaTypes,
-  }) =>
-      _itemsApi.searchItems(
-        serverUrl: currentServerUrl,
-        userId: currentUserId,
-        searchTerm: searchTerm,
-        includePeople: includePeople,
-        includeMedia: includeMedia,
-        includeGenres: includeGenres,
-        includeStudios: includeStudios,
-        includeArtists: includeArtists,
-        includeItemTypes: includeItemTypes,
-        excludeItemTypes: excludeItemTypes,
-        limit: limit,
-        fields: fields,
-        recursive: recursive,
-        enableTotalRecordCount: enableTotalRecordCount,
-        imageTypeLimit: imageTypeLimit,
-        mediaTypes: mediaTypes,
-      );
+  }) => _itemsApi.searchItems(
+    serverUrl: currentServerUrl,
+    userId: currentUserId,
+    searchTerm: searchTerm,
+    includePeople: includePeople,
+    includeMedia: includeMedia,
+    includeGenres: includeGenres,
+    includeStudios: includeStudios,
+    includeArtists: includeArtists,
+    includeItemTypes: includeItemTypes,
+    excludeItemTypes: excludeItemTypes,
+    limit: limit,
+    fields: fields,
+    recursive: recursive,
+    enableTotalRecordCount: enableTotalRecordCount,
+    imageTypeLimit: imageTypeLimit,
+    mediaTypes: mediaTypes,
+  );
 
   /// Update item from Item object
   ///
@@ -217,20 +219,19 @@ class ItemsRepository {
     String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
     String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
     int imageTypeLimit = 1,
-  }) =>
-      _itemsApi.getLatestMedia(
-        serverUrl: currentServerUrl,
-        userId: currentUserId,
-        parentId: parentId,
-        limit: limit,
-        fields: fields,
-        enableImageTypes: enableImageTypes,
-        imageTypeLimit: imageTypeLimit,
-      );
+  }) => _itemsApi.getLatestMedia(
+    serverUrl: currentServerUrl,
+    userId: currentUserId,
+    parentId: parentId,
+    limit: limit,
+    fields: fields,
+    enableImageTypes: enableImageTypes,
+    imageTypeLimit: imageTypeLimit,
+  );
 
   /// Return a Category with all Views
   ///
-  /// Can throw [ViewRequestFailure]
+  /// Can throw [ViewRequestFailure] or [UnauthorizedException]
   Future<Category> getLibraryViews() => _itemsApi.getLibraryViews(serverUrl: currentServerUrl, userId: currentUserId);
 
   /// Helper method to generate an URL to get Item image
@@ -270,27 +271,27 @@ class ItemsRepository {
     String? backgroundColor,
     String? foregroundLayer,
     int? imageIndex,
-  }) =>
-      _itemsApi.getItemImageUrl(
-          serverUrl: currentServerUrl,
-          itemId: itemId,
-          type: type,
-          maxWidth: maxWidth,
-          maxHeight: maxHeight,
-          width: width,
-          height: height,
-          quality: quality,
-          fillWidth: fillWidth,
-          fillHeight: fillHeight,
-          tag: tag,
-          format: format,
-          addPlayedIndicator: addPlayedIndicator,
-          percentPlayed: percentPlayed,
-          unplayedCount: unplayedCount,
-          blur: blur,
-          backgroundColor: backgroundColor,
-          foregroundLayer: foregroundLayer,
-          imageIndex: imageIndex);
+  }) => _itemsApi.getItemImageUrl(
+    serverUrl: currentServerUrl,
+    itemId: itemId,
+    type: type,
+    maxWidth: maxWidth,
+    maxHeight: maxHeight,
+    width: width,
+    height: height,
+    quality: quality,
+    fillWidth: fillWidth,
+    fillHeight: fillHeight,
+    tag: tag,
+    format: format,
+    addPlayedIndicator: addPlayedIndicator,
+    percentPlayed: percentPlayed,
+    unplayedCount: unplayedCount,
+    blur: blur,
+    backgroundColor: backgroundColor,
+    foregroundLayer: foregroundLayer,
+    imageIndex: imageIndex,
+  );
 
   /// Get all availables images for an item
   Future<RemoteImage> getRemoteImages(
@@ -300,15 +301,15 @@ class ItemsRepository {
     int? limit,
     String? providerName,
     bool? includeAllLanguages = false,
-  }) =>
-      _itemsApi.getRemoteImages(
-          serverUrl: currentServerUrl,
-          itemId: itemId,
-          type: type,
-          startIndex: startIndex,
-          limit: limit,
-          providerName: providerName,
-          includeAllLanguages: includeAllLanguages);
+  }) => _itemsApi.getRemoteImages(
+    serverUrl: currentServerUrl,
+    itemId: itemId,
+    type: type,
+    startIndex: startIndex,
+    limit: limit,
+    providerName: providerName,
+    includeAllLanguages: includeAllLanguages,
+  );
 
   /// Get all availables images for an item
   Future<Uint8List> downloadRemoteImage(String itemId, {ImageType type = ImageType.Primary}) =>
@@ -388,13 +389,14 @@ class ItemsRepository {
     // If item do not exist locally the we fetch it from remote server
     final data = await isCodecSupported();
     final backInfos = await _itemsApi.playbackInfos(
-        serverUrl: currentServerUrl,
-        userId: currentUserId,
-        profile: data,
-        itemId: item.id,
-        startTimeTick: item.userData!.playbackPositionTicks,
-        maxVideoBitrate: settings.maxVideoBitrate,
-        maxAudioBitrate: settings.maxAudioBitrate);
+      serverUrl: currentServerUrl,
+      userId: currentUserId,
+      profile: data,
+      itemId: item.id,
+      startTimeTick: item.userData!.playbackPositionTicks,
+      maxVideoBitrate: settings.maxVideoBitrate,
+      maxAudioBitrate: settings.maxAudioBitrate,
+    );
     var completeTranscodeUrl;
     // Check if we have a transcide url or we create it
     if (backInfos.isTranscoding() && !directPlay) {
@@ -424,8 +426,10 @@ class ItemsRepository {
         case StreamingSoftware.EXOPLAYER:
         case StreamingSoftware.AVPLAYER:
         default:
-          final deviceProfile = await Profiles(database: _database, userId: _authenticationRepository.currentUser.id)
-              .getExoplayerProfile();
+          final deviceProfile = await Profiles(
+            database: _database,
+            userId: _authenticationRepository.currentUser.id,
+          ).getExoplayerProfile();
           return DeviceProfileParent(deviceProfile: deviceProfile);
       }
     } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
@@ -435,8 +439,13 @@ class ItemsRepository {
     return null;
   }
 
-  Future<String> createURL(Item item, PlayBackInfos playBackInfos,
-      {int startTick = 0, int? audioStreamIndex, int? subtitleStreamIndex}) async {
+  Future<String> createURL(
+    Item item,
+    PlayBackInfos playBackInfos, {
+    int startTick = 0,
+    int? audioStreamIndex,
+    int? subtitleStreamIndex,
+  }) async {
     final user = await _database.userAppDao.getUserByJellyfinUserId(_authenticationRepository.currentUser.id);
     final settings = await _database.settingsDao.getSettingsById(user.id);
     final info = await DeviceInfo.getCurrentDeviceInfo();

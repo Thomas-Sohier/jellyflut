@@ -7,11 +7,13 @@ part 'home_category_state.dart';
 
 class HomeCategoryCubit extends Cubit<HomeCategoryState> {
   HomeCategoryCubit({required ItemsRepository itemsRepository, HomeCategoryType? type, required Item? parentItem})
-      : _itemsRepository = itemsRepository,
-        assert((type != null || parentItem != null) ||
+    : _itemsRepository = itemsRepository,
+      assert(
+        (type != null || parentItem != null) ||
             (type == HomeCategoryType.item && parentItem != null) ||
-            (type == null && parentItem != null)),
-        super(type != null ? HomeCategoryState(type: type) : HomeCategoryState(parentItem: parentItem)) {
+            (type == null && parentItem != null),
+      ),
+      super(type != null ? HomeCategoryState(type: type) : HomeCategoryState(parentItem: parentItem)) {
     _init();
   }
 
@@ -27,14 +29,14 @@ class HomeCategoryCubit extends Cubit<HomeCategoryState> {
     switch (state.type) {
       case HomeCategoryType.item:
         return _itemsRepository.getLatestMedia(
-            parentId: state.parentItem!.id, fields: 'DateCreated, DateAdded, ImageTags');
+          parentId: state.parentItem!.id,
+          fields: 'DateCreated, DateAdded, ImageTags',
+        );
       case HomeCategoryType.resume:
         final category = await _itemsRepository.getResumeItems();
         return category.items;
       case HomeCategoryType.latest:
         return _itemsRepository.getLatestMedia();
-      default:
-        return _itemsRepository.getLatestMedia(fields: 'DateCreated, DateAdded, ImageTags');
     }
   }
 }

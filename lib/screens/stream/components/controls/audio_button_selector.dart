@@ -32,27 +32,27 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButtonSelector(
-        onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
-        shape: CircleBorder(),
-        child: changeAudioTrack(context));
+      onPressed: () => _popupMenuButtonKey.currentState?.showButtonMenu(),
+      shape: CircleBorder(),
+      child: changeAudioTrack(context),
+    );
   }
 
   Widget changeAudioTrack(BuildContext context) {
     final audioTracks = context.read<StreamCubit>().state.audioTracks;
     return ExcludeFocus(
-        child: IgnorePointer(
-      child: PopupMenuButton<AudioTrack>(
+      child: IgnorePointer(
+        child: PopupMenuButton<AudioTrack>(
           key: _popupMenuButtonKey,
-          icon: Icon(
-            Icons.audiotrack,
-            color: Colors.white,
-          ),
+          icon: Icon(Icons.audiotrack, color: Colors.white),
           tooltip: 'select_audio_source'.tr(),
           onSelected: context.read<StreamCubit>().setAudioStreamIndex,
           itemBuilder: (context) {
             return _audioTracksListTile(audioTracks);
-          }),
-    ));
+          },
+        ),
+      ),
+    );
   }
 
   List<PopupMenuEntry<AudioTrack>> _audioTracksListTile(List<AudioTrack> audioTracks) {
@@ -72,28 +72,22 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
       CheckedPopupMenuItem(
         value: disabledAudioTrack,
         checked: context.read<StreamCubit>().state.selectedAudioTrack.index == disabledAudioTrack.index,
-        child: Text(
-          'default'.tr(),
-        ),
+        child: Text('default'.tr()),
       ),
     );
 
     // LOCAL AUDIO TRACKS
     final localAudioTracks = audioTracks.where((element) => element.mediaType == MediaType.local).toList();
     list.add(PopupMenuDivider(height: 10));
-    list.add(listItemTitle(
-        child: Text(
-      'embeded_audio_tracks'.tr(),
-      style: Theme.of(context).textTheme.bodyMedium,
-    )));
+    list.add(listItemTitle(child: Text('embeded_audio_tracks'.tr(), style: Theme.of(context).textTheme.bodyMedium)));
 
     if (localAudioTracks.isEmpty) {
-      list.add(PopupMenuItem(
+      list.add(
+        PopupMenuItem(
           enabled: false,
-          child: Align(
-            alignment: Alignment.center,
-            child: Text('no_audio_source'.tr()),
-          )));
+          child: Align(alignment: Alignment.center, child: Text('no_audio_source'.tr())),
+        ),
+      );
     } else {
       for (var index = 0; index < localAudioTracks.length; index++) {
         final audioTrack = localAudioTracks.elementAt(index);
@@ -109,13 +103,7 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
 
     // REMOTE AUDIO TRACKS
     list.add(PopupMenuDivider(height: 10));
-    list.add(
-      listItemTitle(
-          child: Text(
-        'remote_audio_tracks'.tr(),
-        style: Theme.of(context).textTheme.bodyMedium,
-      )),
-    );
+    list.add(listItemTitle(child: Text('remote_audio_tracks'.tr(), style: Theme.of(context).textTheme.bodyMedium)));
 
     final remoteAudioTracks = audioTracks.where((element) => element.mediaType == MediaType.remote).toList();
     if (remoteAudioTracks.isEmpty) {
@@ -123,11 +111,13 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
     } else {
       for (var index = 0; index < remoteAudioTracks.length; index++) {
         final audioTrack = remoteAudioTracks.elementAt(index);
-        list.add(CheckedPopupMenuItem(
-          value: audioTrack,
-          checked: audioTrack.index == context.read<StreamCubit>().state.selectedAudioTrack.index,
-          child: Text(audioTrack.name),
-        ));
+        list.add(
+          CheckedPopupMenuItem(
+            value: audioTrack,
+            checked: audioTrack.index == context.read<StreamCubit>().state.selectedAudioTrack.index,
+            child: Text(audioTrack.name),
+          ),
+        );
       }
     }
 
@@ -136,15 +126,18 @@ class _AudioButtonSelectorState extends State<AudioButtonSelector> {
 
   PopupMenuEntry<AudioTrack> listItemTitle({required Widget child}) {
     return PopupMenuItem(
-        padding: EdgeInsets.symmetric(horizontal: 4),
-        height: 30,
-        enabled: false,
-        child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 4),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: ColorUtil.darken(Theme.of(context).colorScheme.background, 0.1)),
-            child: child));
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      height: 30,
+      enabled: false,
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          color: ColorUtil.darken(Theme.of(context).colorScheme.surface, 0.1),
+        ),
+        child: child,
+      ),
+    );
   }
 }

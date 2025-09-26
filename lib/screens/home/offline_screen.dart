@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/routes/router.gr.dart' as r;
+import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/screens/home/components/error/error_user_actions.dart';
 import 'package:jellyflut/screens/home/header_bar.dart';
 
@@ -17,7 +17,7 @@ class OffLineScreen extends StatelessWidget {
     late final IconData iconError;
     late final errorObject = error;
 
-    if (errorObject is DioError) {
+    if (errorObject is DioException) {
       iconError = Icons.signal_wifi_statusbar_connected_no_internet_4;
     } else {
       iconError = Icons.error;
@@ -39,15 +39,23 @@ class OffLineScreen extends StatelessWidget {
                   children: [
                     Icon(iconError, size: 24),
                     const SizedBox(height: 18),
-                    Text('You seems to not be able to access your server or to have internet',
-                        textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
+                    Text(
+                      'You seems to not be able to access your server or to have internet',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                     const SizedBox(height: 12),
-                    PaletteButton('Go to my offline library',
-                        borderRadius: 4, minHeight: 40, onPressed: () => context.router.root.push(r.DownloadsPage())),
+                    PaletteButton(
+                      'Go to my offline library',
+                      borderRadius: 4,
+                      minHeight: 40,
+                      onPressed: () => context.router.root.push(DownloadsRoute()),
+                    ),
                     Divider(height: 32),
                     ErrorUserActions(
-                        reloadFunction: reloadFunction,
-                        errorMessage: '${error.toString()}\n${Error.safeToString(error).toString()})')
+                      reloadFunction: reloadFunction,
+                      errorMessage: '${error.toString()}\n${Error.safeToString(error).toString()})',
+                    ),
                   ],
                 ),
               ),

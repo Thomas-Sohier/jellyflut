@@ -19,49 +19,54 @@ class _CommonControlsState extends State<CommonControls> {
   @override
   void initState() {
     super.initState();
-    RawKeyboard.instance.addListener(_onKey);
+    HardwareKeyboard.instance.addHandler(_onKey);
   }
 
   @override
   void dispose() {
-    RawKeyboard.instance.removeListener(_onKey);
+    HardwareKeyboard.instance.removeHandler(_onKey);
     super.dispose();
   }
 
-  void _onKey(RawKeyEvent e) {
+  bool _onKey(KeyEvent e) {
     if (e.runtimeType.toString() == 'RawKeyDownEvent') {
-      context.read<StreamCubit>().autoHideControlTimer();
       switch (e.logicalKey.debugName) {
         case 'Media Play Pause':
           context.read<StreamCubit>().togglePlay();
           break;
       }
+      return true;
     }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
       child: GestureDetector(
-          onTap: context.read<StreamCubit>().toggleControl,
-          behavior: HitTestBehavior.translucent,
-          child: MouseRegion(
-              opaque: false,
-              onHover: (PointerHoverEvent event) =>
-                  event.kind == PointerDeviceKind.mouse ? context.read<StreamCubit>().autoHideControlTimer() : {},
-              child: SubtreeBuilder(
-                  builder: (_, child) => BlocBuilder<StreamCubit, StreamState>(
-                        buildWhen: (previous, current) => previous.visible != current.visible,
-                        builder: (_, state) => Visibility(
-                            maintainSize: false,
-                            maintainAnimation: false,
-                            maintainState: true,
-                            maintainSemantics: false,
-                            maintainInteractivity: false,
-                            visible: state.visible,
-                            child: child ?? const SizedBox()),
-                      ),
-                  child: const Controls()))),
+        onTap: context.read<StreamCubit>().toggleControlsVisibility,
+        behavior: HitTestBehavior.translucent,
+        child: MouseRegion(
+          opaque: false,
+          onHover: (PointerHoverEvent event) =>
+              event.kind == PointerDeviceKind.mouse ? context.read<StreamCubit>().showControlsAndAutoDismiss() : {},
+          child: SubtreeBuilder(
+            builder: (_, child) => BlocBuilder<StreamCubit, StreamState>(
+              buildWhen: (previous, current) => previous.visible != current.visible,
+              builder: (_, state) => Visibility(
+                maintainSize: false,
+                maintainAnimation: false,
+                maintainState: true,
+                maintainSemantics: false,
+                maintainInteractivity: false,
+                visible: state.visible,
+                child: child ?? const SizedBox(),
+              ),
+            ),
+            child: const Controls(),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -71,12 +76,14 @@ class Controls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilderScreen(builder: (_, constraints, type) {
-      if (type.isAndroidTv) return const CommonControlsPhone();
-      if (constraints.maxWidth > 960) {
-        return const CommonControlsDesktop();
-      }
-      return const CommonControlsPhone();
-    });
+    return LayoutBuilderScreen(
+      builder: (_, constraints, type) {
+        if (type.isAndroidTv) return const CommonControlsPhone();
+        if (constraints.maxWidth > 960) {
+          return const CommonControlsDesktop();
+        }
+        return const CommonControlsPhone();
+      },
+    );
   }
 }

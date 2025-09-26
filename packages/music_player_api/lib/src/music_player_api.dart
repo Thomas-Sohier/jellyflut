@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:rxdart/rxdart.dart';
@@ -35,9 +34,6 @@ class MusicPlayerApi {
     if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS || Platform.isWindows || kIsWeb) {
       final player = AudioPlayer();
       _commonPlayer = CommonPlayer.parseJustAudioController(audioPlayer: player);
-    } else if (Platform.isLinux) {
-      final player = Player(id: 0);
-      _commonPlayer = CommonPlayer.parseVLCController(audioPlayer: player);
     } else {
       throw UnimplementedError('No audio player on this platform');
     }

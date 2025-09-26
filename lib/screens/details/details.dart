@@ -1,4 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:downloads_repository/downloads_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ import 'details_download_cubit/details_download_cubit.dart';
 import 'template/components/photo_item.dart';
 import 'template/large_details.dart';
 
+@RoutePage()
 class DetailsPage extends StatelessWidget {
   final Item item;
   final String? heroTag;
@@ -26,23 +28,28 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: const MusicPlayerFAB(),
-      body: MultiBlocProvider(providers: [
-        BlocProvider<DetailsDownloadCubit>(
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<DetailsDownloadCubit>(
             create: (blocContext) =>
-                DetailsDownloadCubit(item: item, downloadsRepository: context.read<DownloadsRepository>())),
-        BlocProvider<DetailsBloc>(
+                DetailsDownloadCubit(item: item, downloadsRepository: context.read<DownloadsRepository>()),
+          ),
+          BlocProvider<DetailsBloc>(
             create: (blocContext) => DetailsBloc(
-                item: item,
-                heroTag: heroTag,
-                sharedPreferences: SharedPrefs.sharedPrefs,
-                themeProvider: context.read<ThemeProvider>(),
-                itemsRepository: context.read<ItemsRepository>(),
-                downloadsRepository: context.read<DownloadsRepository>(),
-                authenticationRepository: context.read<AuthenticationRepository>(),
-                contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
-                screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop)
-              ..add(DetailsInitRequested(item: item))),
-      ], child: const DetailsView()),
+              item: item,
+              heroTag: heroTag,
+              sharedPreferences: SharedPrefs.sharedPrefs,
+              themeProvider: context.read<ThemeProvider>(),
+              itemsRepository: context.read<ItemsRepository>(),
+              downloadsRepository: context.read<DownloadsRepository>(),
+              authenticationRepository: context.read<AuthenticationRepository>(),
+              contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
+              screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
+            )..add(DetailsInitRequested(item: item)),
+          ),
+        ],
+        child: const DetailsView(),
+      ),
     );
   }
 }
@@ -53,22 +60,26 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubtreeBuilder(
-        builder: (_, child) {
-          return BlocBuilder<DetailsBloc, DetailsState>(
-              buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
-              builder: (_, state) => Theme(
-                  data: state.theme,
-                  child: AnnotatedRegion<SystemUiOverlayStyle>(
-                      value: SystemUiOverlayStyle(
-                          statusBarColor: Colors.transparent,
-                          statusBarIconBrightness: state.theme.colorScheme.onBackground.computeLuminance() > 0.5
-                              ? Brightness.light
-                              : Brightness.dark),
-                      child: child ?? const SizedBox())));
-        },
-        child: Scaffold(
-            body: context.read<DetailsBloc>().state.item.type != ItemType.Photo
-                ? const LargeDetails()
-                : const PhotoItem()));
+      builder: (_, child) {
+        return BlocBuilder<DetailsBloc, DetailsState>(
+          buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
+          builder: (_, state) => Theme(
+            data: state.theme,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: state.theme.colorScheme.onSurface.computeLuminance() > 0.5
+                    ? Brightness.light
+                    : Brightness.dark,
+              ),
+              child: child ?? const SizedBox(),
+            ),
+          ),
+        );
+      },
+      child: Scaffold(
+        body: context.read<DetailsBloc>().state.item.type != ItemType.Photo ? const LargeDetails() : const PhotoItem(),
+      ),
+    );
   }
 }

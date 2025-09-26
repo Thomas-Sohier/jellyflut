@@ -8,7 +8,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:jellyflut/components/locale_button_selector.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
-import 'package:jellyflut/routes/router.gr.dart' as r;
+import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/user_icon.dart';
 import 'package:jellyflut/screens/settings/components/details_contrast_switch.dart';

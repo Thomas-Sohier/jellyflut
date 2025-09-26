@@ -4,12 +4,14 @@ version: 1.0.0
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ^3.9.0-0
+  
+resolution: workspace
 
 dependencies:
   authentication_repository:
     path: ../authentication_repository
-  dio: ^4.0.6
+  dio: ^5.9.0
   downloads_api:
     path: ../downloads_api
   drift: ^2.3.0
@@ -17,10 +19,10 @@ dependencies:
     path: ../jellyflut_models
   json_annotation: ^4.5.0
   path_provider: ^2.0.11
-  permission_handler: ^10.0.0
+  permission_handler: ^12.0.1
   remote_downloads_api:
     path: ../remote_downloads_api
-  rxdart: ^0.27.5
+  rxdart: ^0.28.0
   sqlite_database:
     path: ../sqlite_database
 

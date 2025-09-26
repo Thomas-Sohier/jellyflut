@@ -7,28 +7,24 @@ class SelectableBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-        autofocus: false,
-        onPressed: context.router.root.pop,
-        style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onBackground,
-                minimumSize: Size(24, 24),
-                padding: EdgeInsets.all(12),
-                shape: const CircleBorder())
-            .copyWith(side: _buttonBorderSide(context)),
-        child: Icon(Icons.arrow_back));
+      autofocus: false,
+      onPressed: context.router.root.pop,
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        minimumSize: Size(24, 24),
+        padding: EdgeInsets.all(12),
+        shape: const CircleBorder(),
+      ).copyWith(side: _buttonBorderSide(context)),
+      child: Icon(Icons.arrow_back),
+    );
   }
 
-  MaterialStateProperty<BorderSide> _buttonBorderSide(BuildContext context) {
-    return MaterialStateProperty.resolveWith<BorderSide>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.focused)) {
-          return BorderSide(
-            width: 2,
-            color: Theme.of(context).colorScheme.onBackground,
-          );
-        }
-        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
-      },
-    );
+  WidgetStateProperty<BorderSide> _buttonBorderSide(BuildContext context) {
+    return WidgetStateProperty.resolveWith<BorderSide>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.focused)) {
+        return BorderSide(width: 2, color: Theme.of(context).colorScheme.onSurface);
+      }
+      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+    });
   }
 }

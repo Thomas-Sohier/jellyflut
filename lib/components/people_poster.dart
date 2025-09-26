@@ -12,13 +12,14 @@ class PeoplePoster extends StatefulWidget {
   final bool bigPoster;
   final Function(String)? onPressed;
 
-  PeoplePoster(
-      {super.key,
-      required this.person,
-      this.onPressed,
-      this.bigPoster = false,
-      this.clickable = true,
-      this.notFoundPlaceholder});
+  PeoplePoster({
+    super.key,
+    required this.person,
+    this.onPressed,
+    this.bigPoster = false,
+    this.clickable = true,
+    this.notFoundPlaceholder,
+  });
 
   @override
   State<PeoplePoster> createState() => _PeoplePosterState();
@@ -62,14 +63,12 @@ class PersonPoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: heroTag,
-        child: AspectRatio(
-            aspectRatio: 2 / 3,
-            child: AsyncImage(
-              item: person.asItem(),
-              notFoundPlaceholder: notFoundPlaceholder,
-              boxFit: BoxFit.contain,
-            )));
+      tag: heroTag,
+      child: AspectRatio(
+        aspectRatio: 2 / 3,
+        child: AsyncImage(item: person.asItem(), boxFit: BoxFit.contain),
+      ),
+    );
   }
 }
 
@@ -82,85 +81,72 @@ class BigPersonPoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: heroTag,
-        child: AspectRatio(
-          aspectRatio: 2 / 3,
-          child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  AsyncImage(
-                    item: person.asItem(),
-                    notFoundPlaceholder: notFoundPlaceholder,
-                    boxFit: BoxFit.contain,
+      tag: heroTag,
+      child: AspectRatio(
+        aspectRatio: 2 / 3,
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              AsyncImage(item: person.asItem(), boxFit: BoxFit.contain),
+              Container(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.black, Colors.black87, Colors.transparent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: [0, 0.1, 0.25],
                   ),
-                  Container(
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.zero,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black,
-                          Colors.black87,
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        stops: [0, 0.1, 0.25],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        person.name ?? '',
+                        overflow: TextOverflow.clip,
+                        softWrap: false,
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            person.name ?? '',
-                            overflow: TextOverflow.clip,
-                            softWrap: false,
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                          if (person.role != null)
-                            Text(
-                              person.role!,
-                              overflow: TextOverflow.clip,
-                              softWrap: false,
-                              style: TextStyle(color: Colors.white70, fontSize: 12),
-                            )
-                        ],
-                      ),
-                    ),
+                      if (person.role != null)
+                        Text(
+                          person.role!,
+                          overflow: TextOverflow.clip,
+                          softWrap: false,
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                    ],
                   ),
-                ],
-              )),
-        ));
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
-MaterialStateProperty<double> buttonElevation() {
-  return MaterialStateProperty.resolveWith<double>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-        return 2;
-      }
-      return 0; // defer to the default
-    },
-  );
+WidgetStateProperty<double> buttonElevation() {
+  return WidgetStateProperty.resolveWith<double>((Set<WidgetState> states) {
+    if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+      return 2;
+    }
+    return 0; // defer to the default
+  });
 }
 
-MaterialStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
-  return MaterialStateProperty.resolveWith<BorderSide>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.focused)) {
-        return BorderSide(
-          width: 2,
-          color: Theme.of(context).colorScheme.onBackground,
-        );
-      }
-      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
-    },
-  );
+WidgetStateProperty<BorderSide> buttonBorderSide(BuildContext context) {
+  return WidgetStateProperty.resolveWith<BorderSide>((Set<WidgetState> states) {
+    if (states.contains(WidgetState.focused)) {
+      return BorderSide(width: 2, color: Theme.of(context).colorScheme.onSurface);
+    }
+    return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+  });
 }

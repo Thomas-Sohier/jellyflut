@@ -10,10 +10,14 @@ class RatingDetailsWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
       decoration: BoxDecoration(
-          border: Border.all(width: 1, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onBackground),
-          borderRadius: BorderRadius.all(Radius.circular(4))),
-      child: Text(state.item.officialRating!,
-          textAlign: TextAlign.justify, style: Theme.of(context).textTheme.titleMedium),
+        border: Border.all(width: 1, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onSurface),
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+      ),
+      child: Text(
+        state.item.officialRating!,
+        textAlign: TextAlign.justify,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
     );
   }
 }

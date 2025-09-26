@@ -13,40 +13,39 @@ class ProviderButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => _launchURL(providerUrl),
-      style: TextButton.styleFrom(
-              padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
-              alignment: Alignment.center,
-              side: BorderSide(width: 1, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onBackground))
-          .copyWith(backgroundColor: buttonBackground(context))
-          .copyWith(foregroundColor: buttonForeground(context))
-          .copyWith(overlayColor: buttonBackground(context)),
-      child: Text(
-        providerName,
-        style: TextStyle(fontFamily: 'Quicksand'),
-      ),
+      style:
+          TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
+                alignment: Alignment.center,
+                side: BorderSide(width: 1, style: BorderStyle.solid, color: Theme.of(context).colorScheme.onSurface),
+              )
+              .copyWith(backgroundColor: buttonBackground(context))
+              .copyWith(foregroundColor: buttonForeground(context))
+              .copyWith(overlayColor: buttonBackground(context)),
+      child: Text(providerName, style: TextStyle(fontFamily: 'Quicksand')),
     );
   }
 
   void _launchURL(String url) async =>
       await canLaunchUrlString(url) ? await launchUrlString(url) : throw 'cannot_open.'.tr(args: [url]);
 
-  MaterialStateProperty<Color> buttonBackground(BuildContext context) {
-    return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-        return Theme.of(context).colorScheme.onBackground;
-      } else if (states.contains(MaterialState.pressed)) {
-        return Theme.of(context).colorScheme.onBackground.withOpacity(0.1);
+  WidgetStateProperty<Color> buttonBackground(BuildContext context) {
+    return WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+        return Theme.of(context).colorScheme.onSurface;
+      } else if (states.contains(WidgetState.pressed)) {
+        return Theme.of(context).colorScheme.onSurface.withOpacity(0.1);
       }
       return Colors.transparent;
     });
   }
 
-  MaterialStateProperty<Color> buttonForeground(BuildContext context) {
-    return MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-        return ColorUtil.invert(Theme.of(context).colorScheme.onBackground);
+  WidgetStateProperty<Color> buttonForeground(BuildContext context) {
+    return WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+        return ColorUtil.invert(Theme.of(context).colorScheme.onSurface);
       }
-      return Theme.of(context).colorScheme.onBackground;
+      return Theme.of(context).colorScheme.onSurface;
     });
   }
 }

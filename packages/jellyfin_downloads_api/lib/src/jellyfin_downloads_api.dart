@@ -41,19 +41,13 @@ class JellyfinDownloadsApi extends RemoteDownloadsApi {
             final percentage = ((received / total) * 100).floor();
             stateOfDownload.add(percentage);
           },
-          options: Options(
-            headers: {HttpHeaders.acceptEncodingHeader: '*'},
-            responseType: ResponseType.bytes,
-          ),
+          options: Options(headers: {HttpHeaders.acceptEncodingHeader: '*'}, responseType: ResponseType.bytes),
         );
       } else {
         response = await _dioClient.get<Uint8List>(
           url,
           cancelToken: cancelToken,
-          options: Options(
-            headers: {HttpHeaders.acceptEncodingHeader: '*'},
-            responseType: ResponseType.bytes,
-          ),
+          options: Options(headers: {HttpHeaders.acceptEncodingHeader: '*'}, responseType: ResponseType.bytes),
         );
       }
 
@@ -62,8 +56,8 @@ class JellyfinDownloadsApi extends RemoteDownloadsApi {
       }
 
       return response.data ?? Uint8List.fromList([]);
-    } on DioError catch (e) {
-      throw DownloadFailed(e.message);
+    } on DioException catch (e) {
+      throw DownloadFailed(e.message ?? 'Failed to download item');
     } catch (_) {
       throw DownloadFailed('Failed to download item');
     }

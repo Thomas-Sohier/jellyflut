@@ -7,13 +7,15 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_api/downloads_api.dart';
 import 'package:downloads_repository/downloads_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:items_api/items_api.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/app/app.dart';
 import 'package:jellyflut/app/app_bloc_observer.dart';
 import 'package:jellyflut/routes/router.dart';
-import 'package:jellyflut/routes/router.gr.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:live_tv_api/live_tv_api.dart';
@@ -31,56 +33,69 @@ import 'package:users_repository/users_repository.dart';
 
 import 'providers/theme/theme_provider.dart';
 
-Future<void> bootstrap(
-    {required Database database,
-    required ThemeProvider themeProvider,
-    required Dio dioClient,
-    required PackageInfo packageInfo,
-    required AuthenticationApi authenticationApi,
-    required DownloadsApi downloadsApi,
-    required RemoteDownloadsApi remoteDownloadsApi,
-    required StreamingApi streamingApi,
-    required ItemsApi itemsApi,
-    required UsersApi usersApi,
-    required LiveTvApi liveTvApi,
-    required MusicPlayerApi musicPlayerApi}) async {
+Future<void> bootstrap({
+  required Database database,
+  required ThemeProvider themeProvider,
+  required Dio dioClient,
+  required PackageInfo packageInfo,
+  required AuthenticationApi authenticationApi,
+  required DownloadsApi downloadsApi,
+  required RemoteDownloadsApi remoteDownloadsApi,
+  required StreamingApi streamingApi,
+  required ItemsApi itemsApi,
+  required UsersApi usersApi,
+  required LiveTvApi liveTvApi,
+  required MusicPlayerApi musicPlayerApi,
+}) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   final authenticationRepository = await AuthenticationRepository.create(
-      authenticationApi: authenticationApi,
-      database: database,
-      sharedPreferences: SharedPrefs.sharedPrefs,
-      dioClient: dioClient);
+    authenticationApi: authenticationApi,
+    database: database,
+    sharedPreferences: SharedPrefs.sharedPrefs,
+    dioClient: dioClient,
+  );
   final settingsRepository = SettingsRepository(database: database, authenticationRepository: authenticationRepository);
   final downloadsRepository = DownloadsRepository(
-      downloadsApi: downloadsApi,
-      remoteDownloadsApi: remoteDownloadsApi,
-      authenticationRepository: authenticationRepository,
-      database: database);
-  final itemsRepository =
-      ItemsRepository(itemsApi: itemsApi, database: database, authenticationRepository: authenticationRepository);
+    downloadsApi: downloadsApi,
+    remoteDownloadsApi: remoteDownloadsApi,
+    authenticationRepository: authenticationRepository,
+    database: database,
+  );
+  final itemsRepository = ItemsRepository(
+    itemsApi: itemsApi,
+    database: database,
+    authenticationRepository: authenticationRepository,
+  );
   final usersRepository = UsersRepository(usersApi: usersApi, authenticationRepository: authenticationRepository);
   final musicPlayerRepository = MusicPlayerRepository(musicPlayerApi: musicPlayerApi);
   final liveTvRepository = LiveTvRepository(liveTvApi: liveTvApi, authenticationRepository: authenticationRepository);
   final streamingRepository = StreamingRepository(
-      streamingApi: streamingApi,
-      itemsApi: itemsApi,
-      database: database,
-      authenticationRepository: authenticationRepository);
+    streamingApi: streamingApi,
+    itemsApi: itemsApi,
+    database: database,
+    authenticationRepository: authenticationRepository,
+  );
 
   // Init auth bloc here to use it down the tree in AppView
   // Needed to route correctly without context
   final authBloc = AuthBloc(
-      authenticationRepository: authenticationRepository,
-      authenticated: authenticationRepository.currentUser.isNotEmpty);
+    authenticationRepository: authenticationRepository,
+    authenticated: authenticationRepository.currentUser.isNotEmpty,
+  );
 
-  final appRouter = AppRouter(authGuard: AuthGuard(authBloc: authBloc));
+  final appRouter = AppRouter(authBloc: authBloc);
 
   Bloc.observer = AppBlocObserver();
   runApp(
-    App(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('fr', 'FR'), Locale('de', 'DE')],
+      path: kIsWeb ? 'translations' : 'assets/translations',
+      assetLoader: YamlAssetLoader(),
+      fallbackLocale: Locale('en', 'US'),
+      child: App(
         database: database,
         themeProvider: themeProvider,
         appRouter: appRouter,
@@ -93,6 +108,8 @@ Future<void> bootstrap(
         usersRepository: usersRepository,
         liveTvRepository: liveTvRepository,
         streamingRepository: streamingRepository,
-        musicPlayerRepository: musicPlayerRepository),
+        musicPlayerRepository: musicPlayerRepository,
+      ),
+    ),
   );
 }

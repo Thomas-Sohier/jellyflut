@@ -36,7 +36,7 @@ class PaletteButton extends StatefulWidget {
   State<StatefulWidget> createState() => _PaletteButtonState();
 }
 
-class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
+class _PaletteButtonState extends State<PaletteButton> with AbsorbAction {
   // variable for both button size
   double get minWidth => widget.minWidth;
   double get minHeight => widget.minHeight;
@@ -77,30 +77,30 @@ class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
     }
 
     return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
-        child: IgnorePointer(
-          ignoring: !widget.enabled,
-          child: Center(
-            child: TextButton(
-              autofocus: false,
-              focusNode: _node,
-              onPressed: () => action(widget.onPressed),
-              style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(borderRadius: borderRadius),
-                      backgroundColor: Colors.transparent,
-                      textStyle: TextStyle(color: Colors.black))
-                  .copyWith(side: buttonBorderSide())
-                  .copyWith(elevation: buttonElevation()),
-              child: child,
-            ),
+      constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
+      child: IgnorePointer(
+        ignoring: !widget.enabled,
+        child: Center(
+          child: TextButton(
+            autofocus: false,
+            focusNode: _node,
+            onPressed: () => action(widget.onPressed),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(borderRadius: borderRadius),
+              backgroundColor: Colors.transparent,
+              textStyle: TextStyle(color: Colors.black),
+            ).copyWith(side: buttonBorderSide()).copyWith(elevation: buttonElevation()),
+            child: child,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget buttonFromTheme() {
     final palette = [theme.colorScheme.primary, theme.colorScheme.secondary, theme.colorScheme.tertiary];
-    final onBackground = theme.colorScheme.onBackground;
+    final onBackground = theme.colorScheme.onSurface;
     return buttonFromPalette(palette, onBackground);
   }
 
@@ -114,32 +114,29 @@ class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
     return Ink(
       key: ValueKey<int>(0),
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: palette,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: borderRadius),
+        gradient: LinearGradient(colors: palette, begin: Alignment.topLeft, end: Alignment.bottomRight),
+        borderRadius: borderRadius,
+      ),
       child: Container(
         constraints: BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
         alignment: Alignment.center,
-        child:
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            widget.text,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: onBackground, fontSize: 18),
-          ),
-          if (widget.icon != null)
-            Padding(
-              padding: padding,
-              child: Icon(
-                widget.icon!.icon,
-                color: onBackground,
-              ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.text,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: onBackground, fontSize: 18),
             ),
-          if (widget.trailing != null) widget.trailing!
-        ]),
+            if (widget.icon != null)
+              Padding(
+                padding: padding,
+                child: Icon(widget.icon!.icon, color: onBackground),
+              ),
+            if (widget.trailing != null) widget.trailing!,
+          ],
+        ),
       ),
     );
   }
@@ -151,55 +148,47 @@ class _PaletteButtonState extends State<PaletteButton> with AbsordAction {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
-            constraints:
-                BoxConstraints(minHeight: minHeight, minWidth: minWidth, maxWidth: maxWidth, maxHeight: maxHeight),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: borderRadius,
-            ),
-            alignment: Alignment.center,
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                  ),
-                  if (widget.icon != null)
-                    Padding(
-                      padding: padding,
-                      child: widget.icon,
-                    ),
-                  if (widget.trailing != null) widget.trailing!
-                ])),
+          constraints: BoxConstraints(
+            minHeight: minHeight,
+            minWidth: minWidth,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+          ),
+          decoration: BoxDecoration(color: color, borderRadius: borderRadius),
+          alignment: Alignment.center,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black, fontSize: 18),
+              ),
+              if (widget.icon != null) Padding(padding: padding, child: widget.icon),
+              if (widget.trailing != null) widget.trailing!,
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  MaterialStateProperty<double> buttonElevation() {
-    return MaterialStateProperty.resolveWith<double>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-          return 6;
-        }
-        return 0; // defer to the default
-      },
-    );
+  WidgetStateProperty<double> buttonElevation() {
+    return WidgetStateProperty.resolveWith<double>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+        return 6;
+      }
+      return 0; // defer to the default
+    });
   }
 
-  MaterialStateProperty<BorderSide> buttonBorderSide() {
-    return MaterialStateProperty.resolveWith<BorderSide>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.hovered) || states.contains(MaterialState.focused)) {
-          return BorderSide(
-            width: 2,
-            color: Theme.of(context).colorScheme.onBackground,
-          );
-        }
-        return BorderSide(width: 0, color: Colors.transparent); // defer to the default
-      },
-    );
+  WidgetStateProperty<BorderSide> buttonBorderSide() {
+    return WidgetStateProperty.resolveWith<BorderSide>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+        return BorderSide(width: 2, color: Theme.of(context).colorScheme.onSurface);
+      }
+      return BorderSide(width: 0, color: Colors.transparent); // defer to the default
+    });
   }
 }

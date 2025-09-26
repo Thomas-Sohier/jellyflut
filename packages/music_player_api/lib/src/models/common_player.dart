@@ -1,10 +1,8 @@
-import 'package:dart_vlc/dart_vlc.dart';
 import 'package:just_audio/just_audio.dart' hide AudioSource;
 import 'package:rxdart/rxdart.dart';
 
 import 'audio_source.dart';
 import 'common_player_just_audio.dart';
-import 'common_player_vlc.dart';
 
 class CommonPlayer {
   final void Function() _pause;
@@ -24,38 +22,38 @@ class CommonPlayer {
   final Future<void> Function() _dispose;
   dynamic controller;
 
-  CommonPlayer._(
-      {required void Function() pause,
-      required void Function() play,
-      required bool Function() isPlaying,
-      required void Function(Duration) seekTo,
-      required Stream<Duration?> bufferingDuration,
-      required Duration? Function() duration,
-      required void Function() init,
-      required void Function() nextTrack,
-      required void Function() previousTrack,
-      required Future<void> Function(AudioSource) playRemote,
-      required Duration? Function() currentPosition,
-      required BehaviorSubject<Duration?> positionStream,
-      required BehaviorSubject<Duration?> durationStream,
-      required BehaviorSubject<bool?> isPlayingStream,
-      required Future<void> Function() dispose,
-      required this.controller})
-      : _play = play,
-        _pause = pause,
-        _isPlaying = isPlaying(),
-        _seekTo = seekTo,
-        _bufferingDuration = bufferingDuration,
-        _duration = duration,
-        _init = init,
-        _nextTrack = nextTrack,
-        _previousTrack = previousTrack,
-        _playRemote = playRemote,
-        _currentPosition = currentPosition,
-        _positionStream = positionStream,
-        _durationStream = durationStream,
-        _isPlayingStream = isPlayingStream,
-        _dispose = dispose;
+  CommonPlayer._({
+    required void Function() pause,
+    required void Function() play,
+    required bool Function() isPlaying,
+    required void Function(Duration) seekTo,
+    required Stream<Duration?> bufferingDuration,
+    required Duration? Function() duration,
+    required void Function() init,
+    required void Function() nextTrack,
+    required void Function() previousTrack,
+    required Future<void> Function(AudioSource) playRemote,
+    required Duration? Function() currentPosition,
+    required BehaviorSubject<Duration?> positionStream,
+    required BehaviorSubject<Duration?> durationStream,
+    required BehaviorSubject<bool?> isPlayingStream,
+    required Future<void> Function() dispose,
+    required this.controller,
+  }) : _play = play,
+       _pause = pause,
+       _isPlaying = isPlaying(),
+       _seekTo = seekTo,
+       _bufferingDuration = bufferingDuration,
+       _duration = duration,
+       _init = init,
+       _nextTrack = nextTrack,
+       _previousTrack = previousTrack,
+       _playRemote = playRemote,
+       _currentPosition = currentPosition,
+       _positionStream = positionStream,
+       _durationStream = durationStream,
+       _isPlayingStream = isPlayingStream,
+       _dispose = dispose;
 
   void play() => _play();
   void pause() => _pause();
@@ -76,42 +74,22 @@ class CommonPlayer {
   static CommonPlayer parseJustAudioController({required AudioPlayer audioPlayer}) {
     final commonPlayerJustAudio = CommonPlayerJustAudio(audioPlayer: audioPlayer);
     return CommonPlayer._(
-        pause: audioPlayer.pause,
-        play: audioPlayer.play,
-        isPlaying: () => audioPlayer.playerState.playing,
-        seekTo: audioPlayer.seek,
-        duration: () => audioPlayer.duration,
-        init: commonPlayerJustAudio.init,
-        nextTrack: audioPlayer.seekToNext,
-        previousTrack: audioPlayer.seekToPrevious,
-        bufferingDuration: audioPlayer.durationStream,
-        playRemote: commonPlayerJustAudio.playRemote,
-        currentPosition: () => audioPlayer.position,
-        positionStream: commonPlayerJustAudio.positionStream(),
-        durationStream: commonPlayerJustAudio.durationStream(),
-        isPlayingStream: commonPlayerJustAudio.playingStateStream(),
-        dispose: commonPlayerJustAudio.dispose,
-        controller: audioPlayer);
-  }
-
-  static CommonPlayer parseVLCController({required Player audioPlayer}) {
-    final commonPlayerVLC = CommonPlayerVLC(audioPlayer: audioPlayer);
-    return CommonPlayer._(
-        pause: audioPlayer.pause,
-        play: audioPlayer.play,
-        isPlaying: () => audioPlayer.playback.isPlaying,
-        seekTo: audioPlayer.seek,
-        duration: () => audioPlayer.position.duration,
-        init: commonPlayerVLC.init,
-        nextTrack: audioPlayer.next,
-        previousTrack: audioPlayer.previous,
-        bufferingDuration: Stream.value(Duration(seconds: 0)),
-        playRemote: commonPlayerVLC.playRemote,
-        currentPosition: () => audioPlayer.position.position,
-        positionStream: commonPlayerVLC.positionStream(),
-        durationStream: commonPlayerVLC.durationStream(),
-        isPlayingStream: commonPlayerVLC.playingStateStream(),
-        dispose: commonPlayerVLC.dispose,
-        controller: audioPlayer);
+      pause: audioPlayer.pause,
+      play: audioPlayer.play,
+      isPlaying: () => audioPlayer.playerState.playing,
+      seekTo: audioPlayer.seek,
+      duration: () => audioPlayer.duration,
+      init: commonPlayerJustAudio.init,
+      nextTrack: audioPlayer.seekToNext,
+      previousTrack: audioPlayer.seekToPrevious,
+      bufferingDuration: audioPlayer.durationStream,
+      playRemote: commonPlayerJustAudio.playRemote,
+      currentPosition: () => audioPlayer.position,
+      positionStream: commonPlayerJustAudio.positionStream(),
+      durationStream: commonPlayerJustAudio.durationStream(),
+      isPlayingStream: commonPlayerJustAudio.playingStateStream(),
+      dispose: commonPlayerJustAudio.dispose,
+      controller: audioPlayer,
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' hide Category;
+import 'package:items_api/src/exceptions/unauthorized_exception.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
 /// Exception thrown when item request fails.
@@ -81,8 +82,8 @@ class ItemsApi {
       }
 
       return compute(Item.fromJson, response.data!);
-    } on DioError catch (e) {
-      log(e.error.message);
+    } on DioException catch (e) {
+      log(e.message ?? '');
       throw ItemNotFoundFailure();
     }
   }
@@ -91,26 +92,27 @@ class ItemsApi {
   /// Can add other parameter (already good defaults for most queries)
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getCategory(
-      {required String serverUrl,
-      required String userId,
-      String? parentId,
-      String? albumArtistIds,
-      String? personIds,
-      String? filter = 'IsNotFolder',
-      bool? recursive = true,
-      List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
-      String? sortOrder = 'Descending',
-      String? mediaTypes,
-      String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
-      String? includeItemTypes,
-      int? limit = 300,
-      int? startIndex = 0,
-      int? imageTypeLimit = 1,
-      String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
-      String? excludeLocationTypes = 'Virtual',
-      bool? enableTotalRecordCount = false,
-      bool? collapseBoxSetItems = false}) async {
+  Future<Category> getCategory({
+    required String serverUrl,
+    required String userId,
+    String? parentId,
+    String? albumArtistIds,
+    String? personIds,
+    String? filter = 'IsNotFolder',
+    bool? recursive = true,
+    List<HttpRequestSortBy>? sortBy = const [HttpRequestSortBy.DateCreated],
+    String? sortOrder = 'Descending',
+    String? mediaTypes,
+    String? enableImageTypes = 'Primary,Backdrop,Banner,Thumb,Logo',
+    String? includeItemTypes,
+    int? limit = 300,
+    int? startIndex = 0,
+    int? imageTypeLimit = 1,
+    String? fields = 'Chapters,People,Height,Width,PrimaryImageAspectRatio',
+    String? excludeLocationTypes = 'Virtual',
+    bool? enableTotalRecordCount = false,
+    bool? collapseBoxSetItems = false,
+  }) async {
     final queryParams = <String, dynamic>{};
     queryParams.putIfAbsent('parentId', () => parentId);
     queryParams.putIfAbsent('albumArtistIds', () => albumArtistIds);
@@ -166,23 +168,24 @@ class ItemsApi {
   /// Can add other parameter (already good defaults for most queries)
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getResumeItems(
-      {required String serverUrl,
-      required String userId,
-      String filter = 'IsNotFolder, IsUnplayed',
-      bool recursive = true,
-      String sortBy = '',
-      String sortOrder = '',
-      String mediaType = 'Video',
-      String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
-      String? includeItemTypes,
-      int limit = 12,
-      int startIndex = 0,
-      int imageTypeLimit = 1,
-      String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
-      String excludeLocationTypes = '',
-      bool enableTotalRecordCount = false,
-      bool collapseBoxSetItems = false}) async {
+  Future<Category> getResumeItems({
+    required String serverUrl,
+    required String userId,
+    String filter = 'IsNotFolder, IsUnplayed',
+    bool recursive = true,
+    String sortBy = '',
+    String sortOrder = '',
+    String mediaType = 'Video',
+    String enableImageTypes = 'Primary,Backdrop,Thumb,Logo',
+    String? includeItemTypes,
+    int limit = 12,
+    int startIndex = 0,
+    int imageTypeLimit = 1,
+    String fields = 'PrimaryImageAspectRatio,BasicSyncInfo,ImageBlurHashes,Height,Width',
+    String excludeLocationTypes = '',
+    bool enableTotalRecordCount = false,
+    bool collapseBoxSetItems = false,
+  }) async {
     final queryParams = <String, dynamic>{};
     queryParams['Filters'] = filter;
     queryParams['Recursive'] = recursive;
@@ -220,8 +223,12 @@ class ItemsApi {
   /// Get epsiodes from series ID, can filter by season id if needed
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getEpsiodes(
-      {required String serverUrl, required String userId, required String seriesId, String? seasonId}) async {
+  Future<Category> getEpsiodes({
+    required String serverUrl,
+    required String userId,
+    required String seriesId,
+    String? seasonId,
+  }) async {
     final queryParams = <String, dynamic>{};
     if (seasonId != null) queryParams['seasonId'] = seasonId;
     queryParams['userId'] = userId;
@@ -247,8 +254,12 @@ class ItemsApi {
   /// Get seasons from series ID
   ///
   /// Can throw [ItemRequestFailure]
-  Future<Category> getSeasons(
-      {required String serverUrl, required String userId, required String seriesId, bool? isSpecialSeason}) async {
+  Future<Category> getSeasons({
+    required String serverUrl,
+    required String userId,
+    required String seriesId,
+    bool? isSpecialSeason,
+  }) async {
     final queryParams = <String, dynamic>{};
     if (isSpecialSeason != null) {
       queryParams['isSpecialSeason'] = isSpecialSeason;
@@ -277,23 +288,24 @@ class ItemsApi {
   /// Can add other parameter (already good defaults for most queries)
   ///
   /// Can throw [ItemSearchFailure]
-  Future<Category> searchItems(
-      {required String serverUrl,
-      required String userId,
-      required String searchTerm,
-      bool includePeople = false,
-      bool includeMedia = true,
-      bool includeGenres = false,
-      bool includeStudios = false,
-      bool includeArtists = false,
-      String includeItemTypes = '',
-      String excludeItemTypes = '',
-      int limit = 24,
-      String fields = 'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
-      bool recursive = true,
-      bool enableTotalRecordCount = false,
-      int imageTypeLimit = 1,
-      String? mediaTypes}) async {
+  Future<Category> searchItems({
+    required String serverUrl,
+    required String userId,
+    required String searchTerm,
+    bool includePeople = false,
+    bool includeMedia = true,
+    bool includeGenres = false,
+    bool includeStudios = false,
+    bool includeArtists = false,
+    String includeItemTypes = '',
+    String excludeItemTypes = '',
+    int limit = 24,
+    String fields = 'PrimaryImageAspectRatio,CanDelete,BasicSyncInfo,MediaSourceCount,Height,Width',
+    bool recursive = true,
+    bool enableTotalRecordCount = false,
+    int imageTypeLimit = 1,
+    String? mediaTypes,
+  }) async {
     final queryParams = <String, dynamic>{};
     queryParams['searchTerm'] = searchTerm;
     queryParams['IncludePeople'] = includePeople;
@@ -332,10 +344,7 @@ class ItemsApi {
   Future<void> updateItem({required String serverUrl, required String userId, required Item item}) async {
     try {
       // final payload = item.toJson();
-      final response = await _dioClient.post<void>(
-        '$serverUrl/Items/${item.id}',
-        data: item,
-      );
+      final response = await _dioClient.post<void>('$serverUrl/Items/${item.id}', data: item);
 
       if (response.statusCode != 204) {
         throw ItemUpdateFailure();
@@ -350,9 +359,7 @@ class ItemsApi {
   /// Can throw [ItemViewRequestFailure]
   Future<UserData> viewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient.post<Map<String, dynamic>>(
-        '$serverUrl/Users/$userId/PlayedItems/$itemId',
-      );
+      final response = await _dioClient.post<Map<String, dynamic>>('$serverUrl/Users/$userId/PlayedItems/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemViewRequestFailure();
@@ -369,9 +376,7 @@ class ItemsApi {
   /// Can throw [ItemViewRequestFailure]
   Future<UserData> unviewItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$serverUrl/Users/$userId/PlayedItems/$itemId',
-      );
+      final response = await _dioClient.delete<Map<String, dynamic>>('$serverUrl/Users/$userId/PlayedItems/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemViewRequestFailure();
@@ -388,9 +393,7 @@ class ItemsApi {
   /// Can throw [ItemFavoriteRequestFailure]
   Future<UserData> favItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient.post<Map<String, dynamic>>(
-        '$serverUrl/Users/$userId/FavoriteItems/$itemId',
-      );
+      final response = await _dioClient.post<Map<String, dynamic>>('$serverUrl/Users/$userId/FavoriteItems/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemFavoriteRequestFailure();
@@ -407,9 +410,7 @@ class ItemsApi {
   /// Can throw [ItemFavoriteRequestFailure]
   Future<UserData> unfavItem({required String serverUrl, required String userId, required String itemId}) async {
     try {
-      final response = await _dioClient.delete<Map<String, dynamic>>(
-        '$serverUrl/Users/$userId/FavoriteItems/$itemId',
-      );
+      final response = await _dioClient.delete<Map<String, dynamic>>('$serverUrl/Users/$userId/FavoriteItems/$itemId');
 
       if (response.statusCode != 200) {
         throw ItemFavoriteRequestFailure();
@@ -461,11 +462,8 @@ class ItemsApi {
 
   /// Return a Category with all Views
   ///
-  /// Can throw [ViewRequestFailure]
-  Future<Category> getLibraryViews({
-    required String serverUrl,
-    required String userId,
-  }) async {
+  /// Can throw [ViewRequestFailure] or [UnauthorizedException]
+  Future<Category> getLibraryViews({required String serverUrl, required String userId}) async {
     try {
       final response = await _dioClient.get<Map<String, dynamic>>('$serverUrl/Users/$userId/Views');
 
@@ -474,7 +472,11 @@ class ItemsApi {
       }
 
       return compute(Category.fromMap, response.data!);
-    } catch (_) {
+    } on DioException catch (e) {
+      log(e.toString());
+      if (e.response?.statusCode == 401) {
+        throw UnauthorizedException();
+      }
       throw ViewRequestFailure();
     }
   }
@@ -577,12 +579,16 @@ class ItemsApi {
   }
 
   /// Download an image for a given itemId
-  Future<Uint8List> downloadRemoteImage(
-      {required String serverUrl, required String itemId, ImageType type = ImageType.Primary}) async {
+  Future<Uint8List> downloadRemoteImage({
+    required String serverUrl,
+    required String itemId,
+    ImageType type = ImageType.Primary,
+  }) async {
     try {
       final response = await _dioClient.get<Uint8List>(
-          getItemImageUrl(serverUrl: serverUrl, itemId: itemId, type: type, quality: 100),
-          options: Options(responseType: ResponseType.bytes));
+        getItemImageUrl(serverUrl: serverUrl, itemId: itemId, type: type, quality: 100),
+        options: Options(responseType: ResponseType.bytes),
+      );
       if (response.statusCode != 200) {
         throw IamgeRequestFailure();
       }
@@ -592,17 +598,18 @@ class ItemsApi {
     }
   }
 
-  Future<PlayBackInfos> playbackInfos(
-      {required String serverUrl,
-      required String userId,
-      required String itemId,
-      DeviceProfileParent? profile,
-      int startTimeTick = 0,
-      int? subtitleStreamIndex,
-      int? audioStreamIndex,
-      int? maxStreamingBitrate,
-      int? maxVideoBitrate,
-      int? maxAudioBitrate}) async {
+  Future<PlayBackInfos> playbackInfos({
+    required String serverUrl,
+    required String userId,
+    required String itemId,
+    DeviceProfileParent? profile,
+    int startTimeTick = 0,
+    int? subtitleStreamIndex,
+    int? audioStreamIndex,
+    int? maxStreamingBitrate,
+    int? maxVideoBitrate,
+    int? maxAudioBitrate,
+  }) async {
     // Query params are deprecated but still used for older version of jellyfin server
     final queryParams = <String, dynamic>{};
     queryParams['UserId'] = userId;
