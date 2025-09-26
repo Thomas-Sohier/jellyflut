@@ -12,18 +12,19 @@ class AsyncRightDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: (previous, current) => previous.detailsStatus != current.detailsStatus,
-        builder: (_, detailsState) {
-          switch (detailsState.detailsStatus) {
-            case DetailsStatus.initial:
-            case DetailsStatus.loading:
-              return const RightDetailsShimmer();
-            case DetailsStatus.success:
-              return const RightDetails();
-            default:
-              return const SizedBox();
-          }
-        });
+      buildWhen: (previous, current) => previous.detailsStatus != current.detailsStatus,
+      builder: (_, detailsState) {
+        switch (detailsState.detailsStatus) {
+          case DetailsStatus.initial:
+          case DetailsStatus.loading:
+            return const RightDetailsShimmer();
+          case DetailsStatus.success:
+            return const RightDetails();
+          default:
+            return const SizedBox();
+        }
+      },
+    );
   }
 }
 

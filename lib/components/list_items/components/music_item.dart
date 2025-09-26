@@ -115,7 +115,7 @@ class _MusicItemState extends State<MusicItem> {
   }
 
   Widget artists() {
-    if (widget.item.hasArtists()) {
+    if (widget.item.hasArtists) {
       return Row(
         children: [
           Text(

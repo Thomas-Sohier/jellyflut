@@ -4,89 +4,90 @@ import 'package:jellyflut/components/async_item_image/async_item_image.dart';
 import 'package:jellyflut/components/logo.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/action_button.dart';
-import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/details/details_ui_model.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:provider/provider.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.read<SettingsBloc>().state;
-    return BlocBuilder<DetailsBloc, DetailsState>(
-      buildWhen: ((previous, current) => previous.screenLayout != current.screenLayout),
-      builder: ((context, state) {
-        switch (state.screenLayout) {
-          case ScreenLayout.desktop:
-            if (settings.detailsPageContrasted) {
-              return Padding(padding: state.contentPadding, child: const DesktopHeader());
-            } else {
-              return Column(
-                children: [
-                  const SizedBox(height: 24),
-                  if (state.item.hasLogo()) Logo(item: state.item),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: state.contentPadding.copyWith(bottom: 10),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
-                      child: PlayButton(maxWidth: double.infinity),
-                    ),
-                  ),
-                ],
-              );
-            }
-          case ScreenLayout.mobile:
-          default:
-            return const MobileHeader();
-        }
-      }),
+    final layout = context.select((DetailsUIModel model) => model.layout);
+    if (layout.isMobile) {
+      final heroTag = context.select((DetailsBloc bloc) => bloc.state.heroTag);
+      final item = context.select((DetailsBloc bloc) => bloc.state.item);
+      return _MobileHeader(item: item, heroTag: heroTag);
+    } else {
+      return const _DesktopHeader();
+    }
+  }
+}
+
+/// Header pour la vue Desktop.
+class _DesktopHeader extends StatelessWidget {
+  const _DesktopHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 50),
+        child: const PlayButton(maxWidth: double.infinity),
+      ),
     );
   }
 }
 
-class MobileHeader extends StatelessWidget {
+class _MobileHeader extends StatelessWidget {
   static const controlsOverflowSize = 20.0;
-  const MobileHeader({super.key});
+  final Item item;
+  final String? heroTag;
+
+  const _MobileHeader({required this.item, this.heroTag});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<DetailsBloc>().state;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Column(
       children: [
         Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
-            Column(
-              children: [
-                Hero(
-                  tag: state.heroTag ?? '',
-                  child: ShaderMask(
-                    shaderCallback: (rect) {
-                      return LinearGradient(
-                        begin: Alignment.topCenter,
-                        stops: [0.7, 1],
-                        end: Alignment.bottomCenter,
-                        colors: [Theme.of(context).colorScheme.surface, Colors.transparent],
-                      ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
-                    },
-                    blendMode: BlendMode.dstIn,
-                    child: AsyncImage(
-                      item: state.item,
-                      imageType: ImageType.Primary,
-                      boxFit: BoxFit.cover,
-                      width: double.infinity,
-                      borderRadius: BorderRadius.zero,
-                      height: 250,
-                      showOverlay: true,
-                    ),
-                  ),
+            Hero(
+              tag: heroTag ?? '',
+              child: ShaderMask(
+                shaderCallback: (rect) {
+                  return LinearGradient(
+                    begin: Alignment.topCenter,
+                    stops: const [0, 1],
+                    end: Alignment.bottomCenter,
+                    colors: [surfaceColor, Colors.transparent],
+                  ).createShader(Rect.fromLTRB(0, 0, 0, rect.height));
+                },
+                blendMode: BlendMode.dstIn,
+                child: AsyncImageProvider(
+                  item: item,
+                  imageType: ImageType.Primary,
+                  width: double.infinity,
+                  height: 250,
+                  showParent: false,
+                  builder: (context, imageProvider, imageInfo) {
+                    return Image(image: imageProvider, fit: BoxFit.cover);
+                  },
                 ),
-                SizedBox(height: controlsOverflowSize),
-              ],
+              ),
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Logo(item: item),
+              ),
             ),
             Positioned(
-              bottom: 0,
+              bottom: -controlsOverflowSize,
               left: 15,
               right: 15,
               child: ConstrainedBox(
@@ -96,60 +97,7 @@ class MobileHeader extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 10),
-      ],
-    );
-  }
-}
-
-class DesktopHeader extends StatelessWidget {
-  static const controlsOverflowSize = 20.0;
-  const DesktopHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final state = context.read<DetailsBloc>().state;
-    if (!state.item.hasBackrop() && !state.item.hasLogo()) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 16, bottom: 10),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 50, maxWidth: double.infinity),
-          child: PlayButton(maxWidth: double.infinity),
-        ),
-      );
-    }
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              children: [
-                if (state.item.hasBackrop())
-                  AsyncImage(
-                    item: state.item,
-                    imageType: ImageType.Backdrop,
-                    boxFit: BoxFit.cover,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
-                    width: double.infinity,
-                    height: 250,
-                    showOverlay: true,
-                  ),
-                SizedBox(height: controlsOverflowSize),
-              ],
-            ),
-            if (state.item.hasLogo()) Logo(item: state.item),
-            Positioned(
-              bottom: 0,
-              left: 15,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 50, maxWidth: 200),
-                child: PlayButton(maxWidth: double.infinity),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 24),
+        const SizedBox(height: controlsOverflowSize + 10),
       ],
     );
   }

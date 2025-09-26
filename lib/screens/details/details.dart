@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/music_player_FAB.dart';
-import 'package:jellyflut/components/subtree_builder.dart';
 import 'package:jellyflut/providers/theme/theme_provider.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/items_collection/seasons/cubit/season_cubit.dart';
 import 'package:jellyflut/screens/settings/bloc/settings_bloc.dart';
 import 'package:jellyflut/shared/shared_prefs.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
@@ -30,6 +30,9 @@ class DetailsPage extends StatelessWidget {
       floatingActionButton: const MusicPlayerFAB(),
       body: MultiBlocProvider(
         providers: [
+          BlocProvider<SeasonCubit>(
+            create: (blocContext) => SeasonCubit(itemsRepository: context.read<ItemsRepository>(), item: item),
+          ),
           BlocProvider<DetailsDownloadCubit>(
             create: (blocContext) =>
                 DetailsDownloadCubit(item: item, downloadsRepository: context.read<DownloadsRepository>()),
@@ -44,7 +47,6 @@ class DetailsPage extends StatelessWidget {
               downloadsRepository: context.read<DownloadsRepository>(),
               authenticationRepository: context.read<AuthenticationRepository>(),
               contrastedPage: context.read<SettingsBloc>().state.detailsPageContrasted,
-              screenLayout: MediaQuery.of(context).size.width <= 960 ? ScreenLayout.mobile : ScreenLayout.desktop,
             )..add(DetailsInitRequested(item: item)),
           ),
         ],
@@ -59,27 +61,33 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SubtreeBuilder(
-      builder: (_, child) {
-        return BlocBuilder<DetailsBloc, DetailsState>(
-          buildWhen: (previousState, currentState) => previousState.theme != currentState.theme,
-          builder: (_, state) => Theme(
-            data: state.theme,
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness: state.theme.colorScheme.onSurface.computeLuminance() > 0.5
-                    ? Brightness.light
-                    : Brightness.dark,
-              ),
-              child: child ?? const SizedBox(),
+    return BlocBuilder<DetailsBloc, DetailsState>(
+      buildWhen: (previous, current) => previous.theme != current.theme,
+      builder: (context, state) {
+        return Theme(
+          data: state.theme,
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: state.theme.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
             ),
+            child: const _DetailsContent(),
           ),
         );
       },
-      child: Scaffold(
-        body: context.read<DetailsBloc>().state.item.type != ItemType.Photo ? const LargeDetails() : const PhotoItem(),
-      ),
     );
+  }
+}
+
+// Le contenu réel de la page, maintenant dans son propre widget stateless
+// pour garantir qu'il n'est pas reconstruit par le changement de thème.
+class _DetailsContent extends StatelessWidget {
+  const _DetailsContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final itemType = context.select((DetailsBloc bloc) => bloc.state.item.type);
+
+    return Scaffold(body: itemType != ItemType.Photo ? const LargeDetailsWrapper() : const PhotoItem());
   }
 }

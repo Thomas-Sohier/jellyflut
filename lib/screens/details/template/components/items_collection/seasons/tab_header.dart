@@ -1,13 +1,12 @@
-import 'package:jellyflut/components/subtree_builder.dart';
-import 'package:jellyflut_models/jellyflut_models.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:universal_io/io.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/palette_button.dart';
-import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/details/details_ui_model.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'cubit/season_cubit.dart';
 
@@ -15,12 +14,16 @@ const _height = 80.0;
 
 class TabHeader extends SliverPersistentHeaderDelegate {
   final EdgeInsets padding;
+  final bool isMobile;
 
-  const TabHeader({Key? key, this.padding = const EdgeInsets.only(left: 12)});
+  const TabHeader({this.isMobile = false, this.padding = const EdgeInsets.only(left: 12)});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    context.read<DetailsBloc>().add(PinnedHeaderChangeRequested(shrinkOffset: shrinkOffset));
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      context.read<DetailsUIModel>().updatePinnedStateFromShrink(shrinkOffset);
+    });
+
     return BlocBuilder<SeasonCubit, SeasonState>(
       buildWhen: (previous, current) => previous.seasonStatus != current.seasonStatus,
       builder: (context, state) {
@@ -31,18 +34,10 @@ class TabHeader extends SliverPersistentHeaderDelegate {
           case Status.success:
             return HeaderBar(padding: padding);
           case Status.failure:
-          default:
             return const SizedBox(height: _height);
         }
       },
     );
-  }
-
-  Widget safeAreaBuilder(Widget child) {
-    if (Platform.isAndroid || Platform.isIOS) {
-      return SafeArea(child: child);
-    }
-    return child;
   }
 
   @override
@@ -53,62 +48,71 @@ class TabHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    if (oldDelegate is TabHeader) {
+      return isMobile || oldDelegate.padding != padding;
+    }
+    return true;
   }
 }
 
 class ShimmerHeaderBar extends StatelessWidget {
-  static const EdgeInsets buttonPadding = EdgeInsets.only(right: 12);
-  static const double height = 50;
-  static const double width = 150;
-  static const int count = 4;
   final EdgeInsets padding;
-
   const ShimmerHeaderBar({super.key, required this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return SubtreeBuilder(
-      builder: (_, child) => BlocBuilder<DetailsBloc, DetailsState>(
-        buildWhen: (previous, current) => previous.pinnedHeader != current.pinnedHeader,
-        builder: (_, state) => _HeaderBlur(
-          pinnedHeader: state.pinnedHeader,
-          child: SizedBox(
-            height: _height,
-            child: Shimmer.fromColors(
-              baseColor: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-              highlightColor: Theme.of(context).colorScheme.onSurface.withAlpha(100),
-              child: AnimatedPadding(
-                padding: state.pinnedHeader ? padding.copyWith(left: padding.left + 40) : padding,
-                duration: Duration(milliseconds: 200),
-                child: child ?? const SizedBox(),
-              ),
-            ),
+    final isMobile = context.select((DetailsUIModel model) => model.layout.isMobile);
+    final isPinned = context.select((DetailsUIModel model) => model.isPinned);
+    return _HeaderBlur(
+      pinnedHeader: isPinned,
+      child: SizedBox(
+        height: _height,
+        child: Shimmer.fromColors(
+          baseColor: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+          highlightColor: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+          child: AnimatedPadding(
+            padding: isPinned && isMobile ? padding.copyWith(left: padding.left + 40) : padding,
+            duration: const Duration(milliseconds: 200),
+            child: const _ShimmerList(),
           ),
         ),
       ),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.horizontal,
-        itemCount: count,
-        itemExtent: (width + buttonPadding.right),
-        itemBuilder: (context, index) {
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: buttonPadding,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-                child: SizedBox(
-                  height: height,
-                  width: double.infinity,
-                  child: ColoredBox(color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
-                ),
+    );
+  }
+}
+
+// Widget privé pour le contenu statique du shimmer.
+class _ShimmerList extends StatelessWidget {
+  static const EdgeInsets buttonPadding = EdgeInsets.only(right: 12);
+  static const double height = 50;
+  static const double width = 150;
+  static const int count = 4;
+
+  const _ShimmerList();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.horizontal,
+      itemCount: count,
+      itemExtent: (width + buttonPadding.right),
+      itemBuilder: (context, index) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: buttonPadding,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              child: SizedBox(
+                height: height,
+                width: double.infinity,
+                child: ColoredBox(color: Theme.of(context).colorScheme.onSurface.withAlpha(150)),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -120,20 +124,17 @@ class HeaderBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsBloc, DetailsState>(
-      buildWhen: (previous, current) =>
-          previous.pinnedHeader != current.pinnedHeader || previous.screenLayout != current.screenLayout,
-      builder: (_, state) => _HeaderBlur(
-        pinnedHeader: state.pinnedHeader,
-        child: SizedBox(
-          height: _height,
-          child: AnimatedPadding(
-            padding: state.pinnedHeader && state.screenLayout.isMobile
-                ? padding.copyWith(left: padding.left + 40)
-                : padding,
-            duration: Duration(milliseconds: 200),
-            child: _HeaderSeasonsButtons(),
-          ),
+    final isMobile = context.select((DetailsUIModel model) => model.layout.isMobile);
+    final isPinned = context.select((DetailsUIModel model) => model.isPinned);
+
+    return _HeaderBlur(
+      pinnedHeader: isPinned,
+      child: SizedBox(
+        height: _height,
+        child: AnimatedPadding(
+          padding: isPinned && isMobile ? padding.copyWith(left: padding.left + 40) : padding,
+          duration: const Duration(milliseconds: 200),
+          child: const _HeaderSeasonsButtons(),
         ),
       ),
     );
@@ -168,7 +169,7 @@ class _HeaderBlur extends StatelessWidget {
   Widget build(BuildContext context) {
     if (pinnedHeader) {
       return ClipRRect(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(4), bottomRight: Radius.circular(4)),
         child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), child: child),
       );
     }

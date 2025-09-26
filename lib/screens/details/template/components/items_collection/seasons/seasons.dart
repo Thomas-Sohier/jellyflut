@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
+import 'package:jellyflut/screens/details/template/components/details/details_ui_model.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -15,12 +15,7 @@ class Seasons extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = context.read<DetailsBloc>().state.item;
     if (item.type != ItemType.Series) return const SliverToBoxAdapter();
-    return BlocProvider(
-        create: (context) => SeasonCubit(
-              itemsRepository: context.read<ItemsRepository>(),
-              item: context.read<DetailsBloc>().state.item,
-            ),
-        child: const SeasonsView());
+    return BlocProvider.value(value: context.read<SeasonCubit>(), child: const SeasonsView());
   }
 }
 
@@ -29,13 +24,13 @@ class SeasonsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiSliver(children: const [
-      SliverPersistentHeader(
-        pinned: true,
-        floating: false,
-        delegate: TabHeader(),
-      ),
-      SeasonEpisode(),
-    ]);
+    final isMobile = context.select((DetailsUIModel model) => model.layout.isMobile);
+
+    return MultiSliver(
+      children: [
+        SliverPersistentHeader(pinned: true, floating: false, delegate: TabHeader(isMobile: isMobile)),
+        const SeasonEpisode(),
+      ],
+    );
   }
 }

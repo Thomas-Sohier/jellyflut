@@ -55,3 +55,6 @@ export 'trancode_infos.dart';
 export 'transcoding_profile.dart';
 export 'user.dart';
 export 'user_data.dart';
+export 'extensions/item_image_logic.dart';
+export 'extensions/item_ui_logic.dart';
+export 'extensions/item_playback_logic.dart';

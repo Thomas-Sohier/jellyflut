@@ -59,7 +59,7 @@ class EpisodeItem extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 4, bottom: 4),
                           child: Row(
                             children: [
-                              if (item.hasRatings()) Critics(item: item),
+                              if (item.hasRatings) Critics(item: item),
                               if (item.getDuration() != 0) _Duration(duration: item.getDuration()),
                             ],
                           ),

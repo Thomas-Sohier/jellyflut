@@ -71,7 +71,7 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
                                 padding: const EdgeInsets.only(top: 4, bottom: 4),
                                 child: Row(
                                   children: [
-                                    if (widget.ongoingDownload.item.hasRatings())
+                                    if (widget.ongoingDownload.item.hasRatings)
                                       Critics(item: widget.ongoingDownload.item),
                                     if (widget.ongoingDownload.item.getDuration() != 0) duration(),
                                   ],

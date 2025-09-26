@@ -29,22 +29,4 @@ class DetailsItemUpdate extends DetailsEvent {
   List<Object> get props => [item];
 }
 
-class PinnedHeaderChangeRequested extends DetailsEvent {
-  final double shrinkOffset;
-
-  PinnedHeaderChangeRequested({required this.shrinkOffset});
-
-  @override
-  List<Object> get props => [shrinkOffset];
-}
-
-class DetailsScreenSizeChanged extends DetailsEvent {
-  final ScreenLayout screenLayout;
-
-  DetailsScreenSizeChanged({required this.screenLayout});
-
-  @override
-  List<Object> get props => [screenLayout];
-}
-
 class ResetStates extends DetailsEvent {}

@@ -32,15 +32,25 @@ class _Background extends StatelessWidget {
     final item = context.read<StreamCubit>().state.parentItem;
     if (item == null) return const CircularProgressIndicator();
     if (item.type != ItemType.TvChannel) {
-      return AsyncImage(
+      return AsyncImageProvider(
         item: item,
         width: double.infinity,
         height: double.infinity,
-        boxFit: BoxFit.cover,
         imageType: ImageType.Backdrop,
         showParent: true,
+        builder: (context, imageProvider, imageInfo) {
+          return Image(image: imageProvider, fit: BoxFit.cover);
+        },
       );
     }
-    return AsyncImage(item: item, width: 300, height: 300, boxFit: BoxFit.contain, imageType: ImageType.Primary);
+    return AsyncImageProvider(
+      item: item,
+      width: 300,
+      height: 300,
+      imageType: ImageType.Primary,
+      builder: (context, imageProvider, imageInfo) {
+        return Image(image: imageProvider, fit: BoxFit.contain);
+      },
+    );
   }
 }

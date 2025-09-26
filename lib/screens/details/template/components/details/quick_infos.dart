@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jellyflut/components/critics.dart';
 import 'package:jellyflut/screens/details/bloc/details_bloc.dart';
 import 'package:jellyflut/screens/details/template/components/details_widgets.dart';
+import 'package:jellyflut_models/jellyflut_models.dart';
 
 class QuickInfos extends StatelessWidget {
   const QuickInfos({super.key});
@@ -14,14 +15,15 @@ class QuickInfos extends StatelessWidget {
       children: [
         Expanded(
           child: Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              runAlignment: WrapAlignment.center,
-              children: [
-                if (state.item.hasRatings()) Critics(item: state.item),
-                const InfosDetailsWidget(),
-              ]),
+            direction: Axis.horizontal,
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            runAlignment: WrapAlignment.center,
+            children: [
+              if (state.item.hasRatings) Critics(item: state.item),
+              const InfosDetailsWidget(),
+            ],
+          ),
         ),
       ],
     );

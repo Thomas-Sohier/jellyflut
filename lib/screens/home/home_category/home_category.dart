@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut/components/poster/item_poster.dart';
-import 'package:jellyflut/globals.dart';
+import 'package:jellyflut/globals.dart'; // Supposé pour les constantes de shimmer
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut/screens/home/home_category/cubit/home_category_cubit.dart';
 import 'package:jellyflut/screens/home/home_category/home_category_title.dart';
@@ -11,18 +11,19 @@ import 'package:jellyflut/theme/theme.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shimmer/shimmer.dart';
 
+// CENTRALISATION DES CONSTANTES
+const double _kPosterHeight = 220.0;
+const double _kPosterLabelHeight = 40.0;
+const double _kHorizontalPadding = 12.0;
+const double _kItemSpacing = 8.0;
+const double _kDefaultAspectRatio = 2 / 3;
+
 class HomeCategory extends StatelessWidget {
-  // ignore: unused_element
-  const HomeCategory._(this.item, this.itemType);
-
-  const HomeCategory.fromItem({required this.item}) : itemType = null;
-
-  const HomeCategory.fromType({required this.itemType}) : item = null;
+  const HomeCategory.fromItem({super.key, required this.item}) : itemType = null;
+  const HomeCategory.fromType({super.key, required this.itemType}) : item = null;
 
   final Item? item;
   final HomeCategoryType? itemType;
-  final double height = 220;
-  final double gapSize = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +36,22 @@ class HomeCategory extends StatelessWidget {
 }
 
 class HomeCategoryView extends StatelessWidget {
-  const HomeCategoryView();
+  const HomeCategoryView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCategoryCubit, HomeCategoryState>(
-      builder: (_, state) {
-        switch (state.status) {
-          case HomeCategoryStatus.success:
-            if (state.items.isEmpty) return const SizedBox();
-            return const HomeCategoryLoaded();
-          case HomeCategoryStatus.initial:
-          case HomeCategoryStatus.loading:
-          default:
-            return const HomeCategoryShimmer();
-        }
-      },
-    );
+    final status = context.watch<HomeCategoryCubit>().state.status;
+    final items = context.watch<HomeCategoryCubit>().state.items;
+
+    switch (status) {
+      case HomeCategoryStatus.success:
+        if (items.isEmpty) return const SizedBox.shrink();
+        return const HomeCategoryLoaded();
+      case HomeCategoryStatus.initial:
+      case HomeCategoryStatus.loading:
+      default:
+        return const HomeCategoryShimmer();
+    }
   }
 }
 
@@ -60,30 +60,35 @@ class HomeCategoryLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomeCategoryCubit>();
+    final state = context.read<HomeCategoryCubit>().state;
+    final firstItemAspectRatio = state.items.first.getPrimaryAspectRatio(showParent: true);
+    final posterWidth = _kPosterHeight * firstItemAspectRatio;
+
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HomeCategoryTitle(
-          cubit.state.categoryName,
-          onTap: () => cubit.state.parentItem != null
-              ? context.router.root.push(CollectionRoute(item: cubit.state.parentItem!))
-              : {},
+          state.categoryName,
+          onTap: () {
+            if (state.parentItem != null) {
+              context.router.root.push(CollectionRoute(item: state.parentItem!));
+            }
+          },
         ),
         SizedBox(
-          height: itemPosterHeight + itemPosterLabelHeight,
+          height: _kPosterHeight + _kPosterLabelHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: cubit.state.items.length,
-            itemExtent: (itemPosterHeight * cubit.state.items.first.getPrimaryAspectRatio(showParent: true)) + 20,
-            itemBuilder: (context, index) => ItemPoster(
-              cubit.state.items[index],
-              width: double.infinity,
-              height: double.infinity,
-              boxFit: BoxFit.cover,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: _kHorizontalPadding),
+            itemCount: state.items.length,
+            itemExtent: posterWidth + _kItemSpacing,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.only(right: _kItemSpacing),
+                child: ItemPoster(state.items[index], height: _kPosterHeight),
+              );
+            },
           ),
         ),
       ],
@@ -91,64 +96,39 @@ class HomeCategoryLoaded extends StatelessWidget {
   }
 }
 
+/// Affiche un placeholder de chargement (shimmer).
 class HomeCategoryShimmer extends StatelessWidget {
   const HomeCategoryShimmer({super.key});
-  final double height = 220;
-  final double gapSize = 20;
 
   @override
   Widget build(BuildContext context) {
+    const shimmerPosterWidth = _kPosterHeight * _kDefaultAspectRatio;
     return Shimmer.fromColors(
       enabled: shimmerAnimation,
       baseColor: shimmerColor1,
       highlightColor: shimmerColor2,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                  height: 30,
-                  width: 70,
-                  color: Colors.white30,
-                ),
-              ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15, 5, 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  child: Container(height: 30, width: 30, color: Colors.white30),
-                ),
-              ),
-            ],
-          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: itemPosterHeight,
-                    child: ListView.builder(
-                      itemCount: 3,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          child: Container(height: height, width: height * (2 / 3), color: Colors.white30),
-                        ),
-                      ),
-                    ),
-                  ),
+            padding: const EdgeInsets.symmetric(horizontal: _kHorizontalPadding, vertical: 15),
+            child: Container(height: 30, width: 120, color: Colors.white),
+          ),
+          SizedBox(
+            height: _kPosterHeight,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: _kHorizontalPadding),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 4, // Affiche 4 placeholders
+              itemExtent: shimmerPosterWidth + _kItemSpacing,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(right: _kItemSpacing),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: Container(height: _kPosterHeight, width: shimmerPosterWidth, color: Colors.white),
                 ),
-              ],
+              ),
             ),
           ),
         ],

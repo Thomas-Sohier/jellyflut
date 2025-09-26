@@ -19,30 +19,36 @@ class DetailsBackground extends StatelessWidget {
     if (settings.detailsPageContrasted) return const SizedBox();
     return Stack(
       children: [
-        AsyncImage(
+        AsyncImageProvider(
           item: context.read<DetailsBloc>().state.item,
           width: double.infinity,
           height: double.infinity,
           imageType: ImageType.Backdrop,
-          boxFit: BoxFit.cover,
+          builder: (context, imageProvider, imageInfo) {
+            return Image(image: imageProvider, fit: BoxFit.cover);
+          },
         ),
         ClipRect(
-            clipBehavior: Clip.hardEdge,
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
-                child: AnimatedContainer(
-                    duration: duration,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent.withOpacity(0.6),
-                        gradient: LinearGradient(
-                          colors: [
-                            ownDetailsTheme(context).primary,
-                            ownDetailsTheme(context).secondary,
-                            ownDetailsTheme(context).tertiary
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ))))),
+          clipBehavior: Clip.hardEdge,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 17.0, sigmaY: 17.0),
+            child: AnimatedContainer(
+              duration: duration,
+              decoration: BoxDecoration(
+                color: Colors.transparent.withOpacity(0.6),
+                gradient: LinearGradient(
+                  colors: [
+                    ownDetailsTheme(context).primary,
+                    ownDetailsTheme(context).secondary,
+                    ownDetailsTheme(context).tertiary,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

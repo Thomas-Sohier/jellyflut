@@ -12,17 +12,17 @@ class Poster extends StatelessWidget {
     final state = context.read<DetailsBloc>().state;
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(5)),
-      child: AspectRatio(
-        aspectRatio: state.item.getPrimaryAspectRatio(),
-        child: ItemPoster(
-          state.item,
-          key: ValueKey(state.item),
-          boxFit: BoxFit.cover,
-          clickable: false,
-          showParent: true,
-          tag: ImageType.Primary,
-          heroTag: state.heroTag,
-        ),
+      child: ItemPoster(
+        state.item,
+        key: ValueKey(state.item),
+        boxFit: BoxFit.cover,
+        clickable: false,
+        showParent: true,
+        showOverlay: false,
+        showLogo: false,
+        showName: false,
+        tag: ImageType.Primary,
+        heroTag: state.heroTag,
       ),
     );
   }

@@ -28,33 +28,36 @@ class Logo extends StatelessWidget {
 
   void logoDialog(BuildContext context) {
     showDialog(
-        context: context,
-        barrierColor: Colors.black.withOpacity(0.64),
-        builder: (_) {
-          return GestureDetector(
-            onTap: () => context.router.root.pop(),
-            child: FocusableActionDetector(
-                autofocus: true,
-                descendantsAreFocusable: false,
-                mouseCursor: SystemMouseCursors.click,
-                actions: <Type, Action<Intent>>{
-                  ActivateIntent: CallbackAction<Intent>(
-                    onInvoke: (Intent intent) => context.router.pop(),
-                  ),
-                },
-                child: Center(child: logo(context, BoxConstraints(maxWidth: 960)))),
-          );
-        });
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.64),
+      builder: (_) {
+        return GestureDetector(
+          onTap: () => context.router.root.pop(),
+          child: FocusableActionDetector(
+            autofocus: true,
+            descendantsAreFocusable: false,
+            mouseCursor: SystemMouseCursors.click,
+            actions: <Type, Action<Intent>>{
+              ActivateIntent: CallbackAction<Intent>(onInvoke: (Intent intent) => context.router.pop()),
+            },
+            child: Center(child: logo(context, BoxConstraints(maxWidth: 960))),
+          ),
+        );
+      },
+    );
   }
 
   Widget logo(BuildContext context, [BoxConstraints? overridedConstraints]) {
     return ConstrainedBox(
-        constraints: overridedConstraints ?? constraints,
-        child: AsyncImage(
-          item: item,
-          showParent: true,
-          boxFit: BoxFit.contain,
-          imageType: ImageType.Logo,
-        ));
+      constraints: overridedConstraints ?? constraints,
+      child: AsyncImageProvider(
+        item: item,
+        showParent: true,
+        imageType: ImageType.Logo,
+        builder: (context, imageProvider, imageInfo) {
+          return Image(image: imageProvider, fit: BoxFit.contain);
+        },
+      ),
+    );
   }
 }

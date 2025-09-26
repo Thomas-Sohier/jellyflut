@@ -7,15 +7,14 @@ import 'package:jellyflut/mixins/absorb_action.dart';
 import 'package:jellyflut/routes/router.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 
-/// Affiche une jaquette d'item complète, incluant l'image,
-/// des superpositions optionnelles (logo, indicateurs) et un titre.
-class ItemPoster extends StatelessWidget {
+final _aspectRatioCache = <String, double>{};
+
+class ItemPoster extends StatefulWidget {
   const ItemPoster(
     this.item, {
     super.key,
     this.textColor,
     this.heroTag,
-    this.aspectRatio,
     this.height,
     this.width,
     this.showName = true,
@@ -29,7 +28,6 @@ class ItemPoster extends StatelessWidget {
 
   final Item item;
   final String? heroTag;
-  final double? aspectRatio;
   final Color? textColor;
   final double? height;
   final double? width;
@@ -42,12 +40,61 @@ class ItemPoster extends StatelessWidget {
   final BoxFit boxFit;
 
   @override
-  Widget build(BuildContext context) {
-    final finalAspectRatio = aspectRatio ?? item.getPrimaryAspectRatio(showParent: showParent);
-    final finalTextColor = textColor ?? Theme.of(context).colorScheme.onSurface;
+  State<ItemPoster> createState() => _ItemPosterState();
+}
 
+class _ItemPosterState extends State<ItemPoster> {
+  double? _aspectRatio;
+
+  @override
+  void initState() {
+    super.initState();
+    _aspectRatio =
+        _aspectRatioCache[widget.item.id] ?? widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final finalTextColor = widget.textColor ?? Theme.of(context).colorScheme.onSurface;
+
+    return AsyncImageProvider(
+      item: widget.item,
+      imageType: widget.tag,
+      showParent: widget.showParent,
+      placeholder: (_) => _buildPlaceholder(),
+      error: (_) => _buildPlaceholder(),
+      builder: (context, imageProvider, imageInfo) {
+        final image = imageInfo.image;
+        if (image.height > 0) {
+          final calculatedRatio = image.width / image.height;
+          if (_aspectRatio != calculatedRatio) {
+            _aspectRatioCache[widget.item.id] = calculatedRatio;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() => _aspectRatio = calculatedRatio);
+              }
+            });
+          }
+        }
+
+        // On construit l'UI finale avec le ratio d'aspect correct
+        return _buildContent(context, finalTextColor, imageProvider);
+      },
+    );
+  }
+
+  // Affiche un placeholder en attendant que l'image soit prête
+  Widget _buildPlaceholder() {
     return AspectRatio(
-      aspectRatio: finalAspectRatio,
+      aspectRatio: _aspectRatio!, // Utilise le ratio de l'API/cache pendant le chargement
+      child: Container(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
+    );
+  }
+
+  // Construit l'UI finale du poster
+  Widget _buildContent(BuildContext context, Color textColor, ImageProvider imageProvider) {
+    return AspectRatio(
+      aspectRatio: _aspectRatio!,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,47 +104,39 @@ class ItemPoster extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 _Poster(
-                  item: item,
-                  imageType: tag,
-                  heroTag: heroTag,
-                  boxFit: boxFit,
-                  width: width,
-                  height: height,
-                  clickable: clickable,
-                  showParent: showParent,
+                  item: widget.item,
+                  imageProvider: imageProvider, // On passe l'ImageProvider
+                  heroTag: widget.heroTag,
+                  boxFit: widget.boxFit,
+                  clickable: widget.clickable,
                 ),
-                if (showOverlay) _PosterOverlays(item: item, showLogo: showLogo),
+                if (widget.showOverlay) _PosterOverlays(item: widget.item, showLogo: widget.showLogo),
               ],
             ),
           ),
-          if (showName) _PosterTitle(item: item, showParent: showParent, textColor: finalTextColor),
+          if (widget.showName) _PosterTitle(item: widget.item, showParent: widget.showParent, textColor: textColor),
         ],
       ),
     );
   }
 }
 
-/// Widget interne gérant l'image interactive (clic, focus, hover).
+// Le widget `_Poster` est maintenant beaucoup plus simple.
+// Il ne fait qu'afficher une image et gérer le clic.
 class _Poster extends StatefulWidget {
   const _Poster({
     required this.item,
-    required this.imageType,
+    required this.imageProvider,
     required this.boxFit,
     required this.clickable,
-    required this.showParent,
     this.heroTag,
-    this.width,
-    this.height,
   });
 
   final Item item;
-  final ImageType imageType;
+  final ImageProvider imageProvider;
   final BoxFit boxFit;
   final bool clickable;
-  final bool showParent;
   final String? heroTag;
-  final double? width;
-  final double? height;
 
   @override
   State<_Poster> createState() => _PosterState();
@@ -124,15 +163,7 @@ class _PosterState extends State<_Poster> with AbsorbAction {
 
   @override
   Widget build(BuildContext context) {
-    final posterImage = AsyncImage(
-      item: widget.item,
-      imageType: widget.imageType,
-      boxFit: widget.boxFit,
-      width: widget.width,
-      height: widget.height,
-      showParent: widget.showParent,
-    );
-
+    final posterImage = Image(image: widget.imageProvider, fit: widget.boxFit);
     final posterWithHero = widget.heroTag != null ? Hero(tag: widget.heroTag!, child: posterImage) : posterImage;
 
     if (!widget.clickable) {
@@ -172,14 +203,14 @@ class _PosterOverlays extends StatelessWidget {
     return IgnorePointer(
       child: Stack(
         children: [
-          if (item.isNew()) const Positioned(top: 8, left: 8, child: _NewBanner()),
-          if (item.isPlayed()) const Positioned(top: 8, right: 8, child: _PlayedBanner()),
+          if (item.isNew) const Positioned(top: 8, left: 8, child: _NewBanner()),
+          if (item.isPlayed) const Positioned(top: 8, right: 8, child: _PlayedBanner()),
           if (showLogo)
             Align(
               alignment: Alignment.center,
               child: Logo(item: item, selectable: false),
             ),
-          if (item.hasProgress())
+          if (item.hasProgress)
             Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomCenter,

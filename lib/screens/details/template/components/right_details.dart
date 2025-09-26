@@ -29,11 +29,7 @@ class RightDetails extends StatelessWidget {
         const DetailsButtonRowBuilder(),
         const _BoxAdaptater(TaglineDetailsWidget()),
         const _BoxAdaptater(SizedBox(height: 24)),
-        _BoxAdaptater(Row(children: const [
-          TitleDetailsWidget(),
-          SizedBox(width: 8),
-          RatingDetailsWidget(),
-        ])),
+        _BoxAdaptater(Row(children: const [TitleDetailsWidget(), SizedBox(width: 8), RatingDetailsWidget()])),
         const _BoxAdaptater(OriginalTitleDetailsWidget()),
         const _BoxAdaptater(SizedBox(height: 8)),
         const _BoxAdaptater(QuickInfos()),
@@ -59,7 +55,8 @@ class _BoxAdaptater extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-        padding: context.read<DetailsBloc>().state.contentPadding,
-        sliver: SliverToBoxAdapter(child: child ?? const SizedBox()));
+      padding: context.read<DetailsBloc>().state.contentPadding,
+      sliver: SliverToBoxAdapter(child: child ?? const SizedBox()),
+    );
   }
 }

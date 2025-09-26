@@ -66,7 +66,12 @@ class PersonPoster extends StatelessWidget {
       tag: heroTag,
       child: AspectRatio(
         aspectRatio: 2 / 3,
-        child: AsyncImage(item: person.asItem(), boxFit: BoxFit.contain),
+        child: AsyncImageProvider(
+          item: person.asItem(),
+          builder: (context, imageProvider, imageInfo) {
+            return Image(image: imageProvider, fit: BoxFit.contain);
+          },
+        ),
       ),
     );
   }
@@ -89,7 +94,12 @@ class BigPersonPoster extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              AsyncImage(item: person.asItem(), boxFit: BoxFit.contain),
+              AsyncImageProvider(
+                item: person.asItem(),
+                builder: (context, imageProvider, imageInfo) {
+                  return Image(image: imageProvider, fit: BoxFit.contain);
+                },
+              ),
               Container(
                 margin: EdgeInsets.zero,
                 padding: EdgeInsets.zero,
