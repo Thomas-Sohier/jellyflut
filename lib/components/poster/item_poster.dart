@@ -9,14 +9,20 @@ import 'package:jellyflut_models/jellyflut_models.dart';
 
 final _aspectRatioCache = <String, double>{};
 
+enum PosterFit {
+  /// Le widget essaiera de remplir les contraintes du parent en utilisant [Expanded].
+  expand,
+
+  /// Le widget sera aussi petit que possible, en se basant sur la taille de son contenu.
+  tight,
+}
+
 class ItemPoster extends StatefulWidget {
   const ItemPoster(
     this.item, {
     super.key,
     this.textColor,
     this.heroTag,
-    this.height,
-    this.width,
     this.showName = true,
     this.showParent = true,
     this.showOverlay = true,
@@ -24,13 +30,12 @@ class ItemPoster extends StatefulWidget {
     this.clickable = true,
     this.tag = ImageType.Primary,
     this.boxFit = BoxFit.cover,
+    this.fit = PosterFit.expand,
   });
 
   final Item item;
   final String? heroTag;
   final Color? textColor;
-  final double? height;
-  final double? width;
   final bool showName;
   final bool showParent;
   final bool showOverlay;
@@ -38,13 +43,14 @@ class ItemPoster extends StatefulWidget {
   final bool clickable;
   final ImageType tag;
   final BoxFit boxFit;
+  final PosterFit fit;
 
   @override
   State<ItemPoster> createState() => _ItemPosterState();
 }
 
 class _ItemPosterState extends State<ItemPoster> {
-  double? _aspectRatio;
+  late double _aspectRatio;
 
   @override
   void initState() {
@@ -53,71 +59,76 @@ class _ItemPosterState extends State<ItemPoster> {
         _aspectRatioCache[widget.item.id] ?? widget.item.getPrimaryAspectRatio(showParent: widget.showParent);
   }
 
+  void _updateAspectRatio(ImageInfo imageInfo) {
+    final image = imageInfo.image;
+    if (image.height > 16) {
+      final calculatedRatio = image.width / image.height;
+      if (_aspectRatio != calculatedRatio) {
+        _aspectRatioCache[widget.item.id] = calculatedRatio;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() => _aspectRatio = calculatedRatio);
+          }
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final finalTextColor = widget.textColor ?? Theme.of(context).colorScheme.onSurface;
 
-    return AsyncImageProvider(
-      item: widget.item,
-      imageType: widget.tag,
-      showParent: widget.showParent,
-      placeholder: (_) => _buildPlaceholder(),
-      error: (_) => _buildPlaceholder(),
-      builder: (context, imageProvider, imageInfo) {
-        final image = imageInfo.image;
-        if (image.height > 0) {
-          final calculatedRatio = image.width / image.height;
-          if (_aspectRatio != calculatedRatio) {
-            _aspectRatioCache[widget.item.id] = calculatedRatio;
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) {
-                setState(() => _aspectRatio = calculatedRatio);
-              }
-            });
-          }
-        }
-
-        // On construit l'UI finale avec le ratio d'aspect correct
-        return _buildContent(context, finalTextColor, imageProvider);
-      },
+    // Le contenu du poster est le même dans les deux cas
+    final posterContent = Stack(
+      alignment: Alignment.center,
+      children: [
+        AspectRatio(
+          aspectRatio: _aspectRatio,
+          child: AsyncImageProvider(
+            item: widget.item,
+            imageType: widget.tag,
+            showParent: widget.showParent,
+            placeholder: (_) =>
+                Container(color: Theme.of(context).colorScheme.onSurface.withAlpha(20), child: const SizedBox.expand()),
+            builder: (context, imageProvider, imageInfo) {
+              _updateAspectRatio(imageInfo);
+              return _Poster(
+                item: widget.item,
+                imageProvider: imageProvider,
+                heroTag: widget.heroTag,
+                boxFit: widget.boxFit,
+                clickable: widget.clickable,
+              );
+            },
+          ),
+        ),
+        if (widget.showOverlay)
+          Positioned.fill(
+            child: _PosterOverlays(item: widget.item, showLogo: widget.showLogo),
+          ),
+      ],
     );
-  }
 
-  // Affiche un placeholder en attendant que l'image soit prête
-  Widget _buildPlaceholder() {
-    return AspectRatio(
-      aspectRatio: _aspectRatio!, // Utilise le ratio de l'API/cache pendant le chargement
-      child: Container(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
-    );
-  }
+    final titleContent = _PosterTitle(item: widget.item, showParent: widget.showParent, textColor: finalTextColor);
 
-  // Construit l'UI finale du poster
-  Widget _buildContent(BuildContext context, Color textColor, ImageProvider imageProvider) {
-    return AspectRatio(
-      aspectRatio: _aspectRatio!,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    // LOGIQUE CONDITIONNELLE BASÉE SUR LE PARAMÈTRE `fit`
+    if (widget.fit == PosterFit.expand) {
+      // Comportement original : utiliser Expanded pour remplir l'espace
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                _Poster(
-                  item: widget.item,
-                  imageProvider: imageProvider, // On passe l'ImageProvider
-                  heroTag: widget.heroTag,
-                  boxFit: widget.boxFit,
-                  clickable: widget.clickable,
-                ),
-                if (widget.showOverlay) _PosterOverlays(item: widget.item, showLogo: widget.showLogo),
-              ],
-            ),
-          ),
-          if (widget.showName) _PosterTitle(item: widget.item, showParent: widget.showParent, textColor: textColor),
+          Expanded(flex: 8, child: posterContent),
+          if (widget.showName) Expanded(flex: 2, child: titleContent),
         ],
-      ),
-    );
+      );
+    } else {
+      // Nouveau comportement : utiliser MainAxisSize.min pour une hauteur minimale
+      return Column(
+        mainAxisSize: MainAxisSize.min, // La clé est ici !
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [posterContent, if (widget.showName) titleContent],
+      );
+    }
   }
 }
 
@@ -145,14 +156,22 @@ class _Poster extends StatefulWidget {
 class _PosterState extends State<_Poster> with AbsorbAction {
   late final FocusNode _focusNode;
 
+  void _onFocusChange() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
+    _focusNode.removeListener(_onFocusChange);
     _focusNode.dispose();
     super.dispose();
   }
@@ -167,26 +186,28 @@ class _PosterState extends State<_Poster> with AbsorbAction {
     final posterWithHero = widget.heroTag != null ? Hero(tag: widget.heroTag!, child: posterImage) : posterImage;
 
     if (!widget.clickable) {
-      return posterWithHero;
+      return ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(4)), child: posterWithHero);
     }
 
-    return OutlinedButton(
-      onPressed: () => action(_navigateToDetails),
-      focusNode: _focusNode,
-      style: ButtonStyle(
-        padding: WidgetStateProperty.all(EdgeInsets.zero),
-        shape: WidgetStateProperty.all(
-          const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        InkWell(
+          onTap: () => action(_navigateToDetails),
+          focusNode: _focusNode,
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(4)), child: posterWithHero),
         ),
-        backgroundColor: WidgetStateProperty.all(Colors.transparent),
-        side: WidgetStateProperty.resolveWith<BorderSide>((states) {
-          if (states.contains(WidgetState.focused)) {
-            return BorderSide(width: 3, color: Theme.of(context).colorScheme.onSurface);
-          }
-          return BorderSide.none;
-        }),
-      ),
-      child: posterWithHero,
+        if (_focusNode.hasFocus)
+          IgnorePointer(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                border: Border.all(width: 3, color: Theme.of(context).colorScheme.onSurface),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -234,28 +255,29 @@ class _PosterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final hasSubtitle = item.isFolder != null && item.parentIndexNumber != null;
+    final hasSubtitle = item.isFolder != null && item.parentIndexNumber != null && item.indexNumber != null;
+    final subtitleText = hasSubtitle ? 'Saison ${item.parentIndexNumber}, Épisode ${item.indexNumber}' : '';
 
     return Padding(
       padding: const EdgeInsets.only(top: 4.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             showParent ? item.parentName() : item.name ?? '',
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            maxLines: 1,
             style: textTheme.bodyLarge?.copyWith(fontSize: 16, color: textColor),
           ),
-          if (hasSubtitle)
-            Text(
-              'Saison ${item.parentIndexNumber}, Épisode ${item.indexNumber}',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: textTheme.bodyMedium?.copyWith(fontSize: 12, color: textColor.withOpacity(0.8)),
-              textAlign: TextAlign.center,
-            ),
+          Text(
+            subtitleText,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: textTheme.bodyMedium?.copyWith(fontSize: 12, color: textColor.withAlpha(200)),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );

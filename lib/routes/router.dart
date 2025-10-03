@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:jellyflut/screens/auth/auth_parent.dart';
 import 'package:jellyflut/screens/auth/bloc/auth_bloc.dart';
 import 'package:jellyflut/screens/book/book_reader.dart';
-import 'package:jellyflut/screens/book/components/page_epub.dart';
 import 'package:jellyflut/screens/collection/collection_parent.dart';
 import 'package:jellyflut/screens/details/details.dart';
 import 'package:jellyflut/screens/downloads/downloads_parent.dart';

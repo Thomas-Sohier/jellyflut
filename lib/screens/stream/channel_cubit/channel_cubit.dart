@@ -12,8 +12,8 @@ part 'channel_state.dart';
 
 class ChannelCubit extends Cubit<ChannelState> {
   ChannelCubit({required LiveTvRepository liveTvRepository})
-      : _liveTvRepository = liveTvRepository,
-        super(ChannelState());
+    : _liveTvRepository = liveTvRepository,
+      super(ChannelState());
 
   final LiveTvRepository _liveTvRepository;
 
@@ -24,7 +24,7 @@ class ChannelCubit extends Cubit<ChannelState> {
       emit(state.copyWith(channels: channels, status: Status.success));
     } on StreamingException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: Status.failure));
-    } on DioError catch (e, _) {
+    } on DioException catch (e, _) {
       emit(state.copyWith(failureMessage: e.message, status: Status.failure));
     } catch (e, s) {
       print(s);

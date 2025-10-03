@@ -86,7 +86,7 @@ class HomeCategoryLoaded extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(right: _kItemSpacing),
-                child: ItemPoster(state.items[index], height: _kPosterHeight),
+                child: ItemPoster(state.items[index]),
               );
             },
           ),

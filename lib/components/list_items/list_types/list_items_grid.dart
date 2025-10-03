@@ -1,55 +1,32 @@
 part of '../list_items_parent.dart';
 
-class ListItemsGrid extends StatelessWidget {
+class _ListItemsGrid extends StatelessWidget {
   final List<Item> items;
-  final ScrollPhysics scrollPhysics;
-  final BoxFit boxFit;
-  final Widget? notFoundPlaceholder;
-  final EdgeInsetsGeometry padding;
+  final ScrollController controller;
 
-  const ListItemsGrid({
-    super.key,
-    this.boxFit = BoxFit.cover,
-    this.notFoundPlaceholder,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8),
-    required this.scrollPhysics,
-    required this.items,
-  });
+  const _ListItemsGrid({required this.items, required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.watch<CollectionBloc>();
+    final itemHeight = bloc.gridPosterHeight;
+    final itemAspectRatio = items.isEmpty ? 2 / 3 : items.first.getPrimaryAspectRatio(showParent: true);
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final itemHeight = context.read<CollectionBloc>().state.gridPosterHeight.isInfinite
-            ? itemPosterHeight
-            : context.read<CollectionBloc>().state.gridPosterHeight;
-        final itemAspectRatio = items.first.getPrimaryAspectRatio(showParent: true);
-        final numberOfItemRow = (constraints.maxWidth / (itemHeight * itemAspectRatio)).round();
-        return CustomScrollView(
-          controller: ScrollController(),
-          scrollDirection: Axis.vertical,
-          slivers: <Widget>[
-            SliverPadding(
-              padding: padding,
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: items.first.getPrimaryAspectRatio(),
-                  crossAxisCount: numberOfItemRow,
-                  mainAxisExtent: itemHeight + itemPosterLabelHeight,
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 5,
-                ),
-                delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
-                  return ItemPoster(
-                    items.elementAt(index),
-                    boxFit: boxFit,
-                    width: double.infinity,
-                    height: double.infinity,
-                  );
-                }, childCount: items.length),
-              ),
-            ),
-          ],
+        final crossAxisCount = (constraints.maxWidth / (itemHeight * itemAspectRatio)).round().clamp(1, 10);
+        return GridView.builder(
+          controller: controller,
+          physics: bloc.physics,
+          padding: const EdgeInsets.all(8),
+          itemCount: items.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+            childAspectRatio: itemAspectRatio / (1 + (40 / itemHeight)), // ratio with label height
+          ),
+          itemBuilder: (context, index) => ItemPoster(items[index]),
         );
       },
     );

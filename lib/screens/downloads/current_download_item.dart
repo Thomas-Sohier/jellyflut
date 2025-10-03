@@ -129,8 +129,6 @@ class _CurrentDownloadItemState extends State<CurrentDownloadItem> {
         tag: ImageType.Primary,
         heroTag: '${widget.ongoingDownload.item.id}-${Uuid().v1()}-${widget.ongoingDownload.item.name}',
         clickable: false,
-        width: double.infinity,
-        height: double.infinity,
         boxFit: BoxFit.cover,
         showParent: false,
       ),

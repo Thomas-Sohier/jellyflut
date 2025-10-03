@@ -34,8 +34,6 @@ class _Background extends StatelessWidget {
     if (item.type != ItemType.TvChannel) {
       return AsyncImageProvider(
         item: item,
-        width: double.infinity,
-        height: double.infinity,
         imageType: ImageType.Backdrop,
         showParent: true,
         builder: (context, imageProvider, imageInfo) {
@@ -45,11 +43,10 @@ class _Background extends StatelessWidget {
     }
     return AsyncImageProvider(
       item: item,
-      width: 300,
-      height: 300,
+
       imageType: ImageType.Primary,
       builder: (context, imageProvider, imageInfo) {
-        return Image(image: imageProvider, fit: BoxFit.contain);
+        return Image(image: imageProvider, width: 300, height: 300, fit: BoxFit.contain);
       },
     );
   }

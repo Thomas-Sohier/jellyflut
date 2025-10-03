@@ -26,8 +26,6 @@ class BookPlaceholder extends StatelessWidget {
                 tag: ImageType.Primary,
                 heroTag: '${item.id}-${Uuid().v1()}',
                 clickable: false,
-                width: double.infinity,
-                height: double.infinity,
                 boxFit: BoxFit.contain,
               ),
             ),

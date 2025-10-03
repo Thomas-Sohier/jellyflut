@@ -18,5 +18,5 @@ class OngoingDownload extends Download {
   });
 
   /// Stop current download
-  stopDownload() => cancelToken.cancel();
+  void stopDownload() => cancelToken.cancel();
 }

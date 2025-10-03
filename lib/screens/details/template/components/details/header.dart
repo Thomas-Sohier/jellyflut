@@ -71,11 +71,9 @@ class _MobileHeader extends StatelessWidget {
                 child: AsyncImageProvider(
                   item: item,
                   imageType: ImageType.Primary,
-                  width: double.infinity,
-                  height: 250,
                   showParent: false,
                   builder: (context, imageProvider, imageInfo) {
-                    return Image(image: imageProvider, fit: BoxFit.cover);
+                    return Image(image: imageProvider, height: 250, width: double.infinity, fit: BoxFit.cover);
                   },
                 ),
               ),

@@ -21,8 +21,6 @@ class DetailsBackground extends StatelessWidget {
       children: [
         AsyncImageProvider(
           item: context.read<DetailsBloc>().state.item,
-          width: double.infinity,
-          height: double.infinity,
           imageType: ImageType.Backdrop,
           builder: (context, imageProvider, imageInfo) {
             return Image(image: imageProvider, fit: BoxFit.cover);

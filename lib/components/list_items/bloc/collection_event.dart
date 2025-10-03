@@ -1,47 +1,29 @@
 part of 'collection_bloc.dart';
 
-class CollectionEvent {
+abstract class CollectionEvent extends Equatable {
   const CollectionEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
-class InitCollectionRequested extends CollectionEvent {
-  const InitCollectionRequested();
-}
+class CollectionFetchStarted extends CollectionEvent {}
 
-class AddItem extends CollectionEvent {
-  final List<Item> items;
+class CollectionFetchMore extends CollectionEvent {}
 
-  const AddItem({required this.items});
-}
+class CollectionRefreshed extends CollectionEvent {}
 
-class ReplaceItem extends CollectionEvent {
-  final List<Item> items;
-
-  const ReplaceItem({required this.items});
-}
-
-class ClearItemsRequested extends CollectionEvent {
-  const ClearItemsRequested();
-}
-
-class SortByField extends CollectionEvent {
-  final FieldsEnum fieldEnum;
-
-  const SortByField({required this.fieldEnum});
-}
-
-class LoadMoreItemsRequested extends CollectionEvent {
-  const LoadMoreItemsRequested();
-}
-
-class SetScrollController extends CollectionEvent {
-  final ScrollController scrollController;
-
-  const SetScrollController({required this.scrollController});
-}
-
-class ListTypeChangeRequested extends CollectionEvent {
+class CollectionListTypeChanged extends CollectionEvent {
   final ListType? listType;
+  const CollectionListTypeChanged({this.listType});
+}
 
-  const ListTypeChangeRequested({this.listType});
+class CollectionSortChanged extends CollectionEvent {
+  final String field;
+  const CollectionSortChanged(this.field);
+}
+
+class CollectionItemsReplaced extends CollectionEvent {
+  final List<Item> items;
+  const CollectionItemsReplaced(this.items);
 }

@@ -17,8 +17,11 @@ class ListItemsSkeleton extends StatelessWidget {
   final double horizontalListPosterHeight;
   final double gridPosterHeight;
 
-  const ListItemsSkeleton(
-      {this.verticalListPosterHeight = 200, this.horizontalListPosterHeight = 200, this.gridPosterHeight = 200});
+  const ListItemsSkeleton({
+    this.verticalListPosterHeight = 200,
+    this.horizontalListPosterHeight = 200,
+    this.gridPosterHeight = 200,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +31,6 @@ class ListItemsSkeleton extends StatelessWidget {
       case ListType.poster:
         return const ListItemsHorizontalSkeleton();
       case ListType.grid:
-        return const ListItemsGridSkeleton();
-      default:
         return const ListItemsGridSkeleton();
     }
   }

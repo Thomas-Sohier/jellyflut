@@ -34,15 +34,10 @@ class _CollectionParentState extends State<CollectionParent> with HomeTab, Ticke
     return super.visibiltyBuilder(
       child: Stack(
         children: [
-          // if (widget.item.collectionType == CollectionType.movies ||
-          //     widget.item.collectionType == CollectionType.books ||
-          //     widget.item.collectionType == CollectionType.tvshows)
-          //   ChangeNotifierProvider.value(value: carrousselProvider, child: CarrousselBackGroundImage()),
-          ListItems.fromCustomRequest(
+          ListItems(
             fetchMethod: (startIndex, limit) => getItems(startIndex: startIndex, limit: limit),
             gridPosterHeight: 200,
             horizontalListPosterHeight: double.maxFinite,
-            verticalListPosterHeight: 250,
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 part of 'collection_bloc.dart';
 
-enum SeasonStatus { initial, loading, loadingMore, success, failure }
+enum CollectionStatus { initial, loading, loadingMore, success, failure }
 
 enum ListType {
   poster,
@@ -8,99 +8,52 @@ enum ListType {
   grid;
 
   const ListType();
-
-  ListType getNextListType() => ListType.values[(index + 1) >= ListType.values.length ? 0 : index + 1];
+  ListType get next => ListType.values[(index + 1) % ListType.values.length];
 }
 
-enum SortBy {
-  ASC,
-  DESC;
+enum SortOrder {
+  asc,
+  desc;
 
-  const SortBy();
-
-  SortBy reverse() => this == SortBy.ASC ? SortBy.DESC : SortBy.ASC;
+  const SortOrder();
+  SortOrder get reverse => this == SortOrder.asc ? SortOrder.desc : SortOrder.asc;
 }
 
-class SeasonState extends Equatable {
-  final List<Item> carouselSliderItems;
+class CollectionState extends Equatable {
+  final CollectionStatus status;
   final List<Item> items;
-  final ListType listType;
   final bool canLoadMore;
-  final bool showTitle;
-  final bool showIfEmpty;
-  final bool showSorting;
-  final SortBy sortBy;
+  final ListType listType;
+  final SortOrder sortOrder;
   final String sortField;
-  final double horizontalListPosterHeight;
-  final double verticalListPosterHeight;
-  final double gridPosterHeight;
-  final SeasonStatus collectionStatus;
-  final ScrollController scrollController;
-  final Future<List<Item>> Function(int startIndex, int limit) fetchMethod;
 
-  const SeasonState(
-      {required this.scrollController,
-      required this.fetchMethod,
-      this.sortField = '',
-      this.carouselSliderItems = const <Item>[],
-      this.items = const <Item>[],
-      this.canLoadMore = true,
-      this.showTitle = false,
-      this.showIfEmpty = true,
-      this.showSorting = true,
-      this.horizontalListPosterHeight = 150,
-      this.verticalListPosterHeight = double.infinity,
-      this.gridPosterHeight = 100,
-      this.sortBy = SortBy.DESC,
-      this.collectionStatus = SeasonStatus.initial,
-      this.listType = ListType.grid});
+  const CollectionState({
+    this.status = CollectionStatus.initial,
+    this.items = const <Item>[],
+    this.canLoadMore = true,
+    this.listType = ListType.grid,
+    this.sortOrder = SortOrder.asc,
+    this.sortField = '',
+  });
 
-  SeasonState copyWith({
-    List<Item>? carouselSliderItems,
+  CollectionState copyWith({
+    CollectionStatus? status,
     List<Item>? items,
-    ListType? listType,
     bool? canLoadMore,
-    bool? showTitle,
-    bool? showIfEmpty,
-    bool? showSorting,
-    double? horizontalListPosterHeight,
-    double? verticalListPosterHeight,
-    double? gridPosterHeight,
-    SortBy? sortBy,
+    ListType? listType,
+    SortOrder? sortOrder,
     String? sortField,
-    ScrollController? scrollController,
-    SeasonStatus? collectionStatus,
   }) {
-    return SeasonState(
-        carouselSliderItems: carouselSliderItems ?? this.carouselSliderItems,
-        items: items ?? this.items,
-        fetchMethod: fetchMethod,
-        listType: listType ?? this.listType,
-        canLoadMore: canLoadMore ?? this.canLoadMore,
-        showTitle: showTitle ?? this.showTitle,
-        showIfEmpty: showIfEmpty ?? this.showIfEmpty,
-        showSorting: showSorting ?? this.showSorting,
-        sortBy: sortBy ?? this.sortBy,
-        horizontalListPosterHeight: horizontalListPosterHeight ?? this.horizontalListPosterHeight,
-        verticalListPosterHeight: verticalListPosterHeight ?? this.verticalListPosterHeight,
-        gridPosterHeight: gridPosterHeight ?? this.gridPosterHeight,
-        sortField: sortField ?? this.sortField,
-        scrollController: scrollController ?? this.scrollController,
-        collectionStatus: collectionStatus ?? this.collectionStatus);
+    return CollectionState(
+      status: status ?? this.status,
+      items: items ?? this.items,
+      canLoadMore: canLoadMore ?? this.canLoadMore,
+      listType: listType ?? this.listType,
+      sortOrder: sortOrder ?? this.sortOrder,
+      sortField: sortField ?? this.sortField,
+    );
   }
 
   @override
-  List<Object?> get props => [
-        canLoadMore,
-        carouselSliderItems,
-        scrollController,
-        collectionStatus,
-        items,
-        showTitle,
-        showIfEmpty,
-        showSorting,
-        sortBy,
-        sortField,
-        listType
-      ];
+  List<Object> get props => [status, items, canLoadMore, listType, sortOrder, sortField];
 }

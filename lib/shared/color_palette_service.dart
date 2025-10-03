@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:items_repository/items_repository.dart';
 import 'package:jellyflut_models/jellyflut_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';

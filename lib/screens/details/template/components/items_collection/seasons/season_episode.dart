@@ -31,7 +31,7 @@ class SeasonEpisode extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (_, int index) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 250),
+                      constraints: BoxConstraints(maxHeight: 350),
                       child: EpisodeItem(item: episodes[index]),
                     );
                   },

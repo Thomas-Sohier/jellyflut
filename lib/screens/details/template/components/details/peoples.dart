@@ -27,7 +27,7 @@ class PeoplesDetailsWidget extends StatelessWidget {
         const SliverToBoxAdapter(child: SizedBox(height: 8)),
         SliverPadding(
           padding: EdgeInsets.only(left: state.contentPadding.left),
-          sliver: const SliverToBoxAdapter(child: PeoplesList()),
+          sliver: const SliverToBoxAdapter(child: ItemList()),
         ),
       ],
     );

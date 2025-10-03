@@ -17,9 +17,9 @@ class StreamCubit extends Cubit<StreamState> {
   late Timer _controlsVisibilityTimer;
 
   StreamCubit({required StreamingRepository streamingRepository, Item? item, String? url})
-      : assert(item != null || url != null, 'At least one param must be given'),
-        _streamingRepository = streamingRepository,
-        super(StreamState(parentItem: item, url: url)) {
+    : assert(item != null || url != null, 'At least one param must be given'),
+      _streamingRepository = streamingRepository,
+      super(StreamState(parentItem: item, url: url)) {
     _controlsVisibilityTimer = Timer(Duration.zero, () {});
   }
 
@@ -45,21 +45,27 @@ class StreamCubit extends Cubit<StreamState> {
         streamItem = streamController.streamItem;
       } else if (state.url != null) {
         commonStream = await _streamingRepository.createController(uri: Uri.parse(state.url!));
-        streamItem = StreamItem(url: state.url!, item: Item(id: '0', type: ItemType.Video));
+        streamItem = StreamItem(
+          url: state.url!,
+          item: Item(id: '0', type: ItemType.Video),
+        );
       }
 
       await commonStream.initialize();
-      emit(state.copyWith(
+      emit(
+        state.copyWith(
           controller: commonStream,
           streamItem: streamItem,
           hasPip: await commonStream.hasPip(),
           audioTracks: await _getAudioTracks(),
-          status: StreamStatus.success));
+          status: StreamStatus.success,
+        ),
+      );
 
       await state.controller?.play();
     } on StreamingException catch (e) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } catch (e, s) {
       debugPrint('Error during init: $s');
@@ -121,11 +127,10 @@ class StreamCubit extends Cubit<StreamState> {
   void setAudioStreamIndex(AudioTrack audioTrack) async {
     if (audioTrack.mediaType == MediaType.remote) {
       final streamParamters = StreamParameters(
-          startAt: state.controller?.getCurrentPosition(), audioStreamIndex: audioTrack.jellyfinSubtitleIndex);
-      await changeDataSource(
-        item: state.streamItem.item,
-        streamParameters: streamParamters,
+        startAt: state.controller?.getCurrentPosition(),
+        audioStreamIndex: audioTrack.jellyfinSubtitleIndex,
       );
+      await changeDataSource(item: state.streamItem.item, streamParameters: streamParamters);
     } else if (audioTrack.mediaType == MediaType.local) {
       await state.controller?.setAudioTrack(audioTrack);
     }
@@ -161,8 +166,10 @@ class StreamCubit extends Cubit<StreamState> {
   ///
   /// [item] L'élément (média) pour la nouvelle source.
   /// [streamParameters] Les paramètres de flux optionnels pour la nouvelle source.
-  Future<void> changeDataSource(
-      {required Item item, StreamParameters streamParameters = StreamParameters.empty}) async {
+  Future<void> changeDataSource({
+    required Item item,
+    StreamParameters streamParameters = StreamParameters.empty,
+  }) async {
     emit(state.copyWith(status: StreamStatus.loading));
     final playSessionId = state.streamItem.playbackInfos?.playSessionId;
     if (playSessionId == null) return;
@@ -177,13 +184,16 @@ class StreamCubit extends Cubit<StreamState> {
 
     try {
       final streamController = await _generateController(item: item);
-      emit(state.copyWith(
+      emit(
+        state.copyWith(
           controller: streamController.controller,
           streamItem: streamController.streamItem,
-          status: StreamStatus.success));
+          status: StreamStatus.success,
+        ),
+      );
     } on StreamingException catch (e) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(state.copyWith(failureMessage: e.message, status: StreamStatus.failure));
     } catch (e, s) {
       debugPrint('Error during changeDataSource: $s');

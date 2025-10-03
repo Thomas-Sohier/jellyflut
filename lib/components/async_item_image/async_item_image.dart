@@ -1,3 +1,4 @@
+import 'package:blurhash_ffi/blurhash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:items_repository/items_repository.dart';
@@ -23,12 +24,6 @@ class AsyncImageProvider extends StatelessWidget {
   // Par défaut : false
   final bool showParent;
 
-  // La largeur souhaitée pour l'image. Passée à l'API pour optimiser la taille du fichier.
-  final double? width;
-
-  // La hauteur souhaitée pour l'image. Passée à l'API pour optimiser la taille du fichier.
-  final double? height;
-
   // Un builder optionnel pour afficher un widget pendant le chargement.
   final WidgetBuilder? placeholder;
 
@@ -41,8 +36,6 @@ class AsyncImageProvider extends StatelessWidget {
     required this.builder,
     this.imageType = ImageType.Primary,
     this.showParent = false,
-    this.width,
-    this.height,
     this.placeholder,
     this.error,
   });
@@ -55,6 +48,7 @@ class AsyncImageProvider extends StatelessWidget {
         itemId: showParent ? item.seriesId ?? item.id : item.id,
         imageType: imageType,
         tag: item.id,
+        hash: item.imageBlurHashes?.getBlurHashValueFromImageType(imageType),
       )..loadImage(),
       child: BlocBuilder<AsyncImageCubit, AsyncImageState>(
         builder: (context, state) {
@@ -70,7 +64,19 @@ class AsyncImageProvider extends StatelessWidget {
               return error?.call(context) ?? const SizedBox();
             case AsyncImageStatus.loading:
             case AsyncImageStatus.initial:
-              return placeholder?.call(context) ?? const SizedBox();
+              if (state.placeholderImage != null) {
+                return _ImageInfoResolver(
+                  imageProvider: state.placeholderImage!,
+                  builder: builder,
+                  placeholder: placeholder,
+                );
+              } else if (placeholder?.call(context) != null) {
+                return placeholder!.call(context);
+              }
+              return Container(
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(20),
+                child: const SizedBox.expand(),
+              );
             case AsyncImageStatus.failure:
               return error?.call(context) ?? const SizedBox();
           }
@@ -99,12 +105,7 @@ class _ImageInfoResolverState extends State<_ImageInfoResolver> {
   @override
   void initState() {
     super.initState();
-    _listener = ImageStreamListener(
-      _handleImageFrame,
-      onError: (exception, stackTrace) {
-        // Gérer l'erreur de chargement de l'image si nécessaire
-      },
-    );
+    _listener = ImageStreamListener(_handleImageFrame, onError: (exception, stackTrace) {});
   }
 
   @override

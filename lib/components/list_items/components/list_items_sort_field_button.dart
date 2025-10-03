@@ -57,9 +57,9 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
   Widget _leadingListTile() {
     late final IconData icon;
     final collectionBloc = context.read<CollectionBloc>();
-    if (collectionBloc.state.sortBy == SortBy.ASC) {
+    if (collectionBloc.state.sortOrder == SortOrder.asc) {
       icon = Icons.arrow_upward;
-    } else if (collectionBloc.state.sortBy == SortBy.DESC) {
+    } else if (collectionBloc.state.sortOrder == SortOrder.desc) {
       icon = Icons.arrow_downward;
     }
 
@@ -68,6 +68,6 @@ class _ListItemsSortFieldButtonState extends State<ListItemsSortFieldButton> {
 
   void sortByField(final FieldsEnum? fieldEnum) {
     if (fieldEnum == null) return;
-    context.read<CollectionBloc>().add(SortByField(fieldEnum: fieldEnum));
+    context.read<CollectionBloc>().add(CollectionSortChanged(fieldEnum.fieldName));
   }
 }

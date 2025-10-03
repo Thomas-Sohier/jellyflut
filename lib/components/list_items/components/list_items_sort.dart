@@ -21,13 +21,14 @@ class ListItemsSort extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 shape: CircleBorder(),
                 child: Icon(Icons.grid_view, size: 26, color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => context.read<CollectionBloc>().add(ListTypeChangeRequested()),
+                onPressed: () => context.read<CollectionBloc>().add(CollectionListTypeChanged()),
               ),
               OutlinedButtonSelector(
                 padding: EdgeInsets.all(8),
                 shape: CircleBorder(),
                 child: Icon(Icons.date_range_outlined, size: 26, color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => context.read<CollectionBloc>().add(SortByField(fieldEnum: FieldsEnum.DATECREATED)),
+                onPressed: () =>
+                    context.read<CollectionBloc>().add(CollectionSortChanged(FieldsEnum.DATECREATED.fieldName)),
               ),
               OutlinedButtonSelector(
                 padding: EdgeInsets.all(8),
@@ -37,7 +38,7 @@ class ListItemsSort extends StatelessWidget {
                   size: 26,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
-                onPressed: () => context.read<CollectionBloc>().add(SortByField(fieldEnum: FieldsEnum.NAME)),
+                onPressed: () => context.read<CollectionBloc>().add(CollectionSortChanged(FieldsEnum.NAME.fieldName)),
               ),
               ListItemsSortFieldButton(),
             ],

@@ -23,15 +23,15 @@ class FileDoesNotExist implements Exception {}
 /// {@endtemplate}
 class DownloadsRepository {
   /// {@macro downloads_repository}
-  DownloadsRepository(
-      {required DownloadsApi downloadsApi,
-      required RemoteDownloadsApi remoteDownloadsApi,
-      required AuthenticationRepository authenticationRepository,
-      required database.Database database})
-      : _downloadsApi = downloadsApi,
-        _remoteDownloadsApi = remoteDownloadsApi,
-        _authenticationRepository = authenticationRepository,
-        _database = database;
+  DownloadsRepository({
+    required DownloadsApi downloadsApi,
+    required RemoteDownloadsApi remoteDownloadsApi,
+    required AuthenticationRepository authenticationRepository,
+    required database.Database database,
+  }) : _downloadsApi = downloadsApi,
+       _remoteDownloadsApi = remoteDownloadsApi,
+       _authenticationRepository = authenticationRepository,
+       _database = database;
 
   // ignore: unused_field
   final DownloadsApi _downloadsApi;
@@ -59,7 +59,7 @@ class DownloadsRepository {
 
   /// Provides a [Stream] of all downloads.
   Stream<List<Download>> getDownloads() {
-    final BehaviorSubject<List<Download>> downloadsStream = BehaviorSubject.seeded(const []);
+    final downloadsStream = BehaviorSubject<List<Download>>.seeded(const []);
     final streamListener = _database.downloadsDao.watchAllDownloads.listen((event) {});
     streamListener.onData((dbDownloads) {
       final downloads = dbDownloads.map(_parseDatabaseDownloads).toList();
@@ -70,12 +70,13 @@ class DownloadsRepository {
 
   Download _parseDatabaseDownloads(database.Download download) {
     return Download(
-        id: download.id,
-        item: download.item ?? Item.empty,
-        path: download.path,
-        name: download.name,
-        primary: download.primary,
-        backdrop: download.backdrop);
+      id: download.id,
+      item: download.item ?? Item.empty,
+      path: download.path,
+      name: download.name,
+      primary: download.primary,
+      backdrop: download.backdrop,
+    );
   }
 
   // /// Deletes the download with the given id.
@@ -89,11 +90,12 @@ class DownloadsRepository {
   ///
   /// - [forceRemoteFetch] parameter allow to bypass filesystem check to directly
   /// download from API
-  Future<Uint8List> downloadItem(
-      {required String itemId,
-      BehaviorSubject<int>? stateOfDownload,
-      CancelToken? cancelToken,
-      bool forceRemoteFetch = false}) async {
+  Future<Uint8List> downloadItem({
+    required String itemId,
+    BehaviorSubject<int>? stateOfDownload,
+    CancelToken? cancelToken,
+    bool forceRemoteFetch = false,
+  }) async {
     if (!forceRemoteFetch) {
       // Id item is already downloaded then return it instead
       final isDownloaded = await isItemDownloaded(itemId);
@@ -105,14 +107,20 @@ class DownloadsRepository {
     }
 
     final ongoingDownload = OngoingDownload(
-        cancelToken: cancelToken!, id: itemId, item: Item.empty, path: '', stateOfDownload: stateOfDownload!);
+      cancelToken: cancelToken!,
+      id: itemId,
+      item: Item.empty,
+      path: '',
+      stateOfDownload: stateOfDownload!,
+    );
     addOngoingDownload(ongoingDownload);
 
     return _remoteDownloadsApi.downloadItem(
-        serverUrl: _authenticationRepository.currentServer.url,
-        itemId: itemId,
-        stateOfDownload: stateOfDownload,
-        cancelToken: cancelToken);
+      serverUrl: _authenticationRepository.currentServer.url,
+      itemId: itemId,
+      stateOfDownload: stateOfDownload,
+      cancelToken: cancelToken,
+    );
   }
 
   /// Return the rowId of the download inserted

@@ -78,13 +78,11 @@ class ChannelsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListItems.fromCustomRequest(
+    return ListItems(
       fetchMethod: (startIndex, limit) async {
         await context.read<LiveTvGuideCubit>().loadLiveTvGuide(startIndex: startIndex, limit: limit);
         return context.read<LiveTvGuideCubit>().state.guide.map((e) => e.channel).toList();
       },
-      notFoundPlaceholder: const _ChannelPlaceholder(),
-      verticalListPosterHeight: 150,
       gridPosterHeight: 120,
       boxFit: BoxFit.contain,
       listType: ListType.grid,

@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equatable/equatable.dart';
@@ -45,7 +46,10 @@ class AsyncImageCubit extends Cubit<AsyncImageState> {
     final placeholder = await _blurhashService.decode(_hash);
     if (isClosed) return;
     if (placeholder != null) {
-      emit(state.copyWith(placeholderImage: placeholder));
+      final bytedata = await placeholder.toByteData(format: ui.ImageByteFormat.png);
+      final headedIntList = Uint8List.view(bytedata!.buffer);
+      if (isClosed) return;
+      emit(state.copyWith(placeholderImage: MemoryImage(headedIntList)));
     }
   }
 
