@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=Thomas-Sohier&project=jellyflut&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 <img height="80" width="80" src="./img/icon/rounded_logo.png"/>
 
 # Jellyflut
